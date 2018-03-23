@@ -1,0 +1,23 @@
+.plug-timer-grid {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border-collapse: collapse;
+    z-index: 1;
+}
+.plug-timer-wrap {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    font-size: 12px;
+}
+.plug-timer-grid .noboder {
+    border-bottom: 1px solid #fff;
+}
+.plug-timer-grid th {
+    height: 29px;
+    border: 1px solid #dfe6ec;
+    text-align: center;
+}
