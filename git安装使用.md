@@ -110,4 +110,15 @@ git pull
 
 git push -u origin master
 
+七、执行指令删除文件
+
+删除文件夹要使用-r 参数
+
+
+git rm --cached -r 文件夹名或文件名
+
+git commit -m "remove file"
+
+git push -u origin master
+
 OK:完结~~~~~~~~~~~~~~~~~~~~~~~~~~~~
