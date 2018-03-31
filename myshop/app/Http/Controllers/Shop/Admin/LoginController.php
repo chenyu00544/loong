@@ -26,8 +26,6 @@ class LoginController extends CommonController
                 }
 
                 if($user->password != Common::md5Encrypt($input['password'], $user->salt)){
-                    dd($user->password);
-
                     return back()->with('errors', $lang['login_faild']);
                 }
                 session(['user'=>$user]);
