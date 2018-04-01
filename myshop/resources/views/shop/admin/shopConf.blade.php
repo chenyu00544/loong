@@ -1,6 +1,6 @@
-@extends('shop.layouts.layinfo')
+@extends('shop.layouts.index')
 @section('content')
-    <body class="iframe_body">
+    <body class="iframe_body" style="overflow-y: scroll;">
     <div class="warpper shop_special">
         <div class="title">{{$lang['system_set']}} - {{$lang['shop_setup']}}</div>
         <div class="content">
@@ -92,26 +92,6 @@
                     $("#shopConfigForm").submit();
                 }
             });
-
-            // $('#shopConfigForm').validate({
-            //     errorPlacement: function (error, element) {
-            //         var error_div = element.parents('div.label_value').find('div.form_prompt');
-            //         element.parents('div.label_value').find(".notic").hide();
-            //         error_div.append(error);
-            //     },
-            //     rules: {
-            //         "value[101]": {
-            //             required: true
-            //         }
-            //     },
-            //     messages: {
-            //         "value[101]": {
-            //             required: '<i class="icon icon-exclamation-sign"></i>商店名称不能为空'
-            //         }
-            //     }
-            // });
-        });
-
 
         /*url重写验证*/
         var ReWriteSelected = null;

@@ -14,6 +14,6 @@ class CommonController extends Controller
     //
     public function __construct()
     {
-
+        View::share('v',time());
     }
 }
