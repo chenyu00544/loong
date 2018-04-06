@@ -1,0 +1,84 @@
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 12px;
+}
+.plug-timer-grid {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border-collapse: collapse;
+    z-index: 1;
+}
+.plug-timer-wrap {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    font-size: 12px;
+}
+.plug-timer-grid .noboder {
+    border-bottom: 1px solid #fff;
+}
+.plug-timer-grid th {
+    height: 29px;
+    border: 1px solid #dfe6ec;
+    text-align: center;
+}
+.plug-timer-grid td {
+    border: 1px solid #fff;
+    font-size: 12px;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+    transition: background .5s;
+    -webkit-transition: background .5s;
+    background-color: #f6f7fa;
+}
+.plug-timer-grid td.selected {
+    background-color: rgba(255,167,64,.3);
+}
+.plug-timer-canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background: #fff;
+    filter: alpha(opacity = 0);
+    opacity: 0;
+}
+.plug-timer-cover {
+    position: absolute;
+    z-index: 2;
+    opacity: .5;
+    background: red;
+    filter: alpha(opacity = 50);
+}
+.table_bottom {
+    overflow: hidden;
+    zoom: 1;
+    position: relative;
+    padding-left: 106px;
+    padding-bottom: 30px;
+    padding-top: 10px;
+    font-size: 12px;
+}
+.table_bottom .zr {
+    padding: 5px 0;
+}
+.table_bottom .zt {
+    text-align: right;
+    width: 84px;
+    padding: 5px 0;
+    position: absolute;
+    left: 0;
+}
+.table_bottom{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+    -khtml-user-select: none; /* Konqueror */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently not supported by any browser */
+}
