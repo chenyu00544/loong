@@ -8,11 +8,12 @@ return array(
     ),
     'system' => array(
         'setup' => '设置',
+        'advertise' => '广告',
     ),
     'setup' => array(
         'shopsetup' => array(
             'name' => '商城设置',
-            'url' => 'admin/shopsetup',
+            'url' => 'admin/shopconf',
         ),
         'navsetup' => array(
             'name' => '自定义导航',
@@ -27,10 +28,20 @@ return array(
     'home' => array(
         'info' => '首页',
     ),
+    'advertise' => array(
+        'ad_list' => array(
+            'name' => '广告列表',
+            'url' => 'admin/ad_list',
+        ),
+        'ad_position' => array(
+            'name' => '广告位置',
+            'url' => 'admin/adposition',
+        )
+    ),
     'info' => array(
         'infocenter' => array(
             'name' => '管理中心',
-            'url' => '',
+            'url' => 'admin/info',
         ),
     ),
     'shop' => array(
@@ -38,8 +49,12 @@ return array(
     ),
     'commodity' => array(
         'shopsetup' => array(
-            'name' => '商店设置',
+            'name' => '商品设置',
             'url' => '',
+        ),
+        'comcate' => array(
+            'name' => '商品分类',
+            'url' => 'admin/comcate',
         ),
     ),
     'finance' => array(

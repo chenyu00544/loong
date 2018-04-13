@@ -5,8 +5,7 @@
             <input type="text" name="value[{{$var['id']}}]" class="text {{$var['code']}}" value="{{$var['value']}}"
                    autocomplete="off"/>
             <div class="form_prompt"></div>
-            @if($var['desc'])
-                <div class="notic">{{nl2br($var['desc'])}}</div>@endif
+            @if($var['desc'])<div class="notic">{{nl2br($var['desc'])}}</div>@endif
         </div>
     @elseif($var['type'] == 'password')
         <div class="label_value">
@@ -101,8 +100,7 @@
     @elseif($var['type'] == "manual")
         @if ($var['code'] == 'shop_country')
             <div class="ui-dropdown smartdropdown alien">
-                <select value="{{$var['value']}}" name="value[{{$var['id']}}]" id="selCountry" class="txt"
-                        onchange="selectProvince(this)">
+                <select value="{{$var['value']}}" name="value[{{$var['id']}}]" id="selCountry" class="txt" onchange="selectProvince(this)">
                     <option>国家</option>
                 </select>
             </div>

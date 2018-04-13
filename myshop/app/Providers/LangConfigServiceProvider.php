@@ -8,6 +8,7 @@
 
 namespace App\Providers;
 
+use App\Services\LangConfigService;
 use Illuminate\Support\ServiceProvider;
 
 class LangConfigServiceProvider extends ServiceProvider
@@ -20,7 +21,7 @@ class LangConfigServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('LangConfigService', function () {
-            return new \App\Services\LangConfigService();
+            return new LangConfigService();
         });
     }
 }

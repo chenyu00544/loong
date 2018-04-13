@@ -180,6 +180,9 @@ return [
         App\Providers\CommonServiceProvider::class,
         App\Providers\LangConfigServiceProvider::class,
         App\Providers\VerifiableServiceProvider::class,
+        App\Providers\HtmlServiceProvider::class,
+        App\Providers\RegionsServiceProvider::class,
+        App\Providers\ShopConfigServiceProvider::class,
     ],
 
     /*
@@ -232,6 +235,9 @@ return [
         'Common' => App\Facades\Common::class,
         'LangConfig' => App\Facades\LangConfig::class,
         'Verifiable' => App\Facades\Verifiable::class,
+        'Html' => App\Facades\Html::class,
+        'Regions' => App\Facades\Regions::class,
+        'ShopConfig' => App\Facades\ShopConfig::class,
     ],
 
 ];

@@ -33,4 +33,9 @@ class LangConfigService
     {
         return Config::get('languages.'.Config::get('config')['lang_type'].'.admin.shop_config');
     }
+
+    public static function LangAdminCutNavConf()
+    {
+        return Config::get('languages.'.Config::get('config')['lang_type'].'.admin.cutnav_config');
+    }
 }

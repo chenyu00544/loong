@@ -47,5 +47,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Shop\Admin'], function () {
 Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' => 'Shop\Admin'], function () {
     Route::get('index', 'IndexController@index');
     Route::get('info', 'IndexController@info');
-    Route::get('shopsetup', 'ShopConfController@index');
+
+//    Route::get('shopsetup', 'ShopConfController@index');
+    Route::resource('shopconf', 'ShopConfController');
+
+    Route::post('navsetup/show/or/view', 'NavigationController@showOrView');
+    Route::post('navsetup/chang/order', 'NavigationController@changOrder');
+    Route::resource('navsetup', 'NavigationController');
+
+    Route::post('comcate/chang/order', 'ComCateController@changOrder');
+    Route::resource('comcate', 'ComCateController');
 });

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RegionsModel extends Model
 {
-    protected $table = 'region';
+    protected $table = 'regions';
     protected $primaryKey = 'region_id';
     public $timestamps = false;
     protected $guarded = [];
@@ -14,5 +14,10 @@ class RegionsModel extends Model
     public function getRegions($type = 0, $parent = 0)
     {
         return $this->select('region_id', 'region_name', 'parent_id')->where([['region_type',$type],['parent_id',$parent]])->get();
+    }
+
+    public function getRegion($id)
+    {
+        return $this->select('region_id', 'region_name')->where('region_id',$id)->first();
     }
 }

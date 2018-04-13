@@ -8,6 +8,7 @@
 
 namespace App\Providers;
 
+use App\Services\CommonService;
 use Illuminate\Support\ServiceProvider;
 
 class CommonServiceProvider extends ServiceProvider
@@ -20,7 +21,7 @@ class CommonServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('CommonService', function () {
-            return new \App\Services\CommonService();
+            return new CommonService();
         });
     }
 }
