@@ -30,6 +30,7 @@ $(function () {
         $(this).parent().find('li').removeClass('curr');
         $(this).addClass('curr');
     });
+<<<<<<< HEAD
 
     $('.tabs li').click(function () {
         $(this).parent().find('li').removeClass('curr');
@@ -55,3 +56,6 @@ $(function () {
 function region() {
     $('.shop_country')
 }
+=======
+})
+>>>>>>> 3446ec3a04598a6da640fcdbe28208fa77238de4
