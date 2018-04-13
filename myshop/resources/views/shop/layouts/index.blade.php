@@ -4,11 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/static/bootstrap.min.css')}}">
-<<<<<<< HEAD
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.css')}}">
     <link rel="stylesheet" href="{{asset('styles/plugin/nyroModal/styles/nyroModal.css')}}">
-=======
->>>>>>> 3446ec3a04598a6da640fcdbe28208fa77238de4
     <link rel="stylesheet" href="{{asset('styles/admin/css/main.css').'?v='.$v}}">
     <title>{{Config::get('config.admin_name')}}</title>
     <script>
