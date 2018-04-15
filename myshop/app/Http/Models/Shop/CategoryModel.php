@@ -11,10 +11,47 @@ class CategoryModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getComCatesForFirst()
+    public function getComCates($id = 0)
     {
-        return $this->where('parent_id',0)
-            ->orderBy('sort_order','asc')
+        return $this->where('parent_id', $id)
+            ->orderBy('sort_order', 'asc')
             ->get();
+    }
+
+    public function getComCate($id)
+    {
+        return $this->where('id', $id)
+            ->first();
+    }
+
+    public function setComCate($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function getRank($data, $index = 0, $ranks = ['二级', '三级', '四级', '五级', '六级', '七级', '八级', '九级', '十级'])
+    {
+        if ($data->parent_id == 0) {
+            return [$ranks[$index], $index];
+        }
+        $i = $index + 1;
+        $re = $this->getComCate($data->parent_id);
+        if($re){
+            return $this->getRank($re,$i);
+        }else{
+            return [$ranks[$i], $i];
+        }
+    }
+
+    public function addCate($data)
+    {
+        return $this->create($data);
+    }
+
+    public function deleteCate($where)
+    {
+        return $this->where($where)
+            ->delete();
     }
 }

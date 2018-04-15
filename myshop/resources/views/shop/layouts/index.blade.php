@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/static/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.css')}}">
     <link rel="stylesheet" href="{{asset('styles/plugin/nyroModal/styles/nyroModal.css')}}">
+    <link rel="stylesheet" href="{{asset('styles/iconfont/iconfont.css')}}">
     <link rel="stylesheet" href="{{asset('styles/admin/css/main.css').'?v='.$v}}">
     <title>{{Config::get('config.admin_name')}}</title>
     <script>

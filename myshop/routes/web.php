@@ -55,6 +55,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('navsetup/chang/order', 'NavigationController@changOrder');
     Route::resource('navsetup', 'NavigationController');
 
-    Route::post('comcate/chang/order', 'ComCateController@changOrder');
+    Route::post('comcate/chang', 'ComCateController@chang');
+    Route::post('comcate/getcates/{id}', 'ComCateController@getCates');
+    Route::any('comcate/add/cate/{id}', 'ComCateController@addCate');
     Route::resource('comcate', 'ComCateController');
 });
