@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商品设置 - 商品分类列表</div>
+        <div class="title">商城设置 - 商品分类列表</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">

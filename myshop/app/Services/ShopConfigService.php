@@ -22,7 +22,7 @@ class ShopConfigService
         $group_list = array();
         $code_arr = array('shop_logo', 'no_picture', 'watermark', 'shop_slagon', 'wap_logo', 'two_code_logo', 'web_qrcode', 'bl_qrcode', 'index_down_logo', 'site_commitment', 'user_login_logo', 'login_logo_pic', 'business_logo', 'admin_login_logo', 'admin_logo', 'seller_login_logo', 'seller_logo', 'stores_login_logo', 'stores_logo', 'order_print_logo');
         $languages = LangConfig::LangAdminShopConf();
-        foreach ($item_list AS $key => $item) {
+        foreach ($item_list as $key => $item) {
             if (!in_array($item->code, $filter_item)) {
                 $pid = $item->parent_id;
                 $item['name'] = isset($languages['cfg_name'][$item->code]) ? $languages['cfg_name'][$item->code] : $item->code;
@@ -68,12 +68,17 @@ class ShopConfigService
         return $group_list;
     }
 
-    public static function setConf($data)
+    public static function setConf($data, $groups = 'shop')
     {
 
         $m = (new ShopConfigModel);
         /* 保存变量值 */
-        $item_list = $m->getConf();
+        if($groups != 'shop'){
+            $item_list = $m->getGroupsConfig($groups);
+        }else{
+            $item_list = $m->getConf();
+        }
+
         $arr = array();
         foreach ($item_list as $item) {
             $arr[$item['id']] = $item['value'];
@@ -111,7 +116,7 @@ class ShopConfigService
                 if (!FileHelper::checkFileType($tmpName, $filename, $allow_file_types)) {
                     dd($ext);
                 } else {
-                    $code_arr = array('bl_qrcode', 'web_qrcode', 'index_down_logo', 'site_commitment', 'user_login_logo', 'login_logo_pic', 'admin_login_logo', 'admin_logo', 'seller_login_logo', 'seller_logo', 'stores_login_logo', 'stores_logo', 'order_print_logo', 'shop_logo', 'business_logo', 'watermark', 'wap_logo', 'two_code_logo');
+                    $code_arr = array('bl_qrcode', 'web_qrcode', 'index_down_logo', 'site_commitment', 'user_login_logo', 'login_logo_pic', 'admin_login_logo', 'admin_logo', 'seller_login_logo', 'seller_logo', 'stores_login_logo', 'stores_logo', 'order_print_logo', 'shop_logo', 'business_logo', 'watermark', 'wap_logo', 'two_code_logo', 'no_picture', 'no_brand');
                     if (in_array($code, $code_arr)) {
 
                         $dir = base_path() . '/' . $file_list[$code]['store_dir'];
@@ -123,7 +128,7 @@ class ShopConfigService
                         /* 判断是否上传成功 */
                         if ($path = $file->move($dir, $file_name)) {
                             $where['code'] = $code;
-                            $update['value'] = 'styles/images/upload/'.$file_name;
+                            $update['value'] = 'styles/images/upload/' . $file_name;
                             $m->setConf($where, $update);
                         }
                     }

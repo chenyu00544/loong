@@ -30,6 +30,9 @@ body, ul, ol, li, dl, dt, dd, p, h1, h2, h3, h4, h5, h6, form, fieldset {
     margin: 0;
     padding: 0;
 }
+b{
+    color: red;
+}
 
 .table > tbody > tr > th, .table > tbody > tr > td {
     line-height: 30px;
@@ -347,6 +350,7 @@ input[type="radio"]{
     position: relative;
     overflow: hidden;
     border-bottom: 1px solid #62b3ff;
+    padding-bottom: 1px;
 }
 
 .tabs ul li {

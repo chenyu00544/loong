@@ -11,7 +11,6 @@ namespace App\Repositories;
 use App\Contracts\ComCateRepositoryInterface;
 use App\Http\Models\shop\CategoryModel;
 
-
 class ComCateRepository implements ComCateRepositoryInterface
 {
 
@@ -36,26 +35,16 @@ class ComCateRepository implements ComCateRepositoryInterface
     {
         $updata = [];
         foreach ($data as $key => $val) {
-            if ($key == 'category_name') {
-                if (count($val) > 0) {
-                    if ($val[count($val) - 1] == 0) {
-                        $updata['parent_id'] = $val[count($val) - 2];
-                    } else {
-                        $updata['parent_id'] = $val[count($val) - 1];
-                    }
-                }
-            } else {
-                $updata[$key] = $val ? $val : 0;
-            }
+            $updata[$key] = $val ? $val : 0;
         }
 
         return $this->categoryModel->addCate($updata);
     }
 
-//    public function upDateCate($data, $id)
-//    {
-//        return $this->categoryModel->upDateNav($data, $id);
-//    }
+    public function upDateCate($data, $id)
+    {
+        return $this->categoryModel->upDateCate($data, $id);
+    }
 
     public function getParentCate($id, $parentCates = [])
     {

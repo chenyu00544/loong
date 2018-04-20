@@ -183,6 +183,7 @@ return [
         App\Providers\HtmlServiceProvider::class,
         App\Providers\RegionsServiceProvider::class,
         App\Providers\ShopConfigServiceProvider::class,
+        App\Providers\FileHandleServiceProvider::class,
     ],
 
     /*
@@ -238,6 +239,7 @@ return [
         'Html' => App\Facades\Html::class,
         'Regions' => App\Facades\Regions::class,
         'ShopConfig' => App\Facades\ShopConfig::class,
+        'FileHandle' => App\Facades\FileHandle::class,
     ],
 
 ];

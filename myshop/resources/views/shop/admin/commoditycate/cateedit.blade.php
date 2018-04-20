@@ -16,19 +16,22 @@
             </div>
             <div class="fromlist">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/comcate')}}" method="post" class="form-horizontal">
+                    <form name="conf" action="{{url('admin/comcate/'.$cate->id)}}" method="post"
+                          class="form-horizontal">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
                         <div class="form-group">
                             <label class="col-sm-4 control-label">分类名称：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="cat_name" class="form-control" value=""
+                                <input type="text" name="cat_name" class="form-control" value="{{$cate->cat_name}}"
                                        placeholder="分类名称">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">分类别名：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="cat_alias_name" class="form-control" value=""
+                                <input type="text" name="cat_alias_name" class="form-control"
+                                       value="{{$cate->cat_alias_name}}"
                                        placeholder="分类别名">
                             </div>
                         </div>
@@ -40,14 +43,15 @@
                                     @if($loop->index != 0)　>　@endif<span>{{$val['cat_name']}}</span>
                                 @endforeach
                                 <a href="javascript:;" class="btn btn-warning btn-reset btn-sm">重置</a>
+                                <input type="hidden" name="parent_id" value="{{$cate->parent_id}}">
                             </div>
                             <div class="col-sm-8 pre-cate" style="@if(count($parentCates) > 0)display: none;@endif">
                                 <div class="cate-option fl">
                                     <select name="category_name[]" class="form-control select"
                                             onchange="setNextCate(this)">
                                         <option value="0">顶级分类</option>
-                                        @foreach($cates as $cate)
-                                            <option value="{{$cate->id}}">{{$cate->cat_name}}</option>
+                                        @foreach($cates as $cat)
+                                            <option value="{{$cat->id}}">{{$cat->cat_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -56,21 +60,23 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">数量单位：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="measure_unit" class="form-control" value=""
+                                <input type="text" name="measure_unit" class="form-control"
+                                       value="{{$cate->measure_unit}}"
                                        placeholder="数量单位">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">排序：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="sort_order" class="form-control" value="0"
+                                <input type="text" name="sort_order" class="form-control" value="{{$cate->sort_order}}"
                                        placeholder="排序">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">利润率%：</label>
                             <div class="col-sm-2">
-                                <input type="text" name="commission_rate" class="form-control" value="0"
+                                <input type="text" name="commission_rate" class="form-control"
+                                       value="{{$cate->commission_rate}}"
                                        placeholder="利润率">
                             </div>
                         </div>
@@ -78,10 +84,12 @@
                             <label class="col-sm-4 control-label">是否显示：</label>
                             <div class="col-sm-4 n-wd400">
                                 <label class="radio-inline fl ml10">
-                                    <input type="radio" name="is_show" value="1" checked> 是
+                                    <input type="radio" name="is_show" value="1"
+                                           @if($cate->is_show == 1) checked @endif> 是
                                 </label>
                                 <label class="radio-inline fl ml10">
-                                    <input type="radio" name="is_show" value="0"> 否
+                                    <input type="radio" name="is_show" value="0"
+                                           @if($cate->is_show == 0) checked @endif> 否
                                 </label>
                             </div>
                         </div>
@@ -89,10 +97,12 @@
                             <label class="col-sm-4 control-label">是否显示在导航栏：</label>
                             <div class="col-sm-4 n-wd400">
                                 <label class="radio-inline fl ml10">
-                                    <input type="radio" name="show_in_nav" value="1"> 是
+                                    <input type="radio" name="show_in_nav" value="1"
+                                           @if($cate->show_in_nav == 1) checked @endif> 是
                                 </label>
                                 <label class="radio-inline fl ml10">
-                                    <input type="radio" name="show_in_nav" value="0" checked> 否
+                                    <input type="radio" name="show_in_nav" value="0"
+                                           @if($cate->show_in_nav == 0) checked @endif> 否
                                 </label>
                             </div>
                         </div>
@@ -100,10 +110,12 @@
                             <label class="col-sm-4 control-label">是否使用顶级分类页样式：</label>
                             <div class="col-sm-4 n-wd400">
                                 <label class="radio-inline fl ml10">
-                                    <input type="radio" name="is_top_style" value="1"> 是
+                                    <input type="radio" name="is_top_style" value="1"
+                                           @if($cate->is_top_style == 1) checked @endif> 是
                                 </label>
                                 <label class="radio-inline fl ml10">
-                                    <input type="radio" name="is_top_style" value="0" checked> 否
+                                    <input type="radio" name="is_top_style" value="0"
+                                           @if($cate->is_top_style == 0) checked @endif> 否
                                 </label>
                             </div>
                         </div>
@@ -113,7 +125,7 @@
                                 @foreach($icons['cate_icons'] as $key => $val)
                                     <label class="radio-inline fl ml10">
                                         <input type="radio" name="style_icon" value="{{$val}}"
-                                               @if($loop->index == 0) checked @endif > <i
+                                               @if($cate->style_icon == $val) checked @endif > <i
                                                 class="icon iconfont {{$val}}"> </i>　
                                     </label>
                                 @endforeach
@@ -122,29 +134,29 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">价格区间个数：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="grade" class="form-control" value="0"
+                                <input type="text" name="grade" class="form-control" value="{{$cate->grade}}"
                                        placeholder="填0表示不做分级">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">分类的样式表文件：</label>
                             <div class="col-sm-5">
-                                <input type="text" name="style" class="form-control" value=""
+                                <input type="text" name="style" class="form-control" value="{{$cate->style}}"
                                        placeholder="文件存放在themes目录下则输入：themes/style.css">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">关键字：</label>
                             <div class="col-sm-5">
-                                <input type="text" name="keywords" class="form-control" value=""
+                                <input type="text" name="keywords" class="form-control" value="{{$cate->keywords}}"
                                        placeholder="关键字">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">分类描述：</label>
                             <div class="col-sm-5">
-                                <textarea type="text" name="cat_desc" rows="5" class="form-control" value=""
-                                          placeholder="分类描述"></textarea>
+                                <textarea type="text" name="cat_desc" rows="5" class="form-control"
+                                          placeholder="分类描述">{{$cate->cat_desc}}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -164,9 +176,6 @@
 @section('script')
     <script>
         $(function () {
-            $.post("{{url('admin/comcate')}}", {'_token': '{{csrf_token()}}'}, function (data) {
-
-            });
 
             $('.btn-reset').click(function () {
                 $('.pre-cate-sel').hide();
@@ -176,6 +185,7 @@
 
         function setNextCate(that) {
             var id = $(that).val();
+            $('input[name="parent_id"]').val(id);
             var html = '';
             $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
                 if (data.code == 1) {

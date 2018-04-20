@@ -34,17 +34,24 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">上级分类：</label>
-                            <div class="col-sm-8 pre-cate">
+                            <div class="col-sm-8 pre-cate-sel"
+                                 style="@if(count($parentCates) > 0)display: block;@endif">
+                                @foreach($parentCates as $val)
+                                    @if($loop->index != 0)　>　@endif<span>{{$val['cat_name']}}</span>
+                                @endforeach
+                                <a href="javascript:;" class="btn btn-warning btn-reset btn-sm">重置</a>
+                                <input type="hidden" name="parent_id" value="{{$parentCates[0]['id']}}">
+                            </div>
+                            <div class="col-sm-8 pre-cate" style="@if(count($parentCates) > 0)display: none;@endif">
                                 <div class="cate-option fl">
                                     <select class="form-control select"
                                             onchange="setNextCate(this)">
                                         <option value="0">顶级分类</option>
-                                        @foreach($cates as $cate)
-                                            <option value="{{$cate->id}}">{{$cate->cat_name}}</option>
+                                        @foreach($cates as $cat)
+                                            <option value="{{$cat->id}}">{{$cat->cat_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <input type="hidden" name="parent_id" value="">
                             </div>
                         </div>
                         <div class="form-group">
@@ -158,7 +165,10 @@
 @section('script')
     <script>
         $(function () {
-
+            $('.btn-reset').click(function () {
+                $('.pre-cate-sel').hide();
+                $('.pre-cate').show();
+            })
         });
 
         function setNextCate(that) {

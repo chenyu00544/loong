@@ -10,8 +10,8 @@ $(function () {
         sub_nav.find('.item').first().addClass('current');
         sub_nav.find('.item').find('.sub-item').hide();
         sub_nav.find('.item').first().children('.sub-item').show();
-        sub_nav.find('.item').first().children('.sub-item ul li').removeClass('curr');
-        sub_nav.find('.item').first().children('.sub-item ul li').first().addClass('curr');
+        sub_nav.find('.item').children('.sub-item').find('li').removeClass('curr');
+        sub_nav.find('.item').children('.sub-item').find('li').first().addClass('curr');
     });
 
     //左边导航切换

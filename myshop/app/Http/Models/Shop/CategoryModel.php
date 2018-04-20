@@ -30,6 +30,12 @@ class CategoryModel extends Model
             ->update($data);
     }
 
+    public function upDateCate($data, $id)
+    {
+        return $this->where('id', $id)
+            ->update($data);
+    }
+
     public function getRank($data, $index = 0, $ranks = ['二级', '三级', '四级', '五级', '六级', '七级', '八级', '九级', '十级'])
     {
         if ($data->parent_id == 0) {
@@ -37,9 +43,9 @@ class CategoryModel extends Model
         }
         $i = $index + 1;
         $re = $this->getComCate($data->parent_id);
-        if($re){
-            return $this->getRank($re,$i);
-        }else{
+        if ($re) {
+            return $this->getRank($re, $i);
+        } else {
             return [$ranks[$i], $i];
         }
     }

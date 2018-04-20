@@ -55,8 +55,15 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('navsetup/chang/order', 'NavigationController@changOrder');
     Route::resource('navsetup', 'NavigationController');
 
+    Route::post('goodsconf/chang', 'GoodsConfigController@chang');
+    Route::resource('goodsconf', 'GoodsConfigController');
+
     Route::post('comcate/chang', 'ComCateController@chang');
     Route::post('comcate/getcates/{id}', 'ComCateController@getCates');
     Route::any('comcate/add/cate/{id}', 'ComCateController@addCate');
     Route::resource('comcate', 'ComCateController');
+
+    Route::post('brand/chang', 'BrandController@chang');
+    Route::post('brand/firstchar', 'BrandController@getFirstChar');
+    Route::resource('brand', 'BrandController');
 });

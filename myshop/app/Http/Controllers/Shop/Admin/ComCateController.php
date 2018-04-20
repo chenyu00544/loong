@@ -37,7 +37,10 @@ class ComCateController extends CommonController
 
     public function addCate($id)
     {
-        dd($id);
+        $icons = LangConfig::LangAdminIconsConf();
+        $cates = $this->comCateRepository->getComCates();
+        $parentCates = $this->comCateRepository->getParentCate($id);
+        return view('shop.admin.commoditycate.subcateadd', compact('icons', 'cates', 'parentCates'));
     }
 
     public function getCates($id)
@@ -103,7 +106,7 @@ class ComCateController extends CommonController
         $cates = $this->comCateRepository->getComCates();
         $cate = $this->comCateRepository->getComCate($id);
         $parentCates = $this->comCateRepository->getParentCate($id);
-        return view('shop.admin.commoditycate.cateedit', compact('icons', 'cates', 'cate','parentCates'));
+        return view('shop.admin.commoditycate.cateedit', compact('icons', 'cates', 'cate', 'parentCates'));
     }
 
     /**
@@ -115,7 +118,12 @@ class ComCateController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["cat_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->comCateRepository->upDateCate($request->except('_token', '_method', 'category_name'), $id);
+        return view('shop.admin.success');
     }
 
     /**

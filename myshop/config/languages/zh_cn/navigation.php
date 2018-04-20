@@ -50,11 +50,19 @@ return array(
     'commodity' => array(
         'shopsetup' => array(
             'name' => '商品设置',
-            'url' => '',
+            'url' => 'admin/goodsconf',
         ),
         'comcate' => array(
             'name' => '商品分类',
             'url' => 'admin/comcate',
+        ),
+        'commodity' => array(
+            'name' => '商品列表',
+            'url' => 'admin/commodity',
+        ),
+        'brandlist' => array(
+            'name' => '品牌管理',
+            'url' => 'admin/brand',
         ),
     ),
     'finance' => array(
