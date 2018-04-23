@@ -23,7 +23,7 @@
                     <li>商店相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
-            <div class="fromlist">
+            <div class="fromlist clearfix">
                 <div class="main-info">
                     <form enctype="multipart/form-data" name="conf" action="{{url('admin/shopconf')}}" method="post"
                           class="form-horizontal">
@@ -56,7 +56,7 @@
             </div>
         </div>
     </div>
-    <div class="text-center"><a href="#">copy</a></div>
+    @component('shop.components.copyright',['copyright'=>''])@endcomponent
     <div style="height: 30px">　</div>
     </body>
 @section('script')
@@ -66,8 +66,8 @@
 
             $('.shop_country').change(function () {
                 var parent = $(this).val();
-                $.post("{{url('api/region/getCountries')}}",{type:1, parent:parent},function(data){
-                    if(data.data.length > 0) {
+                $.post("{{url('api/region/getCountries')}}", {type: 1, parent: parent}, function (data) {
+                    if (data.data.length > 0) {
                         $html = '';
                         $.each(data.data, function (k, v) {
                             $html += '<option value="' + v.id + '">' + v.name + '</option>';
@@ -79,8 +79,8 @@
 
             $('.shop_province').change(function () {
                 var parent = $(this).val();
-                $.post("{{url('api/region/getCountries')}}",{type:2, parent:parent},function(data){
-                    if(data.data.length > 0) {
+                $.post("{{url('api/region/getCountries')}}", {type: 2, parent: parent}, function (data) {
+                    if (data.data.length > 0) {
                         $html = '';
                         $.each(data.data, function (k, v) {
                             $html += '<option value="' + v.id + '">' + v.name + '</option>';

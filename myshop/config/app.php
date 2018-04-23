@@ -184,6 +184,7 @@ return [
         App\Providers\RegionsServiceProvider::class,
         App\Providers\ShopConfigServiceProvider::class,
         App\Providers\FileHandleServiceProvider::class,
+        App\Providers\UrlServiceProvider::class,
     ],
 
     /*
@@ -240,6 +241,7 @@ return [
         'Regions' => App\Facades\Regions::class,
         'ShopConfig' => App\Facades\ShopConfig::class,
         'FileHandle' => App\Facades\FileHandle::class,
+        'Url' => App\Facades\Url::class,
     ],
 
 ];

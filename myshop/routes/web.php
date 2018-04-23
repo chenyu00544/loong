@@ -40,7 +40,7 @@ Route::group(['namespace' => 'Shop\Home'], function () {
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Shop\Admin'], function () {
     Route::any('login', 'LoginController@login');
-    Route::get('chang', 'LoginController@chang');
+    Route::get('change', 'LoginController@change');
     Route::get('tool', 'LoginController@tool');
 });
 
@@ -52,18 +52,22 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('shopconf', 'ShopConfController');
 
     Route::post('navsetup/show/or/view', 'NavigationController@showOrView');
-    Route::post('navsetup/chang/order', 'NavigationController@changOrder');
+    Route::post('navsetup/change/order', 'NavigationController@changeOrder');
     Route::resource('navsetup', 'NavigationController');
 
-    Route::post('goodsconf/chang', 'GoodsConfigController@chang');
+    Route::post('goodsconf/change', 'GoodsConfigController@change');
     Route::resource('goodsconf', 'GoodsConfigController');
 
-    Route::post('comcate/chang', 'ComCateController@chang');
+    Route::post('comcate/change', 'ComCateController@change');
     Route::post('comcate/getcates/{id}', 'ComCateController@getCates');
     Route::any('comcate/add/cate/{id}', 'ComCateController@addCate');
     Route::resource('comcate', 'ComCateController');
 
-    Route::post('brand/chang', 'BrandController@chang');
+    Route::post('brand/change', 'BrandController@change');
     Route::post('brand/firstchar', 'BrandController@getFirstChar');
     Route::resource('brand', 'BrandController');
+
+    Route::post('goods/change', 'GoodsController@change');
+    Route::get('goods/weight/order/{id}', 'GoodsController@weightOrder');
+    Route::resource('goods', 'GoodsController');
 });

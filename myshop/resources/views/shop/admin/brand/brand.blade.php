@@ -14,7 +14,7 @@
                     <li>商城相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
-            <div class="fromlist">
+            <div class="fromlist clearfix">
                 <div>
                     <a href="{{url('admin/brand/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加　</a>
@@ -84,7 +84,7 @@
             </div>
         </div>
     </div>
-    <div class="text-center"><a href="#">copy</a></div>
+    @component('shop.components.copyright',['copyright'=>''])@endcomponent
     <div style="height: 30px">　</div>
     </body>
 @section('script')
@@ -101,7 +101,7 @@
                 onSwitchChange: function (event, state) {
                     if (state == true) {
                         $.post(
-                            '{{url("admin/brand/chang")}}',
+                            '{{url("admin/brand/change")}}',
                             {
                                 id: $(this).val(),
                                 type: 'is_recommend',
@@ -114,7 +114,7 @@
                         );
                     } else {
                         $.post(
-                            '{{url("admin/brand/chang")}}',
+                            '{{url("admin/brand/change")}}',
                             {
                                 id: $(this).val(),
                                 type: 'is_recommend',
@@ -138,7 +138,7 @@
                 onSwitchChange: function (event, state) {
                     if (state == true) {
                         $.post(
-                            '{{url("admin/brand/chang")}}',
+                            '{{url("admin/brand/change")}}',
                             {
                                 id: $(this).val(),
                                 type: 'opennew',
@@ -151,7 +151,7 @@
                         );
                     } else {
                         $.post(
-                            '{{url("admin/brand/chang")}}',
+                            '{{url("admin/brand/change")}}',
                             {
                                 id: $(this).val(),
                                 type: 'opennew',
@@ -168,7 +168,7 @@
 
             $('.chang-order').change(function () {
                 $.post(
-                    '{{url("admin/brand/chang")}}',
+                    '{{url("admin/brand/change")}}',
                     {
                         id: $(this).data('id'),
                         order: $(this).val(),

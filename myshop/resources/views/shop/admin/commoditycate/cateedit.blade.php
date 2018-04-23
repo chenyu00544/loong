@@ -14,7 +14,7 @@
                     <li>商店相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
-            <div class="fromlist">
+            <div class="fromlist clearfix">
                 <div class="main-info">
                     <form name="conf" action="{{url('admin/comcate/'.$cate->id)}}" method="post"
                           class="form-horizontal">
@@ -170,7 +170,7 @@
             </div>
         </div>
     </div>
-    <div class="text-center"><a href="#">copy</a></div>
+    @component('shop.components.copyright',['copyright'=>''])@endcomponent
     <div style="height: 30px">　</div>
     </body>
 @section('script')

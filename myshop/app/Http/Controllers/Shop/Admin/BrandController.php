@@ -28,7 +28,7 @@ class BrandController extends CommonController
         return view('shop.admin.brand.brand', compact('brands'));
     }
 
-    public function chang(Request $request)
+    public function change(Request $request)
     {
         return $this->brandRepository->changBrand($request->except('_token'));
     }
@@ -40,9 +40,9 @@ class BrandController extends CommonController
             foreach ($re as $val) {
                 $char = $this->brandRepository->getFirstChar($val['brand_name']);
                 if ($char) {
+                    $val['brand_first_char'] = $char;
                     $where['id'] = $val['id'];
-                    $updata['brand_first_char'] = $char;
-                    $this->brandRepository->setBrand($where,$updata);
+                    $this->brandRepository->setBrand($where, $val);
                 }
             }
         }
@@ -56,7 +56,7 @@ class BrandController extends CommonController
      */
     public function create()
     {
-        return view('shop.admin.brand.brandadd');
+        return view('shop.admin.brand.brandAdd');
     }
 
     /**
@@ -95,7 +95,7 @@ class BrandController extends CommonController
     public function edit($id)
     {
         $brand = $this->brandRepository->getBrand($id);
-        return view('shop.admin.brand.brandedit', compact('brand'));
+        return view('shop.admin.brand.brandEdit', compact('brand'));
     }
 
     /**

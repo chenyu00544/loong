@@ -10,16 +10,43 @@ namespace App\Repositories;
 
 use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\LangConfig;
+use App\Facades\Url;
+use App\Http\Models\Shop\BrandModel;
+use App\Http\Models\Shop\GoodsCateModel;
+use App\Http\Models\Shop\GoodsExtendModel;
+use App\Http\Models\Shop\GoodsModel;
+use App\Http\Models\Shop\GoodsTransportModel;
+use App\Http\Models\Shop\IntelligentWeightModel;
 use App\Http\Models\Shop\ShopConfigModel;
 
 class GoodsRepository implements GoodsRepositoryInterface
 {
 
     private $shopConfigModel;
+    private $goodsModel;
+    private $goodsCateModel;
+    private $brandModel;
+    private $goodsTransportModel;
+    private $goodsExtendModel;
+    private $intelligentWeightModel;
 
-    public function __construct(ShopConfigModel $shopConfigModel)
+    public function __construct(
+        ShopConfigModel $shopConfigModel,
+        GoodsModel $goodsModel,
+        GoodsCateModel $goodsCateModel,
+        BrandModel $brandModel,
+        GoodsTransportModel $goodsTransportModel,
+        GoodsExtendModel $goodsExtendModel,
+        IntelligentWeightModel $intelligentWeightModel
+    )
     {
         $this->shopConfigModel = $shopConfigModel;
+        $this->goodsModel = $goodsModel;
+        $this->goodsCateModel = $goodsCateModel;
+        $this->brandModel = $brandModel;
+        $this->goodsTransportModel = $goodsTransportModel;
+        $this->goodsExtendModel = $goodsExtendModel;
+        $this->intelligentWeightModel = $intelligentWeightModel;
     }
 
     public function getGroupsConfig($groups)
@@ -81,4 +108,106 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $group_list;
     }
 
+    //商品分页
+    public function getGoodsPage($size = 10, $data = ['is_delete' => 0])
+    {
+        $goodsColumns = ['goods_id', 'goods_thumb', 'goods_name', 'user_id', 'brand_id', 'goods_type', 'goods_sn', 'shop_price', 'is_on_sale', 'is_best', 'is_new', 'is_hot', 'sort_order', 'goods_number', 'integral', 'commission_rate', 'is_promote', 'model_price', 'model_inventory', 'model_attr', 'review_status', 'review_content', 'store_best', 'store_new', 'store_hot', 'is_real', 'is_shipping', 'stages', 'goods_thumb', 'is_alone_sale', 'is_limit_buy', 'promote_end_date', 'limit_buy_end_date', 'bar_code', 'freight', 'tid'];
+        $where = $data;
+        if ($goods = $this->goodsModel->getGoodsPage($size, $where, $goodsColumns)) {
+            //品牌
+            $brandColumns = ['id', 'brand_name'];
+            $brandsFormat = [];
+            if ($brands = $this->brandModel->getBrandsAll($brandColumns)->toArray()) {
+                foreach ($brands as $bVal) {
+                    $brandsFormat[$bVal['id']] = $bVal['brand_name'];
+                }
+            }
+
+            //运费
+            $transportColumns = ['tid', 'ru_id', 'freight_type'];
+            $transportFormat = [];
+            if ($transports = $this->goodsTransportModel->getTransportAll($transportColumns)->toArray()) {
+                foreach ($transports as $tVal) {
+                    $transportFormat[$tVal['tid']] = ['business_id' => $tVal['ru_id'], 'freight_type' => $tVal['freight_type']];
+                }
+            }
+
+            //商品属性
+//            $sql = "SELECT ga.goods_attr_id FROM " . $GLOBALS['ecs']->table('goods_attr') . " AS ga," .
+//                $GLOBALS['ecs']->table('attribute') . " AS a" .
+//                " WHERE ga.goods_id = '" . $row[$i]['goods_id'] . "' AND ga.attr_id = a.attr_id AND a.attr_type <> 0";
+
+            foreach ($goods as $key => $val) {
+                $goods[$key]->brand_name = !empty($brandsFormat[$val->brand_id]) ? $brandsFormat[$val->brand_id] : '暂无';
+                $goods[$key]->transport = !empty($transportFormat[$val->tid]) ? $transportFormat[$val->tid] : [];
+                $goods[$key]->goods_thumb = Url::getImagePath($val->goods_thumb);
+                $goods[$key]->is_attr = 0;
+            }
+        }
+
+        return $goods;
+    }
+
+    //单个商品
+    public function getGoods($id)
+    {
+        $goodsColumns = ['goods_id', 'goods_thumb', 'goods_name', 'user_id', 'brand_id', 'goods_type', 'goods_sn', 'shop_price', 'is_on_sale', 'is_best', 'is_new', 'is_hot', 'sort_order', 'goods_number', 'integral', 'commission_rate', 'is_promote', 'model_price', 'model_inventory', 'model_attr', 'review_status', 'review_content', 'store_best', 'store_new', 'store_hot', 'is_real', 'is_shipping', 'stages', 'goods_thumb', 'is_alone_sale', 'is_limit_buy', 'promote_end_date', 'limit_buy_end_date', 'bar_code', 'freight', 'tid'];
+        return $this->goodsModel->getGoods($id, $goodsColumns);
+    }
+
+    //商品的状态导航
+    public function getGoodsNav()
+    {
+        $goodsNav['normal'] = ['title' => '普通商品', 'count' => $this->goodsModel->getGoodsCount(['is_delete' => 0], [], ['review_status', ['3', '5']])];
+        $goodsNav['virtual'] = ['title' => '虚拟商品', 'count' => $this->goodsModel->getGoodsCount(['extension_code' => 'virtual_card'])];
+        $goodsNav['examine'] = ['title' => '审核商品', 'count' => $this->goodsModel->getGoodsCount(['review_status' => 2], ['review_status' => 1])];
+        $goodsNav['recovery'] = ['title' => '回收商品', 'count' => $this->goodsModel->getGoodsCount(['is_delete' => 1])];
+        $goodsNav['onsale'] = ['title' => '上架商品', 'count' => $this->goodsModel->getGoodsCount(['is_on_sale' => 1])];
+        $goodsNav['offsale'] = ['title' => '下架商品', 'count' => $this->goodsModel->getGoodsCount(['is_on_sale' => 0])];
+        return $goodsNav;
+    }
+
+    //设置商品
+    public function setGoods($data)
+    {
+        $rep = ['code' => 5, 'msg' => '修改失败'];
+        $updata = [];
+        $where['goods_id'] = $data['id'];
+        switch ($data['type']) {
+            case 'is_best':
+                $updata['is_best'] = $data['val'];
+                break;
+            case 'is_new':
+                $updata['is_new'] = $data['val'];
+                break;
+            case 'is_hot':
+                $updata['is_hot'] = $data['val'];
+                break;
+            case 'is_on_sale':
+                $updata['is_on_sale'] = $data['val'];
+                break;
+            case 'order':
+                $updata['sort_order'] = $data['val'];
+                break;
+            default:
+                break;
+        }
+
+        $re = $this->goodsModel->setGoods($where, $updata);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
+        return $rep;
+    }
+
+    //商品权重排序
+    public function getGoodsByWeightOrder($id)
+    {
+        $re = $this->intelligentWeightModel->getGoodsWeight($id);
+        if ($re) {
+            return $re->toArray();
+        } else {
+            return ['goods_number' => 0, 'return_number' => 0, 'user_number' => 0, 'goods_comment_number' => 0, 'merchants_comment_number' => 0, 'user_attention_number' => 0];
+        }
+    }
 }

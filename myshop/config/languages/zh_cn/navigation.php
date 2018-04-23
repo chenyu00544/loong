@@ -56,9 +56,9 @@ return array(
             'name' => '商品分类',
             'url' => 'admin/comcate',
         ),
-        'commodity' => array(
+        'goods' => array(
             'name' => '商品列表',
-            'url' => 'admin/commodity',
+            'url' => 'admin/goods',
         ),
         'brandlist' => array(
             'name' => '品牌管理',

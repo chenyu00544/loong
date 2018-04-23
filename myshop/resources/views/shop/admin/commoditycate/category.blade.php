@@ -14,7 +14,7 @@
                     <li>商品相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
-            <div class="fromlist">
+            <div class="fromlist clearfix">
                 <div class="clearfix">
                     <a href="{{url('admin/comcate/create')}}"
                        class="btn btn-success btn-add btn-sm fl">　添加　</a>
@@ -84,7 +84,7 @@
             </div>
         </div>
     </div>
-    <div class="text-center"><a href="#">copy</a></div>
+    @component('shop.components.copyright',['copyright'=>''])@endcomponent
     <div style="height: 30px">　</div>
     </body>
 @section('script')
@@ -104,7 +104,7 @@
                         val = 0;
                     }
                     $.post(
-                        '{{url("admin/comcate/chang")}}',
+                        '{{url("admin/comcate/change")}}',
                         {
                             id: $(this).val(),
                             shownav: val,
@@ -132,7 +132,7 @@
                         val = 0;
                     }
                     $.post(
-                        '{{url("admin/comcate/chang")}}',
+                        '{{url("admin/comcate/change")}}',
                         {
                             id: $(this).val(),
                             isshow: val,
@@ -171,7 +171,7 @@
                 }
                 var obj = Object.assign(data, type);
                 $.post(
-                    '{{url("admin/comcate/chang")}}',
+                    '{{url("admin/comcate/change")}}',
                     obj,
                     function (data) {
                         layer.open({

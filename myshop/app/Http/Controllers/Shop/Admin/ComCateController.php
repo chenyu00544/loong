@@ -30,7 +30,7 @@ class ComCateController extends CommonController
         return view('shop.admin.commoditycate.category', compact('cates', 'rank'));
     }
 
-    public function chang(Request $request)
+    public function change(Request $request)
     {
         return $this->comCateRepository->setComCate($request->except('_token'));
     }
@@ -40,7 +40,7 @@ class ComCateController extends CommonController
         $icons = LangConfig::LangAdminIconsConf();
         $cates = $this->comCateRepository->getComCates();
         $parentCates = $this->comCateRepository->getParentCate($id);
-        return view('shop.admin.commoditycate.subcateadd', compact('icons', 'cates', 'parentCates'));
+        return view('shop.admin.commoditycate.subCateAdd', compact('icons', 'cates', 'parentCates'));
     }
 
     public function getCates($id)
@@ -62,7 +62,7 @@ class ComCateController extends CommonController
     {
         $icons = LangConfig::LangAdminIconsConf();
         $cates = $this->comCateRepository->getComCates();
-        return view('shop.admin.commoditycate.cateadd', compact('icons', 'cates'));
+        return view('shop.admin.commoditycate.cateAdd', compact('icons', 'cates'));
     }
 
     /**
@@ -106,7 +106,7 @@ class ComCateController extends CommonController
         $cates = $this->comCateRepository->getComCates();
         $cate = $this->comCateRepository->getComCate($id);
         $parentCates = $this->comCateRepository->getParentCate($id);
-        return view('shop.admin.commoditycate.cateedit', compact('icons', 'cates', 'cate', 'parentCates'));
+        return view('shop.admin.commoditycate.cateEdit', compact('icons', 'cates', 'cate', 'parentCates'));
     }
 
     /**

@@ -59,7 +59,7 @@ class NavigationRepository implements NavigationRepositoryInterface
         }
     }
 
-    public function changOrder($data)
+    public function changeOrder($data)
     {
 
         if($data['order'] == ''){

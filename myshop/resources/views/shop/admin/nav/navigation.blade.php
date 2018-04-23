@@ -14,7 +14,7 @@
                     <li>商店相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
-            <div class="fromlist">
+            <div class="fromlist clearfix">
                 <div>
                     <a href="{{url('admin/navsetup/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加　</a>
@@ -67,7 +67,7 @@
             </div>
         </div>
     </div>
-    <div class="text-center"><a href="#">copy</a></div>
+    @component('shop.components.copyright',['copyright'=>''])@endcomponent
     <div style="height: 30px">　</div>
     </body>
 @section('script')
@@ -149,7 +149,7 @@
 
             $('.chang-order').change(function () {
                 $.post(
-                    '{{url("admin/navsetup/chang/order")}}',
+                    '{{url("admin/navsetup/change/order")}}',
                     {
                         id: $(this).data('id'),
                         order: $(this).val(),

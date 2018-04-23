@@ -37,8 +37,8 @@ class NavigationController extends CommonController
         return $re;
     }
 
-    public function changOrder(Request $req){
-        $re = $this->navigationRepository->changOrder($req->except('_token'));
+    public function changeOrder(Request $req){
+        $re = $this->navigationRepository->changeOrder($req->except('_token'));
         return $re;
     }
 
@@ -50,7 +50,7 @@ class NavigationController extends CommonController
     public function create()
     {
         $navsTop = $this->navigationRepository->getNavsTop();
-        return view('shop.admin.nav.navadd', compact('navsTop'));
+        return view('shop.admin.nav.navAdd', compact('navsTop'));
     }
 
     /**
@@ -86,7 +86,7 @@ class NavigationController extends CommonController
     {
         $field = $this->navigationRepository->getNav($id);
         $navsTop = $this->navigationRepository->getNavsTop();
-        return view('shop.admin.nav.navedit',compact('field','navsTop'));
+        return view('shop.admin.nav.navEdit',compact('field','navsTop'));
     }
 
     /**

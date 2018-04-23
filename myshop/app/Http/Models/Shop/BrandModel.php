@@ -18,9 +18,10 @@ class BrandModel extends Model
             ->paginate($size);
     }
 
-    public function getBrandsAll()
+    public function getBrandsAll($columns = ['*'])
     {
-        return $this->get();
+        return $this->select($columns)
+            ->get();
     }
 
     public function getBrand($id)

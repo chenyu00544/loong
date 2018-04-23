@@ -41,7 +41,7 @@
                     <button type="submit" class="btn btn-primary">　　{{$lang['login']}}　　</button>
                 </div>
             </div>
-            <div class="copy-right text-info text-center">&copy; 2010-2018 ShopEx,Inc.All rights reserved.</div>
+            @component('shop.components.copyright',['copyright'=>''])@endcomponent
         </div>
     </form>
 @endsection
