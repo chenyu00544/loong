@@ -47,22 +47,29 @@
                                 <td>
                                     <span class="show">
                                             <a href="{{url($brand->brand_logo)}}" class="nyroModal">
-                                                <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{url($brand->brand_logo)}}"
+                                                <i class="glyphicon glyphicon-picture top5"
+                                                   data-tooltipimg="{{url($brand->brand_logo)}}"
                                                    ctype="tooltip" title="tooltip"></i>
                                             </a>
                                         </span>
                                 </td>
                                 <td>{{$brand->brand_desc}}</td>
                                 <td>
-                                    <div class="switch switch-small">
-                                        <input type="checkbox" name="is_recommend" @if($brand->is_recommend) checked
-                                               @endif value="{{$brand->id}}"/>
+                                    <div class="switch-wrap clearfix">
+                                        <div class="switch @if($brand->is_recommend) active @endif"
+                                             data-type="is_recommend" title="是">
+                                            <div class="circle"></div>
+                                            <input type="hidden" value="{{$brand->id}}">
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="switch switch-small">
-                                        <input type="checkbox" name="is_show" @if($brand->is_show) checked
-                                               @endif value="{{$brand->id}}"/>
+                                    <div class="switch-wrap clearfix">
+                                        <div class="switch @if($brand->is_show) active @endif"
+                                             data-type="is_show" title="是">
+                                            <div class="circle"></div>
+                                            <input type="hidden" value="{{$brand->id}}">
+                                        </div>
                                     </div>
                                 </td>
                                 <td><input class="form-control input-sm chang-order" type="text"
@@ -71,7 +78,8 @@
                                 <td>
                                     <a type="button" href="{{url('admin/brand/'.$brand->id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$brand->id}}">删除</a>
+                                    <a type="button" class="btn btn-danger btn-del btn-sm"
+                                       data-id="{{$brand->id}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -92,78 +100,31 @@
         $(function () {
             $('.nyroModal').nyroModal();
 
-            $('[name="is_recommend"]').bootstrapSwitch({    //初始化按钮
-                onText: "开",
-                offText: "关",
-                onColor: "success",
-                offColor: "danger",
-                size: "mini",
-                onSwitchChange: function (event, state) {
-                    if (state == true) {
-                        $.post(
-                            '{{url("admin/brand/change")}}',
-                            {
-                                id: $(this).val(),
-                                type: 'is_recommend',
-                                is_recommend: '1',
-                                _token: '{{csrf_token()}}'
-                            },
-                            function (data) {
-
-                            }
-                        );
-                    } else {
-                        $.post(
-                            '{{url("admin/brand/change")}}',
-                            {
-                                id: $(this).val(),
-                                type: 'is_recommend',
-                                is_recommend: '0',
-                                _token: '{{csrf_token()}}'
-                            },
-                            function (data) {
-
-                            }
-                        );
-                    }
+            $('.switch').click(function () {
+                var val = 0;
+                if ($(this).hasClass('active')) {
+                    val = 0
+                    $(this).removeClass('active');
+                } else {
+                    val = 1
+                    $(this).addClass('active');
                 }
-            });
 
-            $('[name="is_show"]').bootstrapSwitch({    //初始化按钮
-                onText: "开",
-                offText: "关",
-                onColor: "success",
-                offColor: "danger",
-                size: "mini",
-                onSwitchChange: function (event, state) {
-                    if (state == true) {
-                        $.post(
-                            '{{url("admin/brand/change")}}',
-                            {
-                                id: $(this).val(),
-                                type: 'opennew',
-                                is_show: '1',
-                                _token: '{{csrf_token()}}'
-                            },
-                            function (data) {
+                var tag = $(this).data('type');
+                var id = $(this).children('input').val();
 
-                            }
-                        );
-                    } else {
-                        $.post(
-                            '{{url("admin/brand/change")}}',
-                            {
-                                id: $(this).val(),
-                                type: 'opennew',
-                                is_show: '0',
-                                _token: '{{csrf_token()}}'
-                            },
-                            function (data) {
+                $.post(
+                    '{{url("admin/brand/change")}}',
+                    {
+                        id: id,
+                        type: tag,
+                        val: val,
+                        _token: '{{csrf_token()}}'
+                    },
+                    function (data) {
 
-                            }
-                        );
                     }
-                }
+                );
             });
 
             $('.chang-order').change(function () {
@@ -171,7 +132,8 @@
                     '{{url("admin/brand/change")}}',
                     {
                         id: $(this).data('id'),
-                        order: $(this).val(),
+                        type: 'order',
+                        val: $(this).val(),
                         _token: '{{csrf_token()}}'
                     },
                     function (data) {

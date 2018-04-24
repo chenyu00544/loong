@@ -176,6 +176,10 @@ span {
     min-width: 80px;
 }
 
+.wd250 {
+    min-width: 250px;
+}
+
 .top-border {
     font-size: 0;
     line-height: 0;
@@ -574,6 +578,10 @@ span {
     margin-top: 20px;
 }
 
+.mar-left-20 {
+    margin-top: 20px;
+}
+
 .pad-all-5 {
     padding: 5px;
 }
@@ -605,7 +613,7 @@ span {
     font-style: normal;
 }
 
-.max-wd-250 {
+.max-wd-190 {
     max-width: 190px;
     display: inline-block;
     white-space: nowrap;

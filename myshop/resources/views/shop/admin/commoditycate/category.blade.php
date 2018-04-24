@@ -54,21 +54,31 @@
                                            data-cate="measure_unit" data-id="{{$cate->id}}"
                                            value="{{$cate->measure_unit}}"></td>
                                 <td>
-                                    <div class="switch switch-small">
-                                        <input type="checkbox" name="show_in_nav" @if($cate->show_in_nav) checked
-                                               @endif value="{{$cate->id}}"/>
+                                    <div class="switch-wrap clearfix">
+                                        <div class="switch @if($cate->show_in_nav) active @endif" data-type="shownav"
+                                             title="是">
+                                            <div class="circle"></div>
+                                            <input type="hidden" value="{{$cate->id}}">
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="switch switch-small">
-                                        <input type="checkbox" name="is_show" @if($cate->is_show) checked
-                                               @endif value="{{$cate->id}}"/>
+                                    <div class="switch-wrap clearfix">
+                                        <div class="switch @if($cate->is_show) active @endif" data-type="isshow"
+                                             title="是">
+                                            <div class="circle"></div>
+                                            <input type="hidden" value="{{$cate->id}}">
+                                        </div>
                                     </div>
                                 </td>
-                                <td><input class="form-control input-sm chang-cate" type="text" data-id="{{$cate->id}}"
-                                           data-cate="grade" value="{{$cate->grade}}"></td>
-                                <td><input class="form-control input-sm chang-cate" type="text" data-id="{{$cate->id}}"
-                                           data-cate="sort_order" value="{{$cate->sort_order}}"></td>
+                                <td>
+                                    <input class="form-control input-sm chang-cate" type="text" data-id="{{$cate->id}}"
+                                           data-cate="grade" value="{{$cate->grade}}">
+                                </td>
+                                <td>
+                                    <input class="form-control input-sm chang-cate" type="text" data-id="{{$cate->id}}"
+                                           data-cate="order" value="{{$cate->sort_order}}">
+                                </td>
                                 <td>
                                     <a href="{{url('admin/comcate/add/cate/'.$cate->id)}}"
                                        class="btn btn-info btn-warning btn-sm">添加子类</a>
@@ -90,89 +100,46 @@
 @section('script')
     <script>
         $(function () {
-            $('[name="show_in_nav"]').bootstrapSwitch({    //初始化按钮
-                onText: "开",
-                offText: "关",
-                onColor: "success",
-                offColor: "danger",
-                size: "mini",
-                onSwitchChange: function (event, state) {
-                    var val = 0;
-                    if (state == true) {
-                        val = 1;
-                    } else {
-                        val = 0;
-                    }
-                    $.post(
-                        '{{url("admin/comcate/change")}}',
-                        {
-                            id: $(this).val(),
-                            shownav: val,
-                            _token: '{{csrf_token()}}'
-                        },
-                        function (data) {
 
-                        }
-                    );
-
+            $('.switch').click(function () {
+                var val = 0;
+                if ($(this).hasClass('active')) {
+                    val = 0
+                    $(this).removeClass('active');
+                } else {
+                    val = 1
+                    $(this).addClass('active');
                 }
-            });
 
-            $('[name="is_show"]').bootstrapSwitch({    //初始化按钮
-                onText: "开",
-                offText: "关",
-                onColor: "success",
-                offColor: "danger",
-                size: "mini",
-                onSwitchChange: function (event, state) {
-                    var val = 0;
-                    if (state == true) {
-                        val = 1;
-                    } else {
-                        val = 0;
+                var tag = $(this).data('type');
+                var id = $(this).children('input').val();
+
+                $.post(
+                    '{{url("admin/comcate/change")}}',
+                    {
+                        id: id,
+                        type: tag,
+                        val: val,
+                        _token: '{{csrf_token()}}'
+                    },
+                    function (data) {
+
                     }
-                    $.post(
-                        '{{url("admin/comcate/change")}}',
-                        {
-                            id: $(this).val(),
-                            isshow: val,
-                            _token: '{{csrf_token()}}'
-                        },
-                        function (data) {
-
-                        }
-                    );
-                }
+                );
             });
 
             $('.chang-cate').change(function () {
 
-                var cate = $(this).data('cate');
                 var data = {
                     id: $(this).data('id'),
+                    type: $(this).data('cate'),
+                    val: $(this).val(),
                     _token: '{{csrf_token()}}',
                 };
-                var type = {};
-                switch (cate) {
-                    case 'sort_order':
-                        type = {order: $(this).val()};
-                        break;
-                    case 'grade':
-                        type = {grade: $(this).val()};
-                        break;
-                    case 'measure_unit':
-                        type = {measure_unit: $(this).val()};
-                        break;
-                    case 'commission_rate':
-                        type = {commission_rate: $(this).val()};
-                        break;
-                    default:
-                        break;
-                }
-                var obj = Object.assign(data, type);
+
                 $.post(
                     '{{url("admin/comcate/change")}}',
-                    obj,
+                    data,
                     function (data) {
                         layer.open({
                             title: '提示',

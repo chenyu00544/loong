@@ -87,15 +87,15 @@ class BrandRepository implements BrandRepositoryInterface
         $where['id'] = $data['id'];
         $keys = array_keys($data);
         foreach ($keys as $val) {
-            switch ($val) {
+            switch ($data['type']) {
                 case 'order':
-                    $updata['sort_order'] = $data['order'];
+                    $updata['sort_order'] = $data['val'];
                     break;
                 case 'is_recommend':
-                    $updata['is_recommend'] = $data['is_recommend'];
+                    $updata['is_recommend'] = $data['val'];
                     break;
                 case 'is_show':
-                    $updata['is_show'] = $data['is_show'];
+                    $updata['is_show'] = $data['val'];
                     break;
                 default:
                     break;

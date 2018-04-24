@@ -103,30 +103,28 @@ class ComCateRepository implements ComCateRepositoryInterface
         $rep = ['code' => 5, 'msg' => '修改失败'];
 
         $where['id'] = $data['id'];
-        $keys = array_keys($data);
-        foreach ($keys as $val) {
-            switch ($val) {
-                case 'order':
-                    $updata['sort_order'] = $data['order'];
-                    break;
-                case 'grade':
-                    $updata['grade'] = $data['grade'];
-                    break;
-                case 'measure_unit':
-                    $updata['measure_unit'] = $data['measure_unit'];
-                    break;
-                case 'commission_rate':
-                    $updata['commission_rate'] = $data['commission_rate'];
-                    break;
-                case 'isshow':
-                    $updata['is_show'] = $data['isshow'];
-                    break;
-                case 'shownav':
-                    $updata['show_in_nav'] = $data['shownav'];
-                    break;
-                default:
-                    break;
-            }
+
+        switch ($data['type']) {
+            case 'order':
+                $updata['sort_order'] = $data['val'];
+                break;
+            case 'grade':
+                $updata['grade'] = $data['val'];
+                break;
+            case 'measure_unit':
+                $updata['measure_unit'] = $data['val'];
+                break;
+            case 'commission_rate':
+                $updata['commission_rate'] = $data['val'];
+                break;
+            case 'isshow':
+                $updata['is_show'] = $data['val'];
+                break;
+            case 'shownav':
+                $updata['show_in_nav'] = $data['val'];
+                break;
+            default:
+                break;
         }
         $re = $this->categoryModel->setComCate($where, $updata);
         if ($re) {

@@ -11,11 +11,14 @@ class GoodsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getGoodsPage($size = 10, $where = [], $columns = ['*'])
+    public function getGoodsPage($size = 10, $where = [], $columns = ['*'], $keywords = '')
     {
         $goods = $this->select($columns);
         if (!empty($where)) {
             $goods->where($where);
+        }
+        if(!empty($keywords)){
+            $goods->where('goods_name', 'like', '%'.$keywords.'%');
         }
         return $goods->orderBy('goods_id', 'desc')
             ->paginate($size);
@@ -24,7 +27,7 @@ class GoodsModel extends Model
     public function getGoods($id, $columns = ['*'])
     {
         return $this->select($columns)
-            ->where('goods_id',$id)
+            ->where('goods_id', $id)
             ->first();
     }
 
@@ -35,7 +38,7 @@ class GoodsModel extends Model
             $count->orWhere($orwhere);
         }
         if (!empty($inwhere)) {
-            $count->whereIn($inwhere[0],$inwhere[1]);
+            $count->whereIn($inwhere[0], $inwhere[1]);
         }
         return $count->count();
     }
@@ -43,6 +46,12 @@ class GoodsModel extends Model
     public function setGoods($where = [], $updata = [])
     {
         return $this->where($where)
+            ->update($updata);
+    }
+
+    public function setGoodsMore($where = [], $updata = [])
+    {
+        return $this->whereIn('goods_id', $where)
             ->update($updata);
     }
 }

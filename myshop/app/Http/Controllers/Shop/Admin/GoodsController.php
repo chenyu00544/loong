@@ -21,9 +21,9 @@ class GoodsController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $goodsList = $this->goodsRepository->getGoodsPage();
+        $goodsList = $this->goodsRepository->getGoodsPage($request->get('keywords'));
         $goodsNav = $this->goodsRepository->getGoodsNav();
         return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav'));
     }
@@ -31,6 +31,11 @@ class GoodsController extends CommonController
     public function change(Request $request)
     {
         return $this->goodsRepository->setGoods($request->except('_token'));
+    }
+
+    public function changes(Request $request)
+    {
+        return $this->goodsRepository->setGoodsMore($request->except('_token'));
     }
 
     //商品权重排序页
@@ -104,6 +109,9 @@ class GoodsController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        $data['id'] = $id;
+        $data['type'] = 'is_delete';
+        $data['val'] = 1;
+        return $this->goodsRepository->setGoods($data);
     }
 }

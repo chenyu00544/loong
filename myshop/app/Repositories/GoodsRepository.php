@@ -109,11 +109,11 @@ class GoodsRepository implements GoodsRepositoryInterface
     }
 
     //商品分页
-    public function getGoodsPage($size = 10, $data = ['is_delete' => 0])
+    public function getGoodsPage($keywords, $size = 10, $data = ['is_delete' => 0])
     {
         $goodsColumns = ['goods_id', 'goods_thumb', 'goods_name', 'user_id', 'brand_id', 'goods_type', 'goods_sn', 'shop_price', 'is_on_sale', 'is_best', 'is_new', 'is_hot', 'sort_order', 'goods_number', 'integral', 'commission_rate', 'is_promote', 'model_price', 'model_inventory', 'model_attr', 'review_status', 'review_content', 'store_best', 'store_new', 'store_hot', 'is_real', 'is_shipping', 'stages', 'goods_thumb', 'is_alone_sale', 'is_limit_buy', 'promote_end_date', 'limit_buy_end_date', 'bar_code', 'freight', 'tid'];
         $where = $data;
-        if ($goods = $this->goodsModel->getGoodsPage($size, $where, $goodsColumns)) {
+        if ($goods = $this->goodsModel->getGoodsPage($size, $where, $goodsColumns, $keywords)) {
             //品牌
             $brandColumns = ['id', 'brand_name'];
             $brandsFormat = [];
@@ -189,11 +189,60 @@ class GoodsRepository implements GoodsRepositoryInterface
             case 'order':
                 $updata['sort_order'] = $data['val'];
                 break;
+            case 'is_delete':
+                $updata['is_delete'] = $data['val'];
+                break;
             default:
                 break;
         }
 
         $re = $this->goodsModel->setGoods($where, $updata);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
+        return $rep;
+    }
+
+    //批量设置商品
+    public function setGoodsMore($data)
+    {
+        $rep = ['code' => 5, 'msg' => '修改失败'];
+
+        $updata = [];
+        $where = $data['ids'];
+        switch ($data['type']) {
+            case 'is_best_on':
+                $updata['is_best'] = 1;
+                break;
+            case 'is_best_off':
+                $updata['is_best'] = 0;
+                break;
+            case 'is_new_on':
+                $updata['is_new'] = 1;
+                break;
+            case 'is_new_off':
+                $updata['is_new'] = 0;
+                break;
+            case 'is_hot_on':
+                $updata['is_hot'] = 1;
+                break;
+            case 'is_hot_off':
+                $updata['is_hot'] = 0;
+                break;
+            case 'is_sale_on':
+                $updata['is_on_sale'] = 1;
+                break;
+            case 'is_sale_off':
+                $updata['is_on_sale'] = 0;
+                break;
+            case 'is_delete':
+                $updata['is_delete'] = 1;
+                break;
+            default:
+                break;
+        }
+
+        $re = $this->goodsModel->setGoodsMore($where, $updata);
         if ($re) {
             $rep = ['code' => 1, 'msg' => '修改成功'];
         }

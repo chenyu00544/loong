@@ -36,15 +36,21 @@
                             <tr>
                                 <th>{{$nav->name}}</th>
                                 <td>
-                                    <div class="switch switch-small">
-                                        <input type="checkbox" name="ifshow" @if($nav->ifshow) checked
-                                               @endif value="{{$nav->id}}"/>
+                                    <div class="switch-wrap clearfix">
+                                        <div class="switch @if($nav->ifshow) active @endif" data-type="ifshow"
+                                             title="是">
+                                            <div class="circle"></div>
+                                            <input type="hidden" value="{{$nav->id}}">
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="switch switch-small">
-                                        <input type="checkbox" name="opennew" @if($nav->opennew) checked
-                                               @endif value="{{$nav->id}}"/>
+                                    <div class="switch-wrap clearfix">
+                                        <div class="switch @if($nav->opennew) active @endif" data-type="opennew"
+                                             title="是">
+                                            <div class="circle"></div>
+                                            <input type="hidden" value="{{$nav->id}}">
+                                        </div>
                                     </div>
                                 </td>
                                 <td><input class="form-control input-sm chang-order" type="text" data-id="{{$nav->id}}"
@@ -73,78 +79,31 @@
 @section('script')
     <script>
         $(function () {
-            $('[name="ifshow"]').bootstrapSwitch({    //初始化按钮
-                onText: "开",
-                offText: "关",
-                onColor: "success",
-                offColor: "danger",
-                size: "mini",
-                onSwitchChange: function (event, state) {
-                    if (state == true) {
-                        $.post(
-                            '{{url("admin/navsetup/show/or/view")}}',
-                            {
-                                id: $(this).val(),
-                                type: 'ifshow',
-                                isshow: '1',
-                                _token: '{{csrf_token()}}'
-                            },
-                            function (data) {
 
-                            }
-                        );
-                    } else {
-                        $.post(
-                            '{{url("admin/navsetup/show/or/view")}}',
-                            {
-                                id: $(this).val(),
-                                type: 'ifshow',
-                                isshow: '0',
-                                _token: '{{csrf_token()}}'
-                            },
-                            function (data) {
-
-                            }
-                        );
-                    }
+            $('.switch').click(function () {
+                var val = 0;
+                if ($(this).hasClass('active')) {
+                    val = 0
+                    $(this).removeClass('active');
+                } else {
+                    val = 1
+                    $(this).addClass('active');
                 }
-            });
 
-            $('[name="opennew"]').bootstrapSwitch({    //初始化按钮
-                onText: "开",
-                offText: "关",
-                onColor: "success",
-                offColor: "danger",
-                size: "mini",
-                onSwitchChange: function (event, state) {
-                    if (state == true) {
-                        $.post(
-                            '{{url("admin/navsetup/show/or/view")}}',
-                            {
-                                id: $(this).val(),
-                                type: 'opennew',
-                                isopen: '1',
-                                _token: '{{csrf_token()}}'
-                            },
-                            function (data) {
+                var tag = $(this).data('type');
+                var id = $(this).children('input').val();
+                $.post(
+                    '{{url("admin/navsetup/show/or/view")}}',
+                    {
+                        id: id,
+                        type: tag,
+                        val: val,
+                        _token: '{{csrf_token()}}'
+                    },
+                    function (data) {
 
-                            }
-                        );
-                    } else {
-                        $.post(
-                            '{{url("admin/navsetup/show/or/view")}}',
-                            {
-                                id: $(this).val(),
-                                type: 'opennew',
-                                isopen: '0',
-                                _token: '{{csrf_token()}}'
-                            },
-                            function (data) {
-
-                            }
-                        );
                     }
-                }
+                );
             });
 
             $('.chang-order').change(function () {

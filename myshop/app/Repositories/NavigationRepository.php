@@ -48,15 +48,25 @@ class NavigationRepository implements NavigationRepositoryInterface
 
     public function showOrOpenView($data)
     {
-        if($data['type'] == 'ifshow'){
-            $updata['ifshow'] = $data['isshow'];
-            $where['id'] = $data['id'];
-            return $this->navigationModel->setNav($updata,$where);
-        }else if($data['type'] == 'opennew'){
-            $updata['opennew'] = $data['isopen'];
-            $where['id'] = $data['id'];
-            return $this->navigationModel->setNav($updata,$where);
+        $rep = ['code' => 5, 'msg' => '修改失败'];
+
+        $where['id'] = $data['id'];
+        switch ($data['type']) {
+            case 'ifshow':
+                $updata['ifshow'] = $data['val'];
+                break;
+            case 'opennew':
+                $updata['opennew'] = $data['val'];
+                break;
+            default:
+                break;
         }
+        $re = $this->navigationModel->setNav($updata,$where);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
+
+        return $rep;
     }
 
     public function changeOrder($data)

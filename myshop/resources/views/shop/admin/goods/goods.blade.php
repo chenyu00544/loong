@@ -27,6 +27,14 @@
                 <div>
                     <a href="{{url('admin/goods/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加商品　</a>
+
+                    <div class="fr wd250">
+                        <form action="{{url('admin/goods')}}" method="get">
+                            {{csrf_field()}}
+                            <input type="text" name="keywords" value="" class="form-control input-sm max-wd-190" placeholder="名称/货号">
+                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr" value="查询">
+                        </form>
+                    </div>
                 </div>
                 <div class="main-info">
                     <table class="table table-hover table-condensed">
@@ -49,7 +57,7 @@
                         <tbody>
                         @foreach($goodsList as $goods)
                             <tr>
-                                <td><input type="checkbox" name="checkboxes[]" value="{{$goods->goods_id}}"
+                                <td><input type="checkbox" name="checkboxes" value="{{$goods->goods_id}}"
                                            class="checkbox check-all"
                                            id="checkbox_{{$goods->goods_id}}"></td>
                                 <td>{{$goods->goods_id}}</td>
@@ -62,7 +70,7 @@
                                         </div>
                                         <div class="desc fl pad-all-5">
                                             <div class="name">
-                                                <span class="max-wd-250 line-hg-20" title="{{$goods->goods_name}}"
+                                                <span class="max-wd-190 line-hg-20" title="{{$goods->goods_name}}"
                                                       data-toggle="tooltip"
                                                       data-placement="bottom">{{$goods->goods_name}}</span>
                                             </div>
@@ -113,7 +121,7 @@
                                                            class="btn btn-primary btn-sm" value="region_price"
                                                            type="button">
                                                 @else
-                                                    <span onclick="listTable.edit(this, 'edit_goods_price', {{$goods->goods_id}})">{{$goods->shop_price}}</span>
+                                                    <span>{{$goods->shop_price}}</span>
                                                 @endif
                                             </div>
                                         </div>
@@ -121,7 +129,7 @@
                                         <div class="tDiv_item">
                                             <span class="fl">货号：</span>
                                             <div class="value">
-                                                <span onclick="listTable.edit(this, 'edit_goods_sn', {{$goods->goods_id}})">{{$goods->goods_sn}}</span>
+                                                <span>{{$goods->goods_sn}}</span>
                                             </div>
                                         </div>
 
@@ -136,7 +144,6 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="hidden" value="{{$goods->goods_id}}" class="goode-id">
                                     <div class="switch-wrap clearfix"><span class="fl">精品：</span>
                                         <div class="switch @if($goods->is_best) active @endif" data-type="is_best"
                                              title="是">
@@ -170,7 +177,8 @@
                                     <a type="button" href="javascript:;"
                                        class="btn btn-info btn-weight-order btn-sm" data-goodsid="{{$goods->goods_id}}">权重排序</a>
                                 </td>
-                                <td>@if($goods->is_attr)
+                                <td>
+                                    @if($goods->is_attr)
                                         <a href="javascript:;" ectype="add_sku" data-goodsid="{{$goods->goods_id}}"
                                            data-userid="{{$goods->user_id}}">
                                             <i class="glyphicon glyphicon-edit"></i>
@@ -212,7 +220,7 @@
                         </div>
                         <div class="fl mar-all-5">
                             <select name="select_type" class="form-control col-md-2">
-                                <option value="select">请选择</option>
+                                <option value="0">请选择</option>
                                 <option value="is_best_on">精品</option>
                                 <option value="is_best_off">取消精品</option>
                                 <option value="is_new_on">新品</option>
@@ -284,25 +292,34 @@
                 });
             });
 
-            $('.chang-order').change(function () {
-                $.post(
-                    '{{url("admin/brand/change")}}',
-                    {
-                        id: $(this).data('id'),
-                        order: $(this).val(),
-                        _token: '{{csrf_token()}}'
-                    },
-                    function (data) {
-                        layer.open({
-                            title: '提示',
-                            content: data.msg,
-                            icon: data.code,
-                            success: function (layero, index) {
+            $('.btn-sure').click(function () {
 
-                            }
-                        });
+                var goods_ids = $("input[name=checkboxes]");
+
+                var ids = [];
+                $.each(goods_ids, function (k, v) {
+                    if ($(v).is(':checked')) {
+                        ids.push($(v).val());
                     }
-                );
+                });
+                var select_type = $("select[name=select_type]").val();
+
+                if (ids.length > 0 && select_type != 0) {
+                    $.post(
+                        '{{url("admin/goods/changes")}}',
+                        {
+                            ids: ids,
+                            type: select_type,
+                            _token: '{{csrf_token()}}'
+                        },
+                        function (data) {
+                            layer.msg(data.msg, {icon: data.code});
+                            setTimeout(function () {
+                                location.href = location.href;
+                            }, 1000);
+                        }
+                    );
+                }
             });
 
             $('[name="all_list"]').click(function () {
@@ -325,7 +342,7 @@
                                 layer.msg(data.msg, {icon: data.code});
                                 setTimeout(function () {
                                     location.href = location.href;
-                                }, 3000);
+                                }, 1000);
                             } else {
                                 layer.msg(data.msg, {icon: data.code});
                             }
