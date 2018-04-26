@@ -38,6 +38,12 @@ class GoodsController extends CommonController
         return $this->goodsRepository->setGoodsMore($request->except('_token'));
     }
 
+    public function examine($id)
+    {
+        $goods = $this->goodsRepository->getGoods($id);
+        return view('shop.admin.goods.examine', compact('goods'));
+    }
+
     //商品权重排序页
     public function weightOrder($id)
     {

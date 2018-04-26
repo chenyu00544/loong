@@ -1,6 +1,6 @@
 @extends('shop.layouts.index')
 @section('content')
-    <body style="overflow-y: scroll;background-color: #f7f7f7;padding: 20px;">
+    <body style="background-color: #f7f7f7;padding: 20px;">
     <div class="content-wrap">
         <div class="tip">
             <ul>
@@ -8,7 +8,6 @@
                 <li>2、权重排序默认不会统计出之前的老数据，在统计过一次后会把老数据统计出来</li>
             </ul>
         </div>
-
         <div class="weight-goods-name">
             <span>商品名称：</span><span class="title">{{$goods->goods_name}}</span>
         </div>

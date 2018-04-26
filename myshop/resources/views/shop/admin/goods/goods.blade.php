@@ -31,7 +31,8 @@
                     <div class="fr wd250">
                         <form action="{{url('admin/goods')}}" method="get">
                             {{csrf_field()}}
-                            <input type="text" name="keywords" value="" class="form-control input-sm max-wd-190" placeholder="名称/货号">
+                            <input type="text" name="keywords" value="" class="form-control input-sm max-wd-190"
+                                   placeholder="名称/货号">
                             <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr" value="查询">
                         </form>
                     </div>
@@ -188,19 +189,19 @@
                                     @endif</td>
                                 <td>
                                     @if($goods->review_status == 1)
-                                        <font class="org2">未审核</font>
+                                        <font class="oranges" id="examine_{{$goods->goods_id}}">未审核</font>
                                     @elseif($goods->review_status == 2)
-                                        <font class="red">审核不通过</font><br/>
+                                        <font class="red" id="examine_{{$goods->goods_id}}">审核不通过</font><br/>
                                         <i class="tip yellow" title="{$goods.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
                                     @elseif($goods->review_status == 3 || $goods->review_status == 4)
-                                        <font class="blue">审核已通过</font>
+                                        <font class="blue" id="examine_{{$goods->goods_id}}">审核已通过</font>
                                     @elseif($goods->review_status == 5)
-                                        <font class="navy2">无需审核</font>
+                                        <font class="navy2" id="examine_{{$goods->goods_id}}">无需审核</font>
                                     @endif
                                 </td>
                                 <td>
-                                    <a type="button" href="{{url('admin/goods/'.$goods->goods_id.'/edit')}}"
-                                       class="btn btn-primary btn-edit btn-sm fl mar-all-5">审核</a>
+                                    <a type="button" href="javascript:;" data-id="{{$goods->goods_id}}"
+                                       class="btn btn-primary btn-examine btn-sm fl mar-all-5">审核</a>
                                     <a type="button" href="{{url('admin/goods/'.$goods->goods_id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm fl mar-all-5">查看</a>
                                     <a type="button" href="{{url('admin/goods/'.$goods->goods_id.'/edit')}}"
@@ -253,6 +254,7 @@
 
             $("[data-toggle='tooltip']").tooltip();
 
+            //开关
             $('.switch').click(function () {
                 var val = 0;
                 if ($(this).hasClass('active')) {
@@ -279,6 +281,7 @@
                 );
             });
 
+            //权重
             $('.btn-weight-order').click(function () {
                 var goods_id = $(this).data('goodsid');
 
@@ -292,6 +295,24 @@
                 });
             });
 
+            //审核
+            $('.btn-examine').click(function () {
+                var goods_id = $(this).data('id');
+
+                layer.open({
+                    type: 2,
+                    area: ['500px', 'auto'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '审核',
+                    content: ["{{url('admin/goods/examine/')}}" + "/" + goods_id, 'no'],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+
+            //批量修改
             $('.btn-sure').click(function () {
 
                 var goods_ids = $("input[name=checkboxes]");
@@ -322,6 +343,7 @@
                 }
             });
 
+            //全选
             $('[name="all_list"]').click(function () {
                 var flage = $(this).is(':checked')
                 $(".check-all").each(function () {
@@ -329,6 +351,7 @@
                 })
             })
 
+            //删除
             $('.btn-del').click(function () {
                 var Id = $(this).data('id');
                 layer.confirm('您确定要删除吗', {
@@ -348,7 +371,6 @@
                             }
 
                         });
-                    // layer.msg('的确很重要', {icon: 1});
                 }, function () {
                 });
             });

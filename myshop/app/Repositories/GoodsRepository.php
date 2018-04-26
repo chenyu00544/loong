@@ -192,6 +192,12 @@ class GoodsRepository implements GoodsRepositoryInterface
             case 'is_delete':
                 $updata['is_delete'] = $data['val'];
                 break;
+            case 'is_examine':
+                $updata['review_status'] = $data['val'];
+                if ($data['val'] == 2) {
+                    $updata['review_content'] = $data['review_content'];
+                }
+                break;
             default:
                 break;
         }
