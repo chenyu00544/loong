@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Config;
 
 class LangConfigService
 {
-    private $languages;
 
     public function __construct()
     {
@@ -32,5 +31,15 @@ class LangConfigService
     public static function LangAdminShopConf()
     {
         return Config::get('languages.'.Config::get('config')['lang_type'].'.admin.shop_config');
+    }
+
+    public static function LangAdminCutNavConf()
+    {
+        return Config::get('languages.'.Config::get('config')['lang_type'].'.admin.cutnav_config');
+    }
+
+    public static function LangAdminIconsConf()
+    {
+        return Config::get('languages.'.Config::get('config')['lang_type'].'.icons');
     }
 }

@@ -4,7 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/static/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.css')}}">
     <link rel="stylesheet" href="{{asset('styles/plugin/nyroModal/styles/nyroModal.css')}}">
+    <link rel="stylesheet" href="{{asset('styles/iconfont/iconfont.css')}}">
     <link rel="stylesheet" href="{{asset('styles/admin/css/main.css').'?v='.$v}}">
     <title>{{Config::get('config.admin_name')}}</title>
     <script>
@@ -15,7 +17,9 @@
 @yield('content')
 <script src="{{asset('styles/plugin/jquery/jquery.min.js')}}"></script>
 <script src="{{asset('styles/plugin/bootstrap/static/bootstrap.min.js')}}"></script>
+<script src="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.js')}}"></script>
 <script src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal.custom.js')}}"></script>
+<script src="{{asset('styles/plugin/layer/layer.js')}}"></script>
 <!--[if IE 6]>
 <script src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal-ie6.js')}}"></script>
 <![endif]-->

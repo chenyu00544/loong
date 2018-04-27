@@ -49,8 +49,24 @@ return array(
     ),
     'commodity' => array(
         'shopsetup' => array(
-            'name' => '商店设置',
-            'url' => '',
+            'name' => '商品设置',
+            'url' => 'admin/goodsconf',
+        ),
+        'comcate' => array(
+            'name' => '商品分类',
+            'url' => 'admin/comcate',
+        ),
+        'goods' => array(
+            'name' => '商品列表',
+            'url' => 'admin/goods',
+        ),
+        'brandlist' => array(
+            'name' => '品牌管理',
+            'url' => 'admin/brand',
+        ),
+        'goodstype' => array(
+            'name' => '商品类型',
+            'url' => 'admin/goodstype',
         ),
     ),
     'finance' => array(

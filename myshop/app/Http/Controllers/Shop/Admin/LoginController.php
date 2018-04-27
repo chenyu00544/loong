@@ -38,7 +38,7 @@ class LoginController extends CommonController
         }
     }
 
-    public function chang()
+    public function change()
     {
         $lang = 'zh_cn';
         $dir = 'admin';
