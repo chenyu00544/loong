@@ -16,22 +16,32 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="brand" action="{{url('admin/goodstype')}}" method="post" class="form-horizontal"
+                    <form name="brand" action="{{url('admin/goodstype/'.$goodsType->cat_id)}}" method="post"
+                          class="form-horizontal"
                           enctype="multipart/form-data">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>商品类型名称：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="cat_name" class="form-control" value=""
+                                <input type="text" name="cat_name" class="form-control" value="{{$goodsType->cat_name}}"
                                        placeholder="商品类型名称">
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="hidden" name="c_id" value="0">
+                            <input type="hidden" name="c_id" value="{{$goodsType->c_id}}">
                             <label class="col-sm-4 control-label">分类：</label>
-                            <div class="col-sm-8 pre-cate">
+                            <div class="col-sm-8 pre-cate-sel"
+                                 style="@if(count($parentCates) > 0)display: block; @else display: none; @endif">
+                                @foreach($parentCates as $val)
+                                    @if($loop->index != 0)　>　@endif<span>{{$val['cat_name']}}</span>
+                                @endforeach
+                                <a href="javascript:;" class="btn btn-warning btn-reset btn-sm">重置</a>
+                            </div>
+                            <div class="col-sm-8 pre-cate" style="@if(count($parentCates) > 0)display: none;@endif">
                                 <div class="cate-option fl">
-                                    <select class="form-control select" onchange="setNextCate(this)">
+                                    <select class="form-control select"
+                                            onchange="setNextCate(this)">
                                         <option value="0">顶级分类</option>
                                         @foreach($typeCates as $typeCate)
                                             <option value="{{$typeCate->cate_id}}">{{$typeCate->cat_name}}</option>
@@ -65,24 +75,28 @@
 @section('script')
     <script>
         $(function () {
-
+            $('.btn-reset').on('click', function () {
+                $('.pre-cate-sel').hide();
+                $('.pre-cate').show();
+                $('input[name="c_id"]').val(0);
+            })
         });
 
         function setNextCate(that) {
             var id = $(that).val();
-            if(id > 0){
-                $('input[name="c_id"]').val(id);
+            $('input[name="c_id"]').val(id);
+            if (id > 0) {
                 var html = '';
                 $.post("{{url('admin/goodstype/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
-                    if(data.code == 1){
+                    if (data.code == 1) {
                         html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
                         $.each(data.data, function (k, v) {
-                            html += '<option value="'+v.cate_id+'">'+v.cat_name+'</option>';
+                            html += '<option value="' + v.cate_id + '">' + v.cat_name + '</option>';
                         })
                         html += '</select></div>';
                         $(that).parent().nextAll().remove();
                         $('.pre-cate').append(html);
-                    }else{
+                    } else {
                         $(that).parent().nextAll().remove();
                     }
                 })

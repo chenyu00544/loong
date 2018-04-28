@@ -17,10 +17,27 @@ class GoodsTypeModel extends Model
         if (!empty($where)) {
             $goods->where($where);
         }
-        if(!empty($keywords)){
-            $goods->where('cat_name', 'like', '%'.$keywords.'%');
+        if (!empty($keywords)) {
+            $goods->where('cat_name', 'like', '%' . $keywords . '%');
         }
         return $goods->orderBy('cat_id', 'desc')
             ->paginate($size);
+    }
+
+    public function getGoodsType($id)
+    {
+        return $this->where(['cat_id' => $id])
+            ->first();
+    }
+
+    public function addtGoodsType($updata)
+    {
+        return $this->create($updata);
+    }
+
+    public function setGoodsType($updata, $id)
+    {
+        return $this->where('cat_id', $id)
+            ->update($updata);
     }
 }

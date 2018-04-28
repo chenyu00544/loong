@@ -38,7 +38,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">上级分类：</label>
                             <div class="col-sm-8 pre-cate-sel"
-                                 style="@if(count($parentCates) > 0)display: block;@endif">
+                                 style="@if(count($parentCates) > 0)display: block; @else display: none; @endif">
                                 @foreach($parentCates as $val)
                                     @if($loop->index != 0)　>　@endif<span>{{$val['cat_name']}}</span>
                                 @endforeach
@@ -180,24 +180,29 @@
             $('.btn-reset').click(function () {
                 $('.pre-cate-sel').hide();
                 $('.pre-cate').show();
+                $('input[name="c_id"]').val(0);
             })
         });
 
         function setNextCate(that) {
             var id = $(that).val();
             $('input[name="parent_id"]').val(id);
-            var html = '';
-            $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
-                if (data.code == 1) {
-                    html = '<div class="cate-option fl"><select name="category_name[]" class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
-                    $.each(data.data, function (k, v) {
-                        html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
-                    })
-                    html += '</select></div>';
-                    $(that).parent().nextAll().remove();
-                    $('.pre-cate').append(html);
-                }
-            })
+            if(id > 0){
+                var html = '';
+                $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
+                    if (data.code == 1) {
+                        html = '<div class="cate-option fl"><select name="category_name[]" class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
+                        $.each(data.data, function (k, v) {
+                            html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
+                        })
+                        html += '</select></div>';
+                        $(that).parent().nextAll().remove();
+                        $('.pre-cate').append(html);
+                    }else{
+                        $(that).parent().nextAll().remove();
+                    }
+                })
+            }
         }
     </script>
 @endsection

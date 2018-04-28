@@ -164,18 +164,22 @@
         function setNextCate(that) {
             var id = $(that).val();
             $('input[name="parent_id"]').val(id);
-            var html = '';
-            $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
-                if(data.code == 1){
-                    html = '<div class="cate-option fl"><select name="category_name[]" class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
-                    $.each(data.data, function (k, v) {
-                        html += '<option value="'+v.id+'">'+v.cat_name+'</option>';
-                    })
-                    html += '</select></div>';
-                    $(that).parent().nextAll().remove();
-                    $('.pre-cate').append(html);
-                }
-            })
+            if(id > 0){
+                var html = '';
+                $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
+                    if(data.code == 1){
+                        html = '<div class="cate-option fl"><select name="category_name[]" class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
+                        $.each(data.data, function (k, v) {
+                            html += '<option value="'+v.id+'">'+v.cat_name+'</option>';
+                        })
+                        html += '</select></div>';
+                        $(that).parent().nextAll().remove();
+                        $('.pre-cate').append(html);
+                    }else{
+                        $(that).parent().nextAll().remove();
+                    }
+                })
+            }
         }
     </script>
 @endsection

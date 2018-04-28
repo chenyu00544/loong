@@ -50,8 +50,11 @@ class ComCateRepository implements ComCateRepositoryInterface
     {
         $PCates = $parentCates;
         $re = $this->categoryModel->getComCate($id);
-        $PCates[] = $re;
-        if($re->parent_id != 0){
+        if($re){
+            $PCates[] = $re;
+        }
+
+        if($re && $re->parent_id != 0){
             return $this->getParentCate($re->parent_id, $PCates);
         }else{
             krsort($PCates);

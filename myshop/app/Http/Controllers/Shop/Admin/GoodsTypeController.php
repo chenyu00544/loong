@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\GoodsTypeRepository;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,16 @@ class GoodsTypeController extends CommonController
         return view('shop.admin.goodstype.goodsType', compact('typeNav', 'goodsTypes'));
     }
 
+    public function getCates($id)
+    {
+        $re = $this->goodsTypeRepository->getTypeCates($id);
+        if ($re->toArray()) {
+            return ['code' => 1, 'data' => $re];
+        } else {
+            return ['code' => 0];
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -34,7 +45,8 @@ class GoodsTypeController extends CommonController
      */
     public function create()
     {
-        return view('shop.admin.goodstype.goodsTypeAdd');
+        $typeCates = $this->goodsTypeRepository->getTypeCates(0);
+        return view('shop.admin.goodstype.goodsTypeAdd', compact('typeCates'));
     }
 
     /**
@@ -45,7 +57,12 @@ class GoodsTypeController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["cat_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->goodsTypeRepository->addtGoodsType($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**
@@ -67,7 +84,10 @@ class GoodsTypeController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $goodsType = $this->goodsTypeRepository->getGoodsType($id);
+        $typeCates = $this->goodsTypeRepository->getTypeCates(0);
+        $parentCates = $this->goodsTypeRepository->getParentCate($goodsType->c_id);
+        return view('shop.admin.goodstype.goodsTypeEdit', compact('goodsType', 'typeCates', 'parentCates'));
     }
 
     /**
@@ -79,7 +99,8 @@ class GoodsTypeController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $re = $this->goodsTypeRepository->setGoodsType($request->except('_token','_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
