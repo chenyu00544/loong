@@ -64,6 +64,13 @@ return array(
             'name' => '品牌管理',
             'url' => 'admin/brand',
         ),
+<<<<<<< HEAD
+=======
+        'goodstype' => array(
+            'name' => '商品类型',
+            'url' => 'admin/goodstype',
+        ),
+>>>>>>> d943a45a0f015c5b0b2b32de647786bda51cddb0
     ),
     'finance' => array(
         'satistics' => '统计',

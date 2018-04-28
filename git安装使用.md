@@ -106,6 +106,9 @@ ps：git config  –global 参数，有了这个参数，表示你这台机器�
 
 	git pull
 
+	无效 使用
+	git pull origin master --allow-unrelated-histories
+
 #####第五步：push到远程master分支上
 
 	git push -u origin master

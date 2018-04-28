@@ -196,6 +196,11 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $updata['review_status'] = $data['val'];
                 if ($data['val'] == 2) {
                     $updata['review_content'] = $data['review_content'];
+<<<<<<< HEAD
+=======
+                }else{
+                    $updata['review_content'] = '';
+>>>>>>> d943a45a0f015c5b0b2b32de647786bda51cddb0
                 }
                 break;
             default:
