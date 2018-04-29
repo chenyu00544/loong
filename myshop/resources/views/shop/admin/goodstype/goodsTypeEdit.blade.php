@@ -40,8 +40,7 @@
                             </div>
                             <div class="col-sm-8 pre-cate" style="@if(count($parentCates) > 0)display: none;@endif">
                                 <div class="cate-option fl">
-                                    <select class="form-control select"
-                                            onchange="setNextCate(this)">
+                                    <select class="form-control select" data-parent_id="0">
                                         <option value="0">顶级分类</option>
                                         @foreach($typeCates as $typeCate)
                                             <option value="{{$typeCate->cate_id}}">{{$typeCate->cat_name}}</option>
@@ -80,28 +79,35 @@
                 $('.pre-cate').show();
                 $('input[name="c_id"]').val(0);
             })
+
+            $('body').on('change','.select',function () {
+                var that = this;
+                var id = $(this).val();
+                var parent_id = $(this).data('parent_id');
+                $('input[name="c_id"]').val(id);
+                if (id > 0) {
+                    var html = '';
+                    $.post("{{url('admin/typecate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
+                        if (data.code == 1) {
+                            html = '<div class="cate-option fl"><select class="form-control select" data-parent_id="' + id + '"><option value="0">顶级分类</option>';
+                            $.each(data.data, function (k, v) {
+                                html += '<option value="' + v.cate_id + '">' + v.cat_name + '</option>';
+                            })
+                            html += '</select></div>';
+                            $(that).parent().nextAll().remove();
+                            $('.pre-cate').append(html);
+                        } else {
+                            $(that).parent().nextAll().remove();
+                        }
+                    })
+                }else {
+                    $(this).parent().nextAll().remove();
+                    $('input[name="c_id"]').val(parent_id);
+                }
+            })
         });
 
-        function setNextCate(that) {
-            var id = $(that).val();
-            $('input[name="c_id"]').val(id);
-            if (id > 0) {
-                var html = '';
-                $.post("{{url('admin/goodstype/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
-                    if (data.code == 1) {
-                        html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
-                        $.each(data.data, function (k, v) {
-                            html += '<option value="' + v.cate_id + '">' + v.cat_name + '</option>';
-                        })
-                        html += '</select></div>';
-                        $(that).parent().nextAll().remove();
-                        $('.pre-cate').append(html);
-                    } else {
-                        $(that).parent().nextAll().remove();
-                    }
-                })
-            }
-        }
+
     </script>
 @endsection
 @endsection

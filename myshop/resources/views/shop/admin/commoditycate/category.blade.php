@@ -43,7 +43,8 @@
                         <tbody>
                         @foreach($cates as $cate)
                             <tr>
-                                <td><a href="{{url('admin/comcate/'.$cate->id)}}" class="btn btn-primary btn-sm">下一级</a>
+                                <td>
+                                    <a href="{{url('admin/comcate/'.$cate->id)}}" class="btn btn-primary btn-sm">下一级</a>
                                 </td>
                                 <td>{{$cate->cat_name}}</td>
                                 <td><input class="form-control input-sm chang-cate" type="text"

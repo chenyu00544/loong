@@ -13,13 +13,32 @@ class GoodsTypeCateModel extends Model
 
     public function getTypeCates($where = [])
     {
-        return $this->where($where)->get();
+        return $this->where($where)
+            ->orderBy('sort_order','asc')
+            ->get();
     }
 
     public function getTypeCate($id)
     {
         return $this->where('cate_id', $id)
             ->first();
+    }
+
+    public function setTypeCate($where, $updata)
+    {
+        return $this->where($where)
+            ->update($updata);
+    }
+
+    public function addTypeCate($data)
+    {
+        return $this->create($data);
+    }
+
+    public function deleteCate($where)
+    {
+        return $this->where($where)
+            ->delete();
     }
 
 }

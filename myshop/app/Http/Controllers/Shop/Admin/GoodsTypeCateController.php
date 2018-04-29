@@ -6,8 +6,9 @@ use App\Facades\Verifiable;
 use App\Repositories\GoodsTypeRepository;
 use Illuminate\Http\Request;
 
-class GoodsTypeController extends CommonController
+class GoodsTypeCateController extends CommonController
 {
+
     protected $goodsTypeRepository;
 
     public function __construct(GoodsTypeRepository $goodsTypeRepository)
@@ -23,10 +24,25 @@ class GoodsTypeController extends CommonController
      */
     public function index()
     {
-        $typeNav = 'goodsType';
-        $goodsTypes = $this->goodsTypeRepository->getGoodsTypesPage();
-        $typeCates = $this->goodsTypeRepository->getTypeCatesAll();
-        return view('shop.admin.goodstype.goodsType', compact('typeNav', 'goodsTypes', 'typeCates'));
+        $typeNav = 'typeCate';
+        $typeCates = $this->goodsTypeRepository->getTypeCates(0);
+        $rank = ['一级', 10];
+        return view('shop.admin.goodstype.typeCate', compact('typeNav', 'typeCates', 'rank'));
+    }
+
+    public function getCates($id)
+    {
+        $re = $this->goodsTypeRepository->getTypeCates($id);
+        if ($re->toArray()) {
+            return ['code' => 1, 'data' => $re];
+        } else {
+            return ['code' => 0];
+        }
+    }
+
+    public function change(Request $request)
+    {
+        return $this->goodsTypeRepository->setTypeCate($request->except('_token'));
     }
 
     /**
@@ -37,7 +53,7 @@ class GoodsTypeController extends CommonController
     public function create()
     {
         $typeCates = $this->goodsTypeRepository->getTypeCates(0);
-        return view('shop.admin.goodstype.goodsTypeAdd', compact('typeCates'));
+        return view('shop.admin.goodstype.typeCateAdd', compact('typeCates'));
     }
 
     /**
@@ -52,7 +68,7 @@ class GoodsTypeController extends CommonController
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->goodsTypeRepository->addGoodsType($request->except('_token'));
+        $re = $this->goodsTypeRepository->addTypeCate($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -64,7 +80,14 @@ class GoodsTypeController extends CommonController
      */
     public function show($id)
     {
-        //
+        $ranks = ['0级','1级','二级', '三级', '四级', '五级', '六级', '七级', '八级', '九级', '十级'];
+        $rank = ['0级'];
+        $typeNav = 'typeCate';
+        $typeCates = $this->goodsTypeRepository->getTypeCates($id);
+        foreach($typeCates as $item){
+            $rank = [$ranks[$item->level]];
+        }
+        return view('shop.admin.goodstype.typeCate', compact('typeNav', 'typeCates', 'rank'));
     }
 
     /**
@@ -75,10 +98,10 @@ class GoodsTypeController extends CommonController
      */
     public function edit($id)
     {
-        $goodsType = $this->goodsTypeRepository->getGoodsType(['cat_id' => $id]);
+        $typeCate = $this->goodsTypeRepository->getTypeCate($id);
         $typeCates = $this->goodsTypeRepository->getTypeCates(0);
-        $parentCates = $this->goodsTypeRepository->getParentCate($goodsType->c_id);
-        return view('shop.admin.goodstype.goodsTypeEdit', compact('goodsType', 'typeCates', 'parentCates'));
+        $parentCates = $this->goodsTypeRepository->getParentCate($typeCate->parent_id);
+        return view('shop.admin.goodstype.typeCateEdit', compact('typeCate','typeCates', 'parentCates'));
     }
 
     /**
@@ -90,7 +113,7 @@ class GoodsTypeController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $re = $this->goodsTypeRepository->setGoodsType($request->except('_token','_method'), $id);
+        $re = $this->goodsTypeRepository->upDateTypeCate($request->except('_token','_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -102,6 +125,6 @@ class GoodsTypeController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->goodsTypeRepository->delete($id);
+        return $this->goodsTypeRepository->deleteCate($id);
     }
 }

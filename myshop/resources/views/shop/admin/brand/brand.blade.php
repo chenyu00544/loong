@@ -72,7 +72,8 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><input class="form-control input-sm chang-order" type="text"
+                                <td>
+                                    <input class="form-control input-sm chang-order" type="text"
                                            data-id="{{$brand->id}}" name="sort_order" value="{{$brand->sort_order}}">
                                 </td>
                                 <td>

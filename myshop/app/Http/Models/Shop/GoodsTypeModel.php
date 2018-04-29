@@ -24,13 +24,26 @@ class GoodsTypeModel extends Model
             ->paginate($size);
     }
 
-    public function getGoodsType($id)
+    public function getGoodsTypes($where)
     {
-        return $this->where(['cat_id' => $id])
+        return $this->where($where)
+            ->get();
+    }
+
+    public function getGoodsTypeAll($columns = ['*'], $where = [])
+    {
+        return $this->select($columns)
+            ->where($where)
+            ->get();
+    }
+
+    public function getGoodsType($where)
+    {
+        return $this->where($where)
             ->first();
     }
 
-    public function addtGoodsType($updata)
+    public function addGoodsType($updata)
     {
         return $this->create($updata);
     }
@@ -39,5 +52,11 @@ class GoodsTypeModel extends Model
     {
         return $this->where('cat_id', $id)
             ->update($updata);
+    }
+
+    public function deleteType($where)
+    {
+        return $this->where($where)
+            ->delete();
     }
 }

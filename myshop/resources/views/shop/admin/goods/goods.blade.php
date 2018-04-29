@@ -58,9 +58,11 @@
                         <tbody>
                         @foreach($goodsList as $goods)
                             <tr>
-                                <td><input type="checkbox" name="checkboxes" value="{{$goods->goods_id}}"
+                                <td>
+                                    <input type="checkbox" name="checkboxes" value="{{$goods->goods_id}}"
                                            class="checkbox check-all"
-                                           id="checkbox_{{$goods->goods_id}}"></td>
+                                           id="checkbox_{{$goods->goods_id}}">
+                                </td>
                                 <td>{{$goods->goods_id}}</td>
                                 <td>
                                     <div class="tDiv goods-info">
@@ -107,7 +109,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><em>直营</em></td>
+                                <td><font class="red">直营</font></td>
                                 <td>
                                     <div class="tDiv">
                                         <div class="tDiv_item">

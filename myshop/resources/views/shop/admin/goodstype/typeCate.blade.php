@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商品管理 - 商品类型</div>
+        <div class="title">商品管理 - 类型分类</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -26,59 +26,46 @@
             </div>
             <div class="fromlist clearfix">
                 <div>
-                    <a href="{{url('admin/goodstype/create')}}"
-                       class="btn btn-success btn-add btn-sm">　添加商品类型　</a>
-
-                    <div class="fr wd250">
-                        <form action="{{url('admin/goodstype')}}" method="get">
-                            {{csrf_field()}}
-                            <input type="text" name="keywords" value="" class="form-control input-sm max-wd-190"
-                                   placeholder="名称">
-                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr" value="查询">
-                        </form>
-                    </div>
+                    <a href="{{url('admin/typecate/create')}}"
+                       class="btn btn-success btn-add btn-sm">　添加类型分类　</a>
                 </div>
                 <div class="main-info">
                     <table class="table table-hover table-condensed">
                         <thead>
                         <tr>
-                            <th class="col-md-1"><a>编号</a></th>
-                            <th class="col-md-3"><a>商品类型名称</a></th>
-                            <th class="col-md-1">商家名称</th>
-                            <th class="col-md-1">属性分组</th>
-                            <th class="col-md-1">类型分类</th>
-                            <th class="col-md-1">属性数</th>
-                            <th class="col-md-1">状态</th>
+                            <th class="col-sm-2">级别({{$rank[0]}})</th>
+                            <th class="col-md-2">商家名称</th>
+                            <th class="col-md-2">分类名称</th>
+                            <th class="col-md-2">类型数</th>
+                            <th class="col-md-1">排序</th>
                             <th class="col-md-3 text-center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($goodsTypes as $type)
+                        @foreach($typeCates as $typeCate)
                             <tr>
-                                <td>{{$type->cat_id}}</td>
-                                <td>{{$type->cat_name}}</td>
+                                <td>
+                                    <a href="{{url('admin/typecate/'.$typeCate->cate_id)}}"
+                                       class="btn btn-primary btn-sm">下一级</a>
+                                </td>
                                 <td><font class="red">直营</font></td>
-                                <td>{{$type->attr_group}}</td>
-                                <td>{{$typeCates[$type->c_id]}}</td>
-                                <td>{{$type->enabled}}</td>
-                                <td>@if($type->enabled == 1) <img src="{{url('styles/images/yes.png')}}"
-                                                                  class="pointer"> @else <img
-                                            src="{{url('images/no.png')}}" class="pointer"> @endif</td>
+                                <td>{{$typeCate->cat_name}}</td>
+                                <td>123</td>
+                                <td>
+                                    <input class="form-control input-sm chang-order" type="text"
+                                           data-id="{{$typeCate->cate_id}}"
+                                           data-cate="order" value="{{$typeCate->sort_order}}">
+                                </td>
                                 <td class="text-center">
-                                    <a type="button" href="{{url('admin/attribute/'.$type->cat_id)}}"
-                                       class="btn btn-primary btn-examine btn-sm mar-all-5">属性列表</a>
-                                    <a type="button" href="{{url('admin/goodstype/'.$type->cat_id.'/edit')}}"
+                                    <a type="button" href="{{url('admin/typecate/'.$typeCate->cate_id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
                                     <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                       data-id="{{$type->cat_id}}">删除</a>
+                                       data-id="{{$typeCate->cate_id}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-                    <div class="page_list">
-                        {{$goodsTypes->links()}}
-                    </div>
                 </div>
             </div>
         </div>
@@ -91,14 +78,38 @@
         $(function () {
             $('.nyroModal').nyroModal();
 
+            $('.chang-order').on('change', function () {
+
+                var data = {
+                    id: $(this).data('id'),
+                    type: $(this).data('cate'),
+                    val: $(this).val(),
+                    _token: '{{csrf_token()}}',
+                };
+
+                $.post(
+                    '{{url("admin/typecate/change")}}',
+                    data,
+                    function (data) {
+                        layer.open({
+                            title: '提示',
+                            content: data.msg,
+                            icon: data.code,
+                            success: function (layero, index) {
+                            }
+                        });
+                    }
+                );
+            });
+
             //删除
-            $('.btn-del').on('click', function () {
+            $('.btn-del').click(function () {
                 var Id = $(this).data('id');
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/goodstype/')}}/" + Id,
+                        "{{url('admin/typecate/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             if (data.code == 1) {

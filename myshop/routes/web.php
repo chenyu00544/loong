@@ -74,6 +74,11 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('goods', 'GoodsController');
 
     Route::post('goodstype/changes', 'GoodsTypeController@changes');
-    Route::post('goodstype/getcates/{id}', 'GoodsTypeController@getCates');
     Route::resource('goodstype', 'GoodsTypeController');
+
+    Route::post('typecate/change', 'GoodsTypeCateController@change');
+    Route::post('typecate/getcates/{id}', 'GoodsTypeCateController@getCates');
+    Route::resource('typecate', 'GoodsTypeCateController');
+
+    Route::resource('attribute', 'AttributeController');
 });

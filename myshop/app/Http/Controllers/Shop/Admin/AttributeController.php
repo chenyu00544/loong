@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
+use App\Repositories\AttributeRepository;
 use App\Repositories\GoodsTypeRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class GoodsTypeController extends CommonController
+class AttributeController extends CommonController
 {
-    protected $goodsTypeRepository;
 
-    public function __construct(GoodsTypeRepository $goodsTypeRepository)
+    private $attributeRepository;
+    private $goodsTypeRepository;
+
+    public function __construct(AttributeRepository $attributeRepository, GoodsTypeRepository $goodsTypeRepository)
     {
         parent::__construct();
+        $this->attributeRepository = $attributeRepository;
         $this->goodsTypeRepository = $goodsTypeRepository;
     }
 
@@ -23,10 +28,7 @@ class GoodsTypeController extends CommonController
      */
     public function index()
     {
-        $typeNav = 'goodsType';
-        $goodsTypes = $this->goodsTypeRepository->getGoodsTypesPage();
-        $typeCates = $this->goodsTypeRepository->getTypeCatesAll();
-        return view('shop.admin.goodstype.goodsType', compact('typeNav', 'goodsTypes', 'typeCates'));
+        //
     }
 
     /**
@@ -36,8 +38,8 @@ class GoodsTypeController extends CommonController
      */
     public function create()
     {
-        $typeCates = $this->goodsTypeRepository->getTypeCates(0);
-        return view('shop.admin.goodstype.goodsTypeAdd', compact('typeCates'));
+        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => session('user')->ru_id]);
+        return view('shop.admin.attribute.attributeAdd', compact('goodsTypes'));
     }
 
     /**
@@ -48,11 +50,11 @@ class GoodsTypeController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["cat_name" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["attr_name" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->goodsTypeRepository->addGoodsType($request->except('_token'));
+        $re = $this->attributeRepository->addAttribute($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -64,7 +66,9 @@ class GoodsTypeController extends CommonController
      */
     public function show($id)
     {
-        //
+        $attributes = $this->attributeRepository->getAttributePage($id);
+        $goodsType = $this->goodsTypeRepository->getGoodsTypeAll();
+        return view('shop.admin.attribute.attribute', compact('attributes', 'goodsType'));
     }
 
     /**
@@ -75,10 +79,9 @@ class GoodsTypeController extends CommonController
      */
     public function edit($id)
     {
-        $goodsType = $this->goodsTypeRepository->getGoodsType(['cat_id' => $id]);
-        $typeCates = $this->goodsTypeRepository->getTypeCates(0);
-        $parentCates = $this->goodsTypeRepository->getParentCate($goodsType->c_id);
-        return view('shop.admin.goodstype.goodsTypeEdit', compact('goodsType', 'typeCates', 'parentCates'));
+        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => session('user')->ru_id]);
+        $attribute = $this->attributeRepository->getAttribute($id);
+        return view('shop.admin.attribute.attributeEdit', compact('goodsTypes', 'attribute'));
     }
 
     /**
@@ -90,7 +93,11 @@ class GoodsTypeController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $re = $this->goodsTypeRepository->setGoodsType($request->except('_token','_method'), $id);
+        $ver = Verifiable::Validator($request->all(), ["attr_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->attributeRepository->setAttribute($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -102,6 +109,6 @@ class GoodsTypeController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->goodsTypeRepository->delete($id);
+        //
     }
 }

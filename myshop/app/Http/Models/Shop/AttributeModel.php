@@ -10,4 +10,29 @@ class AttributeModel extends Model
     protected $primaryKey = 'attr_id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function getAttributePage($id = 0, $size = 10)
+    {
+        return $this->where('cat_id', $id)
+            ->orderBy('attr_id', 'desc')
+            ->paginate($size);;
+    }
+
+    public function addAttribute($data)
+    {
+        return $this->create($data);
+    }
+
+    public function getAttr($id)
+    {
+        return $this->where('attr_id', $id)
+            ->first();
+    }
+
+    public function setAttr($data, $id)
+    {
+        return $this->where('attr_id', $id)
+            ->update($data);
+    }
+
 }
