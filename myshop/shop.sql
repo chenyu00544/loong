@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 28/04/2018 00:02:46
+ Date: 29/04/2018 23:48:33
 */
 
 SET NAMES utf8mb4;
@@ -98,7 +98,7 @@ CREATE TABLE `cyc_attribute`  (
   INDEX `attr_type`(`attr_type`) USING BTREE,
   INDEX `attr_group`(`attr_group`) USING BTREE,
   INDEX `sort_order`(`sort_order`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 47 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 51 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_attribute
@@ -110,6 +110,8 @@ INSERT INTO `cyc_attribute` VALUES (4, 4, '颜色', 0, 1, 1, '灰色\r\n枚红�
 INSERT INTO `cyc_attribute` VALUES (5, 5, '尺码', 0, 1, 1, 'M\r\nX\r\nXL\r\n2XL\r\n3XL\r\n4XL', '', 0, 0, 0, 0, '');
 INSERT INTO `cyc_attribute` VALUES (6, 5, '颜色', 1, 0, 1, '', '', 0, 0, 0, 0, '');
 INSERT INTO `cyc_attribute` VALUES (7, 6, '颜色', 0, 1, 1, '白红色\r\n海军蓝\r\n黄黑色', '', 0, 0, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (49, 19, '金装', 1, 1, 1, '800g\r\n900g', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (50, 19, '铂金', 1, 1, 1, '800g\r\n900g', '', 1, 100, 0, 0, '');
 
 -- ----------------------------
 -- Table structure for cyc_brand
@@ -5732,17 +5734,17 @@ INSERT INTO `cyc_goods_transport` VALUES (16, 18, 0, 1, '全国', '', 0.00, 1508
 DROP TABLE IF EXISTS `cyc_goods_type`;
 CREATE TABLE `cyc_goods_type`  (
   `cat_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) UNSIGNED NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL DEFAULT 0,
   `cat_name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
-  `attr_group` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `attr_group` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `c_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`cat_id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   INDEX `cat_name`(`cat_name`) USING BTREE,
   INDEX `enabled`(`enabled`) USING BTREE,
   INDEX `c_id`(`c_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 19 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_goods_type
@@ -5753,6 +5755,7 @@ INSERT INTO `cyc_goods_type` VALUES (3, 3, '笔记本', 1, '', 0);
 INSERT INTO `cyc_goods_type` VALUES (4, 4, '三件套', 1, '', 0);
 INSERT INTO `cyc_goods_type` VALUES (5, 0, '服装', 1, '', 0);
 INSERT INTO `cyc_goods_type` VALUES (6, 0, '鞋子', 1, '', 0);
+INSERT INTO `cyc_goods_type` VALUES (19, 0, '奶粉', 1, '', 4);
 
 -- ----------------------------
 -- Table structure for cyc_goods_type_cate
@@ -5763,18 +5766,23 @@ CREATE TABLE `cyc_goods_type_cate`  (
   `user_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `parent_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `cat_name` varchar(90) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `sort_order` int(10) UNSIGNED NOT NULL DEFAULT 50,
+  `sort_order` int(10) UNSIGNED NOT NULL DEFAULT 100,
   `level` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
   PRIMARY KEY (`cate_id`) USING BTREE,
   INDEX `user_id`(`user_id`) USING BTREE,
   INDEX `parent_id`(`parent_id`) USING BTREE,
   INDEX `cat_name`(`cat_name`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_goods_type_cate
 -- ----------------------------
-INSERT INTO `cyc_goods_type_cate` VALUES (1, 0, 0, '颜色', 50, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (1, 0, 0, '颜色', 100, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (2, 0, 0, '地区', 100, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (3, 0, 2, '澳洲', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (4, 0, 2, '日本', 45, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (5, 0, 0, '化妆品', 50, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (6, 0, 5, '兰蔻', 100, 2);
 
 -- ----------------------------
 -- Table structure for cyc_intelligent_weight
@@ -5813,7 +5821,7 @@ CREATE TABLE `cyc_nav`  (
   INDEX `cid`(`cid`) USING BTREE,
   INDEX `vieworder`(`vieworder`) USING BTREE,
   INDEX `opennew`(`opennew`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_nav
@@ -5822,6 +5830,7 @@ INSERT INTO `cyc_nav` VALUES (1, '0', 0, '首页', 1, 1, 0, 'http://www.shuangch
 INSERT INTO `cyc_nav` VALUES (2, '0', 0, '母婴', 1, 2, 0, 'http://www.shuangchome.com/', 'home_nav');
 INSERT INTO `cyc_nav` VALUES (3, '0', 0, '美妆', 1, 3, 0, 'http://www.shuangchome.com/', 'home_nav');
 INSERT INTO `cyc_nav` VALUES (4, '0', 2, '饰品', 1, 4, 0, 'http://www.shop.com/admin/index.php', 'home_nav');
+INSERT INTO `cyc_nav` VALUES (5, '0', 2, '奶粉', 1, 1, 0, 'http', 'home_head');
 
 -- ----------------------------
 -- Table structure for cyc_products
