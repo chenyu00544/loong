@@ -31,6 +31,16 @@ class AttributeController extends CommonController
         //
     }
 
+    public function change($id)
+    {
+        
+    }
+
+    public function deleteAll($ids)
+    {
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *
