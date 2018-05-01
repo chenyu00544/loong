@@ -109,10 +109,39 @@ class GoodsRepository implements GoodsRepositoryInterface
     }
 
     //商品分页
-    public function getGoodsPage($keywords, $size = 10, $data = ['is_delete' => 0])
+    public function getGoodsPage($keywords, $parame = [], $size = 10)
     {
         $goodsColumns = ['goods_id', 'goods_thumb', 'goods_name', 'user_id', 'brand_id', 'goods_type', 'goods_sn', 'shop_price', 'is_on_sale', 'is_best', 'is_new', 'is_hot', 'sort_order', 'goods_number', 'integral', 'commission_rate', 'is_promote', 'model_price', 'model_inventory', 'model_attr', 'review_status', 'review_content', 'store_best', 'store_new', 'store_hot', 'is_real', 'is_shipping', 'stages', 'goods_thumb', 'is_alone_sale', 'is_limit_buy', 'promote_end_date', 'limit_buy_end_date', 'bar_code', 'freight', 'tid'];
-        $where = $data;
+        $where[] = ['is_delete', '=', '0'];
+        foreach ($parame as $val) {
+            switch ($val) {
+                case 'normal':
+                    $where[] = ['review_status', '>=', '3'];
+                    break;
+                case 'fictitious':
+                    $where[] = ['extension_code', '=', 'virtual_card'];
+                    break;
+                case 'examine':
+                case 'noexamine':
+                    $where[] = ['review_status', '=', '1'];
+                    break;
+                case 'examined':
+                    $where[] = ['review_status', '=', '2'];
+                    break;
+                case 'delete':
+                    $where = [['is_delete', '=', '1']];
+                    break;
+                case 'onsale':
+                    $where[] = ['is_on_sale', '=', '1'];
+                    break;
+                case 'offsale':
+                    $where[] = ['is_on_sale', '=', '0'];
+                    break;
+                default:
+                    break;
+            }
+        }
+
         if ($goods = $this->goodsModel->getGoodsPage($size, $where, $goodsColumns, $keywords)) {
             //品牌
             $brandColumns = ['id', 'brand_name'];
@@ -131,11 +160,6 @@ class GoodsRepository implements GoodsRepositoryInterface
                     $transportFormat[$tVal['tid']] = ['business_id' => $tVal['ru_id'], 'freight_type' => $tVal['freight_type']];
                 }
             }
-
-            //商品属性
-//            $sql = "SELECT ga.goods_attr_id FROM " . $GLOBALS['ecs']->table('goods_attr') . " AS ga," .
-//                $GLOBALS['ecs']->table('attribute') . " AS a" .
-//                " WHERE ga.goods_id = '" . $row[$i]['goods_id'] . "' AND ga.attr_id = a.attr_id AND a.attr_type <> 0";
 
             foreach ($goods as $key => $val) {
                 $goods[$key]->brand_name = !empty($brandsFormat[$val->brand_id]) ? $brandsFormat[$val->brand_id] : '暂无';
@@ -158,12 +182,12 @@ class GoodsRepository implements GoodsRepositoryInterface
     //商品的状态导航
     public function getGoodsNav()
     {
-        $goodsNav['normal'] = ['title' => '普通商品', 'count' => $this->goodsModel->getGoodsCount(['is_delete' => 0], [], ['review_status', ['3', '5']])];
-        $goodsNav['virtual'] = ['title' => '虚拟商品', 'count' => $this->goodsModel->getGoodsCount(['extension_code' => 'virtual_card'])];
-        $goodsNav['examine'] = ['title' => '审核商品', 'count' => $this->goodsModel->getGoodsCount(['review_status' => 2], ['review_status' => 1])];
-        $goodsNav['recovery'] = ['title' => '回收商品', 'count' => $this->goodsModel->getGoodsCount(['is_delete' => 1])];
-        $goodsNav['onsale'] = ['title' => '上架商品', 'count' => $this->goodsModel->getGoodsCount(['is_on_sale' => 1])];
-        $goodsNav['offsale'] = ['title' => '下架商品', 'count' => $this->goodsModel->getGoodsCount(['is_on_sale' => 0])];
+        $goodsNav['normal'] = ['title' => '普通商品', 'navType' => 'normal', 'count' => $this->goodsModel->getGoodsCount(['is_delete' => 0], [], ['review_status', ['3', '5']])];
+        $goodsNav['virtual'] = ['title' => '虚拟商品', 'navType' => 'fictitious', 'count' => $this->goodsModel->getGoodsCount(['extension_code' => 'virtual_card'])];
+        $goodsNav['examine'] = ['title' => '审核商品', 'navType' => 'examine', 'count' => $this->goodsModel->getGoodsCount(['review_status' => 2], ['review_status' => 1])];
+        $goodsNav['recovery'] = ['title' => '回收商品', 'navType' => 'delete', 'count' => $this->goodsModel->getGoodsCount(['is_delete' => 1])];
+        $goodsNav['onsale'] = ['title' => '上架商品', 'navType' => 'onsale', 'count' => $this->goodsModel->getGoodsCount(['is_on_sale' => 1])];
+        $goodsNav['offsale'] = ['title' => '下架商品', 'navType' => 'offsale', 'count' => $this->goodsModel->getGoodsCount(['is_on_sale' => 0])];
         return $goodsNav;
     }
 
@@ -196,7 +220,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $updata['review_status'] = $data['val'];
                 if ($data['val'] == 2) {
                     $updata['review_content'] = $data['review_content'];
-                }else{
+                } else {
                     $updata['review_content'] = '';
                 }
                 break;

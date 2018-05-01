@@ -17,8 +17,9 @@
             <div class="tabs mar-top-20">
                 <ul class="fl">
                     @foreach($goodsNav as $nav)
-                        <li class="@if($loop->index == 0) curr @endif fl">
-                            <a href="javascript:void(0);">{{$nav['title']}}(<em>{{$nav['count']}}</em>)</a>
+                        <li class="@if($navType == $nav['navType']) curr @endif fl">
+                            <a href="{{url('admin/goods/'.$nav['navType'])}}">{{$nav['title']}}(<font
+                                        class="red">{{$nav['count']}}</font>)</a>
                         </li>
                     @endforeach
                 </ul>
@@ -27,12 +28,18 @@
                 <div>
                     <a href="{{url('admin/goods/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加商品　</a>
+                    @if($navType == 'examine' || $navType == 'examined' || $navType == 'noexamine')
+                        <a href="{{url('admin/goods/noexamine')}}"
+                           class="btn btn-default btn-add btn-sm">未审核</a>
+                        <a href="{{url('admin/goods/examined')}}"
+                           class="btn btn-default btn-add btn-sm">审核未通过</a>
+                    @endif
 
                     <div class="fr wd250">
-                        <form action="{{url('admin/goods')}}" method="get">
+                        <form action="{{url('admin/goods/'.$navType)}}" method="get">
                             {{csrf_field()}}
-                            <input type="text" name="keywords" value="" class="form-control input-sm max-wd-190"
-                                   placeholder="名称/货号">
+                            <input type="text" name="keywords" value="{{$keywords}}"
+                                   class="form-control input-sm max-wd-190" placeholder="名称">
                             <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr" value="查询">
                         </form>
                     </div>
@@ -56,163 +63,181 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($goodsList as $goods)
-                            <tr>
-                                <td>
-                                    <input type="checkbox" name="checkboxes" value="{{$goods->goods_id}}"
-                                           class="checkbox check-all"
-                                           id="checkbox_{{$goods->goods_id}}">
-                                </td>
-                                <td>{{$goods->goods_id}}</td>
-                                <td>
-                                    <div class="tDiv goods-info">
-                                        <div class="img fl pad-all-5">
-                                            <a href="" target="_blank" title="">
-                                                <img src="{{$goods->goods_thumb}}" width="68" height="68">
-                                            </a>
-                                        </div>
-                                        <div class="desc fl pad-all-5">
-                                            <div class="name">
+                        @if(count($goodsList) > 0)
+                            @foreach($goodsList as $goods)
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="checkboxes" value="{{$goods->goods_id}}"
+                                               class="checkbox check-all"
+                                               id="checkbox_{{$goods->goods_id}}">
+                                    </td>
+                                    <td>{{$goods->goods_id}}</td>
+                                    <td>
+                                        <div class="tDiv goods-info">
+                                            <div class="img fl pad-all-5">
+                                                <a href="" target="_blank" title="">
+                                                    <img src="{{$goods->goods_thumb}}" width="68" height="68">
+                                                </a>
+                                            </div>
+                                            <div class="desc fl pad-all-5">
+                                                <div class="name">
                                                 <span class="max-wd-190 line-hg-20" title="{{$goods->goods_name}}"
                                                       data-toggle="tooltip"
                                                       data-placement="bottom">{{$goods->goods_name}}</span>
-                                            </div>
-                                            <p class="brand">品牌：
-                                                <em class="em-blue">{{$goods->brand_name}}</em>　　
-                                                @if($goods->is_shipping)
-                                                    <em class="free"></em>
-                                                @endif
-                                                @if($goods->stages)
-                                                    <em class="byStage"></em>
-                                                @endif
-                                                @if(!$goods->is_alone_sale)
-                                                    <em class="parts"></em>
-                                                @endif
-                                                @if($goods->is_promote)
-                                                    @if(time() > $goods->promote_end_date)
-                                                        <em class="sale-end"></em>
-                                                    @else
-                                                        <em class="sale"></em>
+                                                </div>
+                                                <p class="brand">品牌：
+                                                    <em class="em-blue">{{$goods->brand_name}}</em>　　
+                                                    @if($goods->is_shipping)
+                                                        <em class="free"></em>
                                                     @endif
-                                                @endif
-                                                @if($goods->is_limit_buy)
-                                                    @if(time() > $goods->limit_buy_end_date)
-                                                        <em class="purchaseEnd"></em>
-                                                    @else
-                                                        <em class="purchase"></em>
+                                                    @if($goods->stages)
+                                                        <em class="byStage"></em>
                                                     @endif
-                                                @endif
-                                                @if($goods->is_distribution)
-                                                    <em class="distribution">{$lang.distribution}</em>
-                                                @endif
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td><font class="red">直营</font></td>
-                                <td>
-                                    <div class="tDiv">
-                                        <div class="tDiv_item">
-                                            <span class="fl">价格：</span>
-                                            <div class="value">
-                                                @if($goods->model_attr == 1)
-                                                    <input name="goods_model_price" data-goodsid="{{$goods->goods_id}}"
-                                                           class="btn btn-primary btn-sm" value="warehouse_price"
-                                                           type="button">
-                                                @elseif($goods->model_attr == 2)
-                                                    <input name="goods_model_price" data-goodsid="{{$goods->goods_id}}"
-                                                           class="btn btn-primary btn-sm" value="region_price"
-                                                           type="button">
-                                                @else
-                                                    <span>{{$goods->shop_price}}</span>
-                                                @endif
+                                                    @if(!$goods->is_alone_sale)
+                                                        <em class="parts"></em>
+                                                    @endif
+                                                    @if($goods->is_promote)
+                                                        @if(time() > $goods->promote_end_date)
+                                                            <em class="sale-end"></em>
+                                                        @else
+                                                            <em class="sale"></em>
+                                                        @endif
+                                                    @endif
+                                                    @if($goods->is_limit_buy)
+                                                        @if(time() > $goods->limit_buy_end_date)
+                                                            <em class="purchaseEnd"></em>
+                                                        @else
+                                                            <em class="purchase"></em>
+                                                        @endif
+                                                    @endif
+                                                    @if($goods->is_distribution)
+                                                        <em class="distribution">{$lang.distribution}</em>
+                                                    @endif
+                                                </p>
                                             </div>
                                         </div>
+                                    </td>
+                                    <td><font class="red">直营</font></td>
+                                    <td>
+                                        <div class="tDiv">
+                                            <div class="tDiv_item">
+                                                <span class="fl">价格：</span>
+                                                <div class="value">
+                                                    @if($goods->model_attr == 1)
+                                                        <input name="goods_model_price"
+                                                               data-goodsid="{{$goods->goods_id}}"
+                                                               class="btn btn-primary btn-sm" value="warehouse_price"
+                                                               type="button">
+                                                    @elseif($goods->model_attr == 2)
+                                                        <input name="goods_model_price"
+                                                               data-goodsid="{{$goods->goods_id}}"
+                                                               class="btn btn-primary btn-sm" value="region_price"
+                                                               type="button">
+                                                    @else
+                                                        <span>{{$goods->shop_price}}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
 
-                                        <div class="tDiv_item">
-                                            <span class="fl">货号：</span>
-                                            <div class="value">
-                                                <span>{{$goods->goods_sn}}</span>
+                                            <div class="tDiv_item">
+                                                <span class="fl">货号：</span>
+                                                <div class="value">
+                                                    <span>{{$goods->goods_sn}}</span>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="tDiv_item">
-                                            <span class="fl">运费：</span>
-                                            <div class="value">
-                                                <a href="" target="_blank">
-                                                    按运费模板
-                                                </a>
+                                            <div class="tDiv_item">
+                                                <span class="fl">运费：</span>
+                                                <div class="value">
+                                                    <a href="" target="_blank">
+                                                        按运费模板
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="switch-wrap clearfix"><span class="fl">精品：</span>
-                                        <div class="switch @if($goods->is_best) active @endif" data-type="is_best"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$goods->goods_id}}">
+                                    </td>
+                                    <td>
+                                        <div class="switch-wrap clearfix"><span class="fl">精品：</span>
+                                            <div class="switch @if($goods->is_best) active @endif" data-type="is_best"
+                                                 title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$goods->goods_id}}">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="switch-wrap clearfix"><span class="fl">新品：</span>
-                                        <div class="switch @if($goods->is_new) active @endif" data-type="is_new"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$goods->goods_id}}">
+                                        <div class="switch-wrap clearfix"><span class="fl">新品：</span>
+                                            <div class="switch @if($goods->is_new) active @endif" data-type="is_new"
+                                                 title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$goods->goods_id}}">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="switch-wrap clearfix"><span class="fl">热销：</span>
-                                        <div class="switch @if($goods->is_hot) active @endif" data-type="is_hot"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$goods->goods_id}}">
+                                        <div class="switch-wrap clearfix"><span class="fl">热销：</span>
+                                            <div class="switch @if($goods->is_hot) active @endif" data-type="is_hot"
+                                                 title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$goods->goods_id}}">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="switch-wrap clearfix"><span class="fl">上架：</span>
-                                        <div class="switch @if($goods->is_on_sale) active @endif" data-type="is_on_sale"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$goods->goods_id}}">
+                                        <div class="switch-wrap clearfix"><span class="fl">上架：</span>
+                                            <div class="switch @if($goods->is_on_sale) active @endif"
+                                                 data-type="is_on_sale"
+                                                 title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$goods->goods_id}}">
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <a type="button" href="javascript:;"
-                                       class="btn btn-info btn-weight-order btn-sm" data-goodsid="{{$goods->goods_id}}">权重排序</a>
-                                </td>
-                                <td>
-                                    @if($goods->is_attr)
-                                        <a href="javascript:;" ectype="add_sku" data-goodsid="{{$goods->goods_id}}"
-                                           data-userid="{{$goods->user_id}}">
-                                            <i class="glyphicon glyphicon-edit"></i>
-                                        </a>
-                                    @else
-                                        <span onclick="listTable.edit(this, 'edit_goods_number', {{$goods->goods_id}})">{{$goods->goods_number}}</span>
-                                    @endif</td>
-                                <td>
-                                    @if($goods->review_status == 1)
-                                        <font class="oranges" id="examine_{{$goods->goods_id}}">未审核</font>
-                                    @elseif($goods->review_status == 2)
-                                        <font class="red" id="examine_{{$goods->goods_id}}">审核不通过</font><br/>
-                                        <i class="tip yellow" title="{$goods.review_content}" data-toggle="tooltip">{$lang.prompt}</i>
-                                    @elseif($goods->review_status == 3 || $goods->review_status == 4)
-                                        <font class="blue" id="examine_{{$goods->goods_id}}">审核已通过</font>
-                                    @elseif($goods->review_status == 5)
-                                        <font class="navy2" id="examine_{{$goods->goods_id}}">无需审核</font>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a type="button" href="javascript:;" data-id="{{$goods->goods_id}}"
-                                       class="btn btn-primary btn-examine btn-sm fl mar-all-5">审核</a>
-                                    <a type="button" href="{{url('admin/goods/'.$goods->goods_id.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm fl mar-all-5">查看</a>
-                                    <a type="button" href="{{url('admin/goods/'.$goods->goods_id.'/edit')}}"
-                                       class="btn btn-warning btn-edit btn-sm fl mar-all-5">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm fl mar-all-5"
-                                       data-id="{{$goods->goods_id}}">删除</a>
-                                </td>
+                                    </td>
+                                    <td>
+                                        <a type="button" href="javascript:;"
+                                           class="btn btn-info btn-weight-order btn-sm"
+                                           data-goodsid="{{$goods->goods_id}}">权重排序</a>
+                                    </td>
+                                    <td>
+                                        @if($goods->is_attr)
+                                            <a href="javascript:;" ectype="add_sku" data-goodsid="{{$goods->goods_id}}"
+                                               data-userid="{{$goods->user_id}}">
+                                                <i class="glyphicon glyphicon-edit"></i>
+                                            </a>
+                                        @else
+                                            <span onclick="listTable.edit(this, 'edit_goods_number', {{$goods->goods_id}})">{{$goods->goods_number}}</span>
+                                        @endif</td>
+                                    <td>
+                                        @if($goods->review_status == 1)
+                                            <font class="oranges" id="examine_{{$goods->goods_id}}">未审核</font>
+                                        @elseif($goods->review_status == 2)
+                                            <font class="red" id="examine_{{$goods->goods_id}}">审核不通过</font><br/>
+                                            <i class="dark-red" title="{{$goods->review_content}}"
+                                               data-toggle="tooltip">（提示）</i>
+                                        @elseif($goods->review_status == 3 || $goods->review_status == 4)
+                                            <font class="blue" id="examine_{{$goods->goods_id}}">审核已通过</font>
+                                        @elseif($goods->review_status == 5)
+                                            <font class="navy2" id="examine_{{$goods->goods_id}}">无需审核</font>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($navType == 'delete')
+                                            <a type="button" href="{{url('admin/goods/backto/'.$goods->goods_id)}}"
+                                               class="btn btn-warning btn-edit btn-sm fl mar-all-5">还原</a>
+                                            <a type="button" href="{{url('admin/goods/del/'.$goods->goods_id)}}"
+                                               class="btn btn-danger btn-del btn-sm fl mar-all-5">删除</a>
+                                        @else
+                                            <a type="button" href="javascript:;" data-id="{{$goods->goods_id}}"
+                                               class="btn btn-primary btn-examine btn-sm fl mar-all-5">审核</a>
+                                            <a type="button" href="{{url('admin/goods/'.$goods->goods_id.'/edit')}}"
+                                               class="btn btn-info btn-edit btn-sm fl mar-all-5">查看</a>
+                                            <a type="button" href="{{url('admin/goods/'.$goods->goods_id.'/edit')}}"
+                                               class="btn btn-warning btn-edit btn-sm fl mar-all-5">编辑</a>
+                                            <a type="button" class="btn btn-danger btn-del btn-sm fl mar-all-5"
+                                               data-id="{{$goods->goods_id}}">删除</a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
-                        @endforeach
+                        @endif
                         </tbody>
                     </table>
                     <div class="clearfix bg-color-dray pad-top-4">

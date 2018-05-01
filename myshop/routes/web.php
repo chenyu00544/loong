@@ -51,6 +51,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 //    Route::get('shopsetup', 'ShopConfController@index');
     Route::resource('shopconf', 'ShopConfController');
 
+    Route::resource('regions', 'RegionsController');
+
     Route::post('navsetup/show/or/view', 'NavigationController@showOrView');
     Route::post('navsetup/change/order', 'NavigationController@changeOrder');
     Route::resource('navsetup', 'NavigationController');
@@ -69,6 +71,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::post('goods/change', 'GoodsController@change');
     Route::post('goods/changes', 'GoodsController@changes');
+    Route::get('goods/backto/{id}', 'GoodsController@backTo');
+    Route::get('goods/del/{id}', 'GoodsController@thoroughDel');
     Route::get('goods/examine/{id}', 'GoodsController@examine');
     Route::get('goods/weight/order/{id}', 'GoodsController@weightOrder');
     Route::resource('goods', 'GoodsController');

@@ -19,11 +19,20 @@ return array(
             'name' => '自定义导航',
             'url' => 'admin/navsetup',
         ),
-//        'paysetup' => '支付设置',
-//        'areasetup' => '地区设置',
+        'paysetup' => array(
+            'name' => '支付设置',
+            'url' => 'admin/pay',
+        ),
+        'areasetup' => array(
+            'name' => '地区设置',
+            'url' => 'admin/regions',
+        ),
+        'seosetup' => array(
+            'name' => 'SEO设置',
+            'url' => 'admin/seo',
+        ),
 //        'friendsetup' => '友情链接',
 //        'codesetup' => '验证码设置',
-//        'seosetup' => 'SEO设置',
     ),
     'home' => array(
         'info' => '首页',

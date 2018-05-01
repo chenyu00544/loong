@@ -111,7 +111,7 @@
                             <label class="col-sm-4 control-label">可选值列表：</label>
                             <div class="col-sm-4 n-wd400">
                                 <textarea name="attr_values" rows="5" class="form-control"
-                                          @if($attribute->attr_input_type == 0) disabled="disabled" @endif></textarea>
+                                          @if($attribute->attr_input_type == 0) disabled="disabled" @endif>{{$attribute->attr_values}}</textarea>
                             </div>
                         </div>
                         <div class="form-group">

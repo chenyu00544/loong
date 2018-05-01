@@ -25,7 +25,9 @@ class GoodsController extends CommonController
     {
         $goodsList = $this->goodsRepository->getGoodsPage($request->get('keywords'));
         $goodsNav = $this->goodsRepository->getGoodsNav();
-        return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav'));
+        $navType = 'normal';
+        $keywords = '';
+        return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav', 'navType', 'keywords'));
     }
 
     public function change(Request $request)
@@ -50,6 +52,21 @@ class GoodsController extends CommonController
         $goods = $this->goodsRepository->getGoods($id);
         $goodsWeight = $this->goodsRepository->getGoodsByWeightOrder($id);
         return view('shop.admin.goods.weightOrder', compact('goodsWeight', 'goods'));
+    }
+
+    public function thoroughDel($id)
+    {
+
+        return view('shop.admin.success');
+    }
+
+    public function backTo($id)
+    {
+        $data['id'] = $id;
+        $data['type'] = 'is_delete';
+        $data['val'] = 0;
+        $this->goodsRepository->setGoods($data);
+        return view('shop.admin.success');
     }
 
     /**
@@ -79,9 +96,13 @@ class GoodsController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $navType = $id;
+        $keywords = $request->get('keywords');
+        $goodsList = $this->goodsRepository->getGoodsPage($keywords, [$id]);
+        $goodsNav = $this->goodsRepository->getGoodsNav();
+        return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav', 'navType', 'keywords'));
     }
 
     /**
