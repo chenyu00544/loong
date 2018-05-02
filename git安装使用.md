@@ -109,6 +109,10 @@ ps：git config  –global 参数，有了这个参数，表示你这台机器�
 	无效 使用
 	git pull origin master --allow-unrelated-histories
 
+	有文件没有pull下来，先git status看看状态再
+	撤销修改 git checkout 路径+文件
+	
+
 #####第五步：push到远程master分支上
 
 	git push -u origin master
