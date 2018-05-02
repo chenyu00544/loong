@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 01/05/2018 23:30:18
+ Date: 02/05/2018 23:05:24
 */
 
 SET NAMES utf8mb4;
@@ -10379,6 +10379,37 @@ INSERT INTO `cyc_regions` VALUES (3405, 3401, '包河区', 3, 0);
 INSERT INTO `cyc_regions` VALUES (3406, 3401, '长丰县', 3, 0);
 INSERT INTO `cyc_regions` VALUES (3407, 3401, '肥东县', 3, 0);
 INSERT INTO `cyc_regions` VALUES (3408, 3401, '肥西县', 3, 0);
+
+-- ----------------------------
+-- Table structure for cyc_shipping
+-- ----------------------------
+DROP TABLE IF EXISTS `cyc_shipping`;
+CREATE TABLE `cyc_shipping`  (
+  `shipping_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `shipping_code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `shipping_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `shipping_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `insure` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `support_cod` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `shipping_print` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `print_bg` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `config_lable` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `print_model` tinyint(1) NULL DEFAULT 0,
+  `shipping_order` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `customer_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `customer_pwd` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `month_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `send_site` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`shipping_id`) USING BTREE,
+  INDEX `shipping_code`(`shipping_code`, `enabled`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '快递配置表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cyc_shipping
+-- ----------------------------
+INSERT INTO `cyc_shipping` VALUES (9, 'sto_express', '申通快递', '江、浙、沪地区首重为15元/KG，其他地区18元/KG， 续重均为5-6元/KG， 云南地区为8元', '0', 0, 1, '', '', '', 2, 0, '', '', '', '');
+INSERT INTO `cyc_shipping` VALUES (16, 'sf_express', '顺丰速运', '江、浙、沪地区首重15元/KG，续重2元/KG，其余城市首重20元/KG', '0', 0, 1, '', '', '', 2, 0, '', '', '', '');
 
 -- ----------------------------
 -- Table structure for cyc_shop_config

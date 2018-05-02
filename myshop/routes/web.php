@@ -51,7 +51,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 //    Route::get('shopsetup', 'ShopConfController@index');
     Route::resource('shopconf', 'ShopConfController');
 
-    Route::resource('regions', 'RegionsController');
+    Route::resource('express', 'ExpressController');
 
     Route::post('navsetup/show/or/view', 'NavigationController@showOrView');
     Route::post('navsetup/change/order', 'NavigationController@changeOrder');

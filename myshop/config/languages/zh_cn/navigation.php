@@ -24,8 +24,8 @@ return array(
             'url' => 'admin/pay',
         ),
         'areasetup' => array(
-            'name' => '地区设置',
-            'url' => 'admin/regions',
+            'name' => '地区&快递',
+            'url' => 'admin/express',
         ),
         'seosetup' => array(
             'name' => 'SEO设置',

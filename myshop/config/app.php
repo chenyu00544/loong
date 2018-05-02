@@ -185,6 +185,7 @@ return [
         App\Providers\ShopConfigServiceProvider::class,
         App\Providers\FileHandleServiceProvider::class,
         App\Providers\UrlServiceProvider::class,
+        App\Providers\ExpressServiceProvider::class,
     ],
 
     /*
@@ -242,6 +243,7 @@ return [
         'ShopConfig' => App\Facades\ShopConfig::class,
         'FileHandle' => App\Facades\FileHandle::class,
         'Url' => App\Facades\Url::class,
+        'Express' => App\Facades\Express::class,
     ],
 
 ];

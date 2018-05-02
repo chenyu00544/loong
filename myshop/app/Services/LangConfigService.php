@@ -42,4 +42,9 @@ class LangConfigService
     {
         return Config::get('languages.'.Config::get('config')['lang_type'].'.icons');
     }
+
+    public function LangExpressConf()
+    {
+        return Config::get('languages.'.Config::get('config')['lang_type'].'.express');
+    }
 }

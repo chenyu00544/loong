@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\ShippingRepository;
 use Illuminate\Http\Request;
 
-class RegionsController extends CommonController
+class ExpressController extends CommonController
 {
 
-    public function __construct()
+    private $shippingRepository;
+
+    public function __construct(ShippingRepository $shippingRepository)
     {
         parent::__construct();
+        $this->shippingRepository = $shippingRepository;
     }
 
     /**
@@ -19,7 +23,9 @@ class RegionsController extends CommonController
      */
     public function index()
     {
-        //
+
+        $shipping = $this->shippingRepository->getShippingAll();
+        dd($shipping);
     }
 
     /**
