@@ -28,13 +28,23 @@ class ShippingRepository implements ShippingRepositoryInterface
         $express = Express::expressList();
         $express['express'];
         $shipping = $this->shippingModel->getShippingAll();
+        foreach ($shipping->toArray() as $ship){
+            foreach ($ship as $key => $val){
+                $shipArr[$ship['shipping_code']][$key] = $val;
+            }
+        }
 
         foreach ($express['express'] as $exp){
-            $shipList[$exp]['shipping_code'] = $express[$exp.'_code'];
-            $shipList[$exp]['shipping_name'] = $express[$exp.'_express'];
-            $shipList[$exp]['shipping_desc'] = $express[$exp.'_express_desc'];
+            if(!empty($shipArr[$exp.'_express'])){
+                foreach ($shipArr[$exp.'_express'] as $key => $val){
+                    $shipList[$exp.'_express'][$key] = $val;
+                }
+            }else{
+                $shipList[$exp.'_express']['shipping_code'] = $express[$exp.'_code'];
+                $shipList[$exp.'_express']['shipping_name'] = $express[$exp.'_express'];
+                $shipList[$exp.'_express']['shipping_desc'] = $express[$exp.'_express_desc'];
+            }
         }
-        dd($shipList);
+        return $shipList;
     }
-
 }
