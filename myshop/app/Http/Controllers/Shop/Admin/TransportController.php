@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\TransportRepository;
 use Illuminate\Http\Request;
 
 class TransportController extends CommonController
 {
-    public function __construct()
+    private $transportRepository;
+
+    public function __construct(TransportRepository $transportRepository)
     {
         parent::__construct();
+        $this->transportRepository = $transportRepository;
     }
 
     /**
@@ -19,8 +23,8 @@ class TransportController extends CommonController
     public function index()
     {
         $typeNav = 'transport';
-        
-        return view('shop.admin.shipping.transport', compact('typeNav'));
+        $transports = $this->transportRepository->getTransportAll();
+        return view('shop.admin.shipping.transport', compact('typeNav', 'transports'));
     }
 
     /**
@@ -30,7 +34,7 @@ class TransportController extends CommonController
      */
     public function create()
     {
-        //
+        return view('shop.admin.shipping.transportAdd');
     }
 
     /**
@@ -63,7 +67,8 @@ class TransportController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $transportInfo = $this->transportRepository->getTransportInfo($id);
+        return view('shop.admin.shipping.transportEdit', compact('transportInfo'));
     }
 
     /**

@@ -10,9 +10,9 @@
                     <h5>操作提示</h5>
                 </div>
                 <ul>
-                    <li>标识<em>"*"</em>的选项为必填项，其余为选填项。</li>
-                    <li>支持快递鸟打印的快递，部分还需要申请帐号才能正常使用，请按照如下提示进行设置。</li>
-                    <li><font class="red">无需申请帐号：</font>EMS、邮政快递包裹、顺丰、宅急送</li>
+                    <li>可以针对具体商品设置运费模板。</li>
+                    <li>订单运费计算中，该运费总是优先于任何运费。</li>
+                    <li>商品选择该运费只有首重，且运费固定，请根据实际需要进行设置</li>
                 </ul>
             </div>
             <div class="tabs mar-top-20">
@@ -29,31 +29,34 @@
                 </ul>
             </div>
             <div class="fromlist clearfix">
+                <div>
+                    <a href="{{url('admin/transport/create')}}" class="btn btn-success btn-add btn-sm">　添加　</a>
+                </div>
                 <div class="main-info">
                     <table class="table table-hover table-condensed">
                         <thead>
                         <tr>
                             <th class="col-md-1">编号</th>
-                            <th class="col-md-3">模板名称</th>
-                            <th class="col-md-1">运费标题</th>
-                            <th class="col-md-1">计算方式</th>
+                            <th class="col-md-2">模板名称</th>
+                            <th class="col-md-2">运费标题</th>
+                            <th class="col-md-2">计算方式</th>
                             <th class="col-md-1">更新时间</th>
                             <th class="col-md-3 text-center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($shipping as $ship)
+                        @foreach($transports as $transport)
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>{{$transport->tid}}</td>
+                                <td>{{$transport->title}}</td>
+                                <td>{{$transport->shipping_title}}</td>
+                                <td>@if($transport->freight_type == 0) 自定义 @else 快递模板 @endif</td>
+                                <td>{{date('Y-m-d H:i:s',$transport->update_time)}}</td>
                                 <td class="text-center">
-                                    <a type="button" href=""
+                                    <a type="button" href="{{url('admin/transport/'.$transport->tid.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
                                     <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                       data-id="{{$ship['shipping_id']}}">删除</a>
+                                       data-id="{{$transport->tid}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
