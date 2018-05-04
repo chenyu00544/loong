@@ -20,11 +20,11 @@
                     <li class="@if($typeNav == 'express') curr @endif fl">
                         <a href="{{url('admin/express')}}">快递配置</a>
                     </li>
-                    <li class="@if($typeNav == 'ship') curr @endif fl">
-                        <a href="{{url('admin/express/ship')}}">运费管理</a>
+                    <li class="@if($typeNav == 'transport') curr @endif fl">
+                        <a href="{{url('admin/transport')}}">运费管理</a>
                     </li>
                     <li class="@if($typeNav == 'area') curr @endif fl">
-                        <a href="{{url('admin/express/area')}}">地区列表</a>
+                        <a href="{{url('admin/area')}}">地区列表</a>
                     </li>
                 </ul>
             </div>
@@ -33,36 +33,27 @@
                     <table class="table table-hover table-condensed">
                         <thead>
                         <tr>
-                            <th class="col-md-1">配送方式名称</th>
-                            <th class="col-md-3">网址(仅供参考)</th>
-                            <th class="col-md-1">保价费用</th>
-                            <th class="col-md-1">货到付款</th>
-                            <th class="col-md-1">快递鸟打印</th>
-                            <th class="col-md-1">默认方式</th>
-                            <th class="col-md-1">排序</th>
+                            <th class="col-md-1">编号</th>
+                            <th class="col-md-3">模板名称</th>
+                            <th class="col-md-1">运费标题</th>
+                            <th class="col-md-1">计算方式</th>
+                            <th class="col-md-1">更新时间</th>
                             <th class="col-md-3 text-center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($shipping as $ship)
                             <tr>
-                                <td>{{$ship['shipping_name']}}</td>
-                                <td>{!! $ship['shipping_desc'] !!}</td>
-                                <td>{{empty($ship['insure'])?0:$ship['insure']}}%</td>
-                                <td>@if(empty($ship['support_cod'])) <img src="{{url('styles/images/no.png')}}" class="pointer"> @else <img src="{{url('styles/images/yes.png')}}" class="pointer"> @endif</td>
-                                <td><img src="{{url('styles/images/yes.png')}}" class="pointer"></td>
-                                <td><img src="{{url('styles/images/yes.png')}}" class="pointer"></td>
-                                <td>{{empty($ship['shipping_order'])?0:$ship['shipping_order']}}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td class="text-center">
-                                    @if(empty($ship['shipping_id']))
-                                        <a type="button" data-code="{{$ship['outside_code']}}"
-                                           class="btn btn-primary btn-install btn-sm mar-all-5">安装</a>
-                                    @else
-                                        <a type="button" data-id="{{$ship['shipping_id']}}"
-                                           class="btn btn-info btn-edit btn-sm mar-all-5">账号编辑</a>
-                                        <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                           data-id="{{$ship['shipping_id']}}">删除</a>
-                                    @endif
+                                    <a type="button" href=""
+                                       class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
+                                    <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
+                                       data-id="{{$ship['shipping_id']}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -79,39 +70,6 @@
     <script>
         $(function () {
             $('.nyroModal').nyroModal();
-
-            //添加快递
-            $('.btn-install').on('click', function () {
-                var code = $(this).data('code');
-                $.post(
-                    "{{url('admin/express/install')}}/" + code,
-                    {'_token': '{{csrf_token()}}'},
-                    function (data) {
-                        layer.msg(data.msg, {icon: data.code});
-                        if (data.code == 1) {
-                            setTimeout(function () {
-                                location.href = location.href;
-                            }, 1000);
-                        }
-                    }
-                );
-            });
-
-            //编辑快递
-            $('.btn-edit').on('click', function () {
-                var id = $(this).data('id');
-                layer.open({
-                    type: 2,
-                    area: ['500px', 'auto'],
-                    fixed: true, //固定
-                    maxmin: true,
-                    title: '编辑',
-                    content: ["{{url('admin/express')}}/" + id + "/edit", 'no'],
-                    success: function (layero, index) {
-                        layer.iframeAuto(index)
-                    }
-                });
-            });
 
             //删除
             $('.btn-del').on('click', function () {

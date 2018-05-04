@@ -19,6 +19,7 @@ class TransportController extends CommonController
     public function index()
     {
         $typeNav = 'transport';
+        
         return view('shop.admin.shipping.transport', compact('typeNav'));
     }
 
