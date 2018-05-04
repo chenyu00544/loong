@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Repositories\ShippingRepository;
 use Illuminate\Http\Request;
 
-class ExpressController extends CommonController
+class TransportController extends CommonController
 {
-
-    private $shippingRepository;
-
-    public function __construct(ShippingRepository $shippingRepository)
+    public function __construct()
     {
         parent::__construct();
-        $this->shippingRepository = $shippingRepository;
     }
 
     /**
@@ -23,20 +18,8 @@ class ExpressController extends CommonController
      */
     public function index()
     {
-
-        $shipping = $this->shippingRepository->getShippingAll();
-        $typeNav = 'express';
-        return view('shop.admin.shipping.express', compact('shipping', 'typeNav'));
-    }
-
-    public function install($id)
-    {
-        return $this->shippingRepository->addShip($id);
-    }
-
-    public function changes(Request $request)
-    {
-        return $this->shippingRepository->changes($request->except('_token'));
+        $typeNav = 'transport';
+        return view('shop.admin.shipping.transport', compact('typeNav'));
     }
 
     /**
@@ -52,7 +35,7 @@ class ExpressController extends CommonController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -63,7 +46,7 @@ class ExpressController extends CommonController
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -74,20 +57,19 @@ class ExpressController extends CommonController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $ship = $this->shippingRepository->getShipping($id);
-        return view('shop.admin.shipping.expressEdit', compact('ship'));
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -98,11 +80,11 @@ class ExpressController extends CommonController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        return $this->shippingRepository->deleteShip($id);
+        //
     }
 }

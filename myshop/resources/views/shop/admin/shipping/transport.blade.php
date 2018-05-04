@@ -10,9 +10,9 @@
                     <h5>操作提示</h5>
                 </div>
                 <ul>
-                    <li>可以针对具体商品设置运费模板。</li>
-                    <li>订单运费计算中，该运费总是优先于任何运费。</li>
-                    <li>商品选择该运费只有首重，且运费固定，请根据实际需要进行设置</li>
+                    <li>标识<em>"*"</em>的选项为必填项，其余为选填项。</li>
+                    <li>支持快递鸟打印的快递，部分还需要申请帐号才能正常使用，请按照如下提示进行设置。</li>
+                    <li><font class="red">无需申请帐号：</font>EMS、邮政快递包裹、顺丰、宅急送</li>
                 </ul>
             </div>
             <div class="tabs mar-top-20">
@@ -20,11 +20,11 @@
                     <li class="@if($typeNav == 'express') curr @endif fl">
                         <a href="{{url('admin/express')}}">快递配置</a>
                     </li>
-                    <li class="@if($typeNav == 'transport') curr @endif fl">
-                        <a href="{{url('admin/transport')}}">运费管理</a>
+                    <li class="@if($typeNav == 'ship') curr @endif fl">
+                        <a href="{{url('admin/express/ship')}}">运费管理</a>
                     </li>
                     <li class="@if($typeNav == 'area') curr @endif fl">
-                        <a href="{{url('admin/area')}}">地区列表</a>
+                        <a href="{{url('admin/express/area')}}">地区列表</a>
                     </li>
                 </ul>
             </div>

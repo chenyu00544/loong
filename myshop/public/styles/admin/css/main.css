@@ -597,6 +597,10 @@ span {
     line-height: 20px;
 }
 
+.line-hg-30 {
+    line-height: 30px;
+}
+
 .sale-end {
     background: url(../../images/act_icon.png) no-repeat;
     background-position: -235px 0;
