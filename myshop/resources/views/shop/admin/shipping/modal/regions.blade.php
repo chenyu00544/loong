@@ -10,7 +10,7 @@
                             <input type="checkbox" name="province[{{$val['id']}}]" value="{{$val['id']}}"
                                    id="province_{{$val['id']}}" class="fl dis-bk regions pro">
                             <label class="ui-label cursor" for="province_{{$val['id']}}">
-                                <span>{{$val['name']}}</span>
+                                <span class="pro-name">{{$val['name']}}</span>
                                 <span class="green child_num">(0)</span>
                             </label>
                         </a>
@@ -21,7 +21,7 @@
                                     <input type="checkbox" name="city[{{$value['id']}}]" value="{{$value['id']}}"
                                            id="city_{{$value['id']}}" class="fl dis-bk regions city">
                                     <label class="cursor" for="city_{{$value['id']}}">
-                                        <span>{{$value['name']}}</span>
+                                        <span class="city-name">{{$value['name']}}</span>
                                     </label>
                                 </li>
                             @endforeach
@@ -138,18 +138,28 @@
                 var id = $('.extend_id').val();
                 var areaStr = '';
                 var topAreaStr = '';
-                $('.city').each(function () {
-                    if ($(this).is(':checked')) {
-                        areaStr += $(this).val() + ',';
-                    }
-                });
-                areaStr = areaStr.substr(0, areaStr.length-1);
+                var html = '';
                 $('.pro').each(function () {
                     if ($(this).is(':checked')) {
+                        html += '<p><strong>';
                         topAreaStr += $(this).val() + ',';
+                        var pro_name = $(this).parent().find('.pro-name').html();
+                        html += pro_name + ':</strong>';
+
+                        $(this).parent().parent().find('.city').each(function () {
+                            if ($(this).is(':checked')) {
+                                areaStr += $(this).val() + ',';
+                                var city_name = $(this).parent().find('.city-name').html();
+                                html += city_name + ',';
+                            }
+                        });
+                        html = html.substr(0, html.length - 1);
+                        html += '</p>';
                     }
                 });
-                topAreaStr = topAreaStr.substr(0,topAreaStr.length-1);
+                topAreaStr = topAreaStr.substr(0, topAreaStr.length - 1);
+                areaStr = areaStr.substr(0, areaStr.length - 1);
+
                 $.post('{{url('admin/transport/changes')}}', {
                     area_id: areaStr,
                     top_area_id: topAreaStr,
@@ -157,7 +167,9 @@
                     id: id,
                     type: 'area_update'
                 }, function (data) {
-
+                    var transInfo = parent.$('.trans-info');
+                    transInfo.html(html);
+                    parent.layer.close(index);
                 })
             });
 

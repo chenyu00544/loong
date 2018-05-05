@@ -52,7 +52,7 @@ class TransportController extends CommonController
     public function create()
     {
         $transportInfo = $this->transportRepository->getTransportInfo();
-        return view('shop.admin.shipping.transportAdd', compact('transportInfo'));
+        return view('shop.admin.shipping.transportAdd', compact('transportInfo', 'regions'));
     }
 
     /**

@@ -69,7 +69,7 @@ span {
     overflow: hidden;
 }
 
-.hide{
+.hide {
     display: none;
 }
 
@@ -133,7 +133,7 @@ span {
     font-size: 16px;
 }
 
-.cl-darkgray{
+.cl-darkgray {
     color: darkgray;
 }
 
@@ -751,7 +751,7 @@ span {
     color: blue;
 }
 
-.green{
+.green {
     color: green;
 }
 
@@ -764,25 +764,25 @@ span {
     height: 200px;
 }
 
-.trans-info {
-    width: 520px;
+.trans-info, .express-info {
     white-space: normal;
+    max-width: 450px;
 }
 
-.dis-bk{
+.dis-bk {
     display: block;
 }
 
-.regions-wrap .regions{
+.regions-wrap .regions {
     margin-top: 4px;
     margin-right: 5px;
 }
 
-.cursor{
+.cursor {
     cursor: pointer;
 }
 
-.region-city{
+.region-city {
     position: absolute;
     width: 400px;
     background: #ecf8ff;

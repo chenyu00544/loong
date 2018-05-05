@@ -69,7 +69,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">配送地区：</label>
                             <div class="col-sm-7">
-                                <div class="area-wrap" style="display: @if(count($transportInfo['extend']) == 0) none @else block @endif ;">
+                                <div class="area-wrap"
+                                     style="display: @if(count($transportInfo['extend']) == 0) none @else block @endif ;">
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
@@ -80,21 +81,29 @@
                                         </thead>
                                         <tbody class="area-info-wrap">
                                         @foreach($transportInfo['extend'] as $val)
-                                        <tr class="area-line area-line_{{$val->id}}">
-                                            <td>
-                                                <div class="trans-info">
-                                                    <p>未指定地区</p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <input type="text" name="sprice" class="form-control" value="{{$val->sprice}}">
-                                            </td>
-                                            <td>
-                                                <input type="hidden" name="areaid" value="{{$val->id}}">
-                                                <a href="javascript:;" class="btn btn-info btn-edit-area btn-sm">编辑</a>
-                                                <a href="javascript:;" class="btn btn-info btn-del-area btn-sm">删除</a>
-                                            </td>
-                                        </tr>
+                                            <tr class="area-line area-line_{{$val->id}}">
+                                                <td>
+                                                    <div class="trans-info">
+                                                        @if($val->area_html)
+                                                            {!! $val->area_html !!}
+                                                        @else
+                                                            <p>未指定地区</p>
+                                                        @endif
+
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="sprice" class="form-control"
+                                                           value="{{$val->sprice}}">
+                                                </td>
+                                                <td>
+                                                    <input type="hidden" name="areaid" value="{{$val->id}}">
+                                                    <a href="javascript:;"
+                                                       class="btn btn-info btn-edit-area btn-sm">编辑</a>
+                                                    <a href="javascript:;"
+                                                       class="btn btn-info btn-del-area btn-sm">删除</a>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                         </tbody>
                                     </table>
@@ -105,7 +114,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">快递方式：</label>
                             <div class="col-sm-7">
-                                <div class="express-wrap" style="display: @if(count($transportInfo['express']) == 0) none @else block @endif ;">
+                                <div class="express-wrap"
+                                     style="display: @if(count($transportInfo['express']) == 0) none @else block @endif ;">
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
@@ -123,7 +133,8 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="shipping_fee" class="form-control" value="{{$value->shipping_fee}}">
+                                                    <input type="text" name="shipping_fee" class="form-control"
+                                                           value="{{$value->shipping_fee}}">
                                                 </td>
                                                 <td>
                                                     <input type="hidden" name="expressid" value="{{$value->id}}">
@@ -156,8 +167,11 @@
     <script>
         $(function () {
             $('body').on('click', '.btn-add-area', function () {
-                $.post('{{url("admin/transport/changes")}}', {_token: '{{csrf_token()}}', type:'area_add'}, function (data) {
-                    var html = '<tr class="area-line area-line_'+data.id+'">\n' +
+                $.post('{{url("admin/transport/changes")}}', {
+                    _token: '{{csrf_token()}}',
+                    type: 'area_add'
+                }, function (data) {
+                    var html = '<tr class="area-line area-line_' + data.id + '">\n' +
                         '           <td>\n' +
                         '               <div class="trans-info">\n' +
                         '                    <p>未指定地区</p>\n' +
@@ -167,7 +181,7 @@
                         '               <input type="text" name="sprice" class="form-control" value="0.00">\n' +
                         '           </td>\n' +
                         '           <td>\n' +
-                        '               <input type="hidden" name="areaid" value="'+data.id+'">\n' +
+                        '               <input type="hidden" name="areaid" value="' + data.id + '">\n' +
                         '               <a href="javascript:;" class="btn btn-info btn-edit-area btn-sm">编辑</a>\n' +
                         '               <a href="javascript:;" class="btn btn-info btn-del-area btn-sm">删除</a>\n' +
                         '           </td>\n' +
@@ -179,10 +193,14 @@
 
             $('body').on('click', '.btn-del-area', function () {
                 var id = $(this).parent().find('input[name=areaid]').val();
-                $.post('{{url("admin/transport/changes")}}', {_token: '{{csrf_token()}}', type:'area_del', id:id}, function (data) {
+                $.post('{{url("admin/transport/changes")}}', {
+                    _token: '{{csrf_token()}}',
+                    type: 'area_del',
+                    id: id
+                }, function (data) {
                     // $(this).parent().parent().remove();
-                    $('.area-line_'+id).remove();
-                    if($('.area-line').length <= 0){
+                    $('.area-line_' + id).remove();
+                    if ($('.area-line').length <= 0) {
                         $('.area-wrap').hide();
                     }
                 })
@@ -194,7 +212,7 @@
 
                 layer.open({
                     type: 2,
-                    area: ['700px', 'auto'],
+                    area: ['700px', '410px'],
                     fixed: true, //不固定
                     maxmin: true,
                     title: '地区',
@@ -206,8 +224,11 @@
             });
 
             $('body').on('click', '.btn-add-express', function () {
-                $.post('{{url("admin/transport/changes")}}', {_token: '{{csrf_token()}}', type:'express_add'}, function (data) {
-                    var html = '<tr class="express-line express-line_'+data.id+'">\n' +
+                $.post('{{url("admin/transport/changes")}}', {
+                    _token: '{{csrf_token()}}',
+                    type: 'express_add'
+                }, function (data) {
+                    var html = '<tr class="express-line express-line_' + data.id + '">\n' +
                         '           <td>\n' +
                         '               <div class="express-info">\n' +
                         '                    <p>未指定快递</p>\n' +
@@ -217,7 +238,7 @@
                         '               <input type="text" name="shipping_fee" class="form-control" value="0.00">\n' +
                         '           </td>\n' +
                         '           <td>\n' +
-                        '               <input type="hidden" name="expressid" value="'+data.id+'">\n' +
+                        '               <input type="hidden" name="expressid" value="' + data.id + '">\n' +
                         '               <a href="javascript:;" class="btn btn-info btn-edit-express btn-sm">编辑</a>\n' +
                         '               <a href="javascript:;" class="btn btn-info btn-del-express btn-sm">删除</a>\n' +
                         '           </td>\n' +
@@ -229,10 +250,14 @@
 
             $('body').on('click', '.btn-del-express', function () {
                 var id = $(this).parent().find('input[name=expressid]').val();
-                $.post('{{url("admin/transport/changes")}}', {_token: '{{csrf_token()}}', type:'express_del', id:id}, function (data) {
+                $.post('{{url("admin/transport/changes")}}', {
+                    _token: '{{csrf_token()}}',
+                    type: 'express_del',
+                    id: id
+                }, function (data) {
                     // $(this).parent().parent().remove();
-                    $('.express-line_'+id).remove();
-                    if($('.express-line').length <= 0){
+                    $('.express-line_' + id).remove();
+                    if ($('.express-line').length <= 0) {
                         $('.express-wrap').hide();
                     }
                 })
