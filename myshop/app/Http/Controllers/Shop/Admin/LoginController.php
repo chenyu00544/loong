@@ -7,7 +7,7 @@ use App\Facades\LangConfig;
 use App\Facades\Verifiable;
 use App\Http\Models\Shop\UserModel;
 use Illuminate\Http\Request;
-use App\Http\Requests;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
 
 class LoginController extends CommonController
@@ -28,7 +28,8 @@ class LoginController extends CommonController
                 if($user->password != Common::md5Encrypt($input['password'], $user->salt)){
                     return back()->with('errors', $lang['login_faild']);
                 }
-                session(['user'=>$user]);
+//                session(['user'=>$user]);
+                Cache::put('adminUser', $user, 600);
                 return redirect('admin/index');
             }else{
                 return back()->withErrors($validator);
@@ -38,7 +39,7 @@ class LoginController extends CommonController
         }
     }
 
-    public function change()
+    public function change(Request $request)
     {
         $lang = 'zh_cn';
         $dir = 'admin';

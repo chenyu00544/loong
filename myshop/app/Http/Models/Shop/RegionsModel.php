@@ -13,11 +13,23 @@ class RegionsModel extends Model
 
     public function getRegions($type = 0, $parent = 0)
     {
-        return $this->select('region_id', 'region_name', 'parent_id')->where([['region_type',$type],['parent_id',$parent]])->get();
+        return $this->select('region_id', 'region_name', 'parent_id')
+            ->where([['region_type', $type], ['parent_id', $parent]])
+            ->get();
+    }
+
+    public function getRegionsRange($type_s = 0, $type_e = 0)
+    {
+        return $this->select('region_id', 'region_name', 'parent_id', 'region_type')
+            ->where([['region_type', '>=', $type_s], ['region_type', '<=', $type_e]])
+            ->orderBy('region_id', 'asc')
+            ->get();
     }
 
     public function getRegion($id)
     {
-        return $this->select('region_id', 'region_name')->where('region_id',$id)->first();
+        return $this->select('region_id', 'region_name')
+            ->where('region_id', $id)
+            ->first();
     }
 }

@@ -18,4 +18,11 @@ class TransportModel extends Model
             ->orderBy('tid', 'desc')
             ->get();
     }
+
+    public function getTransport($id, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where('tid', $id)
+            ->first();
+    }
 }

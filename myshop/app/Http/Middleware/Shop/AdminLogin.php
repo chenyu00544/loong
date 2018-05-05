@@ -3,6 +3,7 @@
 namespace App\Http\Middleware\Shop;
 
 use Closure;
+use Illuminate\Support\Facades\Cache;
 
 class AdminLogin
 {
@@ -15,7 +16,8 @@ class AdminLogin
      */
     public function handle($request, Closure $next)
     {
-        if(!session('user')){
+//        !session('user');
+        if(!Cache::get('adminUser')){
             return redirect('admin/login');
         }
         return $next($request);

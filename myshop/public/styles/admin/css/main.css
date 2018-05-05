@@ -69,6 +69,10 @@ span {
     overflow: hidden;
 }
 
+.hide{
+    display: none;
+}
+
 .select {
     width: auto;
 }
@@ -121,8 +125,16 @@ span {
     top: 5px;
 }
 
+.ft-12 {
+    font-size: 12px;
+}
+
 .ft-16 {
     font-size: 16px;
+}
+
+.cl-darkgray{
+    color: darkgray;
 }
 
 .nav_icon {
@@ -178,6 +190,14 @@ span {
 
 .wd80 {
     min-width: 80px;
+}
+
+.wd100 {
+    min-width: 100px;
+}
+
+.wd120 {
+    min-width: 120px;
 }
 
 .wd250 {
@@ -731,6 +751,10 @@ span {
     color: blue;
 }
 
+.green{
+    color: green;
+}
+
 .dark-red {
     color: #900000;
 }
@@ -738,6 +762,33 @@ span {
 .no-records {
     text-align: center;
     height: 200px;
+}
+
+.trans-info {
+    width: 520px;
+    white-space: normal;
+}
+
+.dis-bk{
+    display: block;
+}
+
+.regions-wrap .regions{
+    margin-top: 4px;
+    margin-right: 5px;
+}
+
+.cursor{
+    cursor: pointer;
+}
+
+.region-city{
+    position: absolute;
+    width: 400px;
+    background: #ecf8ff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    z-index: 9;
 }
 
 

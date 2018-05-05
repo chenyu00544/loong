@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\RegionsRepository;
 use App\Repositories\TransportRepository;
 use Illuminate\Http\Request;
 
 class TransportController extends CommonController
 {
     private $transportRepository;
+    private $regionsRepository;
 
-    public function __construct(TransportRepository $transportRepository)
+    public function __construct(
+        TransportRepository $transportRepository,
+        RegionsRepository $regionsRepository
+    )
     {
         parent::__construct();
         $this->transportRepository = $transportRepository;
+        $this->regionsRepository = $regionsRepository;
     }
 
     /**
@@ -27,6 +33,17 @@ class TransportController extends CommonController
         return view('shop.admin.shipping.transport', compact('typeNav', 'transports'));
     }
 
+    public function changes(Request $request)
+    {
+        return $this->transportRepository->setTransport($request->except('_token'));
+    }
+
+    public function regions($id)
+    {
+        $regions = $this->regionsRepository->getRegionsRange();
+        return view('shop.admin.shipping.modal.regions', compact('regions', 'id'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -34,13 +51,14 @@ class TransportController extends CommonController
      */
     public function create()
     {
-        return view('shop.admin.shipping.transportAdd');
+        $transportInfo = $this->transportRepository->getTransportInfo();
+        return view('shop.admin.shipping.transportAdd', compact('transportInfo'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -51,7 +69,7 @@ class TransportController extends CommonController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -62,7 +80,7 @@ class TransportController extends CommonController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -74,8 +92,8 @@ class TransportController extends CommonController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -86,7 +104,7 @@ class TransportController extends CommonController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

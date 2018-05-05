@@ -33,6 +33,23 @@ class RegionsRepository implements RegionsRepositoryInterface
         return $reArr;
     }
 
+    public function getRegionsRange($type_s = 1, $type_e = 2)
+    {
+        $reArr = [];
+        $arr = $this->regionsModel->getRegionsRange($type_s,$type_e);
+        foreach ($arr as $item) {
+            if($item->parent_id == 1){
+                $reArr[$item->region_id]['id'] = $item->region_id;
+                $reArr[$item->region_id]['name'] = $item->region_name;
+            }else{
+                $reArr[$item->parent_id]['subRegion'][$item->region_id]['id'] = $item->region_id;
+                $reArr[$item->parent_id]['subRegion'][$item->region_id]['name'] = $item->region_name;
+            }
+
+        }
+        return $reArr;
+    }
+
     public function getArea($id)
     {
         $reArr = [
