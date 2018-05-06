@@ -8,10 +8,10 @@
                     <li class="fl mar-all-5 wd120">
                         <a class="cursor sel-pro">
                             <input type="checkbox" name="province[{{$val['id']}}]" value="{{$val['id']}}"
-                                   id="province_{{$val['id']}}" class="fl dis-bk regions pro">
+                                   id="province_{{$val['id']}}" class="fl dis-bk regions pro" @if($val['selected']) checked @endif @if($val['disabled']) disabled @endif>
                             <label class="ui-label cursor" for="province_{{$val['id']}}">
                                 <span class="pro-name">{{$val['name']}}</span>
-                                <span class="green child_num">(0)</span>
+                                <span class="green child_num">({{$val['num']}})</span>
                             </label>
                         </a>
                         <i class="glyphicon glyphicon-menu-down ft-12 cl-darkgray cursor show-more"></i>
@@ -19,7 +19,7 @@
                             @foreach($val['subRegion'] as $value)
                                 <li class="fl mar-all-5 sel-city">
                                     <input type="checkbox" name="city[{{$value['id']}}]" value="{{$value['id']}}"
-                                           id="city_{{$value['id']}}" class="fl dis-bk regions city">
+                                           id="city_{{$value['id']}}" class="fl dis-bk regions city" @if($value['selected']) checked @endif @if($value['disabled']) disabled @endif>
                                     <label class="cursor" for="city_{{$value['id']}}">
                                         <span class="city-name">{{$value['name']}}</span>
                                     </label>
@@ -55,15 +55,25 @@
             $('.sel-all').click(function () {
                 if ($('input[name=select-all]').is(':checked')) {
                     $('input[type=checkbox]').each(function () {
-                        $(this).prop("checked", false);
+                        if(!$(this).prop("disabled")){
+                            $(this).prop("checked", false);
+                        }
                     });
                     $('.child_num').html('(0)');
                 } else {
                     $('input[type=checkbox]').each(function () {
-                        $(this).prop("checked", true);
+                        if(!$(this).prop("disabled")){
+                            $(this).prop("checked", true);
+                        }
                     });
                     $('.region-city').each(function () {
-                        $(this).parent().find('.child_num').html('(' + $(this).find('input').length + ')');
+                        var num = 0;
+                        $(this).find('input').each(function () {
+                            if(!$(this).prop("disabled")){
+                                num++;
+                            }
+                        });
+                        $(this).parent().find('.child_num').html('(' + num + ')');
                     })
                 }
             });
@@ -101,13 +111,23 @@
             $('.sel-pro').click(function () {
                 if ($(this).children('input').is(':checked')) {
                     $(this).parent().find('input[type=checkbox]').each(function () {
-                        $(this).prop("checked", true);
+                        if(!$(this).prop("disabled")){
+                            $(this).prop("checked", true);
+                        }
                     });
-                    $(this).find('.child_num').html('(' + ($(this).parent().find('input[type=checkbox]').length - 1) + ')');
 
+                    var num = 0;
+                    $(this).parent().find('input[type=checkbox]').each(function () {
+                        if(!$(this).prop("disabled")){
+                            num++;
+                        }
+                    });
+                    $(this).find('.child_num').html('(' + (num - 1) + ')');
                 } else {
                     $(this).parent().find('input[type=checkbox]').each(function () {
-                        $(this).prop("checked", false);
+                        if(!$(this).prop("disabled")){
+                            $(this).prop("checked", false);
+                        }
                     });
                     $(this).find('.child_num').html('(0)');
                 }
@@ -117,11 +137,13 @@
             $('.sel-city').click(function () {
                 var i = 0;
                 $(this).parent().find('input').each(function () {
-                    if ($(this).is(':checked')) {
-                        i++;
+                    if(!$(this).prop("disabled")) {
+                        if ($(this).is(':checked')) {
+                            i++;
+                        }
                     }
                 });
-                if ($(this).parent().find('input').length > 0) {
+                if (i > 0) {
                     $(this).parent().parent().find('.pro').prop("checked", true);
                 }
                 $(this).parent().parent().find('.child_num').html('(' + i + ')');
@@ -167,7 +189,7 @@
                     id: id,
                     type: 'area_update'
                 }, function (data) {
-                    var transInfo = parent.$('.trans-info');
+                    var transInfo = parent.$('.trans-info-' + id);
                     transInfo.html(html);
                     parent.layer.close(index);
                 })

@@ -16,9 +16,8 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/transport/')}}" class="form-horizontal" method="post">
+                    <form name="conf" action="{{url('admin/transport')}}" class="form-horizontal" method="post">
                         {{csrf_field()}}
-                        {{method_field('PUT')}}
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label">模板类型：</label>
@@ -27,7 +26,7 @@
                                     <input type="radio" name="freight_type" value="0" checked> 自定义
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="freight_type" value="1"> 快递模板
+                                    <input type="radio" name="freight_type" value="1" disabled> 快递模板
                                 </label>
                             </div>
                         </div>
@@ -55,7 +54,7 @@
                                     <input type="radio" name="type" value="1"> 按商品件数
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="type" value="3"> 按重量
+                                    <input type="radio" name="type" value="2"> 按重量
                                 </label>
                             </div>
                         </div>
@@ -83,21 +82,21 @@
                                         @foreach($transportInfo['extend'] as $val)
                                             <tr class="area-line area-line_{{$val->id}}">
                                                 <td>
-                                                    <div class="trans-info">
+                                                    <div class="trans-info trans-info-{{$val->id}}">
                                                         @if($val->area_html)
                                                             {!! $val->area_html !!}
                                                         @else
                                                             <p>未指定地区</p>
                                                         @endif
-
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="sprice" class="form-control"
+                                                    <input type="text" name="sprice[]" class="form-control"
                                                            value="{{$val->sprice}}">
                                                 </td>
                                                 <td>
-                                                    <input type="hidden" name="areaid" value="{{$val->id}}">
+                                                    <input type="hidden" name="areaid[]" class="areaid"
+                                                           value="{{$val->id}}">
                                                     <a href="javascript:;"
                                                        class="btn btn-info btn-edit-area btn-sm">编辑</a>
                                                     <a href="javascript:;"
@@ -128,16 +127,21 @@
                                         @foreach($transportInfo['express'] as $value)
                                             <tr class="express-line express-line_{{$value->id}}">
                                                 <td>
-                                                    <div class="express-info">
-                                                        <p>未指定快递</p>
+                                                    <div class="express-info express-info-{{$value->id}}">
+                                                        @if($value->ship_html)
+                                                            {!! $value->ship_html !!}
+                                                        @else
+                                                            <p>未指定快递</p>
+                                                        @endif
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <input type="text" name="shipping_fee" class="form-control"
+                                                    <input type="text" name="shipping_fee[]" class="form-control"
                                                            value="{{$value->shipping_fee}}">
                                                 </td>
                                                 <td>
-                                                    <input type="hidden" name="expressid" value="{{$value->id}}">
+                                                    <input type="hidden" name="expressid[]" class="expressid"
+                                                           value="{{$value->id}}">
                                                     <a href="javascript:;" class="btn btn-info btn-edit-express btn-sm">编辑</a>
                                                     <a href="javascript:;" class="btn btn-info btn-del-express btn-sm">删除</a>
                                                 </td>
@@ -173,15 +177,15 @@
                 }, function (data) {
                     var html = '<tr class="area-line area-line_' + data.id + '">\n' +
                         '           <td>\n' +
-                        '               <div class="trans-info">\n' +
+                        '               <div class="trans-info trans-info-' + data.id + '">\n' +
                         '                    <p>未指定地区</p>\n' +
                         '               </div>\n' +
                         '           </td>\n' +
                         '           <td>\n' +
-                        '               <input type="text" name="sprice" class="form-control" value="0.00">\n' +
+                        '               <input type="text" name="sprice[]" class="form-control" value="0.00">\n' +
                         '           </td>\n' +
                         '           <td>\n' +
-                        '               <input type="hidden" name="areaid" value="' + data.id + '">\n' +
+                        '               <input type="hidden" name="areaid[]" class="areaid"  value="' + data.id + '">\n' +
                         '               <a href="javascript:;" class="btn btn-info btn-edit-area btn-sm">编辑</a>\n' +
                         '               <a href="javascript:;" class="btn btn-info btn-del-area btn-sm">删除</a>\n' +
                         '           </td>\n' +
@@ -192,7 +196,7 @@
             });
 
             $('body').on('click', '.btn-del-area', function () {
-                var id = $(this).parent().find('input[name=areaid]').val();
+                var id = $(this).parent().find('.areaid').val();
                 $.post('{{url("admin/transport/changes")}}', {
                     _token: '{{csrf_token()}}',
                     type: 'area_del',
@@ -208,7 +212,7 @@
 
             $('body').on('click', '.btn-edit-area', function () {
 
-                var id = $(this).parent().find('input[name=areaid]').val();
+                var id = $(this).parent().find('.areaid').val();
 
                 layer.open({
                     type: 2,
@@ -216,7 +220,7 @@
                     fixed: true, //不固定
                     maxmin: true,
                     title: '地区',
-                    content: ["{{url('admin/transport/regions/')}}" + "/" + id, 'no'],
+                    content: ["{{url('admin/transport/regions/')}}" + "/" + id + "/0", 'no'],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
@@ -230,15 +234,15 @@
                 }, function (data) {
                     var html = '<tr class="express-line express-line_' + data.id + '">\n' +
                         '           <td>\n' +
-                        '               <div class="express-info">\n' +
+                        '               <div class="express-info express-info-' + data.id + '">\n' +
                         '                    <p>未指定快递</p>\n' +
                         '               </div>\n' +
                         '           </td>\n' +
                         '           <td>\n' +
-                        '               <input type="text" name="shipping_fee" class="form-control" value="0.00">\n' +
+                        '               <input type="text" name="shipping_fee[]" class="form-control" value="0.00">\n' +
                         '           </td>\n' +
                         '           <td>\n' +
-                        '               <input type="hidden" name="expressid" value="' + data.id + '">\n' +
+                        '               <input type="hidden" name="expressid[]" class="expressid" value="' + data.id + '">\n' +
                         '               <a href="javascript:;" class="btn btn-info btn-edit-express btn-sm">编辑</a>\n' +
                         '               <a href="javascript:;" class="btn btn-info btn-del-express btn-sm">删除</a>\n' +
                         '           </td>\n' +
@@ -249,7 +253,7 @@
             });
 
             $('body').on('click', '.btn-del-express', function () {
-                var id = $(this).parent().find('input[name=expressid]').val();
+                var id = $(this).parent().find('.expressid').val();
                 $.post('{{url("admin/transport/changes")}}', {
                     _token: '{{csrf_token()}}',
                     type: 'express_del',
@@ -264,7 +268,18 @@
             });
 
             $('body').on('click', '.btn-edit-express', function () {
-                alert(1212);
+                var id = $(this).parent().find('.expressid').val();
+                layer.open({
+                    type: 2,
+                    area: ['700px', '270px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '快递',
+                    content: ["{{url('admin/transport/express/')}}" + "/" + id + "/0", 'no'],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
             });
         });
     </script>

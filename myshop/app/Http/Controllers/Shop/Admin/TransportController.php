@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\RegionsRepository;
 use App\Repositories\TransportRepository;
 use Illuminate\Http\Request;
@@ -38,10 +39,17 @@ class TransportController extends CommonController
         return $this->transportRepository->setTransport($request->except('_token'));
     }
 
-    public function regions($id)
+    public function regions($id, $tid)
     {
         $regions = $this->regionsRepository->getRegionsRange();
+        $regions = $this->transportRepository->getTransportExtendByTid($id, $tid, $regions);
         return view('shop.admin.shipping.modal.regions', compact('regions', 'id'));
+    }
+
+    public function express($id, $tid)
+    {
+        $express = $this->transportRepository->getTransportExpressByTid($id, $tid);
+        return view('shop.admin.shipping.modal.express', compact('express', 'id'));
     }
 
     /**
@@ -63,7 +71,13 @@ class TransportController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["shipping_title" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->transportRepository->addTransport($request->except('_token'));
+        return view('shop.admin.success');
+
     }
 
     /**
@@ -98,7 +112,12 @@ class TransportController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["shipping_title" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->transportRepository->upDateTransport($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
@@ -109,6 +128,6 @@ class TransportController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->transportRepository->deleteTransport($id);
     }
 }

@@ -25,4 +25,21 @@ class TransportModel extends Model
             ->where('tid', $id)
             ->first();
     }
+
+    public function setTransport($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addTransport($data)
+    {
+        return $this->create($data);
+    }
+
+    public function deleteTransport($where)
+    {
+        return $this->where($where)
+            ->delete();
+    }
 }

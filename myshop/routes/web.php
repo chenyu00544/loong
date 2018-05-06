@@ -56,7 +56,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('express', 'ExpressController');
 
     Route::post('transport/changes', 'TransportController@changes');
-    Route::get('transport/regions/{id}', 'TransportController@regions');
+    Route::get('transport/regions/{id}/{tid}', 'TransportController@regions');
+    Route::get('transport/express/{id}/{tid}', 'TransportController@express');
     Route::resource('transport', 'TransportController');
 
     Route::post('navsetup/show/or/view', 'NavigationController@showOrView');

@@ -11,9 +11,11 @@ class ShippingModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getShippingAll()
+    public function getShippingAll($where = [], $column = ['*'])
     {
-        return $this->get();
+        return $this->select($column)
+            ->where($where)
+            ->get();
     }
 
     public function getShipping($id, $column = ['*'])

@@ -17,6 +17,13 @@ class TransportExpressModel extends Model
             ->where($where)
             ->get();
     }
+
+    public function setExpress($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
     public function addExpress($data = ['ru_id' => 0])
     {
         return $this->create($data);

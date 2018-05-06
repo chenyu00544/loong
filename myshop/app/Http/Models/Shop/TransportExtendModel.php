@@ -34,4 +34,5 @@ class TransportExtendModel extends Model
         return $this->where($where)
             ->delete();
     }
+
 }

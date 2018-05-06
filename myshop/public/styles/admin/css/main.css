@@ -774,8 +774,10 @@ span {
 }
 
 .regions-wrap .regions {
-    margin-top: 4px;
+    margin-top: 2px;
     margin-right: 5px;
+    width: 15px;
+    height: 15px;
 }
 
 .cursor {
