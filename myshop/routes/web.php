@@ -60,6 +60,10 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('transport/express/{id}/{tid}', 'TransportController@express');
     Route::resource('transport', 'TransportController');
 
+    Route::get('regions/nextregions/{id}/{tid}', 'RegionsController@nextRegions');
+    Route::post('regions/changes', 'RegionsController@changes');
+    Route::resource('regions', 'RegionsController');
+
     Route::post('navsetup/show/or/view', 'NavigationController@showOrView');
     Route::post('navsetup/change/order', 'NavigationController@changeOrder');
     Route::resource('navsetup', 'NavigationController');

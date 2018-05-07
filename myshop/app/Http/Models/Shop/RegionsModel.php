@@ -11,9 +11,9 @@ class RegionsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getRegions($type = 0, $parent = 0)
+    public function getRegions($type = 0, $parent = 0, $column = ['region_id', 'region_name', 'parent_id'])
     {
-        return $this->select('region_id', 'region_name', 'parent_id')
+        return $this->select($column)
             ->where([['region_type', $type], ['parent_id', $parent]])
             ->get();
     }
@@ -26,10 +26,21 @@ class RegionsModel extends Model
             ->get();
     }
 
-    public function getRegion($id)
+    public function getRegion($id, $column = ['region_id', 'region_name'])
     {
-        return $this->select('region_id', 'region_name')
+        return $this->select($column)
             ->where('region_id', $id)
             ->first();
+    }
+
+    public function setRegion($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addRegion($data)
+    {
+        return $this->create($data);
     }
 }

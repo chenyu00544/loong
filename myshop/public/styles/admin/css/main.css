@@ -204,6 +204,10 @@ span {
     min-width: 250px;
 }
 
+.xwd100 {
+    max-width: 100px;
+}
+
 .top-border {
     font-size: 0;
     line-height: 0;

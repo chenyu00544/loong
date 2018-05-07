@@ -15,7 +15,7 @@ use App\Http\Models\Shop\BrandModel;
 use App\Http\Models\Shop\GoodsCateModel;
 use App\Http\Models\Shop\GoodsExtendModel;
 use App\Http\Models\Shop\GoodsModel;
-use App\Http\Models\Shop\GoodsTransportModel;
+use App\Http\Models\Shop\TransportModel;
 use App\Http\Models\Shop\IntelligentWeightModel;
 use App\Http\Models\Shop\ShopConfigModel;
 
@@ -26,7 +26,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $goodsModel;
     private $goodsCateModel;
     private $brandModel;
-    private $goodsTransportModel;
+    private $transportModel;
     private $goodsExtendModel;
     private $intelligentWeightModel;
 
@@ -35,7 +35,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         GoodsModel $goodsModel,
         GoodsCateModel $goodsCateModel,
         BrandModel $brandModel,
-        GoodsTransportModel $goodsTransportModel,
+        TransportModel $transportModel,
         GoodsExtendModel $goodsExtendModel,
         IntelligentWeightModel $intelligentWeightModel
     )
@@ -44,7 +44,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->goodsModel = $goodsModel;
         $this->goodsCateModel = $goodsCateModel;
         $this->brandModel = $brandModel;
-        $this->goodsTransportModel = $goodsTransportModel;
+        $this->transportModel = $transportModel;
         $this->goodsExtendModel = $goodsExtendModel;
         $this->intelligentWeightModel = $intelligentWeightModel;
     }
@@ -155,7 +155,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             //运费
             $transportColumns = ['tid', 'ru_id', 'freight_type'];
             $transportFormat = [];
-            if ($transports = $this->goodsTransportModel->getTransportAll($transportColumns)->toArray()) {
+            if ($transports = $this->transportModel->getTransportAll([],$transportColumns)->toArray()) {
                 foreach ($transports as $tVal) {
                     $transportFormat[$tVal['tid']] = ['business_id' => $tVal['ru_id'], 'freight_type' => $tVal['freight_type']];
                 }

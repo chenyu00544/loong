@@ -23,8 +23,8 @@
                     <li class="@if($typeNav == 'transport') curr @endif fl">
                         <a href="{{url('admin/transport')}}">运费管理</a>
                     </li>
-                    <li class="@if($typeNav == 'area') curr @endif fl">
-                        <a href="{{url('admin/area')}}">地区列表</a>
+                    <li class="@if($typeNav == 'regions') curr @endif fl">
+                        <a href="{{url('admin/regions')}}">地区列表</a>
                     </li>
                 </ul>
             </div>

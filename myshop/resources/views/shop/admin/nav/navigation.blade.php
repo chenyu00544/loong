@@ -144,7 +144,6 @@
                             } else {
                                 layer.msg(data.msg, {icon: data.code});
                             }
-
                         });
                     // layer.msg('的确很重要', {icon: 1});
                 }, function () {

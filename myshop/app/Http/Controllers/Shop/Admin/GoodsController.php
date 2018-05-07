@@ -23,10 +23,10 @@ class GoodsController extends CommonController
      */
     public function index(Request $request)
     {
-        $goodsList = $this->goodsRepository->getGoodsPage($request->get('keywords'));
-        $goodsNav = $this->goodsRepository->getGoodsNav();
         $navType = 'normal';
         $keywords = '';
+        $goodsList = $this->goodsRepository->getGoodsPage($request->get('keywords'));
+        $goodsNav = $this->goodsRepository->getGoodsNav();
         return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav', 'navType', 'keywords'));
     }
 
