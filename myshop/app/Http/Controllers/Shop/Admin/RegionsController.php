@@ -34,7 +34,11 @@ class RegionsController extends CommonController
     {
         $typeNav = 'regions';
         $regions = $this->regionsRepository->getRegionsLevel($id, $type + 1);
-        $parent_id = $regions[0]->parent_id;
+        if(!$regions->isEmpty()){
+            $parent_id = $regions[0]->parent_id;
+        }else{
+            $parent_id = 0;
+        }
         $level = $type+1;
         return view('shop.admin.regions.regions', compact('typeNav', 'regions', 'parent_id', 'level'));
     }

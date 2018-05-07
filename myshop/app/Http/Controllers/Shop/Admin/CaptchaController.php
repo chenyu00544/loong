@@ -19,7 +19,7 @@ class CaptchaController extends CommonController
      */
     public function index()
     {
-        return view('shop.admin.code.code');
+        return view('shop.admin.code.captcha');
     }
 
     /**

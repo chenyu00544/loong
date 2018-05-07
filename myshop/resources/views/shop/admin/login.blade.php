@@ -38,7 +38,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-4 center clear">
-                    <button type="submit" class="btn btn-primary">　　{{$lang['login']}}　　</button>
+                    <input type="submit" class="btn btn-primary n-wd110" value="{{$lang['login']}}">
                 </div>
             </div>
             @component('shop.components.copyright',['copyright'=>''])@endcomponent

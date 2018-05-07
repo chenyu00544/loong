@@ -69,6 +69,14 @@ span {
     overflow: hidden;
 }
 
+p{
+    white-space: normal;
+}
+
+strong{
+    color: #707070;
+}
+
 .hide {
     display: none;
 }
@@ -522,6 +530,10 @@ span {
     min-width: 100px;
 }
 
+.n-wd110 {
+    min-width: 110px;
+}
+
 .suc-tip {
     margin: 100px auto 20px auto;
 }
@@ -615,7 +627,7 @@ span {
 }
 
 .mar-left-20 {
-    margin-top: 20px;
+    margin-left: 20px;
 }
 
 .pad-all-5 {
@@ -624,6 +636,14 @@ span {
 
 .pad-top-4 {
     padding-top: 4px;
+}
+
+.pad-top-13 {
+    padding-top: 13px;
+}
+
+.pad-top-30 {
+    padding-top: 30px;
 }
 
 .line-hg-20 {
@@ -658,6 +678,10 @@ span {
     display: inline-block;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.max-wd-750{
+    max-width: 750px;
 }
 
 .goods-info .name {
@@ -806,4 +830,11 @@ span {
     z-index: 9;
 }
 
+.capt-td{
+    word-break: keep-all;
+}
+
+.wd-750{
+    width: 750px;
+}
 
