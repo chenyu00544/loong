@@ -31,9 +31,9 @@
             </div>
             <div class="fromlist clearfix">
                 <div>
-                    @if(empty($level))<a href="javascript:history.go(-1)"
+                    @if(!empty($level))<a href="javascript:history.go(-1)"
                                          class="btn btn-success btn-add btn-sm">返回上一级</a>@endif
-                    <a href="{{url('admin/regions/create')}}" class="btn btn-success btn-add btn-sm">　添加　</a>
+                    <a href="{{url('admin/regions/addregion/'.$parent_id.'/'.$level)}}" class="btn btn-success btn-add btn-sm">　添加　</a>
                 </div>
                 <div class="main-info">
                     <table class="table table-hover table-condensed">

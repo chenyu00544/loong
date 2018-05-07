@@ -102,7 +102,7 @@
                 var id = $(this).data('id');
                 layer.open({
                     type: 2,
-                    area: ['500px', 'auto'],
+                    area: ['500px', '380px'],
                     fixed: true, //固定
                     maxmin: true,
                     title: '编辑',

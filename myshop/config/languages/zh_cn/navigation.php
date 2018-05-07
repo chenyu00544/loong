@@ -31,8 +31,11 @@ return array(
             'name' => 'SEO设置',
             'url' => 'admin/seo',
         ),
+        'codesetup' => array(
+            'name' => '验证码设置',
+            'url' => 'admin/captcha',
+        ),
 //        'friendsetup' => '友情链接',
-//        'codesetup' => '验证码设置',
     ),
     'home' => array(
         'info' => '首页',

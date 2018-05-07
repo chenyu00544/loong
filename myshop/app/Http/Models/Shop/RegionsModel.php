@@ -43,4 +43,10 @@ class RegionsModel extends Model
     {
         return $this->create($data);
     }
+
+    public function delRegion($where)
+    {
+        return $this->where($where)
+            ->delete();
+    }
 }

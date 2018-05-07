@@ -149,6 +149,15 @@ span {
     line-height: 48px;
 }
 
+.checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline{
+    margin-right: 10px;
+    margin-left: 0px;
+}
+.checkbox-inline, .radio-inline{
+    margin-right: 10px;
+    margin-left: 0px;
+}
+
 .admin-header {
     min-width: 1280px;
     height: 48px;

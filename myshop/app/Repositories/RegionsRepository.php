@@ -83,6 +83,17 @@ class RegionsRepository implements RegionsRepositoryInterface
         return $this->regionsModel->addRegion($updata);
     }
 
+    public function delRegion($id)
+    {
+        $req = ['code' => 5, 'msg' => '删除失败'];
+        $re = $this->regionsModel->delRegion(['region_id' => $id]);
+        if ($re) {
+            $req['code'] = 1;
+            $req['msg'] = '删除成功';
+        }
+        return $req;
+    }
+
     public function changes($data)
     {
         $req = ['code' => 5, 'msg' => '修改失败'];

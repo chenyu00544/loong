@@ -61,6 +61,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('transport', 'TransportController');
 
     Route::get('regions/nextregions/{id}/{tid}', 'RegionsController@nextRegions');
+    Route::get('regions/addregion/{id}/{tid}', 'RegionsController@addRegion');
     Route::post('regions/changes', 'RegionsController@changes');
     Route::resource('regions', 'RegionsController');
 
@@ -96,4 +97,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('typecate', 'GoodsTypeCateController');
 
     Route::resource('attribute', 'AttributeController');
+
+    Route::resource('captcha', 'CaptchaController');
 });

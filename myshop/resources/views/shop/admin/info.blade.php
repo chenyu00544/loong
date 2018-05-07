@@ -1,7 +1,6 @@
-@extends('shop.layouts.layinfo')
-
+@extends('shop.layouts.index')
 @section('content')
-<body class="iframe_body">
+<body class="iframe_body" style="overflow-y: scroll;background-color: #f7f7f7;">
 <div class="warpper">
     <div class="title">管理中心</div>
     <div class="content start_content">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\RegionsRepository;
 use Illuminate\Http\Request;
 
@@ -23,16 +24,26 @@ class RegionsController extends CommonController
     public function index()
     {
         $typeNav = 'regions';
-        $level = 1;
+        $level = 0;
         $regions = $this->regionsRepository->getRegionsLevel();
-        return view('shop.admin.regions.regions', compact('typeNav', 'regions', 'level'));
+        $parent_id = $regions[0]->parent_id;
+        return view('shop.admin.regions.regions', compact('typeNav', 'regions', 'level', 'parent_id'));
     }
 
     public function nextRegions($id, $type)
     {
         $typeNav = 'regions';
-        $regions = $this->regionsRepository->getRegionsLevel($id,$type + 1);
-        return view('shop.admin.regions.regions', compact('typeNav', 'regions'));
+        $regions = $this->regionsRepository->getRegionsLevel($id, $type + 1);
+        $parent_id = $regions[0]->parent_id;
+        $level = $type+1;
+        return view('shop.admin.regions.regions', compact('typeNav', 'regions', 'parent_id', 'level'));
+    }
+
+    public function addRegion($pid, $type)
+    {
+        $parent_id = $pid;
+        $region_type = $type;
+        return view('shop.admin.regions.regionsAdd', compact('parent_id', 'region_type'));
     }
 
     public function changes(Request $request)
@@ -47,7 +58,6 @@ class RegionsController extends CommonController
      */
     public function create()
     {
-
     }
 
     /**
@@ -58,7 +68,12 @@ class RegionsController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["region_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->regionsRepository->addRegion($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**
@@ -79,7 +94,9 @@ class RegionsController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $parent_id = $id;
+        $region_type = $id;
+        return view('shop.admin.regions.regionsAdd', compact('parent_id', 'region_type'));
     }
 
     /**
@@ -102,6 +119,6 @@ class RegionsController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->regionsRepository->delRegion($id);
     }
 }
