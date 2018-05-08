@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 05/05/2018 17:29:26
+ Date: 08/05/2018 17:04:27
 */
 
 SET NAMES utf8mb4;
@@ -6929,7 +6929,7 @@ CREATE TABLE `cyc_regions`  (
   INDEX `region_type`(`region_type`) USING BTREE,
   INDEX `agency_id`(`agency_id`) USING BTREE,
   INDEX `region_name`(`region_name`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 3412 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地区表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 3414 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '地区表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_regions
@@ -10342,6 +10342,35 @@ INSERT INTO `cyc_regions` VALUES (3405, 3401, '包河区', 3, 0);
 INSERT INTO `cyc_regions` VALUES (3406, 3401, '长丰县', 3, 0);
 INSERT INTO `cyc_regions` VALUES (3407, 3401, '肥东县', 3, 0);
 INSERT INTO `cyc_regions` VALUES (3408, 3401, '肥西县', 3, 0);
+INSERT INTO `cyc_regions` VALUES (3413, 0, '澳洲', 0, 0);
+
+-- ----------------------------
+-- Table structure for cyc_seo
+-- ----------------------------
+DROP TABLE IF EXISTS `cyc_seo`;
+CREATE TABLE `cyc_seo`  (
+  `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '标题',
+  `keywords` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '关键词',
+  `description` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '描述',
+  `type` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '类型',
+  UNIQUE INDEX `id`(`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'SEO信息存放表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cyc_seo
+-- ----------------------------
+INSERT INTO `cyc_seo` VALUES (1, '首页et', '首页wert', '首页erwt', 'home');
+INSERT INTO `cyc_seo` VALUES (2, '团购', '团购', '团购', 'group');
+INSERT INTO `cyc_seo` VALUES (3, '团购详情', '团购详情', '团购详情', 'group_content');
+INSERT INTO `cyc_seo` VALUES (5, '积分商城', '积分商城', '积分商城', 'change');
+INSERT INTO `cyc_seo` VALUES (6, '积分中心商品内容', '积分中心商品内容', '积分中心商品内容', 'change_content');
+INSERT INTO `cyc_seo` VALUES (7, '文章分类列表', '文章分类列表', '文章分类列表', 'article');
+INSERT INTO `cyc_seo` VALUES (8, '文章内容', '文章内容', '文章内容', 'article_content');
+INSERT INTO `cyc_seo` VALUES (9, '店铺街', '店铺街', '店铺街', 'shop');
+INSERT INTO `cyc_seo` VALUES (10, ' 商品', ' 商品', ' 商品', 'goods');
+INSERT INTO `cyc_seo` VALUES (12, '品牌', '品牌', '品牌', 'brand_list');
+INSERT INTO `cyc_seo` VALUES (13, '品牌商品列表', '品牌商品列表', '品牌商品列表', 'brand');
 
 -- ----------------------------
 -- Table structure for cyc_shipping
@@ -10367,12 +10396,21 @@ CREATE TABLE `cyc_shipping`  (
   `send_site` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '网点标识',
   PRIMARY KEY (`shipping_id`) USING BTREE,
   INDEX `shipping_code`(`shipping_code`, `enabled`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '快递配置表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '快递配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_shipping
 -- ----------------------------
+INSERT INTO `cyc_shipping` VALUES (23, 'STO', 'sto_express', '申通快递', '<a href=\"http://www.sto.cn\" target=\"_blank\">http://www.sto.cn</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
 INSERT INTO `cyc_shipping` VALUES (21, 'SF', 'sf_express', '顺丰快递', '<a href=\"http://www.sf-express.com\" target=\"_blank\">http://www.sf-express.com</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '17365860753', 'long19860212', '0', '0');
+INSERT INTO `cyc_shipping` VALUES (24, 'JD', 'jd_express', '京东快递', '<a href=\"http://www.jd-express.com\" target=\"_blank\">http://www.jd-express.com</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
+INSERT INTO `cyc_shipping` VALUES (25, 'HTKY', 'htky_express', '百世汇通快递', '<a href=\"http://www.htky365.com\" target=\"_blank\">http://www.htky365.com</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
+INSERT INTO `cyc_shipping` VALUES (26, 'QFKD', 'qfkd_express', '全峰快递', '<a href=\"http://www.qfkd.com.cn\" target=\"_blank\">http://www.qfkd.com.cn</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
+INSERT INTO `cyc_shipping` VALUES (27, 'EMS', 'ems_express', 'EMS国内邮政', '<a href=\"http://www.ems.com.cn\" target=\"_blank\">http://www.ems.com.cn</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
+INSERT INTO `cyc_shipping` VALUES (28, 'HHTT', 'hhtt_express', '天天快递', '<a href=\"http://www.ttkdex.com\" target=\"_blank\">http://www.ttkdex.com</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
+INSERT INTO `cyc_shipping` VALUES (29, 'YD', 'yd_express', '韵达速递', '<a href=\"http://www.yundaex.com\" target=\"_blank\">http://www.yundaex.com</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
+INSERT INTO `cyc_shipping` VALUES (30, 'ZTO', 'zto_express', '中通速递', '<a href=\"http://www.zto.cn\" target=\"_blank\">http://www.zto.cn</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
+INSERT INTO `cyc_shipping` VALUES (31, 'YTO', 'yto_express', '圆通速递', '<a href=\"http://www.yto.net.cn\" target=\"_blank\">http://www.yto.net.cn</a>', '0', 0, 0, '', NULL, NULL, 0, 0, '', '', '', '');
 
 -- ----------------------------
 -- Table structure for cyc_shop_config
@@ -10410,8 +10448,8 @@ INSERT INTO `cyc_shop_config` VALUES (102, 1, 'shop_title', 'text', '', '', 'SC�
 INSERT INTO `cyc_shop_config` VALUES (103, 1, 'shop_desc', 'text', '', '', 'SC海购', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (104, 1, 'shop_keywords', 'text', '', '', 'SC海购', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (105, 1, 'shop_country', 'manual', '', '', '1', 1, '');
-INSERT INTO `cyc_shop_config` VALUES (106, 1, 'shop_province', 'manual', '', '', '12', 1, '');
-INSERT INTO `cyc_shop_config` VALUES (107, 1, 'shop_city', 'manual', '', '', '168', 1, '');
+INSERT INTO `cyc_shop_config` VALUES (106, 1, 'shop_province', 'manual', '', '', '31', 1, '');
+INSERT INTO `cyc_shop_config` VALUES (107, 1, 'shop_city', 'manual', '', '', '383', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (108, 1, 'shop_address', 'text', '', '', '西湖区天目山路888号', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (109, 1, 'qq', 'textarea', '', '', '客服一|349488953\r\n客服二|1234567', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (110, 1, 'ww', 'textarea', '', '', '小黄人|654321', 1, '');
@@ -10549,9 +10587,9 @@ INSERT INTO `cyc_shop_config` VALUES (612, 6, 'sms_total_money', 'hidden', '', '
 INSERT INTO `cyc_shop_config` VALUES (613, 6, 'sms_balance', 'hidden', '', '', '', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (614, 6, 'sms_last_request', 'hidden', '', '', '', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (616, 6, 'affiliate', 'hidden', '', '', 'a:3:{s:6:\"config\";a:7:{s:6:\"expire\";d:24;s:11:\"expire_unit\";s:4:\"hour\";s:11:\"separate_by\";i:0;s:15:\"level_point_all\";s:2:\"5%\";s:15:\"level_money_all\";s:2:\"1%\";s:18:\"level_register_all\";i:2;s:17:\"level_register_up\";i:60;}s:4:\"item\";a:4:{i:0;a:2:{s:11:\"level_point\";s:3:\"60%\";s:11:\"level_money\";s:3:\"60%\";}i:1;a:2:{s:11:\"level_point\";s:3:\"30%\";s:11:\"level_money\";s:3:\"30%\";}i:2;a:2:{s:11:\"level_point\";s:2:\"7%\";s:11:\"level_money\";s:2:\"7%\";}i:3;a:2:{s:11:\"level_point\";s:2:\"3%\";s:11:\"level_money\";s:2:\"3%\";}}s:2:\"on\";i:1;}', 1, '');
-INSERT INTO `cyc_shop_config` VALUES (617, 6, 'captcha', 'hidden', '', '', '0', 1, '');
-INSERT INTO `cyc_shop_config` VALUES (618, 6, 'captcha_width', 'hidden', '', '', '112', 1, '');
-INSERT INTO `cyc_shop_config` VALUES (619, 6, 'captcha_height', 'hidden', '', '', '37', 1, '');
+INSERT INTO `cyc_shop_config` VALUES (617, 6, 'captcha', 'hidden', '', '', '1,2,0,0,0,32', 1, '');
+INSERT INTO `cyc_shop_config` VALUES (618, 6, 'captcha_width', 'hidden', '', '', '120', 1, '');
+INSERT INTO `cyc_shop_config` VALUES (619, 6, 'captcha_height', 'hidden', '', '', '40', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (620, 6, 'sitemap', 'hidden', '', '', 'a:6:{s:19:\"homepage_changefreq\";s:6:\"hourly\";s:17:\"homepage_priority\";s:3:\"0.9\";s:19:\"category_changefreq\";s:6:\"hourly\";s:17:\"category_priority\";s:3:\"0.8\";s:18:\"content_changefreq\";s:6:\"weekly\";s:16:\"content_priority\";s:3:\"0.7\";}', 0, '');
 INSERT INTO `cyc_shop_config` VALUES (621, 6, 'points_rule', 'hidden', '', '', '', 0, '');
 INSERT INTO `cyc_shop_config` VALUES (622, 6, 'flash_theme', 'hidden', '', '', 'dynfocus', 1, '');
@@ -10597,7 +10635,7 @@ INSERT INTO `cyc_shop_config` VALUES (931, 3, 'user_helpart', 'text', '', '', '1
 INSERT INTO `cyc_shop_config` VALUES (932, 3, 'delete_seller', 'select', '0,1', '', '1', 1, 'seller');
 INSERT INTO `cyc_shop_config` VALUES (933, 1, 'seller_email', 'hidden', '0,1', '', '0', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (934, 995, 'show_warehouse', 'select', '0,1', '', '0', 1, 'goods');
-INSERT INTO `cyc_shop_config` VALUES (935, 6, 'captcha_font_size', 'hidden', '', '', '16', 1, '');
+INSERT INTO `cyc_shop_config` VALUES (935, 6, 'captcha_font_size', 'hidden', '', '', '18', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (936, 6, 'captcha_length', 'hidden', '', '', '4', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (937, 9, 'wap_index_pro', 'select', '1,0', '', '1', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (938, 998, 'two_code', 'select', '1,0', '', '1', 1, 'goods');
@@ -10714,12 +10752,12 @@ CREATE TABLE `cyc_transport`  (
   `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`tid`) USING BTREE,
   INDEX `ru_id`(`ru_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '快递' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '快递' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_transport
 -- ----------------------------
-INSERT INTO `cyc_transport` VALUES (1, 0, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_transport` VALUES (17, 0, 0, 0, '全国', '顺丰快递', 0.00, 1525653509);
 
 -- ----------------------------
 -- Table structure for cyc_transport_express
@@ -10735,7 +10773,7 @@ CREATE TABLE `cyc_transport_express`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `tid`(`tid`) USING BTREE,
   INDEX `ru_id`(`ru_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_transport_express
@@ -10745,7 +10783,7 @@ INSERT INTO `cyc_transport_express` VALUES (7, 2, 62, 61, '16', 5.00);
 INSERT INTO `cyc_transport_express` VALUES (8, 7, 973, 84, '2', 0.00);
 INSERT INTO `cyc_transport_express` VALUES (9, 8, 0, 58, '32', 0.00);
 INSERT INTO `cyc_transport_express` VALUES (10, 9, 62, 61, '32', 0.00);
-INSERT INTO `cyc_transport_express` VALUES (11, 0, 0, 60, '', 0.00);
+INSERT INTO `cyc_transport_express` VALUES (11, 17, 0, 60, '21', 0.00);
 
 -- ----------------------------
 -- Table structure for cyc_transport_extend
@@ -10762,7 +10800,7 @@ CREATE TABLE `cyc_transport_extend`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `tid`(`tid`) USING BTREE,
   INDEX `ru_id`(`ru_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_transport_extend
@@ -10773,7 +10811,7 @@ INSERT INTO `cyc_transport_extend` VALUES (6, 2, 62, 61, '52,36,37,38,39,40,41,4
 INSERT INTO `cyc_transport_extend` VALUES (7, 7, 973, 84, '52,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,3401,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397', '2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35', 0.00);
 INSERT INTO `cyc_transport_extend` VALUES (8, 8, 0, 58, '52,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,3401,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397', '2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35', 0.00);
 INSERT INTO `cyc_transport_extend` VALUES (9, 9, 62, 61, '52,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,3401,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397', '2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35', 0.00);
-INSERT INTO `cyc_transport_extend` VALUES (19, 0, 0, 60, '', '2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35', 0.00);
+INSERT INTO `cyc_transport_extend` VALUES (20, 17, 0, 60, '52,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,3401,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397', '2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35', 0.00);
 
 -- ----------------------------
 -- Table structure for cyc_transport_tpl
