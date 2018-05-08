@@ -99,4 +99,9 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('attribute', 'AttributeController');
 
     Route::resource('captcha', 'CaptchaController');
+
+    Route::get('seo/brand', 'SeoController@brand');
+    Route::get('seo/goods', 'SeoController@goods');
+    Route::get('seo/goodscate', 'SeoController@goodsCate');
+    Route::resource('seo', 'SeoController');
 });

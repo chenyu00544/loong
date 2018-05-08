@@ -1,7 +1,7 @@
 <div class="admin-header clearfix">
     <div class="admin-logo fl">
         <a href="javascript:void(0);" data-param="home" target="workspace">
-            <img src="{{asset('styles/images/logo.png')}}"/>
+            <img src="{{asset('styles/images/admin_logo.png')}}"/>
         </a>
         <div class="foldsider"><i class="icon icon-indent-left"></i></div>
     </div>

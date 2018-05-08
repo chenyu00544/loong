@@ -38,4 +38,13 @@ class ShopConfigModel extends Model
             ->get();
     }
 
+    public function getHiddenConfig()
+    {
+        return $this->where('type', '=', 'hidden')
+            ->orderBy('parent_id', 'asc')
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
+    }
+
 }

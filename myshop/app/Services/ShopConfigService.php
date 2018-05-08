@@ -73,9 +73,9 @@ class ShopConfigService
 
         $m = (new ShopConfigModel);
         /* 保存变量值 */
-        if($groups != 'shop'){
+        if ($groups != 'shop') {
             $item_list = $m->getGroupsConfig($groups);
-        }else{
+        } else {
             $item_list = $m->getConf();
         }
 
@@ -136,5 +136,53 @@ class ShopConfigService
             }
         }
         return true;
+    }
+
+    public static function getConfHidden($line)
+    {
+
+        $req = [];
+        $configList = (new ShopConfigModel)->getHiddenConfig();
+        if ($configList->count() > 0) {
+            foreach ($configList as $val) {
+                if (in_array($val->code, $line)) {
+                    if ($val->code == 'captcha') {
+                        $arr = explode(',', $val->value);
+                        if (count($arr) < 6) {
+                            $j = 6 - count($arr);
+                            for ($i = 0; $i < $j; $i++) {
+                                $arr[] = '0';
+                            }
+                        }
+                        $val->value = $arr;
+                    }
+                    $req[$val->code] = $val;
+                }
+            }
+        }
+        return $req;
+    }
+
+    public static function setConfHidden($data)
+    {
+        $other = ['captcha_register' => 0, 'captcha_login' => 0, 'captcha_comment' => 0, 'captcha_admin' => 0, 'captcha_message' => 0, 'captcha_login_fail' => 0];
+        $dataOther['value'] = '';
+        $whereOther['code'] = 'captcha';
+        $updata = [];
+        $shopConfig = (new ShopConfigModel);
+        foreach ($data as $key => $val) {
+            if (in_array($key, array_keys($other))) {
+                $other[$key] = $val;
+            } else {
+                $where['code'] = $key;
+                $updata['value'] = $val;
+                $shopConfig->setConf($where, $updata);
+            }
+        }
+        foreach ($other as $val) {
+            $dataOther['value'] .= $val . ',';
+        }
+        $dataOther['value'] = substr($dataOther['value'], 0, -1);
+        $shopConfig->setConf($whereOther, $dataOther);
     }
 }

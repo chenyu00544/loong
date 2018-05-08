@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Facades\ShopConfig;
-use App\Facades\Verifiable;
+use App\Repositories\SeoRepository;
 use Illuminate\Http\Request;
 
-class CaptchaController extends CommonController
+class SeoController extends CommonController
 {
+    private $seoRepository;
 
-    public function __construct()
+    public function __construct(SeoRepository $seoRepository)
     {
         parent::__construct();
+        $this->seoRepository = $seoRepository;
     }
 
     /**
@@ -21,8 +22,30 @@ class CaptchaController extends CommonController
      */
     public function index()
     {
-        $captcha = ShopConfig::getConfHidden(['captcha','captcha_width','captcha_height','captcha_font_size','captcha_length']);
-        return view('shop.admin.code.captcha', compact('captcha'));
+        $seoNav = 'home';
+        $seo = $this->seoRepository->getSeo(['type' => $seoNav]);
+        return view('shop.admin.seo.seo', compact('seoNav', 'seo'));
+    }
+
+    public function brand()
+    {
+        $seoNav = 'brand';
+        $seo = $this->seoRepository->getSeo(['type' => $seoNav]);
+        return view('shop.admin.seo.seo', compact('seoNav', 'seo'));
+    }
+
+    public function goods()
+    {
+        $seoNav = 'goods';
+        $seo = $this->seoRepository->getSeo(['type' => $seoNav]);
+        return view('shop.admin.seo.seo', compact('seoNav', 'seo'));
+    }
+
+    public function goodsCate()
+    {
+        $seoNav = 'goodsCate';
+        $seo = $this->seoRepository->getSeo(['type' => $seoNav]);
+        return view('shop.admin.seo.seo', compact('seoNav', 'seo'));
     }
 
     /**
@@ -43,20 +66,7 @@ class CaptchaController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator(
-            $request->all(),
-            [
-                "captcha_width" => 'required',
-                "captcha_height" => 'required',
-                "captcha_font_size" => 'required',
-                "captcha_length" => 'required'
-            ]
-        );
-        if (!$ver->passes()) {
-            return view('shop.admin.failed');
-        }
-        $re = ShopConfig::setConfHidden($request->except('_token'));
-        return view('shop.admin.success');
+        //
     }
 
     /**
