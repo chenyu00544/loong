@@ -102,6 +102,9 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::get('seo/brand', 'SeoController@brand');
     Route::get('seo/goods', 'SeoController@goods');
-    Route::get('seo/goodscate', 'SeoController@goodsCate');
     Route::resource('seo', 'SeoController');
+
+    Route::post('pay/install', 'PayConfigController@install');
+    Route::post('pay/changes', 'PayConfigController@changes');
+    Route::resource('pay', 'PayConfigController');
 });

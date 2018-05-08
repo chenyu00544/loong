@@ -25,4 +25,10 @@ class SeoRepository implements SeoRepositoryInterface
     {
         return $this->seoModel->getSeo($where);
     }
+
+    public function setSeo($data, $id)
+    {
+        $where['id'] = $id;
+        return $this->seoModel->setSeo($where, $data);
+    }
 }

@@ -29,15 +29,13 @@
                     <li class="@if($seoNav == 'goods') curr @endif fl">
                         <a href="{{url('admin/seo/goods')}}">商品</a>
                     </li>
-                    <li class="@if($seoNav == 'goodsCate') curr @endif fl">
-                        <a href="{{url('admin/seo/goodscate')}}">商品分类</a>
-                    </li>
                 </ul>
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form action="{{url('admin/seo')}}" class="form-horizontal" method="post" enctype="multipart/form-data">
+                    <form action="{{url('admin/seo/'.$seo->id)}}" class="form-horizontal" method="post" enctype="multipart/form-data">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
                         <div class="form-group">
                             <label class="col-sm-4 control-label">title：</label>
                             <div class="col-sm-4 n-wd400">
@@ -62,11 +60,10 @@
                         <div class="item">
                             <div class="label">&nbsp;</div>
                             <div class="">
-                                <input type="hidden" name="type" value="{{$seoNav}}">
+                                <input type="hidden" name="type" value="{{$seo->type}}">
                                 <input type="submit" value="　确定　" class="btn btn-danger clearfix">
                             </div>
                         </div>
-
                     </form>
                 </div>
             </div>

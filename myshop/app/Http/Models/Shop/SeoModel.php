@@ -17,4 +17,10 @@ class SeoModel extends Model
             ->where($where)
             ->first();
     }
+
+    public function setSeo($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
 }

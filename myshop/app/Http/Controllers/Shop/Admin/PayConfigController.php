@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\SeoRepository;
+use App\Repositories\PaymentRepository;
 use Illuminate\Http\Request;
 
-class SeoController extends CommonController
+class PayConfigController extends CommonController
 {
-    private $seoRepository;
 
-    public function __construct(SeoRepository $seoRepository)
+    private $paymentRepository;
+
+    public function __construct(PaymentRepository $paymentRepository)
     {
         parent::__construct();
-        $this->seoRepository = $seoRepository;
+        $this->paymentRepository = $paymentRepository;
     }
 
     /**
@@ -23,23 +24,18 @@ class SeoController extends CommonController
      */
     public function index()
     {
-        $seoNav = 'home';
-        $seo = $this->seoRepository->getSeo(['type' => $seoNav]);
-        return view('shop.admin.seo.seo', compact('seoNav', 'seo'));
+        $payConfig = $this->paymentRepository->getPaymentAll();
+        return view('shop.admin.payment.pay', compact('payConfig'));
     }
 
-    public function brand()
+    public function install(Request $request)
     {
-        $seoNav = 'brand';
-        $seo = $this->seoRepository->getSeo(['type' => $seoNav]);
-        return view('shop.admin.seo.seo', compact('seoNav', 'seo'));
+        return $this->paymentRepository->addPayment($request->except('_token'));
     }
 
-    public function goods()
+    public function changes(Request $request)
     {
-        $seoNav = 'goods';
-        $seo = $this->seoRepository->getSeo(['type' => $seoNav]);
-        return view('shop.admin.seo.seo', compact('seoNav', 'seo'));
+        return $this->paymentRepository->setPayment($request->except('_token'));
     }
 
     /**
@@ -49,7 +45,6 @@ class SeoController extends CommonController
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -60,7 +55,11 @@ class SeoController extends CommonController
      */
     public function store(Request $request)
     {
-
+        $ver = Verifiable::Validator($request->all(), ["pay_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        return view('shop.admin.success');
     }
 
     /**
@@ -71,7 +70,6 @@ class SeoController extends CommonController
      */
     public function show($id)
     {
-        //
     }
 
     /**
@@ -82,7 +80,7 @@ class SeoController extends CommonController
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -94,12 +92,7 @@ class SeoController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["title" => 'required']);
-        if (!$ver->passes()) {
-            return view('shop.admin.failed');
-        }
-        $re = $this->seoRepository->setSeo($request->except('_token', '_method'), $id);
-        return view('shop.admin.success');
+        //
     }
 
     /**
@@ -110,6 +103,6 @@ class SeoController extends CommonController
      */
     public function destroy($id)
     {
-        //
+
     }
 }

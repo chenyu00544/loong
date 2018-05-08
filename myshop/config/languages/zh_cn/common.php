@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: chenyu
+ * Date: 2018/5/8
+ * Time: 21:09
+ */
+
 return array(
     'login' => '登录',
     'username' => '账号',
@@ -14,5 +21,5 @@ return array(
     'please_select' => '请选择',
     'add' => '添加',
     'drop' => '删除',
-    'lang_list' => array('en_us','zh_cn','zh_tw',),
+    'lang_list' => array('en_us', 'zh_cn', 'zh_tw',),
 );

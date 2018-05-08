@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: chenyu
+ * Date: 2018/5/8
+ * Time: 21:09
+ */
+
 return array(
     'item_fee' => '单件商品费用',
     'base_fee' => '首重1KG以内费用',

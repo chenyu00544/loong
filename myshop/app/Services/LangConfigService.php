@@ -43,8 +43,13 @@ class LangConfigService
         return Config::get('languages.'.Config::get('config')['lang_type'].'.icons');
     }
 
-    public function LangExpressConf()
+    public static function LangExpressConf()
     {
         return Config::get('languages.'.Config::get('config')['lang_type'].'.express');
+    }
+
+    public static function LangPayConf()
+    {
+        return Config::get('languages.'.Config::get('config')['lang_type'].'.payment.pay_config');
     }
 }

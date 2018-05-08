@@ -136,13 +136,11 @@
                         "{{url('admin/navsetup/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
+                            layer.msg(data.msg, {icon: data.code});
                             if (data.code == 1) {
-                                layer.msg(data.msg, {icon: data.code});
                                 setTimeout(function () {
                                     location.href = location.href;
-                                }, 2000);
-                            } else {
-                                layer.msg(data.msg, {icon: data.code});
+                                }, 1000);
                             }
                         });
                     // layer.msg('的确很重要', {icon: 1});
