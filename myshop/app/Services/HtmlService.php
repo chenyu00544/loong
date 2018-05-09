@@ -14,6 +14,8 @@ class HtmlService
 {
     public static function shopConfHtml($conf = [], $lang = [])
     {
+        $countryId = '';
+        $provinceId = '';
         foreach ($conf as $key => $item) {
             foreach ($item->vars as $k => $var) {
                 switch ($var['type']) {
@@ -98,6 +100,36 @@ class HtmlService
                 }
             }
         }
+        return $conf;
+    }
+
+    public function PayConfHtml($conf = [], $payInfo = [])
+    {
+        foreach ($conf as $key => $item) {
+            switch ($item['type']){
+                case 'text':
+                    $item['html'] = '<input type="text" name="' . $item['code'] . '" class="form-control ' . $item['code'] . '" value="' . $payInfo[$item['code']] . '" placeholder="' . $item['name'] . '"/>';
+                    break;
+                case 'textarea':
+                    $item['html'] = '<textarea name="' . $item['code'] . '" class="form-control ' . $item['code'] . '" row="5" placeholder= "' . $item['name'] . '" style="min-height:100px;">' . $payInfo[$item['code']] . '</textarea>';
+                    break;
+                case 'select':
+                    $item['html'] = '<select name="' . $item['code'] . '" class="form-control ' . $item['code'] . '">';
+                    foreach ($item['sel_val'] as $k => $val){
+                        $item['html'] .= '<option value="'.$val;
+                        if($payInfo[$item['code']] == $val){
+                            $item['html'] .= ' selected ';
+                        }
+                        $item['html'] .= '">'.$k.'</option>';
+                    }
+                    $item['html'] .= '</select>';
+                    break;
+                default:
+                    break;
+            }
+            $conf[$key] = $item;
+        }
+
         return $conf;
     }
 }

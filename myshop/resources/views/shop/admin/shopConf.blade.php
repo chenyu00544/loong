@@ -7,8 +7,8 @@
             <div class="tabs">
                 <ul class="fl">
                     @foreach($conf as $item)
-                        <li class="@if($loop->index == 0) curr @endif fl"><a
-                                    href="javascript:void(0);">{{$item->name}}</a>
+                        <li class="@if($loop->index == 0) curr @endif fl">
+                            <a href="javascript:void(0);">{{$item->name}}</a>
                         </li>
                     @endforeach
                 </ul>

@@ -80,7 +80,8 @@ class PayConfigController extends CommonController
      */
     public function edit($id)
     {
-
+        $payInfo = $this->paymentRepository->getPayment($id);
+        return view('shop.admin.payment.payAdd', compact('payInfo'));
     }
 
     /**

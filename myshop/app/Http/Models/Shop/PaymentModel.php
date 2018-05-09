@@ -17,4 +17,22 @@ class PaymentModel extends Model
             ->orderBy('pay_order', 'asc')
             ->get();
     }
+
+    public function getPayment($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setPayment($where, $updata)
+    {
+        return $this->where($where)
+            ->update($updata);
+    }
+
+    public function addPayment($data)
+    {
+        return $this->create($data);
+    }
 }

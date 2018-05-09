@@ -34,7 +34,7 @@
                                 <td>{!! $pay['pay_desc'] !!}</td>
                                 <td>{{$pay['pay_fee']}}</td>
                                 <td><input type="text" class="form-control changes" data-id="{{$pay['pay_id']}}"
-                                           value="{{$pay['pay_order']}}"></td>
+                                           value="{{$pay['pay_order']}}" @if(empty($pay['install'])) disabled @endif></td>
                                 <td class="text-center">
                                     @if(empty($pay['install']))
                                         <a type="button" data-code="{{$pay['pay_code']}}"
@@ -73,9 +73,10 @@
                 })
             });
 
+            //安装
             $('.btn-install').on('click', function () {
                 var code = $(this).data('code');
-                $.post("{{url('admin/pay/install')}}", {code: code, _token: '{{csrf_token()}}'}, function () {
+                $.post("{{url('admin/pay/install')}}", {code: code, _token: '{{csrf_token()}}'}, function (data) {
                     layer.msg(data.msg, {icon: data.code});
                     if (data.code == 1) {
                         setTimeout(function () {
