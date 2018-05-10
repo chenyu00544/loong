@@ -20,6 +20,7 @@
                           class="form-horizontal">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
+
                         <div class="form-group">
                             <label class="col-sm-4 control-label">分类名称：</label>
                             <div class="col-sm-4">

@@ -45,23 +45,26 @@ class FriendController extends CommonController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["link_name" => 'required',"link_url" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["link_name" => 'required', "link_url" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
         $re = $this->friendRepository->addFriend($request->except('_token'));
+        if (!$re) {
+            return view('shop.admin.failed');
+        }
         return view('shop.admin.success');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -72,34 +75,40 @@ class FriendController extends CommonController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
+        $link = $this->friendRepository->getFriend($id);
+        return view('shop.admin.friend.linkEdit', compact('link'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["link_name" => 'required', "link_url" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->friendRepository->setFriend($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        return $this->friendRepository->delFriend($id, $request->except('_method', '_token'));
     }
 }

@@ -41,21 +41,25 @@
                                 </td>
                                 <td>
                                     <span class="img-show fl">
-                                        <a href="{{$friend->link_logo}}" target="_blank" class="nyroModal">
-                                            <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{$friend->link_logo}}" ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                        <a href="{{url($friend->link_logo)}}" target="_blank" class="nyroModal">
+                                            <i class="glyphicon glyphicon-picture top5 img_{{$friend->link_id}}"
+                                               data-tooltipimg="{{$friend->link_logo}}" ectype="tooltip"
+                                               data-toggle="tooltip" title="tooltip"></i>
                                         </a>
                                     </span>
                                 </td>
                                 </td>
                                 <td>
-                                    <input class="form-control input-sm changes" type="text" data-id="{{$friend->link_id}}"
+                                    <input class="form-control input-sm changes" type="text"
+                                           data-id="{{$friend->link_id}}"
                                            name="show_order"
                                            value="{{$friend->show_order}}">
                                 </td>
                                 <td class="text-center">
                                     <a type="button" href="{{url('admin/friend/'.$friend->link_id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$friend->link_id}}">删除</a>
+                                    <a type="button" class="btn btn-danger btn-del btn-sm"
+                                       data-id="{{$friend->link_id}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -100,12 +104,13 @@
 
             $('.btn-del').click(function () {
                 var Id = $(this).data('id');
+                var img = $('.img_' + Id).data('tooltipimg');
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
                         "{{url('admin/friend/')}}/" + Id,
-                        {'_method': 'delete', '_token': '{{csrf_token()}}'},
+                        {'_method': 'delete', '_token': '{{csrf_token()}}', 'img': img},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
                             if (data.code == 1) {

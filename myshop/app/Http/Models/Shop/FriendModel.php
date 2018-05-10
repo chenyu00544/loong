@@ -15,7 +15,7 @@ class FriendModel extends Model
     {
         return $this->select($column)
             ->where($where)
-            ->orderBy('show_order', 'desc')
+            ->orderBy('show_order', 'asc')
             ->paginate($size);;
     }
 
@@ -23,5 +23,23 @@ class FriendModel extends Model
     {
         return $this->where($where)
             ->update($data);
+    }
+
+    public function getFriend($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function addFriend($data)
+    {
+        return $this->create($data);
+    }
+
+    public function delFriend($where)
+    {
+        return $this->where($where)
+            ->delete();
     }
 }
