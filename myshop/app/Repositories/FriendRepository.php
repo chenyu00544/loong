@@ -58,14 +58,11 @@ class FriendRepository implements FriendRepositoryInterface
                         dd($ext);
                     } else {
                         $dir = base_path() . '/public/upload/friend_logo/';
-                        $file_name = $code . "." . $ext;
-                        if (file_exists($file_name)) {
-                            @unlink($file_name);
-                        }
+                        $file_name = md5(time().rand(10000,99999)) . "." . $ext;
 
                         /* 判断是否上传成功 */
                         if ($path = $value->move($dir, $file_name)) {
-                            $update['value'] = 'styles/images/upload/' . $file_name;
+                            $saveData['link_logo'] = 'styles/images/upload/' . $file_name;
                         }
                     }
                 }
