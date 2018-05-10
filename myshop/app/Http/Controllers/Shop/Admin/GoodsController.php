@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\ComCateRepository;
 use App\Repositories\GoodsRepository;
 use Illuminate\Http\Request;
 
 class GoodsController extends CommonController
 {
 
-    protected $goodsRepository;
+    private $goodsRepository;
+    private $comCateRepository;
 
-    public function __construct(GoodsRepository $goodsRepository)
+    public function __construct(
+        GoodsRepository $goodsRepository,
+        ComCateRepository $comCateRepository
+    )
     {
         parent::__construct();
         $this->goodsRepository = $goodsRepository;
+        $this->comCateRepository = $comCateRepository;
     }
 
     /**
@@ -54,6 +60,7 @@ class GoodsController extends CommonController
         return view('shop.admin.goods.weightOrder', compact('goodsWeight', 'goods'));
     }
 
+    //删除回收站里的商品
     public function thoroughDel($id)
     {
 
@@ -76,7 +83,8 @@ class GoodsController extends CommonController
      */
     public function create()
     {
-        //
+        $comCate =$this->comCateRepository->getComCates();
+        return view('shop.admin.goods.goodsAdd', compact('comCate'));
     }
 
     /**
