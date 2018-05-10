@@ -107,4 +107,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('pay/install', 'PayConfigController@install');
     Route::post('pay/changes', 'PayConfigController@changes');
     Route::resource('pay', 'PayConfigController');
+
+    Route::post('friend/changes', 'FriendController@changes');
+    Route::resource('friend', 'FriendController');
 });

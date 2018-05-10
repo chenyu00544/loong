@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\PaymentRepository;
+use App\Repositories\FriendRepository;
 use Illuminate\Http\Request;
 
-class PayConfigController extends CommonController
+class FriendController extends CommonController
 {
+    private $friendRepository;
 
-    private $paymentRepository;
-
-    public function __construct(PaymentRepository $paymentRepository)
+    public function __construct(FriendRepository $friendRepository)
     {
         parent::__construct();
-        $this->paymentRepository = $paymentRepository;
+        $this->friendRepository = $friendRepository;
     }
 
     /**
@@ -24,18 +23,13 @@ class PayConfigController extends CommonController
      */
     public function index()
     {
-        $payConfig = $this->paymentRepository->getPaymentAll();
-        return view('shop.admin.payment.pay', compact('payConfig'));
-    }
-
-    public function install(Request $request)
-    {
-        return $this->paymentRepository->addPayment($request->except('_token'));
+        $friends = $this->friendRepository->getFriends();
+        return view('shop.admin.friend.link', compact('friends'));
     }
 
     public function changes(Request $request)
     {
-        return $this->paymentRepository->changes($request->except('_token'));
+        return $this->friendRepository->setFriend($request->except('_token'));
     }
 
     /**
@@ -45,66 +39,67 @@ class PayConfigController extends CommonController
      */
     public function create()
     {
+        return view('shop.admin.friend.linkAdd');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-
+        $ver = Verifiable::Validator($request->all(), ["link_name" => 'required',"link_url" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->friendRepository->addFriend($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $payInfo = $this->paymentRepository->getPayment($id);
-        return view('shop.admin.payment.payAdd', compact('payInfo'));
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["pay_name" => 'required']);
-        if (!$ver->passes()) {
-            return view('shop.admin.failed');
-        }
-        $this->paymentRepository->setPayment($request->except('_token', '_method'), $id);
-        return view('shop.admin.success');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-
+        //
     }
 }

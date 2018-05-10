@@ -41,9 +41,9 @@ class PaymentRepository implements PaymentRepositoryInterface
             } else {
                 $val['install'] = true;
                 foreach ($payArr[$k] as $n => $m) {
-                    if($n == 'pay_config'){
+                    if ($n == 'pay_config') {
                         $val[$n] = unserialize($m);
-                    }else{
+                    } else {
                         $val[$n] = $m;
                     }
                 }
@@ -63,7 +63,48 @@ class PaymentRepository implements PaymentRepositoryInterface
         return $pay;
     }
 
-    public function setPayment($data)
+    public function setPayment($data, $id)
+    {
+        $where['pay_id'] = $id;
+        $column = ['pay_code', 'pay_name', 'pay_fee', 'pay_desc', 'enabled', 'is_cod', 'is_online'];
+        $update = [];
+        $payConf = [];
+        foreach ($data as $key => $value) {
+            if (in_array($key, $column)) {
+                $update[$key] = $value;
+            }else{
+                $payConf[$key] = $value;
+            }
+        }
+        $update['pay_config'] = serialize($payConf);
+        return $this->paymentModel->setPayment($where, $update);
+    }
+
+    public function addPayment($data)
+    {
+        $rep = ['code' => 5, 'msg' => '安装失败'];
+        $PayConfig = LangConfig::LangPayConf();
+        $pay = $PayConfig[$data['code']];//
+        foreach ($pay as $key => $value) {
+            if ($key == 'pay_config') {
+                foreach ($value as $val) {
+                    $conf[$val['code']] = $val['value'];
+                }
+                $addData[$key] = serialize($conf);
+            } else {
+                $addData[$key] = $value;
+            }
+        }
+
+        $re = $this->paymentModel->addPayment($addData);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '安装成功'];
+        }
+
+        return $rep;
+    }
+
+    public function changes($data)
     {
         $rep = ['code' => 5, 'msg' => '修改失败'];
         $where['pay_id'] = $data['id'];
@@ -76,28 +117,4 @@ class PaymentRepository implements PaymentRepositoryInterface
         return $rep;
     }
 
-    public function addPayment($data)
-    {
-        $rep = ['code' => 5, 'msg' => '安装失败'];
-        $PayConfig = LangConfig::LangPayConf();
-        $pay = $PayConfig[$data['code']];//
-        foreach ($pay as $key => $value){
-            if($key == 'pay_config'){
-                foreach ($value as $val){
-                    $conf[$val['code']] = $val['value'];
-                }
-                $addData[$key] = serialize($conf);
-            }else{
-                $addData[$key] = $value;
-            }
-        }
-
-        $re = $this->paymentModel->addPayment($addData);
-        if ($re) {
-            $rep = ['code' => 1, 'msg' => '安装成功'];
-        }
-
-        return $rep;
-    }
-    
 }

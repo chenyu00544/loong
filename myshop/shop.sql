@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 08/05/2018 17:04:27
+ Date: 09/05/2018 09:02:59
 */
 
 SET NAMES utf8mb4;
@@ -98,7 +98,7 @@ CREATE TABLE `cyc_attribute`  (
   INDEX `attr_type`(`attr_type`) USING BTREE,
   INDEX `attr_group`(`attr_group`) USING BTREE,
   INDEX `sort_order`(`sort_order`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 51 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品属性表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品属性表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_attribute
@@ -110,8 +110,8 @@ INSERT INTO `cyc_attribute` VALUES (4, 4, '颜色', 0, 1, 1, '灰色\r\n枚红�
 INSERT INTO `cyc_attribute` VALUES (5, 5, '尺码', 0, 1, 1, 'M\r\nX\r\nXL\r\n2XL\r\n3XL\r\n4XL', '', 0, 0, 0, 0, '');
 INSERT INTO `cyc_attribute` VALUES (6, 5, '颜色', 1, 0, 1, '', '', 0, 0, 0, 0, '');
 INSERT INTO `cyc_attribute` VALUES (7, 6, '颜色', 0, 1, 1, '白红色\r\n海军蓝\r\n黄黑色', '', 0, 0, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (49, 19, '金装', 1, 1, 1, '800g\r\n900g', '', 1, 100, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (50, 19, '铂金', 1, 0, 1, '800g\r\n900g', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (8, 19, '金装', 1, 1, 1, '800g\r\n900g', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (9, 19, '铂金', 1, 0, 1, '800g\r\n900g', '', 1, 100, 0, 0, '');
 
 -- ----------------------------
 -- Table structure for cyc_brand
@@ -6820,6 +6820,26 @@ INSERT INTO `cyc_nav` VALUES (4, '0', 2, '饰品', 1, 4, 0, 'http://www.shop.com
 INSERT INTO `cyc_nav` VALUES (5, '0', 2, '奶粉', 1, 1, 0, 'http', 'home_head');
 
 -- ----------------------------
+-- Table structure for cyc_payment
+-- ----------------------------
+DROP TABLE IF EXISTS `cyc_payment`;
+CREATE TABLE `cyc_payment`  (
+  `pay_id` tinyint(3) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pay_code` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `pay_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `pay_fee` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `pay_desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `pay_order` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
+  `pay_config` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `enabled` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `is_cod` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `is_online` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`pay_id`) USING BTREE,
+  UNIQUE INDEX `pay_code`(`pay_code`) USING BTREE,
+  INDEX `is_online`(`is_online`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付配置表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for cyc_products
 -- ----------------------------
 DROP TABLE IF EXISTS `cyc_products`;
@@ -10773,7 +10793,7 @@ CREATE TABLE `cyc_transport_express`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `tid`(`tid`) USING BTREE,
   INDEX `ru_id`(`ru_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '运送快递' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_transport_express
@@ -10800,7 +10820,7 @@ CREATE TABLE `cyc_transport_extend`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `tid`(`tid`) USING BTREE,
   INDEX `ru_id`(`ru_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '运送快递' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_transport_extend

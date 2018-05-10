@@ -42,7 +42,10 @@ return array(
             'name' => '验证码设置',
             'url' => 'admin/captcha',
         ),
-//        'friendsetup' => '友情链接',
+        'friendsetup' => array(
+            'name' => '友情链接',
+            'url' => 'admin/friend',
+        ),
     ),
     'home' => array(
         'info' => '首页',

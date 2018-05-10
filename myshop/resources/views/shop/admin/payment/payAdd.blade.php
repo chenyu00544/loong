@@ -16,19 +16,20 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form enctype="multipart/form-data" action="{{url('admin/pay')}}" method="post"
+                    <form enctype="multipart/form-data" action="{{url('admin/pay/'.$payInfo->pay_id)}}" method="post"
                           class="form-horizontal">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>支付方式名称：</label>
-                            <div class="col-sm-4 n-wd400">
+                            <div class="col-sm-3 n-wd400">
                                 <input type="text" class="form-control" name="pay_name" value="{{$payInfo->pay_name}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">支付方式描述：</label>
-                            <div class="col-sm-4 n-wd400">
+                            <div class="col-sm-3 n-wd400">
                                 <textarea name="pay_desc" class="form-control" cols="30"
                                           rows="5">{{$payInfo->pay_desc}}</textarea>
                             </div>
@@ -36,7 +37,7 @@
                         @foreach($payInfo->pay_config as $pay)
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">{{$pay['name']}}：</label>
-                                <div class="col-sm-4 n-wd400">
+                                <div class="col-sm-3 n-wd400">
                                     {!! $pay['html'] !!}
                                 </div>
                                 {{--@if($pay['desc'])<div class="notic col-sm-3">{{nl2br($pay['desc'])}}</div>@endif--}}
@@ -44,20 +45,20 @@
                         @endforeach
                         <div class="form-group">
                             <label class="col-sm-4 control-label">支付手续费：</label>
-                            <div class="col-sm-4 n-wd400">
+                            <div class="col-sm-3 n-wd400">
                                 <input type="text" class="form-control" name="pay_fee" value="{{$payInfo->pay_fee}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">货到付款：</label>
-                            <div class="col-sm-4 n-wd400">
+                            <div class="col-sm-2 n-wd400">
                                 <label class="control-label">@if($payInfo->is_cod) 是 @else 否 @endif</label>
                                 <input type="hidden" class="form-control" name="is_cod" value="{{$payInfo->is_cod}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>在线支付：</label>
-                            <div class="col-sm-4 n-wd400">
+                            <div class="col-sm-2 n-wd400">
                                 <label class="control-label">@if($payInfo->is_online) 是 @else 否 @endif</label>
                                 <input type="hidden" class="form-control" name="is_online" value="{{$payInfo->is_online}}">
                             </div>
