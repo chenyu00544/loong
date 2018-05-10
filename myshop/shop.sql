@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 09/05/2018 09:02:59
+ Date: 10/05/2018 22:31:04
 */
 
 SET NAMES utf8mb4;
@@ -300,6 +300,27 @@ INSERT INTO `cyc_category` VALUES (9, '奶粉', '奶粉', '奶粉', 7, 0, '', '�
 INSERT INTO `cyc_category` VALUES (14, '奶瓶', '奶瓶', '奶瓶', 7, 0, '', '0', 0, '0', 1, 0, '0', 0, '', 'icon-naiping', '', 0, '', '', '', '奶瓶', 0, '', '', '', '');
 INSERT INTO `cyc_category` VALUES (16, '婴幼奶粉', '婴幼奶粉', '婴幼奶粉', 9, 0, '', '0', 0, '0', 1, 0, '0', 0, '', 'icon-naiping', '', 0, '', '', '', '婴幼奶粉', 0, '', '', '', '');
 INSERT INTO `cyc_category` VALUES (17, '成人奶粉', '成人奶粉', '成人奶粉', 9, 0, '', '0', 0, '0', 1, 0, '0', 0, '', 'icon-naiping', '', 0, '', '', '', '成人奶粉', 0, '', '', '', '');
+
+-- ----------------------------
+-- Table structure for cyc_friend_link
+-- ----------------------------
+DROP TABLE IF EXISTS `cyc_friend_link`;
+CREATE TABLE `cyc_friend_link`  (
+  `link_id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `link_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `link_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `link_logo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `show_order` tinyint(3) UNSIGNED NOT NULL DEFAULT 50,
+  PRIMARY KEY (`link_id`) USING BTREE,
+  INDEX `show_order`(`show_order`) USING BTREE,
+  INDEX `link_name`(`link_name`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cyc_friend_link
+-- ----------------------------
+INSERT INTO `cyc_friend_link` VALUES (1, '唯C海购', 'http://www.shuangchome.com/', 'upload/friend_logo/fdf21a32e12c4745ac03f1ed77663fdd.jpg', 1);
+INSERT INTO `cyc_friend_link` VALUES (2, '百度', 'https://www.baidu.com/', 'upload/friend_logo/4b5a0b65b4f8ae87f7e6d0f59e986ded.gif', 2);
 
 -- ----------------------------
 -- Table structure for cyc_goods
@@ -6714,6 +6735,43 @@ INSERT INTO `cyc_goods_gallery` VALUES (1013, 903, 'images/201703/goods_img/_P_1
 INSERT INTO `cyc_goods_gallery` VALUES (1014, 903, 'images/201703/goods_img/_P_1490915817088.jpg', 6, 'images/201703/thumb_img/_thumb_P_1490915817767.jpg', 'images/201703/source_img/_P_1490915817527.jpg', 0, '', NULL, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1267, 902, 'data/gallery_album/2/images/1494985263763439875.jpg', 1, 'data/gallery_album/2/thumb_img/1494985263202725320.jpg', 'data/gallery_album/2/original_img/1494985263326444094.png', NULL, '', NULL, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1272, 903, 'data/gallery_album/2/images/1494985267925705306.jpg', 8, 'data/gallery_album/2/thumb_img/1494985267866016454.jpg', 'data/gallery_album/2/original_img/1494985267962226313.JPG', NULL, '', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for cyc_goods_transport
+-- ----------------------------
+DROP TABLE IF EXISTS `cyc_goods_transport`;
+CREATE TABLE `cyc_goods_transport`  (
+  `tid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `ru_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `freight_type` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `title` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `shipping_title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `free_money` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `update_time` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`tid`) USING BTREE,
+  INDEX `ru_id`(`ru_id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '快递' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cyc_goods_transport
+-- ----------------------------
+INSERT INTO `cyc_goods_transport` VALUES (1, 0, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (2, 1, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (3, 2, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (4, 3, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (5, 4, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (6, 5, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (7, 6, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (8, 9, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (9, 10, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (10, 11, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (11, 12, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (12, 13, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (13, 14, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (14, 15, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (15, 16, 0, 1, '全国', '', 0.00, 1508351313);
+INSERT INTO `cyc_goods_transport` VALUES (16, 18, 0, 1, '全国', '', 0.00, 1508351313);
 
 -- ----------------------------
 -- Table structure for cyc_goods_type
