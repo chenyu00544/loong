@@ -83,7 +83,7 @@ class GoodsController extends CommonController
      */
     public function create()
     {
-        $comCates =$this->comCateRepository->getComCates();dd($comCates);
+        $comCates =$this->comCateRepository->getComCates();
         return view('shop.admin.goods.goodsAdd', compact('comCates'));
     }
 

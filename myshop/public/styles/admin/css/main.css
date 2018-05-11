@@ -69,12 +69,16 @@ span {
     overflow: hidden;
 }
 
-p{
+p {
     white-space: normal;
 }
 
-strong{
+strong {
     color: #707070;
+}
+
+i, em {
+    font-style: normal;
 }
 
 .hide {
@@ -157,11 +161,12 @@ strong{
     line-height: 48px;
 }
 
-.checkbox-inline+.checkbox-inline, .radio-inline+.radio-inline{
+.checkbox-inline + .checkbox-inline, .radio-inline + .radio-inline {
     margin-right: 10px;
     margin-left: 0px;
 }
-.checkbox-inline, .radio-inline{
+
+.checkbox-inline, .radio-inline {
     margin-right: 10px;
     margin-left: 0px;
 }
@@ -193,11 +198,11 @@ strong{
 }
 
 .admin-menu .active {
-    background: rgba(0,0,0,0.15);
+    background: rgba(0, 0, 0, 0.15);
 }
 
 .admin-menu li:hover {
-    background: rgba(0,0,0,0.15);
+    background: rgba(0, 0, 0, 0.15);
 }
 
 .active {
@@ -679,7 +684,7 @@ strong{
     text-overflow: ellipsis;
 }
 
-.max-wd-750{
+.max-wd-750 {
     max-width: 750px;
 }
 
@@ -829,11 +834,162 @@ strong{
     z-index: 9;
 }
 
-.capt-td{
+.capt-td {
     word-break: keep-all;
 }
 
-.wd-750{
+.wd-750 {
     width: 750px;
 }
 
+.flexilist {
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+    line-height: 26px;
+}
+
+.stepflex {
+    margin: 20px 0 60px;
+    position: relative;
+    font-size: 0;
+    text-align: center;
+}
+
+.stepflex dl {
+    display: inline-block;
+    width: 179px;
+    height: 40px;
+    background: url(../images/goods_step_icon.png) -18px -81px no-repeat;
+    position: relative;
+}
+
+.stepflex dl dt {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    line-height: 26px;
+    top: 8px;
+    right: 7px;
+    font-size: 14px;
+    color: #62b3ff;
+    text-align: center;
+}
+
+.stepflex dl.first.cur {
+    background-position: -214px -24px;
+}
+
+.stepflex dl.cur {
+    background-position: -214px -81px;
+}
+
+.stepflex dl.first {
+    width: 39px;
+    background-position: -19px -24px;
+}
+
+.stepflex dl.cur dt {
+    color: #fff;
+}
+
+.stepflex dl dd {
+    position: absolute;
+    min-width: 80px;
+    text-align: center;
+    right: -24px;
+    top: 40px;
+    color: #343434;
+    font-size: 12px;
+}
+
+.stepflex dl.last {
+    width: 180px;
+    background-position: -19px -141px;
+}
+
+.step_one h3 {
+    text-align: center;
+    margin: 40px 0 20px;
+}
+.step .mos {
+    margin: 0 auto;
+}
+
+.step .mos .mos_item {
+    width: 33%;
+    float: left;
+    border: 1px solid #e4eaec;
+    background: #f7f7f7;
+    margin-left: -1px;
+    position: relative;
+    cursor: pointer;
+}
+
+.step .mos .active {
+    background: #fff;
+}
+
+.step .mos .mos_con {
+    margin: 10% 15%;
+    width: calc(100% - 30%);
+    overflow: hidden;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+.step .mos .mos_con .mos_left {
+    width: 132px;
+    height: 129px;
+    float: left;
+}
+
+.mos_icon {
+    width: 132px;
+    height: 129px;
+    background: url(../images/mode_icon.png) 0 0 no-repeat;
+    display: block;
+}
+
+.mos_icon_default {
+    background-position: -5px -6px;
+}
+
+.step .mos .mos_con .mos_right {
+    float: left;
+    height: 129px;
+    line-height: 129px;
+    width: calc(100% - 132px);
+}
+
+.mos_default .mos_right {
+    background: #ecfaff;
+    color: #31b4e1;
+}
+
+.step .mos .mos_con .mos_right span {
+    display: block;
+    font-size: 24px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.step .mos .mos_item:hover {
+    background: #fff;
+}
+
+.mos_icon_warehouse {
+    background-position: -156px -6px;
+}
+
+.mos_warehouse .mos_right {
+    background: #effefd;
+    color: #13cbc0;
+}
+
+.mos_icon_region {
+    background-position: -306px -6px;
+}
+.mos_region .mos_right {
+    background: #f1f7ff;
+    color: #62a1ff;
+}
