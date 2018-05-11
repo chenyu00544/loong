@@ -66,8 +66,8 @@
                         <div class="item">
                             <div class="label">&nbsp;</div>
                             <div class="">
-                                <input type="submit" value="　保存　"
-                                       class="btn btn-danger clearfix">
+                                <input type="submit" value="　保存　" class="btn btn-danger clearfix">
+                                <a type="button" class="btn btn-default clearfix mar-left-20" href="javascript:history.go(-1)" >返回</a>
                             </div>
                         </div>
                     </form>

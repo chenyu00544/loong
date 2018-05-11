@@ -100,7 +100,7 @@ class RegionsController extends CommonController
     {
         $parent_id = $id;
         $region_type = $id;
-        return view('shop.admin.regions.regionsAdd', compact('parent_id', 'region_type'));
+        return view('shop.admin.regions.regionsEdit', compact('parent_id', 'region_type'));
     }
 
     /**
