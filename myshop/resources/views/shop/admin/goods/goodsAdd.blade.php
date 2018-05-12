@@ -21,21 +21,22 @@
                     <form enctype="multipart/form-data" action="{{url('admin/goods')}}" method="post"
                           class="form-horizontal">
                         {{csrf_field()}}
+
                         <div class="flexilist">
                             <div class="stepflex">
                                 <dl class="first cur" data-step="1">
                                     <dt class="cursor">1</dt>
                                     <dd class="s-text">设置商品模式</dd>
                                 </dl>
-                                <dl data-step="3">
+                                <dl data-step="2">
                                     <dt class="cursor">2</dt>
                                     <dd class="s-text">选择商品分类</dd>
                                 </dl>
-                                <dl data-step="4">
+                                <dl data-step="3">
                                     <dt class="cursor">3</dt>
                                     <dd class="s-text">填写商品信息</dd>
                                 </dl>
-                                <dl class="last" data-step="5">
+                                <dl class="last" data-step="4">
                                     <dt class="pointer">4</dt>
                                     <dd class="s-text">填写商品属性</dd>
                                 </dl>
@@ -43,7 +44,7 @@
                         </div>
 
                         <!--第一步 选择商品模式-->
-                        <div class="step step_one" ectype="step" data-step="1" style="">
+                        <div class="step step-one" ectype="step" data-step="1" style="display: none;">
                             <h3>设置商品模式</h3>
                             <div class="mos clearfix">
                                 <div class="mos_item mos_default active" data-model="0" data-stepmodel="3">
@@ -67,6 +68,69 @@
                                 <input type="hidden" name="goods_model" id="goods_model" value="0">
                             </div>
                         </div>
+                        <div class="step step-two" ectype="step" data-step="2" style="">
+                            <div class="step-title">
+                                <i class="ui-step"></i>
+                                <h3>选择商品分类</h3>
+                            </div>
+
+                            <div class="step-near fl clearfix">
+                                <strong class="fl lh36">您最近使用的商品分类：</strong>
+                                <select name="" id="" class="form-control fl max-wd-450">
+                                    <option value="0">请选择</option>
+                                </select>
+                                <a class="btn btn-primary btn-select mar-left-10 fl">查询</a>
+                            </div>
+
+                            <div class="sort-info">
+                                <div id="cate-add">
+                                    <div class="sort-list sort-list-one">
+                                        <div class="sort-list-warp">
+                                            <div class="category-list ps-container ps-active-y">
+                                                <ul ectype="category" data-cat_level="1">
+                                                    <li data-cat_name="" data-cat_id="0" data-cat_level="1"
+                                                        class="current">
+                                                        <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>
+                                                    </li>
+                                                    @foreach($comCates as $comCate)
+                                                        <li data-cat_id="{{$comCate->id}}"
+                                                            data-cat_name="{{$comCate->cat_name}}" data-cat_level="1"
+                                                            class="">
+                                                            <a href="javascript:;"><i
+                                                                        class="sc-icon"></i>{{$comCate->cat_name}}</a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                            <div class="sort-point"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sort-list sort-list-one">
+                                        <div class="sort-list-warp">
+                                            <div class="category-list ps-container ps-active-y">
+                                                <ul ectype="category" data-cat_level="2">
+                                                    <li data-cat_name="" data-cat_id="0" data-cat_level="2">
+                                                        <a href="javascript:;"><i class="sc_icon"></i>请选择分类</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="sort-point"></div>
+                                    </div>
+                                    <div class="sort-list">
+                                        <div class="sort-list-warp">
+                                            <div class="category-list ps-container">
+                                                <ul ectype="category" data-cat_level="3">
+                                                    <li data-cat_name="" data-cat_id="0" data-cat_level="3" class=""><a
+                                                                href="javascript:void(0);"><i class="sc_icon"></i>请选择分类</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -79,6 +143,29 @@
     <script>
         $(function () {
 
+            $('.mos_item').on('click', function () {
+                $('.mos_item').removeClass('active');
+                $(this).addClass('active');
+                var model = $(this).data('model');
+                $('input[name=goods_model]').val(model);
+                $('.step-one').hide();
+                $('.step-two').show();
+
+                $('.stepflex dl').each(function () {
+                    if ($(this).data('step') <= 2) {
+                        if (!$(this).hasClass('cur')) {
+                            $(this).addClass('cur');
+                        }
+                    }
+                })
+            });
+
+            $('.category-list').on('click', 'li', function () {
+                $(this).parent().find('li').removeClass('current');
+                $(this).addClass('current');
+                var cate_id = $(this).data('cat_id');
+                var cate_level = $(this).data('cat_level');
+            })
         });
     </script>
 @endsection
