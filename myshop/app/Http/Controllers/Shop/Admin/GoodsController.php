@@ -49,7 +49,7 @@ class GoodsController extends CommonController
     public function examine($id)
     {
         $goods = $this->goodsRepository->getGoods($id);
-        return view('shop.admin.goods.examine', compact('goods'));
+        return view('shop.admin.goods.modal.examine', compact('goods'));
     }
 
     //商品权重排序页
@@ -57,7 +57,7 @@ class GoodsController extends CommonController
     {
         $goods = $this->goodsRepository->getGoods($id);
         $goodsWeight = $this->goodsRepository->getGoodsByWeightOrder($id);
-        return view('shop.admin.goods.weightOrder', compact('goodsWeight', 'goods'));
+        return view('shop.admin.goods.modal.weightOrder', compact('goodsWeight', 'goods'));
     }
 
     //删除回收站里的商品
@@ -83,8 +83,8 @@ class GoodsController extends CommonController
      */
     public function create()
     {
-        $comCate =$this->comCateRepository->getComCates();
-        return view('shop.admin.goods.goodsAdd', compact('comCate'));
+        $comCates =$this->comCateRepository->getComCates();
+        return view('shop.admin.goods.goodsAdd', compact('comCates'));
     }
 
     /**

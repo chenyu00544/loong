@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 10/05/2018 22:31:04
+ Date: 11/05/2018 23:16:10
 */
 
 SET NAMES utf8mb4;
@@ -6895,7 +6895,14 @@ CREATE TABLE `cyc_payment`  (
   PRIMARY KEY (`pay_id`) USING BTREE,
   UNIQUE INDEX `pay_code`(`pay_code`) USING BTREE,
   INDEX `is_online`(`is_online`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付配置表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '支付配置表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cyc_payment
+-- ----------------------------
+INSERT INTO `cyc_payment` VALUES (1, 'alipay', '支付宝', '0', '支付宝网站(www.alipay.com) 是国内先进的网上支付平台。<br/>支付宝收款接口：在线即可开通，<font color=\"red\"><b>零预付，免年费</b></font>，单笔阶梯费率，无流量限制。<br/><a href=\"http://cloud.ecshop.com/payment_apply.php?mod=alipay\" target=\"_blank\"><font color=\"red\">立即在线申请</font></a>', 0, 'a:9:{s:14:\"alipay_account\";s:0:\"\";s:10:\"alipay_key\";s:0:\"\";s:14:\"alipay_partner\";s:0:\"\";s:17:\"alipay_pay_method\";s:0:\"\";s:11:\"use_sandbox\";s:0:\"\";s:6:\"app_id\";s:0:\"\";s:9:\"sign_type\";s:0:\"\";s:14:\"ali_public_key\";s:0:\"\";s:15:\"rsa_private_key\";s:0:\"\";}', 1, 0, 1);
+INSERT INTO `cyc_payment` VALUES (2, 'wxpay', '微信支付', '0', '微信支付，是基于客户端提供的服务功能。同时向商户提供销售经营分析、<br/>账户和资金管理的功能支持。用户通过扫描二维码、<br/>微信内打开商品页面购买等多种方式调起微信支付模块完成支付。', 0, 'a:7:{s:11:\"wxpay_appid\";s:0:\"\";s:15:\"wxpay_appsecret\";s:0:\"\";s:9:\"wxpay_key\";s:0:\"\";s:11:\"wxpay_mchid\";s:0:\"\";s:5:\"is_h5\";s:0:\"\";s:7:\"sslcert\";s:0:\"\";s:6:\"sslkey\";s:0:\"\";}', 1, 0, 1);
+INSERT INTO `cyc_payment` VALUES (3, 'chinabank', '网银在线', '1%', '网银在线（www.chinabank.com.cn）与中国工商银行、招商银行、中国建设银行、<br/>农业银行、民生银行等数十家金融机构达成协议。<br/>全面支持全国19家银行的信用卡及借记卡实现网上支付。<br/><a href=\"http://www.chinabank.com.cn\" target=\"_blank\">立即在线申请</a>', 0, 'a:2:{s:17:\"chinabank_account\";s:0:\"\";s:13:\"chinabank_key\";s:0:\"\";}', 1, 0, 1);
 
 -- ----------------------------
 -- Table structure for cyc_products
