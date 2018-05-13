@@ -71,7 +71,7 @@
                 var parent_id = $(this).data('parent_id');
                 var level = $(this).data('level');
                 $('input[name="parent_id"]').val(id);
-                if (id > 0) {
+                if (id > 0 && parent_id == 0) {
                     $('input[name="level"]').val(level + 1);
                     var html = '';
                     $.post("{{url('admin/typecate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {

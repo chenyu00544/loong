@@ -237,6 +237,10 @@ i, em {
     max-width: 100px;
 }
 
+.hg30 {
+    height: 30px;
+}
+
 .top-border {
     font-size: 0;
     line-height: 0;
@@ -696,12 +700,16 @@ i, em {
     text-overflow: ellipsis;
 }
 
-.max-wd-750 {
-    max-width: 750px;
+.max-wd-350 {
+    max-width: 350px;
 }
 
 .max-wd-450 {
     max-width: 450px;
+}
+
+.max-wd-750 {
+    max-width: 750px;
 }
 
 .lh36 {
@@ -887,9 +895,8 @@ i, em {
 .stepflex dl dt {
     position: absolute;
     width: 24px;
-    height: 24px;
-    line-height: 26px;
-    top: 7px;
+    height: 40px;
+    line-height: 40px;
     right: 7px;
     font-size: 14px;
     color: #62b3ff;
@@ -1148,4 +1155,138 @@ i, em {
     text-align: center;
     padding: 35px 0 30px 0;
     font-size: 0;
+}
+
+.step-three .step-content {
+    padding-top: 30px;
+}
+
+.step-content {
+    position: relative;
+    width: 100%;
+    padding: 20px 0px;
+}
+
+.step-content .item-com-cate {
+    line-height: normal;
+}
+
+.step-content .item {
+    width: 100%;
+    float: left;
+    line-height: 30px;
+}
+
+.step-value {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.step-content .item .step-label {
+    width: 20%;
+    float: left;
+    text-align: right;
+    padding-right: 8px;
+}
+
+.step-content .item .step-value {
+    width: 78%;
+    float: left;
+}
+
+.step-value .edit-category, .step-value .edit {
+    font-size: 16px;
+    margin: 1px 0 0 8px;
+    float: left;
+}
+
+.step-value .category-dialog {
+    margin-left: 50px;
+}
+
+.form_prompt {
+    line-height: 28px;
+    float: left;
+    font-size: 12px;
+}
+
+.brand-select-container, .select-container {
+    width: 250px;
+    border: 1px solid #dbdbdb;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    position: absolute;
+    top: 30px;
+    z-index: 9;
+    background: #fff;
+}
+
+.brand-select-container .brand-top {
+    margin: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #ccc;
+    overflow: hidden;
+}
+
+.brand-select-container .brand-top ul {
+    overflow: hidden;
+}
+
+.brand-select-container .brand-top li {
+    float: left;
+}
+
+.brand-select-container .brand-top li a {
+    line-height: 16px;
+    color: #666;
+    text-align: center;
+    display: block;
+    min-width: 16px;
+    padding: 6px;
+    margin: 0;
+    font-size: 12px;
+}
+
+.brand-select-container .brand-top li a:hover {
+    text-decoration: none;
+    color: #FFF;
+    background: #31b4e1;
+}
+
+.brand-select-container .brand-top .b-search {
+    line-height: normal;
+    clear: both;
+    margin-top: 6px;
+}
+
+.brand-select-container .brand-top .b-search .btn-mini {
+    width: 40px;
+    height: 30px;
+    display: block;
+    float: left;
+    background: #e0e0e0;
+    border-radius: 0 4px 4px 0;
+    color: #a9a9a9;
+    font-size: 16px;
+}
+
+.brand-select-container .brand-top .b-search .btn-mini i {
+    margin: 5px 11px;
+}
+
+.brand-select-container .brand-top .b-search .btn-mini:hover {
+    background: #CFCFCF;
+}
+
+.brand-select-container .brand-list{
+    width: calc(100% - 16px);
+    max-height: 220px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    margin: 0 8px;
+}
+
+.brand-select-container .brand-list ul{
+    overflow-y: scroll;
 }

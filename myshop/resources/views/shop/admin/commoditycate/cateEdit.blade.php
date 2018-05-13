@@ -48,8 +48,8 @@
                             </div>
                             <div class="col-sm-8 pre-cate" style="@if(count($parentCates) > 0)display: none;@endif">
                                 <div class="cate-option fl">
-                                    <select name="category_name[]" class="form-control select"
-                                            onchange="setNextCate(this)">
+                                    <select class="form-control select"
+                                            onchange="setNextCate(this)" data-parent="0">
                                         <option value="0">顶级分类</option>
                                         @foreach($cates as $cat)
                                             <option value="{{$cat->id}}">{{$cat->cat_name}}</option>
@@ -187,12 +187,13 @@
 
         function setNextCate(that) {
             var id = $(that).val();
+            var parent = $(that).data('parent');
             $('input[name="parent_id"]').val(id);
-            if(id > 0){
+            if(id > 0 && parent == 0){
                 var html = '';
                 $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
                     if (data.code == 1) {
-                        html = '<div class="cate-option fl"><select name="category_name[]" class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
+                        html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
                         $.each(data.data, function (k, v) {
                             html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
                         })
