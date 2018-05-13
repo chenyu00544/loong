@@ -186,6 +186,7 @@ return [
         App\Providers\FileHandleServiceProvider::class,
         App\Providers\UrlServiceProvider::class,
         App\Providers\ExpressServiceProvider::class,
+        App\Providers\TokenServiceProvider::class,
     ],
 
     /*
@@ -244,6 +245,7 @@ return [
         'FileHandle' => App\Facades\FileHandle::class,
         'Url' => App\Facades\Url::class,
         'Express' => App\Facades\Express::class,
+        'Token' => App\Facades\Token::class,
     ],
 
 ];

@@ -889,7 +889,7 @@ i, em {
     width: 24px;
     height: 24px;
     line-height: 26px;
-    top: 8px;
+    top: 7px;
     right: 7px;
     font-size: 14px;
     color: #62b3ff;
@@ -907,6 +907,10 @@ i, em {
 .stepflex dl.first {
     width: 39px;
     background-position: -19px -24px;
+}
+
+.stepflex dl.last.cur {
+    background-position: -214px -141px;
 }
 
 .stepflex dl.cur dt {
@@ -1135,3 +1139,13 @@ i, em {
     margin-top: -15px;
 }
 
+.choiceClass {
+    margin: 25px 0 15px 35px;
+    float: left;
+}
+
+.goods-btn {
+    text-align: center;
+    padding: 35px 0 30px 0;
+    font-size: 0;
+}
