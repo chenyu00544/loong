@@ -8,6 +8,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Config;
 
 class TokenService
 {
@@ -218,11 +219,12 @@ class TokenService
      */
     public static function encode($payload, $keyId = null, $head = null)
     {
-        $key = app('App\Services\WxappService')->getWxappConfigByCode('token_secret');
-        $alg = app('config')->get('app.TOKEN_ALG');
+        $key = 'vcbuy';
+        $alg = Config::get('config');
+        $ttl = Config::get('config');
 
         if (!isset($payload['exp'])) {
-            $payload['exp'] = time() + app('config')->get('app.TOKEN_TTL') * 60;
+            $payload['exp'] = time() + $ttl * 60;
         }
 
         if (isset($payload['uid'])) {

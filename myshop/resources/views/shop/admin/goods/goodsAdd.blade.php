@@ -32,7 +32,7 @@
                                     <dt class="cursor">2</dt>
                                     <dd class="s-text">选择商品分类</dd>
                                 </dl>
-                                <dl data-step="3">
+                                <dl data-step="3" class="cur">
                                     <dt class="cursor">3</dt>
                                     <dd class="s-text">填写商品信息</dd>
                                 </dl>
@@ -149,168 +149,284 @@
 
                         <!--第三步 通用信息-->
                         <div class="step step-three" ectype="step" data-step="3" style="">
-                            <div class="step-title">
-                                <i class="ui-step"></i>
-                                <h3>填写通用信息</h3>
-                            </div>
-                            <div class="step-content">
-                                <div class="item item-com-cate">
-                                    <div class="step-label">商品分类：</div>
-                                    <div class="step-value">
-                                        <span class="fl">家居、家具、家装、厨具 > 家装建材 > 灯饰照明</span>
-                                        <a href="javascript:;" class="edit-category" ectype="edit-category">
-                                            <i class="glyphicon glyphicon-edit"></i>
-                                        </a>
-                                        <a href="javascript:;" class="category-dialog">添加扩展分类</a>
-                                    </div>
+                            <div class="step-info clearfix">
+                                <div class="step-title">
+                                    <i class="ui-step"></i>
+                                    <h3>填写通用信息</h3>
                                 </div>
+                                <div class="step-content">
 
-                                <div class="item">
-                                    <div class="step-label">商品货号：</div>
-                                    <div class="step-value">
-                                        <input type="text" name="goods_sn" class="form-control max-wd-190 hg30 fl "
-                                               autocomplete="off" onblur="checkGoodsSn(this.value,'0')" value="">
-                                        <div class="form-prompt"></div>
-                                        <div class="notic fl mar-left-10">如果您不输入商品货号，系统将自动生成一个唯一的货号。</div>
+                                    <div class="item item-com-cate">
+                                        <div class="step-label">商品分类：</div>
+                                        <div class="step-value">
+                                            <span class="fl">家居、家具、家装、厨具 > 家装建材 > 灯饰照明</span>
+                                            <a href="javascript:;" class="edit-category" ectype="edit-category">
+                                                <i class="glyphicon glyphicon-edit"></i>
+                                            </a>
+                                            <a href="javascript:;" class="category-dialog">添加扩展分类</a>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="item">
-                                    <div class="step-label"><font class="red">*</font>商品名称：</div>
-                                    <div class="step-value">
-                                        <input type="text" name="goods_name" class="form-control max-wd-350 hg30 fl "
-                                               autocomplete="off" value="">
-                                        <div class="form-prompt"></div>
-                                        <div class="notic fl mar-left-10"></div>
-                                    </div>
-                                </div>
 
-                                <div class="item">
-                                    <div class="step-label">商品简单描述：</div>
-                                    <div class="step-value">
+                                    <div class="item">
+                                        <div class="step-label">商品货号：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="goods_sn" class="form-control max-wd-190 hg30 fl "
+                                                   autocomplete="off" onblur="checkGoodsSn(this.value,'0')" value="">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">如果您不输入商品货号，系统将自动生成一个唯一的货号。</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label"><font class="red">*</font>商品名称：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="goods_name"
+                                                   class="form-control max-wd-350 hg30 fl "
+                                                   autocomplete="off" value="">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">商品简单描述：</div>
+                                        <div class="step-value">
                                         <textarea class="form-control max-wd-350" rows="5"
                                                   name="goods_brief"></textarea>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="step-label">出售价：</div>
-                                    <div class="step-value">
-                                        <input type="text" name="shop_price" class="form-control max-wd-190 hg30 fl"
-                                               value="0">
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="step-label">市场价：</div>
-                                    <div class="step-value">
-                                        <input type="text" name="market_price" class="form-control max-wd-190 hg30 fl"
-                                               value="0">
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="step-label">成本价：</div>
-                                    <div class="step-value">
-                                        <input type="text" name="cost_price" class="form-control max-wd-190 hg30 fl"
-                                               value="0">
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="step-label"><font class="red">*</font>商品库存：</div>
-                                    <div class="step-value">
-                                        <input type="text" name="goods_number" class="form-control max-wd-190 hg30 fl"
-                                               value="1000">
-                                        <div class="form-prompt"></div>
-                                        <div class="notic fl mar-left-10"></div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="step-label">库存预警值：</div>
-                                    <div class="step-value">
-                                        <input type="text" name="warn_number" class="form-control max-wd-190 hg30 fl"
-                                               value="1">
-                                        <div class="form-prompt"></div>
-                                        <div class="notic fl mar-left-10"></div>
-                                    </div>
-                                </div>
-
-                                <div class="item">
-                                    <div class="step-label">商品品牌：</div>
-                                    <div class="step-value">
-                                        <div class="selection">
-                                            <input type="text" name="brand_name" id="brand_name"
-                                                   class="form-control max-wd-190 hg30 fl" data-filter="brand_name"
-                                                   ectype="require" autocomplete="off" value="请选择" readonly="">
-                                            <a href="javascript:;" class="btn btn-info btn-sm mar-left-20"
-                                               ectype="ajaxBrand">添加</a>
-                                            <input type="hidden" name="brand_id" id="brand_id" value="0">
-                                            <div class="form_prompt"></div>
                                         </div>
-                                        <div class="brand-select-container" style="display: block;">
-                                            <div class="brand-top">
-                                                <div class="letter">
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">出售价：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="shop_price" class="form-control max-wd-190 hg30 fl"
+                                                   value="0">
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">市场价：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="market_price"
+                                                   class="form-control max-wd-190 hg30 fl"
+                                                   value="0">
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">成本价：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="cost_price" class="form-control max-wd-190 hg30 fl"
+                                                   value="0">
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label"><font class="red">*</font>商品库存：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="goods_number"
+                                                   class="form-control max-wd-190 hg30 fl"
+                                                   value="1000">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">库存预警值：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="warn_number"
+                                                   class="form-control max-wd-190 hg30 fl"
+                                                   value="1">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">商品品牌：</div>
+                                        <div class="step-value">
+                                            <div class="selection">
+                                                <input type="text" name="brand_name" id="brand_name"
+                                                       class="form-control max-wd-190 hg30 fl" data-filter="brand_name"
+                                                       ectype="require" autocomplete="off" value="请选择" readonly="">
+                                                <a href="javascript:;" class="btn btn-info btn-sm mar-left-20"
+                                                   ectype="ajaxBrand">添加</a>
+                                                <input type="hidden" name="brand_id" id="brand_id" value="0">
+                                                <div class="form_prompt"></div>
+                                            </div>
+                                            <div class="brand-select-container" style="display: none;">
+                                                <div class="brand-top">
+                                                    <div class="letter">
+                                                        <ul>
+                                                            <li><a href="javascript:void(0);" data-letter="">全部品牌</a>
+                                                            </li>
+                                                            @for($letter = 65; $letter<=90;$letter++)
+                                                                <li><a href="javascript:void(0);"
+                                                                       data-letter="{{chr($letter)}}">{{chr($letter)}}</a>
+                                                                </li>
+                                                            @endfor
+                                                            <li><a href="javascript:void(0);" data-letter="QT">其他</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="b-search">
+                                                        <input name="search_brand_keyword" id="search_brand_keyword"
+                                                               ectype="require" type="text"
+                                                               class="form-control max-wd-190 hg30 fl"
+                                                               autocomplete="off" placeholder="1">
+                                                        <a href="javascript:void(0);" class="btn-mini"><i
+                                                                    class="glyphicon glyphicon-search"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="brand-list ps-container ps-active-y">
                                                     <ul>
-                                                        <li><a href="javascript:void(0);" data-letter="">全部品牌</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="A">A</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="B">B</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="C">C</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="D">D</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="E">E</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="F">F</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="G">G</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="H">H</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="I">I</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="J">J</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="K">K</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="L">L</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="M">M</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="N">N</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="O">O</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="P">P</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="Q">Q</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="R">R</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="S">S</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="T">T</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="U">U</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="V">V</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="W">W</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="X">X</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="Y">Y</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="Z">Z</a></li>
-                                                        <li><a href="javascript:void(0);" data-letter="QT">其他</a></li>
+                                                        <li data-id="0" data-name="请选择品牌" class="blue cursor">取消选择</li>
+                                                        <li data-id="204" data-name="金士顿"><em>J</em>金士顿</li>
+                                                        <li data-id="93" data-name="同庆和堂"><em>T</em>同庆和堂</li>
+                                                        <li data-id="103" data-name="Masentek"><em>M</em>Masentek</li>
+                                                        <li data-id="102" data-name="欧亚马"><em>O</em>欧亚马</li>
                                                     </ul>
-                                                </div>
-                                                <div class="b-search">
-                                                    <input name="search_brand_keyword" id="search_brand_keyword"
-                                                           ectype="require" type="text"
-                                                           class="form-control max-wd-190 hg30 fl"
-                                                           autocomplete="off" placeholder="1">
-                                                    <a href="javascript:void(0);" class="btn-mini"><i
-                                                                class="glyphicon glyphicon-search"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="brand-list ps-container ps-active-y">
-                                                <ul>
-                                                    <li data-id="0" data-name="请选择品牌" class="blue">取消选择</li>
-                                                    <li data-id="204" data-name="金士顿"><em>J</em>金士顿</li>
-                                                    <li data-id="93" data-name="同庆和堂"><em>T</em>同庆和堂</li>
-                                                    <li data-id="103" data-name="Masentek"><em>M</em>Masentek</li>
-                                                    <li data-id="102" data-name="欧亚马"><em>O</em>欧亚马</li>
-                                                    <li data-id="101" data-name="皮克朋"><em>P</em>皮克朋</li>
-                                                    <li data-id="204" data-name="金士顿"><em>J</em>金士顿</li>
-                                                    <li data-id="93" data-name="同庆和堂"><em>T</em>同庆和堂</li>
-                                                    <li data-id="103" data-name="Masentek"><em>M</em>Masentek</li>
-                                                    <li data-id="102" data-name="欧亚马"><em>O</em>欧亚马</li>
-                                                    <li data-id="101" data-name="皮克朋"><em>P</em>皮克朋</li>
-                                                </ul>
-                                                <div class="brand-not" style="display: none;">没有符合"<strong></strong>"条件的品牌
+                                                    <div class="brand-not" style="display: none;">没有符合"<strong></strong>"条件的品牌
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="item item-com-img">
+                                        <div class="step-label"><em class="require-field">*</em>商品图片：</div>
+                                        <div class="step-value">
+                                            <div id="goods-figure" class="update-images">
+                                                <div class="img">
+                                                    <img src="{{url('styles/admin/images/upload_images.jpg')}}">
+                                                </div>
+                                            </div>
+                                            <div class="form_prompt">
+                                            </div>
+                                            <div class="notic">图片尺寸建议800*800</div>
+                                            <input type="hidden" name="original_img" value="">
+                                            <input type="hidden" name="goods_img" value="">
+                                            <input type="hidden" name="goods_thumb" value="">
+                                            <div id="" class="moxie-shim moxie-shim-html5"
+                                                 style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px; overflow: hidden; z-index: 0;">
+                                                <input id="" type="file"
+                                                       style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"
+                                                       accept="image/jpeg,image/png,image/gif"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">　</div>
+                                        <div class="step-value">
+                                            <a href="javascript:;" class="btn btn-primary btn-sm">图片库选择</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">商品运费：</div>
+                                        <div class="step-value">
+                                            <div class="clearfix">
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="freight" value="1"> 按固定运费
+                                                </label>
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="freight" value="2" checked> 按运费模板
+                                                </label>
+                                            </div>
+                                            <input type="text" name="shipping_fee"
+                                                   class="form-control max-wd-190 hg30 fl"
+                                                   autocomplete="off" value="0.00" style="display:none;">
+                                            <div id="tid">
+                                                <select name="tid" id="" class="form-control max-wd-190 hg30 fl ft-12">
+                                                    <option value="3">圆通快递</option>
+                                                    <option value="5">京东快递</option>
+                                                </select>
+                                                <a href="javascript:;" class="btn btn-info btn-sm mar-left-20">添加</a>
+                                                <a href="javascript:;" class="btn btn-info btn-sm mar-left-10">编辑</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">退货标识：</div>
+                                        <div class="step-value step-goods-service">
+                                            <div class="checkbox-items">
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="return_type[]" class="ui-checkbox"
+                                                           id="return_type_0" value="0">
+                                                    <label class="ui-label mar-left-5" for="return_type_0">维修</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="return_type[]" class="ui-checkbox"
+                                                           id="return_type_1" value="1">
+                                                    <label class="ui-label mar-left-5" for="return_type_1">退货</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="return_type[]" class="ui-checkbox"
+                                                           id="return_type_2" value="2">
+                                                    <label class="ui-label mar-left-5" for="return_type_2">换货</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="return_type[]" class="ui-checkbox"
+                                                           id="return_type_3" value="3">
+                                                    <label class="ui-label mar-left-5" for="return_type_3">仅退款</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">商品服务：</div>
+                                        <div class="step-value step-goods-service">
+                                            <div class="checkbox-items">
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="is_reality" class="ui-checkbox"
+                                                           value="1"
+                                                           id="is_reality">
+                                                    <label class="ui-label mar-left-5" for="is_reality">正品保证</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="is_return" class="ui-checkbox"
+                                                           value="1"
+                                                           id="is_return">
+                                                    <label class="ui-label mar-left-5" for="is_return">包退服务</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="is_fast" class="ui-checkbox" value="1"
+                                                           id="is_fast">
+                                                    <label class="ui-label mar-left-5" for="is_fast">闪速配送</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--会员字段 预留↓-->
+                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    <!--会员字段 预留↑-->
                                 </div>
+                            </div>
+
+                            <div class="step-desc clearfix">
+                                <div class="step-title"><i class="ui-step"></i><h3>详细描述</h3></div>
+                                <div class="tabs mar-top-20">
+                                    <ul class="fl">
+                                        <li class="fl curr"><a href="javascript:;"><i class="glyphicon glyphicon-blackboard"></i>电脑端</a>
+                                        </li>
+                                        <li class="fl"><a href="javascript:;"><i class="glyphicon glyphicon-phone"></i>手机端</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <script id="editor" name="content" type="text/plain" style="height:500px;"></script>
+                            </div>
+
+                            <div class="step-pn clearfix">
                                 <div class="goods-btn">
                                     <a href="javascript:;" class="btn btn-default mar-all-10 prev" data-step="2"
                                        data-type="step" ectype="stepSubmit">上一步，选择商品分类</a>
@@ -318,6 +434,7 @@
                                        data-type="step" data-down="false" ectype="stepSubmit">下一步，填写商品属性</a>
                                 </div>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -327,7 +444,11 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
+    <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.config.js')}}"></script>
+    <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.all.min.js')}}"></script>
     <script>
+        var ue = UE.getEditor('editor');
+
         $(function () {
 
             //第一步 选择模式
