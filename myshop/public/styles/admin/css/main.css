@@ -710,7 +710,11 @@ i, em {
 }
 
 .max-wd-40{
-    max-width: 40px;
+     max-width: 40px;
+ }
+
+.max-wd-50{
+    max-width: 50px;
 }
 
 .max-wd-100 {
@@ -1412,6 +1416,10 @@ i, em {
     width: 100%;
 }
 
+.goods-album *{
+    font-size: 12px;
+}
+
 .goods-album ul {
     float: left;
     margin-left: 2px;
@@ -1447,7 +1455,7 @@ i, em {
 }
 
 .goods-album li .info .zt {
-    width: 50px;
+    width: 40px;
 }
 .goods-album li .info * {
     float: left;

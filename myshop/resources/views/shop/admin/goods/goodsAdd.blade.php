@@ -736,13 +736,19 @@
                                     <div class="step-item">
                                         <div class="step-item-left"><h5>属性分类：</h5></div>
                                         <div class="step-item-right">
+                                            <input name="attr_parent_id" type="hidden" value="">
                                             <div class="item-right-li">
                                                 <div class="value-select" ectype="type_cat">
-                                                    <select class="form-control max-wd-190 fl"></select>
+                                                    <select class="form-control max-wd-190 fl mar-right-20">
+                                                        <option value="0">请选择</option>
+                                                    </select>
+
+                                                    <select class="form-control max-wd-190 fl mar-right-20">
+                                                        <option value="0">请选择</option>
+                                                    </select>
                                                 </div>
-                                                <input name="attr_parent_id" type="hidden" value="">
-                                                <input type="button" class="btn btn-info mar-left-20" value="添加属性分类"
-                                                       data-type="add_goods_type_cat" data-goodsid="615">
+                                                <a class="btn btn-info" data-type="add_goods_type_cat"
+                                                   data-goodsid="615">添加属性分类</a>
                                             </div>
                                         </div>
                                     </div>
@@ -752,13 +758,15 @@
                                         <div class="step-item-right">
                                             <div class="item-right-li">
                                                 <div class="value-select" ectype="type_cat">
-                                                    <select id="cate_id" class="form-control max-wd-350 fl"></select>
+                                                    <select id="cate_id" class="form-control max-wd-350 fl">
+                                                        <option value="0">请选择</option>
+                                                    </select>
                                                 </div>
                                                 <input name="goods_type" type="hidden" value="" id="select_attr_val">
-                                                <input type="button" class="btn btn-info mar-left-20" value="添加商品类型"
-                                                       data-type="add_goods_type_cat" data-goodsid="615">
-                                                <input type="button" class="btn btn-info mar-left-20" value="添加属性"
-                                                       data-type="add_goods_type_cat" data-goodsid="615">
+                                                <a class="btn btn-info mar-left-20"
+                                                   data-type="add_goods_type_cat" data-goodsid="615">添加商品类型</a>
+                                                <a class="btn btn-info mar-left-20"
+                                                   data-type="add_goods_type_cat" data-goodsid="615">添加属性</a>
                                             </div>
                                         </div>
                                     </div>
@@ -782,8 +790,8 @@
                                                     <div class="sort">
                                                         <span>排序：</span>
                                                         <input type="text" value="1" name="old_img_desc[643]"
-                                                               class="stext form-control max-wd-40 hg25"
-                                                               autocomplete="off">
+                                                               class="stext form-control max-wd-50 hg25"
+                                                               autocomplete="off" maxlength="3">
                                                         <input type="hidden" value="643" name="img_id[]">
                                                     </div>
                                                     <a href="javascript:void(0);" data-imgid="643" class="delete_img"><i
@@ -802,11 +810,13 @@
                                          data-inid="addAlbumimg" data-act="gallery_album_list"
                                          style="position: relative;">
                                         <a href="javascript:void(0);" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
-                                           id="addImages" style="position: relative; z-index: 1;"><i
-                                                    class="glyphicon glyphicon-plus"></i>添加图片</a>
+                                           id="addImages" style="position: relative; z-index: 1;">
+                                            <i class="glyphicon glyphicon-plus"></i>添加图片
+                                        </a>
                                         <a href="javascript:void(0);" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
-                                           ectype="gallery_album" data-value="图片库选择"><i
-                                                    class="glyphicon glyphicon-plus"></i>图片库选择</a>
+                                           ectype="gallery_album" data-value="图片库选择">
+                                            <i class="glyphicon glyphicon-plus"></i>图片库选择
+                                        </a>
                                         <div id="addAlbumimg"></div>
                                     </div>
                                 </div>
@@ -820,6 +830,7 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
                     </form>
                 </div>
             </div>
