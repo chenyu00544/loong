@@ -847,6 +847,7 @@
         ue.ready(function () {
             ue.setHeight(500);
         });
+
         $(function () {
             //第一步 选择模式
             $('.mos_item').on('click', function () {
