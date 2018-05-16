@@ -237,6 +237,10 @@ i, em {
     max-width: 100px;
 }
 
+.hg25 {
+    height: 25px;
+}
+
 .hg30 {
     height: 30px;
 }
@@ -703,6 +707,18 @@ i, em {
 .em-blue {
     color: #31b4e1;
     font-style: normal;
+}
+
+.max-wd-40{
+    max-width: 40px;
+}
+
+.max-wd-50{
+    max-width: 50px;
+}
+
+.max-wd-100 {
+    max-width: 100px;
 }
 
 .max-wd-190 {
@@ -1358,6 +1374,95 @@ i, em {
     margin-top: 7px;
 }
 
-.step-info, .step-desc {
+.step-info, .step-desc, .step-special, .step-other {
     margin-bottom: 20px;
+}
+
+.step-item {
+    float: left;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.step-item-left {
+    width: 15%;
+    float: left;
+    text-align: right;
+    padding-right: 50px;
+}
+
+.step-item-left h5 {
+    font-size: 14px;
+    color: #333;
+    line-height: 30px;
+}
+
+.step-item-right {
+    width: 80%;
+    float: left;
+}
+
+.step-item-right .item-right-li:last-child {
+    margin-bottom: 0;
+}
+.step-item-right .item-right-li {
+    width: 100%;
+    float: left;
+    margin-bottom: 10px;
+}
+
+.goods-album {
+    float: left;
+    width: 100%;
+}
+
+.goods-album *{
+    font-size: 12px;
+}
+
+.goods-album ul {
+    float: left;
+    margin-left: 2px;
+}
+
+.goods-album li {
+    float: left;
+    padding: 20px 19px;
+    border: 1px solid #dbdbdb;
+    margin: 0 0 -1px -1px;
+    width: 200px;
+}
+
+.goods-album li .img {
+    width: 160px;
+    height: 160px;
+    display: table-cell;
+    vertical-align: middle;
+    cursor: pointer;
+    text-align: center;
+}
+
+.goods-album li .img img {
+    max-width: 160px;
+    max-height: 160px;
+    vertical-align: middle;
+}
+
+.goods-album li .info {
+    overflow: hidden;
+    line-height: 25px;
+    margin-top: 10px;
+}
+
+.goods-album li .info .zt {
+    width: 40px;
+}
+.goods-album li .info * {
+    float: left;
+}
+
+.goods-album li .info .delete_img {
+    float: right;
+    font-size: 16px;
+    margin-top: 5px;
 }

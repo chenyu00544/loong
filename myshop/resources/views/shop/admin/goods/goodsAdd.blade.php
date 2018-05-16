@@ -36,7 +36,7 @@
                                     <dt class="cursor">3</dt>
                                     <dd class="s-text">填写商品信息</dd>
                                 </dl>
-                                <dl class="last" data-step="4">
+                                <dl class="last cur" data-step="4">
                                     <dt class="pointer">4</dt>
                                     <dd class="s-text">填写商品属性</dd>
                                 </dl>
@@ -147,15 +147,14 @@
                             </div>
                         </div>
 
-                        <!--第三步 通用信息-->
-                        <div class="step step-three" ectype="step" data-step="3" style="">
+                        <!--第三步 填写通用信息-->
+                        <div class="step step-three" ectype="step" data-step="3" style="display: none;">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
                                     <h3>填写通用信息</h3>
                                 </div>
-                                <div class="step-content">
-
+                                <div class="step-content clearfix">
                                     <div class="item item-com-cate">
                                         <div class="step-label">商品分类：</div>
                                         <div class="step-value">
@@ -309,10 +308,11 @@
                                             <input type="hidden" name="goods_img" value="">
                                             <input type="hidden" name="goods_thumb" value="">
                                             <div id="" class="moxie-shim moxie-shim-html5"
-                                                 style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px; overflow: hidden; z-index: 0;">
+                                                 style="position: absolute; top: 0px; left: 0px; width: 100px; height: 100px; overflow: hidden; z-index: 0;">
                                                 <input id="" type="file"
-                                                       style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"
-                                                       accept="image/jpeg,image/png,image/gif"></div>
+                                                       style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100px; height: 100px;"
+                                                       accept="image/jpeg,image/png,image/gif">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -414,16 +414,303 @@
                             </div>
 
                             <div class="step-desc clearfix">
-                                <div class="step-title"><i class="ui-step"></i><h3>详细描述</h3></div>
+                                <div class="step-title"><i class="ui-step"></i>
+                                    <h3>详细描述</h3></div>
                                 <div class="tabs mar-top-20">
                                     <ul class="fl">
-                                        <li class="fl curr"><a href="javascript:;"><i class="glyphicon glyphicon-blackboard"></i>电脑端</a>
+                                        <li class="fl curr"><a href="javascript:;"><i
+                                                        class="glyphicon glyphicon-blackboard"></i>电脑端</a>
                                         </li>
                                         <li class="fl"><a href="javascript:;"><i class="glyphicon glyphicon-phone"></i>手机端</a>
                                         </li>
                                     </ul>
                                 </div>
-                                <script id="editor" name="content" type="text/plain" style="height:500px;"></script>
+                                <script id="editor" name="content" type="text/plain"></script>
+                            </div>
+
+                            <div class="step-special clearfix">
+                                <div class="step-title"><i class="ui-step"></i>
+                                    <h3>特殊信息</h3></div>
+                                <div class="step-content">
+                                    <div class="item">
+                                        <div class="step-label">促销：</div>
+                                        <div class="step-value">
+                                            <div class="clearfix">
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_promote" value="0" checked> 否
+                                                </label>
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_promote" value="1"> 是
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">限购：</div>
+                                        <div class="step-value">
+                                            <div class="clearfix">
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_xiangou" value="0" checked> 否
+                                                </label>
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_xiangou" value="1"> 是
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">分期：</div>
+                                        <div class="step-value">
+                                            <div class="clearfix">
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_stages" value="0" checked> 否
+                                                </label>
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_stages" value="1"> 是
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">是否为分销商品：</div>
+                                        <div class="step-value">
+                                            <div class="clearfix">
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_distribution" value="0" checked> 否
+                                                </label>
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_distribution" value="1"> 是
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">阶梯价格：</div>
+                                        <div class="step-value">
+                                            <div class="clearfix">
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_volume" value="0" checked> 否
+                                                </label>
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_volume" value="1"> 是
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">满减价格：</div>
+                                        <div class="step-value">
+                                            <div class="clearfix">
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_fullcut" value="0" checked> 否
+                                                </label>
+                                                <label class="radio-inline fl padtop">
+                                                    <input type="radio" name="is_fullcut" value="1"> 是
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-special clearfix">
+                                <div class="step-title"><i class="ui-step"></i>
+                                    <h3>特殊信息</h3></div>
+                                <div class="step-content">
+                                    <div class="item">
+                                        <div class="step-label">赠送消费积分数：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="give_integral"
+                                                   class="form-control max-wd-350 hg30 fl "
+                                                   autocomplete="off" value="">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">赠送等级积分数：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="rank_integral"
+                                                   class="form-control max-wd-350 hg30 fl "
+                                                   autocomplete="off" value="">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">积分购买金额：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="integral"
+                                                   class="form-control max-wd-350 hg30 fl "
+                                                   autocomplete="off" value="">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">(此处需填写金额)购买该商品时最多可以使用积分的金额</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">商品重量：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="goods_weight"
+                                                   class="form-control max-wd-350 hg30 fl "
+                                                   autocomplete="off" value="0">
+                                            <select name="weight_unit" id=""
+                                                    class="form-control max-wd-100 hg30 fl ft-12 mar-left-20">
+                                                <option value="0.001">克</option>
+                                                <option value="1">千克</option>
+                                            </select>
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label"><font class="red">*</font>赠送等级积分数：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="rank_integral"
+                                                   class="form-control max-wd-350 hg30 fl "
+                                                   autocomplete="off" value="0">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">加入推荐：</div>
+                                        <div class="step-value step-goods-service">
+                                            <div class="checkbox-items">
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="is_best" class="ui-checkbox" value="1"
+                                                           id="is_best" checked>
+                                                    <label class="ui-label mar-left-5" for="is_best">精品</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="is_new" class="ui-checkbox" value="1"
+                                                           id="is_new" checked>
+                                                    <label class="ui-label mar-left-5" for="is_new">新品</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="is_hot" class="ui-checkbox" value="1"
+                                                           id="is_hot" checked>
+                                                    <label class="ui-label mar-left-5" for="is_hot">热销</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">店铺推荐：</div>
+                                        <div class="step-value step-goods-service">
+                                            <div class="checkbox-items">
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="store_best" class="ui-checkbox"
+                                                           value="1" id="store_best">
+                                                    <label class="ui-label mar-left-5" for="store_best">精品</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="store_new" class="ui-checkbox"
+                                                           value="1" id="store_new">
+                                                    <label class="ui-label mar-left-5" for="store_new">新品</label>
+                                                </div>
+                                                <div class="checkbox-item fl mar-right-20">
+                                                    <input type="checkbox" name="store_hot" class="ui-checkbox"
+                                                           value="1"
+                                                           id="store_hot">
+                                                    <label class="ui-label mar-left-5" for="store_hot">热销</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">上架：</div>
+                                        <div class="step-value step-goods-service">
+                                            <div class="switch-wrap clearfix fl" style="margin: 5px 0;">
+                                                <div class="switch active" data-type="is_on_sale" title="是">
+                                                    <div class="circle"></div>
+                                                    <input type="hidden" value="1" name="is_on_sale">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">普通商品销售：</div>
+                                        <div class="step-value step-goods-service">
+                                            <div class="switch-wrap clearfix fl" style="margin: 5px 0;">
+                                                <div class="switch active" data-type="is_alone_sale" title="是">
+                                                    <div class="circle"></div>
+                                                    <input type="hidden" value="1" name="is_alone_sale">
+                                                </div>
+                                            </div>
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">默认为是，如果勾选否，则该商品不能直接购买，只能作为配件、赠品等商品购买</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">是否为免运费商品：</div>
+                                        <div class="step-value step-goods-service">
+                                            <div class="switch-wrap clearfix fl" style="margin: 5px 0;">
+                                                <div class="switch" data-type="is_shipping" title="是">
+                                                    <div class="circle"></div>
+                                                    <input type="hidden" value="0" name="is_shipping">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">商品关键词：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="keywords"
+                                                   class="form-control max-wd-350 hg30 fl "
+                                                   autocomplete="off" value="">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">商品关键词：请用空格分隔；1.作为站内关键词查询；2.作为搜索引擎收录使用。
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">评论标签：</div>
+                                        <div class="step-value">
+                                            <textarea class="form-control max-wd-350 fl" rows="5"
+                                                      name="goods_product_tag"></textarea>
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">
+                                                请用','号分割；例：商品好看,很实用,材料很好...（注意逗号要使用英文逗号）<br>商品确认收货后，买家评论时可勾选的“买家印象”处内容
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">服务承诺标签：</div>
+                                        <div class="step-value">
+                                            <textarea class="form-control max-wd-350 fl" rows="5"
+                                                      name="goods_tag"></textarea>
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">请用','号分割（注：逗号要使用英文逗号）</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">商家备注：</div>
+                                        <div class="step-value">
+                                            <textarea class="form-control max-wd-350 fl" rows="5"
+                                                      name="seller_note"></textarea>
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">仅供商家自己看的信息</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="step-pn clearfix">
@@ -432,6 +719,115 @@
                                        data-type="step" ectype="stepSubmit">上一步，选择商品分类</a>
                                     <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="4"
                                        data-type="step" data-down="false" ectype="stepSubmit">下一步，填写商品属性</a>
+                                    <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="5"
+                                       data-type="step" data-down="false" ectype="stepSubmit">完成,发布商品</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--第四步 填写商品属性-->
+                        <div class="step step-three" ectype="step" data-step="4" style="">
+                            <div class="step-info clearfix">
+                                <div class="step-title">
+                                    <i class="ui-step"></i>
+                                    <h3>商品属性</h3>
+                                </div>
+                                <div class="step-content">
+                                    <div class="step-item">
+                                        <div class="step-item-left"><h5>属性分类：</h5></div>
+                                        <div class="step-item-right">
+                                            <input name="attr_parent_id" type="hidden" value="">
+                                            <div class="item-right-li">
+                                                <div class="value-select" ectype="type_cat">
+                                                    <select class="form-control max-wd-190 fl mar-right-20">
+                                                        <option value="0">请选择</option>
+                                                    </select>
+
+                                                    <select class="form-control max-wd-190 fl mar-right-20">
+                                                        <option value="0">请选择</option>
+                                                    </select>
+                                                </div>
+                                                <a class="btn btn-info" data-type="add_goods_type_cat"
+                                                   data-goodsid="615">添加属性分类</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="step-item">
+                                        <div class="step-item-left"><h5>商品类型：</h5></div>
+                                        <div class="step-item-right">
+                                            <div class="item-right-li">
+                                                <div class="value-select" ectype="type_cat">
+                                                    <select id="cate_id" class="form-control max-wd-350 fl">
+                                                        <option value="0">请选择</option>
+                                                    </select>
+                                                </div>
+                                                <input name="goods_type" type="hidden" value="" id="select_attr_val">
+                                                <a class="btn btn-info mar-left-20"
+                                                   data-type="add_goods_type_cat" data-goodsid="615">添加商品类型</a>
+                                                <a class="btn btn-info mar-left-20"
+                                                   data-type="add_goods_type_cat" data-goodsid="615">添加属性</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-info clearfix">
+                                <div class="step-title">
+                                    <i class="ui-step"></i>
+                                    <h3>商品相册</h3>
+                                </div>
+                                <div class="step-content">
+                                    <div class="goods-album clearfix" id="gallery-img-list">
+                                        <ul id="ul-pics">
+                                            <li id="gallery-643">
+                                                <div class="img" onclick="img_default(643)"><img
+                                                            src="http://www.shop.com/images/201703/thumb_img/0_thumb_P_1489096810306.jpg"
+                                                            width="160" height="160" id="external_img_url643"></div>
+                                                <div class="info">
+                                                    <span class="zt red">主图</span>
+                                                    <div class="sort">
+                                                        <span>排序：</span>
+                                                        <input type="text" value="1" name="old_img_desc[643]"
+                                                               class="stext form-control max-wd-50 hg25"
+                                                               autocomplete="off" maxlength="3">
+                                                        <input type="hidden" value="643" name="img_id[]">
+                                                    </div>
+                                                    <a href="javascript:void(0);" data-imgid="643" class="delete_img"><i
+                                                                class="glyphicon glyphicon-trash"></i></a>
+                                                </div>
+                                                <div class="info">
+                                                    <input name="external_url" type="text"
+                                                           class="form-control max-wd-190 external_url_643"
+                                                           ectype="external_url" value="" title="" data-imgid="643"
+                                                           placeholder="图片外部链接地址"></div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="step-top-btn gallery-album clearfix" ectype="gallery_album_list"
+                                         data-inid="addAlbumimg" data-act="gallery_album_list"
+                                         style="position: relative;">
+                                        <a href="javascript:void(0);" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
+                                           id="addImages" style="position: relative; z-index: 1;">
+                                            <i class="glyphicon glyphicon-plus"></i>添加图片
+                                        </a>
+                                        <a href="javascript:void(0);" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
+                                           ectype="gallery_album" data-value="图片库选择">
+                                            <i class="glyphicon glyphicon-plus"></i>图片库选择
+                                        </a>
+                                        <div id="addAlbumimg"></div>
+                                    </div>
+                                </div>
+
+                                <div class="step-pn clearfix">
+                                    <div class="goods-btn">
+                                        <a href="javascript:;" class="btn btn-default mar-all-10 prev" data-step="3"
+                                           data-type="step" ectype="stepSubmit">上一步，填写通用信息</a>
+                                        <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="5"
+                                           data-type="step" data-down="false" ectype="stepSubmit">完成,发布商品</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -448,9 +844,10 @@
     <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.all.min.js')}}"></script>
     <script>
         var ue = UE.getEditor('editor');
-
+        ue.ready(function () {
+            ue.setHeight(500);
+        });
         $(function () {
-
             //第一步 选择模式
             $('.mos_item').on('click', function () {
                 $('.mos_item').removeClass('active');
@@ -461,14 +858,12 @@
                 $('.step-two').show();
                 step(2)
             });
-
             //第二步选择商品分类
             $('.category-list').on('click', 'li', function () {
                 $(this).parent().find('li').removeClass('current');
                 $(this).addClass('current');
                 var cate_id = $(this).data('cat_id');
                 var cate_level = $(this).data('cat_level');
-
                 getNextCate(cate_id, cate_level);
                 var c_id = 0;
                 $('.current').each(function () {
@@ -482,17 +877,14 @@
                 });
                 $('input[name=cat_id]').val(cate_id);
             })
-
             //填写商品信息上一步
             $('.prev').on('click', function () {
                 step($(this).data('step'));
             });
-
             //填写商品信息下一步
             $('.next').on('click', function () {
                 step($(this).data('step'));
             });
-
             //点击设置步骤指示条
             $('.stepflex dl').on('click', function () {
                 step($(this).data('step'));
@@ -514,7 +906,6 @@
                                 '       <a href="javascript:;"><i class="sc-icon"></i>' + v.cat_name + '</a>\n' +
                                 '   </li>';
                         });
-
                         $('.category-list ul').each(function () {
                             if ($(this).data('cat_level') == level) {
                                 $(this).html(html);
