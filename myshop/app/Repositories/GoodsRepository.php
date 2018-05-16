@@ -301,8 +301,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     {
         $where['goods_id'] = $id;
         $re =  $this->goodsCateModel->getGoodsCates($where);
-        $res = $this->categoryModel->getComCates();
-
+        return $re;
     }
 
     //添加商品扩展分类
@@ -310,6 +309,18 @@ class GoodsRepository implements GoodsRepositoryInterface
     {
         $rep = ['code' => 0, 'msg' => '操作失败'];
         $re = $this->goodsCateModel->addGoodsCate($data);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $rep;
+    }
+
+    //删除商品扩展分类
+    public function delCateExtend($id)
+    {
+        $rep = ['code' => 0, 'msg' => '操作失败'];
+        $where['cat_id'] = $id;
+        $re = $this->goodsCateModel->delGoodsCate($where);
         if ($re) {
             $rep = ['code' => 1, 'msg' => '操作成功'];
         }

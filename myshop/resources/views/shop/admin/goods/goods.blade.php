@@ -52,10 +52,10 @@
                                 <input type="checkbox" name="all_list" class="checkbox check-all">
                             </th>
                             <th class="col-md-1"><a>编号</a></th>
-                            <th class="col-md-3"><a>商品名称</a></th>
+                            <th class="col-md-4"><a>商品名称</a></th>
                             <th class="col-md-1">商家名称</th>
                             <th class="col-md-2">价格/货号/运费</th>
-                            <th class="col-md-1">标签</th>
+                            <th class="col-md-2">标签</th>
                             <th class="col-md-1">排序</th>
                             <th class="col-md-1">SKU/库存</th>
                             <th class="col-md-1">审核状态</th>

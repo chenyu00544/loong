@@ -196,7 +196,7 @@
                                     </div>
 
                                     <div class="item">
-                                        <div class="step-label">出售价：</div>
+                                        <div class="step-label"><font class="red">*</font>出售价：</div>
                                         <div class="step-value">
                                             <input type="text" name="shop_price" class="form-control max-wd-190 hg30 fl"
                                                    value="0">
@@ -324,7 +324,7 @@
                                     </div>
 
                                     <div class="item">
-                                        <div class="step-label">商品运费：</div>
+                                        <div class="step-label"><font class="red">*</font>商品运费：</div>
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
@@ -572,7 +572,7 @@
                                     </div>
 
                                     <div class="item">
-                                        <div class="step-label"><font class="red">*</font>赠送等级积分数：</div>
+                                        <div class="step-label">赠送等级积分数：</div>
                                         <div class="step-value">
                                             <input type="text" name="rank_integral"
                                                    class="form-control max-wd-350 hg30 fl "

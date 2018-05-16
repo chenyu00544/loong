@@ -90,6 +90,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/change', 'GoodsController@change');
     Route::post('goods/changes', 'GoodsController@changes');
     Route::post('goods/addcateext', 'GoodsController@addCateExtend');
+    Route::post('goods/delcateext/{id}', 'GoodsController@delCateExtend');
     Route::resource('goods', 'GoodsController');
 
     Route::post('goodstype/changes', 'GoodsTypeController@changes');

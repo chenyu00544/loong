@@ -5,7 +5,19 @@
         <div class="pb-bd">
             <div class="pb-ct">
                 <div class="extension-category clearfix">
-                    <div class="filter"></div>
+                    <div class="filter">
+                        @foreach($selectedCates as $val)
+                            <span class="filter-item">
+                                <span>
+                                    @foreach($val as $k => $v)
+                                        @if($k != 0) {{$v->cat_name.'>'}} @else {{$v->cat_name}} @endif
+                                    @endforeach
+                                </span>
+                                <a herf="javascript:;" class="delete" data-cate_id="{{$v->id}}"></a>
+                                <input type="hidden" name="other_cat[]" value="{{$v->id}}">
+                            </span>
+                        @endforeach
+                    </div>
                     <div class="cate-info clearfix">
                         <div class="cate-list cate-list-one">
                             <div class="cate-list-warp">
@@ -108,7 +120,7 @@
                             cat_id: cat_id
                         },
                         function (data) {
-                            if(data.code == 1){
+                            if (data.code == 1) {
                                 var str = '';
                                 $('.current').each(function () {
                                     str += $(this).data('cat_name') + '>';
@@ -116,7 +128,7 @@
                                 str = str.substr(0, str.length - 1);
                                 var html = '<span class="filter-item">' +
                                     '           <span>' + str + '</span>' +
-                                    '           <a herf="javascript:void(0);" class="delete"></a>' +
+                                    '           <a herf="javascript:;" class="delete"></a>' +
                                     '           <input type="hidden" name="other_cat[]" value="' + cat_id + '">' +
                                     '       </span>';
                                 $('.filter').append(html);
@@ -142,8 +154,20 @@
 
             //删除扩展分类
             $('.filter').on('click', '.delete', function () {
-                $(this).parent().remove();
-                parent.layer.iframeAuto(index);
+                var that = this;
+                var cate_id = $(this).data('cate_id')
+                $.post(
+                    "{{url('admin/goods/delcateext')}}" + "/" + cate_id,
+                    {
+                        '_token': '{{csrf_token()}}'
+                    },
+                    function (data) {
+                        if (data.code == 1) {
+                            $(that).parent().remove();
+                            parent.layer.iframeAuto(index);
+                        }
+                    }
+                );
             });
 
             //给父页面传值

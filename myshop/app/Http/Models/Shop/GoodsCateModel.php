@@ -27,4 +27,10 @@ class GoodsCateModel extends Model
     {
         return $this->create($data);
     }
+
+    public function delGoodsCate($where)
+    {
+        return $this->where($where)
+            ->delete();
+    }
 }

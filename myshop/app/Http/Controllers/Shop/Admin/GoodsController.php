@@ -64,13 +64,24 @@ class GoodsController extends CommonController
     //商品扩展分类窗口
     public function cateExtend($id)
     {
-        $comCates =$this->comCateRepository->getComCates();
-        return view('shop.admin.goods.modal.goodsCateExtend', compact('comCates', 'id'));
+        $comCates = $this->comCateRepository->getComCates();
+        $cateExtend = $this->goodsRepository->getCateExtend($id);
+        $selectedCates = [];
+        foreach ($cateExtend as $key => $value){
+            $selectedCates[] = $this->comCateRepository->getParentCate($value->cat_id);
+        }
+        return view('shop.admin.goods.modal.goodsCateExtend', compact('comCates', 'id', 'selectedCates'));
     }
 
+    //添加商品扩展分类
     public function addCateExtend(Request $request)
     {
         return $this->goodsRepository->addCateExtend($request->except('_token'));
+    }
+
+    public function delCateExtend($id)
+    {
+        return $this->goodsRepository->delCateExtend($id);
     }
 
     //删除回收站里的商品
@@ -95,7 +106,7 @@ class GoodsController extends CommonController
      */
     public function create()
     {
-        $comCates =$this->comCateRepository->getComCates();
+        $comCates = $this->comCateRepository->getComCates();
         return view('shop.admin.goods.goodsAdd', compact('comCates'));
     }
 
