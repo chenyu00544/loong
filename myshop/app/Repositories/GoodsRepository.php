@@ -12,6 +12,7 @@ use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\LangConfig;
 use App\Facades\Url;
 use App\Http\Models\Shop\BrandModel;
+use App\Http\Models\shop\CategoryModel;
 use App\Http\Models\Shop\GoodsCateModel;
 use App\Http\Models\Shop\GoodsExtendModel;
 use App\Http\Models\Shop\GoodsModel;
@@ -29,6 +30,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $transportModel;
     private $goodsExtendModel;
     private $intelligentWeightModel;
+    private $categoryModel;
 
     public function __construct(
         ShopConfigModel $shopConfigModel,
@@ -37,7 +39,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         BrandModel $brandModel,
         TransportModel $transportModel,
         GoodsExtendModel $goodsExtendModel,
-        IntelligentWeightModel $intelligentWeightModel
+        IntelligentWeightModel $intelligentWeightModel,
+        CategoryModel $categoryModel
     )
     {
         $this->shopConfigModel = $shopConfigModel;
@@ -47,6 +50,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->transportModel = $transportModel;
         $this->goodsExtendModel = $goodsExtendModel;
         $this->intelligentWeightModel = $intelligentWeightModel;
+        $this->categoryModel = $categoryModel;
     }
 
     public function getGroupsConfig($groups)
@@ -290,5 +294,25 @@ class GoodsRepository implements GoodsRepositoryInterface
         } else {
             return ['goods_number' => 0, 'return_number' => 0, 'user_number' => 0, 'goods_comment_number' => 0, 'merchants_comment_number' => 0, 'user_attention_number' => 0];
         }
+    }
+
+    //获取商品扩展分类
+    public function getCateExtend($id)
+    {
+        $where['goods_id'] = $id;
+        $re =  $this->goodsCateModel->getGoodsCates($where);
+        $res = $this->categoryModel->getComCates();
+
+    }
+
+    //添加商品扩展分类
+    public function addCateExtend($data)
+    {
+        $rep = ['code' => 0, 'msg' => '操作失败'];
+        $re = $this->goodsCateModel->addGoodsCate($data);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $rep;
     }
 }

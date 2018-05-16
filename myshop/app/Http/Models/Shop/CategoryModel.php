@@ -18,6 +18,11 @@ class CategoryModel extends Model
             ->get();
     }
 
+    public function getComCateByParent()
+    {
+        
+    }
+
     public function getComCate($id)
     {
         return $this->where('id', $id)

@@ -46,6 +46,7 @@ class GoodsController extends CommonController
         return $this->goodsRepository->setGoodsMore($request->except('_token'));
     }
 
+    //商品审核窗口
     public function examine($id)
     {
         $goods = $this->goodsRepository->getGoods($id);
@@ -60,10 +61,21 @@ class GoodsController extends CommonController
         return view('shop.admin.goods.modal.weightOrder', compact('goodsWeight', 'goods'));
     }
 
+    //商品扩展分类窗口
+    public function cateExtend($id)
+    {
+        $comCates =$this->comCateRepository->getComCates();
+        return view('shop.admin.goods.modal.goodsCateExtend', compact('comCates', 'id'));
+    }
+
+    public function addCateExtend(Request $request)
+    {
+        return $this->goodsRepository->addCateExtend($request->except('_token'));
+    }
+
     //删除回收站里的商品
     public function thoroughDel($id)
     {
-
         return view('shop.admin.success');
     }
 

@@ -28,15 +28,15 @@
                                     <dt class="cursor">1</dt>
                                     <dd class="s-text">设置商品模式</dd>
                                 </dl>
-                                <dl data-step="2" class="cur">
+                                <dl class="cur" data-step="2">
                                     <dt class="cursor">2</dt>
                                     <dd class="s-text">选择商品分类</dd>
                                 </dl>
-                                <dl data-step="3" class="cur">
+                                <dl class="" data-step="3">
                                     <dt class="cursor">3</dt>
                                     <dd class="s-text">填写商品信息</dd>
                                 </dl>
-                                <dl class="last cur" data-step="4">
+                                <dl class="last " data-step="4">
                                     <dt class="pointer">4</dt>
                                     <dd class="s-text">填写商品属性</dd>
                                 </dl>
@@ -148,7 +148,7 @@
                         </div>
 
                         <!--第三步 填写通用信息-->
-                        <div class="step step-three" ectype="step" data-step="3" style="display: none;">
+                        <div class="step step-three" ectype="step" data-step="3" style="">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -158,11 +158,11 @@
                                     <div class="item item-com-cate">
                                         <div class="step-label">商品分类：</div>
                                         <div class="step-value">
-                                            <span class="fl">家居、家具、家装、厨具 > 家装建材 > 灯饰照明</span>
-                                            <a href="javascript:;" class="edit-category" ectype="edit-category">
+                                            <span class="fl cate-name"></span>
+                                            <a href="javascript:;" class="edit-category" ectype="edit-category" onclick="step(2)">
                                                 <i class="glyphicon glyphicon-edit"></i>
                                             </a>
-                                            <a href="javascript:;" class="category-dialog">添加扩展分类</a>
+                                            <a href="javascript:;" class="category-dialog add-cate-extend" data-goods_id="0">添加扩展分类</a>
                                         </div>
                                     </div>
 
@@ -726,7 +726,7 @@
                         </div>
 
                         <!--第四步 填写商品属性-->
-                        <div class="step step-three" ectype="step" data-step="4" style="">
+                        <div class="step step-three" ectype="step" data-step="4" style="display: none;">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -859,6 +859,7 @@
                 $('.step-two').show();
                 step(2)
             });
+
             //第二步选择商品分类
             $('.category-list').on('click', 'li', function () {
                 $(this).parent().find('li').removeClass('current');
@@ -877,19 +878,56 @@
                     }
                 });
                 $('input[name=cat_id]').val(cate_id);
-            })
+            });
+
             //填写商品信息上一步
             $('.prev').on('click', function () {
                 step($(this).data('step'));
             });
+            
             //填写商品信息下一步
             $('.next').on('click', function () {
+                if ($(this).data('step') == 3 && $('input[name=cat_id]').val() <= 0) {
+                    $('.choiceClass strong').html('您还未选择分类');
+                    $('.cate-name').html('');
+                    return;
+                }
                 step($(this).data('step'));
             });
+            
             //点击设置步骤指示条
             $('.stepflex dl').on('click', function () {
+                if($(this).data('step') == 2 && $('input[name=goods_model]').val() == ''){
+                    return;
+                }
+
+                if($(this).data('step') == 3 && $('input[name=cat_id]').val() <= 0){
+                    return;
+                }
+
+                if($(this).data('step') == 4 && ($('input[name=goods_name]').val() == '')){
+                    return;
+                }
                 step($(this).data('step'));
             });
+            
+            //添加扩展分类
+            $('.add-cate-extend').on('click', function () {
+
+                var goods_id = $(this).data('goods_id');
+
+                layer.open({
+                    type: 2,
+                    area: ['800px', '540px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '添加扩展分类',
+                    content: ["{{url('admin/goods/cateextend/')}}" + "/" + goods_id, 'no'],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            })
         });
 
         function getNextCate(parent_id, cat_level) {
@@ -914,7 +952,7 @@
                         })
                     } else {
                         $('.category-list ul').each(function () {
-                            if ($(this).data('cat_level') == level) {
+                            if ($(this).data('cat_level') >= level) {
                                 $(this).html('<li data-cat_name="" data-cat_id="0" data-cat_level="' + level + '" class="">\n' +
                                     '       <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>\n' +
                                     '   </li>');
@@ -927,7 +965,23 @@
                     });
                     html = html.substr(0, html.length - 2);
                     $('.choiceClass strong').html(html);
+                    $('.cate-name').html(html);
                 })
+            } else {
+                $('.category-list ul').each(function () {
+                    if ($(this).data('cat_level') >= level) {
+                        $(this).html('<li data-cat_name="" data-cat_id="0" data-cat_level="' + level + '" class="">\n' +
+                            '       <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>\n' +
+                            '   </li>');
+                    }
+                });
+                var html = '';
+                $('.current').each(function () {
+                    html += $(this).data('cat_name') + ' > ';
+                });
+                html = html.substr(0, html.length - 2);
+                $('.choiceClass strong').html(html);
+                $('.cate-name').html(html);
             }
         }
 
@@ -950,6 +1004,7 @@
                 }
             })
         }
+        
     </script>
 @endsection
 @endsection

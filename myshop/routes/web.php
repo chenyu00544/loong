@@ -81,12 +81,15 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('brand/firstchar', 'BrandController@getFirstChar');
     Route::resource('brand', 'BrandController');
 
-    Route::post('goods/change', 'GoodsController@change');
-    Route::post('goods/changes', 'GoodsController@changes');
+
     Route::get('goods/backto/{id}', 'GoodsController@backTo');
     Route::get('goods/del/{id}', 'GoodsController@thoroughDel');
     Route::get('goods/examine/{id}', 'GoodsController@examine');
     Route::get('goods/weight/order/{id}', 'GoodsController@weightOrder');
+    Route::get('goods/cateextend/{id}', 'GoodsController@cateExtend');
+    Route::post('goods/change', 'GoodsController@change');
+    Route::post('goods/changes', 'GoodsController@changes');
+    Route::post('goods/addcateext', 'GoodsController@addCateExtend');
     Route::resource('goods', 'GoodsController');
 
     Route::post('goodstype/changes', 'GoodsTypeController@changes');

@@ -1466,3 +1466,133 @@ i, em {
     font-size: 16px;
     margin-top: 5px;
 }
+
+.pb-bd {
+    position: relative;
+}
+
+.pb-bd *{
+    font-size: 12px;
+}
+.extension-category .filter {
+    padding: 16px 0 6px;
+    border-bottom: 1px dashed #dedede;
+    overflow: hidden;
+}
+
+.extension-category .filter .filter-item {
+    display: block;
+    float: left;
+    height: 23px;
+    line-height: 23px;
+    border: 1px solid #31b4e1;
+    padding: 0 5px;
+    border-radius: 3px;
+    color: #707070;
+    margin-right: 10px;
+}
+
+.extension-category .filter .filter-item * {
+    float: left;
+}
+
+.delete {
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    background: url(../../images/admin-icon.png) -141px -456px no-repeat;
+    margin: 6px 0 0 7px;
+    cursor: pointer;
+}
+
+.extension-category .filter span {
+    margin-bottom: 10px;
+}
+
+.extension-category .cate-info {
+    margin: 20px 0 18px;
+}
+
+.cate-info {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.extension-category .cate-info .cate-list-one {
+    margin-right: 6.5%;
+}
+.extension-category .cate-info .cate-list {
+    width: 29%;
+}
+.cate-info .cate-list-one {
+    margin-right: 5%;
+}
+.cate-info .cate-list {
+    box-shadow: 1px 1px 6px #999 inset;
+    border-radius: 5px;
+    float: left;
+    width: 30%;
+    position: relative;
+}
+
+.cate-info .cate-list .cate-list-warp {
+    padding: 5px 5px 0 20px;
+}
+
+.extension-category .cate-info .cate-list .cate-list-warp .category-list {
+    height: 223px;
+}
+.cate-info .cate-list .cate-list-warp .category-list {
+    overflow-y: scroll;
+    position: relative;
+}
+
+.cate-info .cate-list .cate-list-warp ul {
+    margin-right: 20px;
+}
+
+.cate-info .cate-list .cate-list-warp li {
+    line-height: 36px;
+    border-bottom: 1px solid #eaeaea;
+    padding-left: 10px;
+    position: relative;
+}
+
+.extension-category .cate-info .cate-list .cate-list-warp li.current {
+    background-color: #f5faff;
+}
+.cate-info .cate-list .cate-list-warp li.current {
+    background: #ffefec;
+}
+
+.cate-info .cate-list .cate-list-warp li.current i {
+    display: block;
+}
+
+.cate-info .cate-list .cate-list-warp li a {
+    display: block;
+    color: #707070;
+}
+.extension-category .cate-info .cate-list .cate-list-warp li i {
+    background-position: -134px -432px;
+}
+.cate-info .cate-list .cate-list-warp li i {
+    width: 5px;
+    height: 8px;
+    background-position: -120px -431px;
+    display: none;
+    position: absolute;
+    top: 14px;
+    right: 18px;
+}
+.extension-category .cate-info .sort-point {
+    right: -40px;
+}
+
+.pb-ft {
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    padding: 20px 0;
+}
