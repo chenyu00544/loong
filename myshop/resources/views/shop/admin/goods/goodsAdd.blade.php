@@ -783,7 +783,7 @@
                                         <ul id="ul-pics">
                                             <li id="gallery-643">
                                                 <div class="img" onclick="img_default(643)"><img
-                                                            src="http://www.shop.com/images/201703/thumb_img/0_thumb_P_1489096810306.jpg"
+                                                            src="{{url('upload/images/201703/thumb_img/0_thumb_P_1489096810306.jpg')}}"
                                                             width="160" height="160" id="external_img_url643"></div>
                                                 <div class="info">
                                                     <span class="zt red">主图</span>
