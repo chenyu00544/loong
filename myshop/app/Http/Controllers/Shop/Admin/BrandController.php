@@ -49,6 +49,11 @@ class BrandController extends CommonController
         return ['code' => 1, 'msg' => '生成成功'];
     }
 
+    public function search(Request $request)
+    {
+        return $this->brandRepository->search($request->except('_token'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

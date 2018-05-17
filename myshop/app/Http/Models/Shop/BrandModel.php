@@ -11,9 +11,10 @@ class BrandModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getBrands($size = 10)
+    public function getBrands($size = 10, $column =['*'])
     {
-        return $this->orderBy('sort_order', 'asc')
+        return $this->select($column)
+            ->orderBy('sort_order', 'asc')
             ->orderBy('id', 'asc')
             ->paginate($size);
     }
@@ -24,9 +25,15 @@ class BrandModel extends Model
             ->get();
     }
 
+    public function getBrandsBySearch($where)
+    {
+        return $this->where($where)
+            ->get();
+    }
+
     public function getBrand($id)
     {
-        return $this->orderBy('id', $id)
+        return $this->where('id', $id)
             ->first();
     }
 

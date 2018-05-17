@@ -103,6 +103,9 @@
 
             //添加扩展分类
             $('.btn-add').on('click', function () {
+                if($('.filter-item').length >= 5){
+                    return;
+                }
                 var bool = true;
                 var cat_id = $('input[name=ext_cat_id]').val();
                 var goods_id = $('input[name=goods_id]').val();

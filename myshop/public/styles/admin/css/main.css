@@ -1340,6 +1340,12 @@ i, em {
     border-right: solid 1px #DDD;
 }
 
+.brand-not {
+    text-align: center;
+    padding: 20px 10px;
+    width: 100%;
+}
+
 .update-images {
     width: 100px;
     height: 100px;

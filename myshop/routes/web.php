@@ -78,6 +78,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('comcate', 'ComCateController');
 
     Route::post('brand/change', 'BrandController@change');
+    Route::post('brand/search', 'BrandController@search');
     Route::post('brand/firstchar', 'BrandController@getFirstChar');
     Route::resource('brand', 'BrandController');
 

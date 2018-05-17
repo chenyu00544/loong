@@ -32,7 +32,8 @@ class BrandRepository implements BrandRepositoryInterface
         return $this->brandModel->getBrand($id);
     }
 
-    public function getBrandsAll(){
+    public function getBrandsAll()
+    {
         return $this->brandModel->getBrandsAll();
     }
 
@@ -156,6 +157,29 @@ class BrandRepository implements BrandRepositoryInterface
         if ($asc >= -11847 && $asc <= -11056) return 'Y';
         if ($asc >= -11055 && $asc <= -10247) return 'Z';
         return null;
+    }
+
+    public function search($data)
+    {
+        $where = [];
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case 'letter':
+                    if($value){
+                        $where['brand_first_char'] = $value;
+                    }
+                    break;
+                case 'keywords':
+                    $where = [['brand_name', 'like', '%' . $value . '%']];
+                    break;
+                default:
+                    break;
+            }
+        }
+        $re = $this->brandModel->getBrandsBySearch($where);
+        if ($re) {
+            return $re->toArray();
+        }
     }
 
 }

@@ -188,7 +188,8 @@
                                                    class="form-control max-wd-350 hg30 fl "
                                                    autocomplete="off" value="">
 
-                                            <input id="color-picker" type="text" class="form-control max-wd-100 hg30 mar-left-20 fl" value="#000000"/>
+                                            <input id="color-picker" type="text"
+                                                   class="form-control max-wd-100 hg30 mar-left-20 fl" value="#000000"/>
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10"></div>
                                         </div>
@@ -206,7 +207,7 @@
                                         <div class="step-label"><font class="red">*</font>出售价：</div>
                                         <div class="step-value">
                                             <input type="text" name="shop_price" class="form-control max-wd-190 hg30 fl"
-                                                   value="0">
+                                                   value="0.00">
                                         </div>
                                     </div>
 
@@ -215,7 +216,7 @@
                                         <div class="step-value">
                                             <input type="text" name="market_price"
                                                    class="form-control max-wd-190 hg30 fl"
-                                                   value="0">
+                                                   value="0.00">
                                         </div>
                                     </div>
 
@@ -223,7 +224,7 @@
                                         <div class="step-label">成本价：</div>
                                         <div class="step-value">
                                             <input type="text" name="cost_price" class="form-control max-wd-190 hg30 fl"
-                                                   value="0">
+                                                   value="0.00">
                                         </div>
                                     </div>
 
@@ -253,9 +254,9 @@
                                         <div class="step-label">商品品牌：</div>
                                         <div class="step-value">
                                             <div class="selection">
-                                                <input type="text" name="brand_name" id="brand_name"
+                                                <input type="text" id="brand_name"
                                                        class="form-control max-wd-190 hg30 fl" data-filter="brand_name"
-                                                       ectype="require" autocomplete="off" value="请选择" readonly="">
+                                                       autocomplete="off" value="请选择品牌" readonly="">
                                                 <a href="javascript:;" class="btn btn-info btn-sm mar-left-20"
                                                    ectype="ajaxBrand">添加</a>
                                                 <input type="hidden" name="brand_id" id="brand_id" value="0">
@@ -265,23 +266,25 @@
                                                 <div class="brand-top">
                                                     <div class="letter">
                                                         <ul>
-                                                            <li><a href="javascript:void(0);" data-letter="">全部品牌</a>
+                                                            <li>
+                                                                <a href="javascript:;" data-letter="">全部品牌</a>
                                                             </li>
                                                             @for($letter = 65; $letter<=90;$letter++)
-                                                                <li><a href="javascript:void(0);"
+                                                                <li>
+                                                                    <a href="javascript:;"
                                                                        data-letter="{{chr($letter)}}">{{chr($letter)}}</a>
                                                                 </li>
                                                             @endfor
-                                                            <li><a href="javascript:void(0);" data-letter="QT">其他</a>
+                                                            <li>
+                                                                <a href="javascript:;" data-letter="QT">其他</a>
                                                             </li>
                                                         </ul>
                                                     </div>
                                                     <div class="b-search">
-                                                        <input name="search_brand_keyword" id="search_brand_keyword"
-                                                               ectype="require" type="text"
+                                                        <input id="search_brand_keyword" type="text"
                                                                class="form-control max-wd-190 hg30 fl"
                                                                autocomplete="off" placeholder="1">
-                                                        <a href="javascript:void(0);" class="btn-mini"><i
+                                                        <a href="javascript:;" class="btn-mini"><i
                                                                     class="glyphicon glyphicon-search"></i></a>
                                                     </div>
                                                 </div>
@@ -293,7 +296,7 @@
                                                         <li data-id="103" data-name="Masentek"><em>M</em>Masentek</li>
                                                         <li data-id="102" data-name="欧亚马"><em>O</em>欧亚马</li>
                                                     </ul>
-                                                    <div class="brand-not" style="display: none;">没有符合"<strong></strong>"条件的品牌
+                                                    <div class="brand-not" style="display: none;">没有符合"<strong class="red"></strong>"条件的品牌
                                                     </div>
                                                 </div>
                                             </div>
@@ -801,7 +804,7 @@
                                                                autocomplete="off" maxlength="3">
                                                         <input type="hidden" value="643" name="img_id[]">
                                                     </div>
-                                                    <a href="javascript:void(0);" data-imgid="643" class="delete_img"><i
+                                                    <a href="javascript:;" data-imgid="643" class="delete_img"><i
                                                                 class="glyphicon glyphicon-trash"></i></a>
                                                 </div>
                                                 <div class="info">
@@ -816,11 +819,11 @@
                                     <div class="step-top-btn gallery-album clearfix" ectype="gallery_album_list"
                                          data-inid="addAlbumimg" data-act="gallery_album_list"
                                          style="position: relative;">
-                                        <a href="javascript:void(0);" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
+                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
                                            id="addImages" style="position: relative; z-index: 1;">
                                             <i class="glyphicon glyphicon-plus"></i>添加图片
                                         </a>
-                                        <a href="javascript:void(0);" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
+                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
                                            ectype="gallery_album" data-value="图片库选择">
                                             <i class="glyphicon glyphicon-plus"></i>图片库选择
                                         </a>
@@ -849,16 +852,60 @@
 @section('script')
     <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.config.js')}}"></script>
     <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.all.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
+    <script type="text/javascript"
+            src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
-        var ue = UE.getEditor('editor');
-        ue.ready(function () {
-            ue.setHeight(500);
-        });
-
-        $('#color-picker').colorpicker();
 
         $(function () {
+
+            $('body').on('click', function () {
+                $('.brand-select-container').hide();
+            });
+
+            var ue = UE.getEditor('editor');
+            ue.ready(function () {
+                ue.setHeight(500);
+            });
+
+            //选择颜色
+            $('#color-picker').colorpicker();
+            $('#color-picker').on('change', function () {
+                $(this).css('background', $(this).val());
+                $(this).css('color', '#fff');
+            });
+
+            //选择品牌
+            $('#brand_name').on('click', function (event) {
+                $('.brand-select-container').show();
+                event.stopPropagation();
+            });
+            $('.brand-select-container').on('click', function (event) {
+                event.stopPropagation();
+            });
+            $('.brand-top .letter ul li a').on('click', function () {
+                var letter = $(this).data('letter');
+                var param = {
+                    '_token': '{{csrf_token()}}',
+                    letter: letter
+                };
+                searchBrand(param, letter);
+            });
+            $('.btn-mini').on('click', function () {
+                var keywords = $('#search_brand_keyword').val();
+                if(keywords != ''){
+                    var param = {
+                        '_token': '{{csrf_token()}}',
+                        keywords: keywords
+                    };
+                    searchBrand(param, keywords);
+                }
+            });
+            $('.brand-list ul').on('click', 'li', function () {
+                $('.brand-select-container').hide();
+                $('#brand_name').val($(this).data('name'));
+                $('#brand_id').val($(this).data('id'));
+            });
+
             //第一步 选择模式
             $('.mos_item').on('click', function () {
                 $('.mos_item').removeClass('active');
@@ -1013,6 +1060,24 @@
                     $(this).removeClass('cur');
                 }
             })
+        }
+        
+        //品牌搜索
+        function searchBrand(param, keywords) {
+            $.post("{{url('admin/brand/search')}}", param, function (data) {
+                if(data.length > 0){
+                    $('.brand-not').hide();
+                    var html = '<li data-id="0" data-name="请选择品牌" class="blue cursor">取消选择</li>';
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<li data-id="' + data[i].id + '" data-name="' + data[i].brand_name + '"><em>' + data[i].brand_first_char + '</em>' + data[i].brand_name + '</li>'
+                    }
+                    $('.brand-list ul').html(html);
+                }else{
+                    $('.brand-list ul').html("");
+                    $('.brand-not').show();
+                    $('.brand-not strong').html(keywords);
+                }
+            });
         }
 
     </script>
