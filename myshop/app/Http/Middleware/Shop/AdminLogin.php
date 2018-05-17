@@ -10,14 +10,16 @@ class AdminLogin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
 //        !session('user');
-        if(!Cache::get('adminUser')){
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        if (!Cache::get('adminUser' . md5($ip) . $uid)) {
             return redirect('admin/login');
         }
         return $next($request);

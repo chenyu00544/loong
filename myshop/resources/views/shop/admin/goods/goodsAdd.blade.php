@@ -1,4 +1,7 @@
 @extends('shop.layouts.index')
+@section('css')
+    <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.css')}}">
+@endsection
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
@@ -159,10 +162,12 @@
                                         <div class="step-label">商品分类：</div>
                                         <div class="step-value">
                                             <span class="fl cate-name"></span>
-                                            <a href="javascript:;" class="edit-category" ectype="edit-category" onclick="step(2)">
+                                            <a href="javascript:;" class="edit-category" ectype="edit-category"
+                                               onclick="step(2)">
                                                 <i class="glyphicon glyphicon-edit"></i>
                                             </a>
-                                            <a href="javascript:;" class="category-dialog add-cate-extend" data-goods_id="0">添加扩展分类</a>
+                                            <a href="javascript:;" class="category-dialog add-cate-extend"
+                                               data-goods_id="0">添加扩展分类</a>
                                         </div>
                                     </div>
 
@@ -182,6 +187,8 @@
                                             <input type="text" name="goods_name"
                                                    class="form-control max-wd-350 hg30 fl "
                                                    autocomplete="off" value="">
+
+                                            <input id="color-picker" type="text" class="form-control max-wd-100 hg30 mar-left-20 fl" value="#000000"/>
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10"></div>
                                         </div>
@@ -842,11 +849,14 @@
 @section('script')
     <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.config.js')}}"></script>
     <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.all.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         var ue = UE.getEditor('editor');
         ue.ready(function () {
             ue.setHeight(500);
         });
+
+        $('#color-picker').colorpicker();
 
         $(function () {
             //第一步 选择模式
@@ -884,7 +894,7 @@
             $('.prev').on('click', function () {
                 step($(this).data('step'));
             });
-            
+
             //填写商品信息下一步
             $('.next').on('click', function () {
                 if ($(this).data('step') == 3 && $('input[name=cat_id]').val() <= 0) {
@@ -894,23 +904,23 @@
                 }
                 step($(this).data('step'));
             });
-            
+
             //点击设置步骤指示条
             $('.stepflex dl').on('click', function () {
-                if($(this).data('step') == 2 && $('input[name=goods_model]').val() == ''){
+                if ($(this).data('step') == 2 && $('input[name=goods_model]').val() == '') {
                     return;
                 }
 
-                if($(this).data('step') == 3 && $('input[name=cat_id]').val() <= 0){
+                if ($(this).data('step') == 3 && $('input[name=cat_id]').val() <= 0) {
                     return;
                 }
 
-                if($(this).data('step') == 4 && ($('input[name=goods_name]').val() == '')){
+                if ($(this).data('step') == 4 && ($('input[name=goods_name]').val() == '')) {
                     return;
                 }
                 step($(this).data('step'));
             });
-            
+
             //添加扩展分类
             $('.add-cate-extend').on('click', function () {
 
@@ -1004,7 +1014,7 @@
                 }
             })
         }
-        
+
     </script>
 @endsection
 @endsection
