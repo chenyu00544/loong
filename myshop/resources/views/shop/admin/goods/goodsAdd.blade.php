@@ -5,7 +5,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商品 - 添加新商品</div>
+        <div class="title">商品管理 - 添加新商品</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -580,7 +580,7 @@
                                                    class="form-control max-wd-350 hg30 fl "
                                                    autocomplete="off" value="0">
                                             <select name="weight_unit" id=""
-                                                    class="form-control max-wd-100 hg30 fl ft-12 mar-left-20">
+                                                    class="form-control max-wd-100 hg30 fl input-sm mar-left-20">
                                                 <option value="0.001">克</option>
                                                 <option value="1">千克</option>
                                             </select>

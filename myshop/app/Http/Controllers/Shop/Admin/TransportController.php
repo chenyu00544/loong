@@ -6,6 +6,7 @@ use App\Facades\Verifiable;
 use App\Repositories\RegionsRepository;
 use App\Repositories\TransportRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class TransportController extends CommonController
 {
@@ -57,9 +58,12 @@ class TransportController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $transportInfo = $this->transportRepository->getTransportInfo();
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        $userId = Cache::get('adminUser' . md5($ip) . $uid)->user_id;
+        $transportInfo = $this->transportRepository->getTransportInfo(0, $userId);
         return view('shop.admin.shipping.transportAdd', compact('transportInfo', 'regions'));
     }
 
@@ -97,9 +101,12 @@ class TransportController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $transportInfo = $this->transportRepository->getTransportInfo($id);
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        $userId = Cache::get('adminUser' . md5($ip) . $uid)->user_id;
+        $transportInfo = $this->transportRepository->getTransportInfo($id, $userId);
         return view('shop.admin.shipping.transportEdit', compact('transportInfo'));
     }
 

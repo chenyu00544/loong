@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\GalleryRepository;
 use Illuminate\Http\Request;
 
 class GalleryController extends CommonController
 {
-    public function __construct()
+    private $galleryRepository;
+
+    public function __construct(GalleryRepository $galleryRepository)
     {
         parent::__construct();
+        $this->galleryRepository = $galleryRepository;
     }
 
     /**
@@ -18,7 +22,9 @@ class GalleryController extends CommonController
      */
     public function index()
     {
-        //
+        $rank[1] = 10;
+        $gallerys = $this->galleryRepository->getGallerys();
+        return view('shop.admin.gallery.gallery', compact('rank', 'gallerys'));
     }
 
     /**
@@ -28,13 +34,13 @@ class GalleryController extends CommonController
      */
     public function create()
     {
-        //
+        return view('shop.admin.gallery.gallerAddy', compact());
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -45,18 +51,20 @@ class GalleryController extends CommonController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $rank[1] = 0;
+        $gallerys = $this->galleryRepository->getGallerys(['parent_album_id' => $id]);
+        return view('shop.admin.gallery.gallery', compact('rank', 'gallerys'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -67,8 +75,8 @@ class GalleryController extends CommonController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -79,7 +87,7 @@ class GalleryController extends CommonController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

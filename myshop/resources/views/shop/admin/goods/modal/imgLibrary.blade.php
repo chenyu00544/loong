@@ -3,7 +3,7 @@
     <body style="background-color: #fff;padding: 20px;">
     <div class="content-wrap">
         <div class="top">
-            <select class="form-control hg30 max-wd-190 mar-all-10 ft-12 fl">
+            <select class="form-control hg30 max-wd-190 mar-all-10 fl input-sm">
                 <option value="1">请选择</option>
             </select>
             <a href="javascript:;" class="btn btn-danger btn-sm mar-all-10 line-hg-20 lib-add fl">添加图库</a>

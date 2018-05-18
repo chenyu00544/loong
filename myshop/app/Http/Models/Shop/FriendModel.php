@@ -16,7 +16,7 @@ class FriendModel extends Model
         return $this->select($column)
             ->where($where)
             ->orderBy('show_order', 'asc')
-            ->paginate($size);;
+            ->paginate($size);
     }
 
     public function setFriend($where, $data)

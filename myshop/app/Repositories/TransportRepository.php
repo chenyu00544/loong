@@ -151,11 +151,8 @@ class TransportRepository implements TransportRepositoryInterface
         return $shippings;
     }
 
-    public function getTransportInfo($id = 0)
+    public function getTransportInfo($id = 0, $userId = 0)
     {
-        $adminUser = Cache::get('adminUser');
-        $userId = $adminUser->user_id;
-
         $extends = $this->transportExtendModel->getExtendAll(['ru_id' => 0, 'tid' => $id, 'admin_id' => $userId]);
         $regions = $this->regionsModel->getRegionsRange(1, 2);
         $regionArr = [];

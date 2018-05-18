@@ -7,6 +7,7 @@ use App\Repositories\AttributeRepository;
 use App\Repositories\GoodsTypeRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 
 class AttributeController extends CommonController
 {
@@ -33,12 +34,12 @@ class AttributeController extends CommonController
 
     public function change($id)
     {
-        
+
     }
 
     public function deleteAll($ids)
     {
-        
+
     }
 
     /**
@@ -46,9 +47,11 @@ class AttributeController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => session('user')->ru_id]);
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => Cache::get('adminUser' . md5($ip) . $uid)->ru_id]);
         return view('shop.admin.attribute.attributeAdd', compact('goodsTypes'));
     }
 
@@ -87,9 +90,11 @@ class AttributeController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => session('user')->ru_id]);
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => Cache::get('adminUser' . md5($ip) . $uid)->ru_id]);
         $attribute = $this->attributeRepository->getAttribute($id);
         return view('shop.admin.attribute.attributeEdit', compact('goodsTypes', 'attribute'));
     }

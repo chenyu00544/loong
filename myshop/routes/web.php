@@ -116,4 +116,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::post('friend/changes', 'FriendController@changes');
     Route::resource('friend', 'FriendController');
+
+    Route::post('gallery/changes', 'GalleryController@changes');
+    Route::resource('gallery', 'GalleryController');
 });

@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">图片库 - 编辑相册</div>
+        <div class="title">系统设置 - 友情链接</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -11,6 +11,7 @@
                 </div>
                 <ul>
                     <li>该页面展示所有友情链接信息列表。</li>
+                    <li>可点击链接进入相应网页，也可进行编辑或删除友情链接。</li>
                 </ul>
             </div>
             <div class="fromlist clearfix">

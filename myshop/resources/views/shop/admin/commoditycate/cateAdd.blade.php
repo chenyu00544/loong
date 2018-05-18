@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">系统设置 - 添加编辑分类</div>
+        <div class="title">商品分类 - 添加编辑分类</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -145,6 +145,7 @@
                             <div class="col-sm-4 control-label">&nbsp;</div>
                             <div class="">
                                 <input type="submit" value="　确定　" class="btn btn-danger">
+                                <a type="button" class="btn btn-default clearfix mar-left-20" href="javascript:history.go(-1)">返回</a>
                             </div>
                         </div>
                     </form>
