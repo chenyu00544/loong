@@ -35,12 +35,12 @@
                                     <dt class="cursor">2</dt>
                                     <dd class="s-text">选择商品分类</dd>
                                 </dl>
-                                <dl class="" data-step="3">
+                                <dl class="cur" data-step="3">
                                     <dt class="cursor">3</dt>
                                     <dd class="s-text">填写商品信息</dd>
                                 </dl>
                                 <dl class="last " data-step="4">
-                                    <dt class="pointer">4</dt>
+                                    <dt class="cursor">4</dt>
                                     <dd class="s-text">填写商品属性</dd>
                                 </dl>
                             </div>
@@ -175,7 +175,8 @@
                                         <div class="step-label">商品货号：</div>
                                         <div class="step-value">
                                             <input type="text" name="goods_sn" class="form-control max-wd-190 hg30 fl "
-                                                   autocomplete="off" onblur="checkGoodsSn(this.value,'0')" value="">
+                                                   autocomplete="off" onblur="checkGoodsSn(this.value,'0')" value=""
+                                                   placeholder="商品货号">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">如果您不输入商品货号，系统将自动生成一个唯一的货号。</div>
                                         </div>
@@ -186,10 +187,11 @@
                                         <div class="step-value">
                                             <input type="text" name="goods_name"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="">
+                                                   autocomplete="off" value="" placeholder="商品名称">
 
-                                            <input id="color-picker" type="text"
-                                                   class="form-control max-wd-100 hg30 mar-left-20 fl" value="#000000"/>
+                                            <input id="color-picker" type="text" name="goods_name_color"
+                                                   class="form-control max-wd-100 hg30 mar-left-20 fl" value="#000000"
+                                                   style="background: #000000;color: #ffffff;">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10"></div>
                                         </div>
@@ -199,9 +201,11 @@
                                         <div class="step-label">商品简单描述：</div>
                                         <div class="step-value">
                                         <textarea class="form-control max-wd-350" rows="5"
-                                                  name="goods_brief"></textarea>
+                                                  name="goods_brief" placeholder="商品简单描述"></textarea>
                                         </div>
                                     </div>
+
+                                    <input name="suppliers_id" type="hidden" value="0">
 
                                     <div class="item">
                                         <div class="step-label"><font class="red">*</font>出售价：</div>
@@ -257,8 +261,7 @@
                                                 <input type="text" id="brand_name"
                                                        class="form-control max-wd-190 hg30 fl" data-filter="brand_name"
                                                        autocomplete="off" value="请选择品牌" readonly="">
-                                                <a href="javascript:;" class="btn btn-info btn-sm mar-left-20"
-                                                   ectype="ajaxBrand">添加</a>
+                                                <a href="javascript:;" class="btn btn-info btn-sm mar-left-20 brand-add">添加</a>
                                                 <input type="hidden" name="brand_id" id="brand_id" value="0">
                                                 <div class="form_prompt"></div>
                                             </div>
@@ -283,7 +286,7 @@
                                                     <div class="b-search">
                                                         <input id="search_brand_keyword" type="text"
                                                                class="form-control max-wd-190 hg30 fl"
-                                                               autocomplete="off" placeholder="1">
+                                                               autocomplete="off" placeholder="品牌名">
                                                         <a href="javascript:;" class="btn-mini"><i
                                                                     class="glyphicon glyphicon-search"></i></a>
                                                     </div>
@@ -291,12 +294,16 @@
                                                 <div class="brand-list ps-container ps-active-y">
                                                     <ul>
                                                         <li data-id="0" data-name="请选择品牌" class="blue cursor">取消选择</li>
-                                                        <li data-id="204" data-name="金士顿"><em>J</em>金士顿</li>
-                                                        <li data-id="93" data-name="同庆和堂"><em>T</em>同庆和堂</li>
-                                                        <li data-id="103" data-name="Masentek"><em>M</em>Masentek</li>
-                                                        <li data-id="102" data-name="欧亚马"><em>O</em>欧亚马</li>
+                                                        @foreach($brands as $bVal)
+                                                            <li data-id="{{$bVal['id']}}"
+                                                                data-name="{{$bVal['brand_name']}}">
+                                                                <em>{{$bVal['brand_first_char']}}</em>{{$bVal['brand_name']}}
+                                                            </li>
+
+                                                        @endforeach
                                                     </ul>
-                                                    <div class="brand-not" style="display: none;">没有符合"<strong class="red"></strong>"条件的品牌
+                                                    <div class="brand-not" style="display: none;">没有符合"<strong
+                                                                class="red"></strong>"条件的品牌
                                                     </div>
                                                 </div>
                                             </div>
@@ -308,7 +315,8 @@
                                         <div class="step-value">
                                             <div id="goods-figure" class="update-images">
                                                 <div class="img">
-                                                    <img src="{{url('styles/admin/images/upload_images.jpg')}}">
+                                                    <img src="{{url('styles/admin/images/upload_images.jpg')}}"
+                                                         class="goods-img-show">
                                                 </div>
                                             </div>
                                             <div class="form_prompt">
@@ -319,9 +327,8 @@
                                             <input type="hidden" name="goods_thumb" value="">
                                             <div id="" class="moxie-shim moxie-shim-html5"
                                                  style="position: absolute; top: 0px; left: 0px; width: 100px; height: 100px; overflow: hidden; z-index: 0;">
-                                                <input id="" type="file"
-                                                       style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100px; height: 100px;"
-                                                       accept="image/jpeg,image/png,image/gif">
+                                                <input id="" type="file" name="goods_img_file"
+                                                       style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100px; height: 100px;">
                                             </div>
                                         </div>
                                     </div>
@@ -329,7 +336,7 @@
                                     <div class="item">
                                         <div class="step-label">　</div>
                                         <div class="step-value">
-                                            <a href="javascript:;" class="btn btn-primary btn-sm">图片库选择</a>
+                                            <a href="javascript:;" class="btn btn-primary btn-sm img-lib-main">图片库选择</a>
                                         </div>
                                     </div>
 
@@ -420,6 +427,7 @@
                                     <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
                                     <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
                                     <!--会员字段 预留↑-->
+
                                 </div>
                             </div>
 
@@ -855,7 +863,6 @@
     <script type="text/javascript"
             src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
-
         $(function () {
 
             $('body').on('click', function () {
@@ -892,7 +899,7 @@
             });
             $('.btn-mini').on('click', function () {
                 var keywords = $('#search_brand_keyword').val();
-                if(keywords != ''){
+                if (keywords != '') {
                     var param = {
                         '_token': '{{csrf_token()}}',
                         keywords: keywords
@@ -905,6 +912,44 @@
                 $('#brand_name').val($(this).data('name'));
                 $('#brand_id').val($(this).data('id'));
             });
+
+            //添加品牌
+            $(".brand-add").on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['1100px', '600px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '添加品牌',
+                    content: ["{{url('admin/brand/create')}}"],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+
+            //直接选择图片
+            $("input[name=goods_img_file]").on('change', function () {
+                var objUrl = getImageURL(this.files[0]);
+                if (objUrl) {
+                    $(".goods-img-show").attr("src", objUrl);
+                }
+            });
+
+            //图片库选择图片
+            $('.img-lib-main').on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['800px', '540px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '图片库选择图片',
+                    content: ["{{url('admin/goods/imagelibrary')}}", 'no'],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            })
 
             //第一步 选择模式
             $('.mos_item').on('click', function () {
@@ -1061,18 +1106,18 @@
                 }
             })
         }
-        
+
         //品牌搜索
         function searchBrand(param, keywords) {
             $.post("{{url('admin/brand/search')}}", param, function (data) {
-                if(data.length > 0){
+                if (data.length > 0) {
                     $('.brand-not').hide();
                     var html = '<li data-id="0" data-name="请选择品牌" class="blue cursor">取消选择</li>';
                     for (var i = 0; i < data.length; i++) {
                         html += '<li data-id="' + data[i].id + '" data-name="' + data[i].brand_name + '"><em>' + data[i].brand_first_char + '</em>' + data[i].brand_name + '</li>'
                     }
                     $('.brand-list ul').html(html);
-                }else{
+                } else {
                     $('.brand-list ul').html("");
                     $('.brand-not').show();
                     $('.brand-not strong').html(keywords);

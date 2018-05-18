@@ -55,10 +55,10 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function getGroupsConfig($groups)
     {
-        $item_list = $this->shopConfigModel->getGroupsConfig($groups);
+        $item_list = $this->shopConfigModel->getGroupsConfig(['shop_group' => $groups]);
 
         /* 整理数据 */
-        $code_arr = array('shop_logo', 'no_picture', 'watermark', 'shop_slagon', 'wap_logo', 'two_code_logo', 'ectouch_qrcode', 'ecjia_qrcode', 'index_down_logo', 'site_commitment', 'user_login_logo', 'login_logo_pic', 'business_logo');
+        $code_arr = array('shop_logo', 'no_picture', 'watermark', 'shop_slagon', 'wap_logo', 'two_code_logo', 'ectouch_qrcode', 'ecjia_qrcode', 'index_down_logo', 'site_commitment', 'user_login_logo', 'login_logo_pic', 'business_logo', 'no_brand');
 
         $lang = LangConfig::LangAdminShopConf();
         $group_list = [];
@@ -159,7 +159,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             //运费
             $transportColumns = ['tid', 'ru_id', 'freight_type'];
             $transportFormat = [];
-            if ($transports = $this->transportModel->getTransportAll([],$transportColumns)->toArray()) {
+            if ($transports = $this->transportModel->getTransportAll([], $transportColumns)->toArray()) {
                 foreach ($transports as $tVal) {
                     $transportFormat[$tVal['tid']] = ['business_id' => $tVal['ru_id'], 'freight_type' => $tVal['freight_type']];
                 }
@@ -300,7 +300,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     public function getCateExtend($id)
     {
         $where['goods_id'] = $id;
-        $re =  $this->goodsCateModel->getGoodsCates($where);
+        $re = $this->goodsCateModel->getGoodsCates($where);
         return $re;
     }
 

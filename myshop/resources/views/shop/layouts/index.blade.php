@@ -16,15 +16,15 @@
 </head>
 <body>
 @yield('content')
-<script src="{{asset('styles/plugin/jquery/jquery.min.js')}}"></script>
-<script src="{{asset('styles/plugin/bootstrap/static/bootstrap.min.js')}}"></script>
-<script src="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.js')}}"></script>
-<script src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal.custom.js')}}"></script>
-<script src="{{asset('styles/plugin/layer/layer.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/plugin/jquery/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/plugin/bootstrap/static/bootstrap.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal.custom.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/plugin/layer/layer.js')}}"></script>
 <!--[if IE 6]>
-<script src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal-ie6.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal-ie6.js')}}"></script>
 <![endif]-->
-<script src="{{asset('styles/admin/js/main.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/admin/js/main.js')}}"></script>
 @yield('script')
 </body>
 </html>

@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 11/05/2018 23:16:10
+ Date: 18/05/2018 16:37:44
 */
 
 SET NAMES utf8mb4;
@@ -137,110 +137,110 @@ CREATE TABLE `cyc_brand`  (
   INDEX `is_show`(`is_show`) USING BTREE,
   INDEX `audit_status`(`audit_status`) USING BTREE,
   INDEX `brand_name`(`brand_name`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 212 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品品牌表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 100 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品品牌表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_brand
 -- ----------------------------
-INSERT INTO `cyc_brand` VALUES (105, '玛克家纺', 'MCOBEAM', 'M', '1490072971610241726.jpg', '1490038296899759540.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (104, '亨泰尔克', 'HT.ARCO', 'H', '1490072960700684863.jpg', '1490038910658692549.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (103, 'Masentek', 'Masentek', 'M', '1490072950580851309.jpg', '1490043826122654645.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (102, '欧亚马', 'OYAMA', 'O', '1490072941526335126.jpg', '1490044086783065993.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (101, '皮克朋', 'PicoBong', 'P', '1490072931218635674.jpg', '1490044357440635685.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (100, '乔山', 'Rojo', 'Q', '1490072918339853569.jpg', '1490044480131227915.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (99, '火枫', 'fire-maple', 'H', '1490072908772672788.jpg', '1490044780080008048.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (98, '皮尔瑜伽', 'pieryoga', 'P', '1490072898345358625.jpg', '1490045276588342493.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (97, '斯伯丁', 'SPALDING', 'S', '1490072889090025069.jpg', '1490045491497826720.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (96, '金史密斯', 'KINGSMITH', 'J', '1490072879222701895.jpg', '1490046065031579649.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (95, 'BH (必艾奇)', 'BH', 'B', '1490072870537181142.jpg', '1490046204739239934.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (94, '乐力', 'Osteoform', 'L', '1490072860522023692.jpg', '1490046311526576371.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (93, '同庆和堂', 'TONGQINGHETANG', 'T', '1490072850306019115.jpg', '1490035744332013781.jpg', '', '', 'http://', 1, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (92, '一品玉', 'yipingyu', 'Y', '1490072835176110718.jpg', '1490046673204494815.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (91, '金奥力', 'kingoly', 'J', '1490072823106532144.jpg', '1490046798791290895.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (90, '北大荒', 'beidahuang', 'B', '1490072813729175306.jpg', '1490046893923995578.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (89, '健安喜', 'GNC', 'J', '1490072804442637685.jpg', '1490047047523828142.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (88, '养生堂', 'YST', 'Y', '1490072787223453617.jpg', '1490047119451779151.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (87, '汤臣倍健', 'TangChen', 'T', '1490072777790374054.jpg', '1490035956569198943.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (86, '康比特', 'CPT', 'K', '1490072765604121481.jpg', '1490047319113360193.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (85, '喜瑞', 'XIRI', 'X', '1490072756032175204.jpg', '1490047441388009467.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (84, '同仁堂', 'TRT', 'T', '1490072746651935979.jpg', '1490047669368343638.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (82, '李宁', 'LiNing', 'L', '1490072694695600078.jpg', '1490047751182198917.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (81, '宝姿', 'PORTS', 'B', '1490072685002270742.jpg', '1490047857044610886.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (80, 'Dior', 'Dior', 'D', '1490072417755830176.jpg', '1490047937765033207.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (79, 'justyle', 'justyle', 'J', '1490072677495061584.jpg', '1490048046384195778.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (78, '猫人', '猫人', 'M', '1490072399542595828.jpg', '1490219134284444948.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (77, '阿迪达斯', '阿迪达斯', 'A', '1490072384627679069.jpg', '1490219016634946053.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (76, '金利来', '金利来', 'J', '1490072373278367315.jpg', '1490219223517648103.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (75, '佐丹奴', '佐丹奴', 'Z', '1490072358487439203.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (74, '梦特娇', '梦特娇', 'M', '1490072344340492758.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (73, '她他/tata', '她他/tata', 'T', '1490072329183966195.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (72, 'ELLE HOME', 'ELLE HOME', 'E', '1490072313895957648.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (83, '白兰氏', '白兰氏', 'B', '1490072728394097278.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (71, 'esprit', 'esprit', 'E', '1490071974970349584.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (106, '开普特', '开普特', 'K', '1490072981305868823.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (107, '三星', '三星', 'S', '1490072993409028193.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (108, '苹果', '苹果', 'P', '1490073009638652059.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (109, '诺基亚', '诺基亚', 'N', '1490074056964147533.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (110, '松下电器', '松下电器', 'S', '1490074043963552715.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (111, '摩托罗拉', '摩托罗拉', 'M', '1490073041519800299.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (112, '海信', '海信', 'H', '1490073055877435308.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (113, 'LG', 'LG', 'L', '1490074030328949587.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (114, '海尔', '海尔', 'H', '1490074021871491604.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (115, '西门子', '西门子', 'X', '1490074006660107941.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (116, '伊莱克斯', '伊莱克斯', 'Y', '1490073109529817869.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (117, '阿尔卡特', '阿尔卡特', 'A', '1490073123533047769.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (118, 'HTC', 'HTC', 'H', '1490073993393817822.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (122, 'Five Plus', 'Five Plus', 'F', '1490073982547710498.jpg', '1490036116716116963.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (124, '亿健', 'YiJian', 'Y', '1490073971637187496.jpg', '1490036245441852571.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (125, '华为', 'HUAWEI', 'H', '1490073960166035363.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (126, '戴尔', 'DELL', 'D', '1490073943918274561.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (190, '火星', 'huoxing', 'H', '1490171606054909832.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (129, 'NINE WEST', 'NINE WEST', 'N', '1490073930435480283.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (130, 'TP-LINL', 'TP-LINL', 'T', '1490074180745676140.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (131, 'ZIPPO', 'ZIPPO', 'Z', '1490073919711003101.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (132, '阿玛尼', '阿玛尼', 'A', '1490073900838296364.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (134, '帮宝适', '帮宝适', 'B', '1490075108722576375.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (136, '博时基金', 'BSJJ', 'B', '1490227517695746097.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (137, '达利园', '达利园', 'D', '1490073731822160672.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (138, '迪士尼', '迪士尼', 'D', '1490073717776504773.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (139, '飞科', '飞科', 'F', '1490073705755280994.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (140, '飞利浦', '飞利浦', 'F', '1490073692774466710.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (141, '钙尔奇', '钙尔奇', 'G', '1490074990110164877.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (142, '哥弟', '哥弟', 'G', '1490073675778205608.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (143, '工银瑞信', '工银瑞信', 'G', '1490073661335207841.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (144, '海飞丝', '海飞丝', 'H', '1490073648356663196.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (145, '海富通基金', '海富通基金', 'H', '1490227603513332911.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (147, '合生元', '合生元', 'H', '1490073616154966189.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (148, '宏基', '宏基', 'H', '1490073603108687350.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (149, '鸿星尔克', '鸿星尔克', 'H', '1490073591535005714.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (150, '华帝', '华帝', 'H', '1490073577683159021.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (151, '姬芮', '姬芮', 'J', '1490073561018734078.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (152, '杰克琼斯', 'JACK&JONES', 'J', '1490228100138579787.jpg', '1490036369827611872.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (153, '康恩贝', '康恩贝', 'K', '1490073539440462760.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (154, '匡威', '匡威', 'K', '1490073529881448780.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (155, '兰蔻', '兰蔻', 'L', '1490073518703639070.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (156, '狼爪', 'Jack Wolfskin', 'L', '1490073454678614186.jpg', '1490036554713762994.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (157, '李医生', '李医生', 'L', '1490227784119952387.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (158, '立邦', 'LB', 'L', '1490227986732712711.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (159, '麦斯威尔', 'MSWE', 'M', '1490228075580091113.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (160, '美的', '美的', 'M', '1490074901892372216.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (163, '魅族', '魅族', 'Z', '1490073359611343586.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (164, '耐克', '耐克', 'N', '1490073338357697604.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (166, '七匹狼', '七匹狼', 'Q', '1490073324022460149.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (167, '千趣会', 'qqh', 'Q', '1490228189687101120.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (176, '途牛', '途牛', 'T', '1490075080126940602.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (178, '文轩网', '文轩网', 'W', '1490073253749057076.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (180, '小米', 'mi', 'X', '1490073240845049320.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (186, '新百伦', 'NB', 'X', '1490074308773778697.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (188, '戴尔-世纪笔记本', 'SHIJI-DELL', 'D', '1490171966221080254.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (189, '佳沪数码-华为', 'JIAHUSHUMA', 'J', '1490171981556005380.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (192, '磨铁图书', 'motie', 'M', '1490228262050567438.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (194, '乐视', 'Letv', 'L', '1490044781505183303.jpg', '1490037447353858744.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (195, '佳能', 'Canon', 'J', '1490075385239594909.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (200, '海贼王', 'One Piece', 'H', '1490074447209712752.jpg', '1490037939143391950.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (203, '金龙鱼', 'Jinlongyu', 'J', '1490228332533535072.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (204, '金士顿', 'Kingston', 'J', '1490039286075654490.jpg', '1490035495833315825.jpg', '', '', 'http://', 2, 1, 0, 1, '', 0);
-INSERT INTO `cyc_brand` VALUES (209, '佳能影像', 'Canon', 'J', '1490075378902486254.jpg', '1490038068363830939.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (35, '玛克家纺', 'MCOBEAM', 'M', '1490072971610241726.jpg', '1490038296899759540.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (34, '亨泰尔克', 'HT.ARCO', 'H', '1490072960700684863.jpg', '1490038910658692549.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (33, 'Masentek', 'Masentek', 'M', '1490072950580851309.jpg', '1490043826122654645.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (32, '欧亚马', 'OYAMA', 'O', '1490072941526335126.jpg', '1490044086783065993.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (31, '皮克朋', 'PicoBong', 'P', '1490072931218635674.jpg', '1490044357440635685.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (30, '乔山', 'Rojo', 'Q', '1490072918339853569.jpg', '1490044480131227915.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (29, '火枫', 'fire-maple', 'H', '1490072908772672788.jpg', '1490044780080008048.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (28, '皮尔瑜伽', 'pieryoga', 'P', '1490072898345358625.jpg', '1490045276588342493.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (27, '斯伯丁', 'SPALDING', 'S', '1490072889090025069.jpg', '1490045491497826720.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (26, '金史密斯', 'KINGSMITH', 'J', '1490072879222701895.jpg', '1490046065031579649.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (25, 'BH (必艾奇)', 'BH', 'B', '1490072870537181142.jpg', '1490046204739239934.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (24, '乐力', 'Osteoform', 'L', '1490072860522023692.jpg', '1490046311526576371.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (23, '同庆和堂', 'TONGQINGHETANG', 'T', '1490072850306019115.jpg', '1490035744332013781.jpg', '', '', 'http://', 1, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (22, '一品玉', 'yipingyu', 'Y', '1490072835176110718.jpg', '1490046673204494815.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (21, '金奥力', 'kingoly', 'J', '1490072823106532144.jpg', '1490046798791290895.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (20, '北大荒', 'beidahuang', 'B', '1490072813729175306.jpg', '1490046893923995578.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (19, '健安喜', 'GNC', 'J', '1490072804442637685.jpg', '1490047047523828142.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (18, '养生堂', 'YST', 'Y', '1490072787223453617.jpg', '1490047119451779151.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (17, '汤臣倍健', 'TangChen', 'T', '1490072777790374054.jpg', '1490035956569198943.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (16, '康比特', 'CPT', 'K', '1490072765604121481.jpg', '1490047319113360193.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (15, '喜瑞', 'XIRI', 'X', '1490072756032175204.jpg', '1490047441388009467.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (14, '同仁堂', 'TRT', 'T', '1490072746651935979.jpg', '1490047669368343638.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (12, '李宁', 'LiNing', 'L', '1490072694695600078.jpg', '1490047751182198917.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (11, '宝姿', 'PORTS', 'B', '1490072685002270742.jpg', '1490047857044610886.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (10, 'Dior', 'Dior', 'D', '1490072417755830176.jpg', '1490047937765033207.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (9, 'justyle', 'justyle', 'J', '1490072677495061584.jpg', '1490048046384195778.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (8, '猫人', '猫人', 'M', '1490072399542595828.jpg', '1490219134284444948.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (7, '阿迪达斯', '阿迪达斯', 'A', '1490072384627679069.jpg', '1490219016634946053.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (6, '金利来', '金利来', 'J', '1490072373278367315.jpg', '1490219223517648103.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (5, '佐丹奴', '佐丹奴', 'Z', '1490072358487439203.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (4, '梦特娇', '梦特娇', 'M', '1490072344340492758.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (3, '她他/tata', '她他/tata', 'T', '1490072329183966195.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (2, 'ELLE HOME', 'ELLE HOME', 'E', '1490072313895957648.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (13, '白兰氏', '白兰氏', 'B', '1490072728394097278.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (1, 'esprit', 'esprit', 'E', '1490071974970349584.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (36, '开普特', '开普特', 'K', '1490072981305868823.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (37, '三星', '三星', 'S', '1490072993409028193.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (38, '苹果', '苹果', 'P', '1490073009638652059.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (39, '诺基亚', '诺基亚', 'N', '1490074056964147533.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (40, '松下电器', '松下电器', 'S', '1490074043963552715.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (41, '摩托罗拉', '摩托罗拉', 'M', '1490073041519800299.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (42, '海信', '海信', 'H', '1490073055877435308.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (43, 'LG', 'LG', 'L', '1490074030328949587.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (44, '海尔', '海尔', 'H', '1490074021871491604.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (45, '西门子', '西门子', 'X', '1490074006660107941.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (46, '伊莱克斯', '伊莱克斯', 'Y', '1490073109529817869.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (47, '阿尔卡特', '阿尔卡特', 'A', '1490073123533047769.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (48, 'HTC', 'HTC', 'H', '1490073993393817822.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (49, 'Five Plus', 'Five Plus', 'F', '1490073982547710498.jpg', '1490036116716116963.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (50, '亿健', 'YiJian', 'Y', '1490073971637187496.jpg', '1490036245441852571.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (51, '华为', 'HUAWEI', 'H', '1490073960166035363.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (52, '戴尔', 'DELL', 'D', '1490073943918274561.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (92, '火星', 'huoxing', 'H', '1490171606054909832.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (53, 'NINE WEST', 'NINE WEST', 'N', '1490073930435480283.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (54, 'TP-LINL', 'TP-LINL', 'T', '1490074180745676140.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (55, 'ZIPPO', 'ZIPPO', 'Z', '1490073919711003101.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (56, '阿玛尼', '阿玛尼', 'A', '1490073900838296364.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (57, '帮宝适', '帮宝适', 'B', '1490075108722576375.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (58, '博时基金', 'BSJJ', 'B', '1490227517695746097.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (59, '达利园', '达利园', 'D', '1490073731822160672.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (60, '迪士尼', '迪士尼', 'D', '1490073717776504773.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (61, '飞科', '飞科', 'F', '1490073705755280994.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (62, '飞利浦', '飞利浦', 'F', '1490073692774466710.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (63, '钙尔奇', '钙尔奇', 'G', '1490074990110164877.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (64, '哥弟', '哥弟', 'G', '1490073675778205608.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (65, '工银瑞信', '工银瑞信', 'G', '1490073661335207841.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (66, '海飞丝', '海飞丝', 'H', '1490073648356663196.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (67, '海富通基金', '海富通基金', 'H', '1490227603513332911.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (68, '合生元', '合生元', 'H', '1490073616154966189.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (69, '宏基', '宏基', 'H', '1490073603108687350.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (70, '鸿星尔克', '鸿星尔克', 'H', '1490073591535005714.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (71, '华帝', '华帝', 'H', '1490073577683159021.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (72, '姬芮', '姬芮', 'J', '1490073561018734078.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (73, '杰克琼斯', 'JACK&JONES', 'J', '1490228100138579787.jpg', '1490036369827611872.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (74, '康恩贝', '康恩贝', 'K', '1490073539440462760.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (75, '匡威', '匡威', 'K', '1490073529881448780.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (76, '兰蔻', '兰蔻', 'L', '1490073518703639070.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (77, '狼爪', 'Jack Wolfskin', 'L', '1490073454678614186.jpg', '1490036554713762994.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (78, '李医生', '李医生', 'L', '1490227784119952387.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (79, '立邦', 'LB', 'L', '1490227986732712711.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (80, '麦斯威尔', 'MSWE', 'M', '1490228075580091113.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (81, '美的', '美的', 'M', '1490074901892372216.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (82, '魅族', '魅族', 'Z', '1490073359611343586.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (83, '耐克', '耐克', 'N', '1490073338357697604.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (84, '七匹狼', '七匹狼', 'Q', '1490073324022460149.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (85, '千趣会', 'qqh', 'Q', '1490228189687101120.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (86, '途牛', '途牛', 'T', '1490075080126940602.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (87, '文轩网', '文轩网', 'W', '1490073253749057076.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (88, '小米', 'mi', 'X', '1490073240845049320.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (89, '新百伦', 'NB', 'X', '1490074308773778697.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (90, '戴尔-世纪笔记本', 'SHIJI-DELL', 'D', '1490171966221080254.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (91, '佳沪数码-华为', 'JIAHUSHUMA', 'J', '1490171981556005380.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (93, '磨铁图书', 'motie', 'M', '1490228262050567438.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (94, '乐视', 'Letv', 'L', '1490044781505183303.jpg', '1490037447353858744.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (95, '佳能', 'Canon', 'J', '1490075385239594909.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (96, '海贼王', 'One Piece', 'H', '1490074447209712752.jpg', '1490037939143391950.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (97, '金龙鱼', 'Jinlongyu', 'J', '1490228332533535072.jpg', '', '', '', 'http://', 50, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (98, '金士顿', 'Kingston', 'J', '1490039286075654490.jpg', '1490035495833315825.jpg', '', '', 'http://', 2, 1, 0, 1, '', 0);
+INSERT INTO `cyc_brand` VALUES (99, '佳能影像', 'Canon', 'J', '1490075378902486254.jpg', '1490038068363830939.jpg', '', '', 'http://', 50, 1, 0, 1, '', 0);
 
 -- ----------------------------
 -- Table structure for cyc_category
@@ -319,8 +319,44 @@ CREATE TABLE `cyc_friend_link`  (
 -- ----------------------------
 -- Records of cyc_friend_link
 -- ----------------------------
-INSERT INTO `cyc_friend_link` VALUES (1, '唯C海购', 'http://www.shuangchome.com/', 'upload/friend_logo/fdf21a32e12c4745ac03f1ed77663fdd.jpg', 1);
+INSERT INTO `cyc_friend_link` VALUES (1, '唯C海购', 'http://www.shuangchome.com/', 'upload\\friend_logo\\a91ea73c2d8a8813c453f627ffd44dce.png', 1);
 INSERT INTO `cyc_friend_link` VALUES (2, '百度', 'https://www.baidu.com/', 'upload/friend_logo/4b5a0b65b4f8ae87f7e6d0f59e986ded.gif', 2);
+
+-- ----------------------------
+-- Table structure for cyc_gallery_album
+-- ----------------------------
+DROP TABLE IF EXISTS `cyc_gallery_album`;
+CREATE TABLE `cyc_gallery_album`  (
+  `album_id` int(10) NOT NULL AUTO_INCREMENT,
+  `parent_album_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `ru_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `album_mame` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `album_cover` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `album_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `sort_order` tinyint(1) UNSIGNED NOT NULL DEFAULT 50,
+  `add_time` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`album_id`) USING BTREE,
+  INDEX `parent_album_id`(`parent_album_id`) USING BTREE,
+  INDEX `ru_id`(`ru_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1074 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '相册分类' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cyc_gallery_album
+-- ----------------------------
+INSERT INTO `cyc_gallery_album` VALUES (1, 0, 0, '首页可视化', '', '', 50, 1494984852);
+INSERT INTO `cyc_gallery_album` VALUES (2, 0, 0, '首页', '', '', 50, 1505340610);
+INSERT INTO `cyc_gallery_album` VALUES (3, 0, 0, '二级页面', '', '', 50, 1505340632);
+INSERT INTO `cyc_gallery_album` VALUES (4, 0, 0, 'pc首页', '', '', 50, 1508713419);
+INSERT INTO `cyc_gallery_album` VALUES (5, 3, 0, '淑女馆', '', '', 50, 1521336066);
+INSERT INTO `cyc_gallery_album` VALUES (6, 3, 0, '绅士馆', '', '', 50, 1521336075);
+INSERT INTO `cyc_gallery_album` VALUES (7, 3, 0, '女装', '', '', 50, 1521336252);
+INSERT INTO `cyc_gallery_album` VALUES (8, 3, 0, '男装', '', '', 50, 1521336259);
+INSERT INTO `cyc_gallery_album` VALUES (9, 3, 0, '女包', '', '', 50, 1521336268);
+INSERT INTO `cyc_gallery_album` VALUES (10, 3, 0, '男包', '', '', 50, 1521336287);
+INSERT INTO `cyc_gallery_album` VALUES (11, 3, 0, '女鞋', '', '', 50, 1521336298);
+INSERT INTO `cyc_gallery_album` VALUES (12, 3, 0, '男鞋', '', '', 50, 1521336305);
+INSERT INTO `cyc_gallery_album` VALUES (13, 3, 0, '美妆', '', '', 50, 1521336315);
+INSERT INTO `cyc_gallery_album` VALUES (14, 3, 0, '母婴', '', '', 50, 1521336323);
 
 -- ----------------------------
 -- Table structure for cyc_goods
@@ -715,7 +751,7 @@ INSERT INTO `cyc_goods` VALUES (883, 1333, 48, 10, 'ECS000883', '', '杜蕾斯�
 INSERT INTO `cyc_goods` VALUES (884, 898, 49, 9, 'ECS000884', '', '美宝莲 宝蓓爱炫彩护唇膏 润唇膏 波普风 保湿滋润 显色丰润 一扫唇色暗沉 卖萌必备', '+', 2, 81, '', 1000, 0.000, 0, 34.80, 0.00, 29.00, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490224263857.jpg', 'images/201703/goods_img/0_G_1490224263978.jpg', 'images/201703/source_img/0_G_1490224263237.jpg', 1, '', 1, 1, 0, 0, 1490224268, 100, 1, 0, 0, 0, 0, 0, 0, NULL, 0, 1490224268, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'meibaolian baoaicaihuchungao runchungao bopufeng baoshizirun xiansefengrun yisaochunseanchen maimengbibei', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 8, 'products', 0, 0.00, 0.00, '', 0.00, 0);
 INSERT INTO `cyc_goods` VALUES (885, 898, 49, 9, 'ECS000885', '', '美宝莲宝蓓护唇膏 宝贝护唇膏 润唇膏 唇彩口红保湿 滋润', '+', 3, 81, '', 1000, 0.000, 0, 28.79, 0.00, 24.00, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490224291051.jpg', 'images/201703/goods_img/0_G_1490224291042.jpg', 'images/201703/source_img/0_G_1490224291858.jpg', 1, '', 1, 1, 0, 0, 1490224297, 100, 1, 0, 0, 0, 0, 0, 0, NULL, 0, 1490224297, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'meibaolianbaohuchungao baobeihuchungao runchungao chuncaikouhongbaoshi zirun', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 8, 'products', 0, 0.00, 0.00, '', 0.00, 0);
 INSERT INTO `cyc_goods` VALUES (886, 898, 49, 9, 'ECS000886', '', 'Maybelline/美宝莲净澈多效卸妆水清爽型 舒缓 深层清洁 舒缓 补水 深层清洁 卸妆', '+', 3, 81, '', 1000, 0.000, 0, 118.80, 0.00, 99.00, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490224320245.jpg', 'images/201703/goods_img/0_G_1490224320138.jpg', 'images/201703/source_img/0_G_1490224320418.jpg', 1, '', 1, 1, 0, 0, 1490224323, 100, 1, 0, 0, 0, 0, 0, 0, NULL, 0, 1490224323, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'Maybelline/meibaolianjingcheduoxiaoxiezhuangshuiqingshuangxing shuhuan shencengqingjie shuhuan bushui shencengqingjie xiezhuang', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 8, 'products', 0, 0.00, 0.00, '', 0.00, 0);
-INSERT INTO `cyc_goods` VALUES (887, 898, 49, 9, 'ECS000887', '', '美宝莲 色秀指甲油 糖果色 专业彩妆美甲 专柜正品 绚丽色彩 多色可选', '+', 6, 81, '', 1000, 0.000, 0, 34.80, 0.00, 29.00, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490224351677.jpg', 'images/201703/goods_img/0_G_1490224351590.jpg', 'images/201703/source_img/0_G_1490224351657.jpg', 1, '', 1, 1, 0, 0, 1490224354, 100, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 1490899674, 0, '', 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 2, '审核未通过', '', 0, 0, 0, 0, 0, 0, 0.00, 'meibaolian sexiuzhijiayou tangguose zhuanyecaizhuangmeijia zhuanguizhengpin xuanlisecai duosekexuan', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 8, 'products', 0, 0.00, 0.00, '', 0.00, 0);
+INSERT INTO `cyc_goods` VALUES (887, 898, 49, 9, 'ECS000887', '', '美宝莲 色秀指甲油 糖果色 专业彩妆美甲 专柜正品 绚丽色彩 多色可选', '+', 6, 81, '', 1000, 0.000, 0, 34.80, 0.00, 29.00, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490224351677.jpg', 'images/201703/goods_img/0_G_1490224351590.jpg', 'images/201703/source_img/0_G_1490224351657.jpg', 1, '', 1, 1, 0, 0, 1490224354, 100, 0, 1, 1, 1, 0, 0, 0, NULL, 0, 1490899674, 0, '', 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 2, '审核未通过', '', 0, 0, 0, 0, 0, 0, 0.00, 'meibaolian sexiuzhijiayou tangguose zhuanyecaizhuangmeijia zhuanguizhengpin xuanlisecai duosekexuan', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 8, 'products', 0, 0.00, 0.00, '', 0.00, 0);
 INSERT INTO `cyc_goods` VALUES (888, 898, 49, 9, 'ECS000888', '', '美宝莲 精纯矿物专业彩妆化妆刷 散粉刷 腮红刷 粉底刷 山羊毛 专业彩妆化妆刷', '+', 4, 81, '', 1000, 0.000, 0, 23.88, 0.00, 19.90, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490224379045.jpg', 'images/201703/goods_img/0_G_1490224379217.jpg', 'images/201703/source_img/0_G_1490224379663.jpg', 1, '', 1, 1, 0, 0, 1490224383, 100, 1, 0, 0, 0, 0, 0, 0, NULL, 0, 1490224383, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'meibaolian jingchunkuangwuzhuanyecaizhuanghuazhuangshua sanfenshua saihongshua fendishua shanyangmao zhuanyecaizhuanghuazhuangshua', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 8, 'products', 0, 0.00, 0.00, '', 0.00, 0);
 INSERT INTO `cyc_goods` VALUES (889, 898, 49, 9, 'ECS000889', '', '美宝莲 奇妙净颜盈润洁面膏100ml 保湿 控油 滋润 祛除多余油脂 不干燥 不紧绷', '+', 2, 81, '', 1000, 0.000, 0, 58.80, 0.00, 49.00, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490224406928.jpg', 'images/201703/goods_img/0_G_1490224406873.jpg', 'images/201703/source_img/0_G_1490224406995.jpg', 1, '', 1, 1, 0, 0, 1490224411, 100, 1, 0, 0, 0, 0, 0, 0, NULL, 0, 1490224411, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'meibaolian qimiaojingyanyingrunjiemiangao100ml baoshi kongyou zirun chuduoyuyouzhi buganzao bujinbeng', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 8, 'products', 0, 0.00, 0.00, '', 0.00, 0);
 INSERT INTO `cyc_goods` VALUES (890, 898, 49, 9, 'ECS000890', '', '美宝莲 顺滑恒久眉笔流畅线条 利落型眉 可长久持妆 新品上市 流畅线条 利落型眉 长效持妆', '+', 4, 81, '', 1000, 0.000, 0, 58.80, 0.00, 49.00, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490224435682.jpg', 'images/201703/goods_img/0_G_1490224435572.jpg', 'images/201703/source_img/0_G_1490224435363.jpg', 1, '', 1, 1, 0, 0, 1490224440, 100, 1, 0, 0, 0, 0, 0, 0, NULL, 0, 1490224440, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'meibaolian shunhuahengjiumeibiliuchangxiantiao liluoxingmei kechangjiuchizhuang xinpinshangshi liuchangxiantiao liluoxingmei changxiaochizhuang', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 8, 'products', 0, 0.00, 0.00, '', 0.00, 0);
@@ -794,6 +830,8 @@ CREATE TABLE `cyc_goods_cate`  (
 -- ----------------------------
 -- Records of cyc_goods_cate
 -- ----------------------------
+INSERT INTO `cyc_goods_cate` VALUES (0, 16);
+INSERT INTO `cyc_goods_cate` VALUES (0, 17);
 INSERT INTO `cyc_goods_cate` VALUES (620, 205);
 
 -- ----------------------------
@@ -5718,15 +5756,15 @@ INSERT INTO `cyc_goods_extend` VALUES (4941, 7007, 0, 0, 0, '', '', '', '', '', 
 DROP TABLE IF EXISTS `cyc_goods_gallery`;
 CREATE TABLE `cyc_goods_gallery`  (
   `img_id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `goods_id` mediumint(8) UNSIGNED NOT NULL DEFAULT 0,
-  `img_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `img_desc` smallint(4) NOT NULL DEFAULT 100,
-  `thumb_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `img_original` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `single_id` mediumint(8) NULL DEFAULT NULL,
-  `external_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `front_cover` tinyint(2) NULL DEFAULT NULL,
-  `dis_id` mediumint(8) NULL DEFAULT NULL,
+  `goods_id` mediumint(8) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品ID',
+  `img_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '实际图片url',
+  `img_desc` smallint(4) NOT NULL DEFAULT 100 COMMENT '图片说明信息',
+  `thumb_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '缩略图片url',
+  `img_original` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '原始图片',
+  `single_id` mediumint(8) NULL DEFAULT NULL COMMENT '晒单ID（此字段暂时无用）',
+  `external_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '外链',
+  `front_cover` tinyint(2) NULL DEFAULT NULL COMMENT '（此字段暂时无用）',
+  `dis_id` mediumint(8) NULL DEFAULT NULL COMMENT '讨论圈ID（此字段暂时无用）',
   PRIMARY KEY (`img_id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1273 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品多图信息表' ROW_FORMAT = Dynamic;
@@ -10554,7 +10592,7 @@ INSERT INTO `cyc_shop_config` VALUES (201, 2, 'lang', 'manual', '', '', 'zh_cn',
 INSERT INTO `cyc_shop_config` VALUES (202, 2, 'icp_number', 'text', '', '', 'DSC00000123', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (203, 2, 'icp_file', 'file', '', 'public/styles/images/upload/', '', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (204, 998, 'watermark', 'file', '', 'public/styles/images/upload/', '', 1, 'goods');
-INSERT INTO `cyc_shop_config` VALUES (205, 998, 'watermark_place', 'select', '0,1,2,3,4,5', '', '1', 1, 'goods');
+INSERT INTO `cyc_shop_config` VALUES (205, 998, 'watermark_place', 'select', '0,1,2,3,4,5', '', '0', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (206, 998, 'watermark_alpha', 'text', '', '', '65', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (207, 995, 'use_storage', 'select', '1,0', '', '0', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (208, 995, 'market_price_rate', 'text', '', '', '1.2', 1, 'goods');
@@ -10564,7 +10602,7 @@ INSERT INTO `cyc_shop_config` VALUES (211, 2, 'integral_scale', 'text', '', '', 
 INSERT INTO `cyc_shop_config` VALUES (212, 2, 'integral_percent', 'text', '', '', '100', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (213, 995, 'sn_prefix', 'text', '', '', 'CYC', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (214, 2, 'comment_check', 'select', '0,1', '', '0', 1, '');
-INSERT INTO `cyc_shop_config` VALUES (215, 998, 'no_picture', 'file', '', 'public/styles/images/upload/', '../images/errorImg.png', 1, 'goods');
+INSERT INTO `cyc_shop_config` VALUES (215, 998, 'no_picture', 'file', '', 'public/styles/images/upload/', 'styles/images/upload/no_picture.jpg', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (218, 2, 'stats_code', 'textarea', '', '', '', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (219, 2, 'cache_time', 'text', '', '', '3600', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (220, 2, 'register_points', 'text', '', '', '0', 1, '');
@@ -10724,7 +10762,7 @@ INSERT INTO `cyc_shop_config` VALUES (935, 6, 'captcha_font_size', 'hidden', '',
 INSERT INTO `cyc_shop_config` VALUES (936, 6, 'captcha_length', 'hidden', '', '', '4', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (937, 9, 'wap_index_pro', 'select', '1,0', '', '1', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (938, 998, 'two_code', 'select', '1,0', '', '1', 1, 'goods');
-INSERT INTO `cyc_shop_config` VALUES (939, 998, 'two_code_logo', 'file', '', 'public/styles/images/upload/', '', 1, 'goods');
+INSERT INTO `cyc_shop_config` VALUES (939, 998, 'two_code_logo', 'file', '', 'public/styles/images/upload/', 'styles/images/upload/two_code_logo.jpg', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (940, 998, 'two_code_links', 'text', '', '', 'http://test1.ecmoban.com/', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (941, 998, 'two_code_mouse', 'text', '', '', '', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (942, 0, 'extend_basic', 'group', '', '', '', 1, '');
@@ -10769,7 +10807,7 @@ INSERT INTO `cyc_shop_config` VALUES (979, 942, 'login_limited_num', 'hidden', '
 INSERT INTO `cyc_shop_config` VALUES (980, 942, 'nav_cat_model', 'select', '0,1', '', '0', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (981, 942, 'index_article_cat', 'text', '', '', '20,21', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (982, 3, 'marticle_index', 'text', '', '', '1,2,3,4', 1, '');
-INSERT INTO `cyc_shop_config` VALUES (983, 998, 'no_brand', 'file', '', 'public/styles/images/upload/', '', 1, 'goods');
+INSERT INTO `cyc_shop_config` VALUES (983, 998, 'no_brand', 'file', '', 'public/styles/images/upload/', 'styles/images/upload/no_brand.jpg', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (984, 942, 'open_study', 'select', '0,1', '', '0', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (985, 0, 'hometheme', 'hidden', 'ecmoban_dsc2017', '', 'backup_tpl_1', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (986, 942, 'openvisual', 'select', '0,1', '', '1', 1, '');

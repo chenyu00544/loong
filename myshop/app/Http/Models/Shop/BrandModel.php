@@ -25,10 +25,14 @@ class BrandModel extends Model
             ->get();
     }
 
-    public function getBrandsBySearch($where)
+    public function getBrandsBySearch($where, $whereIn = [])
     {
-        return $this->where($where)
-            ->get();
+        $brand = $this->where($where);
+        if(!empty($whereIn)){
+            $brand->whereIn('id', $whereIn);
+        }
+        $res = $brand->get();
+        return $res;
     }
 
     public function getBrand($id)

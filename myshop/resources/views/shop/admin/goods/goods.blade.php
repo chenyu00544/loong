@@ -51,7 +51,7 @@
                             <th style="width: 40px">
                                 <input type="checkbox" name="all_list" class="checkbox check-all">
                             </th>
-                            <th class="col-md-1"><a>编号</a></th>
+                            <th class="col-md-1 text-center"><a>编号</a></th>
                             <th class="col-md-4"><a>商品名称</a></th>
                             <th class="col-md-1">商家名称</th>
                             <th class="col-md-2">价格/货号/运费</th>
@@ -71,7 +71,7 @@
                                                class="checkbox check-all"
                                                id="checkbox_{{$goods->goods_id}}">
                                     </td>
-                                    <td>{{$goods->goods_id}}</td>
+                                    <td class="text-center">{{$goods->goods_id}}</td>
                                     <td>
                                         <div class="tDiv goods-info">
                                             <div class="img fl pad-all-5">
@@ -328,7 +328,7 @@
 
                 layer.open({
                     type: 2,
-                    area: ['500px', 'auto'],
+                    area: ['500px', '370px'],
                     fixed: true, //不固定
                     maxmin: true,
                     title: '审核',

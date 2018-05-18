@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\FileHandle;
+use App\Repositories\BrandRepository;
 use App\Repositories\ComCateRepository;
 use App\Repositories\GoodsRepository;
 use Illuminate\Http\Request;
@@ -11,15 +13,18 @@ class GoodsController extends CommonController
 
     private $goodsRepository;
     private $comCateRepository;
+    private $brandRepository;
 
     public function __construct(
         GoodsRepository $goodsRepository,
-        ComCateRepository $comCateRepository
+        ComCateRepository $comCateRepository,
+        BrandRepository $brandRepository
     )
     {
         parent::__construct();
         $this->goodsRepository = $goodsRepository;
         $this->comCateRepository = $comCateRepository;
+        $this->brandRepository = $brandRepository;
     }
 
     /**
@@ -67,7 +72,7 @@ class GoodsController extends CommonController
         $comCates = $this->comCateRepository->getComCates();
         $cateExtend = $this->goodsRepository->getCateExtend($id);
         $selectedCates = [];
-        foreach ($cateExtend as $key => $value){
+        foreach ($cateExtend as $key => $value) {
             $selectedCates[] = $this->comCateRepository->getParentCate($value->cat_id);
         }
         return view('shop.admin.goods.modal.goodsCateExtend', compact('comCates', 'id', 'selectedCates'));
@@ -79,6 +84,7 @@ class GoodsController extends CommonController
         return $this->goodsRepository->addCateExtend($request->except('_token'));
     }
 
+    //删除商品扩展分类
     public function delCateExtend($id)
     {
         return $this->goodsRepository->delCateExtend($id);
@@ -90,6 +96,7 @@ class GoodsController extends CommonController
         return view('shop.admin.success');
     }
 
+    //从回收站还原
     public function backTo($id)
     {
         $data['id'] = $id;
@@ -97,6 +104,14 @@ class GoodsController extends CommonController
         $data['val'] = 0;
         $this->goodsRepository->setGoods($data);
         return view('shop.admin.success');
+    }
+
+    //商品轮播图编辑库
+    public function imageLibrary()
+    {
+        $uri = 'upload/images/goods_img';
+        $files = FileHandle::getImagesByDir(base_path() . '/public/', $uri);
+        return view('shop.admin.goods.modal.imgLibrary', compact('files'));
     }
 
     /**
@@ -107,7 +122,8 @@ class GoodsController extends CommonController
     public function create()
     {
         $comCates = $this->comCateRepository->getComCates();
-        return view('shop.admin.goods.goodsAdd', compact('comCates'));
+        $brands = $this->brandRepository->search([], true);
+        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands'));
     }
 
     /**

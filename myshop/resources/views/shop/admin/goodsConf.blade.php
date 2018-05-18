@@ -38,7 +38,8 @@
                                             {!! $var['html'] !!}
                                         </div>
                                         @if($var['desc'])
-                                            <div class="notic col-sm-3">{{nl2br($var['desc'])}}</div>@endif
+                                            <div class="notic col-sm-3">{{nl2br($var['desc'])}}</div>
+                                        @endif
                                     </div>
 
                                 @endforeach

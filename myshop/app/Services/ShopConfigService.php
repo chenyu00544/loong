@@ -74,7 +74,7 @@ class ShopConfigService
         $m = (new ShopConfigModel);
         /* 保存变量值 */
         if ($groups != 'shop') {
-            $item_list = $m->getGroupsConfig($groups);
+            $item_list = $m->getGroupsConfig(['shop_group'=>$groups]);
         } else {
             $item_list = $m->getConf();
         }
@@ -96,7 +96,11 @@ class ShopConfigService
         $where['type'] = 'file';
         /* 允许上传的文件类型 */
         $allow_file_types = '|GIF|JPG|PNG|BMP|SWF|DOC|XLS|PPT|MID|WAV|ZIP|RAR|PDF|CHM|RM|TXT|CERT|';
-        $item_list = $m->getConf($where);
+        if ($groups != 'shop') {
+            $item_list = $m->getGroupsConfig($where);
+        } else {
+            $item_list = $m->getConf($where);
+        }
         $file_list = array();
         foreach ($item_list as $item) {
             $file_list[$item['code']] = $item;

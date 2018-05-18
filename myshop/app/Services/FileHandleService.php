@@ -30,6 +30,28 @@ class FileHandleService
         }
     }
 
+    public static function getImagesByDir($path, $uri)
+    {
+        $files = array();
+        if (@$handle = opendir($path . $uri)) {
+            while (($file = readdir($handle)) !== false) {
+                //排除根目录
+                if ($file != ".." && $file != ".") {
+                    if (is_dir($path . $uri . "/" . $file)) {
+                        //如果是子文件夹，就进行递归
+                        $files[$file] = self::getImagesByDir($path, $uri . "/" . $file);
+                    } else {
+                        //将文件的名字存入数组；
+                        $files[] = $uri . "/" . $file;
+                    }
+
+                }
+            }
+            closedir($handle);
+            return $files;
+        }
+    }
+
     private static function checkFile($file)
     {
         /* 允许上传的文件类型 */

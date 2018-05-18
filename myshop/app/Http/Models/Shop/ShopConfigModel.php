@@ -11,11 +11,11 @@ class ShopConfigModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getConf($where = [['parent_id', '<>', '5'], ['id', '<>', '5']], $select = [])
+    public function getConf($where = [['parent_id', '<>', '5'], ['id', '<>', '5']], $groups = ['seller', 'complaint_conf', 'report_conf', 'sms', 'goods', 'order_delay'])
     {
         return $this->where('type', '<>', 'hidden')
             ->where($where)
-            ->whereNotIn('shop_group', ['seller', 'complaint_conf', 'report_conf', 'sms', 'goods', 'order_delay'])
+            ->whereNotIn('shop_group', $groups)
             ->orderBy('parent_id', 'asc')
             ->orderBy('sort_order', 'asc')
             ->orderBy('id', 'asc')
@@ -28,9 +28,9 @@ class ShopConfigModel extends Model
         return $re;
     }
 
-    public function getGroupsConfig($groups)
+    public function getGroupsConfig($where)
     {
-        return $this->where('shop_group', '=', $groups)
+        return $this->where($where)
             ->where('type', '<>', 'hidden')
             ->orderBy('parent_id', 'asc')
             ->orderBy('sort_order', 'asc')

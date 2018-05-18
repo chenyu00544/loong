@@ -159,13 +159,13 @@ class BrandRepository implements BrandRepositoryInterface
         return null;
     }
 
-    public function search($data)
+    public function search($data, $bool = false)
     {
         $where = [];
         foreach ($data as $key => $value) {
             switch ($key) {
                 case 'letter':
-                    if($value){
+                    if ($value) {
                         $where['brand_first_char'] = $value;
                     }
                     break;
@@ -176,7 +176,15 @@ class BrandRepository implements BrandRepositoryInterface
                     break;
             }
         }
-        $re = $this->brandModel->getBrandsBySearch($where);
+        $bIn = [];
+        if($bool){
+            for ($i = 0; $i < 10; $i++) {
+                $bIn[] = rand(1,100);
+            }
+            $bIn = array_unique($bIn);
+            sort($bIn);
+        }
+        $re = $this->brandModel->getBrandsBySearch($where, $bIn);
         if ($re) {
             return $re->toArray();
         }

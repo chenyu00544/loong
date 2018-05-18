@@ -90,6 +90,10 @@ return array(
             'name' => '商品类型',
             'url' => 'admin/goodstype',
         ),
+        'gallery' => array(
+            'name' => '图片库管理',
+            'url' => 'admin/gallery',
+        ),
     ),
     'finance' => array(
         'satistics' => '统计',
