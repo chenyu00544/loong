@@ -36,7 +36,7 @@
                             <th class="col-sm-1">封面</th>
                             <th class="col-sm-2">描述</th>
                             <th class="col-sm-1">排序</th>
-                            <th class="col-sm-3">操作</th>
+                            <th class="col-sm-3 text-center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -52,21 +52,21 @@
                                 <td>@if($gallery->ru_id===0) <em>自营</em> @else <em>其他</em> @endif</td>
                                 <td>
                                     <span class="show">
-                                            <a href="{{$gallery->album_cover}}" class="nyroModal">
-                                                <i class="glyphicon glyphicon-picture top5"
-                                                   data-tooltipimg="{{$gallery->album_cover}}" ctype="tooltip"
-                                                   title="tooltip"></i>
-                                            </a>
-                                        </span></td>
+                                        <a href="@if($gallery->album_cover){{url($gallery->album_cover)}}@else{{url('styles/images/no_image.png')}}@endif"
+                                           class="nyroModal">
+                                            <i class="glyphicon glyphicon-picture top5"
+                                               data-tooltipimg="@if($gallery->album_cover){{url($gallery->album_cover)}}@else{{url('styles/images/no_image.png')}}@endif"
+                                               ctype="tooltip" title="tooltip"></i>
+                                        </a>
+                                    </span>
+                                </td>
                                 <td>{{$gallery->album_desc}}</td>
                                 <td>
                                     <input class="form-control input-sm change-order" type="text"
                                            data-id="{{$gallery->id}}" data-order="order"
                                            value="{{$gallery->sort_order}}">
                                 </td>
-                                <td>
-                                    <a href="{{url('admin/gallery/subgallery/'.$gallery->album_id)}}"
-                                       class="btn btn-info btn-warning btn-sm">添加子类</a>
+                                <td class="text-center">
                                     <a href="{{url('admin/gallery/galleryview/'.$gallery->album_id)}}"
                                        class="btn btn-info btn-edit btn-sm">查看</a>
                                     <a href="{{url('admin/gallery/'.$gallery->album_id.'/edit')}}"

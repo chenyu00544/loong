@@ -117,6 +117,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('friend/changes', 'FriendController@changes');
     Route::resource('friend', 'FriendController');
 
+    Route::get('gallery/galleryview/{id}', 'GalleryController@galleryView');
     Route::post('gallery/changes', 'GalleryController@changes');
+    Route::post('gallery/getgallerys/{id}', 'GalleryController@getGallerys');
     Route::resource('gallery', 'GalleryController');
 });

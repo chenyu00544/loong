@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\GalleryRepository;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,22 @@ class GalleryController extends CommonController
     public function index()
     {
         $rank[1] = 10;
-        $gallerys = $this->galleryRepository->getGallerys();
+        $gallerys = $this->galleryRepository->getGallerysByPage();
         return view('shop.admin.gallery.gallery', compact('rank', 'gallerys'));
+    }
+
+    public function getGallerys($id)
+    {
+        $re = $this->galleryRepository->getGallerys(['parent_album_id' => $id]);
+        if ($re->count() > 0) {
+            return $re->toArray();
+        }
+    }
+
+    public function galleryView($id)
+    {
+        $galleryPics = $this->galleryRepository->getGalleryPicsByPage(['album_id' => $id]);
+        return view('shop.admin.gallery.galleryPics', compact('galleryPics'));
     }
 
     /**
@@ -34,7 +49,8 @@ class GalleryController extends CommonController
      */
     public function create()
     {
-        return view('shop.admin.gallery.gallerAddy', compact());
+        $gallerys = $this->galleryRepository->getGallerys();
+        return view('shop.admin.gallery.galleryAdd', compact('gallerys'));
     }
 
     /**
@@ -45,7 +61,12 @@ class GalleryController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["album_mame" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->galleryRepository->addGallery($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**
@@ -57,7 +78,7 @@ class GalleryController extends CommonController
     public function show($id)
     {
         $rank[1] = 0;
-        $gallerys = $this->galleryRepository->getGallerys(['parent_album_id' => $id]);
+        $gallerys = $this->galleryRepository->getGallerysByPage(['parent_album_id' => $id]);
         return view('shop.admin.gallery.gallery', compact('rank', 'gallerys'));
     }
 

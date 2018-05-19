@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 18/05/2018 16:37:44
+ Date: 19/05/2018 16:34:39
 */
 
 SET NAMES utf8mb4;
@@ -335,28 +335,56 @@ CREATE TABLE `cyc_gallery_album`  (
   `album_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `sort_order` tinyint(1) UNSIGNED NOT NULL DEFAULT 50,
   `add_time` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `suppliers_id` int(11) UNSIGNED NULL DEFAULT 0,
   PRIMARY KEY (`album_id`) USING BTREE,
   INDEX `parent_album_id`(`parent_album_id`) USING BTREE,
   INDEX `ru_id`(`ru_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1074 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '相册分类' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '相册分类' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_gallery_album
 -- ----------------------------
-INSERT INTO `cyc_gallery_album` VALUES (1, 0, 0, '首页可视化', '', '', 50, 1494984852);
-INSERT INTO `cyc_gallery_album` VALUES (2, 0, 0, '首页', '', '', 50, 1505340610);
-INSERT INTO `cyc_gallery_album` VALUES (3, 0, 0, '二级页面', '', '', 50, 1505340632);
-INSERT INTO `cyc_gallery_album` VALUES (4, 0, 0, 'pc首页', '', '', 50, 1508713419);
-INSERT INTO `cyc_gallery_album` VALUES (5, 3, 0, '淑女馆', '', '', 50, 1521336066);
-INSERT INTO `cyc_gallery_album` VALUES (6, 3, 0, '绅士馆', '', '', 50, 1521336075);
-INSERT INTO `cyc_gallery_album` VALUES (7, 3, 0, '女装', '', '', 50, 1521336252);
-INSERT INTO `cyc_gallery_album` VALUES (8, 3, 0, '男装', '', '', 50, 1521336259);
-INSERT INTO `cyc_gallery_album` VALUES (9, 3, 0, '女包', '', '', 50, 1521336268);
-INSERT INTO `cyc_gallery_album` VALUES (10, 3, 0, '男包', '', '', 50, 1521336287);
-INSERT INTO `cyc_gallery_album` VALUES (11, 3, 0, '女鞋', '', '', 50, 1521336298);
-INSERT INTO `cyc_gallery_album` VALUES (12, 3, 0, '男鞋', '', '', 50, 1521336305);
-INSERT INTO `cyc_gallery_album` VALUES (13, 3, 0, '美妆', '', '', 50, 1521336315);
-INSERT INTO `cyc_gallery_album` VALUES (14, 3, 0, '母婴', '', '', 50, 1521336323);
+INSERT INTO `cyc_gallery_album` VALUES (1, 0, 0, '首页可视化', '', '', 50, 1494984852, 0);
+INSERT INTO `cyc_gallery_album` VALUES (2, 0, 0, '首页', '', '', 50, 1505340610, 0);
+INSERT INTO `cyc_gallery_album` VALUES (3, 0, 0, '二级页面', '', '', 50, 1505340632, 0);
+INSERT INTO `cyc_gallery_album` VALUES (4, 0, 0, 'pc首页', '', '', 50, 1508713419, 0);
+INSERT INTO `cyc_gallery_album` VALUES (5, 3, 0, '淑女馆', '', '', 50, 1521336066, 0);
+INSERT INTO `cyc_gallery_album` VALUES (6, 3, 0, '绅士馆', '', '', 50, 1521336075, 0);
+INSERT INTO `cyc_gallery_album` VALUES (7, 3, 0, '女装', '', '', 50, 1521336252, 0);
+INSERT INTO `cyc_gallery_album` VALUES (8, 3, 0, '男装', '', '', 50, 1521336259, 0);
+INSERT INTO `cyc_gallery_album` VALUES (9, 3, 0, '女包', '', '', 50, 1521336268, 0);
+INSERT INTO `cyc_gallery_album` VALUES (10, 3, 0, '男包', '', '', 50, 1521336287, 0);
+INSERT INTO `cyc_gallery_album` VALUES (11, 3, 0, '女鞋', '', '', 50, 1521336298, 0);
+INSERT INTO `cyc_gallery_album` VALUES (12, 3, 0, '男鞋', '', '', 50, 1521336305, 0);
+INSERT INTO `cyc_gallery_album` VALUES (13, 3, 0, '美妆', '', '', 50, 1521336315, 0);
+INSERT INTO `cyc_gallery_album` VALUES (14, 3, 0, '母婴', '', '', 50, 1521336323, 0);
+INSERT INTO `cyc_gallery_album` VALUES (15, 3, 0, '兰蔻', 'upload\\gallery_album\\c93f5eaebf1a9f3ff7c33e428ff8dc5c.jpg', '兰蔻', 50, 1526716552, 0);
+INSERT INTO `cyc_gallery_album` VALUES (16, 15, 0, 'xxx', '', 'xxxx', 50, 1526717956, 0);
+
+-- ----------------------------
+-- Table structure for cyc_gallery_album_pic
+-- ----------------------------
+DROP TABLE IF EXISTS `cyc_gallery_album_pic`;
+CREATE TABLE `cyc_gallery_album_pic`  (
+  `pic_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pic_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `album_id` int(10) UNSIGNED NOT NULL,
+  `pic_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `pic_thumb` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `pic_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `pic_size` int(10) UNSIGNED NOT NULL,
+  `pic_spec` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `ru_id` int(10) UNSIGNED NOT NULL,
+  `add_time` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`pic_id`) USING BTREE,
+  INDEX `album_id`(`album_id`) USING BTREE,
+  INDEX `ru_id`(`ru_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '图册图片数据表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of cyc_gallery_album_pic
+-- ----------------------------
+INSERT INTO `cyc_gallery_album_pic` VALUES (1, '1493761723071549703', 2, 'upload/gallery_album/2/original_img/1494984987302153402.jpg', 'upload/gallery_album/2/thumb_img/1494984987146867168.jpg', 'upload/gallery_album/2/images/1494984987088954232.jpg', 3670, '232x330', 0, 1494984987);
 
 -- ----------------------------
 -- Table structure for cyc_goods
