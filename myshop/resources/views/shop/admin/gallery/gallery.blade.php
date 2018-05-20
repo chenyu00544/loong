@@ -47,7 +47,7 @@
                                        class="btn btn-primary btn-sm">下一级</a>
                                 </td>
                                 <td>{{$gallery->album_id}}</td>
-                                <td>{{$gallery->album_mame}}</td>
+                                <td>{{$gallery->album_name}}</td>
                                 <td>0</td>
                                 <td>@if($gallery->ru_id===0) <em>自营</em> @else <em>其他</em> @endif</td>
                                 <td>
@@ -71,7 +71,8 @@
                                        class="btn btn-info btn-edit btn-sm">查看</a>
                                     <a href="{{url('admin/gallery/'.$gallery->album_id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a class="btn btn-danger btn-del btn-sm" data-id="{{$gallery->album_id}}">删除</a>
+                                    <a class="btn btn-danger btn-del btn-sm" data-url="{{$gallery->album_cover}}"
+                                       data-id="{{$gallery->album_id}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -118,12 +119,13 @@
 
             $('.btn-del').click(function () {
                 var Id = $(this).data('id');
+                var url = $(this).data('url');
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
                         "{{url('admin/gallery/')}}/" + Id,
-                        {'_method': 'delete', '_token': '{{csrf_token()}}'},
+                        {'_method': 'delete', '_token': '{{csrf_token()}}', url: url},
                         function (data) {
                             if (data.code == 1) {
                                 layer.msg(data.msg, {icon: data.code});

@@ -106,6 +106,7 @@ class ComCateController extends CommonController
         $cates = $this->comCateRepository->getComCates();
         $cate = $this->comCateRepository->getComCate($id);
         $parentCates = $this->comCateRepository->getParentCate($id);
+        unset($parentCates[0]);
         return view('shop.admin.commoditycate.cateEdit', compact('icons', 'cates', 'cate', 'parentCates'));
     }
 

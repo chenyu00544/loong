@@ -36,10 +36,39 @@ class GalleryController extends CommonController
         }
     }
 
+    //显示相册图片列表
     public function galleryView($id)
     {
         $galleryPics = $this->galleryRepository->getGalleryPicsByPage(['album_id' => $id]);
         return view('shop.admin.gallery.galleryPics', compact('galleryPics'));
+    }
+
+    //转移相册
+    public function transferGalleryPic(Request $request)
+    {
+        return view('shop.admin.gallery.modal.transferPic');
+    }
+
+    //上传图片窗口
+    public function upPicView()
+    {
+        $gallerys = $this->galleryRepository->getGallerys();
+        return view('shop.admin.gallery.modal.upPic', compact('gallerys'));
+    }
+
+    public function upGalleryPic(Request $request)
+    {
+        $this->galleryRepository->upGalleryPic($request->except('_token'));
+    }
+
+    public function setGalleryPic(Request $request)
+    {
+
+    }
+
+    public function delGalleryPic(Request $request)
+    {
+
     }
 
     /**
@@ -61,7 +90,7 @@ class GalleryController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["album_mame" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["album_name" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
@@ -90,7 +119,11 @@ class GalleryController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $gallery = $this->galleryRepository->getGallery($id);
+        $gallerys = $this->galleryRepository->getGallerys();
+        $parentGallerys = $this->galleryRepository->getParentGallerys($id);
+        unset($parentGallerys[0]);
+        return view('shop.admin.gallery.galleryEdit', compact('gallery', 'parentGallerys', 'gallerys'));
     }
 
     /**
@@ -102,7 +135,12 @@ class GalleryController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["album_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->galleryRepository->setGallery($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
@@ -111,8 +149,8 @@ class GalleryController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        return $this->galleryRepository->delGallery($id, $request->except('_token', '_method')['url']);
     }
 }

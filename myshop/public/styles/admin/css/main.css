@@ -1602,3 +1602,14 @@ i, em {
     text-align: center;
     padding: 20px 0;
 }
+
+.image-item .image-wrap{
+    float: left;
+    width: 167px;
+    height: 193px;
+    border: 2px solid #f0f0f0;
+    background-color: #fff;
+    margin: 10px 15px 10px 0;
+    cursor: pointer;
+    position: relative;
+}

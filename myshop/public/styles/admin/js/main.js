@@ -35,14 +35,14 @@ $(function () {
         $(this).parent().find('li').removeClass('curr');
         $(this).addClass('curr');
         var i = 0;
-        $(this).parent().find('li').each(function (k,v) {
-            if($(v).hasClass('curr')) {
+        $(this).parent().find('li').each(function (k, v) {
+            if ($(v).hasClass('curr')) {
                 i = k;
             }
         })
         $('.switch-info').hide();
-        $('.switch-info').each(function (k,v) {
-            if (k == i){
+        $('.switch-info').each(function (k, v) {
+            if (k == i) {
                 $(v).show();
             }
         })
@@ -57,22 +57,43 @@ function region() {
 }
 
 //建立一個可存取到file的url
-function getImageURL(file)
-{
-    var url = null ;
-    if (window.createObjectURL!=undefined)
-    { // basic
-        url = window.createObjectURL(file) ;
+function getImageURL(file) {
+    var url = null;
+    if (window.createObjectURL != undefined) { // basic
+        url = window.createObjectURL(file);
     }
-    else if (window.URL!=undefined)
-    {
+    else if (window.URL != undefined) {
         // mozilla(firefox)
-        url = window.URL.createObjectURL(file) ;
+        url = window.URL.createObjectURL(file);
     }
-    else if (window.webkitURL!=undefined) {
+    else if (window.webkitURL != undefined) {
         // webkit or chrome
-        url = window.webkitURL.createObjectURL(file) ;
+        url = window.webkitURL.createObjectURL(file);
     }
-    return url ;
+    return url;
+}
+
+function setNextAblum(that, token, url) {
+    var id = $(that).val();
+    var parent = $(that).data('parent');
+    $('input[name=parent_album_id]').val(id);
+    if (id > 0 ) {
+        var html = '';
+        $.post(url + id, {'_token': token}, function (data) {
+            if (data.length > 0) {
+                html = '<div class="gallery-option fl mar-left-20"><select class="form-control select" data-parent="1"><option value="0">请选择</option>';
+                $.each(data, function (k, v) {
+                    html += '<option value="' + v.album_id + '">' + v.album_name + '</option>';
+                })
+                html += '</select></div>';
+                $(that).parent().nextAll().remove();
+                $('.p-gallery').append(html);
+            } else {
+                $(that).parent().nextAll().remove();
+            }
+        })
+    } else {
+        $(that).parent().nextAll().remove();
+    }
 }
 

@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Helper\FileHelper;
+use Intervention\Image\Facades\Image;
 
 class FileHandleService
 {
 
+    //上传原图
     public static function upLoadImage($file, $uri)
     {
         $bool = self::checkFile($file);
@@ -17,7 +19,51 @@ class FileHandleService
             if ($path = $file->move($dir, $filename)) {
                 return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
             }
+        }
+        return 0;
+    }
 
+    //上传缩略图
+    public static function upLoadThumbImage($sourceUri, $uri)
+    {
+        $sourceDir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $sourceUri;
+        $bool = file_exists($sourceDir);
+        if ($bool) {
+            list($width, $height, $e) = getimagesize($sourceDir);
+            $ext = ['gif', 'jpg', 'png', 'swf', 'psd', 'bmp'];
+            $img = self::thumpImage($sourceDir, ['width' => $width, 'height' => $height], 0, ['width' => 100, 'height' => 100], $ext[$e - 1]);
+
+            $filename = md5(time() . rand(10000, 99999)) . '.' . $ext[1];
+            $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+            }
+            if ($path = imagejpeg($img, $dir . $filename)) {
+                return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+            }
+        }
+        return 0;
+    }
+
+    //上传展示图
+    public static function upLoadExhibitionImage($sourceUri, $uri, $percent)
+    {
+        $sourceDir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $sourceUri;
+        $bool = file_exists($sourceDir);
+        if ($bool) {
+            list($width, $height, $mime) = getimagesize($sourceDir);
+            list($width, $height, $e) = getimagesize($sourceDir);
+            $ext = ['gif', 'jpg', 'png', 'swf', 'psd', 'bmp'];
+            $img = self::thumpImage($sourceDir, ['width' => $width, 'height' => $height], $percent, [], $ext[$e - 1]);
+
+            $filename = md5(time() . rand(10000, 99999)) . '.' . $ext[1];
+            $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+            }
+            if ($path = imagejpeg($img, $dir . $filename)) {
+                return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+            }
         }
         return 0;
     }
@@ -30,6 +76,7 @@ class FileHandleService
         }
     }
 
+    //获取图片路径
     public static function getImagesByDir($path, $uri)
     {
         $files = array();
@@ -67,7 +114,47 @@ class FileHandleService
                 return true;
             }
         }
+    }
 
+    private static function thumpImage($file, $imageinfo, $percent, $size = [], $ext)
+    {
+        if (empty($size)) {
+            $new_width = $imageinfo['width'] * $percent;
+            $new_height = $imageinfo['height'] * $percent;
+        } else {
+            $new_width = $size['width'];
+            $new_height = $size['height'];
+        }
+        $image_thump = imagecreatetruecolor($new_width, $new_height);
+        $source = '';
+        switch ($ext) {
+            case 'JPG':
+            case 'jpg':
+                $source = imagecreatefromjpeg($file);
+                break;
+            case 'JPEG':
+            case 'jpeg':
+                $source = imagecreatefromjpeg($file);
+                break;
+            case 'PNG':
+            case 'png':
+                $source = imagecreatefrompng($file);
+                break;
+            case 'GIF':
+            case 'gif':
+                $source = imagecreatefromgif($file);
+                break;
+            case 'BMP':
+            case 'bmp':
+                $source = imagecreatefromwbmp($file);
+                break;
+            default:
+                break;
+        }
+
+        //将原图复制带图片载体上面，并且按照一定比例压缩,极大的保持了清晰度
+        imagecopyresampled($image_thump, $source, 0, 0, 0, 0, $new_width, $new_height, $imageinfo['width'], $imageinfo['height']);
+        return $image_thump;
     }
 
 }

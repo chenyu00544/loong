@@ -18,4 +18,9 @@ class GalleryAlbumPicModel extends Model
             ->orderBy('add_time', 'desc')
             ->paginate($size);
     }
+
+    public function addGalleryAlbumPic($data)
+    {
+        return $this->create($data);
+    }
 }

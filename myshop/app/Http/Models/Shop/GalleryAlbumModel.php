@@ -27,8 +27,27 @@ class GalleryAlbumModel extends Model
             ->get();
     }
 
+    public function getGallery($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
     public function addGallery($data)
     {
         return $this->create($data);
+    }
+
+    public function setGallery($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function delGallery($where)
+    {
+        return $this->where($where)
+            ->delete();
     }
 }

@@ -22,7 +22,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font c class="red">*</font>相册名称：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="album_mame" class="form-control" value=""
+                                <input type="text" name="album_name" class="form-control" value=""
                                        placeholder="链接名称">
                             </div>
                         </div>
@@ -34,7 +34,7 @@
                                     <select class="form-control select" data-parent="0">
                                         <option value="0">请选择</option>
                                         @foreach($gallerys as $gallery)
-                                            <option value="{{$gallery->album_id}}">{{$gallery->album_mame}}</option>
+                                            <option value="{{$gallery->album_id}}">{{$gallery->album_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -56,7 +56,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">描述：</label>
                             <div class="col-sm-4">
-                                <textarea type="text" name="album_desc" rows="5" class="form-control" value=""
+                                <textarea type="text" name="album_desc" rows="5" class="form-control"
                                           placeholder="描述"></textarea>
                             </div>
                         </div>
@@ -96,19 +96,19 @@
         function setNextCate(that) {
             var id = $(that).val();
             var parent = $(that).data('parent');
-            $('input[name="parent_album_id"]').val(id);
+            $('input[name=parent_album_id]').val(id);
             if (id > 0 && parent == 0) {
                 var html = '';
                 $.post("{{url('admin/gallery/getgallerys/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
                     if (data.length > 0) {
                         html = '<div class="gallery-option fl mar-left-20"><select class="form-control select" data-parent="1"><option value="0">请选择</option>';
                         $.each(data, function (k, v) {
-                            html += '<option value="' + v.album_id + '">' + v.album_mame + '</option>';
+                            html += '<option value="' + v.album_id + '">' + v.album_name + '</option>';
                         })
                         html += '</select></div>';
                         $(that).parent().nextAll().remove();
                         $('.p-gallery').append(html);
-                    }else{
+                    } else {
                         $(that).parent().nextAll().remove();
                     }
                 })
