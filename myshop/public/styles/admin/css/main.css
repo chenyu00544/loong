@@ -768,7 +768,6 @@ i, em {
 }
 
 .checkwrap .label-tip {
-    margin-top: 2px;
     margin-bottom: 0px;
     padding: 5px 5px;
 }
@@ -1604,12 +1603,97 @@ i, em {
 }
 
 .image-item .image-wrap{
-    float: left;
     width: 167px;
-    height: 193px;
     border: 2px solid #f0f0f0;
     background-color: #fff;
     margin: 10px 15px 10px 0;
     cursor: pointer;
     position: relative;
 }
+
+.image-item .image-wrap .img-container {
+    width: 167px;
+    height: 160px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.image-wrap .img-container img {
+    max-height: 100%;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    border: 0;
+    -ms-interpolation-mode: bicubic;
+}
+
+.image-wrap .checkbox-item {
+    position: absolute;
+    top: 5px;
+    left: 8px;
+}
+
+.image-item .image-wrap .img-width {
+    padding: 0 4px;
+    height: 35px;
+    color: #454545;
+    width: 100%;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    background-color: #fff;
+    z-index: 1;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    background-color: #dadada;
+    line-height: 35px;
+}
+
+.image-item .image-wrap .img-handle {
+    padding: 0 4px;
+    height: 35px;
+    color: #454545;
+    width: 100%;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    background-color: #fff;
+    z-index: 1;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    background-color: #dadada;
+    line-height: 35px;
+    display: none;
+}
+
+.image-item .image-wrap:hover{
+    border-color: #d1d1d1;
+}
+
+.image-item .image-wrap .img-handle a {
+    background-color: #fff;
+    border-radius: 2px;
+    color: #999;
+    display: inline-block;
+    font-size: 12px;
+    height: 16px;
+    letter-spacing: normal;
+    line-height: 16px;
+    margin: 9px 2px 5px 0;
+    padding: 1px 6px;
+    vertical-align: top;
+    word-spacing: normal;
+}
+
+.image-item .image-wrap .img-handle a:hover {
+    color: #4a86e8;
+}
+
+

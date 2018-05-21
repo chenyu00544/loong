@@ -125,7 +125,7 @@ class GalleryRepository implements GalleryRepositoryInterface
         $exhibition_img = 'gallery_album' . DIRECTORY_SEPARATOR . $album_id . DIRECTORY_SEPARATOR . 'exhibition_img';
         $updata['pic_file'] = FileHandle::upLoadImage($file, $original_img);
         $updata['pic_thumb'] = FileHandle::upLoadThumbImage($updata['pic_file'], $thumb_img);
-        $updata['pic_image'] = FileHandle::upLoadExhibitionImage($updata['pic_file'], $exhibition_img, 0.5);
+        $updata['pic_image'] = FileHandle::upLoadExhibitionImage($updata['pic_file'], $exhibition_img, 0.8);
         $updata['pic_size'] = $file->getClientSize();
         $updata['pic_spec'] = $width . '×' . $height;
         $updata['album_id'] = $album_id;

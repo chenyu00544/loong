@@ -247,7 +247,7 @@
                                        class="checkbox check-all fl ">全选</label>
                         </div>
                         <div class="fl mar-all-5">
-                            <select name="select_type" class="form-control col-md-2">
+                            <select name="select_type" class="form-control col-md-2 input-sm">
                                 <option value="0">请选择</option>
                                 <option value="is_best_on">精品</option>
                                 <option value="is_best_off">取消精品</option>

@@ -47,6 +47,7 @@
             });
 
             $('.btn-sure').click(function () {
+                var domain = "{{url('/')}}/";
                 var form = new FormData();
                 form.append('pic', $('input[name=pic]')[0].files[0]);
                 form.append('album_id', $('input[name=parent_album_id]').val());
@@ -58,6 +59,22 @@
                     contentType: false,
                     processData: false,
                     success: function (data) {
+                        var html = '<li class="image-wrap">' +
+                            '<div class="img-container">' +
+                            '<img src="' + domain + data.pic_image + '">' +
+                            '</div>' +
+                            '<div class="checkbox-item">' +
+                            '<input type="checkbox" name="checkboxes[]" value="' + data.pic_id + '" class="ui-checkbox">' +
+                            '</div>' +
+                            '<div class="img-width" style="display: block;">' + data.pic_spec + '"(' + (parseFloat(data.pic_size) / 1024).toFixed(2) + 'k)"</div>' +
+                            '<div class="img-handle" style="display: none;">' +
+                            '<a href="javascript:;" class="t-img"><i class="glyphicon glyphicon-transfer"></i>转移相册</a>' +
+                            '<a href="javascript:;" class="del-img"><i class="glyphicon glyphicon-trash"></i>移除</a>' +
+                            '</div>' +
+                            '</li>';
+                        if (parent.$('.image-item').data('album_id') == data.album_id) {
+                            parent.$('.image-item').prepend(html);
+                        }
                         parent.layer.close(index);
                     }
                 });

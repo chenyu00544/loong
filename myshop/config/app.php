@@ -187,7 +187,7 @@ return [
         App\Providers\UrlServiceProvider::class,
         App\Providers\ExpressServiceProvider::class,
         App\Providers\TokenServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
+//        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -247,7 +247,7 @@ return [
         'Url' => App\Facades\Url::class,
         'Express' => App\Facades\Express::class,
         'Token' => App\Facades\Token::class,
-        'Image' => Intervention\Image\Facades\Image::class,
+//        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

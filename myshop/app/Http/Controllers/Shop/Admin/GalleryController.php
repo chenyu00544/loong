@@ -40,10 +40,10 @@ class GalleryController extends CommonController
     public function galleryView($id)
     {
         $galleryPics = $this->galleryRepository->getGalleryPicsByPage(['album_id' => $id]);
-        return view('shop.admin.gallery.galleryPics', compact('galleryPics'));
+        return view('shop.admin.gallery.galleryPics', compact('galleryPics', 'id'));
     }
 
-    //转移相册
+    //转移相册窗口
     public function transferGalleryPic(Request $request)
     {
         return view('shop.admin.gallery.modal.transferPic');
@@ -58,7 +58,7 @@ class GalleryController extends CommonController
 
     public function upGalleryPic(Request $request)
     {
-        $this->galleryRepository->upGalleryPic($request->except('_token'));
+        return $this->galleryRepository->upGalleryPic($request->except('_token'));
     }
 
     public function setGalleryPic(Request $request)

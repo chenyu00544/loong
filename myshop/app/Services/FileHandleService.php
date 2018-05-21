@@ -31,7 +31,7 @@ class FileHandleService
         if ($bool) {
             list($width, $height, $e) = getimagesize($sourceDir);
             $ext = ['gif', 'jpg', 'png', 'swf', 'psd', 'bmp'];
-            $img = self::thumpImage($sourceDir, ['width' => $width, 'height' => $height], 0, ['width' => 100, 'height' => 100], $ext[$e - 1]);
+            $img = self::thumpImage($sourceDir, ['width' => $width, 'height' => $height], 0, ['width' => 108, 'height' => 108], $ext[$e - 1]);
 
             $filename = md5(time() . rand(10000, 99999)) . '.' . $ext[1];
             $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
