@@ -64,7 +64,7 @@
                             '<img src="' + domain + data.pic_image + '">' +
                             '</div>' +
                             '<div class="checkbox-item">' +
-                            '<input type="checkbox" name="checkboxes[]" value="' + data.pic_id + '" class="ui-checkbox">' +
+                            '<input type="checkbox" name="checkboxes" value="' + data.pic_id + '" class="ui-checkbox">' +
                             '</div>' +
                             '<div class="img-width" style="display: block;">' + data.pic_spec + '"(' + (parseFloat(data.pic_size) / 1024).toFixed(2) + 'k)"</div>' +
                             '<div class="img-handle" style="display: none;">' +

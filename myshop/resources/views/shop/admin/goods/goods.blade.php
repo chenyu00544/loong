@@ -371,12 +371,12 @@
             });
 
             //全选
-            $('[name="all_list"]').click(function () {
+            $('input[name=all_list]').click(function () {
                 var flage = $(this).is(':checked')
                 $(".check-all").each(function () {
                     $(this).prop("checked", flage);
                 })
-            })
+            });
 
             //删除
             $('.btn-del').click(function () {

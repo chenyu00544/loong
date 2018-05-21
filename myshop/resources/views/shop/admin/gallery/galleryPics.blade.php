@@ -25,13 +25,13 @@
                                     <img src="{{url($galleryPic->pic_image)}}">
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="checkboxes[]" value="" class="ui-checkbox">
+                                    <input type="checkbox" name="pic-id" value="{{$galleryPic->pic_id}}" class="ui-checkbox">
                                 </div>
                                 <div class="img-width" style="display: block;">232x330(3.58k)</div>
                                 <div class="img-handle" style="display: none;">
-                                    <a href="javascript:;" class="t-img"><i
+                                    <a href="javascript:;" class="t-img" data-pic_id="{{$galleryPic->pic_id}}"><i
                                                 class="glyphicon glyphicon-transfer"></i>转移相册</a>
-                                    <a href="javascript:;" class="del-img"><i
+                                    <a href="javascript:;" class="del-img" data-pic_id="{{$galleryPic->pic_id}}"><i
                                                 class="glyphicon glyphicon-trash"></i>移除</a>
                                 </div>
                             </li>
@@ -46,8 +46,8 @@
                     <div class="fl mar-all-5">
                         <select name="select_type" class="form-control col-md-2 input-sm">
                             <option value="0">请选择</option>
-                            <option value="is_best_on">删除</option>
-                            <option value="is_best_off">转移相册</option>
+                            <option value="is_del">删除</option>
+                            <option value="is_transfer">转移相册</option>
                         </select>
                     </div>
                     <div class="fl">
@@ -89,7 +89,44 @@
             $('.image-item li').on('mouseleave', function () {
                 $(this).find('.img-width').show();
                 $(this).find('.img-handle').hide();
-            })
+            });
+
+            //全选
+            $('input[name=all_list]').click(function () {
+                var flage = $(this).is(':checked')
+                $("input[name=pic-id]").each(function () {
+                    $(this).prop("checked", flage);
+                });
+            });
+
+            //全选操作
+            $('.btn-sure').on('click', function () {
+                if($('select[name=select_type]').val() != 0){
+                    var pic_ids = $("input[name=pic-id]");
+
+                    var ids = [];
+                    $.each(pic_ids, function (k, v) {
+                        if ($(v).is(':checked')) {
+                            ids.push($(v).val());
+                        }
+                    });
+                    console.log(ids);
+                    if($('select[name=select_type]').val() == 'is_del'){
+
+                    }else if($('select[name=select_type]').val() == 'is_transfer'){
+
+                    }
+                }
+            });
+
+            //单选操作
+            $('.image-item').on('click', '.t-img', function () {
+                var pic_id = $(this).data('pic_id');
+            });
+            //单选操作
+            $('.image-item').on('click', '.del-img', function () {
+                var pic_id = $(this).data('pic_id');
+            });
         });
     </script>
 @endsection
