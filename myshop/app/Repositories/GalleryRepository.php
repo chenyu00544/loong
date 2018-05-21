@@ -115,6 +115,31 @@ class GalleryRepository implements GalleryRepositoryInterface
         return $this->galleryAlbumPicModel->getGalleryPicsByPage($where);
     }
 
+    public function getGalleryPic($id)
+    {
+        $where['pic_id'] = $id;
+        return $this->galleryAlbumPicModel->getGalleryPic($where);
+    }
+
+    public function setGalleryPic($data)
+    {
+        $req = ['code' => 5, 'msg' => '删除失败'];
+        $where = [];
+        $updata = [];
+        foreach ($data as $key => $value){
+            if($key == 'pic_id'){
+                $where[$key] = $value;
+            }else{
+                $updata[$key] = $value;
+            }
+        }
+        $re = $this->galleryAlbumPicModel->setGalleryPic($where, $updata);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '删除成功'];
+        }
+        return $req;
+    }
+
     public function upGalleryPic($data)
     {
         $file = $data['pic'];
@@ -134,5 +159,24 @@ class GalleryRepository implements GalleryRepositoryInterface
         return $this->galleryAlbumPicModel->addGalleryAlbumPic($updata);
     }
 
+    public function delGalleryPic($data)
+    {
+        $req = ['code' => 5, 'msg' => '删除失败'];
+        $where['pic_id'] = $data['pic_id'];
+        $re = $this->galleryAlbumPicModel->delGalleryPic($where);
+        if ($re) {
+            FileHandle::deleteFile($data['pic_image']);
+            FileHandle::deleteFile($data['pic_thumb']);
+            FileHandle::deleteFile($data['pic_file']);
+            $req['code'] = 1;
+            $req['msg'] = '删除成功';
+        }
+        return $req;
+    }
+
+    public function countGalleryPic($arr)
+    {
+        return $this->galleryAlbumPicModel->countGalleryPic($arr);
+    }
 
 }

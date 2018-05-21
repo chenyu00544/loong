@@ -25,6 +25,15 @@ class GalleryController extends CommonController
     {
         $rank[1] = 10;
         $gallerys = $this->galleryRepository->getGallerysByPage();
+        $albumIds = [];
+        foreach ($gallerys as $gallery) {
+            $albumIds[] = $gallery->album_id;
+            $gallery->count = 0;
+        }
+        $countPics = $this->galleryRepository->countGalleryPic($albumIds);
+        foreach ($countPics as $countPic) {
+
+        }
         return view('shop.admin.gallery.gallery', compact('rank', 'gallerys'));
     }
 
@@ -44,31 +53,37 @@ class GalleryController extends CommonController
     }
 
     //转移相册窗口
-    public function transferGalleryPic(Request $request)
+    public function transferGalleryPic($id)
     {
-        return view('shop.admin.gallery.modal.transferPic');
+        $gallerys = $this->galleryRepository->getGallerys();
+        $galleryPic = $this->galleryRepository->getGalleryPic($id);
+        return view('shop.admin.gallery.modal.transferPic', compact('gallerys', 'galleryPic'));
     }
 
     //上传图片窗口
-    public function upPicView()
+    public function upPicView($id)
     {
         $gallerys = $this->galleryRepository->getGallerys();
-        return view('shop.admin.gallery.modal.upPic', compact('gallerys'));
+        $album = $this->galleryRepository->getGallery($id);
+        return view('shop.admin.gallery.modal.upPic', compact('gallerys', 'id', 'album'));
     }
 
+    //上传图片api
     public function upGalleryPic(Request $request)
     {
         return $this->galleryRepository->upGalleryPic($request->except('_token'));
     }
 
+    //设置图片所属相册api
     public function setGalleryPic(Request $request)
     {
-
+        return $this->galleryRepository->setGalleryPic($request->except('_token'));
     }
 
+    //删除图片api
     public function delGalleryPic(Request $request)
     {
-
+        return $this->galleryRepository->delGalleryPic($request->except('_token'));
     }
 
     /**
@@ -108,7 +123,18 @@ class GalleryController extends CommonController
     {
         $rank[1] = 0;
         $gallerys = $this->galleryRepository->getGallerysByPage(['parent_album_id' => $id]);
-        return view('shop.admin.gallery.gallery', compact('rank', 'gallerys'));
+        $albumIds = [];
+        $countPics = [];
+        foreach ($gallerys as $gallery) {
+            $albumIds[] = $gallery->album_id;
+            $gallery->count = 0;
+            $countPics[$gallery->album_id] = 0;
+        }
+        $countPics_re = $this->galleryRepository->countGalleryPic($albumIds);
+        foreach ($countPics_re as $countPic) {
+            $countPics[$countPic->album_id] = $countPic->count;
+        }
+        return view('shop.admin.gallery.gallery', compact('rank', 'gallerys', 'countPics'));
     }
 
     /**

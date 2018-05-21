@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 19/05/2018 16:34:39
+ Date: 22/05/2018 00:07:34
 */
 
 SET NAMES utf8mb4;
@@ -330,7 +330,7 @@ CREATE TABLE `cyc_gallery_album`  (
   `album_id` int(10) NOT NULL AUTO_INCREMENT,
   `parent_album_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `ru_id` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `album_mame` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `album_name` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `album_cover` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `album_desc` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `sort_order` tinyint(1) UNSIGNED NOT NULL DEFAULT 50,
@@ -350,7 +350,6 @@ INSERT INTO `cyc_gallery_album` VALUES (3, 0, 0, '二级页面', '', '', 50, 150
 INSERT INTO `cyc_gallery_album` VALUES (4, 0, 0, 'pc首页', '', '', 50, 1508713419, 0);
 INSERT INTO `cyc_gallery_album` VALUES (5, 3, 0, '淑女馆', '', '', 50, 1521336066, 0);
 INSERT INTO `cyc_gallery_album` VALUES (6, 3, 0, '绅士馆', '', '', 50, 1521336075, 0);
-INSERT INTO `cyc_gallery_album` VALUES (7, 3, 0, '女装', '', '', 50, 1521336252, 0);
 INSERT INTO `cyc_gallery_album` VALUES (8, 3, 0, '男装', '', '', 50, 1521336259, 0);
 INSERT INTO `cyc_gallery_album` VALUES (9, 3, 0, '女包', '', '', 50, 1521336268, 0);
 INSERT INTO `cyc_gallery_album` VALUES (10, 3, 0, '男包', '', '', 50, 1521336287, 0);
@@ -359,7 +358,6 @@ INSERT INTO `cyc_gallery_album` VALUES (12, 3, 0, '男鞋', '', '', 50, 15213363
 INSERT INTO `cyc_gallery_album` VALUES (13, 3, 0, '美妆', '', '', 50, 1521336315, 0);
 INSERT INTO `cyc_gallery_album` VALUES (14, 3, 0, '母婴', '', '', 50, 1521336323, 0);
 INSERT INTO `cyc_gallery_album` VALUES (15, 3, 0, '兰蔻', 'upload\\gallery_album\\c93f5eaebf1a9f3ff7c33e428ff8dc5c.jpg', '兰蔻', 50, 1526716552, 0);
-INSERT INTO `cyc_gallery_album` VALUES (16, 15, 0, 'xxx', '', 'xxxx', 50, 1526717956, 0);
 
 -- ----------------------------
 -- Table structure for cyc_gallery_album_pic
@@ -367,24 +365,32 @@ INSERT INTO `cyc_gallery_album` VALUES (16, 15, 0, 'xxx', '', 'xxxx', 50, 152671
 DROP TABLE IF EXISTS `cyc_gallery_album_pic`;
 CREATE TABLE `cyc_gallery_album_pic`  (
   `pic_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `pic_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `album_id` int(10) UNSIGNED NOT NULL,
-  `pic_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `pic_thumb` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `pic_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `pic_size` int(10) UNSIGNED NOT NULL,
-  `pic_spec` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `ru_id` int(10) UNSIGNED NOT NULL,
-  `add_time` int(10) UNSIGNED NOT NULL,
+  `pic_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图片名称',
+  `album_id` int(10) UNSIGNED NOT NULL COMMENT '相册ID',
+  `pic_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '原图',
+  `pic_thumb` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '缩略图',
+  `pic_image` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '展示图',
+  `pic_size` int(10) UNSIGNED NOT NULL COMMENT '图片大小',
+  `pic_spec` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '尺寸描述',
+  `ru_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '上传用户ID',
+  `add_time` int(10) UNSIGNED NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`pic_id`) USING BTREE,
   INDEX `album_id`(`album_id`) USING BTREE,
   INDEX `ru_id`(`ru_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '图册图片数据表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '图册图片数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_gallery_album_pic
 -- ----------------------------
 INSERT INTO `cyc_gallery_album_pic` VALUES (1, '1493761723071549703', 2, 'upload/gallery_album/2/original_img/1494984987302153402.jpg', 'upload/gallery_album/2/thumb_img/1494984987146867168.jpg', 'upload/gallery_album/2/images/1494984987088954232.jpg', 3670, '232x330', 0, 1494984987);
+INSERT INTO `cyc_gallery_album_pic` VALUES (4, 'f44c8f0e9693cd1be39e89c10971d771', 15, 'upload\\gallery_album\\15\\original_img\\e60081f9106dde438e7bab17e09048a3.jpg', 'upload\\gallery_album\\15\\thumb_img\\28fed6130e2bdf6b752630870d3b8d49.jpg', 'upload\\gallery_album\\15\\exhibition_img\\54b73d6e60c275716c0b393cf3a49276.jpg', 9379, '275×121', 0, 1526903235);
+INSERT INTO `cyc_gallery_album_pic` VALUES (5, '1104cd8a7b186e0aa353cf277127b6e9', 15, 'upload\\gallery_album\\15\\original_img\\843cb92cc8224c35b818bd6cfe1d288e.jpg', 'upload\\gallery_album\\15\\thumb_img\\4f5a0a40a51ccdafa9566c153c21df5f.jpg', 'upload\\gallery_album\\15\\exhibition_img\\437b03676d77e2ba5075cb54e5621b3f.jpg', 33781, '474×280', 0, 1526903256);
+INSERT INTO `cyc_gallery_album_pic` VALUES (8, '14d97faafc1d17924fb81ed771dc09c2', 15, 'upload\\gallery_album\\15\\original_img\\c6208717a8a140df14b491e01f09901e.jpg', 'upload\\gallery_album\\15\\thumb_img\\3116cf4116b03e67f7306329a1c24b1f.jpg', 'upload\\gallery_album\\15\\exhibition_img\\bac2b5cca7edeeec80973c509066317c.jpg', 39479, '342×490', 0, 1526903312);
+INSERT INTO `cyc_gallery_album_pic` VALUES (9, 'b62cf6f88705f7acf64c6ad07f614e5d', 15, 'upload\\gallery_album\\15\\original_img\\2dd4f4e2d2a0ece879ca67624ac628fb.jpg', 'upload\\gallery_album\\15\\thumb_img\\8dd125877546a77bf2c5393c376927f1.jpg', 'upload\\gallery_album\\15\\exhibition_img\\2050ea00cce85948e93199d6119d4725.jpg', 17948, '232×280', 0, 1526903330);
+INSERT INTO `cyc_gallery_album_pic` VALUES (10, 'f7565540a8106657f44ee7b5a3207ead', 15, 'upload\\gallery_album\\15\\original_img\\09b3d47c63389695a13eb6970900b7bf.png', 'upload\\gallery_album\\15\\thumb_img\\573e199741a5cf5e6ddc44addff3057d.jpg', 'upload\\gallery_album\\15\\exhibition_img\\3e81897bf0e39a0ad2d61abb4a40044c.jpg', 73462, '232×280', 0, 1526903499);
+INSERT INTO `cyc_gallery_album_pic` VALUES (12, '7991ee63b36096ecd9127e018c96bd39', 15, 'upload\\gallery_album\\15\\original_img\\ef4892fa8a7cdb031363d864d45b82f8.jpg', 'upload\\gallery_album\\15\\thumb_img\\d73435876fc363897423511bafb88517.jpg', 'upload\\gallery_album\\15\\exhibition_img\\ed128d954ef9b8aa17bbfdd7361c20ad.jpg', 58651, '342×490', 0, 1526905013);
+INSERT INTO `cyc_gallery_album_pic` VALUES (13, '1ed6995e47a5cbcee8b2d48e3b1724c8', 5, 'upload\\gallery_album\\15\\original_img\\ee9a38ca871b235df1a29c4986e5fb6c.jpg', 'upload\\gallery_album\\15\\thumb_img\\0cabb1dfecb3c3c15a304e59dc84622d.jpg', 'upload\\gallery_album\\15\\exhibition_img\\db8f9abae64a1419c3c83a49573641d6.jpg', 36540, '342×490', 0, 1526905022);
+INSERT INTO `cyc_gallery_album_pic` VALUES (14, '58887862b0ef63e31ad697359c9edd22', 15, 'upload\\gallery_album\\15\\original_img\\af34771cbbeff353847bfd6bdc9fdc13.jpg', 'upload\\gallery_album\\15\\thumb_img\\05e95f2622ab6c4745c51d6b8ed2944c.jpg', 'upload\\gallery_album\\15\\exhibition_img\\918d617cc124388d98d092f8f1bae92b.jpg', 27895, '238×132', 0, 1526905034);
 
 -- ----------------------------
 -- Table structure for cyc_goods

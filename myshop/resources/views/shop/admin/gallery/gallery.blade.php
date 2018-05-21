@@ -48,7 +48,7 @@
                                 </td>
                                 <td>{{$gallery->album_id}}</td>
                                 <td>{{$gallery->album_name}}</td>
-                                <td>0</td>
+                                <td>{{$countPics[$gallery->album_id]}}</td>
                                 <td>@if($gallery->ru_id===0) <em>自营</em> @else <em>其他</em> @endif</td>
                                 <td>
                                     <span class="show">

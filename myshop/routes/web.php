@@ -118,11 +118,11 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('friend', 'FriendController');
 
     Route::get('gallery/galleryview/{id}', 'GalleryController@galleryView');
-    Route::get('gallery/transferpic', 'GalleryController@transferGalleryPic');
-    Route::get('gallery/uppicview', 'GalleryController@upPicView');
+    Route::get('gallery/transferpic/{id}', 'GalleryController@transferGalleryPic');
+    Route::get('gallery/uppicview/{id}', 'GalleryController@upPicView');
     Route::post('gallery/changes', 'GalleryController@changes');
     Route::post('gallery/getgallerys/{id}', 'GalleryController@getGallerys');
-    Route::post('gallery/setgallerypic', 'GalleryController@setGalleryPic');
+    Route::post('gallery/setgallerypic/', 'GalleryController@setGalleryPic');
     Route::post('gallery/delgallerypic', 'GalleryController@delGalleryPic');
     Route::post('gallery/upgallerypic', 'GalleryController@upGalleryPic');
     Route::resource('gallery', 'GalleryController');

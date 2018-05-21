@@ -51,7 +51,6 @@ class FileHandleService
         $sourceDir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $sourceUri;
         $bool = file_exists($sourceDir);
         if ($bool) {
-            list($width, $height, $mime) = getimagesize($sourceDir);
             list($width, $height, $e) = getimagesize($sourceDir);
             $ext = ['gif', 'jpg', 'png', 'swf', 'psd', 'bmp'];
             $img = self::thumpImage($sourceDir, ['width' => $width, 'height' => $height], $percent, [], $ext[$e - 1]);

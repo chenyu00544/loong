@@ -20,18 +20,24 @@
                 <div class="main-info">
                     <ul class="image-item clearfix" data-album_id="{{$id}}">
                         @foreach($galleryPics as $galleryPic)
-                            <li class="image-wrap fl clearfix">
+                            <li class="image-wrap fl clearfix pic-id-{{$galleryPic->pic_id}}">
                                 <div class="img-container">
                                     <img src="{{url($galleryPic->pic_image)}}">
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" name="pic-id" value="{{$galleryPic->pic_id}}" class="ui-checkbox">
+                                    <input type="checkbox" name="pic-id" value="{{$galleryPic->pic_id}}"
+                                           class="ui-checkbox">
                                 </div>
-                                <div class="img-width" style="display: block;">232x330(3.58k)</div>
+                                <div class="img-width" style="display: block;">{{$galleryPic->pic_spec}}
+                                    ({{round($galleryPic->pic_size/1024,2)}}k)
+                                </div>
                                 <div class="img-handle" style="display: none;">
                                     <a href="javascript:;" class="t-img" data-pic_id="{{$galleryPic->pic_id}}"><i
                                                 class="glyphicon glyphicon-transfer"></i>转移相册</a>
-                                    <a href="javascript:;" class="del-img" data-pic_id="{{$galleryPic->pic_id}}"><i
+                                    <a href="javascript:;" class="del-img" data-pic_id="{{$galleryPic->pic_id}}"
+                                       data-pic_image="{{$galleryPic->pic_image}}"
+                                       data-pic_thumb="{{$galleryPic->pic_thumb}}"
+                                       data-pic_file="{{$galleryPic->pic_file}}"><i
                                                 class="glyphicon glyphicon-trash"></i>移除</a>
                                 </div>
                             </li>
@@ -74,7 +80,7 @@
                     fixed: true, //不固定
                     maxmin: true,
                     title: '上传图片',
-                    content: ["{{url('admin/gallery/uppicview')}}", 'no'],
+                    content: ["{{url('admin/gallery/uppicview/'.$id)}}", 'no'],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
@@ -92,7 +98,7 @@
             });
 
             //全选
-            $('input[name=all_list]').click(function () {
+            $('input[name=all_list]').on('click', function () {
                 var flage = $(this).is(':checked')
                 $("input[name=pic-id]").each(function () {
                     $(this).prop("checked", flage);
@@ -101,7 +107,7 @@
 
             //全选操作
             $('.btn-sure').on('click', function () {
-                if($('select[name=select_type]').val() != 0){
+                if ($('select[name=select_type]').val() != 0) {
                     var pic_ids = $("input[name=pic-id]");
 
                     var ids = [];
@@ -110,22 +116,62 @@
                             ids.push($(v).val());
                         }
                     });
-                    console.log(ids);
-                    if($('select[name=select_type]').val() == 'is_del'){
 
-                    }else if($('select[name=select_type]').val() == 'is_transfer'){
+                    if ($('select[name=select_type]').val() == 'is_del') {
+
+                    } else if ($('select[name=select_type]').val() == 'is_transfer') {
 
                     }
                 }
             });
 
-            //单选操作
+            //单选转移相册操作
             $('.image-item').on('click', '.t-img', function () {
                 var pic_id = $(this).data('pic_id');
+                layer.open({
+                    type: 2,
+                    area: ['700px', '250px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '上传图片',
+                    content: ["{{url('admin/gallery/transferpic')}}/" + pic_id, 'no'],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
             });
-            //单选操作
+
+            //单选删除操作
             $('.image-item').on('click', '.del-img', function () {
+                var that = this;
                 var pic_id = $(this).data('pic_id');
+                var pic_image = $(this).data('pic_image');
+                var pic_thumb = $(this).data('pic_thumb');
+                var pic_file = $(this).data('pic_file');
+                layer.confirm(
+                    '您确定要删除吗',
+                    {
+                        btn: ['确定', '取消'] //按钮
+                    }, function () {
+                        $.post(
+                            "{{url('admin/gallery/delgallerypic')}}",
+                            {
+                                '_token': '{{csrf_token()}}',
+                                pic_id: pic_id,
+                                pic_image: pic_image,
+                                pic_thumb: pic_thumb,
+                                pic_file: pic_file
+                            },
+                            function (data) {
+                                layer.msg(data.msg, {icon: data.code});
+                                if (data.code == 1) {
+                                    $(that).parent().parent().remove();
+                                }
+                            }
+                        );
+                    }, function () {
+                    }
+                );
             });
         });
     </script>
