@@ -23,7 +23,7 @@ class GalleryAlbumPicModel extends Model
     public function getGalleryPic($where, $column = ['*'])
     {
         return $this->select($column)
-            ->where($where)
+            ->whereIn('pic_id', $where)
             ->first();
     }
 
@@ -34,7 +34,7 @@ class GalleryAlbumPicModel extends Model
 
     public function setGalleryPic($where, $data)
     {
-        return $this->where($where)
+        return $this->whereIn('pic_id', $where)
             ->update($data);
     }
 

@@ -15,6 +15,7 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="clearfix">
+                    <a href="javascript:history.go(-1)" class="btn btn-default mar-all-10 btn-sm fl">　返回　</a>
                     <a href="JavaScript:;" class="btn btn-success btn-add btn-sm fl">添加图片</a>
                 </div>
                 <div class="main-info">
@@ -99,9 +100,19 @@
 
             //全选
             $('input[name=all_list]').on('click', function () {
-                var flage = $(this).is(':checked')
+                var flage = $(this).is(':checked');
                 $("input[name=pic-id]").each(function () {
                     $(this).prop("checked", flage);
+                });
+            });
+            $('input[name=pic-id]').on('click', function () {
+                $('input[name=pic-id]').each(function () {
+                    if (!$(this).is(':checked')) {
+                        $('input[name=all_list]').prop("checked", false);
+                        return false;
+                    } else {
+                        $('input[name=all_list]').prop("checked", true);
+                    }
                 });
             });
 
@@ -111,16 +122,63 @@
                     var pic_ids = $("input[name=pic-id]");
 
                     var ids = [];
+                    var pic_images = [];
+                    var pic_thumbs = [];
+                    var pic_files = [];
                     $.each(pic_ids, function (k, v) {
                         if ($(v).is(':checked')) {
                             ids.push($(v).val());
+                            var del_data = $(v).parent().parent().find('.del-img');
+                            pic_images.push(del_data.data('pic_image'));
+                            pic_thumbs.push(del_data.data('pic_thumb'));
+                            pic_files.push(del_data.data('pic_file'));
                         }
                     });
 
                     if ($('select[name=select_type]').val() == 'is_del') {
-
+                        layer.confirm(
+                            '您确定要删除吗',
+                            {
+                                btn: ['确定', '取消'] //按钮
+                            }, function () {
+                                $.post(
+                                    "{{url('admin/gallery/delgallerypic')}}",
+                                    {
+                                        '_token': '{{csrf_token()}}',
+                                        pic_id: ids,
+                                        pic_image: pic_images,
+                                        pic_thumb: pic_thumbs,
+                                        pic_file: pic_files
+                                    },
+                                    function (data) {
+                                        layer.msg(data.msg, {icon: data.code});
+                                        if (data.code == 1) {
+                                            $.each(ids, function (k, v) {
+                                                $('.pic-id-' + v).remove();
+                                            })
+                                        }
+                                    }
+                                );
+                            }, function () {
+                            }
+                        );
                     } else if ($('select[name=select_type]').val() == 'is_transfer') {
-
+                        var idsStr = '';
+                        $.each(ids, function (k, v) {
+                            idsStr += (v + '-');
+                        });
+                        console.log(idsStr);
+                        layer.open({
+                            type: 2,
+                            area: ['700px', '250px'],
+                            fixed: true, //不固定
+                            maxmin: true,
+                            title: '上传图片',
+                            content: ["{{url('admin/gallery/transferpic')}}/" + idsStr, 'no'],
+                            success: function (layero, index) {
+                                layer.iframeAuto(index)
+                            }
+                        });
                     }
                 }
             });
@@ -134,7 +192,7 @@
                     fixed: true, //不固定
                     maxmin: true,
                     title: '上传图片',
-                    content: ["{{url('admin/gallery/transferpic')}}/" + pic_id, 'no'],
+                    content: ["{{url('admin/gallery/transferpic')}}/" + pic_id + '-', 'no'],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
@@ -157,10 +215,10 @@
                             "{{url('admin/gallery/delgallerypic')}}",
                             {
                                 '_token': '{{csrf_token()}}',
-                                pic_id: pic_id,
-                                pic_image: pic_image,
-                                pic_thumb: pic_thumb,
-                                pic_file: pic_file
+                                pic_id: [pic_id],
+                                pic_image: [pic_image],
+                                pic_thumb: [pic_thumb],
+                                pic_file: [pic_file]
                             },
                             function (data) {
                                 layer.msg(data.msg, {icon: data.code});

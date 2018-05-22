@@ -18,7 +18,7 @@
         </div>
 
         <div class="weight-goods-name" style="text-align: center;">
-            <input type="hidden" name="pic_id" value="{{$galleryPic->pic_id}}">
+            <input type="hidden" name="pic_id" value="{{$id}}">
             <input type="hidden" name="album_id" value="{{$galleryPic->album_id}}">
             <a type="button" class="btn btn-danger btn-sure mar-all-8">确定</a>
             <a type="button" class="btn btn-default btn-close mar-all-8">取消</a>
@@ -43,17 +43,19 @@
 
             $('.btn-sure').click(function () {
                 var pic_id = $('input[name=pic_id]').val();
+                var ids = pic_id.split('-');
                 var album_id = $('input[name=parent_album_id]').val();
                 var old_album_id = $('input[name=album_id]').val();
                 $.post(
                     "{{url('admin/gallery/setgallerypic')}}",
-                    {'_token': '{{csrf_token()}}', pic_id: pic_id, album_id: album_id},
+                    {'_token': '{{csrf_token()}}', pic_id: ids, album_id: album_id},
                     function (data) {
                         if (data) {
                             if (old_album_id != album_id) {
-                                parent.$('.pic-id-' + pic_id).remove();
+                                $.each(ids, function (k, v) {
+                                    parent.$('.pic-id-' + v).remove();
+                                });
                             }
-
                         }
                         parent.layer.close(index);
                     }

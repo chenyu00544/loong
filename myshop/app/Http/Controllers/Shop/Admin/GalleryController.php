@@ -29,12 +29,13 @@ class GalleryController extends CommonController
         foreach ($gallerys as $gallery) {
             $albumIds[] = $gallery->album_id;
             $gallery->count = 0;
+            $countPics[$gallery->album_id] = 0;
         }
-        $countPics = $this->galleryRepository->countGalleryPic($albumIds);
-        foreach ($countPics as $countPic) {
-
+        $countPics_re = $this->galleryRepository->countGalleryPic($albumIds);
+        foreach ($countPics_re as $countPic) {
+            $countPics[$countPic->album_id] = $countPic->count;
         }
-        return view('shop.admin.gallery.gallery', compact('rank', 'gallerys'));
+        return view('shop.admin.gallery.gallery', compact('rank', 'gallerys', 'countPics'));
     }
 
     public function getGallerys($id)
@@ -55,9 +56,10 @@ class GalleryController extends CommonController
     //转移相册窗口
     public function transferGalleryPic($id)
     {
+        $ids = explode('-', $id);
         $gallerys = $this->galleryRepository->getGallerys();
-        $galleryPic = $this->galleryRepository->getGalleryPic($id);
-        return view('shop.admin.gallery.modal.transferPic', compact('gallerys', 'galleryPic'));
+        $galleryPic = $this->galleryRepository->getGalleryPic(array_filter($ids));
+        return view('shop.admin.gallery.modal.transferPic', compact('gallerys', 'galleryPic', 'id'));
     }
 
     //上传图片窗口

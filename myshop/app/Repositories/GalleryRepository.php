@@ -115,27 +115,27 @@ class GalleryRepository implements GalleryRepositoryInterface
         return $this->galleryAlbumPicModel->getGalleryPicsByPage($where);
     }
 
-    public function getGalleryPic($id)
+    public function getGalleryPic($ids)
     {
-        $where['pic_id'] = $id;
-        return $this->galleryAlbumPicModel->getGalleryPic($where);
+        return $this->galleryAlbumPicModel->getGalleryPic($ids);
     }
 
     public function setGalleryPic($data)
     {
-        $req = ['code' => 5, 'msg' => '删除失败'];
+        $req = ['code' => 5, 'msg' => '操作失败'];
         $where = [];
         $updata = [];
         foreach ($data as $key => $value){
             if($key == 'pic_id'){
-                $where[$key] = $value;
+                $where = array_filter($value);
             }else{
                 $updata[$key] = $value;
             }
         }
+
         $re = $this->galleryAlbumPicModel->setGalleryPic($where, $updata);
         if ($re) {
-            $req = ['code' => 1, 'msg' => '删除成功'];
+            $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;
     }
@@ -162,14 +162,16 @@ class GalleryRepository implements GalleryRepositoryInterface
     public function delGalleryPic($data)
     {
         $req = ['code' => 5, 'msg' => '删除失败'];
-        $where['pic_id'] = $data['pic_id'];
-        $re = $this->galleryAlbumPicModel->delGalleryPic($where);
-        if ($re) {
-            FileHandle::deleteFile($data['pic_image']);
-            FileHandle::deleteFile($data['pic_thumb']);
-            FileHandle::deleteFile($data['pic_file']);
-            $req['code'] = 1;
-            $req['msg'] = '删除成功';
+        foreach ($data['pic_id'] as $key => $value){
+            $where['pic_id'] = $value;
+            $re = $this->galleryAlbumPicModel->delGalleryPic($where);
+            if ($re) {
+                FileHandle::deleteFile($data['pic_image'][$key]);
+                FileHandle::deleteFile($data['pic_thumb'][$key]);
+                FileHandle::deleteFile($data['pic_file'][$key]);
+                $req['code'] = 1;
+                $req['msg'] = '删除成功';
+            }
         }
         return $req;
     }
