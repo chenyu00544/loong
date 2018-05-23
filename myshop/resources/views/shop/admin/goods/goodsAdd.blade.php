@@ -940,7 +940,7 @@
             $('.img-lib-main').on('click', function () {
                 layer.open({
                     type: 2,
-                    area: ['800px', '540px'],
+                    area: ['800px', '400px'],
                     fixed: true, //不固定
                     maxmin: true,
                     title: '图片库选择图片',
@@ -949,7 +949,7 @@
                         layer.iframeAuto(index)
                     }
                 });
-            })
+            });
 
             //第一步 选择模式
             $('.mos_item').on('click', function () {

@@ -2,23 +2,50 @@
 @section('content')
     <body style="background-color: #fff;padding: 20px;">
     <div class="content-wrap">
-        <div class="top">
-            <select class="form-control hg30 max-wd-190 mar-all-10 fl input-sm">
-                <option value="1">请选择</option>
-            </select>
-            <a href="javascript:;" class="btn btn-danger btn-sm mar-all-10 line-hg-20 lib-add fl">添加图库</a>
-            <a href="javascript:;" class="btn btn-danger btn-sm mar-all-10 line-hg-20 upload-img fl">上传图片</a>
+        <input type="hidden" name="parent_album_id" value="0">
+        <div class="p-gallery">
+            <div class="gallery-option fl">
+                <select class="form-control select" data-parent="0">
+                    <option value="0">请选择</option>
+                    @foreach($gallerys as $gallery)
+                        <option value="{{$gallery->album_id}}">{{$gallery->album_name}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div>
+            <a href="javascript:;" class="btn btn-danger mar-left-10 lib-add fl">添加图库</a>
+            <a href="javascript:;" class="btn btn-danger mar-left-10 upload-img fl">上传图片</a>
         </div>
 
-        @foreach($files as $file)
+        @foreach($galleryPics as $galleryPic)
 
         @endforeach
     </div>
     </body>
 @section('script')
     <script>
-        $(function () {
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.iframeAuto(index);
 
+        $(function () {
+            $('.p-gallery').on('change', '.select', function () {
+                setNextAblum(this, '{{csrf_token()}}', "{{url('admin/gallery/getgallerys/')}}/")
+            });
+
+            $('.lib-add').on('click', function () {
+                parent.layer.open({
+                    type: 2,
+                    area: ['800px', '500px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '添加相册',
+                    content: ["{{url('admin/goods/addgalleryshow')}}"],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            })
         });
     </script>
 @endsection

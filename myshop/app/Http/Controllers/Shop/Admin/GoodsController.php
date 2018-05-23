@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\FileHandle;
 use App\Repositories\BrandRepository;
 use App\Repositories\ComCateRepository;
+use App\Repositories\GalleryRepository;
 use App\Repositories\GoodsRepository;
 use Illuminate\Http\Request;
 
@@ -14,17 +15,20 @@ class GoodsController extends CommonController
     private $goodsRepository;
     private $comCateRepository;
     private $brandRepository;
+    private $galleryRepository;
 
     public function __construct(
         GoodsRepository $goodsRepository,
         ComCateRepository $comCateRepository,
-        BrandRepository $brandRepository
+        BrandRepository $brandRepository,
+        GalleryRepository $galleryRepository
     )
     {
         parent::__construct();
         $this->goodsRepository = $goodsRepository;
         $this->comCateRepository = $comCateRepository;
         $this->brandRepository = $brandRepository;
+        $this->galleryRepository = $galleryRepository;
     }
 
     /**
@@ -109,9 +113,20 @@ class GoodsController extends CommonController
     //商品轮播图编辑库
     public function imageLibrary()
     {
-        $uri = 'upload/images/goods_img';
-        $files = FileHandle::getImagesByDir(base_path() . '/public/', $uri);
-        return view('shop.admin.goods.modal.imgLibrary', compact('files'));
+        $gallerys = $this->galleryRepository->getGallerys();
+        $galleryPics = $this->galleryRepository->getGalleryPicsByPage(['album_id'=> $gallerys[0]->album_id]);
+        return view('shop.admin.goods.modal.imgLibrary', compact('galleryPics', 'gallerys'));
+    }
+
+    public function addGalleryShow()
+    {
+        $gallerys = $this->galleryRepository->getGallerys();
+        return view('shop.admin.goods.modal.galleryAdd', compact('gallerys'));
+    }
+
+    public function addGallery(Request $request)
+    {
+        return $this->galleryRepository->addGallery($request->except('_token'));
     }
 
     /**
