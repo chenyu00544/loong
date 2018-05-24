@@ -27,6 +27,13 @@ class GalleryAlbumPicModel extends Model
             ->first();
     }
 
+    public function getGalleryPics($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->get();
+    }
+
     public function addGalleryAlbumPic($data)
     {
         return $this->create($data);

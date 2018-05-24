@@ -88,6 +88,11 @@ class GalleryController extends CommonController
         return $this->galleryRepository->delGalleryPic($request->except('_token'));
     }
 
+    public function getGalleryPics(Request $request)
+    {
+        return $this->galleryRepository->getGalleryPics($request->except('_token'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

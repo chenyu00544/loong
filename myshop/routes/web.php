@@ -127,5 +127,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('gallery/setgallerypic/', 'GalleryController@setGalleryPic');
     Route::post('gallery/delgallerypic', 'GalleryController@delGalleryPic');
     Route::post('gallery/upgallerypic', 'GalleryController@upGalleryPic');
+    Route::post('gallery/getgallerypics', 'GalleryController@getGalleryPics');
     Route::resource('gallery', 'GalleryController');
 });
