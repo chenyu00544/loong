@@ -1723,7 +1723,7 @@ input[type=file].upload-file {
     margin-top: 15px;
     overflow: hidden;
     position: relative;
-    height: 210px;
+    min-height: 210px;
 }
 
 .gallery-list .ga-images-ul li {

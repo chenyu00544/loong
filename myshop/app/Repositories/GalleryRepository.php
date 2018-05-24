@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\GalleryRepositoryInterface;
+use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Http\Models\Shop\GalleryAlbumModel;
 use App\Http\Models\Shop\GalleryAlbumPicModel;
@@ -60,9 +61,27 @@ class GalleryRepository implements GalleryRepositoryInterface
         return $this->galleryAlbumModel->getGallery($where);
     }
 
-    public function getGalleryPics($where = ['album_id' => 0])
+    public function getGalleryPics($data = ['album_id' => 0])
     {
-        return $this->galleryAlbumPicModel->getGalleryPics($where);
+        $pageSize = empty($data['size']) ? 20 : $data['size'];
+        $where['album_id'] = $data['album_id'];
+        $page = $data['page'];
+        $re = $this->galleryAlbumPicModel->getGalleryPics($where, $page, $pageSize);
+        $count = $this->galleryAlbumPicModel->countGalleryPic([$data['album_id']]);
+        if ($count->count() > 0) {
+            foreach ($count as $c) {
+                $count = $c->count;
+            }
+        }else{
+            $count = 0;
+        }
+        foreach ($re as $key => $value) {
+            $value->pic_image = url($value->pic_image);
+            $value->pic_file = url($value->pic_file);
+            $value->pic_thumb = url($value->pic_thumb);
+        }
+        $rep = Common::paginate($re, $count, $page, $pageSize);
+        return $rep;
     }
 
     public function addGallery($data)
@@ -125,10 +144,10 @@ class GalleryRepository implements GalleryRepositoryInterface
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where = [];
         $updata = [];
-        foreach ($data as $key => $value){
-            if($key == 'pic_id'){
+        foreach ($data as $key => $value) {
+            if ($key == 'pic_id') {
                 $where = array_filter($value);
-            }else{
+            } else {
                 $updata[$key] = $value;
             }
         }
@@ -142,27 +161,31 @@ class GalleryRepository implements GalleryRepositoryInterface
 
     public function upGalleryPic($data)
     {
-        $file = $data['pic'];
         $album_id = $data['album_id'];
-        list($width, $height) = getimagesize($file);
-        $original_img = 'gallery_album' . DIRECTORY_SEPARATOR . $album_id . DIRECTORY_SEPARATOR . 'original_img';
-        $thumb_img = 'gallery_album' . DIRECTORY_SEPARATOR . $album_id . DIRECTORY_SEPARATOR . 'thumb_img';
-        $exhibition_img = 'gallery_album' . DIRECTORY_SEPARATOR . $album_id . DIRECTORY_SEPARATOR . 'exhibition_img';
-        $updata['pic_file'] = FileHandle::upLoadImage($file, $original_img);
-        $updata['pic_thumb'] = FileHandle::upLoadThumbImage($updata['pic_file'], $thumb_img);
-        $updata['pic_image'] = FileHandle::upLoadExhibitionImage($updata['pic_file'], $exhibition_img, 0.8);
-        $updata['pic_size'] = $file->getClientSize();
-        $updata['pic_spec'] = $width . '×' . $height;
-        $updata['album_id'] = $album_id;
-        $updata['pic_name'] = md5(time() . rand(10000, 99999));
-        $updata['add_time'] = time();
-        return $this->galleryAlbumPicModel->addGalleryAlbumPic($updata);
+        $files = $data['pic'];
+        $rep = [];
+        foreach ($files as $file) {
+            list($width, $height) = getimagesize($file);
+            $original_img = 'gallery_album' . DIRECTORY_SEPARATOR . $album_id . DIRECTORY_SEPARATOR . 'original_img';
+            $thumb_img = 'gallery_album' . DIRECTORY_SEPARATOR . $album_id . DIRECTORY_SEPARATOR . 'thumb_img';
+            $exhibition_img = 'gallery_album' . DIRECTORY_SEPARATOR . $album_id . DIRECTORY_SEPARATOR . 'exhibition_img';
+            $updata['pic_file'] = FileHandle::upLoadImage($file, $original_img);
+            $updata['pic_thumb'] = FileHandle::upLoadThumbImage($updata['pic_file'], $thumb_img);
+            $updata['pic_image'] = FileHandle::upLoadExhibitionImage($updata['pic_file'], $exhibition_img, 0.8);
+            $updata['pic_size'] = $file->getClientSize();
+            $updata['pic_spec'] = $width . '×' . $height;
+            $updata['album_id'] = $album_id;
+            $updata['pic_name'] = md5(time() . rand(10000, 99999));
+            $updata['add_time'] = time();
+            $rep[] = $this->galleryAlbumPicModel->addGalleryAlbumPic($updata);
+        }
+        return $rep;
     }
 
     public function delGalleryPic($data)
     {
         $req = ['code' => 5, 'msg' => '删除失败'];
-        foreach ($data['pic_id'] as $key => $value){
+        foreach ($data['pic_id'] as $key => $value) {
             $where['pic_id'] = $value;
             $re = $this->galleryAlbumPicModel->delGalleryPic($where);
             if ($re) {

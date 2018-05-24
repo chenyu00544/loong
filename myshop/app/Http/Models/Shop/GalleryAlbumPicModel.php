@@ -27,10 +27,12 @@ class GalleryAlbumPicModel extends Model
             ->first();
     }
 
-    public function getGalleryPics($where, $column = ['*'])
+    public function getGalleryPics($where, $page = 1, $size = 20, $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
+            ->offset(($page - 1) * $size)
+            ->limit($size)
             ->get();
     }
 

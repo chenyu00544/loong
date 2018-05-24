@@ -944,7 +944,7 @@
                     fixed: true, //不固定
                     maxmin: true,
                     title: '图片库选择图片',
-                    content: ["{{url('admin/goods/imagelibrary')}}", 'no'],
+                    content: ["{{url('admin/goods/imagelibrary')}}"],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
