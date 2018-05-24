@@ -15,12 +15,26 @@
         </div>
         <div>
             <a href="javascript:;" class="btn btn-danger mar-left-10 lib-add fl">添加图库</a>
-            <a href="javascript:;" class="btn btn-danger mar-left-10 upload-img fl">上传图片</a>
+            <a href="javascript:;" class="btn btn-danger mar-left-10 upload-img fl"><input type="file" name="img"
+                                                                                           class="upload-file fl">上传图片</a>
+        </div>
+        <div class="gallery-list ps-container">
+            <div class="gallery-album">
+                <ul class="ga-images-ul">
+                    @foreach($galleryPics as $galleryPic)
+                        <li data-url="" class="current">
+                            <div class="img-container">
+                                <img src="">
+                            </div>
+                            <i class="checked"></i>
+                        </li>
+                    @endforeach
+                </ul>
+                <div class="clear"></div>
+            </div>
         </div>
 
-        @foreach($galleryPics as $galleryPic)
 
-        @endforeach
     </div>
     </body>
 @section('script')
@@ -30,7 +44,14 @@
 
         $(function () {
             $('.p-gallery').on('change', '.select', function () {
-                setNextAblum(this, '{{csrf_token()}}', "{{url('admin/gallery/getgallerys/')}}/")
+                setNextAblum(this, '{{csrf_token()}}', "{{url('admin/gallery/getgallerys/')}}/");
+                var album_id = $('input[name=parent_album_id]').val();
+                $.post("{{url('admin/gallery/getgallerypics')}}", {
+                    '_token': '{{csrf_token()}}',
+                    album_id: album_id
+                }, function (data) {
+                    console.log(data);
+                })
             });
 
             $('.lib-add').on('click', function () {
@@ -45,7 +66,29 @@
                         layer.iframeAuto(index)
                     }
                 });
-            })
+            });
+
+            $('.upload-img').on('change', function () {
+                var form = new FormData();
+                form.append('pic', $('input[name=img]')[0].files[0]);
+                form.append('album_id', $('input[name=parent_album_id]').val());
+                form.append('_token', '{{csrf_token()}}');
+                $.ajax({
+                    url: "{{url('admin/gallery/upgallerypic')}}",
+                    type: "POST",
+                    data: form,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+
+                    }
+                });
+            });
+
+            $('input[name=parent_album_id]').on('change', function () {
+                var album_id = $(this).val();
+                console.log(1111);
+            });
         });
     </script>
 @endsection
