@@ -31,6 +31,7 @@ class GalleryAlbumPicModel extends Model
     {
         return $this->select($column)
             ->where($where)
+            ->orderBy('add_time', 'desc')
             ->offset(($page - 1) * $size)
             ->limit($size)
             ->get();

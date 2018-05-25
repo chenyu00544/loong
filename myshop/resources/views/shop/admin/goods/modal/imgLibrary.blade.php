@@ -15,28 +15,6 @@
         </div>
         <div class="clearfix">
             <a href="javascript:;" class="btn btn-danger mar-left-10 lib-add fl">添加图库</a>
-<<<<<<< HEAD
-            <a href="javascript:;" class="btn btn-danger mar-left-10 upload-img fl"><input type="file" name="img"
-                                                                                           class="upload-file fl">上传图片</a>
-        </div>
-        <div class="gallery-list ps-container">
-            <div class="gallery-album">
-                <ul class="ga-images-ul">
-                    @foreach($galleryPics as $galleryPic)
-                        <li data-url="" class="current">
-                            <div class="img-container">
-                                <img src="">
-                            </div>
-                            <i class="checked"></i>
-                        </li>
-                    @endforeach
-                </ul>
-                <div class="clear"></div>
-            </div>
-        </div>
-
-
-=======
             <a href="javascript:;" class="btn btn-danger mar-left-10 upload-img fl">
                 <input type="file" name="img" class="upload-file fl" multiple="multiple">上传图片</a>
         </div>
@@ -74,7 +52,6 @@
                 </li>
             </ul>
         </nav>
->>>>>>> be30b524dc83549c54f63e2e2aaa4aa516744d4a
     </div>
     </body>
 @section('script')
@@ -121,6 +98,7 @@
 
             $('.upload-img').on('change', function () {
                 layer.load();
+                var domain = "{{url('/')}}/";
                 var form = new FormData();
                 var files = $('input[name=img]')[0].files;
                 var album_id = $('input[name=parent_album_id]').val();
@@ -139,12 +117,23 @@
                         success: function (data) {
                             $.each(data, function (k, v) {
                                 var html = '';
+                                html += '<li data-url="' + v.pic_id + '" class="">' +
+                                    '<div class="img-container">' +
+                                    '<img src="' + domain + v.pic_image + '">' +
+                                    '</div>' +
+                                    '<i class="checked"></i>' +
+                                    '</li>';
                                 $('.ga-images-ul').prepend(html);
                             });
+                            parent.layer.iframeAuto(index);
                             layer.closeAll('loading');
                         }
                     });
                 }
+            });
+
+            $('.ga-images-ul li').on('click', function () {
+
             });
         });
     </script>

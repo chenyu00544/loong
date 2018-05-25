@@ -110,7 +110,7 @@ class GoodsController extends CommonController
         return view('shop.admin.success');
     }
 
-    //商品轮播图编辑库
+    //商品图册编辑选择窗口
     public function imageLibrary()
     {
         $gallerys = $this->galleryRepository->getGallerys();
