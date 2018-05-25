@@ -50,6 +50,51 @@ $(function () {
 
     region();
 
+    $('.pagination li').on('click', function () {
+        var page = 1;
+        if (!$(this).find('span').length) {
+            $('.pagination li').removeClass('active');
+            $(this).addClass('active');
+            page = $(this).find('a').html();
+        } else if ($(this).find('span').html() == '«') {
+            if($(this).next().hasClass('active')){
+                return false;
+            }
+            $('.pagination li').each(function (k, v) {
+                if ($(v).hasClass('active')) {
+                    $(v).removeClass('active');
+                    if($(v).prev().hasClass('disabled')){
+                        $(v).prev().prev().addClass('active');
+                        page = $(v).prev().prev().find('a').html();
+                    }else{
+                        $(v).prev().addClass('active');
+                        page = $(v).prev().find('a').html();
+                    }
+
+                    return false;
+                }
+            });
+        } else if ($(this).find('span').html() == '»') {
+            if($(this).prev().hasClass('active')){
+                return false;
+            }
+            $('.pagination li').each(function (k, v) {
+                if ($(v).hasClass('active')) {
+                    $(v).removeClass('active');
+                    if($(v).next().hasClass('disabled')){
+                        $(v).next().next().addClass('active');
+                        page = $(v).next().next().find('a').html();
+                    }else{
+                        $(v).next().addClass('active');
+                        page = $(v).next().find('a').html();
+                    }
+                    return false;
+                }
+            });
+        }
+        console.log(page);
+    });
+
 });
 
 function region() {
@@ -77,7 +122,7 @@ function setNextAblum(that, token, url) {
     var id = $(that).val();
     var parent = $(that).data('parent');
     $('input[name=parent_album_id]').val(id);
-    if (id > 0 ) {
+    if (id > 0) {
         var html = '';
         $.post(url + id, {'_token': token}, function (data) {
             if (data.length > 0) {
