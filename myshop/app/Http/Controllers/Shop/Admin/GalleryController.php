@@ -47,7 +47,7 @@ class GalleryController extends CommonController
     }
 
     //显示相册图片列表
-    public function galleryView($id)
+    public function galleryView(Request $request, $id)
     {
         $galleryPics = $this->galleryRepository->getGalleryPicsByPage(['album_id' => $id]);
         return view('shop.admin.gallery.galleryPics', compact('galleryPics', 'id'));

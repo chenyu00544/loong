@@ -248,7 +248,7 @@ i, em {
 .top-border {
     font-size: 0;
     line-height: 0;
-    filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#26000000', endColorstr='#26000000');
+    /*filter: progid:DXImageTransform.Microsoft.gradient(enabled='true', startColorstr='#26000000', endColorstr='#26000000');*/
     background: rgba(0, 0, 0, 0.15);
     display: block;
     width: 100%;
@@ -1723,7 +1723,7 @@ input[type=file].upload-file {
     margin-top: 15px;
     overflow: hidden;
     position: relative;
-    height: 210px;
+    min-height: 210px;
 }
 
 .gallery-list .ga-images-ul li {

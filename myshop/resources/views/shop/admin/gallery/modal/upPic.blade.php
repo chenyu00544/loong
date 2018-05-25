@@ -26,7 +26,7 @@
         <div class="form-group clearfix">
             <label class="col-xs-4 control-label text-right line-hg-30">上传文件：</label>
             <div class="col-xs-6 n-wd400">
-                <input type="file" name="pic">
+                <input type="file" name="pic" multiple="multiple">
             </div>
         </div>
 
@@ -60,9 +60,13 @@
             });
 
             $('.btn-sure').click(function () {
+                layer.load();
                 var domain = "{{url('/')}}/";
                 var form = new FormData();
-                form.append('pic', $('input[name=pic]')[0].files[0]);
+                var files = $('input[name=pic]')[0].files;
+                for (var i = 0; i < files.length; i++) {
+                    form.append('pic[' + i + ']', files[i]);
+                }
                 form.append('album_id', $('input[name=parent_album_id]').val());
                 form.append('_token', '{{csrf_token()}}');
                 $.ajax({
@@ -72,22 +76,25 @@
                     contentType: false,
                     processData: false,
                     success: function (data) {
-                        var html = '<li class="image-wrap fl clearfix pic-id-' + data.pic_id + '">' +
-                            '<div class="img-container">' +
-                            '<img src="' + domain + data.pic_image + '">' +
-                            '</div>' +
-                            '<div class="checkbox-item">' +
-                            '<input type="checkbox" name="pic-id" value="' + data.pic_id + '" class="ui-checkbox">' +
-                            '</div>' +
-                            '<div class="img-width" style="display: block;">' + data.pic_spec + '(' + (parseFloat(data.pic_size) / 1024).toFixed(2) + 'k)</div>' +
-                            '<div class="img-handle" style="display: none;">' +
-                            '<a href="javascript:;" class="t-img" data-pic_id="' + data.pic_id + '"><i class="glyphicon glyphicon-transfer"></i>转移相册</a>' +
-                            '<a href="javascript:;" class="del-img" data-pic_id="' + data.pic_id + '" data-pic_image="' + data.pic_image + '" data-pic_thumb="' + data.pic_thumb + '" data-pic_file="' + data.pic_file + '"><i class="glyphicon glyphicon-trash"></i>移除</a>' +
-                            '</div>' +
-                            '</li>';
-                        if (parent.$('.image-item').data('album_id') == data.album_id) {
-                            parent.$('.image-item').prepend(html);
-                        }
+                        $.each(data, function (k, v) {
+                            var html = '<li class="image-wrap fl clearfix pic-id-' + v.pic_id + '">' +
+                                '<div class="img-container">' +
+                                '<img src="' + domain + v.pic_image + '">' +
+                                '</div>' +
+                                '<div class="checkbox-item">' +
+                                '<input type="checkbox" name="pic-id" value="' + v.pic_id + '" class="ui-checkbox">' +
+                                '</div>' +
+                                '<div class="img-width" style="display: block;">' + v.pic_spec + '(' + (parseFloat(v.pic_size) / 1024).toFixed(2) + 'k)</div>' +
+                                '<div class="img-handle" style="display: none;">' +
+                                '<a href="javascript:;" class="t-img" data-pic_id="' + v.pic_id + '"><i class="glyphicon glyphicon-transfer"></i>转移相册</a>' +
+                                '<a href="javascript:;" class="del-img" data-pic_id="' + v.pic_id + '" data-pic_image="' + v.pic_image + '" data-pic_thumb="' + v.pic_thumb + '" data-pic_file="' + v.pic_file + '"><i class="glyphicon glyphicon-trash"></i>移除</a>' +
+                                '</div>' +
+                                '</li>';
+                            if (parent.$('.image-item').data('album_id') == data[0].album_id) {
+                                parent.$('.image-item').prepend(html);
+                            }
+                        });
+                        layer.closeAll('loading');
                         parent.layer.close(index);
                     }
                 });
