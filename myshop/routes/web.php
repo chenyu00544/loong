@@ -88,7 +88,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('goods/examine/{id}', 'GoodsController@examine');
     Route::get('goods/weight/order/{id}', 'GoodsController@weightOrder');
     Route::get('goods/cateextend/{id}', 'GoodsController@cateExtend');
-    Route::get('goods/imagelibrary', 'GoodsController@imageLibrary');
+    Route::get('goods/imagelibrary/{type}', 'GoodsController@imageLibrary');
     Route::get('goods/addgalleryshow', 'GoodsController@addGalleryShow');
     Route::post('goods/addgallery', 'GoodsController@addGallery');
     Route::post('goods/change', 'GoodsController@change');

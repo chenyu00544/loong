@@ -1,6 +1,6 @@
 @extends('shop.layouts.index')
 @section('content')
-    <body style="background-color: #fff;padding: 20px;overflow-y: scroll;">
+    <body style="background-color: #fff;padding: 20px;">
     <div class="content-wrap">
         <input type="hidden" name="parent_album_id" value="0">
         <div class="p-gallery">
@@ -18,69 +18,46 @@
             <a href="javascript:;" class="btn btn-danger mar-left-10 upload-img fl">
                 <input type="file" name="img" class="upload-file fl" multiple="multiple">上传图片</a>
         </div>
-        <div class="gallery-list ps-container">
-            <div class="gallery-album">
-                <ul class="ga-images-ul">
-                    @foreach($galleryPics as $galleryPic)
-                        <li data-url="{{$galleryPic->pic_id}}" class="">
-                            <div class="img-container">
-                                <img src="{{$galleryPic->pic_image}}">
-                            </div>
-                            <i class="checked"></i>
-                        </li>
-                    @endforeach
-                </ul>
-                <div class="clear"></div>
+        <div style="overflow-y: scroll;height: 250px;">
+            <div class="gallery-list ps-container">
+                <div class="gallery-album">
+                    <ul class="ga-images-ul">
+                        @foreach($galleryPics as $galleryPic)
+                            <li data-pic_id="{{$galleryPic->pic_id}}" data-exhibition_url="{{$galleryPic->pic_image}}"
+                                data-original_url="{{$galleryPic->pic_file}}" class="">
+                                <div class="img-container">
+                                    <img src="{{$galleryPic->pic_image}}">
+                                </div>
+                                <i class="checked"></i>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div class="clear"></div>
+                </div>
             </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm">
+
+                </ul>
+            </nav>
         </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination pagination-sm">
-                <li>
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true">«</span>
-                    </a>
-                </li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li class="disabled"><span>...</span></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true">»</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <div class="clearfix text-center">
+            <a href="javascript:;" class="btn btn-danger mar-left-10 btn-sm btn-sure">确定</a>
+            <a href="javascript:;" class="btn btn-default mar-left-10 btn-sm btn-close">取消</a>
+        </div>
     </div>
     </body>
 @section('script')
     <script>
+        var type = "{{$type}}";
+
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         parent.layer.iframeAuto(index);
 
         $(function () {
             $('.p-gallery').on('change', '.select', function () {
                 setNextAblum(this, '{{csrf_token()}}', "{{url('admin/gallery/getgallerys/')}}/");
-                var album_id = $('input[name=parent_album_id]').val();
-                $.post("{{url('admin/gallery/getgallerypics')}}", {
-                    '_token': '{{csrf_token()}}',
-                    album_id: album_id,
-                    page: 1
-                }, function (data) {
-                    var html = '';
-                    $.each(data.data, function (k, v) {
-                        html += '<li data-url="' + v.pic_id + '" class="">' +
-                            '<div class="img-container">' +
-                            '<img src="' + v.pic_image + '">' +
-                            '</div>' +
-                            '<i class="checked"></i>' +
-                            '</li>';
-                    });
-                    $('.ga-images-ul').html(html);
-                    parent.layer.iframeAuto(index);
-                })
+                getgallerypics(1);
             });
 
             $('.lib-add').on('click', function () {
@@ -131,12 +108,108 @@
                         }
                     });
                 }
+                setTimeout(function () {
+                    layer.closeAll('loading');
+                }, 10000)
             });
 
-            $('.ga-images-ul li').on('click', function () {
+            $('.ga-images-ul').on('click', 'li', function () {
+                if (type == 'main') {
+                    $('.ga-images-ul li').removeClass('current');
+                    $(this).addClass('current');
+                } else if (type == 'webdesc') {
+                    if ($(this).hasClass('current')) {
+                        $(this).removeClass('current');
+                    } else {
+                        $(this).addClass('current');
+                    }
+                }
+            });
 
+            $('.pagination').on('click', '.prev', function () {
+                var page = $(this).data('num');
+                getgallerypics(page)
+            });
+            $('.pagination').on('click', '.num-page', function () {
+                var page = $(this).data('num');
+                getgallerypics(page)
+            });
+            $('.pagination').on('click', '.next', function () {
+                var page = $(this).data('num');
+                getgallerypics(page)
+            });
+
+            $('.btn-sure').on('click', function () {
+                var pic_id = [];
+                var pic_exhibition_url = [];
+                var pic_original_url = [];
+                $('.ga-images-ul li.current').each(function () {
+                    pic_id.push($(this).data('pic_id'));
+                    pic_exhibition_url.push($(this).data('exhibition_url'));
+                    pic_original_url.push($(this).data('original_url'));
+                });
+
+                if (type == 'main') {
+                    parent.$('input[name=gallery_pic_id]').val(pic_exhibition_url[0]);
+                    parent.$('.goods-img-show').attr('src', pic_url[0]);
+                } else if (type == 'webdesc') {
+                    var html = '';
+                    var imgs = '';
+                    $.each(pic_original_url, function (k, v) {
+                        imgs += '<img src="' + v + '">';
+                        html += '<div class="section s-img clearfix">' +
+                            '<div class="img">' +
+                            '<img src="' + v + '">' +
+                            '</div>' +
+                            '<div class="tools">';
+                        if (parent.$('.section-warp section').length == 0 &&  k == 0) {
+                            html += '<i class="move-up glyphicon glyphicon-arrow-up disabled"></i>' +
+                                '<i class="move-down glyphicon glyphicon-arrow-down"></i>';
+                        } else if (k == pic_original_url.length - 1) {
+                            html += '<i class="move-up glyphicon glyphicon-arrow-up"></i>' +
+                                '<i class="move-down glyphicon glyphicon-arrow-down disabled"></i>';
+                        } else {
+                            html += '<i class="move-up glyphicon glyphicon-arrow-up"></i>' +
+                                '<i class="move-down glyphicon glyphicon-arrow-down"></i>';
+                        }
+                        html += '<em class="move-remove"><i class="glyphicon glyphicon-remove"></i>删除</em>' +
+                            '<div class="cover"></div>' +
+                            '</div>' +
+                            '</div>';
+                    });
+                    parent.$('.section-warp').append(html);
+                    var desc_mobile = parent.$('input[name=desc_mobile]').val();
+                    parent.$('input[name=desc_mobile]').val(desc_mobile + imgs);
+                }
+                parent.layer.close(index);
+            });
+
+            $('.btn-close').on('click', function () {
+                parent.layer.close(index);
             });
         });
+
+        function getgallerypics(page) {
+            var album_id = $('input[name=parent_album_id]').val();
+            $.post("{{url('admin/gallery/getgallerypics')}}", {
+                '_token': '{{csrf_token()}}',
+                album_id: album_id,
+                page: page
+            }, function (data) {
+                var html = '';
+                $.each(data.data, function (k, v) {
+                    html += '<li data-pic_id="' + v.pic_id + '" data-exhibition_url="' + v.pic_image + '" data-original_url="' + v.pic_file + '" class="">' +
+                        '<div class="img-container">' +
+                        '<img src="' + v.pic_image + '">' +
+                        '</div>' +
+                        '<i class="checked"></i>' +
+                        '</li>';
+                });
+                $('.ga-images-ul').html(html);
+                setPages(data);
+                parent.layer.iframeAuto(index);
+            })
+        }
     </script>
 @endsection
 @endsection

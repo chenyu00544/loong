@@ -50,23 +50,25 @@ $(function () {
 
     region();
 
-    $('.pagination li').on('click', function () {
+    $('.pagination').on('click', 'li', function () {
         var page = 1;
         if (!$(this).find('span').length) {
-            $('.pagination li').removeClass('active');
-            $(this).addClass('active');
-            page = $(this).find('a').html();
+            if (!$(this).hasClass('disabled')) {
+                $('.pagination li').removeClass('active');
+                $(this).addClass('active');
+                page = $(this).find('a').html();
+            }
         } else if ($(this).find('span').html() == '«') {
-            if($(this).next().hasClass('active')){
+            if ($(this).next().hasClass('active')) {
                 return false;
             }
             $('.pagination li').each(function (k, v) {
                 if ($(v).hasClass('active')) {
                     $(v).removeClass('active');
-                    if($(v).prev().hasClass('disabled')){
+                    if ($(v).prev().hasClass('disabled')) {
                         $(v).prev().prev().addClass('active');
                         page = $(v).prev().prev().find('a').html();
-                    }else{
+                    } else {
                         $(v).prev().addClass('active');
                         page = $(v).prev().find('a').html();
                     }
@@ -75,16 +77,16 @@ $(function () {
                 }
             });
         } else if ($(this).find('span').html() == '»') {
-            if($(this).prev().hasClass('active')){
+            if ($(this).prev().hasClass('active')) {
                 return false;
             }
             $('.pagination li').each(function (k, v) {
                 if ($(v).hasClass('active')) {
                     $(v).removeClass('active');
-                    if($(v).next().hasClass('disabled')){
+                    if ($(v).next().hasClass('disabled')) {
                         $(v).next().next().addClass('active');
                         page = $(v).next().next().find('a').html();
-                    }else{
+                    } else {
                         $(v).next().addClass('active');
                         page = $(v).next().find('a').html();
                     }
@@ -92,7 +94,9 @@ $(function () {
                 }
             });
         }
-        console.log(page);
+        if (!$(this).hasClass('disabled')) {
+            console.log(page);
+        }
     });
 
 });
@@ -141,4 +145,28 @@ function setNextAblum(that, token, url) {
         $(that).parent().nextAll().remove();
     }
 }
+
+function setPages(data) {
+    var html = '<li class="prev" data-num="' + data.prev + '">' +
+        '<a href="#" aria-label="Previous">' +
+        '<span aria-hidden="true">«</span>' +
+        '</a>' +
+        '</li>';
+    $.each(data.page, function (k, v) {
+        if (data.currentPage == v) {
+            html += '<li class="active num-page" data-num="' + v + '"><a href="#">' + v + '</a></li>'
+        } else if (v == '...') {
+            html += '<li class="disabled"><a href="javascript:;">' + v + '</a></li>'
+        } else {
+            html += '<li class="num-page" data-num="' + v + '"><a href="#">' + v + '</a></li>'
+        }
+    });
+    html += '<li class="next" data-num="' + data.next + '">' +
+        '<a href="#" aria-label="Next">' +
+        '<span aria-hidden="true">»</span>' +
+        '</a>' +
+        '</li>';
+    $('.pagination').html(html);
+}
+
 

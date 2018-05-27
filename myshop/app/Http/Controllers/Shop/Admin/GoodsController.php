@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Facades\FileHandle;
 use App\Repositories\BrandRepository;
 use App\Repositories\ComCateRepository;
 use App\Repositories\GalleryRepository;
 use App\Repositories\GoodsRepository;
+use App\Repositories\TransportRepository;
 use Illuminate\Http\Request;
 
 class GoodsController extends CommonController
@@ -16,12 +16,14 @@ class GoodsController extends CommonController
     private $comCateRepository;
     private $brandRepository;
     private $galleryRepository;
+    private $transportRepository;
 
     public function __construct(
         GoodsRepository $goodsRepository,
         ComCateRepository $comCateRepository,
         BrandRepository $brandRepository,
-        GalleryRepository $galleryRepository
+        GalleryRepository $galleryRepository,
+        TransportRepository $transportRepository
     )
     {
         parent::__construct();
@@ -29,6 +31,7 @@ class GoodsController extends CommonController
         $this->comCateRepository = $comCateRepository;
         $this->brandRepository = $brandRepository;
         $this->galleryRepository = $galleryRepository;
+        $this->transportRepository = $transportRepository;
     }
 
     /**
@@ -111,11 +114,11 @@ class GoodsController extends CommonController
     }
 
     //商品图册编辑选择窗口
-    public function imageLibrary()
+    public function imageLibrary($type)
     {
         $gallerys = $this->galleryRepository->getGallerys();
-        $galleryPics = $this->galleryRepository->getGalleryPicsByPage(['album_id'=> $gallerys[0]->album_id]);
-        return view('shop.admin.goods.modal.imgLibrary', compact('galleryPics', 'gallerys'));
+        $galleryPics = $this->galleryRepository->getGalleryPicsByPage(['album_id' => $gallerys[0]->album_id]);
+        return view('shop.admin.goods.modal.imgLibrary', compact('galleryPics', 'gallerys', 'type'));
     }
 
     public function addGalleryShow()
@@ -138,7 +141,8 @@ class GoodsController extends CommonController
     {
         $comCates = $this->comCateRepository->getComCates();
         $brands = $this->brandRepository->search([], true);
-        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands'));
+        $transports = $this->transportRepository->getTransportExpressByRuId(0);
+        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports'));
     }
 
     /**

@@ -44,6 +44,11 @@ class TransportRepository implements TransportRepositoryInterface
         return $this->transportModel->getTransportAll();
     }
 
+    public function getTransportExpressByRuId($id)
+    {
+        return $this->transportModel->getTransportAll(['ru_id' => $id]);
+    }
+
     public function getTransportExtendByTid($id, $tid, $regions)
     {
         $adminUser = Cache::get('adminUser');

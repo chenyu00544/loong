@@ -39,7 +39,7 @@
                                     <dt class="cursor">3</dt>
                                     <dd class="s-text">填写商品信息</dd>
                                 </dl>
-                                <dl class="last " data-step="4">
+                                <dl class="last cur" data-step="4">
                                     <dt class="cursor">4</dt>
                                     <dd class="s-text">填写商品属性</dd>
                                 </dl>
@@ -151,7 +151,7 @@
                         </div>
 
                         <!--第三步 填写通用信息-->
-                        <div class="step step-three" ectype="step" data-step="3" style="">
+                        <div class="step step-three" ectype="step" data-step="3" style="display: none;">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -261,7 +261,8 @@
                                                 <input type="text" id="brand_name"
                                                        class="form-control max-wd-190 hg30 fl" data-filter="brand_name"
                                                        autocomplete="off" value="请选择品牌" readonly="">
-                                                <a href="javascript:;" class="btn btn-info btn-sm mar-left-20 brand-add">添加</a>
+                                                <a href="javascript:;"
+                                                   class="btn btn-info btn-sm mar-left-20 brand-add">添加</a>
                                                 <input type="hidden" name="brand_id" id="brand_id" value="0">
                                                 <div class="form_prompt"></div>
                                             </div>
@@ -322,9 +323,7 @@
                                             <div class="form_prompt">
                                             </div>
                                             <div class="notic">图片尺寸建议800*800</div>
-                                            <input type="hidden" name="original_img" value="">
-                                            <input type="hidden" name="goods_img" value="">
-                                            <input type="hidden" name="goods_thumb" value="">
+                                            <input type="hidden" name="gallery_pic_id" value="">
                                             <div id="" class="moxie-shim moxie-shim-html5"
                                                  style="position: absolute; top: 0px; left: 0px; width: 100px; height: 100px; overflow: hidden; z-index: 0;">
                                                 <input id="" type="file" name="goods_img_file"
@@ -351,16 +350,23 @@
                                                     <input type="radio" name="freight" value="2" checked> 按运费模板
                                                 </label>
                                             </div>
-                                            <input type="text" name="shipping_fee"
-                                                   class="form-control max-wd-190 hg30 fl"
-                                                   autocomplete="off" value="0.00" style="display:none;">
+                                            <div id="shipping_fee" style="display:none;">
+                                                <input type="text" name="shipping_fee"
+                                                       class="form-control max-wd-190 hg30 fl"
+                                                       autocomplete="off" value="0.00">
+                                            </div>
                                             <div id="tid">
                                                 <select name="tid" id="" class="form-control max-wd-190 hg30 fl ft-12">
-                                                    <option value="3">圆通快递</option>
-                                                    <option value="5">京东快递</option>
+                                                    <option value="0">选择</option>
+                                                    @foreach($transports as $transport)
+                                                        <option value="{{$transport->tid}}">{{$transport->title}}</option>
+
+                                                    @endforeach
                                                 </select>
-                                                <a href="javascript:;" class="btn btn-info btn-sm mar-left-20">添加</a>
-                                                <a href="javascript:;" class="btn btn-info btn-sm mar-left-10">编辑</a>
+                                                <a href="javascript:;"
+                                                   class="btn btn-info btn-sm transport-add mar-left-20">添加</a>
+                                                <a href="javascript:;"
+                                                   class="btn btn-info btn-sm transport-edit mar-left-10">编辑</a>
                                             </div>
                                         </div>
                                     </div>
@@ -436,14 +442,44 @@
                                     <h3>详细描述</h3></div>
                                 <div class="tabs mar-top-20">
                                     <ul class="fl">
-                                        <li class="fl curr"><a href="javascript:;"><i
-                                                        class="glyphicon glyphicon-blackboard"></i>电脑端</a>
+                                        <li class="fl curr">
+                                            <a href="javascript:;">
+                                                <i class="glyphicon glyphicon-blackboard"></i>电脑端
+                                            </a>
                                         </li>
-                                        <li class="fl"><a href="javascript:;"><i class="glyphicon glyphicon-phone"></i>手机端</a>
+                                        <li class="fl">
+                                            <a href="javascript:;">
+                                                <i class="glyphicon glyphicon-phone"></i>手机端
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
                                 <script id="editor" name="content" type="text/plain"></script>
+                                <div class="web" style="display: none;">
+                                    <div class="explain">
+                                        <p>
+                                            <strong>一、基本要求</strong>
+                                            <span><em>1、</em>手机详情总体大小：图片+文字，
+                                                <i class="red">图片不超过20张，文字不超过5000字</i>；</span>
+                                        </p>
+                                        <p>
+                                            <strong>二、图片大小</strong>
+                                            <span><em>1、</em>建议使用宽度480 ~ 620像素、高度小于等于960像素的图片；</span>
+                                            <span><em>2、</em>格式为：JPG\JEPG\GIF\PNG；</span>
+                                        </p>
+                                    </div>
+                                    <div class="pannel">
+                                        <div class="pannel-content ps-container">
+                                            <div class="section-warp">
+                                            </div>
+                                        </div>
+                                        <div class="step-top-btn">
+                                            <a href="javascript:;" class="btn btn-danger web-desc">
+                                                <i class="glyphicon glyphicon-picture"></i> 添加图片</a>
+                                        </div>
+                                        <input type="hidden" name="desc_mobile" value="">
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="step-special clearfix">
@@ -744,7 +780,7 @@
                         </div>
 
                         <!--第四步 填写商品属性-->
-                        <div class="step step-three" ectype="step" data-step="4" style="display: none;">
+                        <div class="step step-three" ectype="step" data-step="4" style="">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -917,7 +953,7 @@
             $(".brand-add").on('click', function () {
                 layer.open({
                     type: 2,
-                    area: ['1100px', '600px'],
+                    area: ['1100px', '500px'],
                     fixed: true, //不固定
                     maxmin: true,
                     title: '添加品牌',
@@ -944,12 +980,115 @@
                     fixed: true, //不固定
                     maxmin: true,
                     title: '图片库选择图片',
-                    content: ["{{url('admin/goods/imagelibrary')}}"],
+                    content: ["{{url('admin/goods/imagelibrary/main')}}"],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
                 });
             });
+
+            //运费模板功能
+            $('input[name=freight]').on('click', function () {
+                if ($(this).val() == 1) {
+                    $('#shipping_fee').show();
+                    $('#tid').hide()
+                } else {
+                    $('#shipping_fee').hide();
+                    $('#tid').show()
+                }
+            });
+            $('.transport-add').on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['1100px', '500px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '运费模板',
+                    content: ["{{url('admin/transport/create')}}"],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+            $('.transport-edit').on('click', function () {
+                var tid = $('select[name=tid]').val();
+                if (tid > 0) {
+                    layer.open({
+                        type: 2,
+                        area: ['1100px', '500px'],
+                        fixed: true, //不固定
+                        maxmin: true,
+                        title: '运费模板',
+                        content: ["{{url('admin/transport/')}}/" + tid + "/edit"],
+                        success: function (layero, index) {
+                            layer.iframeAuto(index)
+                        }
+                    });
+                } else {
+                    layer.msg('请选择运费模板');
+                }
+
+            });
+
+            //商品详细信息功能
+            $('.tabs').on('click', 'li', function () {
+                if ($(this).find('.glyphicon-blackboard').length > 0) {
+                    $('#editor').show();
+                    $('.web').hide();
+                } else {
+                    $('#editor').hide();
+                    $('.web').show();
+                }
+            });
+            //移动端商品详情图片添加
+            $('.web-desc').on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['800px', '400px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '图片库选择图片',
+                    content: ["{{url('admin/goods/imagelibrary/webdesc')}}"],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+            //移动端商品详情图片上移
+            $('.section-warp').on('click', '.move-up', function () {
+                if (!$(this).hasClass('disabled')) {
+                    $(this).parent().parent().prev().before($(this).parent().parent());
+                    setDescMobile()
+                }
+            });
+            //移动端商品详情图片下移
+            $('.section-warp').on('click', '.move-down', function () {
+                if (!$(this).hasClass('disabled')) {
+                    $(this).parent().parent().next().after($(this).parent().parent());
+                    setDescMobile()
+                }
+            });
+            //移动端商品详情图片删除
+            $('.section-warp').on('click', '.move-remove', function () {
+                $(this).parent().parent().remove();
+                setDescMobile()
+            });
+
+            //开关
+            $('.switch').on('click', function () {
+                var val = 0;
+                if($(this).hasClass('active')){
+                    val = 0;
+                    $(this).removeClass('active');
+                }else{
+                    val = 1;
+                    $(this).addClass('active');
+                }
+                $(this).find('input').val(val);
+            });
+
+
+            ///////////////////////////////////////////////////////////////
 
             //第一步 选择模式
             $('.mos_item').on('click', function () {
@@ -1029,7 +1168,7 @@
                         layer.iframeAuto(index)
                     }
                 });
-            })
+            });
         });
 
         function getNextCate(parent_id, cat_level) {
@@ -1123,6 +1262,24 @@
                     $('.brand-not strong').html(keywords);
                 }
             });
+        }
+
+        function setDescMobile() {
+            $('.section-warp .section').each(function (k, v) {
+                $(this).find('.move-up').removeClass('disabled');
+                $(this).find('.move-down').removeClass('disabled');
+                if (k == 0) {
+                    $(this).find('.move-up').addClass('disabled');
+                } else if (k == $('.section-warp .section').length-1) {
+                    $(this).find('.move-down').addClass('disabled');
+                }
+            });
+
+            var imgs = '';
+            $('.section-warp .img').each(function () {
+                imgs += $(this).html();
+            });
+            $('input[name=desc_mobile]').val(imgs);
         }
 
     </script>
