@@ -146,6 +146,55 @@ function setNextAblum(that, token, url) {
     }
 }
 
+function setNextGoodsTypeCate(that, token, url) {
+    var id = $(that).val();
+    var parent = $(that).data('parent');
+    $('input[name=attr_parent_id]').val(id);
+    if (id > 0) {
+        var html = '';
+        $.post(url + id, {'_token': token}, function (data) {
+            if (data.code == 1 && data.data.length > 0) {
+                html = '<select class="form-control max-wd-100 fl mar-right-20 select">' +
+                    '<option value="0">请选择</option>';
+                $.each(data.data, function (k, v) {
+                    html += '<option value="' + v.cate_id + '">' + v.cat_name + '</option>';
+                })
+                html += '</select>';
+                $(that).nextAll().remove();
+                $('.goods_type_cat').append(html);
+            } else {
+                $(that).nextAll().remove();
+            }
+        })
+    } else {
+        $(that).nextAll().remove();
+    }
+}
+
+function getGoodsTypes(that, token, url) {
+    var id = $(that).val();
+    var html = '<select class="form-control max-wd-350 fl">' +
+        '<option value="0">请选择</option>' +
+        '</select>';
+    if (id > 0) {
+        $.post(url + id, {'_token': token}, function (data) {
+            if (data.length > 0) {
+                html = '<select class="form-control max-wd-350 fl">' +
+                    '<option value="0">请选择</option>';
+                $.each(data, function (k, v) {
+                    html += '<option value="' + v.cate_id + '">' + v.cat_name + '</option>';
+                });
+                html += '</select>';
+                $('.goods_type').html(html);
+            }else{
+                $('.goods_type').html(html);
+            }
+        });
+    }else{
+        $('.goods_type').html(html);
+    }
+}
+
 function setPages(data) {
     var html = '<li class="prev" data-num="' + data.prev + '">' +
         '<a href="#" aria-label="Previous">' +

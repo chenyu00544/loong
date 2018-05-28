@@ -6,6 +6,7 @@ use App\Repositories\BrandRepository;
 use App\Repositories\ComCateRepository;
 use App\Repositories\GalleryRepository;
 use App\Repositories\GoodsRepository;
+use App\Repositories\GoodsTypeRepository;
 use App\Repositories\TransportRepository;
 use Illuminate\Http\Request;
 
@@ -17,13 +18,15 @@ class GoodsController extends CommonController
     private $brandRepository;
     private $galleryRepository;
     private $transportRepository;
+    private $goodsTypeRepository;
 
     public function __construct(
         GoodsRepository $goodsRepository,
         ComCateRepository $comCateRepository,
         BrandRepository $brandRepository,
         GalleryRepository $galleryRepository,
-        TransportRepository $transportRepository
+        TransportRepository $transportRepository,
+        GoodsTypeRepository $goodsTypeRepository
     )
     {
         parent::__construct();
@@ -32,6 +35,7 @@ class GoodsController extends CommonController
         $this->brandRepository = $brandRepository;
         $this->galleryRepository = $galleryRepository;
         $this->transportRepository = $transportRepository;
+        $this->goodsTypeRepository = $goodsTypeRepository;
     }
 
     /**
@@ -142,7 +146,8 @@ class GoodsController extends CommonController
         $comCates = $this->comCateRepository->getComCates();
         $brands = $this->brandRepository->search([], true);
         $transports = $this->transportRepository->getTransportExpressByRuId(0);
-        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports'));
+        $goodsTypeCates = $this->goodsTypeRepository->getTypeCates();
+        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports', 'goodsTypeCates'));
     }
 
     /**

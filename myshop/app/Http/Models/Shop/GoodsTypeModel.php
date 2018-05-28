@@ -24,13 +24,7 @@ class GoodsTypeModel extends Model
             ->paginate($size);
     }
 
-    public function getGoodsTypes($where)
-    {
-        return $this->where($where)
-            ->get();
-    }
-
-    public function getGoodsTypeAll($columns = ['*'], $where = [])
+    public function getGoodsTypes($where, $columns = ['*'])
     {
         return $this->select($columns)
             ->where($where)

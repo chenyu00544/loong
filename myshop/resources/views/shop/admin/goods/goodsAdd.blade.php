@@ -790,19 +790,18 @@
                                     <div class="step-item">
                                         <div class="step-item-left"><h5>属性分类：</h5></div>
                                         <div class="step-item-right">
-                                            <input name="attr_parent_id" type="hidden" value="">
+                                            <input name="attr_parent_id" type="hidden" value="0">
                                             <div class="item-right-li">
-                                                <div class="value-select" ectype="type_cat">
-                                                    <select class="form-control max-wd-190 fl mar-right-20">
+                                                <div class="value-select goods_type_cat">
+                                                    <select class="form-control max-wd-100 fl mar-right-20 select">
                                                         <option value="0">请选择</option>
-                                                    </select>
-
-                                                    <select class="form-control max-wd-190 fl mar-right-20">
-                                                        <option value="0">请选择</option>
+                                                        @foreach($goodsTypeCates as $goodsTypeCate)
+                                                            <option value="{{$goodsTypeCate->cate_id}}">{{$goodsTypeCate->cat_name}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
-                                                <a class="btn btn-info" data-type="add_goods_type_cat"
-                                                   data-goodsid="615">添加属性分类</a>
+                                                <a class="btn btn-info add_goods_type_cat_win"
+                                                   data-goodsid="">添加属性分类</a>
                                             </div>
                                         </div>
                                     </div>
@@ -811,16 +810,14 @@
                                         <div class="step-item-left"><h5>商品类型：</h5></div>
                                         <div class="step-item-right">
                                             <div class="item-right-li">
-                                                <div class="value-select" ectype="type_cat">
+                                                <div class="value-select goods_type">
                                                     <select id="cate_id" class="form-control max-wd-350 fl">
                                                         <option value="0">请选择</option>
                                                     </select>
                                                 </div>
                                                 <input name="goods_type" type="hidden" value="" id="select_attr_val">
-                                                <a class="btn btn-info mar-left-20"
-                                                   data-type="add_goods_type_cat" data-goodsid="615">添加商品类型</a>
-                                                <a class="btn btn-info mar-left-20"
-                                                   data-type="add_goods_type_cat" data-goodsid="615">添加属性</a>
+                                                <a class="btn btn-info mar-left-20" data-goodsid="">添加商品类型</a>
+                                                <a class="btn btn-info mar-left-20" data-goodsid="">添加属性</a>
                                             </div>
                                         </div>
                                     </div>
@@ -1077,16 +1074,40 @@
             //开关
             $('.switch').on('click', function () {
                 var val = 0;
-                if($(this).hasClass('active')){
+                if ($(this).hasClass('active')) {
                     val = 0;
                     $(this).removeClass('active');
-                }else{
+                } else {
                     val = 1;
                     $(this).addClass('active');
                 }
                 $(this).find('input').val(val);
             });
 
+            //选择属性分类
+            $('.goods_type_cat').on('change', '.select', function () {
+                setNextGoodsTypeCate(this, '{{csrf_token()}}', "{{url('admin/typecate/getcates/')}}/");
+                getGoodsTypes(this, '{{csrf_token()}}', "{{url('admin/goodstype/gettypes/')}}/");
+            });
+
+            $('.goods_type_cat').on('change', 'select', function () {
+                $('input[name=goods_type]').val($(this).val());
+
+            });
+
+            $('.add_goods_type_cat_win').on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['830px', '300px'],
+                    fixed: true,
+                    maxmin: true,
+                    title: '图片库选择图片',
+                    content: ["{{url('admin/typecate/typecate/win')}}"],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
 
             ///////////////////////////////////////////////////////////////
 
@@ -1270,7 +1291,7 @@
                 $(this).find('.move-down').removeClass('disabled');
                 if (k == 0) {
                     $(this).find('.move-up').addClass('disabled');
-                } else if (k == $('.section-warp .section').length-1) {
+                } else if (k == $('.section-warp .section').length - 1) {
                     $(this).find('.move-down').addClass('disabled');
                 }
             });

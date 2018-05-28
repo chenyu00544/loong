@@ -44,7 +44,7 @@ class GoodsTypeRepository implements GoodsTypeRepositoryInterface
 
     public function getGoodsTypeAll($where = [])
     {
-        $re = $this->goodsTypeModel->getGoodsTypeAll(['*'],$where)->toArray();
+        $re = $this->goodsTypeModel->getGoodsTypes($where)->toArray();
         $req = [];
         foreach ($re as $val){
             $req[$val['cat_id']] = $val['cat_name'];
@@ -63,7 +63,7 @@ class GoodsTypeRepository implements GoodsTypeRepositoryInterface
     }
 
 
-    public function getTypeCates($id)
+    public function getTypeCates($id = 0)
     {
         $where['parent_id'] = $id;
         return $this->goodsTypeCateModel->getTypeCates($where);

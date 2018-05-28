@@ -45,6 +45,21 @@ class GoodsTypeCateController extends CommonController
         return $this->goodsTypeRepository->setTypeCate($request->except('_token'));
     }
 
+    public function goodsTypeCateByWin()
+    {
+        $typeCates = $this->goodsTypeRepository->getTypeCates(0);
+        return view('shop.admin.goodstype.modal.typeCateAddWin', compact('typeCates'));
+    }
+
+    public function addGoodsTypeCate(Request $request)
+    {
+        $ver = Verifiable::Validator($request->all(), ["cat_name" => 'required']);
+        if (!$ver->passes()) {
+            return [];
+        }
+        return $this->goodsTypeRepository->addTypeCate($request->except('_token'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

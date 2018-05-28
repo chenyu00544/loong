@@ -97,9 +97,11 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/delcateext/{id}', 'GoodsController@delCateExtend');
     Route::resource('goods', 'GoodsController');
 
-    Route::post('goodstype/changes', 'GoodsTypeController@changes');
+    Route::post('goodstype/gettypes/{id}', 'GoodsTypeController@getTypes');
     Route::resource('goodstype', 'GoodsTypeController');
 
+    Route::get('typecate/typecate/win', 'GoodsTypeCateController@goodsTypeCateByWin');
+    Route::post('typecate/addgoods/typecate', 'GoodsTypeCateController@addGoodsTypeCate');
     Route::post('typecate/change', 'GoodsTypeCateController@change');
     Route::post('typecate/getcates/{id}', 'GoodsTypeCateController@getCates');
     Route::resource('typecate', 'GoodsTypeCateController');

@@ -29,6 +29,11 @@ class GoodsTypeController extends CommonController
         return view('shop.admin.goodstype.goodsType', compact('typeNav', 'goodsTypes', 'typeCates'));
     }
 
+    public function getTypes($id)
+    {
+        return $this->goodsTypeRepository->getGoodsTypes(['c_id' => $id]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -90,7 +95,7 @@ class GoodsTypeController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $re = $this->goodsTypeRepository->setGoodsType($request->except('_token','_method'), $id);
+        $re = $this->goodsTypeRepository->setGoodsType($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
