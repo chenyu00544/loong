@@ -816,10 +816,141 @@
                                                     </select>
                                                 </div>
                                                 <input name="goods_type" type="hidden" value="" id="select_attr_val">
-                                                <a class="btn btn-info mar-left-20" data-goodsid="">添加商品类型</a>
-                                                <a class="btn btn-info mar-left-20" data-goodsid="">添加属性</a>
+                                                <a class="btn btn-info mar-left-20 add_goods_type" data-goodsid="">添加商品类型</a>
+                                                <a class="btn btn-info mar-left-20 add_attribute"
+                                                   data-goodsid="">添加属性</a>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="step-item step-item-bg" id="tbody-goodsAttr">
+                                        <div class="step-item-row step-item-attr-once">
+                                            <div class="step-item-left">
+                                                <h5>商品属性：</h5>
+                                            </div>
+                                            <div class="step-item-right">
+                                                <div class="item-right-list goods-attr-type fl">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list goods-attr-type fl">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list goods-attr-type">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list goods-attr-type">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list goods-attr-type">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list goods-attr-type">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list goods-attr-type">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list goods-attr-type">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list goods-attr-type">
+                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                            <option value="">xxxxx</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="step-item-row step-item-attr-radio"></div>
+                                    </div>
+                                    <div class="step-item-table" id="attribute-table"></div>
+                                </div>
+                            </div>
+
+                            <div class="step-info clearfix">
+                                <div class="step-title">
+                                    <i class="ui-step"></i>
+                                    <h3>属性图片</h3>
+                                </div>
+                                <div class="attr_gallerys ps-container ps-active-y">
+                                    <div class="step_content attr_gallery">
+                                        <div class="attr_tit">颜色：</div>
+                                        <!--处理属性图片 start-->
+                                        <div class="attr_item" style="width:465px;">
+                                            <div class="txt" title="g" data-toggle="tooltip">g</div>
+                                            <div class="info hide">
+                                                <label class="fl mr10 hide">价格</label>
+                                                <input type="text" class="text w80 hide" name="gallery_attr_price[]"
+                                                       onblur="listTable.editInput(this, 'edit_attr_price', 336223);"
+                                                       size="10" value="0.00">
+                                            </div>
+                                            <div class="info">
+                                                <label>排序：</label>
+                                                <input type="text" class="text w80" name="gallery_attr_sort[]"
+                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
+                                                       size="10" value="1">
+                                            </div>
+                                            <a href="javascript:;" ectype="add_attr_img" class="up_img"
+                                               data-goodsattrid="336223" data-attrid="39101">上传图片</a>
+                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
+                                                   autocomplete="off">
+                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
+                                                   autocomplete="off">
+                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
+                                                   value="g">
+                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
+                                                   value="39101">
+                                        </div>
+                                        <!--处理属性图片 end-->
+                                    </div>
+                                    <div class="ps-scrollbar-x-rail"
+                                         style="width: 1599px; display: none; left: 0px; bottom: 3px;">
+                                        <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
+                                    </div>
+                                    <div class="ps-scrollbar-y-rail"
+                                         style="top: 0px; height: 111px; display: inherit; right: 0px;">
+                                        <div class="ps-scrollbar-y" style="top: 0px; height: 110px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -1101,13 +1232,42 @@
                     area: ['830px', '300px'],
                     fixed: true,
                     maxmin: true,
-                    title: '图片库选择图片',
-                    content: ["{{url('admin/typecate/typecate/win')}}"],
+                    title: '添加属性分类',
+                    content: ["{{url('admin/typecate/typecate/modal')}}"],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
                 });
             });
+
+            $('.add_goods_type').on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['830px', '370px'],
+                    fixed: true,
+                    maxmin: true,
+                    title: '添加商品类型',
+                    content: ["{{url('admin/goodstype/goodstype/modal')}}"],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+
+            $('.add_attribute').on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['900px', '570px'],
+                    fixed: true,
+                    maxmin: true,
+                    title: '添加属性',
+                    content: ["{{url('admin/attribute/attribut/modal')}}"],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+
 
             ///////////////////////////////////////////////////////////////
 

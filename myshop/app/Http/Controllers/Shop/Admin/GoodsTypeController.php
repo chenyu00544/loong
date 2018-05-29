@@ -34,6 +34,22 @@ class GoodsTypeController extends CommonController
         return $this->goodsTypeRepository->getGoodsTypes(['c_id' => $id]);
     }
 
+    public function goodsTypeByModal()
+    {
+        $typeCates = $this->goodsTypeRepository->getTypeCates(0);
+        return view('shop.admin.goodstype.modal.goodsTypeAddModal', compact('typeCates'));
+    }
+
+    public function addGoodsType(Request $request)
+    {
+        $ver = Verifiable::Validator($request->all(), ["cat_name" => 'required']);
+        if (!$ver->passes()) {
+            return [];
+        }
+        return $this->goodsTypeRepository->addGoodsType($request->except('_token'));
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *

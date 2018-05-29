@@ -97,15 +97,19 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/delcateext/{id}', 'GoodsController@delCateExtend');
     Route::resource('goods', 'GoodsController');
 
+    Route::get('goodstype/goodstype/modal', 'GoodsTypeController@goodsTypeByModal');
+    Route::post('goodstype/addgoodstype', 'GoodsTypeController@addGoodsType');
     Route::post('goodstype/gettypes/{id}', 'GoodsTypeController@getTypes');
     Route::resource('goodstype', 'GoodsTypeController');
 
-    Route::get('typecate/typecate/win', 'GoodsTypeCateController@goodsTypeCateByWin');
+    Route::get('typecate/typecate/modal', 'GoodsTypeCateController@goodsTypeCateByModal');
     Route::post('typecate/addgoods/typecate', 'GoodsTypeCateController@addGoodsTypeCate');
     Route::post('typecate/change', 'GoodsTypeCateController@change');
     Route::post('typecate/getcates/{id}', 'GoodsTypeCateController@getCates');
     Route::resource('typecate', 'GoodsTypeCateController');
 
+    Route::get('attribute/attribut/modal', 'AttributeController@attributeModal');
+    Route::post('attribute/addattribute', 'AttributeController@addAttribute');
     Route::resource('attribute', 'AttributeController');
 
     Route::resource('captcha', 'CaptchaController');

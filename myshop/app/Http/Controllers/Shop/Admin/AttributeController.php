@@ -29,7 +29,7 @@ class AttributeController extends CommonController
      */
     public function index()
     {
-        //
+
     }
 
     public function change($id)
@@ -40,6 +40,23 @@ class AttributeController extends CommonController
     public function deleteAll($ids)
     {
 
+    }
+
+    public function attributeModal(Request $request)
+    {
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => Cache::get('adminUser' . md5($ip) . $uid)->ru_id]);
+        return view('shop.admin.attribute.modal.attributeAddModal', compact('goodsTypes'));
+    }
+
+    public function addAttribute(Request $request)
+    {
+        $ver = Verifiable::Validator($request->all(), ["attr_name" => 'required']);
+        if (!$ver->passes()) {
+            return [];
+        }
+        return $this->attributeRepository->addAttribute($request->except('_token'));
     }
 
     /**

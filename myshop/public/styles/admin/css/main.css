@@ -1874,3 +1874,35 @@ input[type=file].upload-file {
     margin: 150px 0 0 20px;
     float: left;
 }
+
+.step-item-bg {
+    background-color: #f3f9ff;
+}
+.step-item-table {
+    overflow: hidden;
+    float: left;
+    width: 100%;
+}
+.step-item-right .goods-attr-type .label {
+    line-height: 33px;
+}
+
+.step-item-right .goods-attr-type:first-child {
+    margin-bottom: 10px;
+}
+.step-item-right .goods-attr-type {
+    width: auto;
+    min-width: 200px;
+}
+
+.step-item-right .item-right-list .label {
+    color: #333;
+    font-weight: bold;
+    padding: 0 10px 0 0;
+    width: 72px;
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 33px;
+}

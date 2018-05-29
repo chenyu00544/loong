@@ -45,10 +45,10 @@ class GoodsTypeCateController extends CommonController
         return $this->goodsTypeRepository->setTypeCate($request->except('_token'));
     }
 
-    public function goodsTypeCateByWin()
+    public function goodsTypeCateByModal()
     {
         $typeCates = $this->goodsTypeRepository->getTypeCates(0);
-        return view('shop.admin.goodstype.modal.typeCateAddWin', compact('typeCates'));
+        return view('shop.admin.goodstype.modal.typeCateAddModal', compact('typeCates'));
     }
 
     public function addGoodsTypeCate(Request $request)
