@@ -1,0 +1,195 @@
+{include file="pageheader"}
+<div class="fancy">
+    <div class="title"><a href="{url('template_my')}" class="s-back">返回</a><!--{$lang['menu_edit']}/{$lang['add']}-->主动模板消息-添加-米时</div>
+    	<div class="flexilist of">
+    		<div class="common-content">
+    			<div class="main-info">
+				<form action="{url('edit_template_my')}" method="post" class="form-horizontal" role="form" onsubmit="return false;">
+				    <div class="switch_info">
+						<!--
+				       <div class="item">
+				          <div class="label-t">{$lang['menu_parent']}:</div>
+				          <div class="label_value col-md-4">
+				          	<div style="width:299px;">
+				              <select name="data[pid]" class="input-sm">
+				              	<option value="0">{$lang['menu_select']}</option>
+				              	{foreach $top_menu as $m}
+				              		<option value="{$m['id']}" {if $info['pid'] == $m['id']}selected{/if}>{$m['name']}</option>
+				              	{/foreach}
+				              </select>
+				            </div>
+				          </div>
+				        </div>
+						-->
+				        <div class="item">
+				          <div class="label-t">模板标题:</div>
+				          <div class="label_value col-md-4">
+				              <input type="text" name="template_title" class="text" value="{$info['title']}" />
+				          </div>
+				        </div>
+				        <!--
+						<div class="item">
+				            <div class="label-t">{$lang['menu_type']}:</div>
+				            <div class="label_value col-md-10">
+				          	    <div class="checkbox_items">
+		                            <div class="checkbox_item">
+					                    <input type="radio" name="data[type]" class="ui-radio evnet_shop_closed clicktype" id="value_116_0" value="click" {if $info['type'] == 'click'}checked{/if} >
+					                    <label for="value_116_0" class="ui-radio-label {if $info['type'] == 'click'}active{/if}">{$lang['menu_click']}</label>
+					                </div>
+					                <div class="checkbox_item">
+					                    <input type="radio" name="data[type]" class="ui-radio evnet_shop_closed clicktype" id="value_116_1" value="view" {if $info['type'] == 'view'}checked{/if}>
+					                    <label for="value_116_1" class="ui-radio-label {if $info['type'] == 'view'}active{/if}">{$lang['menu_view']}</label>
+					                </div>
+                                </div>
+				            </div>
+				        </div>
+						-->
+				        <div id="click" class="item  " >
+				          <div class="label-t">模板ID:</div>
+				          <div class="label_value col-md-4">
+				              <input type="text" name="template_id" class="text" value="{$info['template_id']}" />
+				          </div>
+				        </div>
+						
+				       <div class="item">
+						  <div class="label-t">模板内容:</div>
+						  <div class="label_value">
+								  <textarea class="textarea" style="height:200px;" rows="10" name="template_content" id="template_content" >{$info.template}</textarea>
+						  </div>
+						  
+						</div>
+						
+						 <div class="item">
+							<div style="color:red;width:100%;margin-left:30%;"  id="template_content_str"></div>
+						 </div>
+						
+						 <div class="item">
+						  <div class="label-t">模板示例（可选）:</div>
+						  <div class="label_value">
+								  <textarea class="textarea" rows="5" name="demo_content" >{$info.demo_content}</textarea>
+						  </div>
+						</div>
+						
+				        <div class="item">
+				            <div class="label-t">是否启用:</div>
+				            <div class="label_value col-md-10">
+				          	    <div class="checkbox_items">
+		                            <div class="checkbox_item">
+					                    <input type="radio" name="template_status" class="ui-radio evnet_show" id="value_117_0" value="1" {if $info['status'] == 1}checked{/if}>
+					                    <label for="value_117_0" class="ui-radio-label {if $info['status'] == 1}active{/if}">{$lang['yes']}</label>
+					                </div>
+					                <div class="checkbox_item">
+					                    <input type="radio" name="template_status" class="ui-radio evnet_show" id="value_117_1" value="0" {if $info['status'] == 0}checked{/if}>
+					                    <label for="value_117_1" class="ui-radio-label {if $info['status'] == 0}active{/if}">{$lang['no']}</label>
+					                </div>
+                                </div>
+				            </div>
+				        </div>
+						
+				        <div class="item">
+				            <div class="label-t">模板排序:</div>
+				            <div class="label_value col-md-2">
+				                <input type="text" name="template_sort" class="text" value="{$info['sort']}" />
+				            </div>
+				        </div>
+						
+					        <div class="item">
+					          <div class="label-t">&nbsp;</div>
+					          <div class="label_value col-md-4">
+					          	  <div class="info_btn">
+					          		<input type="hidden" name="id" value="{$info['id']}" />
+									<input type="submit" value="{$lang['button_submit']}" class="button btn-danger bg-red fn" />
+					              	<input type="reset" value="{$lang['button_reset']}" class="button button_reset fn" />
+					              </div>
+					          </div>
+					        </div>
+				        </div>
+				    </form>
+    			</div>
+    		</div>
+	    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(".clicktype").click(function(){
+		// var val = $(this).find("input[type=radio]").val();
+		var val = $(this).val();
+
+		if('click' == val && $("#click").hasClass("hidden")){
+			$("#view").hide().addClass("hidden");
+			$("#click").show().removeClass("hidden");
+		}
+		else if('view' == val && $("#view").hasClass("hidden")){
+			$("#click").hide().addClass("hidden");
+			$("#view").show().removeClass("hidden");
+		}
+	});
+	
+	$("#template_content").blur(function()
+		{
+			var template_content = $("#template_content").val();  
+			
+			// alert("111111111");
+			
+			//alert(template_content);
+			 
+			if(template_content == '') 
+			{
+				return ;
+			}
+			
+			$.ajax
+			({
+				 type:'POST',
+				 data:
+				 {
+					  
+					template_content:template_content  
+				 },
+				 url: "{url('get_temp_vars')}",   
+				 beforeSend: function () 
+				 {
+					//$.jBox.tip("执行中..",'loading');
+				 },
+				 success: function (data)  
+				 {
+					if(data.status == '1')  // 
+					{
+						$("#template_content_str").html("解析到以下变量："+data.vars+",若解析错误，请终止");
+					}
+					else
+					{
+						
+					}
+				 },
+				 dataType: "JSON"
+			});
+		});
+		
+		
+	
+	$(".form-horizontal").submit(function()
+	{
+	    var ajax_data = $(this).serialize();
+	    $.post("{url('edit_template_my')}", ajax_data, function(data)
+		{
+	        if(data.status > 0)
+			{
+			 
+				/**/
+				{if $info['id']}
+	            window.parent.location = "{url('template_my')}";
+				{else}
+				 window.location.href = "{url('template_my')}";
+				 {/if}
+				 
+			}
+	        else{
+	            alert(data.msg);
+	            return false;
+		    }
+	    }, 'json');
+	});
+})
+</script>
+{include file="pagefooter"}

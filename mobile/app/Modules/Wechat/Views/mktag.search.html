@@ -1,0 +1,92 @@
+{include file="pageheader"}
+<div class="wrapper"><!--{$lang['send_template']} 找不到?-->
+    <div class="title">小程序 - 标签搜索</div>
+    <div class="content_tips">
+        <div class="explanation" id="explanation">
+            <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+            </div>
+            <ul>
+                <li>小程序用户标签搜索</li>
+            </ul>
+        </div>
+        <div class="flexilist">
+            <div class="common-head">
+                <div class="fl" style="margin-left: 10px;">
+                    <a href="/mobile/index.php?r=wechat/mktag/search" class="fancybox">
+                        <div class="fbutton">
+                            <div class="add" style="line-height: 20px;"><span><i class="fa fa-search" style="vertical-align: inherit;"></i>搜索</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="common-content">
+
+                <div class="list-div">
+                    <table cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                            <th class="text-center" style="width: 25%">编号</th>
+                            <th class="text-center" style="width: 35%">标签名称</th>
+                            <th class="text-center" style="width: 40%">操作</th>
+                        </tr>
+                        {if count($list) > 0}
+                        {foreach $list as $key=>$val}
+                        <tr>
+                            <td class="text-center">{$val['id']}</td>
+                            <td class="text-center">{$val['tag_name']}</td>
+                            <td class="handle text-center">
+                                <div class="tDiv a3">
+                                    <a href="/mobile/index.php?r=wechat/mktag/add&id={$val['id']}" class="btn_edit"><i
+                                            class="fa fa-edit"></i>编辑</a>
+                                    <a class="btn_trash reset-template" href="javascript:;"
+                                       data-href="../mobile/index.php?r=wechat/mktag/delete&id={$val['id']}"><i
+                                            class="fa fa-repeat"></i>移除</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        {else}
+                        <tr>
+                            <td class="text-center">{$val['id']}</td>
+                            <td class="text-center">{$val['tag_name']}</td>
+                            <td class="handle text-center">
+                                <div class="tDiv a3">
+                                    <a href="/mobile/index.php?r=wechat/mktag/add&id={$val['id']}" class="btn_edit"><i
+                                            class="fa fa-edit"></i>编辑</a>
+                                    <a class="btn_trash reset-template" href="javascript:;"
+                                       data-href="../mobile/index.php?r=wechat/mktag/delete&id={$val['id']}"><i
+                                            class="fa fa-repeat"></i>移除</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {/if}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.btn_trash').click(function () {
+            var that = this;
+            layer.confirm('是否要删除', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                var uri = $(that).data('href');
+                $.post(uri, {}, function (data) {
+                    if (data) {
+                        layer.msg('删除成功', {icon: 1});
+                    }
+                    setTimeout(function () {
+                        location.href = location.href;
+                    }, 3000)
+                })
+
+            }, function () {
+            });
+        })
+    })
+
+</script>
+{include file="pagefooter"}

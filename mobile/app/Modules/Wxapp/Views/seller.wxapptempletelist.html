@@ -1,0 +1,98 @@
+{include file="seller_pageheader"}
+
+{include file="seller_nave_header"}
+
+<div class="ecsc-layout">
+    <div class="site wrapper">
+        {include file="seller_menu_left"}
+
+        <div class="ecsc-layout-right">
+            <div class="main-content" id="mainContent">
+                {include file="seller_nave_header_title"}
+                <div class="wrapper-right of">
+                    <div class="tabmenu">
+                        <ul class="tab">
+                            <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">
+                                主动模板消息</a></li>
+                        </ul>
+                    </div>
+                    <div class="explanation" id="explanation">
+                        <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4></div>
+                        <ul>
+                            <li>小程序主动模板消息。</li>
+                        </ul>
+                    </div>
+
+                    <div class="wrapper-list mt20">
+                        <div class="common-head">
+                            <div class="fl mb20">
+                                <a href="{url('wxapptempleteedit')}" class="sc-btn sc-blue-btn"><i
+                                        class="fa fa-plus"></i>添加模板</a>
+                            </div>
+                        </div>
+
+                        <div class="list-div" id="listDiv">
+                            <table id="list-table" class="ecsc-default-table" style="">
+                                <thead>
+                                <tr>
+                                    <th width="20%">模板名称</th>
+                                    <th width="20%">模板编号</th>
+                                    <th width="30%">模板ID</th>
+                                    <th width="20%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {if $list}
+                                {foreach $list as $key=>$val}
+                                <tr>
+                                    <td>{$val['wx_title']}</td>
+                                    <td>{$val['wx_code']}</td>
+                                    <td>{$val['wx_template_id']}</td>
+                                    <td align="center" class="handle">
+                                        <div class="tDiv">
+                                            <a href="{url('wxappsendtempletemsg')}&template_id={$val['wx_template_id']}"
+                                               class="btn_inst fancybox fancybox.iframe">
+                                                <i class="fa fa-send"></i>发送
+                                            </a>
+                                            <a href="{url('wxapptempleteedit', array('id'=>$val['id']))}"
+                                               class="btn_edit">
+                                                <i class="fa fa-edit"></i>{$lang['wechat_editor']}
+                                            </a>
+                                            <a href="javascript:;"
+                                               data-href="{url('navdel', array('id'=>$val['id']))}'}"
+                                               class="btn_trash delete_confirm">
+                                                <i class="fa fa-trash-o"></i>{$lang['drop']}
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {/foreach}
+                                {else}
+                                <tr>
+                                    <td class="no-records" colspan="5">没有找到任何记录</td>
+                                </tr>
+                                {/if}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).on("mouseenter", ".list-div tbody td", function () {
+        $(this).parents("tr").addClass("tr_bg_blue");
+    });
+
+    $(document).on("mouseleave", ".list-div tbody td", function () {
+        $(this).parents("tr").removeClass("tr_bg_blue");
+    });
+
+</script>
+
+{include file="seller_pagefooter"}
+</body>
+</html>

@@ -1,0 +1,91 @@
+{include file="seller_pageheader"}
+<div class="ecsc-layout">
+    <div class="ecsc-layout-right" style="width: 100%">
+        <div class="main-content" id="mainContent">
+            <div class="wrapper-right of" style="background:#fff">
+                <form action="{url('wxappsendtempletemsg')}" method="post" class="form-horizontal" role="form" onsubmit="return false;">
+                    <div class="wrapper-list mt20">
+                        <div class="account-setting clearfix ecsc-form-goods">
+                            <dl>
+                                <dt>模板名称：</dt>
+                                <dd>
+                                    <input type="text" name="data[wx_title]" class="text" value="{$info['wx_title']}" disabled/>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>模板ID：</dt>
+                                <dd>
+                                    <input type="text" name="data[wx_template_id]" class="text" value="{$info['wx_template_id']}" disabled/>
+                                    <input type="hidden" name="data[wx_template_id]" value="{$info['wx_template_id']}">
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>模板编号：</dt>
+                                <dd>
+                                    <input type="text" name="data[wx_code]" class="text" value="{$info['wx_code']}" disabled/>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>模板内容：</dt>
+                                <dd>
+                                    <textarea type="text" name="data[wx_template]" class="textarea" disabled>{$info['wx_template']}</textarea>
+                                </dd>
+                            </dl>
+                            {foreach $info['vars'] as $key => $val}
+                            <dl>
+                                <dt>{$val}：</dt>
+                                <dd>
+                                    <input type="text" name="data[keyword][]" class="text" value=""/>
+                                    {if $key == 0}
+                                    <div class="notic">* 第一个字段不能超过7个中文字符</div>
+                                    {/if}
+                                </dd>
+                            </dl>
+                            {/foreach}
+                            <dl>
+                                <dt>跳转页面：</dt>
+                                <dd>
+                                    <input type="text" name="data[url]" class="text" value=""/>
+                                    <div class="notic">* 路径pages/index/index，页面值?key=value</div>
+                                </dd>
+                            </dl>
+                            <dl>
+                                <dt>&nbsp;</dt>
+                                <dd>
+                                    <input type="hidden" name="id" value="{$info['id']}"/>
+                                    <input type="submit" value="{$lang['button_submit']}"
+                                           class="sc-btn sc-blueBg-btn btn35"/>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".form-horizontal").submit(function () {
+            var ajax_data = $(this).serialize();
+            $.post("{url('wxappsendtempletemsg')}", ajax_data, function (data) {
+                if (data.status > 0) {
+                    layer.msg(data.msg);
+                }
+                else {
+                    layer.msg(data.msg);
+                    return false;
+                }
+            }, 'json');
+        });
+    })
+</script>
+<style>
+    body{
+        height: 800px;!important;
+    }
+</style>
+{include file="seller_pagefooter"}
+</body>
+</html>

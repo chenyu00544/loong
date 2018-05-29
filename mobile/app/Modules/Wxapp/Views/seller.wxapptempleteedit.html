@@ -1,0 +1,138 @@
+{include file="seller_pageheader"}
+
+{include file="seller_nave_header"}
+
+<div class="ecsc-layout">
+    <div class="site wrapper">
+        {include file="seller_menu_left"}
+
+        <div class="ecsc-layout-right">
+            <div class="main-content" id="mainContent">
+                {include file="seller_nave_header_title"}
+                <div class="wrapper-right of" style="background:#fff">
+                    <div class="tabmenu">
+                        <ul class="tab">
+                            <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">{if
+                                $info['id']}编辑模板消息{else}添加模板消息{/if} </a></li>
+                        </ul>
+                    </div>
+                    <div class="explanation" id="explanation">
+                        <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4></div>
+                        <ul>
+                            <li>自定义模板消息</li>
+                        </ul>
+                    </div>
+                    <form action="{url('wxapptempleteedit')}" method="post" class="form-horizontal" role="form">
+                        <div class="wrapper-list mt20">
+                            <div class="account-setting clearfix ecsc-form-goods">
+                                <dl>
+                                    <dt>模板名称：</dt>
+                                    <dd>
+                                        <input type="text" name="data[wx_title]" class="text"
+                                               value="{$info['wx_title']}"/>
+                                        <div class="notic">* 如：活动参与成功通知</div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>模板ID：</dt>
+                                    <dd>
+                                        <input type="text" name="data[wx_template_id]" class="text"
+                                               value="{$info['wx_template_id']}"/>
+                                        <div class="notic">* 如：pBJNd26Xul2MLz333qaoKZc0ETIKXIi4l18</div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>模板编号：</dt>
+                                    <dd>
+                                        <input type="text" name="data[wx_code]" class="text"
+                                               value="{$info['wx_code']}"/>
+                                        <div class="notic">* 如：AT0541</div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>模板内容：</dt>
+                                    <dd>
+                                        <textarea type="text" name="data[wx_template]" class="textarea">{$info['wx_template']}</textarea>
+                                        <div class="notic">* 模板选择1个参数填</br>标题1{{keyword1.DATA}}</br>
+                                            模板选择2个参数填</br>
+                                            标题1{{keyword1.DATA}}</br>
+                                            标题2{{keyword2.DATA}}</br>
+                                            以此类推,中间用换行符(回车键)隔开
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>参数数量：</dt>
+                                    <dd>
+                                        <input type="text" name="data[keyword_count]" class="text"
+                                               value="{if $info['keyword_count']}{$info['keyword_count']}{else}3{/if}"/>
+                                        <div class="notic">* 模板选择1个参数填1,模板选择2个参数填2,以此类推</div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>变量：</dt>
+                                    <dd>
+                                        <input type="text" name="data[vars]" class="text"
+                                               value="{if $info['vars']}{$info['vars']}{else}keyword1,keyword2,keyword3{/if}"/>
+                                        <div class="notic">* 模板选择1个参数填keyword1,模板选择2个参数填keyword1,keyword2以此类推,中间英文都好隔开
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>启用：</dt>
+                                    <dd>
+                                        <div class="checkbox_items">
+                                            <div class="checkbox_item">
+                                                <input type="radio" name="data[status]" class="ui-radio evnet_show"
+                                                       id="value_117_0" value="1" {if $info['status'] == 1}checked{/if}>
+                                                <label for="value_117_0"
+                                                       class="ui-radio-label {if $info['status'] == 1}active{/if}">{$lang['yes']}</label>
+                                            </div>
+                                            <div class="checkbox_item">
+                                                <input type="radio" name="data[status]" class="ui-radio evnet_show"
+                                                       id="value_117_1" value="0" {if $info['status'] == 0}checked{/if}>
+                                                <label for="value_117_1"
+                                                       class="ui-radio-label {if $info['status'] == 0}active{/if}">{$lang['no']}</label>
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>&nbsp;</dt>
+                                    <dd>
+                                        <input type="hidden" name="id" value="{$info['id']}"/>
+                                        <input type="submit" value="{$lang['button_submit']}"
+                                               class="sc-btn sc-blueBg-btn btn35"/>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".clicktype").click(function () {
+            // var val = $(this).find("input[type=radio]").val();
+            var val = $(this).val();
+
+            if ('click' == val && $("#click").hasClass("hidden")) {
+                $("#view").hide().addClass("hidden");
+                $("#click").show().removeClass("hidden");
+            }
+            else if ('view' == val && $("#view").hasClass("hidden")) {
+                $("#click").hide().addClass("hidden");
+                $("#view").show().removeClass("hidden");
+            }
+        });
+    })
+</script>
+
+{include file="seller_pagefooter"}
+</body>
+</html>

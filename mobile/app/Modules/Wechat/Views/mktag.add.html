@@ -1,0 +1,47 @@
+{include file="pageheader"}
+<div class="wrapper"><!--{$lang['send_template']} 找不到?-->
+    <div class="title">小程序 - 添加编辑用户标签</div>
+    <div class="content_tips">
+        <div class="explanation" id="explanation">
+            <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span>
+            </div>
+            <ul>
+                <li>添加编辑用户标签</li>
+            </ul>
+        </div>
+        <div class="flexilist">
+            <div class="common-content">
+                <div class="main-info">
+                    <form action="/mobile/index.php?r=wechat/mktag/update" method="post" class="form-horizontal" role="form">
+                        <div class="switch_info">
+                            <div class="item">
+                                <div class="label-t">标签标题:</div>
+                                <div class="label_value col-md-4">
+                                    <input type="text" name="tag_name" class="text" value="{$mktag['tag_name']}">
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label-t">标签排序:</div>
+                                <div class="label_value col-md-2">
+                                    <input type="text" name="sort_order" class="text" value="1">
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="label-t">&nbsp;</div>
+                                <div class="label_value col-md-4">
+                                    <div class="info_btn">
+                                        <input type="hidden" name="id" value="{$mktag['id']}">
+                                        <input type="submit" value="提交" class="button btn-danger bg-red fn">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="pagefooter"}

@@ -1,0 +1,41 @@
+{include file="pageheader"}
+<div class="wrapper"><!--{$lang['send_template']} 找不到?-->
+    <div class="title">小程序 - 主动模板消息记录</div>
+	<div class="content_tips">
+        <div class="explanation" id="explanation">
+        	<div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4><span id="explanationZoom" title="收起提示"></span></div>
+            <ul>
+            	<li>小程序主动模板消息记录</li> 
+            </ul>
+        </div>
+        <div class="flexilist">
+            <div class="common-content">
+			 
+				
+                <div class="list-div">
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                        <th class="text-center">用户名</th>
+                        <th class="text-center">模板标题</th> 
+                        <th class="text-center">发送时间</th>
+                      
+                    </tr>
+                  
+					
+                    {foreach $list as $key=>$val}
+                    <tr>
+                        <td  class="text-center">{$val['nick_name']}</td>
+                        <td  class="text-center">{$val['data']}</td>
+                        <td  class="text-center">{$val['send_time']}</td>
+                        
+                    </tr>
+                    {/foreach}
+                    
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="pagefooter_copyright"}
+{include file="pagefooter"}

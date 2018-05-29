@@ -1,0 +1,138 @@
+{include file="seller_pageheader"}
+
+{include file="seller_nave_header"}
+
+<div class="ecsc-layout">
+    <div class="site wrapper">
+        {include file="seller_menu_left"}
+
+        <div class="ecsc-layout-right">
+            <div class="main-content" id="mainContent">
+                {include file="seller_nave_header_title"}
+                <div class="wrapper-right of" style="background:#fff">
+                    <div class="tabmenu">
+                        <ul class="tab">
+                            <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">{if
+                                $info['id']}编辑轮播广告{else}添加轮播广告{/if} </a></li>
+                        </ul>
+                    </div>
+                    <div class="explanation" id="explanation">
+                        <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4></div>
+                        <ul>
+                            <li>自定义轮播广告</li>
+                        </ul>
+                    </div>
+                    <form action="{url('slideadsedit')}" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
+                        <div class="wrapper-list mt20">
+                            <div class="account-setting clearfix ecsc-form-goods">
+                                <dl>
+                                    <dt>导航分类：</dt>
+                                    <dd>
+                                        <select class="input-sm select" name="data[nav_id]" style="border-radius:2px">
+                                            <option value="0">请选择</option>
+                                            {foreach $navs as $key=>$nav}
+                                            <option value="{$nav['id']}" {if $nav['id'] == $info['nav_id']} selected {/if} >{$nav['name']}</option>
+                                            {/foreach}
+                                        </select>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>广告名称：</dt>
+                                    <dd>
+                                        <input type="text" name="data[name]" class="text" value="{$info['name']}"/>
+                                    </dd>
+                                </dl>
+
+                                <dl>
+                                    <dt>URL：</dt>
+                                    <dd>
+                                        <input type="text" name="data[url]" class="text" value="{$info['url']}"/>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>显示：</dt>
+                                    <dd>
+                                        <div class="checkbox_items">
+                                            <div class="checkbox_item">
+                                                <input type="radio" name="data[ifshow]" class="ui-radio evnet_show"
+                                                       id="value_117_0" value="1" {if $info['ifshow'] == 1}checked{/if}>
+                                                <label for="value_117_0"
+                                                       class="ui-radio-label {if $info['ifshow'] == 1}active{/if}">{$lang['yes']}</label>
+                                            </div>
+                                            <div class="checkbox_item">
+                                                <input type="radio" name="data[ifshow]" class="ui-radio evnet_show"
+                                                       id="value_117_1" value="0" {if $info['ifshow'] == 0}checked{/if}>
+                                                <label for="value_117_1"
+                                                       class="ui-radio-label {if $info['ifshow'] == 0}active{/if}">{$lang['no']}</label>
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>图片：</dt>
+                                    <dd>
+                                        <div class="type-file-box">
+                                            <div class="input">
+                                                <input type="button" id="button" class="type-file-button" value="上传...">
+                                                <input type="file" class="type-file-file" name="pic" size="30"
+                                                       data-state="imgfile" hidefocus="true">
+                                                <span class="show">
+                                                <a href="{$info['pic_cdn']}" class="nyroModal fancybox" title="预览">
+                                                    <i class="fa fa-picture-o"></i>
+                                                </a>
+                                            </span>
+                                                <input type="text" name="file_path" class="type-file-text" value="{$info['pic']}"
+                                                       id="textfield" style="display:none">
+                                            </div>
+                                        </div>
+
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>排序：</dt>
+                                    <dd>
+                                        <div class="checkbox_items">
+                                            <input type="text" name="data[vieworder]" class="text"
+                                                   value="{$info['vieworder']}"/>
+                                        </div>
+                                    </dd>
+                                </dl>
+                                <dl>
+                                    <dt>&nbsp;</dt>
+                                    <dd>
+                                        <input type="hidden" name="id" value="{$info['id']}"/>
+                                        <input type="submit" value="{$lang['button_submit']}"
+                                               class="sc-btn sc-blueBg-btn btn35"/>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".clicktype").click(function () {
+            // var val = $(this).find("input[type=radio]").val();
+            var val = $(this).val();
+
+            if ('click' == val && $("#click").hasClass("hidden")) {
+                $("#view").hide().addClass("hidden");
+                $("#click").show().removeClass("hidden");
+            }
+            else if ('view' == val && $("#view").hasClass("hidden")) {
+                $("#click").hide().addClass("hidden");
+                $("#view").show().removeClass("hidden");
+            }
+        });
+    })
+</script>
+
+{include file="seller_pagefooter"}
+</body>
+</html>

@@ -1,0 +1,111 @@
+{include file="seller_pageheader"}
+
+{include file="seller_nave_header"}
+
+<div class="ecsc-layout">
+    <div class="site wrapper">
+		{include file="seller_menu_left"}
+
+		<div class="ecsc-layout-right">
+			<div class="main-content" id="mainContent">
+			{include file="seller_nave_header_title"}
+				<div class="wrapper-right of">
+			        <div class="tabmenu">
+						<ul class="tab">
+							<li class="active"><a href="javascript:;">小程序设置</a></li>
+						</ul>
+			        </div>
+		            <div class="explanation" id="explanation">
+                    <div class="ex_tit"><i class="sc_icon"></i><h4>操作提示</h4></div>
+                        <ul>
+		            	<li>一、配置前先需要申请一个小程序</li>
+                        </ul>
+                    </div>
+                    <form method="post" action="{url('modify')}" class="form-horizontal" role="form">
+						<div class="wrapper-list border1 mt20 ecsc-form-goods">
+						    <dl>
+                                <dt>小程序名称：</dt>
+                                <dd>
+                                    <input type="text" value="{$data['name']}" name="data[name]"  class="text">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic">* 米时</div>
+                                </dd>
+                            </dl>
+						    <dl>
+                                <dt>小程序原始id：</dt>
+                                <dd>
+                                    <input type="text" value="{$data['orgid']}" name="data[orgid]" class="text">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic">* gh_845581623321</div>
+                                </dd>
+                            </dl>
+						    <dl>
+                                <dt>AppID：</dt>
+                                <dd>
+                                    <input type="text" value="{$data['appid']}"  name="data[appid]" class="text">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic">* AppID 请注意需要与小程序，且注意信息安全，不要随意透露给第三方</div>
+                                </dd>
+                            </dl>
+						    <dl>
+                                <dt>AppSecret：</dt>
+                                <dd>
+                                    <input type="text" value="{$data['appsecret']}" name="data[appsecret]" class="text">
+                                    <div class="form_prompt"></div>
+                                    <div class="notic">* AppSecret 请注意需要与小程序，且注意信息安全，不要随意透露给第三方</div>
+                                </dd>
+                            </dl>
+						    <dl>
+                                <dt>Token：</dt>
+                                <dd>
+                                    <input type="text" value="{$data['token']}" name="data[token]" class="text" disabled>
+                                    <input type="hidden" value="{$data['token']}" name="data[token]" >
+                                    <span class="sc-btn sc-blue-btn makeToken" style="margin-left:10px;">生成Token</span>
+                                    <div class="form_prompt"></div>
+                                    <div class="notic">* 自定义Token值,复制到小程序app.js的customToken方法里</div>
+                                </dd>
+                            </dl>
+							<dl>
+							    <dt class="step_label">状态：</dt>
+							    <dd class="step_value">
+							        <div class="checkbox_items">
+							            <div class="checkbox_item">
+							                <input type="radio" name="data[status]" class="ui-radio event_zhuangtai" id="value_118_0" value="1" {if $data['status'] == 1}checked{/if}>
+						                    <label for="value_118_0" class="ui-radio-label active">开启</label>
+							            </div>
+
+							            <div class="checkbox_item mr15">
+							                <input type="radio" name="data[status]" class="ui-radio event_zhuangtai" id="value_118_1" value="0" {if $data['status'] == 0}checked{/if}>
+						                    <label for="value_118_1" class="ui-radio-label ">关闭</label>
+							            </div>
+							        </div>
+							    </dd>
+							</dl>
+						    <dl>
+                                <dt>&nbsp;</dt>
+                                <dd class="button_info">
+	                                <input type="hidden" name="id" value="{$data['id']}" />
+                                    <input type="submit" name="submit" value="保存" class="sc-btn btn35 sc-blueBg-btn">
+                                </dd>
+                            </dl>
+						</div>
+			    	</form>
+			    </div>
+			</div>
+		</div>
+    </div>
+</div>
+<script>
+    // 生成token md5
+    $(".makeToken").click(function(){
+        var mydate = new Date();
+        var mytime = mydate.toLocaleTimeString(); //获取当前时间
+        var token = $.md5(mytime+''+Math.random()*100000);
+        $("input[name='data[token]']").val(token);
+    });
+
+</script>
+
+{include file="seller_pagefooter"}
+</body>
+</html>

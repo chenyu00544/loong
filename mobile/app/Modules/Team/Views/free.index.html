@@ -1,0 +1,41 @@
+{include file="page_header"}
+		<link rel="stylesheet" type="text/css" href="{elixir('free_team/css/style.css')}">
+		
+		<div class="warper">
+			<header class="header1 clearfix">
+				<!--
+				<a class="header1-btn" href="javascript:history.back();"><img src="images/icon-arrow01.png"></a>
+				-->
+				<span class="header1-txt">
+					<img src="{elixir('free_team/images/title.png')}"/>
+				</span>
+			</header>
+			<ul class="newslist">
+			
+				{foreach $goods_list as $key=>$val}
+					<li>
+					 <img class="news-img1" src="{$val.goods_thumb}" />
+			        	<p class="news-txt1">{$val.goods_name}-</p>
+			        	<p class="news-txt2">销量：{$val.sales_volume}件</p>
+			        	<p class="news-txt3">
+				        	<span>￥{$val.shop_price}</span>
+				        	<!--<span>￥1200.00</span>-->
+			        		<a class="news-btn1" href="index.php?m=team&c=goods&id={$val.goods_id}">免单券开团</a>
+			        	</p>
+		        	</li>
+				 {/foreach}
+			</ul>
+	        
+		</div>
+		
+		
+		
+		
+		
+		
+		<script type="text/javascript ">
+				
+		</script>
+	</body>
+
+</html>
