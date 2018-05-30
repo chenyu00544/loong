@@ -1228,6 +1228,9 @@
     </div>
     @component('shop.components.copyright',['copyright'=>''])@endcomponent
     <div style="height: 30px">　</div>
+    <div id="app">
+        <button v-on:click="getTest">xxxxx</button>
+    </div>
     </body>
 @section('script')
     <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.config.js')}}"></script>
@@ -1692,6 +1695,21 @@
             $('input[name=desc_mobile]').val(imgs);
         }
 
+        var app = new Vue({
+            el: '#app',
+            data: {
+                url: "{{url('admin/typecate/getcates/')}}/0",
+                message: 'Hello Vue!'
+            },
+            methods:{
+                getTest:function () {
+                    $.post(this.url,{'_token': '{{csrf_token()}}'},function (data) {
+                        console.log(data);
+                    })
+                }
+            },
+            delimiters:['${', '}']
+        })
     </script>
 @endsection
 @endsection

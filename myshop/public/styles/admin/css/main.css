@@ -89,7 +89,7 @@ i, em {
     font-style: normal;
 }
 
-label{
+label {
     font-weight: normal;
     margin: 0px;
 }
@@ -1963,9 +1963,12 @@ input[type=file].upload-file {
     margin-right: 10px;
     font-size: 12px;
 }
-.attr-gallery .attr-item{
+
+.attr-gallery .attr-item {
     width: 500px;
+    margin-bottom: 10px;
 }
+
 .attr-gallery .attr-item .txt {
     float: left;
     border: 1px solid #dbdbdb;
