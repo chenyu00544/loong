@@ -151,7 +151,9 @@
 
                 if (type == 'main') {
                     parent.$('input[name=gallery_pic_id]').val(pic_exhibition_url[0]);
-                    parent.$('.goods-img-show').attr('src', pic_url[0]);
+                    parent.$('.goods-img-show').attr('src', pic_original_url[0]);
+                } else if (type == 'slide') {
+
                 } else if (type == 'webdesc') {
                     var html = '';
                     var imgs = '';
@@ -162,7 +164,7 @@
                             '<img src="' + v + '">' +
                             '</div>' +
                             '<div class="tools">';
-                        if (parent.$('.section-warp section').length == 0 &&  k == 0) {
+                        if (parent.$('.section-warp section').length == 0 && k == 0) {
                             html += '<i class="move-up glyphicon glyphicon-arrow-up disabled"></i>' +
                                 '<i class="move-down glyphicon glyphicon-arrow-down"></i>';
                         } else if (k == pic_original_url.length - 1) {

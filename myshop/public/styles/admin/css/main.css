@@ -89,6 +89,11 @@ i, em {
     font-style: normal;
 }
 
+label{
+    font-weight: normal;
+    margin: 0px;
+}
+
 .hide {
     display: none;
 }
@@ -169,6 +174,24 @@ i, em {
     line-height: 48px;
 }
 
+.checkbox label, .radio label {
+    min-height: 20px;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.checkbox-inline, .radio-inline {
+    position: relative;
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
 .checkbox-inline + .checkbox-inline, .radio-inline + .radio-inline {
     margin-right: 10px;
     margin-left: 0px;
@@ -239,6 +262,10 @@ i, em {
 
 .hg25 {
     height: 25px;
+}
+
+.hg27 {
+    height: 27px;
 }
 
 .hg30 {
@@ -719,6 +746,10 @@ i, em {
 
 .max-wd-100 {
     max-width: 100px;
+}
+
+.max-wd-110 {
+    max-width: 110px;
 }
 
 .max-wd-190 {
@@ -1791,6 +1822,7 @@ input[type=file].upload-file {
     padding: 10px;
     position: relative;
 }
+
 .pannel-content .section {
     position: relative;
 }
@@ -1878,21 +1910,29 @@ input[type=file].upload-file {
 .step-item-bg {
     background-color: #f3f9ff;
 }
+
 .step-item-table {
     overflow: hidden;
     float: left;
     width: 100%;
 }
+
 .step-item-right .goods-attr-type .label {
     line-height: 33px;
 }
 
-.step-item-right .goods-attr-type:first-child {
+.step-item-right {
     margin-bottom: 10px;
 }
+
 .step-item-right .goods-attr-type {
     width: auto;
     min-width: 200px;
+    margin-bottom: 10px;
+}
+
+.item-right-list {
+    width: 100%;
 }
 
 .step-item-right .item-right-list .label {
@@ -1906,3 +1946,38 @@ input[type=file].upload-file {
     white-space: nowrap;
     line-height: 33px;
 }
+
+.table_head th {
+    background: #62b3ff;
+    border-top: 2px solid #2b88e0;
+    color: #fff;
+    font-weight: bold;
+}
+
+.table_head tbody tr {
+    border-bottom: 1px solid #eaeaea;
+}
+
+.attr-gallery .attr-item .info label {
+    line-height: 25px;
+    margin-right: 10px;
+    font-size: 12px;
+}
+.attr-gallery .attr-item{
+    width: 500px;
+}
+.attr-gallery .attr-item .txt {
+    float: left;
+    border: 1px solid #dbdbdb;
+    border-radius: 2px;
+    height: 27px;
+    line-height: 23px;
+    padding: 0 10px;
+    text-align: left;
+    width: 140px;
+    margin-right: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+

@@ -831,7 +831,8 @@
                                                 <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
@@ -839,72 +840,200 @@
                                                 <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="item-right-list goods-attr-type">
+                                                <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="item-right-list goods-attr-type">
+                                                <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="item-right-list goods-attr-type">
+                                                <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="item-right-list goods-attr-type">
+                                                <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="item-right-list goods-attr-type">
+                                                <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="item-right-list goods-attr-type">
+                                                <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="item-right-list goods-attr-type">
+                                                <div class="item-right-list goods-attr-type fl">
                                                     <div class="label fl" title="鞋面材料">鞋面材料：</div>
                                                     <div class="value-select">
-                                                        <select name="attr_value_list[]" class="form-control max-wd-100 fl">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl">
                                                             <option value="">xxxxx</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="step-item-row step-item-attr-radio"></div>
+                                        <div class="step-item-row step-item-attr-checkbox">
+                                            <div class="step-item-left">
+                                                <h5>商品规格：</h5>
+                                            </div>
+                                            <div class="step-item-right">
+                                                <div class="item-right-list fl">
+                                                    <div class="label fl">颜色：</div>
+                                                    <div>
+                                                        <label class="checkbox-inline">
+                                                            <input type="hidden" data-type="attr_value"
+                                                                   name="attr_value_list1[]" value="白色">
+                                                            <input type="checkbox" data-type="attr_id"
+                                                                   name="attr_id_list1[]" value="">白色
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input type="hidden" data-type="attr_value"
+                                                                   name="attr_value_list1[]" value="白色">
+                                                            <input type="checkbox" data-type="attr_id"
+                                                                   name="attr_id_list1[]" value="">白色
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input type="hidden" data-type="attr_value"
+                                                                   name="attr_value_list1[]" value="白色">
+                                                            <input type="checkbox" data-type="attr_id"
+                                                                   name="attr_id_list1[]" value="">白色
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="item-right-list fl">
+                                                    <div class="label fl">规格：</div>
+                                                    <div>
+                                                        <label class="checkbox-inline">
+                                                            <input type="hidden" data-type="attr_value"
+                                                                   name="attr_value_list1[]" value="白色">
+                                                            <input type="checkbox" data-type="attr_id"
+                                                                   name="attr_id_list1[]" value="">白色
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input type="hidden" data-type="attr_value"
+                                                                   name="attr_value_list1[]" value="白色">
+                                                            <input type="checkbox" data-type="attr_id"
+                                                                   name="attr_id_list1[]" value="">白色
+                                                        </label>
+                                                        <label class="checkbox-inline">
+                                                            <input type="hidden" data-type="attr_value"
+                                                                   name="attr_value_list1[]" value="白色">
+                                                            <input type="checkbox" data-type="attr_id"
+                                                                   name="attr_id_list1[]" value="">白色
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="step-item-table" id="attribute-table"></div>
+                                    <div class="step-item-table" id="attribute-table">
+                                        <table class="table table-hover table_head">
+                                            <thead>
+                                            <tr>
+                                                <th class="col-sm-3 text-center">颜色，尺码</th>
+                                                <th class="col-sm-1"><em>*</em>市场价　<i
+                                                            class="glyphicon glyphicon-edit cursor pro_market"></i></th>
+                                                <th class="col-sm-1"><em>*</em>本店价　<i
+                                                            class="glyphicon glyphicon-edit cursor pro_shop"></i></th>
+                                                <th class="col-sm-1"><em>*</em>促销价　<i
+                                                            class="glyphicon glyphicon-edit cursor pro_promote"></i></th>
+                                                <th class="col-sm-1"><em>*</em>库存　<i
+                                                            class="glyphicon glyphicon-edit cursor pro_number"></i></th>
+                                                <th class="col-sm-1"><em>*</em>预警值　<i
+                                                            class="glyphicon glyphicon-edit cursor pro_warning"></i></th>
+                                                <th class="col-sm-1">商品货号</th>
+                                                <th class="col-sm-1">商品条形码</th>
+                                                <th class="col-sm-1 text-center">操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td class="text-center">c<input type="hidden" name="attr[81189][]"
+                                                                                value="c">
+                                                    <input type="hidden" name="goods_attr_id[275465][]" value="275465">
+                                                    ,37<input type="hidden" name="attr[81190][]" value="37">
+                                                    <input type="hidden" name="goods_attr_id[275464][]" value="275464">
+                                                </td>
+                                                <td><input type="text" name="product_market_price[]"
+                                                           onblur="listTable.editInput(this, 'edit_product_market_price', 12, $('#goods_model').val(), 'goods_model');"
+                                                           class="form-control max-wd-110" autocomplete="off"
+                                                           value="0.00">
+                                                </td>
+                                                <td width="8%"><input type="text" name="product_price[]"
+                                                                      onblur="listTable.editInput(this, 'edit_product_price', 12, $('#goods_model').val(), 'goods_model');"
+                                                                      class="form-control max-wd-110" autocomplete="off"
+                                                                      value="0.00">
+                                                </td>
+                                                <td width="8%"><input type="text" name="product_promote_price[]"
+                                                                      onblur="listTable.editInput(this, 'edit_product_promote_price', 12, $('#goods_model').val(), 'goods_model');"
+                                                                      class="form-control max-wd-110" autocomplete="off"
+                                                                      value="0.00">
+                                                </td>
+                                                <td width="10%"><input type="text" name="product_number[]"
+                                                                       onblur="listTable.editInput(this, 'edit_product_number', 12, $('#goods_model').val(), 'goods_model');"
+                                                                       class="form-control max-wd-110"
+                                                                       autocomplete="off" value="0">
+                                                </td>
+                                                <td width="10%"><input type="text" name="product_warn_number[]"
+                                                                       onblur="listTable.editInput(this, 'edit_product_warn_number', 12, $('#goods_model').val(), 'goods_model');"
+                                                                       class="form-control max-wd-110"
+                                                                       autocomplete="off" value="1">
+                                                </td>
+                                                <td width="12%"><input type="text" name="product_sn[]"
+                                                                       onblur="listTable.editInput(this, 'edit_product_sn', 12, $('#goods_model').val(), 'goods_model');"
+                                                                       class="form-control" autocomplete="off" value="">
+                                                </td>
+                                                <td width="12%"><input type="text" name="product_bar_code[]"
+                                                                       onblur="listTable.editInput(this, 'edit_product_bar_code', 12, $('#goods_model').val(), 'goods_model');"
+                                                                       class="form-control" autocomplete="off" value="">
+                                                </td>
+                                                <td class="handle" width="5%">
+                                                    N/A <input type="hidden" name="product_id[]" value="0">
+                                                    <input type="hidden" name="changelog_product_id[]" value="12">
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
 
@@ -913,25 +1042,74 @@
                                     <i class="ui-step"></i>
                                     <h3>属性图片</h3>
                                 </div>
-                                <div class="attr_gallerys ps-container ps-active-y">
-                                    <div class="step_content attr_gallery">
+                                <div class="attr-gallerys ps-container ps-active-y">
+                                    <div class="step-content attr-gallery clearfix">
                                         <div class="attr_tit">颜色：</div>
                                         <!--处理属性图片 start-->
-                                        <div class="attr_item" style="width:465px;">
-                                            <div class="txt" title="g" data-toggle="tooltip">g</div>
-                                            <div class="info hide">
-                                                <label class="fl mr10 hide">价格</label>
-                                                <input type="text" class="text w80 hide" name="gallery_attr_price[]"
-                                                       onblur="listTable.editInput(this, 'edit_attr_price', 336223);"
-                                                       size="10" value="0.00">
-                                            </div>
-                                            <div class="info">
-                                                <label>排序：</label>
-                                                <input type="text" class="text w80" name="gallery_attr_sort[]"
+                                        <div class="attr-item fl">
+                                            <div class="txt" title="g">g</div>
+                                            <div class="info fl">
+                                                <label class="fl hg27">排序：</label>
+                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
                                                        onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
                                                        size="10" value="1">
                                             </div>
-                                            <a href="javascript:;" ectype="add_attr_img" class="up_img"
+                                            <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
+                                               data-goodsattrid="336223" data-attrid="39101">上传图片</a>
+                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
+                                                   autocomplete="off">
+                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
+                                                   autocomplete="off">
+                                            <input type="hidden" name="gallery_attr_value[]" size="10" value="g">
+                                            <input type="hidden" name="gallery_attr_id[]" size="10" value="39101">
+                                        </div>
+                                        <div class="attr-item fl">
+                                            <div class="txt" title="g">g</div>
+                                            <div class="info fl">
+                                                <label class="fl hg27">排序：</label>
+                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
+                                                       size="10" value="1">
+                                            </div>
+                                            <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
+                                               data-goodsattrid="336223" data-attrid="39101">上传图片</a>
+                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
+                                                   autocomplete="off">
+                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
+                                                   autocomplete="off">
+                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
+                                                   value="g">
+                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
+                                                   value="39101">
+                                        </div>
+                                        <div class="attr-item fl">
+                                            <div class="txt" title="g">g</div>
+                                            <div class="info fl">
+                                                <label class="fl hg27">排序：</label>
+                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
+                                                       size="10" value="1">
+                                            </div>
+                                            <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
+                                               data-goodsattrid="336223" data-attrid="39101">上传图片</a>
+                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
+                                                   autocomplete="off">
+                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
+                                                   autocomplete="off">
+                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
+                                                   value="g">
+                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
+                                                   value="39101">
+                                        </div>
+                                        <div class="attr-item fl">
+                                            <div class="txt" title="g">g</div>
+                                            <div class="info fl">
+                                                <label class="fl hg27">排序：</label>
+                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
+                                                       size="10" value="1">
+                                            </div>
+                                            <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
                                                data-goodsattrid="336223" data-attrid="39101">上传图片</a>
                                             <input name="attr_id" type="hidden" value="39101" id="attrId"
                                                    autocomplete="off">
@@ -944,13 +1122,44 @@
                                         </div>
                                         <!--处理属性图片 end-->
                                     </div>
-                                    <div class="ps-scrollbar-x-rail"
-                                         style="width: 1599px; display: none; left: 0px; bottom: 3px;">
-                                        <div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div>
-                                    </div>
-                                    <div class="ps-scrollbar-y-rail"
-                                         style="top: 0px; height: 111px; display: inherit; right: 0px;">
-                                        <div class="ps-scrollbar-y" style="top: 0px; height: 110px;"></div>
+                                    <div class="step-content attr-gallery clearfix">
+                                        <div class="attr_tit">尺码：</div>
+                                        <!--处理属性 start-->
+                                        <div class="attr-item fl">
+                                            <div class="txt" title="g">g</div>
+                                            <div class="info fl">
+                                                <label class="fl hg27">排序：</label>
+                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
+                                                       size="10" value="1">
+                                            </div>
+                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
+                                                   autocomplete="off">
+                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
+                                                   autocomplete="off">
+                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
+                                                   value="g">
+                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
+                                                   value="39101">
+                                        </div>
+                                        <div class="attr-item fl">
+                                            <div class="txt" title="g">g</div>
+                                            <div class="info fl">
+                                                <label class="fl hg27">排序：</label>
+                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
+                                                       size="10" value="1">
+                                            </div>
+                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
+                                                   autocomplete="off">
+                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
+                                                   autocomplete="off">
+                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
+                                                   value="g">
+                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
+                                                   value="39101">
+                                        </div>
+                                        <!--处理属性 end-->
                                     </div>
                                 </div>
                             </div>
@@ -991,12 +1200,11 @@
                                     <div class="step-top-btn gallery-album clearfix" ectype="gallery_album_list"
                                          data-inid="addAlbumimg" data-act="gallery_album_list"
                                          style="position: relative;">
-                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
-                                           id="addImages" style="position: relative; z-index: 1;">
-                                            <i class="glyphicon glyphicon-plus"></i>添加图片
+                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16" style="position: relative; z-index: 1;">
+                                            <input type="file" multiple id="add-slide-img" name="add-slide-img" style="opacity: 0;max-width: 0;height: 0;margin: 0">
+                                            <i class="glyphicon glyphicon-plus"></i><label for="add-slide-img">添加图片</label>
                                         </a>
-                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
-                                           ectype="gallery_album" data-value="图片库选择">
+                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16 img-lib-slide" data-value="图片库选择">
                                             <i class="glyphicon glyphicon-plus"></i>图片库选择
                                         </a>
                                         <div id="addAlbumimg"></div>
@@ -1266,6 +1474,27 @@
                         layer.iframeAuto(index)
                     }
                 });
+            });
+
+            //轮播图
+            $('.img-lib-slide').on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['800px', '400px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '图片库选择图片',
+                    content: ["{{url('admin/goods/imagelibrary/slide')}}"],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+
+
+            //上传轮播图片
+            $('#add-slide-img').on('change', function () {
+                console.log(12312321);
             });
 
 

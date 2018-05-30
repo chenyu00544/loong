@@ -48,9 +48,9 @@ class CommonService
                     if($isList){
                         $page[] = '...';
                     }
+                    $page[] = $totalPages - 1;
+                    $page[] = $totalPages;
                 }
-                $page[] = $totalPages - 1;
-                $page[] = $totalPages;
             } elseif ($currentPage > ($totalPages - 7)) {
                 $page = [1, 2];
                 if (($totalPages - 6) > 3) {

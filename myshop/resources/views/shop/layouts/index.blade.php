@@ -21,6 +21,7 @@
 <script type="text/javascript" src="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal.custom.js')}}"></script>
 <script type="text/javascript" src="{{asset('styles/plugin/layer/layer.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/plugin/vue/vue.min.js')}}"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal-ie6.js')}}"></script>
 <![endif]-->
