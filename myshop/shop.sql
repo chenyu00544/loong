@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 27/05/2018 23:00:02
+ Date: 30/05/2018 23:39:14
 */
 
 SET NAMES utf8mb4;
@@ -98,20 +98,17 @@ CREATE TABLE `cyc_attribute`  (
   INDEX `attr_type`(`attr_type`) USING BTREE,
   INDEX `attr_group`(`attr_group`) USING BTREE,
   INDEX `sort_order`(`sort_order`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品属性表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品属性表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_attribute
 -- ----------------------------
-INSERT INTO `cyc_attribute` VALUES (1, 1, '颜色', 0, 1, 1, '暗夜黑\r\n宝石蓝\r\n玫瑰金\r\n土豪金\r\n中国红', '', 0, 0, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (2, 2, '颜色', 0, 1, 1, '白色\r\n黑色\r\n金色\r\n', '', 0, 0, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (3, 3, '颜色', 0, 1, 1, '黑色\r\n红色', '', 0, 0, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (4, 4, '颜色', 0, 1, 1, '灰色\r\n枚红色\r\n银灰色\r\n紫色', '', 0, 0, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (5, 5, '尺码', 0, 1, 1, 'M\r\nX\r\nXL\r\n2XL\r\n3XL\r\n4XL', '', 0, 0, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (6, 5, '颜色', 1, 0, 1, '', '', 0, 0, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (7, 6, '颜色', 0, 1, 1, '白红色\r\n海军蓝\r\n黄黑色', '', 0, 0, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (8, 19, '金装', 1, 1, 1, '800g\r\n900g', '', 1, 100, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (9, 19, '铂金', 1, 0, 1, '800g\r\n900g', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (12, 19, '重量(g)', 1, 1, 0, '300g\r\n400g\r\n500g\r\n600g\r\n700g\r\n800g\r\n900g', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (10, 19, '段数', 1, 0, 1, '', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (11, 19, '重量', 1, 0, 1, '', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (13, 19, '包装种类', 1, 1, 0, '盒装\r\n罐装', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (14, 19, '产地', 1, 1, 0, '澳洲\r\n美国\r\n日本\r\n韩国\r\n欧洲', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (15, 19, '适用阶段', 1, 1, 0, '一段\r\n二段\r\n三段\r\n四段', '', 1, 100, 0, 0, '');
 
 -- ----------------------------
 -- Table structure for cyc_brand
@@ -7063,18 +7060,12 @@ CREATE TABLE `cyc_goods_type`  (
   INDEX `cat_name`(`cat_name`) USING BTREE,
   INDEX `enabled`(`enabled`) USING BTREE,
   INDEX `c_id`(`c_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品类型' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品类型' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_goods_type
 -- ----------------------------
-INSERT INTO `cyc_goods_type` VALUES (1, 2, '小米手机套', 1, '', 0);
-INSERT INTO `cyc_goods_type` VALUES (2, 2, '智能手表', 1, '', 0);
-INSERT INTO `cyc_goods_type` VALUES (3, 3, '笔记本', 1, '', 0);
-INSERT INTO `cyc_goods_type` VALUES (4, 4, '三件套', 1, '', 0);
-INSERT INTO `cyc_goods_type` VALUES (5, 0, '服装', 1, '', 0);
-INSERT INTO `cyc_goods_type` VALUES (6, 0, '鞋子', 1, '', 0);
-INSERT INTO `cyc_goods_type` VALUES (19, 0, '奶粉', 1, '', 4);
+INSERT INTO `cyc_goods_type` VALUES (19, 0, '奶粉', 1, NULL, 8);
 
 -- ----------------------------
 -- Table structure for cyc_goods_type_cate
@@ -7091,17 +7082,60 @@ CREATE TABLE `cyc_goods_type_cate`  (
   INDEX `user_id`(`user_id`) USING BTREE,
   INDEX `parent_id`(`parent_id`) USING BTREE,
   INDEX `cat_name`(`cat_name`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品类型分类' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 51 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品类型分类' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_goods_type_cate
 -- ----------------------------
-INSERT INTO `cyc_goods_type_cate` VALUES (1, 0, 0, '颜色', 100, 1);
-INSERT INTO `cyc_goods_type_cate` VALUES (2, 0, 0, '地区', 100, 1);
-INSERT INTO `cyc_goods_type_cate` VALUES (3, 0, 2, '澳洲', 100, 2);
-INSERT INTO `cyc_goods_type_cate` VALUES (4, 0, 2, '日本', 45, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (1, 0, 0, '母婴玩具', 100, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (2, 0, 0, '药品保健', 100, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (3, 0, 2, '维生素', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (4, 0, 2, '滋补养生', 45, 2);
 INSERT INTO `cyc_goods_type_cate` VALUES (5, 0, 0, '化妆品', 50, 1);
-INSERT INTO `cyc_goods_type_cate` VALUES (6, 0, 5, '兰蔻', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (6, 0, 5, '面部套装', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (8, 0, 1, '奶粉', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (9, 0, 1, '尿裤', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (10, 0, 0, '时尚轻奢', 100, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (11, 0, 1, '辅食', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (12, 0, 1, '玩具', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (13, 0, 1, '儿童服饰', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (14, 0, 5, '卸妆洁面', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (15, 0, 5, '化妆水', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (16, 0, 5, '精华液', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (17, 0, 5, '乳液面霜', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (18, 0, 5, '面膜', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (19, 0, 5, '彩妆', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (20, 0, 5, '底妆', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (21, 0, 5, '香水香氛', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (22, 0, 5, '护理', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (23, 0, 5, '美容工具', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (24, 0, 5, '男士护理', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (25, 0, 2, '排毒健体', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (26, 0, 10, '箱包', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (27, 0, 10, '手表', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (28, 0, 10, '饰品', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (29, 0, 10, '服饰', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (30, 0, 0, '个人护理', 100, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (31, 0, 30, '洗发护发', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (32, 0, 30, '头部造型', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (33, 0, 30, '口腔护理', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (34, 0, 30, '身体清洁', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (35, 0, 30, '润肤美体', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (36, 0, 30, '女性护理', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (37, 0, 30, '衣物清洁', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (38, 0, 30, '纸品湿巾', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (39, 0, 30, '家居清洁', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (40, 0, 0, '数码产品', 100, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (41, 0, 0, '食品', 100, 1);
+INSERT INTO `cyc_goods_type_cate` VALUES (42, 0, 41, '奶粉乳酪', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (43, 0, 41, '巧克力', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (44, 0, 41, '坚果果仁', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (45, 0, 41, '麦片冲饮', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (46, 0, 41, '咖啡饮料', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (47, 0, 41, '饼干糕点', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (48, 0, 41, '果干蜜饯', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (49, 0, 41, '糖果零食', 100, 2);
+INSERT INTO `cyc_goods_type_cate` VALUES (50, 0, 41, '米面粮油', 100, 2);
 
 -- ----------------------------
 -- Table structure for cyc_intelligent_weight
