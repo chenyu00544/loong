@@ -30,6 +30,12 @@ class AttributeRepository implements AttributeRepositoryInterface
         return $re;
     }
 
+    public function getAttributes($id)
+    {
+        $where['cat_id'] = $id;
+        return $this->attributeModel->getAttrs($where);
+    }
+
     public function getAttribute($id)
     {
         return $this->attributeModel->getAttr($id);
@@ -43,6 +49,17 @@ class AttributeRepository implements AttributeRepositoryInterface
     public function setAttribute($data, $id)
     {
         return $this->attributeModel->setAttr($data, $id);
+    }
+
+    public function delAttribute($id)
+    {
+        $req = ['code' => 5, 'msg' => '删除失败'];
+        $where['attr_id'] = $id;
+        $re = $this->attributeModel->delAttribute($where);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '删除成功'];
+        }
+        return $req;
     }
 
 }

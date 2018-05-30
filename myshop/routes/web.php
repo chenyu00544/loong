@@ -110,6 +110,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::get('attribute/attribut/modal', 'AttributeController@attributeModal');
     Route::post('attribute/addattribute', 'AttributeController@addAttribute');
+    Route::post('attribute/getattributes/{id}', 'AttributeController@getAttributes');
     Route::resource('attribute', 'AttributeController');
 
     Route::resource('captcha', 'CaptchaController');

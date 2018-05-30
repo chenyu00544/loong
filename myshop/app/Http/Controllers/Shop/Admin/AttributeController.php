@@ -15,7 +15,10 @@ class AttributeController extends CommonController
     private $attributeRepository;
     private $goodsTypeRepository;
 
-    public function __construct(AttributeRepository $attributeRepository, GoodsTypeRepository $goodsTypeRepository)
+    public function __construct(
+        AttributeRepository $attributeRepository,
+        GoodsTypeRepository $goodsTypeRepository
+    )
     {
         parent::__construct();
         $this->attributeRepository = $attributeRepository;
@@ -32,14 +35,9 @@ class AttributeController extends CommonController
 
     }
 
-    public function change($id)
+    public function getAttributes($id)
     {
-
-    }
-
-    public function deleteAll($ids)
-    {
-
+        return $this->attributeRepository->getAttributes($id);
     }
 
     public function attributeModal(Request $request)
@@ -141,6 +139,6 @@ class AttributeController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->attributeRepository->delAttribute($id);
     }
 }

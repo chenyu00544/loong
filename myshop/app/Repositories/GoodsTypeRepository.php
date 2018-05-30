@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\GoodsTypeRepositoryInterface;
+use App\Http\Models\Shop\AttributeModel;
 use App\Http\Models\Shop\GoodsTypeCateModel;
 use App\Http\Models\Shop\GoodsTypeModel;
 
@@ -17,14 +18,17 @@ class GoodsTypeRepository implements GoodsTypeRepositoryInterface
 
     private $goodsTypeModel;
     private $goodsTypeCateModel;
+    private $attributeModel;
 
     public function __construct(
         GoodsTypeModel $goodsTypeModel,
-        GoodsTypeCateModel $goodsTypeCateModel
+        GoodsTypeCateModel $goodsTypeCateModel,
+        AttributeModel $attributeModel
     )
     {
         $this->goodsTypeModel = $goodsTypeModel;
         $this->goodsTypeCateModel = $goodsTypeCateModel;
+        $this->attributeModel = $attributeModel;
     }
 
     public function getGoodsTypesPage($size = 10)
@@ -136,7 +140,9 @@ class GoodsTypeRepository implements GoodsTypeRepositoryInterface
     {
         $req = ['code' => 5, 'msg' => '删除失败'];
         $where['cat_id'] = $id;
+        $attrWhere['cat_id'] = $id;
         $re = $this->goodsTypeModel->deleteType($where);
+        $this->attributeModel->delAttribute($attrWhere);
         if ($re) {
             $req['code'] = 1;
             $req['msg'] = '删除成功';

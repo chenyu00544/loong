@@ -94,6 +94,10 @@ label {
     margin: 0px;
 }
 
+input[type=checkbox], input[type=radio] {
+    margin: 1px 0 0;
+}
+
 .hide {
     display: none;
 }

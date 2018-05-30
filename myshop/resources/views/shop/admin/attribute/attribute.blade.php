@@ -65,7 +65,7 @@
                     </table>
                     <div class="clearfix bg-color-dray pad-top-4">
                         <div class="fl">
-                            <a type="button" class="btn btn-info btn-sure btn-sm mar-all-8">删除</a>
+                            {{--<a type="button" class="btn btn-info btn-sure btn-sm mar-all-8">删除</a>--}}
                         </div>
                     </div>
                     <div class="page_list">
@@ -101,15 +101,10 @@
                         "{{url('admin/attribute/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
-                            if (data.code == 1) {
-                                layer.msg(data.msg, {icon: data.code});
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
-                            } else {
-                                layer.msg(data.msg, {icon: data.code});
-                            }
-
+                            layer.msg(data.msg, {icon: data.code});
+                            setTimeout(function () {
+                                location.href = location.href;
+                            }, 1000);
                         });
                 }, function () {
                 });

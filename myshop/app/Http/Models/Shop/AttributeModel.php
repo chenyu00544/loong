@@ -15,7 +15,15 @@ class AttributeModel extends Model
     {
         return $this->where('cat_id', $id)
             ->orderBy('attr_id', 'desc')
-            ->paginate($size);;
+            ->paginate($size);
+    }
+
+    public function getAttrs($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->orderBy('attr_type', 'asc')
+            ->get();
     }
 
     public function addAttribute($data)
@@ -33,6 +41,12 @@ class AttributeModel extends Model
     {
         return $this->where('attr_id', $id)
             ->update($data);
+    }
+
+    public function delAttribute($where)
+    {
+        return $this->where($where)
+            ->delete();
     }
 
 }

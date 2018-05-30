@@ -154,7 +154,7 @@ function setNextGoodsTypeCate(that, token, url) {
         var html = '';
         $.post(url + id, {'_token': token}, function (data) {
             if (data.code == 1 && data.data.length > 0) {
-                html = '<select class="form-control max-wd-100 fl mar-right-20 select">' +
+                html = '<select class="form-control max-wd-110 fl mar-right-20 select">' +
                     '<option value="0">请选择</option>';
                 $.each(data.data, function (k, v) {
                     html += '<option value="' + v.cate_id + '">' + v.cat_name + '</option>';
@@ -179,19 +179,17 @@ function getGoodsTypes(that, token, url) {
     if (id > 0) {
         $.post(url + id, {'_token': token}, function (data) {
             if (data.length > 0) {
-                html = '<select class="form-control max-wd-350 fl">' +
-                    '<option value="0">请选择</option>';
+                html = '<option value="0">请选择</option>';
                 $.each(data, function (k, v) {
-                    html += '<option value="' + v.cate_id + '">' + v.cat_name + '</option>';
+                    html += '<option value="' + v.cat_id + '">' + v.cat_name + '</option>';
                 });
-                html += '</select>';
-                $('.goods_type').html(html);
+                $('.goods_type select').html(html);
             }else{
-                $('.goods_type').html(html);
+                $('.goods_type select').html(html);
             }
         });
     }else{
-        $('.goods_type').html(html);
+        $('.goods_type select').html(html);
     }
 }
 

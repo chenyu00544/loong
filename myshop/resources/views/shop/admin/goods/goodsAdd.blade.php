@@ -780,7 +780,7 @@
                         </div>
 
                         <!--第四步 填写商品属性-->
-                        <div class="step step-three" ectype="step" data-step="4" style="">
+                        <div class="step step-four" ectype="step" data-step="4" style="" id="appFour">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -793,7 +793,7 @@
                                             <input name="attr_parent_id" type="hidden" value="0">
                                             <div class="item-right-li">
                                                 <div class="value-select goods_type_cat">
-                                                    <select class="form-control max-wd-100 fl mar-right-20 select">
+                                                    <select class="form-control max-wd-110 fl mar-right-20 select">
                                                         <option value="0">请选择</option>
                                                         @foreach($goodsTypeCates as $goodsTypeCate)
                                                             <option value="{{$goodsTypeCate->cate_id}}">{{$goodsTypeCate->cat_name}}</option>
@@ -811,7 +811,8 @@
                                         <div class="step-item-right">
                                             <div class="item-right-li">
                                                 <div class="value-select goods_type">
-                                                    <select id="cate_id" class="form-control max-wd-350 fl">
+                                                    <select id="cate_id" class="form-control max-wd-350 fl"
+                                                            @change="selectValue($event)">
                                                         <option value="0">请选择</option>
                                                     </select>
                                                 </div>
@@ -970,16 +971,18 @@
                                             <thead>
                                             <tr>
                                                 <th class="col-sm-3 text-center">颜色，尺码</th>
-                                                <th class="col-sm-1"><em>*</em>市场价　<i
+                                                <th class="col-sm-1"><em>*</em>市场价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_market"></i></th>
-                                                <th class="col-sm-1"><em>*</em>本店价　<i
+                                                <th class="col-sm-1"><em>*</em>本店价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_shop"></i></th>
-                                                <th class="col-sm-1"><em>*</em>促销价　<i
-                                                            class="glyphicon glyphicon-edit cursor pro_promote"></i></th>
-                                                <th class="col-sm-1"><em>*</em>库存　<i
+                                                <th class="col-sm-1"><em>*</em>促销价 <i
+                                                            class="glyphicon glyphicon-edit cursor pro_promote"></i>
+                                                </th>
+                                                <th class="col-sm-1"><em>*</em>库存 <i
                                                             class="glyphicon glyphicon-edit cursor pro_number"></i></th>
-                                                <th class="col-sm-1"><em>*</em>预警值　<i
-                                                            class="glyphicon glyphicon-edit cursor pro_warning"></i></th>
+                                                <th class="col-sm-1"><em>*</em>预警值 <i
+                                                            class="glyphicon glyphicon-edit cursor pro_warning"></i>
+                                                </th>
                                                 <th class="col-sm-1">商品货号</th>
                                                 <th class="col-sm-1">商品条形码</th>
                                                 <th class="col-sm-1 text-center">操作</th>
@@ -1050,7 +1053,8 @@
                                             <div class="txt" title="g">g</div>
                                             <div class="info fl">
                                                 <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                <input type="text" class="form-control max-wd-100 hg27"
+                                                       name="gallery_attr_sort[]"
                                                        onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
                                                        size="10" value="1">
                                             </div>
@@ -1067,7 +1071,8 @@
                                             <div class="txt" title="g">g</div>
                                             <div class="info fl">
                                                 <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                <input type="text" class="form-control max-wd-100 hg27"
+                                                       name="gallery_attr_sort[]"
                                                        onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
                                                        size="10" value="1">
                                             </div>
@@ -1086,7 +1091,8 @@
                                             <div class="txt" title="g">g</div>
                                             <div class="info fl">
                                                 <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                <input type="text" class="form-control max-wd-100 hg27"
+                                                       name="gallery_attr_sort[]"
                                                        onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
                                                        size="10" value="1">
                                             </div>
@@ -1105,7 +1111,8 @@
                                             <div class="txt" title="g">g</div>
                                             <div class="info fl">
                                                 <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                <input type="text" class="form-control max-wd-100 hg27"
+                                                       name="gallery_attr_sort[]"
                                                        onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
                                                        size="10" value="1">
                                             </div>
@@ -1129,7 +1136,8 @@
                                             <div class="txt" title="g">g</div>
                                             <div class="info fl">
                                                 <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                <input type="text" class="form-control max-wd-100 hg27"
+                                                       name="gallery_attr_sort[]"
                                                        onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
                                                        size="10" value="1">
                                             </div>
@@ -1146,7 +1154,8 @@
                                             <div class="txt" title="g">g</div>
                                             <div class="info fl">
                                                 <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]"
+                                                <input type="text" class="form-control max-wd-100 hg27"
+                                                       name="gallery_attr_sort[]"
                                                        onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
                                                        size="10" value="1">
                                             </div>
@@ -1200,11 +1209,16 @@
                                     <div class="step-top-btn gallery-album clearfix" ectype="gallery_album_list"
                                          data-inid="addAlbumimg" data-act="gallery_album_list"
                                          style="position: relative;">
-                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16" style="position: relative; z-index: 1;">
-                                            <input type="file" multiple id="add-slide-img" name="add-slide-img" style="opacity: 0;max-width: 0;height: 0;margin: 0">
-                                            <i class="glyphicon glyphicon-plus"></i><label for="add-slide-img">添加图片</label>
+                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16"
+                                           style="position: relative; z-index: 1;">
+                                            <input type="file" multiple id="add-slide-img" name="add-slide-img"
+                                                   style="opacity: 0;max-width: 0;height: 0;margin: 0">
+                                            <label for="add-slide-img"><i
+                                                        class="glyphicon glyphicon-plus"></i>添加图片</label>
                                         </a>
-                                        <a href="javascript:;" class="btn btn-danger mar-all-10 line-hg-30 ft-16 img-lib-slide" data-value="图片库选择">
+                                        <a href="javascript:;"
+                                           class="btn btn-danger mar-all-10 line-hg-30 ft-16 img-lib-slide"
+                                           data-value="图片库选择">
                                             <i class="glyphicon glyphicon-plus"></i>图片库选择
                                         </a>
                                         <div id="addAlbumimg"></div>
@@ -1228,9 +1242,6 @@
     </div>
     @component('shop.components.copyright',['copyright'=>''])@endcomponent
     <div style="height: 30px">　</div>
-    <div id="app">
-        <button v-on:click="getTest">xxxxx</button>
-    </div>
     </body>
 @section('script')
     <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.config.js')}}"></script>
@@ -1696,19 +1707,20 @@
         }
 
         var app = new Vue({
-            el: '#app',
+            el: '#appFour',
             data: {
-                url: "{{url('admin/typecate/getcates/')}}/0",
+                url: "{{url('admin/attribute/getattributes/')}}/",
                 message: 'Hello Vue!'
             },
-            methods:{
-                getTest:function () {
-                    $.post(this.url,{'_token': '{{csrf_token()}}'},function (data) {
+            methods: {
+                selectValue: function (e) {
+                    var cat_id = e.target.value;
+                    $.post(this.url+cat_id, {'_token': '{{csrf_token()}}'}, function (data) {
                         console.log(data);
-                    })
+                    });
                 }
             },
-            delimiters:['${', '}']
+            delimiters: ['${', '}']
         })
     </script>
 @endsection
