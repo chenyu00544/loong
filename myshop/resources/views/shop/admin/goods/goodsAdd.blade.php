@@ -780,7 +780,7 @@
                         </div>
 
                         <!--第四步 填写商品属性-->
-                        <div class="step step-four" ectype="step" data-step="4" style="" id="appFour">
+                        <div class="step step-four" ectype="step" data-step="4" style="" id="appFour" v-cloak>
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -824,18 +824,22 @@
                                         </div>
                                     </div>
                                     <div class="step-item step-item-bg" id="tbody-goodsAttr">
-                                        <div class="step-item-row step-item-attr-once clearfix" v-if="attrOnce.length>0 ">
+                                        <div class="step-item-row step-item-attr-once clearfix"
+                                             v-if="attrOnce.length > 0">
                                             <div class="step-item-left">
                                                 <h5>商品属性：</h5>
                                             </div>
                                             <div class="step-item-right">
                                                 <div class="item-right-list goods-attr-type fl"
                                                      v-for="(value, key) in attrOnce">
-                                                    <div class="label fl" :title="value.attr_name">${value.attr_name}：</div>
+                                                    <div class="label fl" :title="value.attr_name">${value.attr_name}：
+                                                    </div>
                                                     <div class="value-select">
                                                         <select name="attr_value_list[]"
                                                                 class="form-control max-wd-100 fl">
-                                                            <option value="" v-for="(val, k) in value.attr_values">${val}</option>
+                                                            <option v-for="(val, k) in value.attr_values" :value="val">
+                                                                ${val}
+                                                            </option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -849,18 +853,22 @@
                                                 <div class="item-right-list fl" v-for="(value, key) in attrMulti">
                                                     <div class="label fl">${value.attr_name}：</div>
                                                     <div>
-                                                        <label class="checkbox-inline" v-for="(val, k) in value.attr_values">
-                                                            <input type="checkbox" name="attr_value_list1[]" :data-key="key" :data-k="k" :value="val" @click="selectAttr($event)">${val}
+                                                        <label class="checkbox-inline"
+                                                               v-for="(val, k) in value.attr_values">
+                                                            <input type="checkbox" name="attr_value_list1[]"
+                                                                   :data-key="key" :data-k="k" :value="val"
+                                                                   @click="selectAttr($event)">${val}
                                                         </label>
                                                         <div class="checkbox-inline" v-if="value.attr_input_type == 1">
-                                                            <a href="javascript:;" class="btn btn-info btn-sm" :data-attrid="value.attr_id">自定义</a>
+                                                            <a href="javascript:;" class="btn btn-info btn-sm"
+                                                               :data-attrid="value.attr_id">自定义</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="step-item-table" id="attribute-table">
+                                    <div class="step-item-table" id="attribute-table" v-if="productList.length > 0">
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
@@ -1606,7 +1614,7 @@
                 url: "{{url('admin/attribute/getattributes/')}}/",
                 attrOnce: [],
                 attrMulti: [],
-                productList:[],
+                productList: [],
             },
             methods: {
                 selectValue: function (e) {
@@ -1616,9 +1624,10 @@
                         if (data.length > 0) {
                             $.each(data, function (k, v) {
                                 if (v.attr_type == 1) {
-                                    that.attrMulti.push(v)
+                                    that.attrMulti.push(v);
+                                    that.productList.push([]);
                                 } else {
-                                    that.attrOnce.push(v)
+                                    that.attrOnce.push(v);
                                 }
                             });
                         } else {
@@ -1627,17 +1636,22 @@
                         }
                     });
                 },
-                selectAttr:function (e) {
-                    if(e.target.checked){
+                selectAttr: function (e) {
+                    if (e.target.checked) {
                         this.productList[e.target.dataset.key][e.target.dataset.k] = e.target.value;
-                    }else{
-                        this.productList[e.target.dataset.key][e.target.dataset.k].remove(e.target.value);
+                    } else {
+                        this.productList[e.target.dataset.key][e.target.dataset.k] = null;
                     }
-                    console.log(this.productList);
+                    var plist = [];
+                    for(var i = 0; i< this.productList.length; i++){
+                        for(var j = 0; j< this.productList[i].length; j++){
+                            plist.push('');
+                        }
+                    }
                 }
             },
             delimiters: ['${', '}']
-        })
+        });
     </script>
 @endsection
 @endsection

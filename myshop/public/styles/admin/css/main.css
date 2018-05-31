@@ -98,6 +98,10 @@ input[type=checkbox], input[type=radio] {
     margin: 1px 0 0;
 }
 
+[v-cloak] {
+    display: none;
+}
+
 .hide {
     display: none;
 }
