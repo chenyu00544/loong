@@ -33,7 +33,13 @@ class AttributeRepository implements AttributeRepositoryInterface
     public function getAttributes($id)
     {
         $where['cat_id'] = $id;
-        return $this->attributeModel->getAttrs($where);
+        $re = $this->attributeModel->getAttrs($where);
+        for ($i = 0; $i < count($re); $i++) {
+            if($re[$i]->attr_values != ''){
+                $re[$i]->attr_values = explode(',', str_replace("\r\n", ',', $re[$i]->attr_values));
+            }
+        }
+        return $re;
     }
 
     public function getAttribute($id)

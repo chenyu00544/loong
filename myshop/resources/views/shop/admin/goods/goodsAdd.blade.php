@@ -824,143 +824,37 @@
                                         </div>
                                     </div>
                                     <div class="step-item step-item-bg" id="tbody-goodsAttr">
-                                        <div class="step-item-row step-item-attr-once">
+                                        <div class="step-item-row step-item-attr-once clearfix" v-if="attrOnce.length>0 ">
                                             <div class="step-item-left">
                                                 <h5>商品属性：</h5>
                                             </div>
                                             <div class="step-item-right">
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
+                                                <div class="item-right-list goods-attr-type fl"
+                                                     v-for="(value, key) in attrOnce">
+                                                    <div class="label fl" :title="value.attr_name">${value.attr_name}：</div>
                                                     <div class="value-select">
                                                         <select name="attr_value_list[]"
                                                                 class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list goods-attr-type fl">
-                                                    <div class="label fl" title="鞋面材料">鞋面材料：</div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option value="">xxxxx</option>
+                                                            <option value="" v-for="(val, k) in value.attr_values">${val}</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="step-item-row step-item-attr-checkbox">
+                                        <div class="step-item-row step-item-attr-checkbox" v-if="attrMulti.length>0">
                                             <div class="step-item-left">
                                                 <h5>商品规格：</h5>
                                             </div>
                                             <div class="step-item-right">
-                                                <div class="item-right-list fl">
-                                                    <div class="label fl">颜色：</div>
+                                                <div class="item-right-list fl" v-for="(value, key) in attrMulti">
+                                                    <div class="label fl">${value.attr_name}：</div>
                                                     <div>
-                                                        <label class="checkbox-inline">
-                                                            <input type="hidden" data-type="attr_value"
-                                                                   name="attr_value_list1[]" value="白色">
-                                                            <input type="checkbox" data-type="attr_id"
-                                                                   name="attr_id_list1[]" value="">白色
+                                                        <label class="checkbox-inline" v-for="(val, k) in value.attr_values">
+                                                            <input type="checkbox" name="attr_value_list1[]" :data-key="key" :data-k="k" :value="val" @click="selectAttr($event)">${val}
                                                         </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="hidden" data-type="attr_value"
-                                                                   name="attr_value_list1[]" value="白色">
-                                                            <input type="checkbox" data-type="attr_id"
-                                                                   name="attr_id_list1[]" value="">白色
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="hidden" data-type="attr_value"
-                                                                   name="attr_value_list1[]" value="白色">
-                                                            <input type="checkbox" data-type="attr_id"
-                                                                   name="attr_id_list1[]" value="">白色
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="item-right-list fl">
-                                                    <div class="label fl">规格：</div>
-                                                    <div>
-                                                        <label class="checkbox-inline">
-                                                            <input type="hidden" data-type="attr_value"
-                                                                   name="attr_value_list1[]" value="白色">
-                                                            <input type="checkbox" data-type="attr_id"
-                                                                   name="attr_id_list1[]" value="">白色
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="hidden" data-type="attr_value"
-                                                                   name="attr_value_list1[]" value="白色">
-                                                            <input type="checkbox" data-type="attr_id"
-                                                                   name="attr_id_list1[]" value="">白色
-                                                        </label>
-                                                        <label class="checkbox-inline">
-                                                            <input type="hidden" data-type="attr_value"
-                                                                   name="attr_value_list1[]" value="白色">
-                                                            <input type="checkbox" data-type="attr_id"
-                                                                   name="attr_id_list1[]" value="">白色
-                                                        </label>
+                                                        <div class="checkbox-inline" v-if="value.attr_input_type == 1">
+                                                            <a href="javascript:;" class="btn btn-info btn-sm" :data-attrid="value.attr_id">自定义</a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1710,14 +1604,36 @@
             el: '#appFour',
             data: {
                 url: "{{url('admin/attribute/getattributes/')}}/",
-                message: 'Hello Vue!'
+                attrOnce: [],
+                attrMulti: [],
+                productList:[],
             },
             methods: {
                 selectValue: function (e) {
+                    var that = this;
                     var cat_id = e.target.value;
-                    $.post(this.url+cat_id, {'_token': '{{csrf_token()}}'}, function (data) {
-                        console.log(data);
+                    $.post(this.url + cat_id, {'_token': '{{csrf_token()}}'}, function (data) {
+                        if (data.length > 0) {
+                            $.each(data, function (k, v) {
+                                if (v.attr_type == 1) {
+                                    that.attrMulti.push(v)
+                                } else {
+                                    that.attrOnce.push(v)
+                                }
+                            });
+                        } else {
+                            that.attrMulti = [];
+                            that.attrOnce = [];
+                        }
                     });
+                },
+                selectAttr:function (e) {
+                    if(e.target.checked){
+                        this.productList[e.target.dataset.key][e.target.dataset.k] = e.target.value;
+                    }else{
+                        this.productList[e.target.dataset.key][e.target.dataset.k].remove(e.target.value);
+                    }
+                    console.log(this.productList);
                 }
             },
             delimiters: ['${', '}']
