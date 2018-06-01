@@ -891,49 +891,47 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td class="text-center">c<input type="hidden" name="attr[81189][]"
-                                                                                value="c">
+                                            <tr v-for="(value, key) in productList">
+                                                <td class="text-center">${value}
+                                                    <input type="hidden" name="attr[81189][]" value="c">
                                                     <input type="hidden" name="goods_attr_id[275465][]" value="275465">
-                                                    ,37<input type="hidden" name="attr[81190][]" value="37">
+                                                    <input type="hidden" name="attr[81190][]" value="37">
                                                     <input type="hidden" name="goods_attr_id[275464][]" value="275464">
                                                 </td>
-                                                <td><input type="text" name="product_market_price[]"
-                                                           onblur="listTable.editInput(this, 'edit_product_market_price', 12, $('#goods_model').val(), 'goods_model');"
-                                                           class="form-control max-wd-110" autocomplete="off"
+                                                <td>
+                                                    <input type="text" name="product_market_price[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off"
                                                            value="0.00">
                                                 </td>
-                                                <td width="8%"><input type="text" name="product_price[]"
-                                                                      onblur="listTable.editInput(this, 'edit_product_price', 12, $('#goods_model').val(), 'goods_model');"
-                                                                      class="form-control max-wd-110" autocomplete="off"
-                                                                      value="0.00">
+                                                <td width="8%">
+                                                    <input type="text" name="product_price[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off"
+                                                           value="0.00">
                                                 </td>
-                                                <td width="8%"><input type="text" name="product_promote_price[]"
-                                                                      onblur="listTable.editInput(this, 'edit_product_promote_price', 12, $('#goods_model').val(), 'goods_model');"
-                                                                      class="form-control max-wd-110" autocomplete="off"
-                                                                      value="0.00">
+                                                <td width="8%">
+                                                    <input type="text" name="product_promote_price[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off"
+                                                           value="0.00">
                                                 </td>
-                                                <td width="10%"><input type="text" name="product_number[]"
-                                                                       onblur="listTable.editInput(this, 'edit_product_number', 12, $('#goods_model').val(), 'goods_model');"
-                                                                       class="form-control max-wd-110"
-                                                                       autocomplete="off" value="0">
+                                                <td width="10%">
+                                                    <input type="text" name="product_number[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off" value="0">
                                                 </td>
-                                                <td width="10%"><input type="text" name="product_warn_number[]"
-                                                                       onblur="listTable.editInput(this, 'edit_product_warn_number', 12, $('#goods_model').val(), 'goods_model');"
-                                                                       class="form-control max-wd-110"
-                                                                       autocomplete="off" value="1">
+                                                <td width="10%">
+                                                    <input type="text" name="product_warn_number[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off" value="1">
                                                 </td>
-                                                <td width="12%"><input type="text" name="product_sn[]"
-                                                                       onblur="listTable.editInput(this, 'edit_product_sn', 12, $('#goods_model').val(), 'goods_model');"
-                                                                       class="form-control" autocomplete="off" value="">
+                                                <td width="12%">
+                                                    <input type="text" name="product_sn[]" class="form-control hg27"
+                                                           autocomplete="off" value="">
                                                 </td>
-                                                <td width="12%"><input type="text" name="product_bar_code[]"
-                                                                       onblur="listTable.editInput(this, 'edit_product_bar_code', 12, $('#goods_model').val(), 'goods_model');"
-                                                                       class="form-control" autocomplete="off" value="">
+                                                <td width="12%">
+                                                    <input type="text" name="product_bar_code[]" class="form-control hg27"
+                                                           autocomplete="off" value="">
                                                 </td>
                                                 <td class="handle" width="5%">
-                                                    N/A <input type="hidden" name="product_id[]" value="0">
-                                                    <input type="hidden" name="changelog_product_id[]" value="12">
+                                                    N/A <input type="hidden" name="product_id[]" value="">
+                                                    <input type="hidden" name="changelog_product_id[]" value="">
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -948,20 +946,19 @@
                                     <h3>属性图片</h3>
                                 </div>
                                 <div class="attr-gallerys ps-container ps-active-y">
-                                    <div class="step-content attr-gallery clearfix">
+                                    <div class="step-content attr-gallery clearfix" v-for="(value, key) in attrList">
                                         <div class="attr_tit">颜色：</div>
                                         <!--处理属性图片 start-->
-                                        <div class="attr-item fl">
+                                        <div class="attr-item fl" v-for="(val, k) in value">
                                             <div class="txt" title="g">g</div>
                                             <div class="info fl">
                                                 <label class="fl hg27">排序：</label>
                                                 <input type="text" class="form-control max-wd-100 hg27"
                                                        name="gallery_attr_sort[]"
-                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
                                                        size="10" value="1">
                                             </div>
                                             <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
-                                               data-goodsattrid="336223" data-attrid="39101">上传图片</a>
+                                               data-goodsattrid="336223" data-attrid="39101" v-if="key == 0">上传图片</a>
                                             <input name="attr_id" type="hidden" value="39101" id="attrId"
                                                    autocomplete="off">
                                             <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
@@ -969,108 +966,7 @@
                                             <input type="hidden" name="gallery_attr_value[]" size="10" value="g">
                                             <input type="hidden" name="gallery_attr_id[]" size="10" value="39101">
                                         </div>
-                                        <div class="attr-item fl">
-                                            <div class="txt" title="g">g</div>
-                                            <div class="info fl">
-                                                <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27"
-                                                       name="gallery_attr_sort[]"
-                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
-                                                       size="10" value="1">
-                                            </div>
-                                            <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
-                                               data-goodsattrid="336223" data-attrid="39101">上传图片</a>
-                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
-                                                   autocomplete="off">
-                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
-                                                   autocomplete="off">
-                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
-                                                   value="g">
-                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
-                                                   value="39101">
-                                        </div>
-                                        <div class="attr-item fl">
-                                            <div class="txt" title="g">g</div>
-                                            <div class="info fl">
-                                                <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27"
-                                                       name="gallery_attr_sort[]"
-                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
-                                                       size="10" value="1">
-                                            </div>
-                                            <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
-                                               data-goodsattrid="336223" data-attrid="39101">上传图片</a>
-                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
-                                                   autocomplete="off">
-                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
-                                                   autocomplete="off">
-                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
-                                                   value="g">
-                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
-                                                   value="39101">
-                                        </div>
-                                        <div class="attr-item fl">
-                                            <div class="txt" title="g">g</div>
-                                            <div class="info fl">
-                                                <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27"
-                                                       name="gallery_attr_sort[]"
-                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
-                                                       size="10" value="1">
-                                            </div>
-                                            <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
-                                               data-goodsattrid="336223" data-attrid="39101">上传图片</a>
-                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
-                                                   autocomplete="off">
-                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
-                                                   autocomplete="off">
-                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
-                                                   value="g">
-                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
-                                                   value="39101">
-                                        </div>
                                         <!--处理属性图片 end-->
-                                    </div>
-                                    <div class="step-content attr-gallery clearfix">
-                                        <div class="attr_tit">尺码：</div>
-                                        <!--处理属性 start-->
-                                        <div class="attr-item fl">
-                                            <div class="txt" title="g">g</div>
-                                            <div class="info fl">
-                                                <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27"
-                                                       name="gallery_attr_sort[]"
-                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
-                                                       size="10" value="1">
-                                            </div>
-                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
-                                                   autocomplete="off">
-                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
-                                                   autocomplete="off">
-                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
-                                                   value="g">
-                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
-                                                   value="39101">
-                                        </div>
-                                        <div class="attr-item fl">
-                                            <div class="txt" title="g">g</div>
-                                            <div class="info fl">
-                                                <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27"
-                                                       name="gallery_attr_sort[]"
-                                                       onblur="listTable.editInput(this, 'edit_attr_sort', 336223);"
-                                                       size="10" value="1">
-                                            </div>
-                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
-                                                   autocomplete="off">
-                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
-                                                   autocomplete="off">
-                                            <input type="hidden" class="text w80" name="gallery_attr_value[]" size="10"
-                                                   value="g">
-                                            <input type="hidden" class="text w80" name="gallery_attr_id[]" size="10"
-                                                   value="39101">
-                                        </div>
-                                        <!--处理属性 end-->
                                     </div>
                                 </div>
                             </div>
@@ -1644,25 +1540,30 @@
                         this.attrList[e.target.dataset.key][e.target.dataset.k] = null;
                     }
                     this.productList = this.pSplicing(this.attrList.length - 1, 0, '', []);
-                    console.log(this.productList);
                 },
                 pSplicing: function (i, j, pStr, pList) {
+                    var bool = true;
+                    var pr_list = [];
                     for (var k = 0; k < this.attrList[j].length; k++) {
                         if (this.attrList[j][k] != null && this.attrList[j][k] != undefined && this.attrList[j][k] != '') {
-                            if (i >= j) {
+                            pr_list.push(pStr + this.attrList[j][k]);
+                            bool = false;
+                            if (i > j) {
                                 var p_list = this.pSplicing(i, j + 1, pStr + this.attrList[j][k] + ',', pList);
-                                if(p_list.length == 0){
-                                    pList = this.attrList[j];
-                                }else{
+                                if (p_list.length == 0) {
+                                    pList = pr_list;
+                                } else {
                                     pList.concat(p_list);
                                 }
                             } else {
                                 pList.push(pStr + this.attrList[j][k]);
                             }
                         } else {
-                            this.pSplicing(i, j + 1, pStr, pList);
                             continue;
                         }
+                    }
+                    if (i > j && bool) {
+                        this.pSplicing(i, j + 1, pStr, pList);
                     }
                     return pList;
                 },
