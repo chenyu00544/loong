@@ -1614,6 +1614,7 @@
                 url: "{{url('admin/attribute/getattributes/')}}/",
                 attrOnce: [],
                 attrMulti: [],
+                attrList: [],
                 productList: [],
             },
             methods: {
@@ -1625,7 +1626,7 @@
                             $.each(data, function (k, v) {
                                 if (v.attr_type == 1) {
                                     that.attrMulti.push(v);
-                                    that.productList.push([]);
+                                    that.attrList.push([]);
                                 } else {
                                     that.attrOnce.push(v);
                                 }
@@ -1638,17 +1639,33 @@
                 },
                 selectAttr: function (e) {
                     if (e.target.checked) {
-                        this.productList[e.target.dataset.key][e.target.dataset.k] = e.target.value;
+                        this.attrList[e.target.dataset.key][e.target.dataset.k] = e.target.value;
                     } else {
-                        this.productList[e.target.dataset.key][e.target.dataset.k] = null;
+                        this.attrList[e.target.dataset.key][e.target.dataset.k] = null;
                     }
-                    var plist = [];
-                    for(var i = 0; i< this.productList.length; i++){
-                        for(var j = 0; j< this.productList[i].length; j++){
-                            plist.push('');
+                    this.productList = this.pSplicing(this.attrList.length - 1, 0, '', []);
+                    console.log(this.productList);
+                },
+                pSplicing: function (i, j, pStr, pList) {
+                    for (var k = 0; k < this.attrList[j].length; k++) {
+                        if (this.attrList[j][k] != null && this.attrList[j][k] != undefined && this.attrList[j][k] != '') {
+                            if (i >= j) {
+                                var p_list = this.pSplicing(i, j + 1, pStr + this.attrList[j][k] + ',', pList);
+                                if(p_list.length == 0){
+                                    pList = this.attrList[j];
+                                }else{
+                                    pList.concat(p_list);
+                                }
+                            } else {
+                                pList.push(pStr + this.attrList[j][k]);
+                            }
+                        } else {
+                            this.pSplicing(i, j + 1, pStr, pList);
+                            continue;
                         }
                     }
-                }
+                    return pList;
+                },
             },
             delimiters: ['${', '}']
         });
