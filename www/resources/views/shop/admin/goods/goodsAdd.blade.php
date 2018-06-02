@@ -779,8 +779,8 @@
                             </div>
                         </div>
 
-                        <!--第四步 填写商品属性-->
-                        <div class="step step-four" ectype="step" data-step="4" style="" id="appFour" v-cloak>
+                        <!--第四步 填写商品属性 vue---id="appFour" v-cloak-->
+                        <div class="step step-four" ectype="step" data-step="4" style="">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -811,8 +811,8 @@
                                         <div class="step-item-right">
                                             <div class="item-right-li">
                                                 <div class="value-select goods_type">
-                                                    <select id="cate_id" class="form-control max-wd-350 fl"
-                                                            @change="selectValue($event)">
+                                                    <select id="cate_id"
+                                                            class="form-control max-wd-350 fl select-value">
                                                         <option value="0">请选择</option>
                                                     </select>
                                                 </div>
@@ -823,52 +823,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="step-item step-item-bg" id="tbody-goodsAttr">
-                                        <div class="step-item-row step-item-attr-once clearfix"
-                                             v-if="attrOnce.length > 0">
+                                    <div class="step-item step-item-bg">
+                                        <div class="step-item-row step-item-attr-once clearfix" style="display: none;">
                                             <div class="step-item-left">
                                                 <h5>商品属性：</h5>
                                             </div>
                                             <div class="step-item-right">
-                                                <div class="item-right-list goods-attr-type fl"
-                                                     v-for="(value, key) in attrOnce">
-                                                    <div class="label fl" :title="value.attr_name">${value.attr_name}：
-                                                    </div>
-                                                    <div class="value-select">
-                                                        <select name="attr_value_list[]"
-                                                                class="form-control max-wd-100 fl">
-                                                            <option v-for="(val, k) in value.attr_values" :value="val">
-                                                                ${val}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="step-item-row step-item-attr-checkbox" v-if="attrMulti.length>0">
+                                        <div class="step-item-row step-item-attr-checkbox clearfix"
+                                             style="display: none;">
                                             <div class="step-item-left">
                                                 <h5>商品规格：</h5>
                                             </div>
                                             <div class="step-item-right">
-                                                <div class="item-right-list fl" v-for="(value, key) in attrMulti">
-                                                    <div class="label fl">${value.attr_name}：</div>
-                                                    <div>
-                                                        <label class="checkbox-inline"
-                                                               v-for="(val, k) in value.attr_values">
-                                                            <input type="checkbox" name="attr_value_list1[]"
-                                                                   :data-key="key" :data-k="k" :value="val"
-                                                                   @click="selectAttr($event)">${val}
-                                                        </label>
-                                                        <div class="checkbox-inline" v-if="value.attr_input_type == 1">
-                                                            <a href="javascript:;" class="btn btn-info btn-sm"
-                                                               :data-attrid="value.attr_id">自定义</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="step-item-table" id="attribute-table" v-if="productList.length > 0">
+                                    <div class="step-item-table" id="attribute-table" style="display:none;">
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
@@ -891,49 +863,6 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr v-for="(value, key) in productList">
-                                                <td class="text-center">${value}
-                                                    <input type="hidden" name="attr[81189][]" value="c">
-                                                    <input type="hidden" name="goods_attr_id[275465][]" value="275465">
-                                                    <input type="hidden" name="attr[81190][]" value="37">
-                                                    <input type="hidden" name="goods_attr_id[275464][]" value="275464">
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="product_market_price[]"
-                                                           class="form-control max-wd-110 hg27" autocomplete="off"
-                                                           value="0.00">
-                                                </td>
-                                                <td width="8%">
-                                                    <input type="text" name="product_price[]"
-                                                           class="form-control max-wd-110 hg27" autocomplete="off"
-                                                           value="0.00">
-                                                </td>
-                                                <td width="8%">
-                                                    <input type="text" name="product_promote_price[]"
-                                                           class="form-control max-wd-110 hg27" autocomplete="off"
-                                                           value="0.00">
-                                                </td>
-                                                <td width="10%">
-                                                    <input type="text" name="product_number[]"
-                                                           class="form-control max-wd-110 hg27" autocomplete="off" value="0">
-                                                </td>
-                                                <td width="10%">
-                                                    <input type="text" name="product_warn_number[]"
-                                                           class="form-control max-wd-110 hg27" autocomplete="off" value="1">
-                                                </td>
-                                                <td width="12%">
-                                                    <input type="text" name="product_sn[]" class="form-control hg27"
-                                                           autocomplete="off" value="">
-                                                </td>
-                                                <td width="12%">
-                                                    <input type="text" name="product_bar_code[]" class="form-control hg27"
-                                                           autocomplete="off" value="">
-                                                </td>
-                                                <td class="handle" width="5%">
-                                                    N/A <input type="hidden" name="product_id[]" value="">
-                                                    <input type="hidden" name="changelog_product_id[]" value="">
-                                                </td>
-                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -945,29 +874,7 @@
                                     <i class="ui-step"></i>
                                     <h3>属性图片</h3>
                                 </div>
-                                <div class="attr-gallerys ps-container ps-active-y">
-                                    <div class="step-content attr-gallery clearfix" v-for="(value, key) in attrList">
-                                        <div class="attr_tit">颜色：</div>
-                                        <!--处理属性图片 start-->
-                                        <div class="attr-item fl" v-for="(val, k) in value">
-                                            <div class="txt" title="g">g</div>
-                                            <div class="info fl">
-                                                <label class="fl hg27">排序：</label>
-                                                <input type="text" class="form-control max-wd-100 hg27"
-                                                       name="gallery_attr_sort[]"
-                                                       size="10" value="1">
-                                            </div>
-                                            <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"
-                                               data-goodsattrid="336223" data-attrid="39101" v-if="key == 0">上传图片</a>
-                                            <input name="attr_id" type="hidden" value="39101" id="attrId"
-                                                   autocomplete="off">
-                                            <input name="attr_value" type="hidden" value="g" id="goodsAttrValue_336223"
-                                                   autocomplete="off">
-                                            <input type="hidden" name="gallery_attr_value[]" size="10" value="g">
-                                            <input type="hidden" name="gallery_attr_id[]" size="10" value="39101">
-                                        </div>
-                                        <!--处理属性图片 end-->
-                                    </div>
+                                <div class="attr-gallerys ps-container ps-active-y" style="display: none;">
                                 </div>
                             </div>
 
@@ -979,26 +886,27 @@
                                 <div class="step-content">
                                     <div class="goods-album clearfix" id="gallery-img-list">
                                         <ul id="ul-pics">
-                                            <li id="gallery-643">
-                                                <div class="img" onclick="img_default(643)"><img
-                                                            src="{{url('upload/images/201703/thumb_img/0_thumb_P_1489096810306.jpg')}}"
-                                                            width="160" height="160" id="external_img_url643"></div>
+                                            <li id="gallery">
+                                                <div class="img">
+                                                    <img src="{{url('upload/images/201703/thumb_img/0_thumb_P_1489096810306.jpg')}}"
+                                                         width="160" height="160" id="external_img_url">
+                                                </div>
                                                 <div class="info">
                                                     <span class="zt red">主图</span>
                                                     <div class="sort">
                                                         <span>排序：</span>
-                                                        <input type="text" value="1" name="old_img_desc[643]"
+                                                        <input type="text" value="1" name="old_img_desc[]"
                                                                class="stext form-control max-wd-50 hg25"
-                                                               autocomplete="off" maxlength="3">
-                                                        <input type="hidden" value="643" name="img_id[]">
+                                                               autocomplete="off" maxlength="3" disabled>
+                                                        <input type="hidden" value="" name="img_id[]">
                                                     </div>
-                                                    <a href="javascript:;" data-imgid="643" class="delete_img"><i
+                                                    <a href="javascript:;" data-imgid="" class="delete_img"><i
                                                                 class="glyphicon glyphicon-trash"></i></a>
                                                 </div>
                                                 <div class="info">
                                                     <input name="external_url" type="text"
-                                                           class="form-control max-wd-190 external_url_643"
-                                                           ectype="external_url" value="" title="" data-imgid="643"
+                                                           class="form-control max-wd-190 external_url"
+                                                           ectype="external_url" value="" title="" data-imgid=""
                                                            placeholder="图片外部链接地址"></div>
                                             </li>
                                         </ul>
@@ -1241,11 +1149,7 @@
                 getGoodsTypes(this, '{{csrf_token()}}', "{{url('admin/goodstype/gettypes/')}}/");
             });
 
-            $('.goods_type_cat').on('change', 'select', function () {
-                $('input[name=goods_type]').val($(this).val());
-
-            });
-
+            //添加属性分类弹窗
             $('.add_goods_type_cat_win').on('click', function () {
                 layer.open({
                     type: 2,
@@ -1259,7 +1163,7 @@
                     }
                 });
             });
-
+            //添加商品类型
             $('.add_goods_type').on('click', function () {
                 layer.open({
                     type: 2,
@@ -1273,7 +1177,7 @@
                     }
                 });
             });
-
+            //添加属性
             $('.add_attribute').on('click', function () {
                 layer.open({
                     type: 2,
@@ -1286,6 +1190,139 @@
                         layer.iframeAuto(index)
                     }
                 });
+            });
+
+            var attrList = [];
+            var attrOnce = [];
+            //选择商品类型
+            $('.select-value').on('change', function () {
+                var cat_id = $(this).val();
+                var htmlM = '';
+                var htmlO = '';
+                var key = 0;
+                $.post("{{url('admin/attribute/getattributes/')}}/" + cat_id, {'_token': '{{csrf_token()}}'}, function (data) {
+                    if (data.length > 0) {
+                        $.each(data, function (k, v) {
+                            if (v.attr_type == 1) {
+                                htmlO += '<div class="item-right-list fl"><div class="label fl">' + v.attr_name + '：</div><div>';
+                                for (var i = 0; i < v.attr_values.length; i++) {
+                                    htmlO += '<label class="checkbox-inline">' +
+                                        '<input type="checkbox" name="attr_value_list1[]"' +
+                                        ' data-key="' + i + '" data-k="' + key + '" value="' + v.attr_values[i] + '">' + v.attr_values[i] + '</label>';
+                                }
+                                htmlO += '<div class="checkbox-inline">';
+                                if (v.attr_input_type == 1) {
+                                    htmlO += '<a href="javascript:;" class="btn btn-info btn-sm" data-attrid="' + v.attr_id + '">自定义</a>';
+                                }
+                                htmlO += '</div></div></div>';
+                                $('.step-item-attr-checkbox .step-item-right').html(htmlO);
+                                $('.step-item-attr-checkbox').show();
+                                key++;
+                                attrList.push([]);
+                                attrOnce.push(v);
+                            } else {
+                                htmlM += '<div class="item-right-list goods-attr-type fl">' +
+                                    '<div class="label fl" title="' + v.attr_name + '">' + v.attr_name + '：</div>' +
+                                    '<div class="value-select">' +
+                                    '<select name="attr_value_list[]" class="form-control max-wd-100 fl">';
+                                for (var i = 0; i < v.attr_values.length; i++) {
+                                    htmlM += '<option value="' + v.attr_values[i] + '">' + v.attr_values[i] + '</option>';
+                                }
+                                htmlM += '</select></div></div>';
+                                $('.step-item-attr-once .step-item-right').html(htmlM);
+                                $('.step-item-attr-once').show();
+                            }
+                        });
+                    } else {
+                        $('.step-item-attr-checkbox').hide();
+                        $('.step-item-attr-once').hide();
+                    }
+                });
+            });
+            //选择商品规格属性
+            $('.step-item-attr-checkbox .step-item-right').on('click', 'input[name="attr_value_list1[]"]', function () {
+                $('.step-item-attr-checkbox .step-item-right input[name="attr_value_list1[]"]').each(function (k, v) {
+                    if ($(v).is(':checked')) {
+                        attrList[$(v).data('k')][$(v).data('key')] = $(v).val();
+                    } else {
+                        attrList[$(v).data('k')][$(v).data('key')] = null;
+                    }
+                });
+                var productList = setProductSplicing(attrList.length - 1, 0, '', [], attrList);
+                if (productList.length > 0) {
+                    $('#attribute-table').show();
+                    $('.attr-gallerys').show();
+                    var html_a_img = '';
+                    $.each(attrList, function (key, val) {
+                        var bool = false;
+                        for (var i = 0; i < val.length; i++) {
+                            if (val[i] != null) {
+                                bool = true
+                            }
+                        }
+                        if (val.length != 0 && bool == true) {
+                            html_a_img += '<div class="step-content attr-gallery clearfix">' +
+                                '<div class="attr_tit">' + attrOnce[key].attr_name + '：</div>';
+                            $.each(val, function (k, v) {
+                                if (v != null) {
+                                    html_a_img += '<div class="attr-item fl">' +
+                                        '<div class="txt">' + attrOnce[key].attr_values[k] + '</div>' +
+                                        '<div class="info fl">' +
+                                        '<label class="fl hg27">排序：</label>' +
+                                        '<input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]" size="10" value="1"></div>' +
+                                        '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
+                                        'data-goodsattrid="336223" data-attrid="' + attrOnce[key].attr_id + '" v-if="key == 0">上传图片</a>' +
+                                        '<input name="attr_id" type="hidden" value="' + attrOnce[key].attr_id + '">' +
+                                        '<input name="attr_value" type="hidden" value="' + attrOnce[key].attr_values[k] + '">' +
+                                        '<input type="hidden" name="gallery_attr_value[]" value="' + attrOnce[key].attr_values[k] + '">' +
+                                        '<input type="hidden" name="gallery_attr_id[]" value="' + attrOnce[key].attr_id + '"></div>';
+                                }
+                            });
+                            html_a_img += '</div>';
+                        }
+                    });
+                    $('.attr-gallerys').html(html_a_img);
+                }
+                else {
+                    $('#attribute-table').hide();
+                    $('.attr-gallerys').hide();
+                }
+                var html = '';
+                $.each(productList, function (k, v) {
+                    html += '<tr>' +
+                        '<td class="text-center">' + v +
+                        '<input type="hidden" name="attr[81189][]" value="' + v + '">' +
+                        '<input type="hidden" name="goods_attr_id[275465][]" value="275465">' +
+                        '<input type="hidden" name="attr[81190][]" value="37">' +
+                        '<input type="hidden" name="goods_attr_id[275464][]" value="275464">' +
+                        '</td>' +
+                        '<td>' +
+                        '<input type="text" name="product_market_price[]"' +
+                        'class="form-control max-wd-110 hg27" autocomplete="off" value="0.00"></td>' +
+                        '<td width="8%">' +
+                        '<input type="text" name="product_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
+                        '</td>' +
+                        '<td width="8%">' +
+                        '<input type="text" name="product_promote_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
+                        '</td>' +
+                        '<td width="10%">' +
+                        '<input type="text" name="product_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0">' +
+                        '</td>' +
+                        '<td width="10%">' +
+                        '<input type="text" name="product_warn_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="1">' +
+                        '</td>' +
+                        '<td width="12%">' +
+                        '<input type="text" name="product_sn[]" class="form-control hg27" autocomplete="off" value="">' +
+                        '</td>' +
+                        '<td width="12%">' +
+                        '<input type="text" name="product_bar_code[]" class="form-control hg27" autocomplete="off" value="">' +
+                        '</td>' +
+                        '<td class="handle" width="5%"> N/A <input type="hidden" name="product_id[]" value="">' +
+                        '<input type="hidden" name="changelog_product_id[]" value="">' +
+                        '</td>' +
+                        '</tr>';
+                });
+                $('#attribute-table tbody').html(html)
             });
 
             //轮播图
@@ -1303,12 +1340,42 @@
                 });
             });
 
-
             //上传轮播图片
             $('#add-slide-img').on('change', function () {
-                console.log(12312321);
+                var files = $(this)[0].files;
+                var html = '';
+                $.each(files, function (k, v) {
+                    var src = getImageURL(v);
+                    html += '<li id="gallery">' +
+                        '<div class="img">' +
+                        '<img src="' + src + '" width="160" height="160" id="external_img_url">' +
+                        '</div>' +
+                        '<div class="info">';
+                    if (k == 0 && $('#ul-pics').length == 0) {
+                        html += '<span class="zt red">主图</span>';
+                    }
+                    html += '<div class="sort">' +
+                        '<span>排序：</span>' +
+                        '<input type="text" value="1" name="old_img_desc[]"' +
+                        'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
+                        '<input type="hidden" value="" name="img_id[]">' +
+                        '</div>' +
+                        '<a href="javascript:;" data-add_key="' + k + '" data-imgid="" class="delete_img"><i class="glyphicon glyphicon-trash"></i></a>' +
+                        '</div>' +
+                        '<div class="info">' +
+                        '<input name="external_url" type="text" class="form-control max-wd-190 external_url"' +
+                        ' value="" title="" data-imgid="" placeholder="图片外部链接地址"></div>' +
+                        '</li>';
+                });
+                $('#ul-pics').append(html);
             });
-
+            //删除轮播图
+            $('#ul-pics').on('click', '.delete_img', function () {
+                var list = Array.prototype.slice.call($('input[name=add-slide-img]')[0].files)
+                list.splice($(this).data('add_key'), 1);
+                console.log(list);
+                $(this).parent().parent().remove();
+            });
 
             ///////////////////////////////////////////////////////////////
 
@@ -1391,7 +1458,8 @@
                     }
                 });
             });
-        });
+        })
+        ;
 
         function getNextCate(parent_id, cat_level) {
             var id = parent_id;
@@ -1400,12 +1468,12 @@
                 var html = '';
                 $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
                     if (data.code == 1) {
-                        html = '<li data-cat_name="" data-cat_id="0" data-cat_level="' + level + '" class="">\n' +
-                            '       <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>\n' +
+                        html = '<li data-cat_name="" data-cat_id="0" data-cat_level="' + level + '" class="">' +
+                            '       <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>' +
                             '   </li>';
                         $.each(data.data, function (k, v) {
-                            html += '<li data-cat_name="' + v.cat_name + '" data-cat_id="' + v.id + '" data-cat_level="' + level + '" class="">\n' +
-                                '       <a href="javascript:;"><i class="sc-icon"></i>' + v.cat_name + '</a>\n' +
+                            html += '<li data-cat_name="' + v.cat_name + '" data-cat_id="' + v.id + '" data-cat_level="' + level + '" class="">' +
+                                '       <a href="javascript:;"><i class="sc-icon"></i>' + v.cat_name + '</a>' +
                                 '   </li>';
                         });
                         $('.category-list ul').each(function () {
@@ -1416,8 +1484,8 @@
                     } else {
                         $('.category-list ul').each(function () {
                             if ($(this).data('cat_level') >= level) {
-                                $(this).html('<li data-cat_name="" data-cat_id="0" data-cat_level="' + level + '" class="">\n' +
-                                    '       <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>\n' +
+                                $(this).html('<li data-cat_name="" data-cat_id="0" data-cat_level="' + level + '" class="">' +
+                                    '       <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>' +
                                     '   </li>');
                             }
                         })
@@ -1433,8 +1501,8 @@
             } else {
                 $('.category-list ul').each(function () {
                     if ($(this).data('cat_level') >= level) {
-                        $(this).html('<li data-cat_name="" data-cat_id="0" data-cat_level="' + level + '" class="">\n' +
-                            '       <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>\n' +
+                        $(this).html('<li data-cat_name="" data-cat_id="0" data-cat_level="' + level + '" class="">' +
+                            '       <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>' +
                             '   </li>');
                     }
                 });
@@ -1504,6 +1572,33 @@
             $('input[name=desc_mobile]').val(imgs);
         }
 
+        function setProductSplicing(i, j, pStr, pList, aList) {
+            var bool = true;
+            var pr_list = [];
+            for (var k = 0; k < aList[j].length; k++) {
+                if (aList[j][k] != null && aList[j][k] != undefined && aList[j][k] != '') {
+                    pr_list.push(pStr + aList[j][k]);
+                    bool = false;
+                    if (i > j) {
+                        var p_list = setProductSplicing(i, j + 1, pStr + aList[j][k] + ',', pList, aList);
+                        if (p_list.length == 0) {
+                            pList = pr_list;
+                        } else {
+                            pList.concat(p_list);
+                        }
+                    } else {
+                        pList.push(pStr + aList[j][k]);
+                    }
+                } else {
+                    continue;
+                }
+            }
+            if (i > j && bool) {
+                setProductSplicing(i, j + 1, pStr, pList, aList);
+            }
+            return pList;
+        }
+
         var app = new Vue({
             el: '#appFour',
             data: {
@@ -1539,6 +1634,7 @@
                     } else {
                         this.attrList[e.target.dataset.key][e.target.dataset.k] = null;
                     }
+                    console.log(this.attrList);
                     this.productList = this.pSplicing(this.attrList.length - 1, 0, '', []);
                 },
                 pSplicing: function (i, j, pStr, pList) {

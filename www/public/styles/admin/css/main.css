@@ -1920,9 +1920,10 @@ input[type=file].upload-file {
 }
 
 .step-item-table {
-    overflow: hidden;
+    overflow-y: scroll;
     float: left;
     width: 100%;
+    max-height: 800px;
 }
 
 .step-item-right .goods-attr-type .label {
@@ -1966,6 +1967,11 @@ input[type=file].upload-file {
     border-bottom: 1px solid #eaeaea;
 }
 
+.attr-gallerys{
+    overflow-y:scroll;
+    height: 200px;
+}
+
 .attr-gallery .attr-item .info label {
     line-height: 25px;
     margin-right: 10px;
@@ -1990,5 +1996,9 @@ input[type=file].upload-file {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.attr-gallery:not(:first-child) .up_img{
+    display: none;
 }
 
