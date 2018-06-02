@@ -1172,6 +1172,19 @@
                 });
             });
 
+            //批量填充
+            $('#attribute-table .glyphicon-edit').on('click', function () {
+                if($(this).hasClass('pro_market')){
+                    $('input[name="product_market_price[]"]').val($('input[name="product_market_price[]"]').first().val());
+                }else if($(this).hasClass('pro_shop')){
+                    $('input[name="product_price[]"]').val($('input[name="product_price[]"]').first().val());
+                }else if($(this).hasClass('pro_promote')){
+                    $('input[name="product_promote_price[]"]').val($('input[name="product_promote_price[]"]').first().val());
+                }else if($(this).hasClass('pro_number')){
+                    $('input[name="product_number[]"]').val($('input[name="product_number[]"]').first().val());
+                }
+            });
+
             var attrList = [];
             var attrOnce = [];
             //选择商品类型
@@ -1251,7 +1264,7 @@
                                         '<label class="fl hg27">排序：</label>' +
                                         '<input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]" size="10" value="1"></div>' +
                                         '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
-                                        'data-goodsattrid="336223" data-attrid="' + attrOnce[key].attr_id + '" v-if="key == 0">上传图片</a>' +
+                                        'data-goodsattrid="" data-attrid="' + attrOnce[key].attr_id + '" v-if="key == 0">上传图片</a>' +
                                         '<input name="attr_id" type="hidden" value="' + attrOnce[key].attr_id + '">' +
                                         '<input name="attr_value" type="hidden" value="' + attrOnce[key].attr_values[k] + '">' +
                                         '<input type="hidden" name="gallery_attr_value[]" value="' + attrOnce[key].attr_values[k] + '">' +
