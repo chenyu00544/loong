@@ -117,7 +117,7 @@
                 if (type == 'main') {
                     $('.ga-images-ul li').removeClass('current');
                     $(this).addClass('current');
-                } else if (type == 'webdesc') {
+                } else if (type == 'webdesc' || type == 'slide') {
                     if ($(this).hasClass('current')) {
                         $(this).removeClass('current');
                     } else {
@@ -153,7 +153,29 @@
                     parent.$('input[name=gallery_pic_id]').val(pic_exhibition_url[0]);
                     parent.$('.goods-img-show').attr('src', pic_original_url[0]);
                 } else if (type == 'slide') {
-
+                    var html = '';
+                    $.each(pic_original_url, function (k, v) {
+                        html += '<li id="gallery">' +
+                            '<div class="img">' +
+                            '<img src="' + v + '" width="160" height="160" id="external_img_url">' +
+                            '</div>' +
+                            '<div class="info">' +
+                            '<span class="zt red">主图</span>' +
+                            '<div class="sort">' +
+                            '<span>排序：</span>' +
+                            '<input type="text" value="50" name="old_img_desc[]"' +
+                            'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
+                            '<input type="hidden" value="" name="img_id[]">' +
+                            '<input type="hidden" value="" name="img_name[]">' +
+                            '</div>' +
+                            '<a href="javascript:;" data-imgid="" class="delete_img"><i class="glyphicon glyphicon-trash"></i></a>' +
+                            '</div>' +
+                            '<div class="info">' +
+                            '<input name="external_url" type="text" class="form-control max-wd-190 external_url"' +
+                            ' value="" title="" data-imgid="" placeholder="图片外部链接地址"></div>' +
+                            '</li>';
+                    });
+                    parent.$('#ul-pics').append(html);
                 } else if (type == 'webdesc') {
                     var html = '';
                     var imgs = '';

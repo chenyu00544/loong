@@ -31,15 +31,15 @@
                                     <dt class="cursor">1</dt>
                                     <dd class="s-text">设置商品模式</dd>
                                 </dl>
-                                <dl class="" data-step="2">
+                                <dl class="cur" data-step="2">
                                     <dt class="cursor">2</dt>
                                     <dd class="s-text">选择商品分类</dd>
                                 </dl>
-                                <dl class="" data-step="3">
+                                <dl class="cur" data-step="3">
                                     <dt class="cursor">3</dt>
                                     <dd class="s-text">填写商品信息</dd>
                                 </dl>
-                                <dl class="last" data-step="4">
+                                <dl class="last cur" data-step="4">
                                     <dt class="cursor">4</dt>
                                     <dd class="s-text">填写商品属性</dd>
                                 </dl>
@@ -47,7 +47,7 @@
                         </div>
 
                         <!--第一步 选择商品模式-->
-                        <div class="step step-one" ectype="step" data-step="1" style="">
+                        <div class="step step-one" ectype="step" data-step="1" style="display: none;">
                             <h3>设置商品模式</h3>
                             <div class="mos clearfix">
                                 <div class="mos_item mos_default active" data-model="0" data-stepmodel="3">
@@ -175,7 +175,8 @@
                                         <div class="step-label">商品货号：</div>
                                         <div class="step-value">
                                             <input type="text" name="goods_sn" class="form-control max-wd-190 hg30 fl "
-                                                   autocomplete="off" value="" placeholder="商品货号">
+                                                   autocomplete="off" onblur="checkGoodsSn(this.value,'0')" value=""
+                                                   placeholder="商品货号">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">如果您不输入商品货号，系统将自动生成一个唯一的货号。</div>
                                         </div>
@@ -779,7 +780,7 @@
                         </div>
 
                         <!--第四步 填写商品属性 vue---id="appFour" v-cloak-->
-                        <div class="step step-four" ectype="step" data-step="4" style="display: none;">
+                        <div class="step step-four" ectype="step" data-step="4" style="">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -885,6 +886,29 @@
                                 <div class="step-content">
                                     <div class="goods-album clearfix" id="gallery-img-list">
                                         <ul id="ul-pics">
+                                            <li id="gallery">
+                                                <div class="img">
+                                                    <img src="{{url('upload/images/201703/thumb_img/0_thumb_P_1489096810306.jpg')}}"
+                                                         width="160" height="160" id="external_img_url">
+                                                </div>
+                                                <div class="info">
+                                                    <span class="zt red">主图</span>
+                                                    <div class="sort">
+                                                        <span>排序：</span>
+                                                        <input type="text" value="1" name="old_img_desc[]"
+                                                               class="stext form-control max-wd-50 hg25"
+                                                               autocomplete="off" maxlength="3">
+                                                        <input type="hidden" value="" name="img_id[]">
+                                                    </div>
+                                                    <a href="javascript:;" data-imgid="" class="delete_img"><i
+                                                                class="glyphicon glyphicon-trash"></i></a>
+                                                </div>
+                                                <div class="info">
+                                                    <input name="external_url" type="text"
+                                                           class="form-control max-wd-190 external_url"
+                                                           ectype="external_url" value="" title="" data-imgid=""
+                                                           placeholder="图片外部链接地址"></div>
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="clearfix"></div>
@@ -947,10 +971,6 @@
             $('#color-picker').on('change', function () {
                 $(this).css('background', $(this).val());
                 $(this).css('color', '#fff');
-            });
-
-            $('input[name=shop_price]').on('blur',function () {
-                $('input[name=market_price]').val((parseFloat($(this).val())*1.2).toFixed(2));
             });
 
             //选择品牌
@@ -1319,6 +1339,7 @@
                     }
                 });
             });
+
             //上传轮播图片
             $('#add-slide-img').on('change', function () {
                 var files = $(this)[0].files;
@@ -1333,7 +1354,7 @@
                         '<span class="zt red">主图</span>' +
                         '<div class="sort">' +
                         '<span>排序：</span>' +
-                        '<input type="text" value="50" name="old_img_desc[]"' +
+                        '<input type="text" value="1" name="old_img_desc[]"' +
                         'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
                         '<input type="hidden" value="" name="img_id[]">' +
                         '<input type="hidden" value="' + files[k].name + '" name="img_name[]">' +

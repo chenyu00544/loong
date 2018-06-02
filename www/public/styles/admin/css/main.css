@@ -2002,3 +2002,7 @@ input[type=file].upload-file {
     display: none;
 }
 
+#ul-pics li:not(:first-child) .zt{
+    display: none;
+}
+
