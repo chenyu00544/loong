@@ -27,6 +27,13 @@ class GalleryAlbumPicModel extends Model
             ->first();
     }
 
+    public function getGalleryPicsByIn($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->whereIn('pic_id', $where)
+            ->get();
+    }
+
     public function getGalleryPics($where, $page = 1, $size = 20, $column = ['*'])
     {
         return $this->select($column)

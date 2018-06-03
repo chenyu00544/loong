@@ -118,11 +118,11 @@ class GoodsController extends CommonController
     }
 
     //商品图册编辑选择窗口
-    public function imageLibrary($type)
+    public function imageLibrary($type, $goods_id)
     {
         $gallerys = $this->galleryRepository->getGallerys();
         $galleryPics = $this->galleryRepository->getGalleryPicsByPage(['album_id' => $gallerys[0]->album_id]);
-        return view('shop.admin.goods.modal.imgLibrary', compact('galleryPics', 'gallerys', 'type'));
+        return view('shop.admin.goods.modal.imgLibrary', compact('galleryPics', 'gallerys', 'type', 'goods_id'));
     }
 
     public function addGalleryShow()
@@ -136,6 +136,24 @@ class GoodsController extends CommonController
         return $this->galleryRepository->addGallery($request->except('_token'));
     }
 
+    //添加商品轮播图册api
+    public function addGoodsGallery(Request $request)
+    {
+        return $this->galleryRepository->addGoodsGallery($request->except('_token'));
+    }
+
+    //上传商品轮播图api
+    public function upGoodsGalleryPic(Request $request)
+    {
+        return $this->galleryRepository->upGoodsGalleryPic($request->except('_token'));
+    }
+
+    //上传商品轮播图api
+    public function delGoodsGalleryPic(Request $request)
+    {
+        return $this->galleryRepository->delGoodsGalleryPic($request->except('_token'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -147,7 +165,8 @@ class GoodsController extends CommonController
         $brands = $this->brandRepository->search([], true);
         $transports = $this->transportRepository->getTransportExpressByRuId(0);
         $goodsTypeCates = $this->goodsTypeRepository->getTypeCates();
-        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports', 'goodsTypeCates'));
+        $goodsGallerys = $this->galleryRepository->getGoodsGallerys();
+        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports', 'goodsTypeCates', 'goodsGallerys'));
     }
 
     /**

@@ -47,7 +47,7 @@
                         </div>
 
                         <!--第一步 选择商品模式-->
-                        <div class="step step-one" ectype="step" data-step="1" style="">
+                        <div class="step step-one" ectype="step" data-step="1" style="display: none;">
                             <h3>设置商品模式</h3>
                             <div class="mos clearfix">
                                 <div class="mos_item mos_default active" data-model="0" data-stepmodel="3">
@@ -779,7 +779,7 @@
                         </div>
 
                         <!--第四步 填写商品属性 vue---id="appFour" v-cloak-->
-                        <div class="step step-four" ectype="step" data-step="4" style="display: none;">
+                        <div class="step step-four" ectype="step" data-step="4" style="">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -885,6 +885,35 @@
                                 <div class="step-content">
                                     <div class="goods-album clearfix" id="gallery-img-list">
                                         <ul id="ul-pics">
+                                            @foreach($goodsGallerys as $goodsGallery)
+                                                <li id="gallery">
+                                                    <div class="img">
+                                                        <img src="{{url($goodsGallery->img_original)}}" width="160"
+                                                             height="160" id="external_img_url">
+                                                    </div>
+                                                    <div class="info">
+                                                        <span class="zt red">主图</span>
+                                                        <div class="sort">
+                                                            <span>排序：</span>
+                                                            <input type="text" value="{{$goodsGallery->img_desc}}"
+                                                                   name="old_img_desc[]"
+                                                                   class="stext form-control max-wd-50 hg25"
+                                                                   autocomplete="off" maxlength="3">
+                                                            <input type="hidden" value="{{$goodsGallery->img_id}}"
+                                                                   name="img_id[]">
+                                                        </div>
+                                                        <a href="javascript:;" data-imgid="{{$goodsGallery->img_id}}"
+                                                           class="delete_img"><i
+                                                                    class="glyphicon glyphicon-trash"></i></a>
+                                                    </div>
+                                                    <div class="info">
+                                                        <input name="external_url" type="text"
+                                                               class="form-control max-wd-190 external_url"
+                                                               value="{{$goodsGallery->external_url}}" title=""
+                                                               data-imgid="" placeholder="图片外部链接地址">
+                                                    </div>
+                                                </li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                     <div class="clearfix"></div>
@@ -932,7 +961,7 @@
             src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
-
+            var goods_id = '0';
             $('body').on('click', function () {
                 $('.brand-select-container').hide();
             });
@@ -949,8 +978,8 @@
                 $(this).css('color', '#fff');
             });
 
-            $('input[name=shop_price]').on('blur',function () {
-                $('input[name=market_price]').val((parseFloat($(this).val())*1.2).toFixed(2));
+            $('input[name=shop_price]').on('blur', function () {
+                $('input[name=market_price]').val((parseFloat($(this).val()) * 1.2).toFixed(2));
             });
 
             //选择品牌
@@ -1016,7 +1045,7 @@
                     fixed: true, //不固定
                     maxmin: true,
                     title: '图片库选择图片',
-                    content: ["{{url('admin/goods/imagelibrary/main')}}"],
+                    content: ["{{url('admin/goods/imagelibrary/main/')}}/" + goods_id],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
@@ -1174,13 +1203,13 @@
 
             //批量填充
             $('#attribute-table .glyphicon-edit').on('click', function () {
-                if($(this).hasClass('pro_market')){
+                if ($(this).hasClass('pro_market')) {
                     $('input[name="product_market_price[]"]').val($('input[name="product_market_price[]"]').first().val());
-                }else if($(this).hasClass('pro_shop')){
+                } else if ($(this).hasClass('pro_shop')) {
                     $('input[name="product_price[]"]').val($('input[name="product_price[]"]').first().val());
-                }else if($(this).hasClass('pro_promote')){
+                } else if ($(this).hasClass('pro_promote')) {
                     $('input[name="product_promote_price[]"]').val($('input[name="product_promote_price[]"]').first().val());
-                }else if($(this).hasClass('pro_number')){
+                } else if ($(this).hasClass('pro_number')) {
                     $('input[name="product_number[]"]').val($('input[name="product_number[]"]').first().val());
                 }
             });
@@ -1326,7 +1355,7 @@
                     fixed: true, //不固定
                     maxmin: true,
                     title: '图片库选择图片',
-                    content: ["{{url('admin/goods/imagelibrary/slide')}}"],
+                    content: ["{{url('admin/goods/imagelibrary/slide/')}}/" + goods_id],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
@@ -1335,34 +1364,61 @@
             //上传轮播图片
             $('#add-slide-img').on('change', function () {
                 var files = $(this)[0].files;
-                var html = '';
-                $.each(files, function (k, v) {
-                    var src = getImageURL(v);
-                    html += '<li id="gallery">' +
-                        '<div class="img">' +
-                        '<img src="' + src + '" width="160" height="160" id="external_img_url">' +
-                        '</div>' +
-                        '<div class="info">' +
-                        '<span class="zt red">主图</span>' +
-                        '<div class="sort">' +
-                        '<span>排序：</span>' +
-                        '<input type="text" value="50" name="old_img_desc[]"' +
-                        'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
-                        '<input type="hidden" value="" name="img_id[]">' +
-                        '<input type="hidden" value="' + files[k].name + '" name="img_name[]">' +
-                        '</div>' +
-                        '<a href="javascript:;" data-imgid="" data-add_key="' + k + '" class="delete_img"><i class="glyphicon glyphicon-trash"></i></a>' +
-                        '</div>' +
-                        '<div class="info">' +
-                        '<input name="external_url" type="text" class="form-control max-wd-190 external_url"' +
-                        ' value="" title="" data-imgid="" placeholder="图片外部链接地址"></div>' +
-                        '</li>';
+                layer.load();
+                var form = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    form.append('pic[' + i + ']', files[i]);
+                }
+                form.append('goods_id', goods_id);
+                form.append('_token', '{{csrf_token()}}');
+                $.ajax({
+                    url: "{{url('admin/goods/upgoodsgallery')}}",
+                    type: "POST",
+                    data: form,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var html = '';
+                        $.each(data, function (k, v) {
+                            html += '<li id="gallery">' +
+                                '<div class="img">' +
+                                '<img src="' + v.img_original + '" width="160" height="160" id="external_img_url">' +
+                                '</div>' +
+                                '<div class="info">' +
+                                '<span class="zt red">主图</span>' +
+                                '<div class="sort">' +
+                                '<span>排序：</span>' +
+                                '<input type="text" value="100" name="old_img_desc[]"' +
+                                'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
+                                '<input type="hidden" value="' + v.img_id + '" name="img_id[]">' +
+                                '</div>' +
+                                '<a href="javascript:;" data-imgid="' + v.img_id + '" class="delete_img"><i class="glyphicon glyphicon-trash"></i></a>' +
+                                '</div>' +
+                                '<div class="info">' +
+                                '<input name="external_url" type="text" class="form-control max-wd-190 external_url"' +
+                                ' value="" title="" data-imgid="' + v.img_id + '" placeholder="图片外部链接地址"></div>' +
+                                '</li>';
+                        });
+                        $('#ul-pics').append(html);
+                        layer.closeAll('loading');
+                    }
                 });
-                $('#ul-pics').append(html);
+                setTimeout(function () {
+                    layer.closeAll('loading');
+                }, 10000);
             });
             //删除轮播图
             $('#ul-pics').on('click', '.delete_img', function () {
-                $(this).parent().parent().remove();
+                var that = this;
+                var imgid = $(this).data('imgid');
+                $.post("{{url('admin/goods/delgoodsgallery')}}", {
+                    '_token': '{{csrf_token()}}',
+                    imgid: imgid
+                }, function (data) {
+                    if (data.code == 1) {
+                        $(that).parent().parent().remove();
+                    }
+                });
             });
             //替换轮播主图
             $('#ul-pics').on('click', 'li img', function () {

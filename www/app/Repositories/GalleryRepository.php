@@ -13,20 +13,24 @@ use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Http\Models\Shop\GalleryAlbumModel;
 use App\Http\Models\Shop\GalleryAlbumPicModel;
+use App\Http\Models\Shop\GoodsGalleryModel;
 
 class GalleryRepository implements GalleryRepositoryInterface
 {
 
     private $galleryAlbumModel;
     private $galleryAlbumPicModel;
+    private $goodsGalleryModel;
 
     public function __construct(
         GalleryAlbumModel $galleryAlbumModel,
-        GalleryAlbumPicModel $galleryAlbumPicModel
+        GalleryAlbumPicModel $galleryAlbumPicModel,
+        GoodsGalleryModel $goodsGalleryModel
     )
     {
         $this->galleryAlbumModel = $galleryAlbumModel;
         $this->galleryAlbumPicModel = $galleryAlbumPicModel;
+        $this->goodsGalleryModel = $goodsGalleryModel;
     }
 
     public function getGallerysByPage($where = ['parent_album_id' => 0])
@@ -72,7 +76,7 @@ class GalleryRepository implements GalleryRepositoryInterface
             foreach ($count as $c) {
                 $count = $c->count;
             }
-        }else{
+        } else {
             $count = 0;
         }
         foreach ($re as $key => $value) {
@@ -202,6 +206,78 @@ class GalleryRepository implements GalleryRepositoryInterface
     public function countGalleryPic($arr)
     {
         return $this->galleryAlbumPicModel->countGalleryPic($arr);
+    }
+
+    public function getGoodsGallerys($id = 0)
+    {
+        $where['goods_id'] = $id;
+        return $this->goodsGalleryModel->getGoodsGallerys($where);
+    }
+
+    public function addGoodsGallery($data)
+    {
+        $picIds = $data['pic_ids'];
+        $pics = $this->galleryAlbumPicModel->getGalleryPicsByIn($picIds);
+        if (empty($data['goods_id'])) {
+            $where['goods_id'] = 0;
+        } else {
+            $where['goods_id'] = $data['goods_id'];
+            $updata['goods_id'] = $data['goods_id'];
+        }
+        $this->goodsGalleryModel->setGoodsGallery($where, ['front_cover' => 0]);
+        foreach ($pics as $key => $pic) {
+            $updata['img_desc'] = 0;
+            if ($key == 0) {
+                $updata['front_cover'] = 1;
+            } else {
+                $updata['front_cover'] = 0;
+            }
+            $updata['img_url'] = $pic->pic_image;
+            $updata['thumb_url'] = $pic->pic_thumb;
+            $updata['img_original'] = $pic->pic_file;
+            $re = $this->goodsGalleryModel->addGoodsGallery($updata);
+            $re->img_original = url($re->img_original);
+            $rep[] = $re;
+        }
+        return ['code' => 1, 'data' => $rep];
+    }
+
+    public function upGoodsGalleryPic($data)
+    {
+        $goods_id = $data['goods_id'];
+        $files = $data['pic'];
+        $rep = [];
+        foreach ($files as $file) {
+            $original_img = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'original_img';
+            $thumb_img = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'thumb_img';
+            $exhibition_img = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'exhibition_img';
+            $updata['img_original'] = FileHandle::upLoadImage($file, $original_img);
+            $updata['thumb_url'] = FileHandle::upLoadThumbImage($updata['img_original'], $thumb_img);
+            $updata['img_url'] = FileHandle::upLoadExhibitionImage($updata['img_original'], $exhibition_img, 0.8);
+            $updata['goods_id'] = $goods_id;
+            $updata['is_source'] = 0;
+            $re = $this->goodsGalleryModel->addGoodsGallery($updata);
+            $re->img_original = url($re->img_original);
+            $rep[] = $re;
+        }
+        return $rep;
+    }
+
+    public function delGoodsGalleryPic($data)
+    {
+        $req = ['code' => 0];
+        $where['img_id'] = $data['imgid'];
+        $re = $this->goodsGalleryModel->getGoodsGallery($where);
+        if ($re) {
+            if($re->is_source == 0){
+                FileHandle::deleteFile($re->img_url);
+                FileHandle::deleteFile($re->thumb_url);
+                FileHandle::deleteFile($re->img_original);
+            }
+            $this->goodsGalleryModel->delGoodsGallery($where);
+            $req['code'] = 1;
+        }
+        return $req;
     }
 
 }

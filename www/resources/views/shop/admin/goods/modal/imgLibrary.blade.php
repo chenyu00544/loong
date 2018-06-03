@@ -50,6 +50,7 @@
 @section('script')
     <script>
         var type = "{{$type}}";
+        var goods_id = "{{$goods_id}}";
 
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         parent.layer.iframeAuto(index);
@@ -110,7 +111,7 @@
                 }
                 setTimeout(function () {
                     layer.closeAll('loading');
-                }, 10000)
+                }, 10000);
             });
 
             $('.ga-images-ul').on('click', 'li', function () {
@@ -152,30 +153,69 @@
                 if (type == 'main') {
                     parent.$('input[name=gallery_pic_id]').val(pic_exhibition_url[0]);
                     parent.$('.goods-img-show').attr('src', pic_original_url[0]);
-                } else if (type == 'slide') {
-                    var html = '';
-                    $.each(pic_original_url, function (k, v) {
-                        html += '<li id="gallery">' +
-                            '<div class="img">' +
-                            '<img src="' + v + '" width="160" height="160" id="external_img_url">' +
-                            '</div>' +
-                            '<div class="info">' +
-                            '<span class="zt red">主图</span>' +
-                            '<div class="sort">' +
-                            '<span>排序：</span>' +
-                            '<input type="text" value="50" name="old_img_desc[]"' +
-                            'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
-                            '<input type="hidden" value="" name="img_id[]">' +
-                            '<input type="hidden" value="" name="img_name[]">' +
-                            '</div>' +
-                            '<a href="javascript:;" data-imgid="" class="delete_img"><i class="glyphicon glyphicon-trash"></i></a>' +
-                            '</div>' +
-                            '<div class="info">' +
-                            '<input name="external_url" type="text" class="form-control max-wd-190 external_url"' +
-                            ' value="" title="" data-imgid="" placeholder="图片外部链接地址"></div>' +
-                            '</li>';
+                    $.post("{{url('admin/goods/addgoodsgallery')}}", {
+                        '_token': '{{csrf_token()}}',
+                        pic_ids: pic_id,
+                        goods_id: goods_id
+                    }, function (data) {
+                        if (data.code == 1) {
+                            var html = '';
+                            $.each(data.data, function (k, v) {
+                                html += '<li id="gallery">' +
+                                    '<div class="img">' +
+                                    '<img src="' + v.img_original + '" width="160" height="160" id="external_img_url">' +
+                                    '</div>' +
+                                    '<div class="info">' +
+                                    '<span class="zt red">主图</span>' +
+                                    '<div class="sort">' +
+                                    '<span>排序：</span>' +
+                                    '<input type="text" value="50" name="old_img_desc[]"' +
+                                    'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
+                                    '<input type="hidden" value="' + v.img_id + '" name="img_id[]">' +
+                                    '</div>' +
+                                    '<a href="javascript:;" data-imgid="' + v.img_id + '" class="delete_img"><i class="glyphicon glyphicon-trash"></i></a>' +
+                                    '</div>' +
+                                    '<div class="info">' +
+                                    '<input name="external_url" type="text" class="form-control max-wd-190 external_url"' +
+                                    ' value="" title="" data-imgid="" placeholder="图片外部链接地址"></div>' +
+                                    '</li>';
+                            });
+                            parent.$('#ul-pics').append(html);
+                        }
+                        parent.layer.close(index);
                     });
-                    parent.$('#ul-pics').append(html);
+                } else if (type == 'slide') {
+                    $.post("{{url('admin/goods/addgoodsgallery')}}", {
+                        '_token': '{{csrf_token()}}',
+                        pic_ids: pic_id,
+                        goods_id: goods_id
+                    }, function (data) {
+                        if (data.code == 1) {
+                            var html = '';
+                            $.each(data.data, function (k, v) {
+                                html += '<li id="gallery">' +
+                                    '<div class="img">' +
+                                    '<img src="' + v.img_original + '" width="160" height="160" id="external_img_url">' +
+                                    '</div>' +
+                                    '<div class="info">' +
+                                    '<span class="zt red">主图</span>' +
+                                    '<div class="sort">' +
+                                    '<span>排序：</span>' +
+                                    '<input type="text" value="50" name="old_img_desc[]"' +
+                                    'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
+                                    '<input type="hidden" value="' + v.img_id + '" name="img_id[]">' +
+                                    '</div>' +
+                                    '<a href="javascript:;" data-imgid="' + v.img_id + '" class="delete_img"><i class="glyphicon glyphicon-trash"></i></a>' +
+                                    '</div>' +
+                                    '<div class="info">' +
+                                    '<input name="external_url" type="text" class="form-control max-wd-190 external_url"' +
+                                    ' value="" title="" data-imgid="" placeholder="图片外部链接地址"></div>' +
+                                    '</li>';
+                            });
+                            parent.$('#ul-pics').append(html);
+                        }
+                        parent.layer.close(index);
+                    });
                 } else if (type == 'webdesc') {
                     var html = '';
                     var imgs = '';
@@ -204,8 +244,8 @@
                     parent.$('.section-warp').append(html);
                     var desc_mobile = parent.$('input[name=desc_mobile]').val();
                     parent.$('input[name=desc_mobile]').val(desc_mobile + imgs);
+                    parent.layer.close(index);
                 }
-                parent.layer.close(index);
             });
 
             $('.btn-close').on('click', function () {
