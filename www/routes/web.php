@@ -90,6 +90,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('goods/cateextend/{id}', 'GoodsController@cateExtend');
     Route::get('goods/imagelibrary/{type}/{id}', 'GoodsController@imageLibrary');
     Route::get('goods/addgalleryshow', 'GoodsController@addGalleryShow');
+    Route::get('goods/customattrwin/{id}/{gid}', 'GoodsController@customAttrWin');
     Route::post('goods/addgallery', 'GoodsController@addGallery');
     Route::post('goods/change', 'GoodsController@change');
     Route::post('goods/changes', 'GoodsController@changes');
@@ -98,6 +99,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/addgoodsgallery', 'GoodsController@addGoodsGallery');
     Route::post('goods/upgoodsgallery', 'GoodsController@upGoodsGalleryPic');
     Route::post('goods/delgoodsgallery', 'GoodsController@delGoodsGalleryPic');
+    Route::post('goods/addgoodsattr', 'GoodsController@addGoodsAttr');
     Route::resource('goods', 'GoodsController');
 
     Route::get('goodstype/goodstype/modal', 'GoodsTypeController@goodsTypeByModal');

@@ -827,7 +827,7 @@
                                             <div class="step-item-left">
                                                 <h5>商品属性：</h5>
                                             </div>
-                                            <div class="step-item-right">
+                                            <div class="step-item-right attr-once">
                                             </div>
                                         </div>
                                         <div class="step-item-row step-item-attr-checkbox clearfix"
@@ -835,7 +835,7 @@
                                             <div class="step-item-left">
                                                 <h5>商品规格：</h5>
                                             </div>
-                                            <div class="step-item-right">
+                                            <div class="step-item-right attr-multi">
                                             </div>
                                         </div>
                                     </div>
@@ -1215,7 +1215,7 @@
             });
 
             var attrList = [];
-            var attrOnce = [];
+            var attrMulti = [];
             //选择商品类型
             $('.select-value').on('change', function () {
                 var cat_id = $(this).val();
@@ -1226,44 +1226,57 @@
                     if (data.length > 0) {
                         $.each(data, function (k, v) {
                             if (v.attr_type == 1) {
-                                htmlO += '<div class="item-right-list fl"><div class="label fl">' + v.attr_name + '：</div><div>';
-                                for (var i = 0; i < v.attr_values.length; i++) {
-                                    htmlO += '<label class="checkbox-inline">' +
-                                        '<input type="checkbox" name="attr_value_list1[]"' +
-                                        ' data-key="' + i + '" data-k="' + key + '" value="' + v.attr_values[i] + '">' + v.attr_values[i] + '</label>';
+                                htmlM += '<div class="item-right-list fl"><div class="label fl">' + v.attr_name + '：' +
+                                    '<input type="hidden" name="attr_id_listM[]" value="' + v.attr_id + '">' +
+                                    '</div><div>';
+                                if (v.attr_input_type == 0) {
+                                    for (var i = 0; i < v.attr_values.length; i++) {
+                                        htmlM += '<label class="checkbox-inline">' +
+                                            '<input type="checkbox" name="attr_value_list1[' + v.attr_id + '][]"' +
+                                            ' class="attr_value_list1" data-key="' + i + '" data-k="' + key + '" value="' + v.attr_values[i] + '" data-attr_id="' + v.attr_id + '">' + v.attr_values[i] + '</label>';
+                                    }
                                 }
-                                htmlO += '<div class="checkbox-inline">';
+                                htmlM += '<div class="checkbox-inline">';
                                 if (v.attr_input_type == 1) {
-                                    htmlO += '<a href="javascript:;" class="btn btn-info btn-sm" data-attrid="' + v.attr_id + '">自定义</a>';
+                                    htmlM += '<a href="javascript:;" class="btn btn-info btn-sm attr-custom" data-attr_id="' + v.attr_id + '">自定义</a>';
                                 }
-                                htmlO += '</div></div></div>';
-                                $('.step-item-attr-checkbox .step-item-right').html(htmlO);
+                                htmlM += '</div></div></div>';
+                                $('.step-item-attr-checkbox .step-item-right').html(htmlM);
                                 $('.step-item-attr-checkbox').show();
                                 key++;
                                 attrList.push([]);
-                                attrOnce.push(v);
+                                attrMulti.push(v);
                             } else {
-                                htmlM += '<div class="item-right-list goods-attr-type fl">' +
+                                htmlO += '<div class="item-right-list goods-attr-type fl">' +
+                                    '<input type="hidden" name="attr_id_listO[]" value="' + v.attr_id + '">' +
                                     '<div class="label fl" title="' + v.attr_name + '">' + v.attr_name + '：</div>' +
                                     '<div class="value-select">' +
                                     '<select name="attr_value_list[]" class="form-control max-wd-100 fl">';
                                 for (var i = 0; i < v.attr_values.length; i++) {
-                                    htmlM += '<option value="' + v.attr_values[i] + '">' + v.attr_values[i] + '</option>';
+                                    htmlO += '<option value="' + v.attr_values[i] + '">' + v.attr_values[i] + '</option>';
                                 }
-                                htmlM += '</select></div></div>';
-                                $('.step-item-attr-once .step-item-right').html(htmlM);
+                                htmlO += '</select></div></div>';
+                                $('.step-item-attr-once .step-item-right').html(htmlO);
                                 $('.step-item-attr-once').show();
                             }
                         });
                     } else {
+                        attrList = [];
+                        attrMulti = [];
+                        $('.step-item-attr-checkbox .step-item-right').html(htmlM);
+                        $('.step-item-attr-once .step-item-right').html(htmlO);
+                        $('#attribute-table tbody').html('');
+                        $('.attr-gallerys').html('');
+                        $('#attribute-table').hide();
+                        $('.attr-gallerys').hide();
                         $('.step-item-attr-checkbox').hide();
                         $('.step-item-attr-once').hide();
                     }
                 });
             });
             //选择商品规格属性
-            $('.step-item-attr-checkbox .step-item-right').on('click', 'input[name="attr_value_list1[]"]', function () {
-                $('.step-item-attr-checkbox .step-item-right input[name="attr_value_list1[]"]').each(function (k, v) {
+            $('.step-item-attr-checkbox .step-item-right').on('click', '.attr_value_list1', function () {
+                $('.step-item-attr-checkbox .step-item-right .attr_value_list1').each(function (k, v) {
                     if ($(v).is(':checked')) {
                         attrList[$(v).data('k')][$(v).data('key')] = $(v).val();
                     } else {
@@ -1284,20 +1297,23 @@
                         }
                         if (val.length != 0 && bool == true) {
                             html_a_img += '<div class="step-content attr-gallery clearfix">' +
-                                '<div class="attr_tit">' + attrOnce[key].attr_name + '：</div>';
+                                '<div class="attr_tit">' + attrMulti[key].attr_name + '：</div>';
                             $.each(val, function (k, v) {
                                 if (v != null) {
                                     html_a_img += '<div class="attr-item fl">' +
-                                        '<div class="txt">' + attrOnce[key].attr_values[k] + '</div>' +
+                                        '<div class="txt">' + attrMulti[key].attr_values[k] + '</div>' +
                                         '<div class="info fl">' +
                                         '<label class="fl hg27">排序：</label>' +
-                                        '<input type="text" class="form-control max-wd-100 hg27" name="gallery_attr_sort[]" size="10" value="1"></div>' +
+                                        '<input type="text" class="form-control max-wd-100 hg27" name="attr_sort[' + attrMulti[key].attr_id + '][]" size="10" value="1"></div>' +
                                         '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
-                                        'data-goodsattrid="" data-attrid="' + attrOnce[key].attr_id + '" v-if="key == 0">上传图片</a>' +
-                                        '<input name="attr_id" type="hidden" value="' + attrOnce[key].attr_id + '">' +
-                                        '<input name="attr_value" type="hidden" value="' + attrOnce[key].attr_values[k] + '">' +
-                                        '<input type="hidden" name="gallery_attr_value[]" value="' + attrOnce[key].attr_values[k] + '">' +
-                                        '<input type="hidden" name="gallery_attr_id[]" value="' + attrOnce[key].attr_id + '"></div>';
+                                        'data-goodsattrid="" data-attrid="' + attrMulti[key].attr_id + '" v-if="key == 0">' +
+                                        '<input type="file" id="attr-img" class="attr-img[' + attrMulti[key].attr_id + '][]"' +
+                                        'style="opacity: 0;max-width: 0;height: 0;margin: 0">' +
+                                        '<label for="attr-img">上传图片</label></a>' +
+                                        '<input name="attr_id" type="hidden" value="' + attrMulti[key].attr_id + '">' +
+                                        '<input name="attr_value" type="hidden" value="' + attrMulti[key].attr_values[k] + '">' +
+                                        '<input type="hidden" name="gallery_attr_value[]" value="' + attrMulti[key].attr_values[k] + '">' +
+                                        '<input type="hidden" name="gallery_attr_id[]" value="' + attrMulti[key].attr_id + '"></div>';
                                 }
                             });
                             html_a_img += '</div>';
@@ -1344,7 +1360,23 @@
                         '</td>' +
                         '</tr>';
                 });
-                $('#attribute-table tbody').html(html)
+                $('#attribute-table tbody').html(html);
+            });
+
+            //自定义商品规格属性
+            $('.step-item-attr-checkbox .step-item-right').on('click', '.attr-custom', function () {
+                var attr_id = $(this).data('attr_id');
+                layer.open({
+                    type: 2,
+                    area: ['700px', '250px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '图片库选择图片',
+                    content: ["{{url('admin/goods/customattrwin/')}}/" + attr_id + '/' + goods_id],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
             });
 
             //轮播图

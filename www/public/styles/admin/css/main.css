@@ -689,6 +689,10 @@ input[type=checkbox], input[type=radio] {
     margin-left: 10px;
 }
 
+.mar-left-15 {
+    margin-left: 15px;
+}
+
 .mar-left-20 {
     margin-left: 20px;
 }
@@ -723,6 +727,10 @@ input[type=checkbox], input[type=radio] {
 
 .line-hg-30 {
     line-height: 30px;
+}
+
+.line-hg-35 {
+    line-height: 35px;
 }
 
 .sale-end {

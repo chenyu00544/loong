@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Repositories\BrandRepository;
 use App\Repositories\ComCateRepository;
 use App\Repositories\GalleryRepository;
+use App\Repositories\GoodsAttrRepository;
 use App\Repositories\GoodsRepository;
 use App\Repositories\GoodsTypeRepository;
 use App\Repositories\TransportRepository;
@@ -19,6 +20,7 @@ class GoodsController extends CommonController
     private $galleryRepository;
     private $transportRepository;
     private $goodsTypeRepository;
+    private $goodsAttrRepository;
 
     public function __construct(
         GoodsRepository $goodsRepository,
@@ -26,7 +28,8 @@ class GoodsController extends CommonController
         BrandRepository $brandRepository,
         GalleryRepository $galleryRepository,
         TransportRepository $transportRepository,
-        GoodsTypeRepository $goodsTypeRepository
+        GoodsTypeRepository $goodsTypeRepository,
+        GoodsAttrRepository $goodsAttrRepository
     )
     {
         parent::__construct();
@@ -36,6 +39,7 @@ class GoodsController extends CommonController
         $this->galleryRepository = $galleryRepository;
         $this->transportRepository = $transportRepository;
         $this->goodsTypeRepository = $goodsTypeRepository;
+        $this->goodsAttrRepository = $goodsAttrRepository;
     }
 
     /**
@@ -152,6 +156,18 @@ class GoodsController extends CommonController
     public function delGoodsGalleryPic(Request $request)
     {
         return $this->galleryRepository->delGoodsGalleryPic($request->except('_token'));
+    }
+
+    //添加自定义属性窗口
+    public function customAttrWin($id, $gid)
+    {
+        return view('shop.admin.goods.modal.customAttr', compact('id', 'gid'));
+    }
+
+    //添加属性
+    public function addGoodsAttr(Request $request)
+    {
+        return $this->goodsAttrRepository->addGoodsAttr($request->except('_token'));
     }
 
     /**
