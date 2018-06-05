@@ -193,7 +193,7 @@ class GoodsController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        dd($request->except('_token'));
     }
 
     /**

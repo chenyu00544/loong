@@ -24,11 +24,11 @@
     <script>
         var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
         parent.layer.iframeAuto(index);
+        getAttr();
         $(function () {
             $('.attr-add').on('click', function () {
-                $('.attr-values').append('<div class="fl mar-all-5">\n' +
-                    '                        <i class="glyphicon glyphicon-minus attr-minus fl" style="margin-top: 3px"></i><input type="text" class="form-control max-wd-110 hg25" name="attr_value">\n' +
-                    '                    </div>');
+                $('.attr-values').append('<div class="fl mar-all-5">' +
+                    '<i class="glyphicon glyphicon-minus attr-minus fl" style="margin-top: 3px"></i><input type="text" class="form-control max-wd-110 hg25" name="attr_value"></div>');
                 parent.layer.iframeAuto(index);
             });
 
@@ -39,25 +39,22 @@
 
             $('.btn-sure').on('click', function () {
                 var attr_id = $('.attr_id').val();
-                var goods_id = $('.goods_id').val();
                 var attr_values = [];
                 $('input[name=attr_value]').each(function () {
-                    attr_values.push($(this).val());
+                    if($(this).val() != '' && $.inArray($(this).val(), attr_values) == -1){
+                        attr_values.push($(this).val());
+                    }
                 });
                 var line = 0;
                 parent.$('.attr-custom').each(function () {
                     var that = this
                     if ($(this).data('attr_id') == attr_id) {
-                        var col = parent.$(this).parent().prev().find('input').data('key');
-                        if(col == null){
-                            col = 0;
-                        }else{
-                            col = parseInt(col)+1
-                        }
-                        $.each(attr_values, function (k,v) {
+                        parent.$(that).parent().parent().find('label').remove();
+
+                        $.each(attr_values, function (k, v) {
                             var html = '<label class="checkbox-inline">' +
-                                '<input type="checkbox" name="attr_value_list1['+attr_id+'][]"' +
-                                ' class="attr_value_list1" data-key="' + (parseInt(col)+k) + '" data-k="' + line + '" value="' + v + '" data-attr_id="'+ attr_id + '">' + v + '</label>';
+                                '<input type="checkbox" name="attr_value_list1[' + attr_id + '][]"' +
+                                ' class="attr_value_list1" data-key="' + k + '" data-k="' + line + '" value="' + v + '" data-attr_id="' + attr_id + '">' + v + '</label>';
                             parent.$(that).parent().before(html);
                         });
                     }
@@ -71,6 +68,15 @@
                 parent.layer.close(index);
             });
         });
+
+        function getAttr() {
+            var attr_id = $('.attr_id').val();
+            parent.$('input[name="attr_value_list1[' + attr_id + '][]"]').each(function () {
+                $('.attr-values').append('<div class="fl mar-all-5">' +
+                    '<i class="glyphicon glyphicon-minus attr-minus fl" style="margin-top: 3px"></i><input type="text" class="form-control max-wd-110 hg25" name="attr_value" value="'+ $(this).val() +'"></div>');
+                parent.layer.iframeAuto(index);
+            });
+        }
     </script>
 @endsection
 @endsection

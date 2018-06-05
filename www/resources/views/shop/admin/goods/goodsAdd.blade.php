@@ -772,8 +772,7 @@
                                        data-type="step" ectype="stepSubmit">上一步，选择商品分类</a>
                                     <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="4"
                                        data-type="step" data-down="false" ectype="stepSubmit">下一步，填写商品属性</a>
-                                    <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="5"
-                                       data-type="step" data-down="false" ectype="stepSubmit">完成,发布商品</a>
+                                    <input class="btn btn-info mar-all-10" type="submit" value="完成,发布商品">
                                 </div>
                             </div>
                         </div>
@@ -940,8 +939,7 @@
                                     <div class="goods-btn">
                                         <a href="javascript:;" class="btn btn-default mar-all-10 prev" data-step="3"
                                            data-type="step" ectype="stepSubmit">上一步，填写通用信息</a>
-                                        <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="5"
-                                           data-type="step" data-down="false" ectype="stepSubmit">完成,发布商品</a>
+                                        <input class="btn btn-info mar-all-10" type="submit" value="完成,发布商品">
                                     </div>
                                 </div>
                             </div>
@@ -962,6 +960,9 @@
     <script>
         $(function () {
             var goods_id = '0';
+            var attrList = [];
+            var attrMulti = [];
+
             $('body').on('click', function () {
                 $('.brand-select-container').hide();
             });
@@ -1156,6 +1157,16 @@
             $('.goods_type_cat').on('change', '.select', function () {
                 setNextGoodsTypeCate(this, '{{csrf_token()}}', "{{url('admin/typecate/getcates/')}}/");
                 getGoodsTypes(this, '{{csrf_token()}}', "{{url('admin/goodstype/gettypes/')}}/");
+                $('.step-item-attr-checkbox .step-item-right').html('');
+                $('.step-item-attr-once .step-item-right').html('');
+                $('#attribute-table tbody').html('');
+                $('.attr-gallerys').html('');
+                $('#attribute-table').hide();
+                $('.attr-gallerys').hide();
+                $('.step-item-attr-checkbox').hide();
+                $('.step-item-attr-once').hide();
+                attrList = [];
+                attrMulti = [];
             });
 
             //添加属性分类弹窗
@@ -1214,8 +1225,7 @@
                 }
             });
 
-            var attrList = [];
-            var attrMulti = [];
+
             //选择商品类型
             $('.select-value').on('change', function () {
                 var cat_id = $(this).val();
@@ -1278,6 +1288,7 @@
             $('.step-item-attr-checkbox .step-item-right').on('click', '.attr_value_list1', function () {
                 $('.step-item-attr-checkbox .step-item-right .attr_value_list1').each(function (k, v) {
                     if ($(v).is(':checked')) {
+                        attrMulti[$(v).data('k')].attr_values[$(v).data('key')] = $(v).val();
                         attrList[$(v).data('k')][$(v).data('key')] = $(v).val();
                     } else {
                         attrList[$(v).data('k')][$(v).data('key')] = null;
