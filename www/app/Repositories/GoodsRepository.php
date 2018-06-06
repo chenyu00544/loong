@@ -183,6 +183,12 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $this->goodsModel->getGoods($id, $goodsColumns);
     }
 
+    //添加商品
+    public function addGoods($data)
+    {
+
+    }
+
     //商品的状态导航
     public function getGoodsNav()
     {

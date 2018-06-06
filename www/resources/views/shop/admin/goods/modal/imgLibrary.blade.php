@@ -151,7 +151,7 @@
                 });
 
                 if (type == 'main') {
-                    parent.$('input[name=gallery_pic_id]').val(pic_exhibition_url[0]);
+                    parent.$('input[name=gallery_pic_id]').val(pic_id[0]);
                     parent.$('.goods-img-show').attr('src', pic_original_url[0]);
                     $.post("{{url('admin/goods/addgoodsgallery')}}", {
                         '_token': '{{csrf_token()}}',

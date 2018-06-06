@@ -194,6 +194,12 @@ class GoodsController extends CommonController
     public function store(Request $request)
     {
         dd($request->except('_token'));
+        $ver = Verifiable::Validator($request->all(), ["goods_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->goodsRepository->addGoods($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**

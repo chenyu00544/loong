@@ -16,6 +16,7 @@ class GoodsGalleryModel extends Model
         return $this->select($column)
             ->where($where)
             ->orderBy('front_cover', 'desc')
+            ->orderBy('img_desc', 'asc')
             ->get();
     }
 

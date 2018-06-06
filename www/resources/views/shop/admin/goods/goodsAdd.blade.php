@@ -317,6 +317,7 @@
                                                 <div class="img">
                                                     <img src="{{url('styles/admin/images/upload_images.jpg')}}"
                                                          class="goods-img-show">
+                                                    <input type="hidden" name="goods_gallery_id" value="">
                                                 </div>
                                             </div>
                                             <div class="form_prompt">
@@ -1032,10 +1033,51 @@
 
             //直接选择图片
             $("input[name=goods_img_file]").on('change', function () {
-                var objUrl = getImageURL(this.files[0]);
-                if (objUrl) {
-                    $(".goods-img-show").attr("src", objUrl);
+                var files = $(this)[0].files;
+                layer.load();
+                var form = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    form.append('pic[' + i + ']', files[i]);
                 }
+                form.append('goods_id', goods_id);
+                form.append('_token', '{{csrf_token()}}');
+                $.ajax({
+                    url: "{{url('admin/goods/upgoodsgallery')}}",
+                    type: "POST",
+                    data: form,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        var html = '';
+                        $.each(data, function (k, v) {
+                            $(".goods-img-show").attr("src", v.img_original);
+                            $("input[name=goods_gallery_id]").val(v.img_id);
+                            html += '<li id="gallery">' +
+                                '<div class="img">' +
+                                '<img src="' + v.img_original + '" width="160" height="160" id="external_img_url">' +
+                                '</div>' +
+                                '<div class="info">' +
+                                '<span class="zt red">主图</span>' +
+                                '<div class="sort">' +
+                                '<span>排序：</span>' +
+                                '<input type="text" value="100" name="old_img_desc[]"' +
+                                'class="stext form-control max-wd-50 hg25" autocomplete="off" maxlength="3">' +
+                                '<input type="hidden" value="' + v.img_id + '" name="img_id[]">' +
+                                '</div>' +
+                                '<a href="javascript:;" data-imgid="' + v.img_id + '" class="delete_img"><i class="glyphicon glyphicon-trash"></i></a>' +
+                                '</div>' +
+                                '<div class="info">' +
+                                '<input name="external_url" type="text" class="form-control max-wd-190 external_url"' +
+                                ' value="" title="" data-imgid="' + v.img_id + '" placeholder="图片外部链接地址"></div>' +
+                                '</li>';
+                        });
+                        $('#ul-pics').append(html);
+                        layer.closeAll('loading');
+                    }
+                });
+                setTimeout(function () {
+                    layer.closeAll('loading');
+                }, 10000);
             });
 
             //图片库选择图片
@@ -1114,7 +1156,7 @@
                     fixed: true, //不固定
                     maxmin: true,
                     title: '图片库选择图片',
-                    content: ["{{url('admin/goods/imagelibrary/webdesc')}}"],
+                    content: ["{{url('admin/goods/imagelibrary/webdesc/')}}/" + goods_id],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }
@@ -1289,12 +1331,15 @@
                 $('.step-item-attr-checkbox .step-item-right .attr_value_list1').each(function (k, v) {
                     if ($(v).is(':checked')) {
                         attrMulti[$(v).data('k')].attr_values[$(v).data('key')] = $(v).val();
-                        attrList[$(v).data('k')][$(v).data('key')] = $(v).val();
+                        var attr_id = $(v).data('attr_id');
+                        attrList[$(v).data('k')][$(v).data('key')] = {attr_id: attr_id, attr_val: $(v).val()};
                     } else {
                         attrList[$(v).data('k')][$(v).data('key')] = null;
                     }
                 });
-                var productList = setProductSplicing(attrList.length - 1, 0, '', [], attrList);
+
+                var productList = setProductSplicing(attrList.length - 1, 0, [], [], attrList);
+                console.log(productList);
                 if (productList.length > 0) {
                     $('#attribute-table').show();
                     $('.attr-gallerys').show();
@@ -1338,14 +1383,19 @@
                 }
                 var html = '';
                 $.each(productList, function (k, v) {
-                    html += '<tr>' +
-                        '<td class="text-center">' + v +
-                        '<input type="hidden" name="attr[81189][]" value="' + v + '">' +
-                        '<input type="hidden" name="goods_attr_id[275465][]" value="275465">' +
-                        '<input type="hidden" name="attr[81190][]" value="37">' +
-                        '<input type="hidden" name="goods_attr_id[275464][]" value="275464">' +
-                        '</td>' +
-                        '<td>' +
+                    html += '<tr>';
+                    $.each(v, function (key, val) {
+                        if (key == 0) {
+                            html += '<td class="text-center">' + val.attr_val +
+                                '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">' +
+                                '</td>'
+                        } else {
+                            html += '<td class="text-center">, ' + val.attr_val +
+                                '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">' +
+                                '</td>'
+                        }
+                    });
+                    html += '<td>' +
                         '<input type="text" name="product_market_price[]"' +
                         'class="form-control max-wd-110 hg27" autocomplete="off" value="0.00"></td>' +
                         '<td width="8%">' +
@@ -1663,29 +1713,30 @@
             $('input[name=desc_mobile]').val(imgs);
         }
 
-        function setProductSplicing(i, j, pStr, pList, aList) {
+        function setProductSplicing(i, j, obj, pList, aList) {
             var bool = true;
             var pr_list = [];
             for (var k = 0; k < aList[j].length; k++) {
                 if (aList[j][k] != null && aList[j][k] != undefined && aList[j][k] != '') {
-                    pr_list.push(pStr + aList[j][k]);
+                    obj.push(aList[j][k]);
+                    pr_list.push(obj);
                     bool = false;
                     if (i > j) {
-                        var p_list = setProductSplicing(i, j + 1, pStr + aList[j][k] + ',', pList, aList);
+                        var p_list = setProductSplicing(i, j + 1, obj, pList, aList);
                         if (p_list.length == 0) {
                             pList = pr_list;
                         } else {
                             pList.concat(p_list);
                         }
                     } else {
-                        pList.push(pStr + aList[j][k]);
+                        pList.push(obj);
                     }
                 } else {
                     continue;
                 }
             }
             if (i > j && bool) {
-                setProductSplicing(i, j + 1, pStr, pList, aList);
+                setProductSplicing(i, j + 1, obj, pList, aList);
             }
             return pList;
         }
