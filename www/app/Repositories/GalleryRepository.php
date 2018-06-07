@@ -224,14 +224,9 @@ class GalleryRepository implements GalleryRepositoryInterface
             $where['goods_id'] = $data['goods_id'];
             $updata['goods_id'] = $data['goods_id'];
         }
-        $this->goodsGalleryModel->setGoodsGallery($where, ['front_cover' => 0]);
         foreach ($pics as $key => $pic) {
-            $updata['img_desc'] = 0;
-            if ($key == 0) {
-                $updata['front_cover'] = 1;
-            } else {
-                $updata['front_cover'] = 0;
-            }
+            $updata['img_desc'] = 100;
+            $updata['front_cover'] = 0;
             $updata['img_url'] = $pic->pic_image;
             $updata['thumb_url'] = $pic->pic_thumb;
             $updata['img_original'] = $pic->pic_file;

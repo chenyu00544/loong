@@ -1717,16 +1717,17 @@
             var bool = true;
             var pr_list = [];
             for (var k = 0; k < aList[j].length; k++) {
-                if (aList[j][k] != null && aList[j][k] != undefined && aList[j][k] != '') {
-                    obj.push(aList[j][k]);
-                    pr_list.push(obj);
+                if (aList[j][k] != null && aList[j][k] != undefined) {
+                    obj[j] = aList[j][k];
+                    var obj_c = $.extend(true,[],obj);
+                    pr_list.push(obj_c);
                     bool = false;
                     if (i > j) {
                         var p_list = setProductSplicing(i, j + 1, obj, pList, aList);
-                        if (p_list.length == 0) {
+                        if(p_list.length == 0){
                             pList = pr_list;
-                        } else {
-                            pList.concat(p_list);
+                        }else{
+                            pList = p_list;
                         }
                     } else {
                         pList.push(obj);
@@ -1735,9 +1736,9 @@
                     continue;
                 }
             }
-            if (i > j && bool) {
-                setProductSplicing(i, j + 1, obj, pList, aList);
-            }
+            // if (i > j && bool) {
+            //     setProductSplicing(i, j + 1, obj, pList, aList);
+            // }
             return pList;
         }
 
