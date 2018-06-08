@@ -1339,7 +1339,6 @@
                 });
 
                 var productList = setProductSplicing(attrList.length - 1, 0, [], [], attrList);
-                console.log(productList);
                 if (productList.length > 0) {
                     $('#attribute-table').show();
                     $('.attr-gallerys').show();
@@ -1383,19 +1382,22 @@
                 }
                 var html = '';
                 $.each(productList, function (k, v) {
-                    html += '<tr>';
+                    html += '<tr><td class="text-center">';
+                    var i = 0;
                     $.each(v, function (key, val) {
-                        if (key == 0) {
-                            html += '<td class="text-center">' + val.attr_val +
-                                '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">' +
-                                '</td>'
+                        if (val) {
+                            if ((key - i) == 0) {
+                                html += '' + val.attr_val +
+                                    '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">';
+                            } else {
+                                html += ', ' + val.attr_val +
+                                    '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">';
+                            }
                         } else {
-                            html += '<td class="text-center">, ' + val.attr_val +
-                                '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">' +
-                                '</td>'
+                            i++;
                         }
                     });
-                    html += '<td>' +
+                    html += '</td><td>' +
                         '<input type="text" name="product_market_price[]"' +
                         'class="form-control max-wd-110 hg27" autocomplete="off" value="0.00"></td>' +
                         '<td width="8%">' +
@@ -1719,26 +1721,26 @@
             for (var k = 0; k < aList[j].length; k++) {
                 if (aList[j][k] != null && aList[j][k] != undefined) {
                     obj[j] = aList[j][k];
-                    var obj_c = $.extend(true,[],obj);
+                    var obj_c = $.extend(true, [], obj);
                     pr_list.push(obj_c);
                     bool = false;
-                    if (i > j) {
-                        var p_list = setProductSplicing(i, j + 1, obj, pList, aList);
-                        if(p_list.length == 0){
+                    if (i > j) {//还没到底层，继续进入下一层
+                        var p_list = setProductSplicing(i, j + 1, $.extend(true, [], obj), pList, aList);
+                        if (p_list.length == 0) {//只有第一层有数据
                             pList = pr_list;
-                        }else{
+                        } else {
                             pList = p_list;
                         }
-                    } else {
-                        pList.push(obj);
+                    } else {//已经到底层,数据组合完毕压入栈中
+                        pList.push($.extend(true, [], obj));
                     }
                 } else {
                     continue;
                 }
             }
-            // if (i > j && bool) {
-            //     setProductSplicing(i, j + 1, obj, pList, aList);
-            // }
+            if (i > j && bool) {//前一次没有选中数据
+                setProductSplicing(i, j + 1, obj, pList, aList);
+            }
             return pList;
         }
 
