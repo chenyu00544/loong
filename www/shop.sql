@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 03/06/2018 23:44:39
+ Date: 11/06/2018 00:32:11
 */
 
 SET NAMES utf8mb4;
@@ -392,7 +392,7 @@ CREATE TABLE `cyc_attribute`  (
 -- ----------------------------
 INSERT INTO `cyc_attribute` VALUES (12, 19, '重量(g)', 1, 1, 0, '300g\r\n400g\r\n500g\r\n600g\r\n700g\r\n800g\r\n900g', '', 1, 100, 0, 0, '');
 INSERT INTO `cyc_attribute` VALUES (10, 19, '段数', 1, 1, 1, '一段\r\n二段\r\n三段\r\n四段', '', 1, 100, 0, 0, '');
-INSERT INTO `cyc_attribute` VALUES (11, 19, '重量', 1, 1, 1, '300g\r\n400g\r\n500g\r\n600g\r\n700g\r\n800g\r\n900g', '', 1, 100, 0, 0, '');
+INSERT INTO `cyc_attribute` VALUES (11, 19, '重量', 1, 0, 1, '300g\r\n400g\r\n500g\r\n600g\r\n700g\r\n800g\r\n900g', '', 1, 100, 0, 0, '');
 INSERT INTO `cyc_attribute` VALUES (13, 19, '包装种类', 1, 1, 0, '盒装\r\n罐装', '', 1, 100, 0, 0, '');
 INSERT INTO `cyc_attribute` VALUES (14, 19, '产地', 1, 1, 0, '澳洲\r\n美国\r\n日本\r\n韩国\r\n欧洲', '', 1, 100, 0, 0, '');
 INSERT INTO `cyc_attribute` VALUES (15, 19, '适用阶段', 1, 1, 0, '一段\r\n二段\r\n三段\r\n四段', '', 1, 100, 0, 0, '');
@@ -896,16 +896,16 @@ CREATE TABLE `cyc_goods`  (
   `click_count` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `brand_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
   `provider_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `goods_number` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `goods_weight` decimal(10, 3) UNSIGNED NOT NULL DEFAULT 0.000,
+  `goods_number` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品库存',
+  `goods_weight` decimal(10, 3) UNSIGNED NOT NULL DEFAULT 0.000 COMMENT '商品重量',
   `default_shipping` int(11) UNSIGNED NOT NULL,
-  `market_price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `market_price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '市场价',
   `cost_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '成本价',
-  `shop_price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00,
-  `promote_price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00,
-  `promote_start_date` int(11) UNSIGNED NOT NULL DEFAULT 0,
-  `promote_end_date` int(11) UNSIGNED NOT NULL DEFAULT 0,
-  `warn_number` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `shop_price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '出售价',
+  `promote_price` decimal(10, 2) UNSIGNED NOT NULL DEFAULT 0.00 COMMENT '促销价',
+  `promote_start_date` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '促销开始时间',
+  `promote_end_date` int(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '促销结束时间',
+  `warn_number` tinyint(3) UNSIGNED NOT NULL DEFAULT 1 COMMENT '库存预警值',
   `keywords` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `goods_brief` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `goods_desc` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -918,7 +918,7 @@ CREATE TABLE `cyc_goods`  (
   `is_on_sale` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
   `is_alone_sale` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
   `is_shipping` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `integral` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `integral` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '购买金额积分',
   `add_time` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `sort_order` smallint(4) UNSIGNED NOT NULL DEFAULT 100 COMMENT '人工干预排序',
   `is_delete` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
@@ -931,11 +931,11 @@ CREATE TABLE `cyc_goods`  (
   `is_check` tinyint(1) UNSIGNED NULL DEFAULT NULL,
   `bonus_type_id` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `last_update` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `goods_type` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `goods_type` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品类型',
   `seller_note` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `give_integral` int(11) NOT NULL DEFAULT -1,
-  `rank_integral` int(11) NOT NULL DEFAULT -1,
-  `suppliers_id` smallint(5) UNSIGNED NULL DEFAULT NULL,
+  `give_integral` int(11) NOT NULL DEFAULT -1 COMMENT '赠送消费积分数',
+  `rank_integral` int(11) NOT NULL DEFAULT -1 COMMENT '赠送等级积分数',
+  `suppliers_id` smallint(5) UNSIGNED NULL DEFAULT NULL COMMENT '供应商id',
   `store_hot` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `store_new` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `store_best` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
@@ -964,7 +964,7 @@ CREATE TABLE `cyc_goods`  (
   `tid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '运费模板id',
   `goods_unit` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '个',
   `goods_cause` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `commission_rate` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0',
+  `commission_rate` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '分销佣金',
   `from_seller` int(11) NOT NULL DEFAULT 0,
   `user_brand` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '品牌统一使用平台品牌ID异步操作',
   `product_table` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'products',
@@ -1317,7 +1317,7 @@ CREATE TABLE `cyc_goods_attr`  (
   INDEX `goods_id`(`goods_id`) USING BTREE,
   INDEX `attr_id`(`attr_id`) USING BTREE,
   INDEX `admin_id`(`admin_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 714 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品多图属性表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 715 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品多图属性表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_goods_attr
@@ -1336,6 +1336,7 @@ INSERT INTO `cyc_goods_attr` VALUES (11, 726, 4, '灰色', '', 0.00, 0, 'data/go
 INSERT INTO `cyc_goods_attr` VALUES (12, 726, 4, '枚红色', '', 0.00, 0, 'data/goods_attr_img/1490161716450638637.jpg', 'images/201703/goods_img/_P_1490161351154.jpg', '', 0, NULL, 0, NULL, NULL, 0, NULL, 45);
 INSERT INTO `cyc_goods_attr` VALUES (13, 726, 4, '银灰色', '', 0.00, 0, 'data/goods_attr_img/1490161725786023362.jpg', 'images/201703/goods_img/_P_1490161351116.jpg', '', 0, NULL, 0, NULL, NULL, 0, NULL, 45);
 INSERT INTO `cyc_goods_attr` VALUES (14, 726, 4, '紫色', '', 0.00, 0, 'data/goods_attr_img/1490161757237870927.jpg', 'images/201703/goods_img/_P_1490161351412.jpg', '', 1, NULL, 0, NULL, NULL, 0, NULL, 45);
+INSERT INTO `cyc_goods_attr` VALUES (714, 0, 10, 'fff', '', 0.00, 0, '', '', '', 0, NULL, 0, NULL, NULL, 0, NULL, 0);
 
 -- ----------------------------
 -- Table structure for cyc_goods_cate
@@ -6288,7 +6289,7 @@ CREATE TABLE `cyc_goods_gallery`  (
   `dis_id` mediumint(8) NULL DEFAULT NULL COMMENT '讨论圈ID（此字段暂时无用）',
   PRIMARY KEY (`img_id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1289 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品多图信息表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 1299 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品多图信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_goods_gallery
@@ -7291,13 +7292,16 @@ INSERT INTO `cyc_goods_gallery` VALUES (1013, 903, 5, 'images/201703/goods_img/_
 INSERT INTO `cyc_goods_gallery` VALUES (1014, 903, 6, 'images/201703/goods_img/_P_1490915817088.jpg', 'images/201703/thumb_img/_thumb_P_1490915817767.jpg', 'images/201703/source_img/_P_1490915817527.jpg', 0, '', NULL, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1267, 902, 1, 'data/gallery_album/2/images/1494985263763439875.jpg', 'data/gallery_album/2/thumb_img/1494985263202725320.jpg', 'data/gallery_album/2/original_img/1494985263326444094.png', NULL, '', NULL, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1272, 903, 8, 'data/gallery_album/2/images/1494985267925705306.jpg', 'data/gallery_album/2/thumb_img/1494985267866016454.jpg', 'data/gallery_album/2/original_img/1494985267962226313.JPG', NULL, '', NULL, NULL);
-INSERT INTO `cyc_goods_gallery` VALUES (1273, 0, 0, 'upload\\gallery_album\\15\\exhibition_img\\ff6c872312e3dfe1acefae7eeddbb2b5.jpg', 'upload\\gallery_album\\15\\thumb_img\\6bb621aa510b30004ea9d2cdeedf3514.jpg', 'upload\\gallery_album\\15\\original_img\\b3b8645ac594220d95c52486d9dd46b2.jpg', 1, '', 0, NULL);
-INSERT INTO `cyc_goods_gallery` VALUES (1277, 0, 0, 'upload\\gallery_album\\15\\exhibition_img\\e8a02a0b41b064af9c1a2811fe4c81b3.jpg', 'upload\\gallery_album\\15\\thumb_img\\84de0265ae80431fd9803c67622b8a0d.jpg', 'upload\\gallery_album\\15\\original_img\\a352f768210961499a8f4d72603bcc12.jpg', 1, '', 0, NULL);
-INSERT INTO `cyc_goods_gallery` VALUES (1278, 0, 0, 'upload\\gallery_album\\15\\exhibition_img\\66e31e6db8d2b0221aef96e03e6e35ec.jpg', 'upload\\gallery_album\\15\\thumb_img\\f3d916b409f817f8a5da4cac637349c9.jpg', 'upload\\gallery_album\\15\\original_img\\c1d71cb17eeaaa8ff53db8bbedd1fb9a.jpg', 1, '', 0, NULL);
-INSERT INTO `cyc_goods_gallery` VALUES (1279, 0, 0, 'upload\\gallery_album\\15\\exhibition_img\\e8a02a0b41b064af9c1a2811fe4c81b3.jpg', 'upload\\gallery_album\\15\\thumb_img\\84de0265ae80431fd9803c67622b8a0d.jpg', 'upload\\gallery_album\\15\\original_img\\a352f768210961499a8f4d72603bcc12.jpg', 1, '', 0, NULL);
-INSERT INTO `cyc_goods_gallery` VALUES (1280, 0, 0, 'upload\\gallery_album\\15\\exhibition_img\\66e31e6db8d2b0221aef96e03e6e35ec.jpg', 'upload\\gallery_album\\15\\thumb_img\\f3d916b409f817f8a5da4cac637349c9.jpg', 'upload\\gallery_album\\15\\original_img\\c1d71cb17eeaaa8ff53db8bbedd1fb9a.jpg', 1, '', 0, NULL);
-INSERT INTO `cyc_goods_gallery` VALUES (1281, 0, 0, 'upload\\gallery_album\\15\\exhibition_img\\5fed92f93538a4bfc30eb5ad654bbe81.jpg', 'upload\\gallery_album\\15\\thumb_img\\ebaca028542adab03875eb263cb3dd52.jpg', 'upload\\gallery_album\\15\\original_img\\6d6eadb325e78440fa5696c815553e29.jpg', 1, '', 1, NULL);
-INSERT INTO `cyc_goods_gallery` VALUES (1282, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\86a0b0ed19e9f9232086978bd9059af5.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\e6195b073798ff8e73511a4eadbaf9dc.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\06a1365e30df49ff56d3d4d5e5e1b2aa.jpg', NULL, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1297, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\68dc76c06577cb9bf4d35dbb9ca43a58.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\0d58408e480435283309e1c64996d5c7.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\86bc832918668f62a061f70823173792.jpg', 0, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1296, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\cb1a304245d170dc1dc347df0e5033ee.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\35b7d0c24d146f90add96855cb94e862.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\baaff02adcae83c5ab2683c273104a13.jpg', 0, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1291, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\4a99f2a46f2e8614925ad4913c5caf06.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\70db5c0b5816cbc5d5b5b522b7ccfe70.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\fb59acb7c0c3c7857a1d20d009955162.png', 0, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1277, 0, 100, 'upload\\gallery_album\\15\\exhibition_img\\e8a02a0b41b064af9c1a2811fe4c81b3.jpg', 'upload\\gallery_album\\15\\thumb_img\\84de0265ae80431fd9803c67622b8a0d.jpg', 'upload\\gallery_album\\15\\original_img\\a352f768210961499a8f4d72603bcc12.jpg', 1, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1298, 0, 100, 'upload\\gallery_album\\15\\exhibition_img\\a00b203c96ab2b43ef4803a6345e0f58.jpg', 'upload\\gallery_album\\15\\thumb_img\\881e99b8ce098562aea5aab077feadf4.jpg', 'upload\\gallery_album\\15\\original_img\\999963ea91892658e1f2f77580baa945.jpg', 1, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1281, 0, 100, 'upload\\gallery_album\\15\\exhibition_img\\5fed92f93538a4bfc30eb5ad654bbe81.jpg', 'upload\\gallery_album\\15\\thumb_img\\ebaca028542adab03875eb263cb3dd52.jpg', 'upload\\gallery_album\\15\\original_img\\6d6eadb325e78440fa5696c815553e29.jpg', 1, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1292, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\b128bdab0f4b248a39cc4991742ce1ec.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\e785e6b469458eee34a1fe23a73f422d.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\46ca9e1cd33f769875ff625737f9d11b.png', 0, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1293, 0, 0, 'upload\\gallery_album\\15\\exhibition_img\\a0c8139004838b8d1aaabd9256551c86.jpg', 'upload\\gallery_album\\15\\thumb_img\\eeb9e8ddf2caacde1bf61a5eff00388b.jpg', 'upload\\gallery_album\\15\\original_img\\a2bd43b3da7f5a4e3ff4a5061a198176.png', 1, '', 1, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1294, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\bdd4b3377bb9d03c690db9f89c8dd556.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\37c15301f8d7e806bbe506d891e2d623.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\1647f14ba49b076d1626284ccc701f06.jpg', 0, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1295, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\7f689bf7dbc96b210ff571dce6bf7793.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\69320e8e0909e349564cdd9d32c88661.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\cc4dcdde5b62cc3aa55a8d8e5c650509.jpg', 0, '', 0, NULL);
 
 -- ----------------------------
 -- Table structure for cyc_goods_transport
@@ -11325,7 +11329,7 @@ INSERT INTO `cyc_shop_config` VALUES (936, 6, 'captcha_length', 'hidden', '', ''
 INSERT INTO `cyc_shop_config` VALUES (937, 9, 'wap_index_pro', 'select', '1,0', '', '1', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (938, 998, 'two_code', 'select', '1,0', '', '1', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (939, 998, 'two_code_logo', 'file', '', 'public/styles/images/upload/', 'styles/images/upload/two_code_logo.jpg', 1, 'goods');
-INSERT INTO `cyc_shop_config` VALUES (940, 998, 'two_code_links', 'text', '', '', 'http://test1.ecmoban.com/', 1, 'goods');
+INSERT INTO `cyc_shop_config` VALUES (940, 998, 'two_code_links', 'text', '', '', 'http://www.vcvbuy.com/', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (941, 998, 'two_code_mouse', 'text', '', '', '', 1, 'goods');
 INSERT INTO `cyc_shop_config` VALUES (942, 0, 'extend_basic', 'group', '', '', '', 1, '');
 INSERT INTO `cyc_shop_config` VALUES (943, 942, 'open_oss', 'select', '0,1', '', '0', 1, '');
