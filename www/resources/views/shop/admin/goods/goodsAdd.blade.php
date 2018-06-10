@@ -47,7 +47,7 @@
                         </div>
 
                         <!--第一步 选择商品模式-->
-                        <div class="step step-one" ectype="step" data-step="1" style="display: none;">
+                        <div class="step step-one" ectype="step" data-step="1" style="">
                             <h3>设置商品模式</h3>
                             <div class="mos clearfix">
                                 <div class="mos_item mos_default active" data-model="0" data-stepmodel="3">
@@ -339,6 +339,39 @@
                                         </div>
                                     </div>
 
+                                    <div class="item item-com-img">
+                                        <div class="step-label"><em class="require-field">*</em>主图视频：</div>
+                                        <div class="step-value">
+                                            <div id="goods-video" class="update-images fl">
+                                                <div class="img">
+                                                    <img src="{{url('styles/admin/images/update_video.jpg')}}"
+                                                         class="goods-img-show">
+                                                </div>
+                                            </div>
+                                            <div class="goods-video-div fl" style="display: none;">
+                                                <video class="goods-video mar-left-10" id="goods_video_js" width="200"
+                                                       height="200" src="" controls="">
+                                                    <source src="" class="goods-video-js" type="video/mp4">
+                                                </video>
+                                                <div class="video_default fl"></div>
+                                                <a href="javascript:;" class="video_remove" >
+                                                    <i class="glyphicon glyphicon-trash"></i></a>
+                                            </div>
+                                            <div class="form_prompt fl">
+                                            </div>
+                                            <div class="notic fl mar-left-10">
+                                                <p>像素：398px * 398px</p>
+                                                <p>大小：10MB以内的视频</p>
+                                                <p>格式：只支持MP4格式</p>
+                                            </div>
+                                            <div id="" class="moxie-shim moxie-shim-html5"
+                                                 style="position: absolute; top: 0px; left: 0px; width: 100px; height: 100px; overflow: hidden; z-index: 0;">
+                                                <input id="" type="file" name="goods_video"
+                                                       style="font-size: 999px; opacity: 0; position: absolute; top: 0px; left: 0px; width: 100px; height: 100px;">
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="item">
                                         <div class="step-label"><font class="red">*</font>商品运费：</div>
                                         <div class="step-value">
@@ -581,7 +614,7 @@
                                         <div class="step-value">
                                             <input type="text" name="give_integral"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="">
+                                                   autocomplete="off" value="0">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
                                         </div>
@@ -592,7 +625,7 @@
                                         <div class="step-value">
                                             <input type="text" name="rank_integral"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="">
+                                                   autocomplete="off" value="0">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
                                         </div>
@@ -603,7 +636,7 @@
                                         <div class="step-value">
                                             <input type="text" name="integral"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="">
+                                                   autocomplete="off" value="0">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">(此处需填写金额)购买该商品时最多可以使用积分的金额</div>
                                         </div>
@@ -779,7 +812,7 @@
                         </div>
 
                         <!--第四步 填写商品属性 vue---id="appFour" v-cloak-->
-                        <div class="step step-four" ectype="step" data-step="4" style="">
+                        <div class="step step-four" ectype="step" data-step="4" style="display: none;">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -1078,6 +1111,15 @@
                 setTimeout(function () {
                     layer.closeAll('loading');
                 }, 10000);
+            });
+
+            //上传主图视频
+            $("input[name=goods_video]").on('change', function (){
+                var file = $(this)[0].files[0];
+                var url = getImageURL(file);
+                $('.goods-video').attr('src', url);
+                $('.goods-video-js').attr('src', url);
+                $('.goods-video-div').show();
             });
 
             //图片库选择图片

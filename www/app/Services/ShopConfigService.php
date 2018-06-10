@@ -11,6 +11,7 @@ namespace App\Services;
 use App\Facades\LangConfig;
 use App\Helper\FileHelper;
 use App\Http\Models\Shop\ShopConfigModel;
+use Illuminate\Support\Facades\Cache;
 
 class ShopConfigService
 {
@@ -74,7 +75,7 @@ class ShopConfigService
         $m = (new ShopConfigModel);
         /* 保存变量值 */
         if ($groups != 'shop') {
-            $item_list = $m->getGroupsConfig(['shop_group'=>$groups]);
+            $item_list = $m->getGroupsConfig(['shop_group' => $groups]);
         } else {
             $item_list = $m->getConf();
         }
@@ -188,5 +189,21 @@ class ShopConfigService
         }
         $dataOther['value'] = substr($dataOther['value'], 0, -1);
         $shopConfig->setConf($whereOther, $dataOther);
+    }
+
+    public static function getConfigAll()
+    {
+        $list = Cache::get('shopConfig');
+        if (!$list) {
+            $conf_list = (new ShopConfigModel)->getAll();
+            $list = [];
+            if(!$conf_list->isEmpty()){
+                foreach ($conf_list as $val){
+                    $list[$val->code] = $val->value;
+                }
+                Cache::forever('shopConfig', $list);
+            }
+        }
+        return $list;
     }
 }

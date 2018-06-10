@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\BrandRepository;
 use App\Repositories\ComCateRepository;
 use App\Repositories\GalleryRepository;
@@ -10,6 +11,8 @@ use App\Repositories\GoodsRepository;
 use App\Repositories\GoodsTypeRepository;
 use App\Repositories\TransportRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
 
 class GoodsController extends CommonController
 {
@@ -193,12 +196,11 @@ class GoodsController extends CommonController
      */
     public function store(Request $request)
     {
-        dd($request->except('_token'));
         $ver = Verifiable::Validator($request->all(), ["goods_name" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->goodsRepository->addGoods($request->except('_token'));
+        $re = $this->goodsRepository->addGoods($request->except('_token'), $this->user->ru_id);
         return view('shop.admin.success');
     }
 

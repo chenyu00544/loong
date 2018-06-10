@@ -9,6 +9,21 @@ class FileHandleService
 {
 
     //上传原图
+    public static function upLoadFlie($file, $uri)
+    {
+        $bool = $file->getClientOriginalExtension() == 'mp4' || $file->getClientOriginalExtension() == 'MP4';
+        if ($bool) {
+            $filename = md5(time() . rand(10000, 99999)) . '.' . $file->getClientOriginalExtension();
+            $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
+
+            if ($path = $file->move($dir, $filename)) {
+                return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+            }
+        }
+        return 0;
+    }
+
+    //上传原图
     public static function upLoadImage($file, $uri)
     {
         $bool = self::checkFile($file);

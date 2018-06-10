@@ -47,4 +47,12 @@ class ShopConfigModel extends Model
             ->get();
     }
 
+    public function getAll()
+    {
+        return $this->select(['id','code','value'])
+            ->orderBy('sort_order', 'asc')
+            ->orderBy('id', 'asc')
+            ->get();
+    }
+
 }

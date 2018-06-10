@@ -30,7 +30,7 @@ class LoginController extends CommonController
                 }
 //                session(['user'=>$user]);
                 Cache::put('adminUser' . md5($ip) . $user->user_id, $user, 600);
-                return redirect('admin/index')->cookie('user_id', $user->user_id, 600);
+                return redirect('admin/index')->cookie('user_id', $user->user_id, 720);
             } else {
                 return back()->withErrors($validator);
             }

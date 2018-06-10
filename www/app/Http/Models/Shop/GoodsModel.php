@@ -54,4 +54,15 @@ class GoodsModel extends Model
         return $this->whereIn('goods_id', $where)
             ->update($updata);
     }
+
+    public function countGoods($where = [])
+    {
+        return $this->where($where)
+            ->count();
+    }
+
+    public function getMaxGoodsId()
+    {
+        return $this->max('goods_id');
+    }
 }
