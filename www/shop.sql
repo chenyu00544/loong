@@ -11,7 +11,7 @@
  Target Server Version : 50714
  File Encoding         : 65001
 
- Date: 11/06/2018 00:32:11
+ Date: 11/06/2018 23:34:18
 */
 
 SET NAMES utf8mb4;
@@ -886,15 +886,15 @@ INSERT INTO `cyc_gallery_album_pic` VALUES (222, '726d0487e8b5990ca5a2269790a5a5
 DROP TABLE IF EXISTS `cyc_goods`;
 CREATE TABLE `cyc_goods`  (
   `goods_id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cat_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `cat_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品导航分类',
   `user_cat` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `user_id` int(11) UNSIGNED NOT NULL,
   `goods_sn` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `bar_code` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `goods_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `goods_name_style` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '+',
+  `bar_code` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '条形码',
+  `goods_name` varchar(120) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '商品名称',
+  `goods_name_style` varchar(60) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '+' COMMENT '字体样式',
   `click_count` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `brand_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `brand_id` smallint(5) UNSIGNED NOT NULL DEFAULT 0 COMMENT '品牌ID',
   `provider_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `goods_number` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '商品库存',
   `goods_weight` decimal(10, 3) UNSIGNED NOT NULL DEFAULT 0.000 COMMENT '商品重量',
@@ -925,9 +925,9 @@ CREATE TABLE `cyc_goods`  (
   `is_best` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `is_new` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
   `is_hot` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `is_promote` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `is_volume` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `is_fullcut` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `is_promote` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '是否促销',
+  `is_volume` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '阶梯价格',
+  `is_fullcut` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '促销满减',
   `is_check` tinyint(1) UNSIGNED NULL DEFAULT NULL,
   `bonus_type_id` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `last_update` int(10) UNSIGNED NOT NULL DEFAULT 0,
@@ -936,9 +936,9 @@ CREATE TABLE `cyc_goods`  (
   `give_integral` int(11) NOT NULL DEFAULT -1 COMMENT '赠送消费积分数',
   `rank_integral` int(11) NOT NULL DEFAULT -1 COMMENT '赠送等级积分数',
   `suppliers_id` smallint(5) UNSIGNED NULL DEFAULT NULL COMMENT '供应商id',
-  `store_hot` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `store_new` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
-  `store_best` tinyint(1) UNSIGNED NOT NULL DEFAULT 0,
+  `store_hot` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '店铺热销',
+  `store_new` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '店铺新品',
+  `store_best` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '店铺精品',
   `group_number` smallint(8) UNSIGNED NOT NULL DEFAULT 0,
   `is_limit_buy` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否限购',
   `limit_buy_start_date` int(11) NOT NULL DEFAULT 0 COMMENT '限购开始时间',
@@ -962,8 +962,8 @@ CREATE TABLE `cyc_goods`  (
   `freight` tinyint(1) UNSIGNED NOT NULL DEFAULT 2,
   `shipping_fee` decimal(10, 2) NOT NULL DEFAULT 0.00,
   `tid` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '运费模板id',
-  `goods_unit` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '个',
-  `goods_cause` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `goods_unit` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '个' COMMENT '商品单位',
+  `goods_cause` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品退货标识',
   `commission_rate` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '0' COMMENT '分销佣金',
   `from_seller` int(11) NOT NULL DEFAULT 0,
   `user_brand` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '品牌统一使用平台品牌ID异步操作',
@@ -997,7 +997,7 @@ CREATE TABLE `cyc_goods`  (
   INDEX `review_status`(`review_status`) USING BTREE,
   INDEX `user_brand`(`user_brand`) USING BTREE,
   INDEX `from_seller`(`from_seller`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 909 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品信息表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 911 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_goods
@@ -1289,6 +1289,7 @@ INSERT INTO `cyc_goods` VALUES (899, 1420, 0, 0, 'ECS000899', '', '【天猫超�
 INSERT INTO `cyc_goods` VALUES (900, 1420, 0, 0, 'ECS000900', '', '润穗苏北软香稻米5kg 香软弹滑 苏北大米 苏软香 口感上层 洁白纤长 香糯可口', '+', 2, 134, '', 1000, 0.000, 0, 44.27, 0.00, 36.90, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490234264758.jpg', 'images/201703/goods_img/0_G_1490234264262.jpg', 'images/201703/source_img/0_G_1490234264009.jpg', 1, '', 1, 1, 0, 0, 1490234270, 300, 1, 1, 1, 1, 0, 0, 0, NULL, 0, 1524118091, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'runsuisubeiruanxiangdaomi5kg xiangruandanhua subeidami suruanxiang kouganshangceng jiebaixianchang xiangnuokekou', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 0, 'products', 0, 0.00, 0.00, '', 0.00, 0);
 INSERT INTO `cyc_goods` VALUES (902, 399, 0, 0, 'ECS000901', '', '阿迪达斯男鞋ZX750三叶草zx700跑步鞋S 76193 BB 1211 1213 1214 〓〓〓专柜正品 支持验货 全新现货〓〓〓', '+', 5, 132, '', 1000, 0.000, 0, 574.80, 0.00, 479.00, 0.00, 0, 0, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490915538739.jpg', 'images/201703/goods_img/0_G_1490915538881.jpg', 'images/201703/source_img/0_G_1490915538506.jpg', 1, '', 1, 1, 0, 0, 1490915605, 100, 1, 1, 1, 1, 0, 0, 0, NULL, 0, 1524118091, 6, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'adidasinanxieZX750sanyecaozx700paobuxieS 76193 BB 1211 1213 1214 zhuanguizhengpin zhichiyanhuo quanxinxianhuo', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 0, 'products', 0, 0.00, 0.00, '', 0.00, 0);
 INSERT INTO `cyc_goods` VALUES (903, 404, 0, 0, 'ECS000903', '', '正品直邮Hermes爱马仕2017新款男鞋 时尚真皮休闲鞋H171325ZH02   7495', '+', 13, 132, '', 998, 0.000, 0, 957.60, 0.00, 798.00, 11.00, 1491000806, 1493247209, 1, '', '', '', '', 'images/201703/thumb_img/0_thumb_G_1490915806032.jpg', 'images/201703/goods_img/0_G_1490915806785.jpg', 'images/201703/source_img/0_G_1490915806993.jpg', 1, '', 1, 1, 0, 0, 1490915820, 100, 1, 1, 1, 1, 1, 0, 0, NULL, 0, 1524198599, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'zhengpinzhiyouHermesaimashi2017xinkuannanxie shishangzhenpixiuxianxieH171325ZH02   7495', '', NULL, '', 0.00, 2, 0.00, 0, '个', '', '0', 0, 0, 'products', 0, 0.00, 0.00, '', 0.00, 0);
+INSERT INTO `cyc_goods` VALUES (909, 16, 0, 0, 'CYC_90443898', '', 'test', '#ab3030', 0, 7, '', 1000, 0.000, 0, 172.80, 67.00, 144.00, 0.00, 0, 0, 1, '', '', '', '<img src=\"http://localhost/upload\\gallery_album\\15\\original_img\\320ef71f7540685ef09f21cca7eda972.jpg\"><img src=\"http://localhost/upload\\gallery_album\\15\\original_img\\5fe75eb877d6f1120715fc2877ad7b64.jpg\"><img src=\"http://localhost/upload\\gallery_album\\15\\original_img\\8c817529312441e1428229afb9261fbf.jpg\"><img src=\"http://localhost/upload\\gallery_album\\15\\original_img\\999963ea91892658e1f2f77580baa945.jpg\">', 'images/201703/thumb_img/_thumb_P_1490159423081.jpg', 'images/201703/goods_img/_P_1490159423807.jpg', 'images/201703/source_img/_P_1490159423614.jpg', 1, '', 1, 1, 1, 0, 0, 100, 0, 1, 1, 1, 0, 0, 0, NULL, 0, 0, 0, '', 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 3, '', '', 0, 0, 0, 0, 0, 0, 0.00, 'test', NULL, NULL, '', 0.50, 2, 0.00, 17, '个', '1,2', '0', 0, 0, 'products', 0, 0.00, 0.00, 'upload\\gallery_album\\goods_gallery\\video\\5b6ecc8c9afb4899aa85b4f026c902ba.mp4', 0.00, 5);
 
 -- ----------------------------
 -- Table structure for cyc_goods_attr
@@ -6289,7 +6290,7 @@ CREATE TABLE `cyc_goods_gallery`  (
   `dis_id` mediumint(8) NULL DEFAULT NULL COMMENT '讨论圈ID（此字段暂时无用）',
   PRIMARY KEY (`img_id`) USING BTREE,
   INDEX `goods_id`(`goods_id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1299 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品多图信息表' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 1300 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '产品多图信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cyc_goods_gallery
@@ -7297,6 +7298,7 @@ INSERT INTO `cyc_goods_gallery` VALUES (1296, 0, 100, 'upload\\gallery_album\\go
 INSERT INTO `cyc_goods_gallery` VALUES (1291, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\4a99f2a46f2e8614925ad4913c5caf06.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\70db5c0b5816cbc5d5b5b522b7ccfe70.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\fb59acb7c0c3c7857a1d20d009955162.png', 0, '', 0, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1277, 0, 100, 'upload\\gallery_album\\15\\exhibition_img\\e8a02a0b41b064af9c1a2811fe4c81b3.jpg', 'upload\\gallery_album\\15\\thumb_img\\84de0265ae80431fd9803c67622b8a0d.jpg', 'upload\\gallery_album\\15\\original_img\\a352f768210961499a8f4d72603bcc12.jpg', 1, '', 0, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1298, 0, 100, 'upload\\gallery_album\\15\\exhibition_img\\a00b203c96ab2b43ef4803a6345e0f58.jpg', 'upload\\gallery_album\\15\\thumb_img\\881e99b8ce098562aea5aab077feadf4.jpg', 'upload\\gallery_album\\15\\original_img\\999963ea91892658e1f2f77580baa945.jpg', 1, '', 0, NULL);
+INSERT INTO `cyc_goods_gallery` VALUES (1299, 0, 100, 'upload\\gallery_album\\15\\exhibition_img\\5a20e2e29172e97370db30627dd90911.jpg', 'upload\\gallery_album\\15\\thumb_img\\08410c4a5e546c27b384fc20fa7f99b0.jpg', 'upload\\gallery_album\\15\\original_img\\0d7a86219d2cf02753d926d57250b4d3.png', 1, '', 0, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1281, 0, 100, 'upload\\gallery_album\\15\\exhibition_img\\5fed92f93538a4bfc30eb5ad654bbe81.jpg', 'upload\\gallery_album\\15\\thumb_img\\ebaca028542adab03875eb263cb3dd52.jpg', 'upload\\gallery_album\\15\\original_img\\6d6eadb325e78440fa5696c815553e29.jpg', 1, '', 0, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1292, 0, 100, 'upload\\gallery_album\\goods_gallery\\exhibition_img\\b128bdab0f4b248a39cc4991742ce1ec.jpg', 'upload\\gallery_album\\goods_gallery\\thumb_img\\e785e6b469458eee34a1fe23a73f422d.jpg', 'upload\\gallery_album\\goods_gallery\\original_img\\46ca9e1cd33f769875ff625737f9d11b.png', 0, '', 0, NULL);
 INSERT INTO `cyc_goods_gallery` VALUES (1293, 0, 0, 'upload\\gallery_album\\15\\exhibition_img\\a0c8139004838b8d1aaabd9256551c86.jpg', 'upload\\gallery_album\\15\\thumb_img\\eeb9e8ddf2caacde1bf61a5eff00388b.jpg', 'upload\\gallery_album\\15\\original_img\\a2bd43b3da7f5a4e3ff4a5061a198176.png', 1, '', 1, NULL);

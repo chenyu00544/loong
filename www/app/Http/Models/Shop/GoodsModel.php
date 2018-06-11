@@ -55,6 +55,11 @@ class GoodsModel extends Model
             ->update($updata);
     }
 
+    public function addGoods($data)
+    {
+        return $this->create($data);
+    }
+
     public function countGoods($where = [])
     {
         return $this->where($where)

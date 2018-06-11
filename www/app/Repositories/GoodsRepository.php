@@ -11,6 +11,7 @@ namespace App\Repositories;
 use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\FileHandle;
 use App\Facades\LangConfig;
+use App\Facades\Pinyin;
 use App\Facades\ShopConfig;
 use App\Facades\Url;
 use App\Http\Models\Shop\BrandModel;
@@ -198,7 +199,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         //检查货号是否重复
         $shopConf = ShopConfig::getConfigAll();
         $snPrefix = $shopConf['sn_prefix'];
-        $maxGoodsId = $this->goodsModel->getMaxGoodsId()+1;
+        $maxGoodsId = $this->goodsModel->getMaxGoodsId() + 1;
         if ($goodsData['goods_sn']) {
             $goodsCount = $this->goodsModel->countGoods(['user_id' => $ru_id, 'goods_sn' => $goodsData['goods_sn']]);
             if ($goodsCount > 0) {
@@ -220,15 +221,18 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goodsData['goods_img'] = $goodsGallery->img_url;
             $goodsData['original_img'] = $goodsGallery->img_original;
         }
-        $goodsData['shop_price'] = round((!empty($data['shop_price']) ? trim($data['shop_price']) : 0),2);
-        $goodsData['market_price'] = round((!empty($data['market_price']) ? trim($data['market_price']) : 0),2);
-        $goodsData['cost_price'] = round((!empty($data['cost_price']) ? trim($data['cost_price']) : 0),2);
+        $goodsData['shop_price'] = round((!empty($data['shop_price']) ? trim($data['shop_price']) : 0), 2);
+        $goodsData['market_price'] = round((!empty($data['market_price']) ? trim($data['market_price']) : 0), 2);
+        $goodsData['cost_price'] = round((!empty($data['cost_price']) ? trim($data['cost_price']) : 0), 2);
 
         //促销价格和开始结束时间
         $goodsData['is_promote'] = !empty($data['is_promote']) ? trim($data['is_promote']) : 0;
-        $goodsData['promote_price'] = round((!empty($data['promote_price']) ? trim($data['promote_price']) : 0),2);
+        $goodsData['promote_price'] = round((!empty($data['promote_price']) ? trim($data['promote_price']) : 0), 2);
         $goodsData['promote_start_date'] = !empty($data['promote_start_date']) ? trim($data['promote_start_date']) : 0;
         $goodsData['promote_end_date'] = !empty($data['promote_end_date']) ? trim($data['promote_end_date']) : 0;
+
+        $goodsData['goods_desc'] = !empty($data['goods_desc']) ? trim($data['goods_desc']) : '';
+        $goodsData['desc_mobile'] = !empty($data['desc_mobile']) ? trim($data['desc_mobile']) : '';
 
         $goodsData['goods_weight'] = !empty($data['goods_weight']) ? $data['goods_weight'] * $data['weight_unit'] : 0;
         $goodsData['is_best'] = !empty($data['is_best']) ? 1 : 0;
@@ -246,130 +250,79 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['suppliers_id'] = !empty($data['suppliers_id']) ? trim($data['suppliers_id']) : 0;
         $goodsData['commission_rate'] = !empty($data['commission_rate']) ? trim($data['commission_rate']) : 0;
 
-        if(!empty($data['goods_video'])){
+        if (!empty($data['goods_video'])) {
             $original_mp4 = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'video';
-            $goodsData['goods_video'] = FileHandle::upLoadFlie($data['goods_video'], $original_mp4);dd($goodsData['goods_video']);
+            $goodsData['goods_video'] = FileHandle::upLoadFlie($data['goods_video'], $original_mp4);
         }
 
-//        $is_volume = isset($_POST['is_volume']) && !empty($_POST['is_volume']) ? intval($_POST['is_volume']) : 0;
-//        $is_fullcut = isset($_POST['is_fullcut']) && !empty($_POST['is_fullcut']) ? intval($_POST['is_fullcut']) : 0;
-//
-//        $review_status = isset($_POST['review_status']) ? intval($_POST['review_status']) : 5;
-//        $review_content = isset($_POST['review_content']) && !empty($_POST['review_content']) ? addslashes(trim($_POST['review_content'])) : '';
-//
-//        /* 微分销 */
-//        $is_distribution = isset($_POST['is_distribution']) ? intval($_POST['is_distribution']) : 0; //如果选择商品分销则判断分销佣金百分比是否在0-100之间 如果不是则设置无效 liu  dis
-//
-//        if ($is_distribution == 1) {
-//            $dis_commission = ($_POST['dis_commission'] > 0 && $_POST['dis_commission'] <= 100) ? intval($_POST['dis_commission']) : 0;
+        $goodsData['is_volume'] = !empty($data['is_volume']) ? intval($data['is_volume']) : 0;
+        $goodsData['is_fullcut'] = !empty($data['is_fullcut']) ? intval($data['is_fullcut']) : 0;
+        $goodsData['review_status'] = !empty($data['review_status']) ? intval($data['review_status']) : 5;
+        $goodsData['review_content'] = '';
+
+        /** 微分销 **/
+        $goodsData['is_distribution'] = !empty($data['is_distribution']) ? intval($data['is_distribution']) : 5;
+        $goodsData['dis_commission'] = !empty($data['is_distribution']) && ($data['dis_commission'] > 0 && $data['dis_commission'] <= 100) ? intval($data['dis_commission']) : 0;
+
+        $goodsData['goods_unit'] = !empty($data['goods_unit']) ? trim($data['goods_unit']) : '个';
+        $goodsData['bar_code'] = !empty($data['bar_code']) ? trim($data['bar_code']) : '';
+
+        $goodsData['goods_name_style'] = !empty($data['goods_name_color']) ? trim($data['goods_name_color']) : '#000000';
+
+        $goodsData['cat_id'] = !empty($data['cat_id']) ? intval($data['cat_id']) : '';
+        if (empty($data['cat_id'])) {
+            $goodsData['cat_id'] = !empty($data['recently_used_category']) ? intval($data['recently_used_category']) : '';
+        }
+
+        $goodsData['brand_id'] = !empty($data['brand_id']) ? intval($data['brand_id']) : '';
+
+        //插入admin_user 常用导航分类
+
+        //分期
+//        $is_stages = !empty($data['is_stages']) ? intval($data['is_stages']) : 0;
+//        if (empty($is_stages)) {
+//            $stages = serialize(!empty($data['stages_num']) ? intval($data['stages_num']) : []);
 //        }
-//
-//        $goods_unit = isset($_POST['goods_unit']) ? trim($_POST['goods_unit']) : '个';//商品单位
-//
-//        $bar_code = isset($_POST['bar_code']) && !empty($_POST['bar_code']) ? trim($_POST['bar_code']) : '';
-//        $goods_name_style = $_POST['goods_name_color'] . '+' . $_POST['goods_name_style'];
-//        $other_catids = isset($_POST['other_catids']) ? trim($_POST['other_catids']) : '';
-//
-//        $catgory_id = empty($_POST['cat_id']) ? '' : intval($_POST['cat_id']);
-//        //常用分类 by wu
-//        if (empty($catgory_id)) {
-//            $catgory_id = intval($_POST['recently_used_category']);
-//        }
-//
-//        $brand_id = empty($_POST['brand_id']) ? '' : intval($_POST['brand_id']);
-//
-//        //ecmoban模板堂 --zhuo
-//        $store_category = !empty($_POST['store_category']) ? intval($_POST['store_category']) : 0;
-//        if ($store_category > 0) {
-//            $catgory_id = $store_category;
-//        }
-//
-//        if ($is_insert){
-//            insert_recently_used_category($catgory_id, $admin_id);
-//        }
-//
-//        /* ecmoban模板堂  序列化分期送期数数据   start bylu */
-//        if ($_POST['is_stages']) {
-//            $stages = serialize($_POST['stages_num']); //分期期数;
-//        }else{
-//            $stages = '';
-//        }
-//
-//        $stages_rate = isset($_POST['stages_rate']) && !empty($_POST['stages_rate']) ? floatval($_POST['stages_rate']) : 0; //分期费率;
+        //分期费率;
+//        $stages_rate = isset($data['stages_rate']) && !empty($data['stages_rate']) ? floatval($data['stages_rate']) : 0;
 //        /* ecmoban模板堂  end bylu */
-//
-//        $adminru = get_admin_ru_id();
-//
-//        $model_price = isset($_POST['model_price']) ? intval($_POST['model_price']) : 0;
-//        $model_inventory = isset($_POST['model_inventory']) ? intval($_POST['model_inventory']) : 0;
-//        $model_attr = isset($_POST['model_attr']) ? intval($_POST['model_attr']) : 0;
-//
-//        //ecmoban模板堂 --zhuo start 限购
-//        $xiangou_num = !empty($_POST['xiangou_num']) ? intval($_POST['xiangou_num'])  : 0;
-//        $is_xiangou = empty($xiangou_num) ? 0 : 1;
-//        $xiangou_start_date = ($is_xiangou && !empty($_POST['xiangou_start_date'])) ? local_strtotime($_POST['xiangou_start_date']) : 0;
-//        $xiangou_end_date = ($is_xiangou && !empty($_POST['xiangou_end_date'])) ? local_strtotime($_POST['xiangou_end_date']) : 0;
-//        //ecmoban模板堂 --zhuo end 限购
-//
-//        //ecmoban模板堂 --zhuo start 促销满减
-//        $cfull      = isset($_POST['cfull']) ? $_POST['cfull'] : array();
-//        $creduce    = isset($_POST['creduce']) ? $_POST['creduce'] : array();
-//        $c_id    = isset($_POST['c_id']) ? $_POST['c_id'] : array();
-//
-//        $sfull      = isset($_POST['sfull']) ? $_POST['sfull'] : array();
-//        $sreduce    = isset($_POST['sreduce']) ? $_POST['sreduce'] : array();
-//        $s_id    = isset($_POST['s_id']) ? $_POST['s_id'] : array();
-//
-//        $largest_amount = !empty($_POST['largest_amount']) ? trim($_POST['largest_amount'])  : 0;
-//        $largest_amount = floatval($largest_amount);
-//        //ecmoban模板堂 --zhuo end 促销满减
-//
-//        $group_number = !empty($_POST['group_number']) ? intval($_POST['group_number']) : 0;
-//
-//        $store_new = isset($_POST['store_new']) && !empty($_POST['store_new']) ? 1 : 0;
-//        $store_hot = isset($_POST['store_hot']) && !empty($_POST['store_hot']) ? 1 : 0;
-//        $store_best = isset($_POST['store_best']) && !empty($_POST['store_best']) ? 1 : 0;
-//
-//        $goods_name = trim($_POST['goods_name']);
-//        //by guan start
-//        $pin = new pin();
-//        $pinyin = $pin->Pinyin($goods_name, 'UTF8');
-//        //by guan end
-//
-//        $user_cat = !empty($_POST['user_cat']) ? intval($_POST['user_cat']) : 0;
-//
-//        /* 微分销 */
-//        $where_drp_sql = '';
-//        $where_drp_val = '';
-//        if (file_exists(MOBILE_DRP)) {
-//            $where_drp_sql = ", is_distribution, dis_commission";
-//            $where_drp_val = ", '$is_distribution', '$dis_commission'";
-//        }
-//
-//        /* 商品运费 by wu start */
-//        $freight = empty($_POST['freight']) ? 0 : intval($_POST['freight']);
-//        $shipping_fee = !empty($_POST['shipping_fee']) && $freight == 1 ? floatval($_POST['shipping_fee']) : '0.00';
-//        $tid = !empty($_POST['tid']) && $freight == 2 ? intval($_POST['tid']) : 0;
-//        if ($is_insert) {
-//            $freight_insert_key = ", freight, shipping_fee, tid";
-//            $freight_insert_val = ", '$freight', '$shipping_fee', '$tid'";
-//        } else {
-//            $freight_update_data = " freight = '$freight'," .
-//                " shipping_fee = '$shipping_fee'," .
-//                " tid = '$tid',";
-//        }
-//        /* 商品运费 by wu end */
-//
-//        $goods_cause = "";
-//        $cause = !empty($_REQUEST['return_type']) ? $_REQUEST['return_type'] : 0;
-//        for ($i = 0; $i < count($cause); $i++) {
-//            if ($i == 0)
-//                $goods_cause = $cause[$i];
-//            else
-//                $goods_cause = $goods_cause . "," . $cause[$i];
-//        }
 
 
+        $goodsData['model_price'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
+        $goodsData['model_inventory'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
+        $goodsData['model_attr'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
+
+        //限购
+        $goodsData['is_limit_buy'] = !empty($data['is_limit_buy']) ? 1 : 0;
+        $goodsData['limit_buy_num'] = !empty($data['limit_buy_num']) ? intval($data['limit_buy_num']) : 0;
+        $goodsData['limit_buy_start_date'] = !empty($data['limit_buy_start_date']) ? strtotime($data['limit_buy_start_date']) : 0;
+        $goodsData['limit_buy_end_date'] = !empty($data['limit_buy_end_date']) ? strtotime($data['limit_buy_end_date']) : 0;
+
+        //促销满减
+        $goodsData['is_fullcut'] = !empty($data['is_fullcut']) ? 1 : 0;
+
+        $goodsData['store_new'] = !empty($data['store_new']) ? 1 : 0;
+        $goodsData['store_hot'] = !empty($data['store_hot']) ? 1 : 0;
+        $goodsData['store_best'] = !empty($data['store_best']) ? 1 : 0;
+
+        $goodsData['goods_name'] = !empty($data['goods_name']) ? trim($data['goods_name']) : '';
+
+        $goodsData['pinyin_keyword'] = Pinyin::Pinyin($goodsData['goods_name'], 'UTF8');
+
+
+        /* 商品运费 */
+        $goodsData['freight'] = !empty($data['freight']) ? intval($data['freight']) : 0;
+        $goodsData['shipping_fee'] = !empty($data['shipping_fee']) && $goodsData['freight'] == 1 ? floatval($data['shipping_fee']) : '0.00';
+        $goodsData['tid'] = !empty($data['tid']) && $goodsData['freight'] == 2 ? intval($data['tid']) : 0;
+
+        $goodsData['goods_cause'] = "";
+        $cause = !empty($data['return_type']) ? $data['return_type'] : [];
+        $goodsData['goods_cause'] = implode(',', $cause);
+
+        $goods = $this->goodsModel->addGoods($goodsData);
+        dd($goods->goods_id);
+
+        $other_catids = !empty($data['other_catids']) ? trim($data['other_catids']) : '';
         dd($data);
     }
 

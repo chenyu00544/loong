@@ -24,7 +24,10 @@
                     <form enctype="multipart/form-data" action="{{url('admin/goods')}}" method="post"
                           class="form-horizontal">
                         {{csrf_field()}}
-
+                        <input type="hidden" name="goods_id" value="0">
+                        <input type="hidden" name="review_status" value="3">
+                        <input type="hidden" name="other_catids" value="">
+                        <input type="hidden" name="ru_id" value="0">
                         <div class="flexilist">
                             <div class="stepflex">
                                 <dl class="first cur" data-step="1">
@@ -85,7 +88,7 @@
 
                             <div class="step-near fl clearfix">
                                 <strong class="fl lh36">您最近使用的商品分类：</strong>
-                                <select name="" id="" class="form-control fl max-wd-450">
+                                <select name="recently_used_category" id="" class="form-control fl max-wd-450">
                                     <option value="0">请选择</option>
                                 </select>
                                 <a class="btn btn-primary btn-select mar-left-10 fl">添加</a>
@@ -538,10 +541,10 @@
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_xiangou" value="0" checked> 否
+                                                    <input type="radio" name="is_limit_buy" value="0" checked> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_xiangou" value="1"> 是
+                                                    <input type="radio" name="is_limit_buy" value="1"> 是
                                                 </label>
                                             </div>
                                         </div>
@@ -655,6 +658,17 @@
                                             </select>
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="item">
+                                        <div class="step-label">商品单位：</div>
+                                        <div class="step-value">
+                                            <input type="text" name="goods_unit"
+                                                   class="form-control max-wd-350 hg30 fl "
+                                                   autocomplete="off" value="个">
+                                            <div class="form-prompt"></div>
+                                            <div class="notic fl mar-left-10">比如：个，件，份，套。默认为个</div>
                                         </div>
                                     </div>
 

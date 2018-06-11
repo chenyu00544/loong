@@ -187,6 +187,7 @@ return [
         App\Providers\UrlServiceProvider::class,
         App\Providers\ExpressServiceProvider::class,
         App\Providers\TokenServiceProvider::class,
+        App\Providers\PinyinServiceProvider::class,
 //        Intervention\Image\ImageServiceProvider::class,
     ],
 
@@ -247,6 +248,7 @@ return [
         'Url' => App\Facades\Url::class,
         'Express' => App\Facades\Express::class,
         'Token' => App\Facades\Token::class,
+        'Pinyin' => App\Facades\Pinyin::class,
 //        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
