@@ -18,9 +18,10 @@ class GoodsCateModel extends Model
             ->get();
     }
 
-    public function setGoodsCate()
+    public function setGoodsCate($where, $data)
     {
-        
+        return $this->where($where)
+            ->update($data);
     }
 
     public function addGoodsCate($data)

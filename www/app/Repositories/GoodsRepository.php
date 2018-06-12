@@ -16,7 +16,9 @@ use App\Facades\ShopConfig;
 use App\Facades\Url;
 use App\Http\Models\Shop\BrandModel;
 use App\Http\Models\shop\CategoryModel;
+use App\Http\Models\Shop\GoodsAttrModel;
 use App\Http\Models\Shop\GoodsCateModel;
+use App\Http\Models\Shop\GoodsChangeLogModel;
 use App\Http\Models\Shop\GoodsExtendModel;
 use App\Http\Models\Shop\GoodsGalleryModel;
 use App\Http\Models\Shop\GoodsModel;
@@ -36,28 +38,34 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $intelligentWeightModel;
     private $categoryModel;
     private $goodsGalleryModel;
+    private $goodsChangeLogModel;
+    private $goodsAttrModel;
 
     public function __construct(
         ShopConfigModel $shopConfigModel,
         GoodsModel $goodsModel,
         GoodsCateModel $goodsCateModel,
+        GoodsGalleryModel $goodsGalleryModel,
+        GoodsChangeLogModel $goodsChangeLogModel,
+        GoodsExtendModel $goodsExtendModel,
+        GoodsAttrModel $goodsAttrModel,
         BrandModel $brandModel,
         TransportModel $transportModel,
-        GoodsExtendModel $goodsExtendModel,
         IntelligentWeightModel $intelligentWeightModel,
-        CategoryModel $categoryModel,
-        GoodsGalleryModel $goodsGalleryModel
+        CategoryModel $categoryModel
     )
     {
         $this->shopConfigModel = $shopConfigModel;
         $this->goodsModel = $goodsModel;
         $this->goodsCateModel = $goodsCateModel;
+        $this->goodsAttrModel = $goodsAttrModel;
+        $this->goodsExtendModel = $goodsExtendModel;
+        $this->goodsGalleryModel = $goodsGalleryModel;
+        $this->goodsChangeLogModel = $goodsChangeLogModel;
         $this->brandModel = $brandModel;
         $this->transportModel = $transportModel;
-        $this->goodsExtendModel = $goodsExtendModel;
         $this->intelligentWeightModel = $intelligentWeightModel;
         $this->categoryModel = $categoryModel;
-        $this->goodsGalleryModel = $goodsGalleryModel;
     }
 
     public function getGroupsConfig($groups)
@@ -215,15 +223,19 @@ class GoodsRepository implements GoodsRepositoryInterface
         if (!empty($data['goods_gallery_id'])) {
             $gallery_id = trim($data['goods_gallery_id']);
         }
-        $goodsGallery = $this->goodsGalleryModel->getGoodsGallery(['img_id' => $gallery_id]);
-        if ($goodsGallery->count() > 0) {
+        if ($gallery_id == '') {
+            $goodsGallery = $this->goodsGalleryModel->getGoodsGallery(['goods_id' => 0]);
+        } else {
+            $goodsGallery = $this->goodsGalleryModel->getGoodsGallery(['img_id' => $gallery_id]);
+        }
+        if (!empty($goodsGallery)) {
             $goodsData['goods_thumb'] = $goodsGallery->thumb_url;
             $goodsData['goods_img'] = $goodsGallery->img_url;
             $goodsData['original_img'] = $goodsGallery->img_original;
         }
-        $goodsData['shop_price'] = round((!empty($data['shop_price']) ? trim($data['shop_price']) : 0), 2);
-        $goodsData['market_price'] = round((!empty($data['market_price']) ? trim($data['market_price']) : 0), 2);
-        $goodsData['cost_price'] = round((!empty($data['cost_price']) ? trim($data['cost_price']) : 0), 2);
+        $goodsData['shop_price'] = round((!empty($data['shop_price']) ? round($data['shop_price'], 2) : 0), 2);
+        $goodsData['market_price'] = round((!empty($data['market_price']) ? round($data['market_price'], 2) : 0), 2);
+        $goodsData['cost_price'] = round((!empty($data['cost_price']) ? round($data['cost_price'], 2) : 0), 2);
 
         //促销价格和开始结束时间
         $goodsData['is_promote'] = !empty($data['is_promote']) ? trim($data['is_promote']) : 0;
@@ -231,7 +243,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['promote_start_date'] = !empty($data['promote_start_date']) ? trim($data['promote_start_date']) : 0;
         $goodsData['promote_end_date'] = !empty($data['promote_end_date']) ? trim($data['promote_end_date']) : 0;
 
-        $goodsData['goods_desc'] = !empty($data['goods_desc']) ? trim($data['goods_desc']) : '';
+        $goodsData['goods_desc'] = !empty($data['content']) ? trim($data['content']) : '';
         $goodsData['desc_mobile'] = !empty($data['desc_mobile']) ? trim($data['desc_mobile']) : '';
 
         $goodsData['goods_weight'] = !empty($data['goods_weight']) ? $data['goods_weight'] * $data['weight_unit'] : 0;
@@ -287,7 +299,6 @@ class GoodsRepository implements GoodsRepositoryInterface
 //        $stages_rate = isset($data['stages_rate']) && !empty($data['stages_rate']) ? floatval($data['stages_rate']) : 0;
 //        /* ecmoban模板堂  end bylu */
 
-
         $goodsData['model_price'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
         $goodsData['model_inventory'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
         $goodsData['model_attr'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
@@ -309,10 +320,9 @@ class GoodsRepository implements GoodsRepositoryInterface
 
         $goodsData['pinyin_keyword'] = Pinyin::Pinyin($goodsData['goods_name'], 'UTF8');
 
-
         /* 商品运费 */
         $goodsData['freight'] = !empty($data['freight']) ? intval($data['freight']) : 0;
-        $goodsData['shipping_fee'] = !empty($data['shipping_fee']) && $goodsData['freight'] == 1 ? floatval($data['shipping_fee']) : '0.00';
+        $goodsData['shipping_fee'] = !empty($data['shipping_fee']) && $goodsData['freight'] == 1 ? floatval(round($data['shipping_fee'], 2)) : '0.00';
         $goodsData['tid'] = !empty($data['tid']) && $goodsData['freight'] == 2 ? intval($data['tid']) : 0;
 
         $goodsData['goods_cause'] = "";
@@ -320,9 +330,39 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['goods_cause'] = implode(',', $cause);
 
         $goods = $this->goodsModel->addGoods($goodsData);
-        dd($goods->goods_id);
+        if ($goods->goods_id > 0) {
+            //更新商品相册
+            $this->goodsGalleryModel->setGoodsGallery(['goods_id' => 0], ['goods_id' => $goods->goods_id]);
 
-        $other_catids = !empty($data['other_catids']) ? trim($data['other_catids']) : '';
+            //更新扩展分类
+            $this->goodsCateModel->setGoodsCate(['goods_id' => 0], ['goods_id' => $goods->goods_id]);
+
+            //添加商品属性
+            $attr_id_listO = !empty($data['attr_id_listO']) ? $data['attr_id_listO'] : [];
+            $attr_value_list = !empty($data['attr_value_list']) ? $data['attr_value_list'] : [];
+            $attrData['goods_id'] = $attr_id_listO[$goods->goods_id];
+            $attrData['admin_id'] = $ru_id;
+            for ($i = 0; $i < count($attr_id_listO); $i++) {
+                $attrData['attr_id'] = $attr_id_listO[$i];
+                $attrData['attr_value'] = $attr_value_list[$i];
+                $attrData['attr_sort'] = 0;
+                $this->goodsAttrModel->addGoodsAttr($attrData);
+            }
+
+            $attr_id_listM = !empty($data['attr_id_listM']) ? $data['attr_id_listM'] : [];
+            $attr_value_list1 = !empty($data['attr_value_list1']) ? $data['attr_value_list1'] : [];
+            $attr_sort = !empty($data['attr_sort']) ? $data['attr_sort'] : [];
+            for ($i = 0; $i < count($attr_id_listM); $i++) {
+                $attrData['attr_id'] = $attr_id_listM[$i];
+                for ($j = 0; $j < count($attr_value_list1[$attr_id_listM[$i]]); $j++) {
+                    $attrData['attr_value'] = $attr_value_list1[$i][$j];
+                    $attrData['attr_sort'] = $attr_sort[$attr_id_listM[$i]][$j];
+                    $attr_id = $this->goodsAttrModel->addGoodsAttr($attrData);
+                    $attr_ids[$i][] = $attr_id->goods_attr_id;
+                }
+            }
+        }
+
         dd($data);
     }
 
