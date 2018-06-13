@@ -340,7 +340,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             //添加商品属性
             $attr_id_listO = !empty($data['attr_id_listO']) ? $data['attr_id_listO'] : [];
             $attr_value_list = !empty($data['attr_value_list']) ? $data['attr_value_list'] : [];
-            $attrData['goods_id'] = $attr_id_listO[$goods->goods_id];
+            $attrData['goods_id'] = $goods->goods_id;
             $attrData['admin_id'] = $ru_id;
             for ($i = 0; $i < count($attr_id_listO); $i++) {
                 $attrData['attr_id'] = $attr_id_listO[$i];
@@ -352,17 +352,43 @@ class GoodsRepository implements GoodsRepositoryInterface
             $attr_id_listM = !empty($data['attr_id_listM']) ? $data['attr_id_listM'] : [];
             $attr_value_list1 = !empty($data['attr_value_list1']) ? $data['attr_value_list1'] : [];
             $attr_sort = !empty($data['attr_sort']) ? $data['attr_sort'] : [];
+            $attr = !empty($data['attr']) ? $data['attr'] : [];
             for ($i = 0; $i < count($attr_id_listM); $i++) {
                 $attrData['attr_id'] = $attr_id_listM[$i];
                 for ($j = 0; $j < count($attr_value_list1[$attr_id_listM[$i]]); $j++) {
-                    $attrData['attr_value'] = $attr_value_list1[$i][$j];
+                    $attrData['attr_value'] = $attr_value_list1[$attr_id_listM[$i]][$j];
                     $attrData['attr_sort'] = $attr_sort[$attr_id_listM[$i]][$j];
+
                     $attr_id = $this->goodsAttrModel->addGoodsAttr($attrData);
-                    $attr_ids[$i][] = $attr_id->goods_attr_id;
+                    foreach ($attr[$attr_id_listM[$i]] as $k => $v){
+                        if($attr[$attr_id_listM[$i]][$k] == $attr_value_list1[$attr_id_listM[$i]][$j]){
+                            $attr[$attr_id_listM[$i]][$k] = $attr_id->goods_attr_id;
+                        }
+                    }
                 }
             }
-        }
 
+            $product_market_price = !empty($data['product_market_price']) ? $data['product_market_price'] : [];
+            $product_price = !empty($data['product_price']) ? $data['product_price'] : [];
+            $product_promote_price = !empty($data['product_promote_price']) ? $data['product_promote_price'] : [];
+            $product_number = !empty($data['product_number']) ? $data['product_number'] : [];
+            $product_warn_number = !empty($data['product_warn_number']) ? $data['product_warn_number'] : [];
+            $product_sn = !empty($data['product_sn']) ? $data['product_sn'] : [];
+            $product_bar_code = !empty($data['product_bar_code']) ? $data['product_bar_code'] : [];
+            $product['goods_id'] = $goods->goods_id;
+            $goods_attr = [];
+            foreach ($attr as $key => $val){
+                foreach ($val as $k => $v){
+                    if($key == 0){
+                        $goods_attr[] = $v;
+                    }else{
+                        $goods_attr[$k] .= '|'.$v;
+                    }
+                }
+            }
+
+            dd($goods_attr);
+        }
         dd($data);
     }
 
