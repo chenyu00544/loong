@@ -22,6 +22,7 @@ use App\Http\Models\Shop\GoodsChangeLogModel;
 use App\Http\Models\Shop\GoodsExtendModel;
 use App\Http\Models\Shop\GoodsGalleryModel;
 use App\Http\Models\Shop\GoodsModel;
+use App\Http\Models\Shop\ProductsModel;
 use App\Http\Models\Shop\TransportModel;
 use App\Http\Models\Shop\IntelligentWeightModel;
 use App\Http\Models\Shop\ShopConfigModel;
@@ -40,6 +41,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $goodsGalleryModel;
     private $goodsChangeLogModel;
     private $goodsAttrModel;
+    private $productsModel;
 
     public function __construct(
         ShopConfigModel $shopConfigModel,
@@ -52,7 +54,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         BrandModel $brandModel,
         TransportModel $transportModel,
         IntelligentWeightModel $intelligentWeightModel,
-        CategoryModel $categoryModel
+        CategoryModel $categoryModel,
+        ProductsModel $productsModel
     )
     {
         $this->shopConfigModel = $shopConfigModel;
@@ -66,6 +69,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->transportModel = $transportModel;
         $this->intelligentWeightModel = $intelligentWeightModel;
         $this->categoryModel = $categoryModel;
+        $this->productsModel = $productsModel;
     }
 
     public function getGroupsConfig($groups)
@@ -211,7 +215,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         if ($goodsData['goods_sn']) {
             $goodsCount = $this->goodsModel->countGoods(['user_id' => $ru_id, 'goods_sn' => $goodsData['goods_sn']]);
             if ($goodsCount > 0) {
-                $goodsData['goods_sn'] = $snPrefix . '_' . $maxGoodsId . rand(10000, 99999);
+                $goodsData['goods_sn'] = $snPrefix . '_' . $maxGoodsId . $goodsData['goods_sn'];
             }
         } else {
             $goodsData['goods_sn'] = $snPrefix . '_' . $maxGoodsId . rand(10000, 99999);
@@ -261,6 +265,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['integral'] = !empty($data['integral']) ? trim($data['integral']) : 0;
         $goodsData['suppliers_id'] = !empty($data['suppliers_id']) ? trim($data['suppliers_id']) : 0;
         $goodsData['commission_rate'] = !empty($data['commission_rate']) ? trim($data['commission_rate']) : 0;
+        $goodsData['extension_code'] = 'package_buy';
 
         if (!empty($data['goods_video'])) {
             $original_mp4 = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'video';
@@ -360,14 +365,15 @@ class GoodsRepository implements GoodsRepositoryInterface
                     $attrData['attr_sort'] = $attr_sort[$attr_id_listM[$i]][$j];
 
                     $attr_id = $this->goodsAttrModel->addGoodsAttr($attrData);
-                    foreach ($attr[$attr_id_listM[$i]] as $k => $v){
-                        if($attr[$attr_id_listM[$i]][$k] == $attr_value_list1[$attr_id_listM[$i]][$j]){
+                    foreach ($attr[$attr_id_listM[$i]] as $k => $v) {
+                        if ($attr[$attr_id_listM[$i]][$k] == $attr_value_list1[$attr_id_listM[$i]][$j]) {
                             $attr[$attr_id_listM[$i]][$k] = $attr_id->goods_attr_id;
                         }
                     }
                 }
             }
 
+            //添加货品
             $product_market_price = !empty($data['product_market_price']) ? $data['product_market_price'] : [];
             $product_price = !empty($data['product_price']) ? $data['product_price'] : [];
             $product_promote_price = !empty($data['product_promote_price']) ? $data['product_promote_price'] : [];
@@ -376,18 +382,30 @@ class GoodsRepository implements GoodsRepositoryInterface
             $product_sn = !empty($data['product_sn']) ? $data['product_sn'] : [];
             $product_bar_code = !empty($data['product_bar_code']) ? $data['product_bar_code'] : [];
             $product['goods_id'] = $goods->goods_id;
+            $product['admin_id'] = $ru_id;
             $goods_attr = [];
-            foreach ($attr as $key => $val){
-                foreach ($val as $k => $v){
-                    if($key == 0){
+            foreach ($attr as $key => $val) {
+                foreach ($val as $k => $v) {
+                    if (empty($goods_attr[$k])) {
                         $goods_attr[] = $v;
-                    }else{
-                        $goods_attr[$k] .= '|'.$v;
+                    } else {
+                        $goods_attr[$k] .= '|' . $v;
                     }
                 }
             }
-
-            dd($goods_attr);
+            $maxProductsId = $this->productsModel->getMaxProductsId() + 1;
+            for ($i = 0; $i < count($goods_attr); $i++) {
+                $maxProductsId += $i;
+                $product['goods_attr'] = $goods_attr[$i];
+                $product['product_sn'] = empty($product_sn[$i]) ? $goodsData['goods_sn'] . 'g_p' . $maxProductsId : $goodsData['goods_sn'] . 'g_p' . $product_sn[$i];
+                $product['bar_code'] = empty($product_bar_code[$i]) ? '' : $product_bar_code[$i];
+                $product['product_number'] = empty($product_number[$i]) ? 0 : $product_number[$i];
+                $product['product_price'] = empty($product_price[$i]) ? 0.00 : $product_price[$i];
+                $product['product_promote_price'] = empty($product_promote_price[$i]) ? 0.00 : $product_promote_price[$i];
+                $product['product_market_price'] = empty($product_market_price[$i]) ? 0.00 : $product_market_price[$i];
+                $product['product_warn_number'] = empty($product_warn_number[$i]) ? 1 : $product_warn_number[$i];
+                $this->productsModel->addProduct($product);
+            }
         }
         dd($data);
     }

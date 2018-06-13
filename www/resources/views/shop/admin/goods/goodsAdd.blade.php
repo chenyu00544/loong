@@ -357,7 +357,7 @@
                                                     <source src="" class="goods-video-js" type="video/mp4">
                                                 </video>
                                                 <div class="video_default fl"></div>
-                                                <a href="javascript:;" class="video_remove" >
+                                                <a href="javascript:;" class="video_remove">
                                                     <i class="glyphicon glyphicon-trash"></i></a>
                                             </div>
                                             <div class="form_prompt fl">
@@ -588,6 +588,41 @@
                                                 <label class="radio-inline fl padtop">
                                                     <input type="radio" name="is_volume" value="1"> 是
                                                 </label>
+                                            </div>
+                                            <div class="special-div" style="display:block">
+                                                <table class="table table-bordered volume-price" style="width: auto;">
+                                                    <tbody>
+                                                    <tr class="first-tr">
+                                                        <td class="text-center">数量</td>
+                                                        <td>
+                                                            <input type="text" name="volume_number[]" value=""
+                                                                   class="form-control max-wd-100" autocomplete="off">
+                                                            <input type="hidden" name="id[]" value="" class="text w50"
+                                                                   autocomplete="off">
+                                                        </td>
+                                                        <td class="" rowspan="3">
+                                                            <a href="javascript:;" class="add-v-p"></a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">价格</td>
+                                                        <td>
+                                                            <input type="text" name="volume_price[]"
+                                                                   value=""
+                                                                   class="form-control max-wd-100"
+                                                                   autocomplete="off">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">操作</td>
+                                                        <td class="text-center">
+                                                            <a href="javascript:;"
+                                                               class="btn btn-info btn-sm"
+                                                               data-id="">删除</a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -1128,7 +1163,7 @@
             });
 
             //上传主图视频
-            $("input[name=goods_video]").on('change', function (){
+            $("input[name=goods_video]").on('change', function () {
                 var file = $(this)[0].files[0];
                 var url = getImageURL(file);
                 $('.goods-video').attr('src', url);

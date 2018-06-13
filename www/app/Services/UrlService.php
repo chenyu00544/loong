@@ -23,13 +23,17 @@ class UrlService
         $shopConfig = Config::get('shopconfig');
 
         if (empty($uri)) {
-            return $shopConfig['cdn_url'] . 'styles/images/no_image.jpg';
+            if ($shopConfig['open_oss'] == 1) {
+                return $shopConfig['cdn_url'] . 'styles/images/no_image.jpg';
+            } else {
+                return Config::get('config')['site_domain'] . 'styles/images/no_image.png';
+            }
         }
 
         if ($shopConfig['open_oss'] == 1) {
-            return $shopConfig['cdn_url'] . 'upload/' . $uri;
+            return $shopConfig['cdn_url'] . '' . $uri;
         } else {
-            return Config::get('config')['site_domain'] . 'upload/' . $uri;
+            return Config::get('config')['site_domain'] . '' . $uri;
         }
     }
 

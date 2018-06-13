@@ -2013,4 +2013,11 @@ input[type=file].upload-file {
 #ul-pics li:not(:first-child) .zt{
     display: none;
 }
+.add-v-p {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: url(../../images/admin-icon.png) -230px -424px no-repeat;
+    margin: 0 auto;
+}
 
