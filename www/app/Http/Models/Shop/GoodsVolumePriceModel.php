@@ -10,4 +10,9 @@ class GoodsVolumePriceModel extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function addGoodsVolumePrice($data)
+    {
+        return $this->create($data);
+    }
 }

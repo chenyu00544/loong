@@ -22,6 +22,7 @@ use App\Http\Models\Shop\GoodsChangeLogModel;
 use App\Http\Models\Shop\GoodsExtendModel;
 use App\Http\Models\Shop\GoodsGalleryModel;
 use App\Http\Models\Shop\GoodsModel;
+use App\Http\Models\Shop\GoodsVolumePriceModel;
 use App\Http\Models\Shop\ProductsModel;
 use App\Http\Models\Shop\TransportModel;
 use App\Http\Models\Shop\IntelligentWeightModel;
@@ -33,14 +34,15 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $shopConfigModel;
     private $goodsModel;
     private $goodsCateModel;
+    private $goodsExtendModel;
+    private $goodsGalleryModel;
+    private $goodsAttrModel;
+    private $goodsVolumePriceModel;
+    private $goodsChangeLogModel;
     private $brandModel;
     private $transportModel;
-    private $goodsExtendModel;
     private $intelligentWeightModel;
     private $categoryModel;
-    private $goodsGalleryModel;
-    private $goodsChangeLogModel;
-    private $goodsAttrModel;
     private $productsModel;
 
     public function __construct(
@@ -51,6 +53,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         GoodsChangeLogModel $goodsChangeLogModel,
         GoodsExtendModel $goodsExtendModel,
         GoodsAttrModel $goodsAttrModel,
+        GoodsVolumePriceModel $goodsVolumePriceModel,
         BrandModel $brandModel,
         TransportModel $transportModel,
         IntelligentWeightModel $intelligentWeightModel,
@@ -64,6 +67,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->goodsAttrModel = $goodsAttrModel;
         $this->goodsExtendModel = $goodsExtendModel;
         $this->goodsGalleryModel = $goodsGalleryModel;
+        $this->goodsVolumePriceModel = $goodsVolumePriceModel;
         $this->goodsChangeLogModel = $goodsChangeLogModel;
         $this->brandModel = $brandModel;
         $this->transportModel = $transportModel;
@@ -273,6 +277,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         }
 
         $goodsData['is_volume'] = !empty($data['is_volume']) ? intval($data['is_volume']) : 0;
+
         $goodsData['is_fullcut'] = !empty($data['is_fullcut']) ? intval($data['is_fullcut']) : 0;
         $goodsData['review_status'] = !empty($data['review_status']) ? intval($data['review_status']) : 5;
         $goodsData['review_content'] = '';
@@ -304,6 +309,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 //        $stages_rate = isset($data['stages_rate']) && !empty($data['stages_rate']) ? floatval($data['stages_rate']) : 0;
 //        /* ecmoban模板堂  end bylu */
 
+        $goods_model = empty($_REQUEST['goods_model']) ? 0 : intval($_REQUEST['goods_model']); //商品模式
         $goodsData['model_price'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
         $goodsData['model_inventory'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
         $goodsData['model_attr'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
@@ -405,6 +411,19 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $product['product_market_price'] = empty($product_market_price[$i]) ? 0.00 : $product_market_price[$i];
                 $product['product_warn_number'] = empty($product_warn_number[$i]) ? 1 : $product_warn_number[$i];
                 $this->productsModel->addProduct($product);
+            }
+
+            //阶梯价格买多少单价为多少
+            $volumePrice['goods_id'] = $goods->goods_id;
+            $volumePrice['price_type'] = 1;
+            $volume_number = !empty($data['volume_number']) ? $data['volume_number'] : [];
+            $volume_price = !empty($data['volume_price']) ? $data['volume_price'] : [];
+            if ($goodsData['is_volume'] == 1) {
+                for ($i =0; $i< count($volume_number);$i++){
+                    $volumePrice['volume_number'] = $volume_number[$i];
+                    $volumePrice['volume_price'] = $volume_price[$i];
+                    $this->goodsVolumePriceModel->addGoodsVolumePrice($volumePrice);
+                }
             }
         }
         dd($data);

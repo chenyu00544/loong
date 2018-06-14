@@ -589,7 +589,7 @@
                                                     <input type="radio" name="is_volume" value="1"> 是
                                                 </label>
                                             </div>
-                                            <div class="special-div" style="display:block">
+                                            <div class="is-volume-div" style="display:none;">
                                                 <table class="table table-bordered volume-price" style="width: auto;">
                                                     <tbody>
                                                     <tr class="first-tr">
@@ -597,7 +597,8 @@
                                                         <td>
                                                             <input type="text" name="volume_number[]" value=""
                                                                    class="form-control max-wd-100" autocomplete="off">
-                                                            <input type="hidden" name="id[]" value="" class="text w50"
+                                                            <input type="hidden" name="volume_id[]" value=""
+                                                                   class="text w50"
                                                                    autocomplete="off">
                                                         </td>
                                                         <td class="" rowspan="3">
@@ -617,8 +618,8 @@
                                                         <td class="text-center">操作</td>
                                                         <td class="text-center">
                                                             <a href="javascript:;"
-                                                               class="btn btn-info btn-sm"
-                                                               data-id="">删除</a>
+                                                               class="btn btn-info btn-sm del-v-p"
+                                                               data-id="1">删除</a>
                                                         </td>
                                                     </tr>
                                                     </tbody>
@@ -1271,6 +1272,46 @@
             $('.section-warp').on('click', '.move-remove', function () {
                 $(this).parent().parent().remove();
                 setDescMobile()
+            });
+
+            //单选
+            $('input[name=is_volume]').on('click', function () {
+                if ($(this).val() == 1) {
+                    $('.is-volume-div').show();
+                } else {
+                    $('.is-volume-div').hide();
+                }
+            });
+            $('.is-volume-div').on('click', '.add-v-p', function () {
+                var tbody = $(this).parent().parent().parent();
+                var html = '<td><input type="text" name="volume_number[]" value=""' +
+                    'class="form-control max-wd-100" autocomplete="off">' +
+                    '<input type="hidden" name="volume_id[]" value="" autocomplete="off"></td>';
+                var html1 = '<td><input type="text" name="volume_price[]" value="" class="form-control max-wd-100" autocomplete="off"></td>';
+                var html2 = '<td class="text-center"><a href="javascript:;" class="btn btn-info btn-sm del-v-p" data-id="' + ($('.del-v-p').length + 1) + '">删除</a></td>';
+                tbody.find('tr').each(function (k, v) {
+                    if (k == 0) {
+                        $(v).find('td').last().before(html);
+                    } else if (k == 1) {
+                        $(v).append(html1);
+                    } else if (k == 2) {
+                        $(v).append(html2);
+                    }
+                })
+            });
+            $('.is-volume-div').on('click', '.del-v-p', function () {
+                var id = $(this).data('id');
+                var tbody = $(this).parent().parent().parent();
+                tbody.find('tr').each(function (k, v) {
+                    $(v).find('td').each(function (key, val) {
+                        if(id == key){
+                            $(val).remove();
+                        }
+                    });
+                });
+                $('.del-v-p').each(function (k, v) {
+                    $(v).data('id',(k+1));
+                });
             });
 
             //开关
