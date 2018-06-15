@@ -6,10 +6,8 @@
 			A date range picker for Bootstrap
 		</title>
 		<link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.css"rel="stylesheet">
-		<link href="http://www.jq22.com/jquery/font-awesome.4.6.0.css"
-		rel="stylesheet">
-		<link rel="stylesheet" type="text/css" media="all" href="daterangepicker-bs3.css"
-		/>
+		<link href="http://www.jq22.com/jquery/font-awesome.4.6.0.css" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" media="all" href="daterangepicker-bs3.css"/>
 		<script type="text/javascript" src="jquery.min.js">
 		</script>
 		<script type="text/javascript" src="bootstrap.min.js">
@@ -100,7 +98,7 @@
                   $('#reservationtime').daterangepicker({
                     timePicker: true,
                     timePickerIncrement: 30,
-                    format: 'MM/DD/YYYY h:mm A'
+                    format: 'YYYY-MM-DD hh:mm:ss'
                   }, function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                   });
@@ -130,7 +128,6 @@
                   var cb = function(start, end, label) {
                     console.log(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-                    //alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + ", label = " + label + "]");
                   }
 
                   var optionSet1 = {

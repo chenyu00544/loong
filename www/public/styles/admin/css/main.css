@@ -1418,6 +1418,10 @@ input[type=checkbox], input[type=radio] {
     padding-top: 1px;
 }
 
+.padtop input[type=radio]{
+    margin-top: 5px;
+}
+
 .checkbox-item .ui-checkbox {
     width: 15px;
     height: 15px;

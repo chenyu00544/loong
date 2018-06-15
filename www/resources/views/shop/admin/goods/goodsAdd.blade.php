@@ -527,11 +527,24 @@
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_promote" value="0" checked> 否
+                                                    <input class="mar-top-5" type="radio" name="is_promote" value="0"
+                                                           checked> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_promote" value="1"> 是
+                                                    <input class="mar-top-5" type="radio" name="is_promote" value="1"> 是
                                                 </label>
+                                                <div class="controls fl is-promote" style="display: none;">
+                                                    <div class="input-prepend input-group" style="width: 500px;">
+                                                    <span class="add-on input-group-addon"><i
+                                                                class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                                        <input type="text" style="width: 300px" name="reservation"
+                                                               id="reservationtime" class="form-control input-sm"
+                                                               value="2018-05-01 00:00:00～2018-06-01 23:59:59">
+                                                        <input type="text"
+                                                               class="form-control max-wd-100 fl mar-left-20 input-sm"
+                                                               name="promote_price" value="0.00">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -541,10 +554,12 @@
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_limit_buy" value="0" checked> 否
+                                                    <input class="mar-top-5" type="radio" name="is_limit_buy" value="0"
+                                                           checked> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_limit_buy" value="1"> 是
+                                                    <input class="mar-top-5" type="radio" name="is_limit_buy" value="1">
+                                                    是
                                                 </label>
                                             </div>
                                         </div>
@@ -555,10 +570,11 @@
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_stages" value="0" checked> 否
+                                                    <input class="mar-top-5" type="radio" name="is_stages" value="0"
+                                                           checked> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_stages" value="1"> 是
+                                                    <input class="mar-top-5" type="radio" name="is_stages" value="1"> 是
                                                 </label>
                                             </div>
                                         </div>
@@ -569,10 +585,12 @@
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_distribution" value="0" checked> 否
+                                                    <input class="mar-top-5" type="radio" name="is_distribution"
+                                                           value="0" checked> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_distribution" value="1"> 是
+                                                    <input class="mar-top-5" type="radio" name="is_distribution"
+                                                           value="1"> 是
                                                 </label>
                                             </div>
                                         </div>
@@ -583,10 +601,11 @@
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_volume" value="0" checked> 否
+                                                    <input class="mar-top-5" type="radio" name="is_volume" value="0"
+                                                           checked> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_volume" value="1"> 是
+                                                    <input class="mar-top-5" type="radio" name="is_volume" value="1"> 是
                                                 </label>
                                             </div>
                                             <div class="is-volume-div" style="display:none;">
@@ -633,10 +652,11 @@
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_fullcut" value="0" checked> 否
+                                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="0"
+                                                           checked> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="is_fullcut" value="1"> 是
+                                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="1"> 是
                                                 </label>
                                             </div>
                                         </div>
@@ -1051,9 +1071,12 @@
                 $('.brand-select-container').hide();
             });
 
-            var ue = UE.getEditor('editor');
+            var ue = UE.getEditor('editor', {
+                initialFrameHeight: 500,
+                scaleEnabled: true
+            });
             ue.ready(function () {
-                ue.setHeight(500);
+                // ue.setHeight(500);
             });
 
             //选择颜色
@@ -1274,7 +1297,40 @@
                 setDescMobile()
             });
 
-            //单选
+            //单选促销
+            $('#reservationtime').daterangepicker({
+                timePicker: true,
+                timePickerIncrement: 1,
+                format: 'YYYY-MM-DD hh:mm:ss',
+                timePicker24Hour: true,
+                timePickerSeconds: true,
+                locale: {
+                    "separator": " -222 ",
+                    "applyLabel": "确定",
+                    "cancelLabel": "取消",
+                    "fromLabel": "起始",
+                    "toLabel": "结束",
+                    "customRangeLabel": "自定义",
+                    "weekLabel": "W",
+                    "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+                    "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                    "firstDay": 1
+                },
+            }, function (start, end) {
+                var s = start.format('YYYY-MM-DD HH:mm:ss');
+                var e = end.format('YYYY-MM-DD HH:mm:ss');
+                var t = s + '～' + e;
+                $('#reservationtime').val(t);
+            });
+            $('input[name=is_promote]').on('click', function () {
+                if ($(this).val() == 1) {
+                    $('.is-promote').show();
+                } else {
+                    $('.is-promote').hide();
+                }
+            });
+
+            //单选阶梯价格
             $('input[name=is_volume]').on('click', function () {
                 if ($(this).val() == 1) {
                     $('.is-volume-div').show();
@@ -1304,13 +1360,13 @@
                 var tbody = $(this).parent().parent().parent();
                 tbody.find('tr').each(function (k, v) {
                     $(v).find('td').each(function (key, val) {
-                        if(id == key){
+                        if (id == key) {
                             $(val).remove();
                         }
                     });
                 });
                 $('.del-v-p').each(function (k, v) {
-                    $(v).data('id',(k+1));
+                    $(v).data('id', (k + 1));
                 });
             });
 
@@ -1733,8 +1789,7 @@
                     }
                 });
             });
-        })
-        ;
+        });
 
         function getNextCate(parent_id, cat_level) {
             var id = parent_id;
