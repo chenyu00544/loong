@@ -31,7 +31,7 @@ class CategoryModel extends Model
         if($rep->parent_id != 0){
             return $this->getComParentCate($rep->id, $cates);
         }else{
-            return $rep;
+            return $cates;
         }
     }
 
