@@ -27,7 +27,6 @@
                         <input type="hidden" name="goods_id" value="0">
                         <input type="hidden" name="review_status" value="3">
                         <input type="hidden" name="other_catids" value="">
-                        <input type="hidden" name="ru_id" value="0">
                         <div class="flexilist">
                             <div class="stepflex">
                                 <dl class="first cur" data-step="1">
@@ -537,9 +536,9 @@
                                                     <div class="input-prepend input-group" style="width: 500px;">
                                                     <span class="add-on input-group-addon"><i
                                                                 class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                                        <input type="text" style="width: 300px" name="reservation"
-                                                               id="reservationtime" class="form-control input-sm"
-                                                               value="2018-05-01 00:00:00～2018-06-01 23:59:59">
+                                                        <input type="text" style="width: 300px" name="promote_date"
+                                                               id="promote_date" class="form-control input-sm"
+                                                               value="{{$now_date}} 00:00:00～{{$now_date}} 23:59:59">
                                                         <input type="text"
                                                                class="form-control max-wd-100 fl mar-left-20 input-sm"
                                                                name="promote_price" value="0.00">
@@ -561,6 +560,18 @@
                                                     <input class="mar-top-5" type="radio" name="is_limit_buy" value="1">
                                                     是
                                                 </label>
+                                                <div class="controls fl is-limit-buy" style="display: none;">
+                                                    <div class="input-prepend input-group" style="width: 500px;">
+                                                    <span class="add-on input-group-addon"><i
+                                                                class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                                        <input type="text" style="width: 300px" name="limit_buy_date"
+                                                               id="limit_buy_date" class="form-control input-sm"
+                                                               value="{{$now_date}} 00:00:00～{{$now_date}} 23:59:59">
+                                                        <input type="text"
+                                                               class="form-control max-wd-100 fl mar-left-20 input-sm"
+                                                               name="limit_buy_num" value="0">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1298,7 +1309,7 @@
             });
 
             //单选促销
-            $('#reservationtime').daterangepicker({
+            var optionSet = {
                 timePicker: true,
                 timePickerIncrement: 1,
                 format: 'YYYY-MM-DD hh:mm:ss',
@@ -1315,18 +1326,33 @@
                     "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
                     "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
                     "firstDay": 1
-                },
-            }, function (start, end) {
+                }
+            };
+            $('#promote_date').daterangepicker(optionSet, function (start, end) {
                 var s = start.format('YYYY-MM-DD HH:mm:ss');
                 var e = end.format('YYYY-MM-DD HH:mm:ss');
                 var t = s + '～' + e;
-                $('#reservationtime').val(t);
+                $('#promote_date').val(t);
             });
             $('input[name=is_promote]').on('click', function () {
                 if ($(this).val() == 1) {
                     $('.is-promote').show();
                 } else {
                     $('.is-promote').hide();
+                }
+            });
+            //单选限购
+            $('#limit_buy_date').daterangepicker(optionSet, function (start, end) {
+                var s = start.format('YYYY-MM-DD HH:mm:ss');
+                var e = end.format('YYYY-MM-DD HH:mm:ss');
+                var t = s + '～' + e;
+                $('#limit_buy_date').val(t);
+            });
+            $('input[name=is_limit_buy]').on('click', function () {
+                if ($(this).val() == 1) {
+                    $('.is-limit-buy').show();
+                } else {
+                    $('.is-limit-buy').hide();
                 }
             });
 

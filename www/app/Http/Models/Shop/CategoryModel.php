@@ -24,6 +24,17 @@ class CategoryModel extends Model
             ->first();
     }
 
+    public function getComParentCate($id)
+    {
+        $rep = $this->where('id', $id)->first();
+        if($rep->parent_id != 0){
+            $re[] = $this->getComParentCate($rep->id);
+            return $re;
+        }else{
+            return $rep;
+        }
+    }
+
     public function setComCate($where, $data)
     {
         return $this->where($where)

@@ -202,8 +202,11 @@ class GoodsRepository implements GoodsRepositoryInterface
     //单个商品
     public function getGoods($id)
     {
-        $goodsColumns = ['goods_id', 'goods_thumb', 'goods_name', 'user_id', 'brand_id', 'goods_type', 'goods_sn', 'shop_price', 'is_on_sale', 'is_best', 'is_new', 'is_hot', 'sort_order', 'goods_number', 'integral', 'commission_rate', 'is_promote', 'model_price', 'model_inventory', 'model_attr', 'review_status', 'review_content', 'store_best', 'store_new', 'store_hot', 'is_real', 'is_shipping', 'stages', 'goods_thumb', 'is_alone_sale', 'is_limit_buy', 'promote_end_date', 'limit_buy_end_date', 'bar_code', 'freight', 'tid'];
-        return $this->goodsModel->getGoods($id, $goodsColumns);
+        $goodsColumns = ['*'];
+        $req = $this->goodsModel->getGoods($id, $goodsColumns);
+        $req->goods_cause = explode(',', $req->goods_cause);
+        $this->categoryModel->getComCates();
+        return $req;
     }
 
     //添加商品
@@ -244,12 +247,6 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['shop_price'] = round((!empty($data['shop_price']) ? round($data['shop_price'], 2) : 0), 2);
         $goodsData['market_price'] = round((!empty($data['market_price']) ? round($data['market_price'], 2) : 0), 2);
         $goodsData['cost_price'] = round((!empty($data['cost_price']) ? round($data['cost_price'], 2) : 0), 2);
-
-        //促销价格和开始结束时间
-        $goodsData['is_promote'] = !empty($data['is_promote']) ? trim($data['is_promote']) : 0;
-        $goodsData['promote_price'] = round((!empty($data['promote_price']) ? trim($data['promote_price']) : 0), 2);
-        $goodsData['promote_start_date'] = !empty($data['promote_start_date']) ? trim($data['promote_start_date']) : 0;
-        $goodsData['promote_end_date'] = !empty($data['promote_end_date']) ? trim($data['promote_end_date']) : 0;
 
         $goodsData['goods_desc'] = !empty($data['content']) ? trim($data['content']) : '';
         $goodsData['desc_mobile'] = !empty($data['desc_mobile']) ? trim($data['desc_mobile']) : '';
@@ -314,11 +311,25 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['model_inventory'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
         $goodsData['model_attr'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
 
-        //限购
-        $goodsData['is_limit_buy'] = !empty($data['is_limit_buy']) ? 1 : 0;
-        $goodsData['limit_buy_num'] = !empty($data['limit_buy_num']) ? intval($data['limit_buy_num']) : 0;
-        $goodsData['limit_buy_start_date'] = !empty($data['limit_buy_start_date']) ? strtotime($data['limit_buy_start_date']) : 0;
-        $goodsData['limit_buy_end_date'] = !empty($data['limit_buy_end_date']) ? strtotime($data['limit_buy_end_date']) : 0;
+        //促销价格和开始结束时间
+        $goodsData['is_promote'] = !empty($data['is_promote']) ? trim($data['is_promote']) : 0;
+        $goodsData['promote_price'] = round((!empty($data['promote_price']) ? trim($data['promote_price']) : 0), 2);
+        $promote_date = !empty($data['promote_date']) ? trim($data['promote_date']) : '';
+        if ($promote_date != '' && $goodsData['is_promote'] == 1) {
+            $promote_date_arr = explode('～', $promote_date);
+            $goodsData['promote_start_date'] = strtotime(!empty($promote_date_arr[0]) ? trim($promote_date_arr[0]) : 0);
+            $goodsData['promote_end_date'] = strtotime(!empty($promote_date_arr[1]) ? trim($promote_date_arr[1]) : 0);
+        }
+
+        //限购价格和开始结束时间
+        $goodsData['is_limit_buy'] = !empty($data['is_limit_buy']) ? trim($data['is_limit_buy']) : 0;
+        $goodsData['limit_buy_num'] = !empty($data['limit_buy_num']) ? trim($data['limit_buy_num']) : 0;
+        $limit_buy_date = !empty($data['limit_buy_date']) ? trim($data['limit_buy_date']) : '';
+        if ($limit_buy_date != '' && $goodsData['is_limit_buy'] == 1) {
+            $limit_buy_date_arr = explode('～', $limit_buy_date);
+            $goodsData['limit_buy_start_date'] = strtotime(!empty($limit_buy_date_arr[0]) ? trim($limit_buy_date_arr[0]) : 0);
+            $goodsData['limit_buy_end_date'] = strtotime(!empty($limit_buy_date_arr[1]) ? trim($limit_buy_date_arr[1]) : 0);
+        }
 
         //促销满减
         $goodsData['is_fullcut'] = !empty($data['is_fullcut']) ? 1 : 0;
@@ -419,7 +430,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $volume_number = !empty($data['volume_number']) ? $data['volume_number'] : [];
             $volume_price = !empty($data['volume_price']) ? $data['volume_price'] : [];
             if ($goodsData['is_volume'] == 1) {
-                for ($i =0; $i< count($volume_number);$i++){
+                for ($i = 0; $i < count($volume_number); $i++) {
                     $volumePrice['volume_number'] = $volume_number[$i];
                     $volumePrice['volume_price'] = $volume_price[$i];
                     $this->goodsVolumePriceModel->addGoodsVolumePrice($volumePrice);

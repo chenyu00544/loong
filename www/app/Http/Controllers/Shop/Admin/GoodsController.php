@@ -182,10 +182,11 @@ class GoodsController extends CommonController
     {
         $comCates = $this->comCateRepository->getComCates();
         $brands = $this->brandRepository->search([], true);
-        $transports = $this->transportRepository->getTransportExpressByRuId(0);
+        $transports = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
         $goodsTypeCates = $this->goodsTypeRepository->getTypeCates();
         $goodsGallerys = $this->galleryRepository->getGoodsGallerys();
-        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports', 'goodsTypeCates', 'goodsGallerys'));
+        $now_date = date('Y-m-d', time());
+        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports', 'goodsTypeCates', 'goodsGallerys', 'now_date'));
     }
 
     /**
@@ -227,7 +228,13 @@ class GoodsController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $comCates = $this->comCateRepository->getComCates();
+        $brands = $this->brandRepository->search([], true);
+        $goodsInfo = $this->goodsRepository->getGoods($id);
+        $transports = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
+        $goodsTypeCates = $this->goodsTypeRepository->getTypeCates();
+        $goodsGallerys = $this->galleryRepository->getGoodsGallerys();
+        return view('shop.admin.goods.goodsEdit', compact('comCates', 'brands', 'goodsInfo', 'transports', 'goodsTypeCates', 'goodsGallerys'));
     }
 
     /**
