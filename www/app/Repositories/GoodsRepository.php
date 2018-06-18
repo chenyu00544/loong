@@ -256,26 +256,44 @@ class GoodsRepository implements GoodsRepositoryInterface
         $req->goods_volume_prices = $this->goodsVolumePriceModel->getGoodsVolumePrice(['goods_id' => $id]);
 
         //商品属性详细信息
-        $goodsAttr = $this->goodsAttrModel->getGoodsAttrs(['goods_id'=>$req->goods_id]);
-        $attr_ids = [];
-        foreach ($goodsAttr as $value){
-            $attr_ids[] = $value->attr_id;
-        }
-        $attr_ids = array_unique($attr_ids);
-        $attributes = $this->attributeModel->getAttrsByIn($attr_ids);
+        $goodsAttr = $this->goodsAttrModel->getGoodsAttrsJoinAttr(['goods_id' => $req->goods_id]);
+//        $attr_ids = [];
+//        foreach ($goodsAttr as $value) {
+//            $attr_ids[] = $value->attr_id;
+//        }
+//        $attr_ids = array_unique($attr_ids);
+//        $attributes = $this->attributeModel->getAttrsByIn($attr_ids);
         $goodsAttrO = [];
         $goodsAttrM = [];
-        foreach ($attributes as $value){
-            $val = $value;
-            $attrValues = explode("\r\n", $val->attr_values);
-            $val->attr_values = $attrValues;
-            if($value->attr_type == 0){//唯一属性
-                $goodsAttrO[] = $val;
-            }else{//单选属性
-                $goodsAttrM[] = $val;
+        foreach ($goodsAttr as $value) {
+            $val_bat = $value;
+            $attrValues = explode("\r\n", $val_bat->attr_values);
+
+            $val_bat->attr_values = $attrValues;
+            if ($value->attr_type == 0) {//唯一属性
+                $goodsAttrO[] = $val_bat;
+            } else {//单选属性
+                $goodsAttrM[$value->attr_id]['attr_name'] = $val_bat->attr_name;
+                $goodsAttrM[$value->attr_id]['attr_input_type'] = $val_bat->attr_input_type;
+                if ($value->attr_input_type == 1) {
+                    $goodsAttrM[$value->attr_id]['value'][] = ['attr_value' => $val_bat->attr_value, 'select' => 1];
+                } else {
+                    $attr_values[$value->attr_id] = $attrValues;
+                    $attr_value_s[$value->attr_id][] = $value->attr_value;
+                }
             }
         }
         $req->goods_attr_o = $goodsAttrO;
+
+        foreach ($attr_values as $key => $values) {
+            foreach ($values as $value) {
+                if (in_array($value, $attr_value_s[$key])) {
+                    $goodsAttrM[$key]['value'][] = ['attr_value' => $value, 'select' => 1];
+                }else{
+                    $goodsAttrM[$key]['value'][] = ['attr_value' => $value, 'select' => 0];
+                }
+            }
+        }
         $req->goods_attr_m = $goodsAttrM;
         return $req;
     }

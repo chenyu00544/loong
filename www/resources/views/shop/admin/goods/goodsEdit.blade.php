@@ -1046,7 +1046,8 @@
                                                             <select name="attr_value_list[]"
                                                                     class="form-control max-wd-100 fl">
                                                                 @foreach($attr_o->attr_values as $attr_value)
-                                                                    <option value="{{$attr_value}}">{{$attr_value}}</option>
+                                                                    <option value="{{$attr_value}}"
+                                                                            @if($attr_value == $attr_o->attr_value) selected @endif>{{$attr_value}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -1060,33 +1061,31 @@
                                                 <h5>商品规格：</h5>
                                             </div>
                                             <div class="step-item-right attr-multi">
-                                                @foreach($goodsInfo->goods_attr_m as $attr_m)
+                                                @foreach($goodsInfo->goods_attr_m as $key => $attr_m)
                                                     <div class="item-right-list fl">
-                                                        <div class="label fl">{{$attr_m->attr_name}}：
+                                                        <div class="label fl">{{$attr_m['attr_name']}}：
                                                             <input type="hidden" name="attr_id_listM[]"
-                                                                   value="{{$attr_m->attr_id}}">
+                                                                   value="{{$key}}">
                                                         </div>
                                                         <div>
-                                                            @if($attr_m->attr_input_type == 0)
-                                                                @for($i = 0; $i < count($attr_m->attr_values); $i++)
-                                                                    <label class="checkbox-inline">
-                                                                        <input type="checkbox"
-                                                                               name="attr_value_list1[{{$attr_m->attr_id}}][]"
-                                                                               class="attr_value_list1"
-                                                                               data-key="{{$i}}"
-                                                                               data-k="{{$loop->index}}"
-                                                                               value="{{$attr_m->attr_values[$i]}}"
-                                                                               data-attr_id="{{$attr_m->attr_id}}">{{$attr_m->attr_values[$i]}}
-                                                                    </label>
-                                                                @endfor
-                                                            @endif
-                                                            <div class="checkbox-inline">
-                                                                @if($attr_m->attr_input_type == 1)
+                                                            @for($i = 0; $i < count($attr_m['value']); $i++)
+                                                                <label class="checkbox-inline">
+                                                                    <input type="checkbox"
+                                                                           name="attr_value_list1[{{$key}}][]"
+                                                                           class="attr_value_list1"
+                                                                           data-key="{{$i}}"
+                                                                           data-k="{{$loop->index}}"
+                                                                           value="{{$attr_m['value'][$i]['attr_value']}}"
+                                                                           data-attr_id="{{$key}}" @if($attr_m['value'][$i]['select'] == 1) checked @endif>{{$attr_m['value'][$i]['attr_value']}}</label>
+                                                            @endfor
+                                                            @if($attr_m['attr_input_type'] == 1)
+                                                                <div class="checkbox-inline">
                                                                     <a href="javascript:;"
                                                                        class="btn btn-info btn-sm attr-custom"
-                                                                       data-attr_id="{{$attr_m->attr_id}}">自定义</a>
-                                                                @endif
-                                                            </div>
+                                                                       data-attr_id="{{$key}}">自定义</a>
+
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -1214,9 +1213,14 @@
             src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
-            var goods_id = '0';
+            var goods_id = '{{$goodsInfo->goods_id}}';
             var attrList = [];
             var attrMulti = [];
+
+            @foreach($goodsInfo->goods_attr_m as $attr_m)
+            attrList.push([]);
+            attrMulti.push({!! json_encode($attr_m) !!});
+            @endforeach
 
             $('body').on('click', function () {
                 $('.brand-select-container').hide();

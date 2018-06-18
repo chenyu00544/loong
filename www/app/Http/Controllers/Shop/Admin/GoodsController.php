@@ -245,6 +245,7 @@ class GoodsController extends CommonController
         $comCates = $this->comCateRepository->getParentCateBySelect($goodsInfo->cat_id);
         $comCateSelect = $this->comCateRepository->getParentCate($goodsInfo->cat_id);
         //属性分类
+        $goodsTypes = [];
         if($goodsInfo->goods_type > 0){
             $goodsTypes = $this->goodsTypeRepository->getGoodsType(['cat_id' => $goodsInfo->goods_type]);
             $goodsTypeCates = $this->goodsTypeRepository->getGoodsTypeCateBySelect($goodsTypes->c_id);

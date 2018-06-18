@@ -18,6 +18,14 @@ class GoodsAttrModel extends Model
             ->get();
     }
 
+    public function getGoodsAttrsJoinAttr($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->join('attribute', 'attribute.attr_id', '=', 'goods_attr.attr_id')
+            ->where($where)
+            ->get();
+    }
+
     public function addGoodsAttr($data)
     {
         return $this->create($data);
