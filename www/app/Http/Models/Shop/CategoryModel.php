@@ -29,7 +29,7 @@ class CategoryModel extends Model
         $rep = $this->where('id', $id)->first();
         $cates[] = $rep;
         if($rep->parent_id != 0){
-            return $this->getComParentCate($rep->id, $cates);
+            return $this->getComParentCate($rep->parent_id, $cates);
         }else{
             return $cates;
         }

@@ -21,7 +21,8 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form enctype="multipart/form-data" action="{{url('admin/goods/'.$goodsInfo->goods_id)}}" method="post"
+                    <form enctype="multipart/form-data" action="{{url('admin/goods/'.$goodsInfo->goods_id)}}"
+                          method="post"
                           class="form-horizontal">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
@@ -72,7 +73,8 @@
                                         <div class="mos_right"><span>地区模式</span></div>
                                     </div>
                                 </div>
-                                <input type="hidden" name="goods_model" id="goods_model" value="{{$goodsInfo->model_price}}">
+                                <input type="hidden" name="goods_model" id="goods_model"
+                                       value="{{$goodsInfo->model_price}}">
                             </div>
                             <div class="goods-btn">
                                 <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="2"
@@ -81,7 +83,8 @@
                         </div>
 
                         <!--第二步 选择商品分类-->
-                        <div class="step step-two" ectype="step" data-step="2" style="@if($goodsInfo->cat_id != 0) display: none; @endif">
+                        <div class="step step-two" ectype="step" data-step="2"
+                             style="@if($goodsInfo->cat_id != 0) display: none; @endif">
                             <div class="step-title">
                                 <i class="ui-step"></i>
                                 <h3>选择商品分类</h3>
@@ -101,13 +104,13 @@
                                         <div class="sort-list-warp">
                                             <div class="category-list ps-container ps-active-y">
                                                 <ul ectype="category" data-cat_level="1">
-                                                    <li data-cat_name="" data-cat_id="0" data-cat_level="1" >
+                                                    <li data-cat_name="" data-cat_id="0" data-cat_level="1">
                                                         <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>
                                                     </li>
-                                                    @foreach($comCates as $comCate)
+                                                    @foreach($comCates[0] as $comCate)
                                                         <li data-cat_id="{{$comCate->id}}"
                                                             data-cat_name="{{$comCate->cat_name}}" data-cat_level="1"
-                                                            class="">
+                                                            class="@if($comCate->select == 1) current @endif">
                                                             <a href="javascript:;"><i
                                                                         class="sc-icon"></i>{{$comCate->cat_name}}</a>
                                                         </li>
@@ -124,6 +127,18 @@
                                                     <li data-cat_name="" data-cat_id="0" data-cat_level="2">
                                                         <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>
                                                     </li>
+                                                    @if(!empty($comCates[1]))
+                                                        @foreach($comCates[1] as $comCate)
+                                                            <li data-cat_id="{{$comCate->id}}"
+                                                                data-cat_name="{{$comCate->cat_name}}"
+                                                                data-cat_level="1"
+                                                                class="@if($comCate->select == 1) current @endif">
+                                                                <a href="javascript:;"><i
+                                                                            class="sc-icon"></i>{{$comCate->cat_name}}
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                    @endif
                                                 </ul>
                                             </div>
                                         </div>
@@ -136,12 +151,30 @@
                                                     <li data-cat_name="" data-cat_id="0" data-cat_level="3" class="">
                                                         <a href="javascript:;"><i class="sc-icon"></i>请选择分类</a>
                                                     </li>
+                                                    @if(!empty($comCates[2]))
+                                                        @foreach($comCates[2] as $comCate)
+                                                            <li data-cat_id="{{$comCate->id}}"
+                                                                data-cat_name="{{$comCate->cat_name}}"
+                                                                data-cat_level="1"
+                                                                class="@if($comCate->select == 1) current @endif">
+                                                                <a href="javascript:;"><i
+                                                                            class="sc-icon"></i>{{$comCate->cat_name}}
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                    @endif
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="cat_id" id="cat_id" value="" ectype="cat_id">
-                                    <div class="choiceClass" id="choiceClass">您当前选择的商品类别是：<strong class="red"></strong>
+                                    <input type="hidden" name="cat_id" id="cat_id" value="{{$goodsInfo->cat_id}}">
+                                    <div class="choiceClass" id="choiceClass">您当前选择的商品类别是：
+                                        <strong class="red">
+                                            @foreach($comCateSelect as $cateSelect)
+                                                @if($loop->index != 0) > @endif
+                                                {{$cateSelect->cat_name}}
+                                            @endforeach
+                                        </strong>
                                     </div>
                                 </div>
                             </div>
@@ -154,7 +187,8 @@
                         </div>
 
                         <!--第三步 填写通用信息-->
-                        <div class="step step-three" ectype="step" data-step="3" style="@if($goodsInfo->goods_id == 0) display: none; @endif">
+                        <div class="step step-three" ectype="step" data-step="3"
+                             style="@if($goodsInfo->goods_id == 0) display: none; @endif">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -164,7 +198,11 @@
                                     <div class="item item-com-cate">
                                         <div class="step-label">商品分类：</div>
                                         <div class="step-value">
-                                            <span class="fl cate-name"></span>
+                                            <span class="fl cate-name">
+                                                @foreach($comCateSelect as $cateSelect)
+                                                    @if($loop->index != 0) > @endif {{$cateSelect->cat_name}}
+                                                @endforeach
+                                            </span>
                                             <a href="javascript:;" class="edit-category" ectype="edit-category"
                                                onclick="step(2)">
                                                 <i class="glyphicon glyphicon-edit"></i>
@@ -178,7 +216,8 @@
                                         <div class="step-label">商品货号：</div>
                                         <div class="step-value">
                                             <input type="text" name="goods_sn" class="form-control max-wd-190 hg30 fl "
-                                                   autocomplete="off" value="" placeholder="商品货号">
+                                                   autocomplete="off" value="{{$goodsInfo->goods_sn}}"
+                                                   placeholder="商品货号">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">如果您不输入商品货号，系统将自动生成一个唯一的货号。</div>
                                         </div>
@@ -189,10 +228,12 @@
                                         <div class="step-value">
                                             <input type="text" name="goods_name"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="" placeholder="商品名称">
+                                                   autocomplete="off" value="{{$goodsInfo->goods_name}}"
+                                                   placeholder="商品名称">
 
                                             <input id="color-picker" type="text" name="goods_name_color"
-                                                   class="form-control max-wd-100 hg30 mar-left-20 fl" value="#000000"
+                                                   class="form-control max-wd-100 hg30 mar-left-20 fl"
+                                                   value="{{$goodsInfo->goods_name_style}}"
                                                    style="background: #000000;color: #ffffff;">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10"></div>
@@ -203,7 +244,8 @@
                                         <div class="step-label">商品简单描述：</div>
                                         <div class="step-value">
                                         <textarea class="form-control max-wd-350" rows="5"
-                                                  name="goods_brief" placeholder="商品简单描述"></textarea>
+                                                  name="goods_brief"
+                                                  placeholder="商品简单描述">{{$goodsInfo->goods_brief}}</textarea>
                                         </div>
                                     </div>
 
@@ -213,7 +255,7 @@
                                         <div class="step-label"><font class="red">*</font>出售价：</div>
                                         <div class="step-value">
                                             <input type="text" name="shop_price" class="form-control max-wd-190 hg30 fl"
-                                                   value="0.00">
+                                                   value="{{$goodsInfo->shop_price}}">
                                         </div>
                                     </div>
 
@@ -222,7 +264,7 @@
                                         <div class="step-value">
                                             <input type="text" name="market_price"
                                                    class="form-control max-wd-190 hg30 fl"
-                                                   value="0.00">
+                                                   value="{{$goodsInfo->market_price}}">
                                         </div>
                                     </div>
 
@@ -230,7 +272,7 @@
                                         <div class="step-label">成本价：</div>
                                         <div class="step-value">
                                             <input type="text" name="cost_price" class="form-control max-wd-190 hg30 fl"
-                                                   value="0.00">
+                                                   value="{{$goodsInfo->cost_price}}">
                                         </div>
                                     </div>
 
@@ -239,7 +281,7 @@
                                         <div class="step-value">
                                             <input type="text" name="goods_number"
                                                    class="form-control max-wd-190 hg30 fl"
-                                                   value="1000">
+                                                   value="{{$goodsInfo->goods_number}}">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10"></div>
                                         </div>
@@ -250,7 +292,7 @@
                                         <div class="step-value">
                                             <input type="text" name="warn_number"
                                                    class="form-control max-wd-190 hg30 fl"
-                                                   value="1">
+                                                   value="{{$goodsInfo->warn_number}}">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10"></div>
                                         </div>
@@ -262,10 +304,12 @@
                                             <div class="selection">
                                                 <input type="text" id="brand_name"
                                                        class="form-control max-wd-190 hg30 fl" data-filter="brand_name"
-                                                       autocomplete="off" value="请选择品牌" readonly="">
+                                                       autocomplete="off" value="{{$brandName->brand_name}}"
+                                                       readonly="">
                                                 <a href="javascript:;"
                                                    class="btn btn-info btn-sm mar-left-20 brand-add">添加</a>
-                                                <input type="hidden" name="brand_id" id="brand_id" value="0">
+                                                <input type="hidden" name="brand_id" id="brand_id"
+                                                       value="{{$goodsInfo->brand_id}}">
                                                 <div class="form_prompt"></div>
                                             </div>
                                             <div class="brand-select-container" style="display: none;">
@@ -318,7 +362,7 @@
                                         <div class="step-value">
                                             <div id="goods-figure" class="update-images">
                                                 <div class="img">
-                                                    <img src="{{url('styles/admin/images/upload_images.jpg')}}"
+                                                    <img src="{{url($goodsInfo->goods_thumb)}}"
                                                          class="goods-img-show">
                                                     <input type="hidden" name="goods_gallery_id" value="">
                                                 </div>
@@ -351,9 +395,10 @@
                                                          class="goods-img-show">
                                                 </div>
                                             </div>
-                                            <div class="goods-video-div fl" style="display: none;">
+                                            <div class="goods-video-div fl"
+                                                 style="@if($goodsInfo->goods_video == '') display: none; @endif ">
                                                 <video class="goods-video mar-left-10" id="goods_video_js" width="200"
-                                                       height="200" src="" controls="">
+                                                       height="200" src="{{url($goodsInfo->goods_video)}}" controls="">
                                                     <source src="" class="goods-video-js" type="video/mp4">
                                                 </video>
                                                 <div class="video_default fl"></div>
@@ -380,18 +425,21 @@
                                         <div class="step-value">
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="freight" value="1"> 按固定运费
+                                                    <input type="radio" name="freight" value="1"
+                                                           @if($goodsInfo->freight == 1) checked @endif> 按固定运费
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input type="radio" name="freight" value="2" checked> 按运费模板
+                                                    <input type="radio" name="freight" value="2"
+                                                           @if($goodsInfo->freight == 2) checked @endif> 按运费模板
                                                 </label>
                                             </div>
-                                            <div id="shipping_fee" style="display:none;">
+                                            <div id="shipping_fee"
+                                                 style="@if($goodsInfo->freight == 2) display:none; @endif">
                                                 <input type="text" name="shipping_fee"
                                                        class="form-control max-wd-190 hg30 fl"
                                                        autocomplete="off" value="0.00">
                                             </div>
-                                            <div id="tid">
+                                            <div id="tid" style="@if($goodsInfo->freight == 1) display:none; @endif">
                                                 <select name="tid" id="" class="form-control max-wd-190 hg30 fl ft-12">
                                                     <option value="0">选择</option>
                                                     @foreach($transports as $transport)
@@ -413,22 +461,26 @@
                                             <div class="checkbox-items">
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="return_type[]" class="ui-checkbox"
-                                                           id="return_type_0" value="0">
+                                                           id="return_type_0" value="0"
+                                                           @if($goodsInfo->goods_cause[0] == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="return_type_0">维修</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="return_type[]" class="ui-checkbox"
-                                                           id="return_type_1" value="1">
+                                                           id="return_type_1" value="1"
+                                                           @if($goodsInfo->goods_cause[1] == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="return_type_1">退货</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="return_type[]" class="ui-checkbox"
-                                                           id="return_type_2" value="2">
+                                                           id="return_type_2" value="2"
+                                                           @if($goodsInfo->goods_cause[2] == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="return_type_2">换货</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="return_type[]" class="ui-checkbox"
-                                                           id="return_type_3" value="3">
+                                                           id="return_type_3" value="3"
+                                                           @if($goodsInfo->goods_cause[3] == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="return_type_3">仅退款</label>
                                                 </div>
                                             </div>
@@ -441,19 +493,20 @@
                                             <div class="checkbox-items">
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="is_reality" class="ui-checkbox"
-                                                           value="1"
-                                                           id="is_reality">
+                                                           value="1" id="is_reality"
+                                                           @if(!empty($goodsInfo->goods_sever) && $goodsInfo->goods_sever->is_reality == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="is_reality">正品保证</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="is_return" class="ui-checkbox"
-                                                           value="1"
-                                                           id="is_return">
+                                                           value="1" id="is_return"
+                                                           @if(!empty($goodsInfo->goods_sever) && $goodsInfo->goods_sever->is_return == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="is_return">包退服务</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="is_fast" class="ui-checkbox" value="1"
-                                                           id="is_fast">
+                                                           id="is_fast"
+                                                           @if(!empty($goodsInfo->goods_sever) && $goodsInfo->goods_sever->is_fast == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="is_fast">闪速配送</label>
                                                 </div>
                                             </div>
@@ -461,15 +514,12 @@
                                     </div>
 
                                     <!--会员字段 预留↓-->
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    @if(!empty($userRanks))
+                                        @foreach($userRanks as $rank)
+                                            <input type="hidden" name="user_price[{{$rank->rank_id}}][]" autocomplete="off" value="-1">
+                                        @endforeach
+                                    @endif
                                     <!--会员字段 预留↑-->
-
                                 </div>
                             </div>
 

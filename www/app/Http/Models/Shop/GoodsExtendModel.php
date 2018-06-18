@@ -11,10 +11,21 @@ class GoodsExtendModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function getGoodsExtend($where, $columns = ['*'])
+    {
+        return $this->select($columns)
+            ->where($where)
+            ->first();
+    }
+
     public function getGoodsExtendAll($columns = ['*'])
     {
         return $this->select($columns)
             ->get();
+    }
 
+    public function addGoodsExtend($data)
+    {
+        return $this->create($data);
     }
 }

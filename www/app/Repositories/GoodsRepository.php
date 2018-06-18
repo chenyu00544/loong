@@ -205,7 +205,16 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsColumns = ['*'];
         $req = $this->goodsModel->getGoods($id, $goodsColumns);
         $req->goods_cause = explode(',', $req->goods_cause);
-        $this->categoryModel->getComCates();
+        $goodsCause = [0,0,0,0];
+        foreach ($goodsCause as $key => $value){
+            foreach ($req->goods_cause as $val){
+                if($key == $val){
+                    $goodsCause[$key] = 1;
+                }
+            }
+        }
+        $req->goods_cause = $goodsCause;
+        $req->goods_sever = $this->goodsExtendModel->getGoodsExtend(['goods_id' => $id]);
         return $req;
     }
 
@@ -358,6 +367,16 @@ class GoodsRepository implements GoodsRepositoryInterface
 
             //更新扩展分类
             $this->goodsCateModel->setGoodsCate(['goods_id' => 0], ['goods_id' => $goods->goods_id]);
+
+            //添加商品扩展信息
+            $goodsExtend['goods_id'] = $goods->goods_id;
+            $goodsExtend['is_reality'] = !empty($data['is_reality']) ? $data['is_reality'] : 0;
+            $goodsExtend['is_return'] = !empty($data['is_return']) ? $data['is_return'] : 0;
+            $goodsExtend['is_fast'] = !empty($data['is_fast']) ? $data['is_fast'] : 0;
+            $this->goodsExtendModel->addGoodsExtend($goodsExtend);
+
+            //添加商品会员优惠信息
+
 
             //添加商品属性
             $attr_id_listO = !empty($data['attr_id_listO']) ? $data['attr_id_listO'] : [];

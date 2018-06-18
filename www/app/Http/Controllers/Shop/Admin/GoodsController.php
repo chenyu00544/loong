@@ -10,6 +10,7 @@ use App\Repositories\GoodsAttrRepository;
 use App\Repositories\GoodsRepository;
 use App\Repositories\GoodsTypeRepository;
 use App\Repositories\TransportRepository;
+use App\Repositories\UserRankRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -24,6 +25,7 @@ class GoodsController extends CommonController
     private $transportRepository;
     private $goodsTypeRepository;
     private $goodsAttrRepository;
+    private $userRankRepository;
 
     public function __construct(
         GoodsRepository $goodsRepository,
@@ -32,7 +34,8 @@ class GoodsController extends CommonController
         GalleryRepository $galleryRepository,
         TransportRepository $transportRepository,
         GoodsTypeRepository $goodsTypeRepository,
-        GoodsAttrRepository $goodsAttrRepository
+        GoodsAttrRepository $goodsAttrRepository,
+        UserRankRepository $userRankRepository
     )
     {
         parent::__construct();
@@ -43,6 +46,7 @@ class GoodsController extends CommonController
         $this->transportRepository = $transportRepository;
         $this->goodsTypeRepository = $goodsTypeRepository;
         $this->goodsAttrRepository = $goodsAttrRepository;
+        $this->userRankRepository = $userRankRepository;
     }
 
     /**
@@ -185,8 +189,9 @@ class GoodsController extends CommonController
         $transports = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
         $goodsTypeCates = $this->goodsTypeRepository->getTypeCates();
         $goodsGallerys = $this->galleryRepository->getGoodsGallerys();
+        $userRanks = $this->userRankRepository->getUserRanks();
         $now_date = date('Y-m-d', time());
-        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports', 'goodsTypeCates', 'goodsGallerys', 'now_date'));
+        return view('shop.admin.goods.goodsAdd', compact('comCates', 'brands', 'transports', 'goodsTypeCates', 'goodsGallerys', 'now_date', 'userRanks'));
     }
 
     /**
@@ -228,13 +233,16 @@ class GoodsController extends CommonController
      */
     public function edit($id)
     {
-        $comCates = $this->comCateRepository->getComCates();
-        $brands = $this->brandRepository->search([], true);
-        $goodsInfo = $this->goodsRepository->getGoods($id);
         $transports = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
         $goodsTypeCates = $this->goodsTypeRepository->getTypeCates();
         $goodsGallerys = $this->galleryRepository->getGoodsGallerys();
-        return view('shop.admin.goods.goodsEdit', compact('comCates', 'brands', 'goodsInfo', 'transports', 'goodsTypeCates', 'goodsGallerys'));
+        $brands = $this->brandRepository->search([], true);
+        $userRanks = $this->userRankRepository->getUserRanks();
+        $goodsInfo = $this->goodsRepository->getGoods($id);
+        $brandName = $this->brandRepository->getBrand($goodsInfo->brand_id);
+        $comCates = $this->comCateRepository->getParentCateBySelect($goodsInfo->cat_id);
+        $comCateSelect = $this->comCateRepository->getParentCate($goodsInfo->cat_id);
+        return view('shop.admin.goods.goodsEdit', compact('comCates', 'brands', 'goodsInfo', 'transports', 'goodsTypeCates', 'goodsGallerys', 'comCateSelect', 'brandName', 'userRanks'));
     }
 
     /**

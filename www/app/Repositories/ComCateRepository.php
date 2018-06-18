@@ -62,9 +62,26 @@ class ComCateRepository implements ComCateRepositoryInterface
         }
     }
 
+    public function getParentCateBySelect($id)
+    {
+        $c_list = $this->getParentCate($id);
+        $cate = [];
+        foreach ($c_list as $value){
+            $re = $this->categoryModel->getComCates($value->parent_id);
+            foreach ($re as $k => $val){
+                if($val->id == $value->id){
+                    $re[$k]->select = 1;
+                }else{
+                    $re[$k]->select = 0;
+                }
+            }
+            $cate[] = $re;
+        }
+        return $cate;
+    }
+
     public function changOrder($data)
     {
-
         if ($data['order'] == '') {
             return ['code' => 5, 'msg' => '修改失败'];
         }
