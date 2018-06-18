@@ -26,6 +26,14 @@ class AttributeModel extends Model
             ->get();
     }
 
+    public function getAttrsByIn($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->whereIn('attr_id', $where)
+            ->orderBy('attr_type', 'asc')
+            ->get();
+    }
+
     public function addAttribute($data)
     {
         return $this->create($data);

@@ -80,9 +80,9 @@ class GalleryRepository implements GalleryRepositoryInterface
             $count = 0;
         }
         foreach ($re as $key => $value) {
-            $value->pic_image = url($value->pic_image);
-            $value->pic_file = url($value->pic_file);
-            $value->pic_thumb = url($value->pic_thumb);
+            $value->pic_image = '/'.$value->pic_image;
+            $value->pic_file = '/'.$value->pic_file;
+            $value->pic_thumb = '/'.$value->pic_thumb;
         }
         $rep = Common::paginate($re, $count, $page, $pageSize);
         return $rep;
@@ -231,7 +231,7 @@ class GalleryRepository implements GalleryRepositoryInterface
             $updata['thumb_url'] = $pic->pic_thumb;
             $updata['img_original'] = $pic->pic_file;
             $re = $this->goodsGalleryModel->addGoodsGallery($updata);
-            $re->img_original = url($re->img_original);
+            $re->img_original = '/'.$re->img_original;
             $rep[] = $re;
         }
         return ['code' => 1, 'data' => $rep];
@@ -252,7 +252,7 @@ class GalleryRepository implements GalleryRepositoryInterface
             $updata['goods_id'] = $goods_id;
             $updata['is_source'] = 0;
             $re = $this->goodsGalleryModel->addGoodsGallery($updata);
-            $re->img_original = url($re->img_original);
+            $re->img_original = '/'.$re->img_original;
             $rep[] = $re;
         }
         return $rep;

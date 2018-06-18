@@ -234,15 +234,23 @@ class GoodsController extends CommonController
     public function edit($id)
     {
         $transports = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
-        $goodsTypeCates = $this->goodsTypeRepository->getTypeCates();
+        $goodsTypeCates[] = $this->goodsTypeRepository->getTypeCates();
         $goodsGallerys = $this->galleryRepository->getGoodsGallerys();
         $brands = $this->brandRepository->search([], true);
+        $now_date = date('Y-m-d', time());
         $userRanks = $this->userRankRepository->getUserRanks();
+
         $goodsInfo = $this->goodsRepository->getGoods($id);
         $brandName = $this->brandRepository->getBrand($goodsInfo->brand_id);
         $comCates = $this->comCateRepository->getParentCateBySelect($goodsInfo->cat_id);
         $comCateSelect = $this->comCateRepository->getParentCate($goodsInfo->cat_id);
-        return view('shop.admin.goods.goodsEdit', compact('comCates', 'brands', 'goodsInfo', 'transports', 'goodsTypeCates', 'goodsGallerys', 'comCateSelect', 'brandName', 'userRanks'));
+        //属性分类
+        if($goodsInfo->goods_type > 0){
+            $goodsTypes = $this->goodsTypeRepository->getGoodsType(['cat_id' => $goodsInfo->goods_type]);
+            $goodsTypeCates = $this->goodsTypeRepository->getGoodsTypeCateBySelect($goodsTypes->c_id);
+            $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['c_id' => $goodsTypes->c_id]);
+        }
+        return view('shop.admin.goods.goodsEdit', compact('comCates', 'brands', 'goodsInfo', 'transports', 'goodsTypeCates', 'goodsGallerys', 'comCateSelect', 'brandName', 'userRanks', 'now_date', 'goodsTypes'));
     }
 
     /**

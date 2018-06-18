@@ -460,13 +460,14 @@
                                     </div>
 
                                     <!--会员字段 预留↓-->
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
-                                    <input type="hidden" name="user_price[]" autocomplete="off" value="-1">
+                                    <div>
+                                        @if(!empty($userRanks))
+                                            @foreach($userRanks as $rank)
+                                                <input type="hidden" name="user_price[{{$rank->rank_id}}]"
+                                                       autocomplete="off" value="-1"/>
+                                            @endforeach
+                                        @endif
+                                    </div>
                                     <!--会员字段 预留↑-->
 
                                 </div>
@@ -495,7 +496,7 @@
                                         <p>
                                             <strong>一、基本要求</strong>
                                             <span><em>1、</em>手机详情总体大小：图片+文字，
-                                                <i class="red">图片不超过20张，文字不超过5000字</i>；</span>
+                                                <i class="red">图片不超过20张</i>；</span>
                                         </p>
                                         <p>
                                             <strong>二、图片大小</strong>
@@ -929,7 +930,7 @@
                                                         <option value="0">请选择</option>
                                                     </select>
                                                 </div>
-                                                <input name="goods_type" type="hidden" value="" id="select_attr_val">
+                                                <input name="goods_type" type="hidden" value="">
                                                 <a class="btn btn-info mar-left-20 add_goods_type" data-goodsid="">添加商品类型</a>
                                                 <a class="btn btn-info mar-left-20 add_attribute"
                                                    data-goodsid="">添加属性</a>
@@ -1485,6 +1486,7 @@
             //选择商品类型
             $('.select-value').on('change', function () {
                 var cat_id = $(this).val();
+                $('input[name=goods_type]').val(cat_id);
                 var htmlM = '';
                 var htmlO = '';
                 var key = 0;
@@ -1923,7 +1925,7 @@
 
             var imgs = '';
             $('.section-warp .img').each(function () {
-                imgs += $(this).html();
+                imgs += $.trim($(this).html());
             });
             $('input[name=desc_mobile]').val(imgs);
         }

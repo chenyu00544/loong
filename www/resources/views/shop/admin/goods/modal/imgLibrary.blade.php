@@ -58,7 +58,7 @@
         $(function () {
             $('.p-gallery').on('change', '.select', function () {
                 setNextAblum(this, '{{csrf_token()}}', "{{url('admin/gallery/getgallerys/')}}/");
-                getgallerypics(1);
+                getGalleryPics(1);
             });
 
             $('.lib-add').on('click', function () {
@@ -129,15 +129,15 @@
 
             $('.pagination').on('click', '.prev', function () {
                 var page = $(this).data('num');
-                getgallerypics(page)
+                getGalleryPics(page)
             });
             $('.pagination').on('click', '.num-page', function () {
                 var page = $(this).data('num');
-                getgallerypics(page)
+                getGalleryPics(page)
             });
             $('.pagination').on('click', '.next', function () {
                 var page = $(this).data('num');
-                getgallerypics(page)
+                getGalleryPics(page)
             });
 
             $('.btn-sure').on('click', function () {
@@ -253,7 +253,7 @@
             });
         });
 
-        function getgallerypics(page) {
+        function getGalleryPics(page) {
             var album_id = $('input[name=parent_album_id]').val();
             $.post("{{url('admin/gallery/getgallerypics')}}", {
                 '_token': '{{csrf_token()}}',

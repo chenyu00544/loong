@@ -14,6 +14,7 @@ use App\Facades\LangConfig;
 use App\Facades\Pinyin;
 use App\Facades\ShopConfig;
 use App\Facades\Url;
+use App\Http\Models\Shop\AttributeModel;
 use App\Http\Models\Shop\BrandModel;
 use App\Http\Models\shop\CategoryModel;
 use App\Http\Models\Shop\GoodsAttrModel;
@@ -22,11 +23,14 @@ use App\Http\Models\Shop\GoodsChangeLogModel;
 use App\Http\Models\Shop\GoodsExtendModel;
 use App\Http\Models\Shop\GoodsGalleryModel;
 use App\Http\Models\Shop\GoodsModel;
+use App\Http\Models\Shop\GoodsTypeModel;
 use App\Http\Models\Shop\GoodsVolumePriceModel;
+use App\Http\Models\Shop\MemberPriceModel;
 use App\Http\Models\Shop\ProductsModel;
 use App\Http\Models\Shop\TransportModel;
 use App\Http\Models\Shop\IntelligentWeightModel;
 use App\Http\Models\Shop\ShopConfigModel;
+use App\Http\Models\Shop\UserRankModel;
 
 class GoodsRepository implements GoodsRepositoryInterface
 {
@@ -37,28 +41,36 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $goodsExtendModel;
     private $goodsGalleryModel;
     private $goodsAttrModel;
+    private $goodsTypeModel;
     private $goodsVolumePriceModel;
     private $goodsChangeLogModel;
     private $brandModel;
     private $transportModel;
+    private $attributeModel;
     private $intelligentWeightModel;
     private $categoryModel;
     private $productsModel;
+    private $userRankModel;
+    private $memberPriceModel;
 
     public function __construct(
         ShopConfigModel $shopConfigModel,
         GoodsModel $goodsModel,
         GoodsCateModel $goodsCateModel,
         GoodsGalleryModel $goodsGalleryModel,
-        GoodsChangeLogModel $goodsChangeLogModel,
         GoodsExtendModel $goodsExtendModel,
         GoodsAttrModel $goodsAttrModel,
+        GoodsTypeModel $goodsTypeModel,
         GoodsVolumePriceModel $goodsVolumePriceModel,
+        GoodsChangeLogModel $goodsChangeLogModel,
         BrandModel $brandModel,
         TransportModel $transportModel,
+        AttributeModel $attributeModel,
         IntelligentWeightModel $intelligentWeightModel,
         CategoryModel $categoryModel,
-        ProductsModel $productsModel
+        ProductsModel $productsModel,
+        UserRankModel $userRankModel,
+        MemberPriceModel $memberPriceModel
     )
     {
         $this->shopConfigModel = $shopConfigModel;
@@ -67,13 +79,17 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->goodsAttrModel = $goodsAttrModel;
         $this->goodsExtendModel = $goodsExtendModel;
         $this->goodsGalleryModel = $goodsGalleryModel;
+        $this->goodsTypeModel = $goodsTypeModel;
         $this->goodsVolumePriceModel = $goodsVolumePriceModel;
         $this->goodsChangeLogModel = $goodsChangeLogModel;
         $this->brandModel = $brandModel;
         $this->transportModel = $transportModel;
+        $this->attributeModel = $attributeModel;
         $this->intelligentWeightModel = $intelligentWeightModel;
         $this->categoryModel = $categoryModel;
         $this->productsModel = $productsModel;
+        $this->userRankModel = $userRankModel;
+        $this->memberPriceModel = $memberPriceModel;
     }
 
     public function getGroupsConfig($groups)
@@ -204,17 +220,63 @@ class GoodsRepository implements GoodsRepositoryInterface
     {
         $goodsColumns = ['*'];
         $req = $this->goodsModel->getGoods($id, $goodsColumns);
+
+        //商品退货标识
         $req->goods_cause = explode(',', $req->goods_cause);
-        $goodsCause = [0,0,0,0];
-        foreach ($goodsCause as $key => $value){
-            foreach ($req->goods_cause as $val){
-                if($key == $val){
+        $goodsCause = [0, 0, 0, 0];
+        foreach ($goodsCause as $key => $value) {
+            foreach ($req->goods_cause as $val) {
+                if ($key == $val) {
                     $goodsCause[$key] = 1;
                 }
             }
         }
         $req->goods_cause = $goodsCause;
+
+        //商品扩展信息比如正品保证
         $req->goods_sever = $this->goodsExtendModel->getGoodsExtend(['goods_id' => $id]);
+        $member_price = $this->memberPriceModel->getMemberPrice(['goods_id' => $id]);
+        $memPrice = [];
+        foreach ($member_price as $key => $value) {
+            $memPrice[$value->user_rank] = $value;
+        }
+        $req->member_price = $memPrice;
+
+        //手机商品详细信息图
+        $req->desc_mobile_html = explode('">', $req->desc_mobile);
+        $descMobileHtml = [];
+        foreach ($req->desc_mobile_html as $value) {
+            if ($value != '') {
+                $descMobileHtml[] = $value . '">';
+            }
+        }
+        $req->desc_mobile_html = $descMobileHtml;
+
+        //阶梯价格
+        $req->goods_volume_prices = $this->goodsVolumePriceModel->getGoodsVolumePrice(['goods_id' => $id]);
+
+        //商品属性详细信息
+        $goodsAttr = $this->goodsAttrModel->getGoodsAttrs(['goods_id'=>$req->goods_id]);
+        $attr_ids = [];
+        foreach ($goodsAttr as $value){
+            $attr_ids[] = $value->attr_id;
+        }
+        $attr_ids = array_unique($attr_ids);
+        $attributes = $this->attributeModel->getAttrsByIn($attr_ids);
+        $goodsAttrO = [];
+        $goodsAttrM = [];
+        foreach ($attributes as $value){
+            $val = $value;
+            $attrValues = explode("\r\n", $val->attr_values);
+            $val->attr_values = $attrValues;
+            if($value->attr_type == 0){//唯一属性
+                $goodsAttrO[] = $val;
+            }else{//单选属性
+                $goodsAttrM[] = $val;
+            }
+        }
+        $req->goods_attr_o = $goodsAttrO;
+        $req->goods_attr_m = $goodsAttrM;
         return $req;
     }
 
@@ -269,13 +331,18 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['is_shipping'] = !empty($data['is_shipping']) ? 1 : 0;
         $goodsData['goods_number'] = !empty($data['goods_number']) ? trim($data['goods_number']) : 0;
         $goodsData['warn_number'] = !empty($data['warn_number']) ? trim($data['warn_number']) : 0;
-        $goodsData['goods_type'] = !empty($data['cate_id']) ? trim($data['cate_id']) : 0;
+        $goodsData['goods_type'] = !empty($data['goods_type']) ? trim($data['goods_type']) : 0;
         $goodsData['give_integral'] = !empty($data['give_integral']) ? trim($data['give_integral']) : 0;
         $goodsData['rank_integral'] = !empty($data['rank_integral']) ? trim($data['rank_integral']) : 0;
         $goodsData['integral'] = !empty($data['integral']) ? trim($data['integral']) : 0;
         $goodsData['suppliers_id'] = !empty($data['suppliers_id']) ? trim($data['suppliers_id']) : 0;
         $goodsData['commission_rate'] = !empty($data['commission_rate']) ? trim($data['commission_rate']) : 0;
-        $goodsData['extension_code'] = 'package_buy';
+        $goodsData['goods_product_tag'] = !empty($data['goods_product_tag']) ? trim($data['goods_product_tag']) : '';
+        $goodsData['goods_tag'] = !empty($data['goods_tag']) ? trim($data['goods_tag']) : '';
+        $goodsData['seller_note'] = !empty($data['seller_note']) ? trim($data['seller_note']) : '';
+        $goodsData['extension_code'] = 'ordinary_buy';
+        $goodsData['add_time'] = time();
+        $goodsData['last_update'] = time();
 
         if (!empty($data['goods_video'])) {
             $original_mp4 = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'video';
@@ -299,6 +366,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
         $goodsData['cat_id'] = !empty($data['cat_id']) ? intval($data['cat_id']) : '';
         if (empty($data['cat_id'])) {
+            //更新您最近使用的商品分类
             $goodsData['cat_id'] = !empty($data['recently_used_category']) ? intval($data['recently_used_category']) : '';
         }
 
@@ -376,7 +444,15 @@ class GoodsRepository implements GoodsRepositoryInterface
             $this->goodsExtendModel->addGoodsExtend($goodsExtend);
 
             //添加商品会员优惠信息
-
+            $userRank = !empty($data['user_price']) ? $data['user_price'] : [];
+            $memberPrice['goods_id'] = $goods->goods_id;
+            foreach ($userRank as $key => $value) {
+                if ($value != -1) {
+                    $memberPrice['user_rank'] = $key;
+                    $memberPrice['user_price'] = $value;
+                    $this->memberPriceModel->addMemberPrice($memberPrice);
+                }
+            }
 
             //添加商品属性
             $attr_id_listO = !empty($data['attr_id_listO']) ? $data['attr_id_listO'] : [];

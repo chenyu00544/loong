@@ -131,7 +131,7 @@
                                                         @foreach($comCates[1] as $comCate)
                                                             <li data-cat_id="{{$comCate->id}}"
                                                                 data-cat_name="{{$comCate->cat_name}}"
-                                                                data-cat_level="1"
+                                                                data-cat_level="2"
                                                                 class="@if($comCate->select == 1) current @endif">
                                                                 <a href="javascript:;"><i
                                                                             class="sc-icon"></i>{{$comCate->cat_name}}
@@ -155,7 +155,7 @@
                                                         @foreach($comCates[2] as $comCate)
                                                             <li data-cat_id="{{$comCate->id}}"
                                                                 data-cat_name="{{$comCate->cat_name}}"
-                                                                data-cat_level="1"
+                                                                data-cat_level="3"
                                                                 class="@if($comCate->select == 1) current @endif">
                                                                 <a href="javascript:;"><i
                                                                             class="sc-icon"></i>{{$comCate->cat_name}}
@@ -462,25 +462,25 @@
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="return_type[]" class="ui-checkbox"
                                                            id="return_type_0" value="0"
-                                                           @if($goodsInfo->goods_cause[0] == 1) checked @endif>
+                                                           @if($goodsInfo->goods_cause[0] == 1) checked @endif >
                                                     <label class="ui-label mar-left-5" for="return_type_0">维修</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="return_type[]" class="ui-checkbox"
                                                            id="return_type_1" value="1"
-                                                           @if($goodsInfo->goods_cause[1] == 1) checked @endif>
+                                                           @if($goodsInfo->goods_cause[1] == 1) checked @endif >
                                                     <label class="ui-label mar-left-5" for="return_type_1">退货</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="return_type[]" class="ui-checkbox"
                                                            id="return_type_2" value="2"
-                                                           @if($goodsInfo->goods_cause[2] == 1) checked @endif>
+                                                           @if($goodsInfo->goods_cause[2] == 1) checked @endif >
                                                     <label class="ui-label mar-left-5" for="return_type_2">换货</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="return_type[]" class="ui-checkbox"
                                                            id="return_type_3" value="3"
-                                                           @if($goodsInfo->goods_cause[3] == 1) checked @endif>
+                                                           @if($goodsInfo->goods_cause[3] == 1) checked @endif >
                                                     <label class="ui-label mar-left-5" for="return_type_3">仅退款</label>
                                                 </div>
                                             </div>
@@ -514,11 +514,15 @@
                                     </div>
 
                                     <!--会员字段 预留↓-->
-                                    @if(!empty($userRanks))
-                                        @foreach($userRanks as $rank)
-                                            <input type="hidden" name="user_price[{{$rank->rank_id}}][]" autocomplete="off" value="-1">
-                                        @endforeach
-                                    @endif
+                                    <div>
+                                        @if(!empty($userRanks))
+                                            @foreach($userRanks as $rank)
+                                                <input type="hidden" name="user_price[{{$rank->rank_id}}]"
+                                                       autocomplete="off"
+                                                       value="@if(!empty($goodsInfo->member_price[$rank->rank_id])) {{$goodsInfo->member_price[$rank->rank_id]}} @else -1 @endif">
+                                            @endforeach
+                                        @endif
+                                    </div>
                                     <!--会员字段 预留↑-->
                                 </div>
                             </div>
@@ -540,13 +544,14 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <script id="editor" name="content" type="text/plain"></script>
+                                <script id="editor" name="content"
+                                        type="text/plain">{!! $goodsInfo->goods_desc !!}</script>
                                 <div class="web" style="display: none;">
                                     <div class="explain">
                                         <p>
                                             <strong>一、基本要求</strong>
                                             <span><em>1、</em>手机详情总体大小：图片+文字，
-                                                <i class="red">图片不超过20张，文字不超过5000字</i>；</span>
+                                                <i class="red">图片不超过20张</i>；</span>
                                         </p>
                                         <p>
                                             <strong>二、图片大小</strong>
@@ -557,13 +562,27 @@
                                     <div class="pannel">
                                         <div class="pannel-content ps-container">
                                             <div class="section-warp">
+                                                @foreach($goodsInfo->desc_mobile_html as $descImg)
+                                                    <div class="section s-img clearfix">
+                                                        <div class="img">
+                                                            {!! $descImg !!}
+                                                        </div>
+                                                        <div class="tools">
+                                                            <i class="move-up glyphicon glyphicon-arrow-up disabled"></i>
+                                                            <i class="move-down glyphicon glyphicon-arrow-down"></i>
+                                                            <em class="move-remove"><i
+                                                                        class="glyphicon glyphicon-remove"></i>删除</em>
+                                                            <div class="cover"></div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                         <div class="step-top-btn">
                                             <a href="javascript:;" class="btn btn-danger web-desc">
                                                 <i class="glyphicon glyphicon-picture"></i> 添加图片</a>
                                         </div>
-                                        <input type="hidden" name="desc_mobile" value="">
+                                        <input type="hidden" name="desc_mobile" value="{{$goodsInfo->desc_mobile}}">
                                     </div>
                                 </div>
                             </div>
@@ -578,21 +597,24 @@
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
                                                     <input class="mar-top-5" type="radio" name="is_promote" value="0"
-                                                           checked> 否
+                                                           @if($goodsInfo->is_promote == 0) checked @endif> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input class="mar-top-5" type="radio" name="is_promote" value="1"> 是
+                                                    <input class="mar-top-5" type="radio" name="is_promote" value="1"
+                                                           @if($goodsInfo->is_promote == 1) checked @endif> 是
                                                 </label>
-                                                <div class="controls fl is-promote" style="display: none;">
+                                                <div class="controls fl is-promote"
+                                                     style="@if($goodsInfo->is_promote == 0) display: none; @endif">
                                                     <div class="input-prepend input-group" style="width: 500px;">
                                                     <span class="add-on input-group-addon"><i
                                                                 class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
                                                         <input type="text" style="width: 300px" name="promote_date"
                                                                id="promote_date" class="form-control input-sm"
-                                                               value="">
+                                                               value="@if($goodsInfo->is_promote == 1) {{$goodsInfo->promote_start_date}}～{{$goodsInfo->promote_end_date}} @else {{$now_date}} 00:00:00～{{$now_date}} 23:59:59 @endif">
                                                         <input type="text"
                                                                class="form-control max-wd-100 fl mar-left-20 input-sm"
-                                                               name="promote_price" value="0.00">
+                                                               name="promote_price"
+                                                               value="{{$goodsInfo->promote_price}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -605,22 +627,25 @@
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
                                                     <input class="mar-top-5" type="radio" name="is_limit_buy" value="0"
-                                                           checked> 否
+                                                           @if($goodsInfo->is_limit_buy == 0) checked @endif> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input class="mar-top-5" type="radio" name="is_limit_buy" value="1">
+                                                    <input class="mar-top-5" type="radio" name="is_limit_buy" value="1"
+                                                           @if($goodsInfo->is_limit_buy == 1) checked @endif>
                                                     是
                                                 </label>
-                                                <div class="controls fl is-limit-buy" style="display: none;">
+                                                <div class="controls fl is-limit-buy"
+                                                     style="@if($goodsInfo->is_limit_buy == 0) display: none; @endif">
                                                     <div class="input-prepend input-group" style="width: 500px;">
                                                     <span class="add-on input-group-addon"><i
                                                                 class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
                                                         <input type="text" style="width: 300px" name="limit_buy_date"
                                                                id="limit_buy_date" class="form-control input-sm"
-                                                               value="">
+                                                               value="@if($goodsInfo->is_limit_buy == 1) {{$goodsInfo->limit_buy_start_date}}～{{$goodsInfo->limit_buy_end_date}} @else {{$now_date}} 00:00:00～{{$now_date}} 23:59:59 @endif">
                                                         <input type="text"
                                                                class="form-control max-wd-100 fl mar-left-20 input-sm"
-                                                               name="limit_buy_num" value="0">
+                                                               name="limit_buy_num"
+                                                               value="{{$goodsInfo->limit_buy_num}}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -664,44 +689,55 @@
                                             <div class="clearfix">
                                                 <label class="radio-inline fl padtop">
                                                     <input class="mar-top-5" type="radio" name="is_volume" value="0"
-                                                           checked> 否
+                                                           @if($goodsInfo->is_volume == 0) checked @endif> 否
                                                 </label>
                                                 <label class="radio-inline fl padtop">
-                                                    <input class="mar-top-5" type="radio" name="is_volume" value="1"> 是
+                                                    <input class="mar-top-5" type="radio" name="is_volume" value="1"
+                                                           @if($goodsInfo->is_volume == 1) checked @endif> 是
                                                 </label>
                                             </div>
-                                            <div class="is-volume-div" style="display:none;">
+                                            <div class="is-volume-div"
+                                                 style="@if($goodsInfo->is_volume == 0) display: none; @endif">
                                                 <table class="table table-bordered volume-price" style="width: auto;">
                                                     <tbody>
                                                     <tr class="first-tr">
                                                         <td class="text-center">数量</td>
-                                                        <td>
-                                                            <input type="text" name="volume_number[]" value=""
-                                                                   class="form-control max-wd-100" autocomplete="off">
-                                                            <input type="hidden" name="volume_id[]" value=""
-                                                                   class="text w50"
-                                                                   autocomplete="off">
-                                                        </td>
+                                                        @foreach($goodsInfo->goods_volume_prices as $goodsVolumePrice)
+                                                            <td>
+                                                                <input type="text" name="volume_number[]"
+                                                                       value="{{$goodsVolumePrice->volume_number}}"
+                                                                       class="form-control max-wd-100"
+                                                                       autocomplete="off">
+                                                                <input type="hidden" name="volume_id[]"
+                                                                       value="{{$goodsVolumePrice->id}}"
+                                                                       class="text w50"
+                                                                       autocomplete="off">
+                                                            </td>
+                                                        @endforeach
                                                         <td class="" rowspan="3">
                                                             <a href="javascript:;" class="add-v-p"></a>
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-center">价格</td>
-                                                        <td>
-                                                            <input type="text" name="volume_price[]"
-                                                                   value=""
-                                                                   class="form-control max-wd-100"
-                                                                   autocomplete="off">
-                                                        </td>
+                                                        @foreach($goodsInfo->goods_volume_prices as $goodsVolumePrice)
+                                                            <td>
+                                                                <input type="text" name="volume_price[]"
+                                                                       value="{{$goodsVolumePrice->volume_price}}"
+                                                                       class="form-control max-wd-100"
+                                                                       autocomplete="off">
+                                                            </td>
+                                                        @endforeach
                                                     </tr>
                                                     <tr>
                                                         <td class="text-center">操作</td>
-                                                        <td class="text-center">
-                                                            <a href="javascript:;"
-                                                               class="btn btn-info btn-sm del-v-p"
-                                                               data-id="1">删除</a>
-                                                        </td>
+                                                        @foreach($goodsInfo->goods_volume_prices as $goodsVolumePrice)
+                                                            <td class="text-center">
+                                                                <a href="javascript:;"
+                                                                   class="btn btn-info btn-sm del-v-p"
+                                                                   data-id="{{$loop->index+1}}">删除</a>
+                                                            </td>
+                                                        @endforeach
                                                     </tr>
                                                     </tbody>
                                                 </table>
@@ -709,20 +745,20 @@
                                         </div>
                                     </div>
 
-                                    <div class="item">
-                                        <div class="step-label">满减价格：</div>
-                                        <div class="step-value">
-                                            <div class="clearfix">
-                                                <label class="radio-inline fl padtop">
-                                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="0"
-                                                           checked> 否
-                                                </label>
-                                                <label class="radio-inline fl padtop">
-                                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="1"> 是
-                                                </label>
-                                            </div>
-                                        </div>
+                                    <!--<div class="item">
+                                    <div class="step-label">满减价格：</div>
+                                    <div class="step-value">
+                                    <div class="clearfix">
+                                    <label class="radio-inline fl padtop">
+                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="0"
+                                    checked> 否
+                                    </label>
+                                    <label class="radio-inline fl padtop">
+                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="1"> 是
+                                    </label>
                                     </div>
+                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
 
@@ -735,7 +771,7 @@
                                         <div class="step-value">
                                             <input type="text" name="give_integral"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="0">
+                                                   autocomplete="off" value="{{$goodsInfo->give_integral}}">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
                                         </div>
@@ -746,7 +782,7 @@
                                         <div class="step-value">
                                             <input type="text" name="rank_integral"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="0">
+                                                   autocomplete="off" value="{{$goodsInfo->rank_integral}}">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
                                         </div>
@@ -757,7 +793,7 @@
                                         <div class="step-value">
                                             <input type="text" name="integral"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="0">
+                                                   autocomplete="off" value="{{$goodsInfo->integral}}">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">(此处需填写金额)购买该商品时最多可以使用积分的金额</div>
                                         </div>
@@ -768,11 +804,11 @@
                                         <div class="step-value">
                                             <input type="text" name="goods_weight"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="0">
-                                            <select name="weight_unit" id=""
+                                                   autocomplete="off" value="{{$goodsInfo->goods_weight}}">
+                                            <select name="weight_unit"
                                                     class="form-control max-wd-100 hg30 fl input-sm mar-left-20">
                                                 <option value="0.001">克</option>
-                                                <option value="1">千克</option>
+                                                <option value="1" selected>千克</option>
                                             </select>
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10"></div>
@@ -784,20 +820,9 @@
                                         <div class="step-value">
                                             <input type="text" name="goods_unit"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="个">
+                                                   autocomplete="off" value="{{$goodsInfo->goods_unit}}">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">比如：个，件，份，套。默认为个</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="item">
-                                        <div class="step-label">赠送等级积分数：</div>
-                                        <div class="step-value">
-                                            <input type="text" name="rank_integral"
-                                                   class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="0">
-                                            <div class="form-prompt"></div>
-                                            <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
                                         </div>
                                     </div>
 
@@ -807,17 +832,17 @@
                                             <div class="checkbox-items">
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="is_best" class="ui-checkbox" value="1"
-                                                           id="is_best" checked>
+                                                           id="is_best" @if($goodsInfo->is_best == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="is_best">精品</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="is_new" class="ui-checkbox" value="1"
-                                                           id="is_new" checked>
+                                                           id="is_new" @if($goodsInfo->is_new == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="is_new">新品</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="is_hot" class="ui-checkbox" value="1"
-                                                           id="is_hot" checked>
+                                                           id="is_hot" @if($goodsInfo->is_hot == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="is_hot">热销</label>
                                                 </div>
                                             </div>
@@ -830,18 +855,20 @@
                                             <div class="checkbox-items">
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="store_best" class="ui-checkbox"
-                                                           value="1" id="store_best">
+                                                           value="1" id="store_best"
+                                                           @if($goodsInfo->store_best == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="store_best">精品</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="store_new" class="ui-checkbox"
-                                                           value="1" id="store_new">
+                                                           value="1" id="store_new"
+                                                           @if($goodsInfo->store_new == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="store_new">新品</label>
                                                 </div>
                                                 <div class="checkbox-item fl mar-right-20">
                                                     <input type="checkbox" name="store_hot" class="ui-checkbox"
-                                                           value="1"
-                                                           id="store_hot">
+                                                           value="1" id="store_hot"
+                                                           @if($goodsInfo->store_hot == 1) checked @endif>
                                                     <label class="ui-label mar-left-5" for="store_hot">热销</label>
                                                 </div>
                                             </div>
@@ -852,9 +879,11 @@
                                         <div class="step-label">上架：</div>
                                         <div class="step-value step-goods-service">
                                             <div class="switch-wrap clearfix fl" style="margin: 5px 0;">
-                                                <div class="switch active" data-type="is_on_sale" title="是">
+                                                <div class="switch @if($goodsInfo->is_on_sale == 1) active @endif"
+                                                     data-type="is_on_sale" title="是">
                                                     <div class="circle"></div>
-                                                    <input type="hidden" value="1" name="is_on_sale">
+                                                    <input type="hidden" value="{{$goodsInfo->is_on_sale}}"
+                                                           name="is_on_sale">
                                                 </div>
                                             </div>
                                         </div>
@@ -864,9 +893,11 @@
                                         <div class="step-label">普通商品销售：</div>
                                         <div class="step-value step-goods-service">
                                             <div class="switch-wrap clearfix fl" style="margin: 5px 0;">
-                                                <div class="switch active" data-type="is_alone_sale" title="是">
+                                                <div class="switch @if($goodsInfo->is_alone_sale == 1) active @endif"
+                                                     data-type="is_alone_sale" title="是">
                                                     <div class="circle"></div>
-                                                    <input type="hidden" value="1" name="is_alone_sale">
+                                                    <input type="hidden" value="{{$goodsInfo->is_alone_sale}}"
+                                                           name="is_alone_sale">
                                                 </div>
                                             </div>
                                             <div class="form-prompt"></div>
@@ -878,9 +909,11 @@
                                         <div class="step-label">是否为免运费商品：</div>
                                         <div class="step-value step-goods-service">
                                             <div class="switch-wrap clearfix fl" style="margin: 5px 0;">
-                                                <div class="switch" data-type="is_shipping" title="是">
+                                                <div class="switch @if($goodsInfo->is_shipping == 1) active @endif"
+                                                     data-type="is_shipping" title="是">
                                                     <div class="circle"></div>
-                                                    <input type="hidden" value="0" name="is_shipping">
+                                                    <input type="hidden" value="{{$goodsInfo->is_shipping}}"
+                                                           name="is_shipping">
                                                 </div>
                                             </div>
                                         </div>
@@ -891,7 +924,7 @@
                                         <div class="step-value">
                                             <input type="text" name="keywords"
                                                    class="form-control max-wd-350 hg30 fl "
-                                                   autocomplete="off" value="">
+                                                   autocomplete="off" value="{{$goodsInfo->keywords}}">
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">商品关键词：请用空格分隔；1.作为站内关键词查询；2.作为搜索引擎收录使用。
                                             </div>
@@ -902,7 +935,7 @@
                                         <div class="step-label">评论标签：</div>
                                         <div class="step-value">
                                             <textarea class="form-control max-wd-350 fl" rows="5"
-                                                      name="goods_product_tag"></textarea>
+                                                      name="goods_product_tag">{{$goodsInfo->goods_product_tag}}</textarea>
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">
                                                 请用','号分割；例：商品好看,很实用,材料很好...（注意逗号要使用英文逗号）<br>商品确认收货后，买家评论时可勾选的“买家印象”处内容
@@ -914,7 +947,7 @@
                                         <div class="step-label">服务承诺标签：</div>
                                         <div class="step-value">
                                             <textarea class="form-control max-wd-350 fl" rows="5"
-                                                      name="goods_tag"></textarea>
+                                                      name="goods_tag">{{$goodsInfo->goods_tag}}</textarea>
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">请用','号分割（注：逗号要使用英文逗号）</div>
                                         </div>
@@ -924,7 +957,7 @@
                                         <div class="step-label">商家备注：</div>
                                         <div class="step-value">
                                             <textarea class="form-control max-wd-350 fl" rows="5"
-                                                      name="seller_note"></textarea>
+                                                      name="seller_note">{{$goodsInfo->seller_note}}</textarea>
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">仅供商家自己看的信息</div>
                                         </div>
@@ -957,12 +990,15 @@
                                             <input name="attr_parent_id" type="hidden" value="0">
                                             <div class="item-right-li">
                                                 <div class="value-select goods_type_cat">
-                                                    <select class="form-control max-wd-110 fl mar-right-20 select">
-                                                        <option value="0">请选择</option>
-                                                        @foreach($goodsTypeCates as $goodsTypeCate)
-                                                            <option value="{{$goodsTypeCate->cate_id}}">{{$goodsTypeCate->cat_name}}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    @foreach($goodsTypeCates as $goodsTypeCate)
+                                                        <select class="form-control max-wd-110 fl mar-right-20 select">
+                                                            <option value="0">请选择</option>
+                                                            @foreach($goodsTypeCate as $subGoodsTypeCate)
+                                                                <option value="{{$subGoodsTypeCate->cate_id}}"
+                                                                        @if($subGoodsTypeCate->select == 1) selected @endif>{{$subGoodsTypeCate->cat_name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endforeach
                                                 </div>
                                                 <a class="btn btn-info add_goods_type_cat_win"
                                                    data-goodsid="">添加属性分类</a>
@@ -978,9 +1014,14 @@
                                                     <select id="cate_id"
                                                             class="form-control max-wd-350 fl select-value">
                                                         <option value="0">请选择</option>
+                                                        @foreach($goodsTypes as $goodsType)
+                                                            <option value="{{$goodsType->cat_id}}"
+                                                                    @if($goodsType->cat_id == $goodsInfo->goods_type) selected @endif>{{$goodsType->cat_name}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
-                                                <input name="goods_type" type="hidden" value="" id="select_attr_val">
+                                                <input name="goods_type" type="hidden"
+                                                       value="{{$goodsInfo->goods_type}}">
                                                 <a class="btn btn-info mar-left-20 add_goods_type" data-goodsid="">添加商品类型</a>
                                                 <a class="btn btn-info mar-left-20 add_attribute"
                                                    data-goodsid="">添加属性</a>
@@ -988,19 +1029,67 @@
                                         </div>
                                     </div>
                                     <div class="step-item step-item-bg">
-                                        <div class="step-item-row step-item-attr-once clearfix" style="display: none;">
+                                        <div class="step-item-row step-item-attr-once clearfix"
+                                             style="@if(empty($goodsInfo->goods_attr_o)) display:none; @endif">
                                             <div class="step-item-left">
                                                 <h5>商品属性：</h5>
                                             </div>
                                             <div class="step-item-right attr-once">
+                                                @foreach($goodsInfo->goods_attr_o as $attr_o)
+                                                    <div class="item-right-list goods-attr-type fl">
+                                                        <input type="hidden" name="attr_id_listO[]"
+                                                               value="{{$attr_o->attr_id}}">
+                                                        <div class="label fl"
+                                                             title="{{$attr_o->attr_name}}">{{$attr_o->attr_name}}：
+                                                        </div>
+                                                        <div class="value-select">
+                                                            <select name="attr_value_list[]"
+                                                                    class="form-control max-wd-100 fl">
+                                                                @foreach($attr_o->attr_values as $attr_value)
+                                                                    <option value="{{$attr_value}}">{{$attr_value}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                         <div class="step-item-row step-item-attr-checkbox clearfix"
-                                             style="display: none;">
+                                             style="@if(empty($goodsInfo->goods_attr_m)) display:none; @endif">
                                             <div class="step-item-left">
                                                 <h5>商品规格：</h5>
                                             </div>
                                             <div class="step-item-right attr-multi">
+                                                @foreach($goodsInfo->goods_attr_m as $attr_m)
+                                                    <div class="item-right-list fl">
+                                                        <div class="label fl">{{$attr_m->attr_name}}：
+                                                            <input type="hidden" name="attr_id_listM[]"
+                                                                   value="{{$attr_m->attr_id}}">
+                                                        </div>
+                                                        <div>
+                                                            @if($attr_m->attr_input_type == 0)
+                                                                @for($i = 0; $i < count($attr_m->attr_values); $i++)
+                                                                    <label class="checkbox-inline">
+                                                                        <input type="checkbox"
+                                                                               name="attr_value_list1[{{$attr_m->attr_id}}][]"
+                                                                               class="attr_value_list1"
+                                                                               data-key="{{$i}}"
+                                                                               data-k="{{$loop->index}}"
+                                                                               value="{{$attr_m->attr_values[$i]}}"
+                                                                               data-attr_id="{{$attr_m->attr_id}}">{{$attr_m->attr_values[$i]}}
+                                                                    </label>
+                                                                @endfor
+                                                            @endif
+                                                            <div class="checkbox-inline">
+                                                                @if($attr_m->attr_input_type == 1)
+                                                                    <a href="javascript:;"
+                                                                       class="btn btn-info btn-sm attr-custom"
+                                                                       data-attr_id="{{$attr_m->attr_id}}">自定义</a>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -1536,6 +1625,7 @@
             //选择商品类型
             $('.select-value').on('change', function () {
                 var cat_id = $(this).val();
+                $('input[name=goods_type]').val(cat_id);
                 var htmlM = '';
                 var htmlO = '';
                 var key = 0;
@@ -1974,7 +2064,7 @@
 
             var imgs = '';
             $('.section-warp .img').each(function () {
-                imgs += $(this).html();
+                imgs += $.trim($(this).html());
             });
             $('input[name=desc_mobile]').val(imgs);
         }

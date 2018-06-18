@@ -11,6 +11,12 @@ class GoodsAttrModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function getGoodsAttrs($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->get();
+    }
 
     public function addGoodsAttr($data)
     {

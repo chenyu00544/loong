@@ -4,21 +4,21 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GoodsVolumePriceModel extends Model
+class MemberPriceModel extends Model
 {
-    protected $table = 'goods_volume_price';
-    protected $primaryKey = 'id';
+    protected $table = 'member_price';
+    protected $primaryKey = 'price_id';
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getGoodsVolumePrice($where, $column = ['*'])
+    public function getMemberPrice($where, $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
             ->get();
     }
 
-    public function addGoodsVolumePrice($data)
+    public function addMemberPrice($data)
     {
         return $this->create($data);
     }

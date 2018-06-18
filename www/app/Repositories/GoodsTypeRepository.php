@@ -50,7 +50,7 @@ class GoodsTypeRepository implements GoodsTypeRepositoryInterface
     {
         $re = $this->goodsTypeModel->getGoodsTypes($where)->toArray();
         $req = [];
-        foreach ($re as $val){
+        foreach ($re as $val) {
             $req[$val['cat_id']] = $val['cat_name'];
         }
         return $req;
@@ -134,6 +134,24 @@ class GoodsTypeRepository implements GoodsTypeRepositoryInterface
             krsort($PCates);
             return $PCates;
         }
+    }
+
+    public function getGoodsTypeCateBySelect($id)
+    {
+        $c_list = $this->getParentCate($id);
+        $cate = [];
+        foreach ($c_list as $value) {
+            $re = $this->goodsTypeCateModel->getTypeCates(['parent_id' => $value->parent_id]);
+            foreach ($re as $k => $val) {
+                if ($val->cate_id == $value->cate_id) {
+                    $re[$k]->select = 1;
+                } else {
+                    $re[$k]->select = 0;
+                }
+            }
+            $cate[] = $re;
+        }
+        return $cate;
     }
 
     public function delete($id)
