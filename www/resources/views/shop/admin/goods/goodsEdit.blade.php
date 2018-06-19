@@ -1061,28 +1061,30 @@
                                                 <h5>商品规格：</h5>
                                             </div>
                                             <div class="step-item-right attr-multi">
-                                                @foreach($goodsInfo->goods_attr_m as $key => $attr_m)
+                                                @foreach($goodsInfo->goods_attr_m as $attr_m)
                                                     <div class="item-right-list fl">
-                                                        <div class="label fl">{{$attr_m['attr_name']}}：
+                                                        <div class="label fl">{{$attr_m->attr_name}}：
                                                             <input type="hidden" name="attr_id_listM[]"
-                                                                   value="{{$key}}">
+                                                                   value="{{$attr_m->attr_id}}">
                                                         </div>
                                                         <div>
-                                                            @for($i = 0; $i < count($attr_m['value']); $i++)
+                                                            @for($i = 0; $i < count($attr_m->attr_values); $i++)
                                                                 <label class="checkbox-inline">
                                                                     <input type="checkbox"
-                                                                           name="attr_value_list1[{{$key}}][]"
+                                                                           name="attr_value_list1[{{$attr_m->attr_id}}][]"
                                                                            class="attr_value_list1"
                                                                            data-key="{{$i}}"
                                                                            data-k="{{$loop->index}}"
-                                                                           value="{{$attr_m['value'][$i]['attr_value']}}"
-                                                                           data-attr_id="{{$key}}" @if($attr_m['value'][$i]['select'] == 1) checked @endif>{{$attr_m['value'][$i]['attr_value']}}</label>
+                                                                           value="{{$attr_m->attr_values[$i]}}"
+                                                                           data-attr_id="{{$attr_m->attr_id}}"
+                                                                           @if($attr_m->selected[$i] == 1) checked @endif>{{$attr_m->attr_values[$i]}}
+                                                                </label>
                                                             @endfor
-                                                            @if($attr_m['attr_input_type'] == 1)
+                                                            @if($attr_m->attr_input_type == 1)
                                                                 <div class="checkbox-inline">
                                                                     <a href="javascript:;"
                                                                        class="btn btn-info btn-sm attr-custom"
-                                                                       data-attr_id="{{$key}}">自定义</a>
+                                                                       data-attr_id="{{$attr_m->attr_id}}">自定义</a>
 
                                                                 </div>
                                                             @endif
@@ -1092,14 +1094,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="step-item-table" id="attribute-table" style="display:none;">
+                                    <div class="step-item-table" id="attribute-table"
+                                         style="@if($goodsInfo->products->count() == 0) display:none; @endif">
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
                                                 <th class="col-sm-3 text-center">颜色，尺码</th>
                                                 <th class="col-sm-1"><em>*</em>市场价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_market"></i></th>
-                                                <th class="col-sm-1"><em>*</em>本店价 <i
+                                                <th class="col-sm-1"><em>*</em>销售价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_shop"></i></th>
                                                 <th class="col-sm-1"><em>*</em>促销价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_promote"></i>
@@ -1115,6 +1118,62 @@
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            @foreach($goodsInfo->products as $product)
+                                                <tr>
+                                                    <td class="text-center">
+                                                        @foreach($product->goods_attr_names as $key => $value)
+                                                            @if($key > 0) , @endif{{$value}}
+                                                            <input type="hidden"
+                                                                   name="attr[{{$product->attr_ids[$key]}}][]"
+                                                                   value="{{$product->attr_ids[$key]}}">
+                                                            <input type="hidden"
+                                                                   name="goods_attr_id[{{$product->goods_attr[$key]}}][]"
+                                                                   value="{{$product->goods_attr[$key]}}">
+                                                        @endforeach
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="product_market_price[]"
+                                                               class="form-control max-wd-110 hg27" autocomplete="off"
+                                                               value="{{$product->product_market_price}}">
+                                                    </td>
+                                                    <td width="8%">
+                                                        <input type="text" name="product_price[]"
+                                                               class="form-control max-wd-110 hg27" autocomplete="off"
+                                                               value="{{$product->product_price}}">
+                                                    </td>
+                                                    <td width="8%">
+                                                        <input type="text" name="product_promote_price[]"
+                                                               class="form-control max-wd-110 hg27" autocomplete="off"
+                                                               value="{{$product->product_promote_price}}">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <input type="text" name="product_number[]"
+                                                               class="form-control max-wd-110 hg27" autocomplete="off"
+                                                               value="{{$product->product_number}}">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <input type="text" name="product_warn_number[]"
+                                                               class="form-control max-wd-110 hg27" autocomplete="off"
+                                                               value="{{$product->product_warn_number}}">
+                                                    </td>
+                                                    <td width="12%">
+                                                        <input type="text" name="product_sn[]" class="form-control hg27"
+                                                               autocomplete="off" value="{{$product->product_sn}}">
+                                                    </td>
+                                                    <td width="12%">
+                                                        <input type="text" name="product_bar_code[]"
+                                                               class="form-control hg27" autocomplete="off"
+                                                               value="{{$product->bar_code}}">
+                                                    </td>
+                                                    <td class="handle" width="5%">
+                                                        <a href="javascript:;" class="btn btn-danger btn-sm product-del"
+                                                           data-product_id="{{$product->product_id}}">删除</a>
+                                                        <input type="hidden" name="product_id[]"
+                                                               value="{{$product->product_id}}">
+                                                        <input type="hidden" name="changelog_product_id[]" value="">
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -1126,7 +1185,27 @@
                                     <i class="ui-step"></i>
                                     <h3>属性图片</h3>
                                 </div>
-                                <div class="attr-gallerys ps-container ps-active-y" style="display: none;">
+                                <div class="attr-gallerys ps-container ps-active-y"
+                                     style="@if(empty($goodsInfo->goods_attr_m)) display:none; @endif">
+                                    @foreach($goodsInfo->goods_attr_m as $attr_img)
+                                        <div class="step-content attr-gallery clearfix">
+                                            <div class="attr_tit">{{$attr_img->attr_name}}：</div>
+                                            @for($i = 0; $i < count($attr_img->attr_values); $i++)
+                                                <div class="attr-item fl">
+                                                    <div class="txt">{{$attr_img->attr_values[$i]}}</div>
+                                                    <div class="info fl">
+                                                        <label class="fl hg27">排序：</label>
+                                                        <input type="text" class="form-control max-wd-100 hg27" name="attr_sort[{{$attr_img->attr_id}}][]" size="10" value="{{$attr_img->attr_sorts[$i]}}"></div>
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10" data-goodsattrid="{{$attr_img->goods_attr_ids[$i]}}" data-attrid="{{$attr_img->attr_id}}">
+                                                        <input type="file" id="attr-img" name="attr-img[{{$attr_img->attr_id}}][]" style="opacity: 0;max-width: 0;height: 0;margin: 0">
+                                                        <label for="attr-img">上传图片</label></a>
+                                                    <input name="attr_id" type="hidden" value="{{$attr_img->attr_id}}">
+                                                    <input name="attr_value" type="hidden" value="{{$attr_img->attr_values[$i]}}">
+                                                    <input type="hidden" name="gallery_attr_value[]" value="{{$attr_img->attr_values[$i]}}">
+                                                    <input type="hidden" name="gallery_attr_id[]" value="{{$attr_img->attr_values[$i]}}"></div>
+                                            @endfor
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
 

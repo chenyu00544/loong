@@ -961,7 +961,7 @@
                                                 <th class="col-sm-3 text-center">颜色，尺码</th>
                                                 <th class="col-sm-1"><em>*</em>市场价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_market"></i></th>
-                                                <th class="col-sm-1"><em>*</em>本店价 <i
+                                                <th class="col-sm-1"><em>*</em>销售价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_shop"></i></th>
                                                 <th class="col-sm-1"><em>*</em>促销价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_promote"></i>

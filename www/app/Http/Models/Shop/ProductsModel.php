@@ -11,6 +11,14 @@ class ProductsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function getProducts($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->orderBy('product_id', 'asc')
+            ->get();
+    }
+
     public function addProduct($data)
     {
         return $this->create($data);

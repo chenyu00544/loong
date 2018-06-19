@@ -257,44 +257,71 @@ class GoodsRepository implements GoodsRepositoryInterface
 
         //商品属性详细信息
         $goodsAttr = $this->goodsAttrModel->getGoodsAttrsJoinAttr(['goods_id' => $req->goods_id]);
-//        $attr_ids = [];
-//        foreach ($goodsAttr as $value) {
-//            $attr_ids[] = $value->attr_id;
-//        }
-//        $attr_ids = array_unique($attr_ids);
-//        $attributes = $this->attributeModel->getAttrsByIn($attr_ids);
+
         $goodsAttrO = [];
         $goodsAttrM = [];
+        $attr_values = [];
+        $goodsAttrArr = [];
         foreach ($goodsAttr as $value) {
+            $goodsAttrArr[$value->goods_attr_id] = $value;
             $val_bat = $value;
             $attrValues = explode("\r\n", $val_bat->attr_values);
-
             $val_bat->attr_values = $attrValues;
             if ($value->attr_type == 0) {//唯一属性
                 $goodsAttrO[] = $val_bat;
             } else {//单选属性
-                $goodsAttrM[$value->attr_id]['attr_name'] = $val_bat->attr_name;
-                $goodsAttrM[$value->attr_id]['attr_input_type'] = $val_bat->attr_input_type;
-                if ($value->attr_input_type == 1) {
-                    $goodsAttrM[$value->attr_id]['value'][] = ['attr_value' => $val_bat->attr_value, 'select' => 1];
+                $attr_values[$value->attr_id][] = $value->attr_value;
+                $attr_sorts[$value->attr_id][] = $value->attr_sort;
+                $goods_attr_ids[$value->attr_id][] = $value->goods_attr_id;
+                $attr_img_flies[$value->attr_id][] = $value->attr_img_flie;
+                $attr_gallery_flies[$value->attr_id][] = $value->attr_gallery_flie;
+                $goodsAttrM[$value->attr_id] = $val_bat;
+            }
+        }
+        foreach ($attr_values as $key => $value) {
+            foreach ($goodsAttrM[$key]->attr_values as $k => $val) {
+                if (in_array($val, $value)) {
+                    $select[$k] = 1;
                 } else {
-                    $attr_values[$value->attr_id] = $attrValues;
-                    $attr_value_s[$value->attr_id][] = $value->attr_value;
+                    $select[$k] = 0;
                 }
             }
+            $goodsAttrM[$key]->attr_sorts = $attr_sorts[$key];
+            $goodsAttrM[$key]->goods_attr_ids = $goods_attr_ids[$key];
+            $goodsAttrM[$key]->attr_img_flies = $attr_img_flies[$key];
+            $goodsAttrM[$key]->attr_gallery_flies = $attr_gallery_flies[$key];
+            $goodsAttrM[$key]->selected = $select;
         }
         $req->goods_attr_o = $goodsAttrO;
+        $req->goods_attr_m = $goodsAttrM;
 
-        foreach ($attr_values as $key => $values) {
-            foreach ($values as $value) {
-                if (in_array($value, $attr_value_s[$key])) {
-                    $goodsAttrM[$key]['value'][] = ['attr_value' => $value, 'select' => 1];
-                }else{
-                    $goodsAttrM[$key]['value'][] = ['attr_value' => $value, 'select' => 0];
+        //商品属性货品数据
+        if ($req->model_price == 0) {
+            $products = $this->productsModel->getProducts(['goods_id' => $id]);
+            foreach ($products as $value) {
+                $goods_attr = explode('|', $value->goods_attr);
+                foreach ($goods_attr as $k => $val){
+                    $goods_attr_names[$k] = $goodsAttrArr[$val]->attr_value;
+                    $attr_ids[$k] = $goodsAttrArr[$val]->attr_id;
                 }
+                $value->goods_attr_names = $goods_attr_names;
+                $value->goods_attr = $goods_attr;
+                $value->attr_ids = $attr_ids;
             }
         }
-        $req->goods_attr_m = $goodsAttrM;
+//        其他模式
+//        elseif($req->model_price == 1){
+//            $products = $this->productsModel->getProducts(['goods_id' => $id]);
+//            foreach ($products as $value){
+//
+//            }
+//        }elseif($req->model_price == 2){
+//            $products = $this->productsModel->getProducts(['goods_id' => $id]);
+//            foreach ($products as $value){
+//
+//            }
+//        }
+        $req->products = $products;
         return $req;
     }
 
