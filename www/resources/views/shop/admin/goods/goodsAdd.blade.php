@@ -1994,7 +1994,6 @@
                     } else {
                         this.attrList[e.target.dataset.key][e.target.dataset.k] = null;
                     }
-                    console.log(this.attrList);
                     this.productList = this.pSplicing(this.attrList.length - 1, 0, '', []);
                 },
                 pSplicing: function (i, j, pStr, pList) {

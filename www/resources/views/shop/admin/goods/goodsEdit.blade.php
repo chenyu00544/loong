@@ -1114,7 +1114,7 @@
                                                 </th>
                                                 <th width="20%">商品货号</th>
                                                 <th width="10%">商品条形码</th>
-                                                <th class="text-center"  width="5%">操作</th>
+                                                <th class="text-center" width="5%">操作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -1834,6 +1834,7 @@
                 }
                 var html = '';
                 $.each(productList, function (k, v) {
+
                     html += '<tr><td class="text-center">';
                     var i = 0;
                     $.each(v, function (key, val) {
