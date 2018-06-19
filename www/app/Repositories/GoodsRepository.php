@@ -278,18 +278,30 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $goodsAttrM[$value->attr_id] = $val_bat;
             }
         }
+
         foreach ($attr_values as $key => $value) {
+            $i = 0;
             foreach ($goodsAttrM[$key]->attr_values as $k => $val) {
                 if (in_array($val, $value)) {
                     $select[$k] = 1;
+
+                    $attr_sorts_bak[$key][] = $attr_sorts[$key][$i];
+                    $goods_attr_ids_bak[$key][] = $goods_attr_ids[$key][$i];
+                    $attr_img_flies_bak[$key][] = $attr_img_flies[$key][$i];
+                    $attr_gallery_flies_bak[$key][] = $attr_gallery_flies[$key][$i];
+                    $i++;
                 } else {
                     $select[$k] = 0;
+                    $attr_sorts_bak[$key][] = 0;
+                    $goods_attr_ids_bak[$key][] = 0;
+                    $attr_img_flies_bak[$key][] = 0;
+                    $attr_gallery_flies_bak[$key][] = 0;
                 }
             }
-            $goodsAttrM[$key]->attr_sorts = $attr_sorts[$key];
-            $goodsAttrM[$key]->goods_attr_ids = $goods_attr_ids[$key];
-            $goodsAttrM[$key]->attr_img_flies = $attr_img_flies[$key];
-            $goodsAttrM[$key]->attr_gallery_flies = $attr_gallery_flies[$key];
+            $goodsAttrM[$key]->attr_sorts = $attr_sorts_bak[$key];
+            $goodsAttrM[$key]->goods_attr_ids = $goods_attr_ids_bak[$key];
+            $goodsAttrM[$key]->attr_img_flies = $attr_img_flies_bak[$key];
+            $goodsAttrM[$key]->attr_gallery_flies = $attr_gallery_flies_bak[$key];
             $goodsAttrM[$key]->selected = $select;
         }
         $req->goods_attr_o = $goodsAttrO;
@@ -322,6 +334,10 @@ class GoodsRepository implements GoodsRepositoryInterface
 //            }
 //        }
         $req->products = $products;
+
+        //商品相册
+        $req->goods_gallerys = $this->goodsGalleryModel->getGoodsGallerys(['goods_id' => $id]);
+
         return $req;
     }
 

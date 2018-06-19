@@ -958,22 +958,22 @@
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
-                                                <th class="col-sm-3 text-center">颜色，尺码</th>
-                                                <th class="col-sm-1"><em>*</em>市场价 <i
+                                                <th width="25%" class="text-center">颜色，尺码</th>
+                                                <th width="9%"><em>*</em>市场价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_market"></i></th>
-                                                <th class="col-sm-1"><em>*</em>销售价 <i
+                                                <th width="9%"><em>*</em>销售价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_shop"></i></th>
-                                                <th class="col-sm-1"><em>*</em>促销价 <i
+                                                <th width="9%"><em>*</em>促销价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_promote"></i>
                                                 </th>
-                                                <th class="col-sm-1"><em>*</em>库存 <i
+                                                <th width="9%"><em>*</em>库存 <i
                                                             class="glyphicon glyphicon-edit cursor pro_number"></i></th>
-                                                <th class="col-sm-1"><em>*</em>预警值 <i
+                                                <th width="9%"><em>*</em>预警值 <i
                                                             class="glyphicon glyphicon-edit cursor pro_warning"></i>
                                                 </th>
-                                                <th class="col-sm-1">商品货号</th>
-                                                <th class="col-sm-1">商品条形码</th>
-                                                <th class="col-sm-1 text-center">操作</th>
+                                                <th width="20%">商品货号</th>
+                                                <th width="10%">商品条形码</th>
+                                                <th class="text-center" width="5%">操作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -1578,7 +1578,7 @@
                                         '<input type="text" class="form-control max-wd-100 hg27" name="attr_sort[' + attrMulti[key].attr_id + '][]" size="10" value="1"></div>' +
                                         '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
                                         'data-goodsattrid="" data-attrid="' + attrMulti[key].attr_id + '" v-if="key == 0">' +
-                                        '<input type="file" id="attr-img" class="attr-img[' + attrMulti[key].attr_id + '][]"' +
+                                        '<input type="file" id="attr-img" name="attr-img[' + attrMulti[key].attr_id + '][]"' +
                                         'style="opacity: 0;max-width: 0;height: 0;margin: 0">' +
                                         '<label for="attr-img">上传图片</label></a>' +
                                         '<input name="attr_id" type="hidden" value="' + attrMulti[key].attr_id + '">' +
@@ -1616,25 +1616,25 @@
                     html += '</td><td>' +
                         '<input type="text" name="product_market_price[]"' +
                         'class="form-control max-wd-110 hg27" autocomplete="off" value="0.00"></td>' +
-                        '<td width="8%">' +
+                        '<td>' +
                         '<input type="text" name="product_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
                         '</td>' +
-                        '<td width="8%">' +
+                        '<td>' +
                         '<input type="text" name="product_promote_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
                         '</td>' +
-                        '<td width="10%">' +
+                        '<td>' +
                         '<input type="text" name="product_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0">' +
                         '</td>' +
-                        '<td width="10%">' +
+                        '<td>' +
                         '<input type="text" name="product_warn_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="1">' +
                         '</td>' +
-                        '<td width="12%">' +
+                        '<td>' +
                         '<input type="text" name="product_sn[]" class="form-control hg27" autocomplete="off" value="">' +
                         '</td>' +
-                        '<td width="12%">' +
+                        '<td>' +
                         '<input type="text" name="product_bar_code[]" class="form-control hg27" autocomplete="off" value="">' +
                         '</td>' +
-                        '<td class="handle" width="5%"> N/A <input type="hidden" name="product_id[]" value="">' +
+                        '<td class="handle"> N/A <input type="hidden" name="product_id[]" value="">' +
                         '<input type="hidden" name="changelog_product_id[]" value="">' +
                         '</td>' +
                         '</tr>';

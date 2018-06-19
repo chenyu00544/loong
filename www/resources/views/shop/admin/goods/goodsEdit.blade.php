@@ -1099,22 +1099,22 @@
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
-                                                <th class="col-sm-3 text-center">颜色，尺码</th>
-                                                <th class="col-sm-1"><em>*</em>市场价 <i
+                                                <th width="25%" class="text-center">颜色，尺码</th>
+                                                <th width="9%"><em>*</em>市场价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_market"></i></th>
-                                                <th class="col-sm-1"><em>*</em>销售价 <i
+                                                <th width="9%"><em>*</em>销售价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_shop"></i></th>
-                                                <th class="col-sm-1"><em>*</em>促销价 <i
+                                                <th width="9%"><em>*</em>促销价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_promote"></i>
                                                 </th>
-                                                <th class="col-sm-1"><em>*</em>库存 <i
+                                                <th width="9%"><em>*</em>库存 <i
                                                             class="glyphicon glyphicon-edit cursor pro_number"></i></th>
-                                                <th class="col-sm-1"><em>*</em>预警值 <i
+                                                <th width="9%"><em>*</em>预警值 <i
                                                             class="glyphicon glyphicon-edit cursor pro_warning"></i>
                                                 </th>
-                                                <th class="col-sm-1">商品货号</th>
-                                                <th class="col-sm-1">商品条形码</th>
-                                                <th class="col-sm-1 text-center">操作</th>
+                                                <th width="20%">商品货号</th>
+                                                <th width="10%">商品条形码</th>
+                                                <th class="text-center"  width="5%">操作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -1125,7 +1125,7 @@
                                                             @if($key > 0) , @endif{{$value}}
                                                             <input type="hidden"
                                                                    name="attr[{{$product->attr_ids[$key]}}][]"
-                                                                   value="{{$product->attr_ids[$key]}}">
+                                                                   value="{{$value}}">
                                                             <input type="hidden"
                                                                    name="goods_attr_id[{{$product->goods_attr[$key]}}][]"
                                                                    value="{{$product->goods_attr[$key]}}">
@@ -1136,36 +1136,36 @@
                                                                class="form-control max-wd-110 hg27" autocomplete="off"
                                                                value="{{$product->product_market_price}}">
                                                     </td>
-                                                    <td width="8%">
+                                                    <td>
                                                         <input type="text" name="product_price[]"
                                                                class="form-control max-wd-110 hg27" autocomplete="off"
                                                                value="{{$product->product_price}}">
                                                     </td>
-                                                    <td width="8%">
+                                                    <td>
                                                         <input type="text" name="product_promote_price[]"
                                                                class="form-control max-wd-110 hg27" autocomplete="off"
                                                                value="{{$product->product_promote_price}}">
                                                     </td>
-                                                    <td width="10%">
+                                                    <td>
                                                         <input type="text" name="product_number[]"
                                                                class="form-control max-wd-110 hg27" autocomplete="off"
                                                                value="{{$product->product_number}}">
                                                     </td>
-                                                    <td width="10%">
+                                                    <td>
                                                         <input type="text" name="product_warn_number[]"
                                                                class="form-control max-wd-110 hg27" autocomplete="off"
                                                                value="{{$product->product_warn_number}}">
                                                     </td>
-                                                    <td width="12%">
+                                                    <td>
                                                         <input type="text" name="product_sn[]" class="form-control hg27"
                                                                autocomplete="off" value="{{$product->product_sn}}">
                                                     </td>
-                                                    <td width="12%">
+                                                    <td>
                                                         <input type="text" name="product_bar_code[]"
                                                                class="form-control hg27" autocomplete="off"
                                                                value="{{$product->bar_code}}">
                                                     </td>
-                                                    <td class="handle" width="5%">
+                                                    <td class="handle">
                                                         <a href="javascript:;" class="btn btn-danger btn-sm product-del"
                                                            data-product_id="{{$product->product_id}}">删除</a>
                                                         <input type="hidden" name="product_id[]"
@@ -1190,19 +1190,32 @@
                                     @foreach($goodsInfo->goods_attr_m as $attr_img)
                                         <div class="step-content attr-gallery clearfix">
                                             <div class="attr_tit">{{$attr_img->attr_name}}：</div>
-                                            @for($i = 0; $i < count($attr_img->attr_values); $i++)
-                                                <div class="attr-item fl">
-                                                    <div class="txt">{{$attr_img->attr_values[$i]}}</div>
-                                                    <div class="info fl">
-                                                        <label class="fl hg27">排序：</label>
-                                                        <input type="text" class="form-control max-wd-100 hg27" name="attr_sort[{{$attr_img->attr_id}}][]" size="10" value="{{$attr_img->attr_sorts[$i]}}"></div>
-                                                    <a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10" data-goodsattrid="{{$attr_img->goods_attr_ids[$i]}}" data-attrid="{{$attr_img->attr_id}}">
-                                                        <input type="file" id="attr-img" name="attr-img[{{$attr_img->attr_id}}][]" style="opacity: 0;max-width: 0;height: 0;margin: 0">
-                                                        <label for="attr-img">上传图片</label></a>
-                                                    <input name="attr_id" type="hidden" value="{{$attr_img->attr_id}}">
-                                                    <input name="attr_value" type="hidden" value="{{$attr_img->attr_values[$i]}}">
-                                                    <input type="hidden" name="gallery_attr_value[]" value="{{$attr_img->attr_values[$i]}}">
-                                                    <input type="hidden" name="gallery_attr_id[]" value="{{$attr_img->attr_values[$i]}}"></div>
+                                            @for($i = 0; $i < count($attr_img->selected); $i++)
+                                                @if($attr_img->selected[$i] == 1)
+                                                    <div class="attr-item fl">
+                                                        <div class="txt">{{$attr_img->attr_values[$i]}}</div>
+                                                        <div class="info fl">
+                                                            <label class="fl hg27">排序：</label>
+                                                            <input type="text" class="form-control max-wd-100 hg27"
+                                                                   name="attr_sort[{{$attr_img->attr_id}}][]" size="10"
+                                                                   value="{{$attr_img->attr_sorts[$i]}}"></div>
+                                                        <a href="javascript:;"
+                                                           class="btn btn-danger btn-sm up_img mar-left-10"
+                                                           data-goodsattrid="{{$attr_img->goods_attr_ids[$i]}}"
+                                                           data-attrid="{{$attr_img->attr_id}}">
+                                                            <input type="file" id="attr-img"
+                                                                   name="attr-img[{{$attr_img->attr_id}}][]"
+                                                                   style="opacity: 0;max-width: 0;height: 0;margin: 0">
+                                                            <label for="attr-img">上传图片</label></a>
+                                                        <input name="attr_id" type="hidden"
+                                                               value="{{$attr_img->attr_id}}">
+                                                        <input name="attr_value" type="hidden"
+                                                               value="{{$attr_img->attr_values[$i]}}">
+                                                        <input type="hidden" name="gallery_attr_value[]"
+                                                               value="{{$attr_img->attr_values[$i]}}">
+                                                        <input type="hidden" name="gallery_attr_id[]"
+                                                               value="{{$attr_img->attr_values[$i]}}"></div>
+                                                @endif
                                             @endfor
                                         </div>
                                     @endforeach
@@ -1217,7 +1230,7 @@
                                 <div class="step-content">
                                     <div class="goods-album clearfix" id="gallery-img-list">
                                         <ul id="ul-pics">
-                                            @foreach($goodsGallerys as $goodsGallery)
+                                            @foreach($goodsInfo->goods_gallerys as $goodsGallery)
                                                 <li id="gallery">
                                                     <div class="img">
                                                         <img src="{{url($goodsGallery->img_original)}}" width="160"
@@ -1295,6 +1308,7 @@
             var goods_id = '{{$goodsInfo->goods_id}}';
             var attrList = [];
             var attrMulti = [];
+            var products = $('#attribute-table tbody').find('tr');
 
             @foreach($goodsInfo->goods_attr_m as $attr_m)
             attrList.push([]);
@@ -1800,7 +1814,7 @@
                                         '<input type="text" class="form-control max-wd-100 hg27" name="attr_sort[' + attrMulti[key].attr_id + '][]" size="10" value="1"></div>' +
                                         '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
                                         'data-goodsattrid="" data-attrid="' + attrMulti[key].attr_id + '" v-if="key == 0">' +
-                                        '<input type="file" id="attr-img" class="attr-img[' + attrMulti[key].attr_id + '][]"' +
+                                        '<input type="file" id="attr-img" name="attr-img[' + attrMulti[key].attr_id + '][]"' +
                                         'style="opacity: 0;max-width: 0;height: 0;margin: 0">' +
                                         '<label for="attr-img">上传图片</label></a>' +
                                         '<input name="attr_id" type="hidden" value="' + attrMulti[key].attr_id + '">' +
@@ -1838,29 +1852,31 @@
                     html += '</td><td>' +
                         '<input type="text" name="product_market_price[]"' +
                         'class="form-control max-wd-110 hg27" autocomplete="off" value="0.00"></td>' +
-                        '<td width="8%">' +
+                        '<td>' +
                         '<input type="text" name="product_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
                         '</td>' +
-                        '<td width="8%">' +
+                        '<td>' +
                         '<input type="text" name="product_promote_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
                         '</td>' +
-                        '<td width="10%">' +
+                        '<td>' +
                         '<input type="text" name="product_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0">' +
                         '</td>' +
-                        '<td width="10%">' +
+                        '<td>' +
                         '<input type="text" name="product_warn_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="1">' +
                         '</td>' +
-                        '<td width="12%">' +
+                        '<td>' +
                         '<input type="text" name="product_sn[]" class="form-control hg27" autocomplete="off" value="">' +
                         '</td>' +
-                        '<td width="12%">' +
+                        '<td>' +
                         '<input type="text" name="product_bar_code[]" class="form-control hg27" autocomplete="off" value="">' +
                         '</td>' +
-                        '<td class="handle" width="5%"> N/A <input type="hidden" name="product_id[]" value="">' +
+                        '<td class="handle"> N/A <input type="hidden" name="product_id[]" value="">' +
                         '<input type="hidden" name="changelog_product_id[]" value="">' +
                         '</td>' +
                         '</tr>';
                 });
+
+
                 $('#attribute-table tbody').html(html);
             });
 
