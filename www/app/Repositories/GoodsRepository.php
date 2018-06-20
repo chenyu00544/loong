@@ -480,12 +480,6 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goodsData['goods_sn'] = $snPrefix . '_' . $maxGoodsId . rand(10000, 99999);
         }
         $gallery_id = !empty($data['gallery_pic_id']) ? trim($data['gallery_pic_id']) : '';
-        if (!empty($data['gallery_pic_id'])) {
-            $gallery_id = trim($data['gallery_pic_id']);
-        }
-        if (!empty($data['goods_gallery_id'])) {
-            $gallery_id = trim($data['goods_gallery_id']);
-        }
         if ($gallery_id == '') {
             $goodsGallery = $this->goodsGalleryModel->getGoodsGallery(['goods_id' => 0]);
         } else {
@@ -502,7 +496,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
         $goodsData['goods_desc'] = !empty($data['content']) ? trim($data['content']) : '';
         $goodsData['desc_mobile'] = !empty($data['desc_mobile']) ? trim($data['desc_mobile']) : '';
-
+        $goodsData['goods_brief'] = !empty($data['goods_brief']) ? trim($data['goods_brief']) : '';
         $goodsData['goods_weight'] = !empty($data['goods_weight']) ? $data['goods_weight'] * $data['weight_unit'] : 0;
         $goodsData['is_best'] = !empty($data['is_best']) ? 1 : 0;
         $goodsData['is_new'] = !empty($data['is_new']) ? 1 : 0;
@@ -518,6 +512,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['integral'] = !empty($data['integral']) ? trim($data['integral']) : 0;
         $goodsData['suppliers_id'] = !empty($data['suppliers_id']) ? trim($data['suppliers_id']) : 0;
         $goodsData['commission_rate'] = !empty($data['commission_rate']) ? trim($data['commission_rate']) : 0;
+        $goodsData['keywords'] = !empty($data['keywords']) ? trim($data['keywords']) : '';
         $goodsData['goods_product_tag'] = !empty($data['goods_product_tag']) ? trim($data['goods_product_tag']) : '';
         $goodsData['goods_tag'] = !empty($data['goods_tag']) ? trim($data['goods_tag']) : '';
         $goodsData['seller_note'] = !empty($data['seller_note']) ? trim($data['seller_note']) : '';
@@ -533,7 +528,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['is_volume'] = !empty($data['is_volume']) ? intval($data['is_volume']) : 0;
 
         $goodsData['is_fullcut'] = !empty($data['is_fullcut']) ? intval($data['is_fullcut']) : 0;
-        $goodsData['review_status'] = !empty($data['review_status']) ? intval($data['review_status']) : 5;
+        $goodsData['review_status'] = 3;
         $goodsData['review_content'] = '';
 
         /** 微分销 **/
@@ -564,10 +559,10 @@ class GoodsRepository implements GoodsRepositoryInterface
 //        $stages_rate = isset($data['stages_rate']) && !empty($data['stages_rate']) ? floatval($data['stages_rate']) : 0;
 //        /* ecmoban模板堂  end bylu */
 
-        $goods_model = empty($_REQUEST['goods_model']) ? 0 : intval($_REQUEST['goods_model']); //商品模式
-        $goodsData['model_price'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
-        $goodsData['model_inventory'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
-        $goodsData['model_attr'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
+        $goods_model = empty($data['goods_model']) ? 0 : intval($data['goods_model']); //商品模式
+        $goodsData['model_price'] = $goods_model;
+        $goodsData['model_inventory'] = $goods_model;
+        $goodsData['model_attr'] = $goods_model;
 
         //促销价格和开始结束时间
         $goodsData['is_promote'] = !empty($data['is_promote']) ? trim($data['is_promote']) : 0;
@@ -625,11 +620,12 @@ class GoodsRepository implements GoodsRepositoryInterface
             $this->goodsExtendModel->addGoodsExtend($goodsExtend);
 
             //添加商品会员优惠信息
-            $userRank = !empty($data['user_price']) ? $data['user_price'] : [];
+            $userPrice = !empty($data['user_price']) ? $data['user_price'] : [];
+            $userRank = !empty($data['user_rank']) ? $data['user_rank'] : [];
             $memberPrice['goods_id'] = $goods->goods_id;
-            foreach ($userRank as $key => $value) {
+            foreach ($userPrice as $key => $value) {
                 if ($value != -1) {
-                    $memberPrice['user_rank'] = $key;
+                    $memberPrice['user_rank'] = $userRank[$key];
                     $memberPrice['user_price'] = $value;
                     $this->memberPriceModel->addMemberPrice($memberPrice);
                 }
@@ -714,13 +710,13 @@ class GoodsRepository implements GoodsRepositoryInterface
                 }
             }
         }
-        dd($data);
+        $rep = ['code' => 1, 'msg' => '修改成功'];
+        return $rep;
     }
 
     //更新商品
     public function updateGoods($data, $id, $ru_id = 0)
     {
-        dd($data);
         $rep = ['code' => 5, 'msg' => '修改失败'];
         $where['goods_id'] = $id;
         //商品基本信息数据整理
@@ -734,9 +730,6 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goodsData['goods_sn'] = $snPrefix . '_' . $maxGoodsId . rand(10000, 99999);
         }
         $gallery_id = !empty($data['gallery_pic_id']) ? trim($data['gallery_pic_id']) : '';
-        if (!empty($data['gallery_pic_id'])) {
-            $gallery_id = trim($data['gallery_pic_id']);
-        }
         if (!empty($data['goods_gallery_id'])) {
             $gallery_id = trim($data['goods_gallery_id']);
         }
@@ -756,7 +749,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
         $goodsData['goods_desc'] = !empty($data['content']) ? trim($data['content']) : '';
         $goodsData['desc_mobile'] = !empty($data['desc_mobile']) ? trim($data['desc_mobile']) : '';
-
+        $goodsData['goods_brief'] = !empty($data['goods_brief']) ? trim($data['goods_brief']) : '';
         $goodsData['goods_weight'] = !empty($data['goods_weight']) ? $data['goods_weight'] * $data['weight_unit'] : 0;
         $goodsData['is_best'] = !empty($data['is_best']) ? 1 : 0;
         $goodsData['is_new'] = !empty($data['is_new']) ? 1 : 0;
@@ -772,22 +765,23 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['integral'] = !empty($data['integral']) ? trim($data['integral']) : 0;
         $goodsData['suppliers_id'] = !empty($data['suppliers_id']) ? trim($data['suppliers_id']) : 0;
         $goodsData['commission_rate'] = !empty($data['commission_rate']) ? trim($data['commission_rate']) : 0;
+        $goodsData['keywords'] = !empty($data['keywords']) ? trim($data['keywords']) : '';
         $goodsData['goods_product_tag'] = !empty($data['goods_product_tag']) ? trim($data['goods_product_tag']) : '';
         $goodsData['goods_tag'] = !empty($data['goods_tag']) ? trim($data['goods_tag']) : '';
         $goodsData['seller_note'] = !empty($data['seller_note']) ? trim($data['seller_note']) : '';
         $goodsData['extension_code'] = 'ordinary_buy';
         $goodsData['add_time'] = time();
         $goodsData['last_update'] = time();
-
+        $goods_video_url = !empty($data['goods_video_url']) ? trim($data['goods_video_url']) : '';
         if (!empty($data['goods_video'])) {
             $original_mp4 = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'video';
             $goodsData['goods_video'] = FileHandle::upLoadFlie($data['goods_video'], $original_mp4);
+            FileHandle::deleteFile($goods_video_url);
         }
 
         $goodsData['is_volume'] = !empty($data['is_volume']) ? intval($data['is_volume']) : 0;
-
         $goodsData['is_fullcut'] = !empty($data['is_fullcut']) ? intval($data['is_fullcut']) : 0;
-        $goodsData['review_status'] = !empty($data['review_status']) ? intval($data['review_status']) : 5;
+        $goodsData['review_status'] = 3;
         $goodsData['review_content'] = '';
 
         /** 微分销 **/
@@ -819,9 +813,9 @@ class GoodsRepository implements GoodsRepositoryInterface
 //        /* ecmoban模板堂  end bylu */
 
         $goods_model = empty($_REQUEST['goods_model']) ? 0 : intval($_REQUEST['goods_model']); //商品模式
-        $goodsData['model_price'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
-        $goodsData['model_inventory'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
-        $goodsData['model_attr'] = !empty($data['goods_model']) ? intval($data['goods_model']) : 0;
+        $goodsData['model_price'] = $goods_model;
+        $goodsData['model_inventory'] = $goods_model;
+        $goodsData['model_attr'] = $goods_model;
 
         //促销价格和开始结束时间
         $goodsData['is_promote'] = !empty($data['is_promote']) ? trim($data['is_promote']) : 0;
@@ -863,9 +857,124 @@ class GoodsRepository implements GoodsRepositoryInterface
         $cause = !empty($data['return_type']) ? $data['return_type'] : [];
         $goodsData['goods_cause'] = implode(',', $cause);
         $re = $this->goodsModel->setGoods($where, $goodsData);
-        if ($re) {
-            $rep = ['code' => 1, 'msg' => '修改成功'];
+
+        //更新商品相册
+        $this->goodsGalleryModel->setGoodsGallery(['goods_id' => 0], ['goods_id' => $id]);
+
+        //更新扩展分类
+        $this->goodsCateModel->setGoodsCate(['goods_id' => 0], ['goods_id' => $id]);
+
+        //阶梯价格买多少单价为多少
+        $whereVolume['goods_id'] = $id;
+        $volumePrice['price_type'] = 1;
+        $volume_number = !empty($data['volume_number']) ? $data['volume_number'] : [];
+        $volume_price = !empty($data['volume_price']) ? $data['volume_price'] : [];
+        $volume_price_ids = !empty($data['volume_id']) ? $data['volume_id'] : [];
+        if ($goodsData['is_volume'] == 1) {
+            for ($i = 0; $i < count($volume_number); $i++) {
+                $whereVolume['id'] = $volume_price_ids[$i];
+                $volumePrice['volume_number'] = $volume_number[$i];
+                $volumePrice['volume_price'] = $volume_price[$i];
+                $this->goodsVolumePriceModel->setGoodsVolumePrice($whereVolume, $volumePrice);
+            }
         }
+
+        //更新商品扩展信息
+        if ($this->goodsExtendModel->countGoodsExtend(['goods_id' => $id])) {
+            $goodsExtend['is_reality'] = !empty($data['is_reality']) ? $data['is_reality'] : 0;
+            $goodsExtend['is_return'] = !empty($data['is_return']) ? $data['is_return'] : 0;
+            $goodsExtend['is_fast'] = !empty($data['is_fast']) ? $data['is_fast'] : 0;
+            $this->goodsExtendModel->setGoodsExtend($where, $goodsExtend);
+        } else {
+            $goodsExtend['goods_id'] = $id;
+            $goodsExtend['is_reality'] = !empty($data['is_reality']) ? $data['is_reality'] : 0;
+            $goodsExtend['is_return'] = !empty($data['is_return']) ? $data['is_return'] : 0;
+            $goodsExtend['is_fast'] = !empty($data['is_fast']) ? $data['is_fast'] : 0;
+            $this->goodsExtendModel->addGoodsExtend($goodsExtend);
+        }
+
+        //更新商品会员优惠信息
+        $userPrice = !empty($data['user_price']) ? $data['user_price'] : [];
+        $userRank = !empty($data['user_rank']) ? $data['user_rank'] : [];
+        $whereMember['goods_id'] = $id;
+        foreach ($userPrice as $key => $value) {
+            if ($value != -1) {
+                $whereMember['user_rank'] = $userRank[$key];
+                if ($this->memberPriceModel->countMemberPrice($whereMember)) {
+                    $memberPrice['user_rank'] = $userRank[$key];
+                    $memberPrice['user_price'] = $value;
+                    $this->memberPriceModel->setMemberPrice($whereMember, $memberPrice);
+                } else {
+                    $memberPrice['user_rank'] = $userRank[$key];
+                    $memberPrice['user_price'] = $value;
+                    $this->memberPriceModel->addMemberPrice($memberPrice);
+                }
+            }
+        }
+
+        //更新商品单一属性
+        $attr_id_listO = !empty($data['attr_id_listO']) ? $data['attr_id_listO'] : [];
+        $attr_value_list = !empty($data['attr_value_list']) ? $data['attr_value_list'] : [];
+        $goods_attr_id_list = !empty($data['goods_attr_id_list']) ? $data['goods_attr_id_list'] : [];
+        $whereAttr['goods_id'] = $id;
+        $attrData['admin_id'] = $ru_id;
+        for ($i = 0; $i < count($attr_id_listO); $i++) {
+            $whereAttr['goods_attr_id'] = $goods_attr_id_list[$i];
+            $attrData['attr_id'] = $attr_id_listO[$i];
+            $attrData['attr_value'] = $attr_value_list[$i];
+            $attrData['attr_sort'] = 0;
+            $attrData['attr_checked'] = 1;
+            $this->goodsAttrModel->setGoodsAttr($whereAttr, $attrData);
+        }
+
+        //更新货品
+        $product_id = !empty($data['product_id']) ? $data['product_id'] : [];
+        $goods_attr_id = !empty($data['goods_attr_id']) ? $data['goods_attr_id'] : [];
+        $product_market_price = !empty($data['product_market_price']) ? $data['product_market_price'] : [];
+        $product_price = !empty($data['product_price']) ? $data['product_price'] : [];
+        $product_promote_price = !empty($data['product_promote_price']) ? $data['product_promote_price'] : [];
+        $product_number = !empty($data['product_number']) ? $data['product_number'] : [];
+        $product_warn_number = !empty($data['product_warn_number']) ? $data['product_warn_number'] : [];
+        $product_sn = !empty($data['product_sn']) ? $data['product_sn'] : [];
+        $product_bar_code = !empty($data['product_bar_code']) ? $data['product_bar_code'] : [];
+        $pdids = $this->productsModel->getProducts($where, ['product_id']);
+        foreach ($pdids as $pid){
+            if(!in_array($pid->product_id, $product_id)){
+                $this->productsModel->delProduct(['product_id'=>$pid->product_id]);
+            }
+        }
+        $maxProductsId = $this->productsModel->getMaxProductsId() + 1;
+        foreach ($product_id as $key => $value){
+            if($value != 0){
+                $product['product_number'] = empty($product_number[$key]) ? 0 : $product_number[$key];
+                $product['product_price'] = empty($product_price[$key]) ? 0.00 : $product_price[$key];
+                $product['product_promote_price'] = empty($product_promote_price[$key]) ? 0.00 : $product_promote_price[$key];
+                $product['product_market_price'] = empty($product_market_price[$key]) ? 0.00 : $product_market_price[$key];
+                $product['product_warn_number'] = empty($product_warn_number[$key]) ? 1 : $product_warn_number[$key];
+                $this->productsModel->setProduct(['product_id'=>$value], $product);
+            }else{
+                $goods_attr = '';
+                foreach ($goods_attr_id as $k => $val){
+                    $goods_attr .= $val[$key].'|';
+                }
+                $goods_attr = substr($goods_attr, 0, -1);
+                $maxProductsId += $i;
+                $product['goods_id'] = $id;
+                $product['admin_id'] = $ru_id;
+                $product['goods_attr'] = $goods_attr;
+                $product['product_sn'] = empty($product_sn[$key]) ? $goodsData['goods_sn'] . 'g_p' . $maxProductsId : $goodsData['goods_sn'] . 'g_p' . $product_sn[$key];
+                $product['bar_code'] = empty($product_bar_code[$key]) ? '' : $product_bar_code[$key];
+                $product['product_number'] = empty($product_number[$key]) ? 0 : $product_number[$key];
+                $product['product_price'] = empty($product_price[$key]) ? 0.00 : $product_price[$key];
+                $product['product_promote_price'] = empty($product_promote_price[$key]) ? 0.00 : $product_promote_price[$key];
+                $product['product_market_price'] = empty($product_market_price[$key]) ? 0.00 : $product_market_price[$key];
+                $product['product_warn_number'] = empty($product_warn_number[$key]) ? 1 : $product_warn_number[$key];
+                $this->productsModel->addProduct($product);
+            }
+        }
+        $this->productsChangeLogModel->delAll($where);
+        $rep = ['code' => 1, 'msg' => '修改成功'];
+        return $rep;
     }
 
     //商品的状态导航

@@ -19,6 +19,12 @@ class ProductsModel extends Model
             ->get();
     }
 
+    public function setProduct($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
     public function addProduct($data)
     {
         return $this->create($data);
@@ -27,5 +33,10 @@ class ProductsModel extends Model
     public function getMaxProductsId()
     {
         return $this->max('product_id');
+    }
+
+    public function delProduct($where)
+    {
+        return $this->where($where)->delete();
     }
 }

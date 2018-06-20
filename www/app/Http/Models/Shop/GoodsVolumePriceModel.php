@@ -18,6 +18,11 @@ class GoodsVolumePriceModel extends Model
             ->get();
     }
 
+    public function setGoodsVolumePrice($where, $data)
+    {
+
+    }
+
     public function addGoodsVolumePrice($data)
     {
         return $this->create($data);

@@ -52,7 +52,8 @@
                         </div>
 
                         <!--第一步 选择商品模式-->
-                        <div class="step step-one" ectype="step" data-step="1" style="display: none;">
+                        <div class="step step-one" ectype="step" data-step="1"
+                             style="@if($goodsInfo->goods_id != 0) display: none; @endif">
                             <h3>设置商品模式</h3>
                             <div class="mos clearfix">
                                 <div class="mos_item mos_default active" data-model="0" data-stepmodel="3">
@@ -188,7 +189,7 @@
 
                         <!--第三步 填写通用信息-->
                         <div class="step step-three" ectype="step" data-step="3"
-                             style="@if($goodsInfo->goods_id != 0) display: none; @endif">
+                             style="@if($goodsInfo->goods_id == 0) display: none; @endif">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -208,7 +209,7 @@
                                                 <i class="glyphicon glyphicon-edit"></i>
                                             </a>
                                             <a href="javascript:;" class="category-dialog add-cate-extend"
-                                               data-goods_id="0">添加扩展分类</a>
+                                               data-goods_id="{{$goodsInfo->goods_id}}">添加扩展分类</a>
                                         </div>
                                     </div>
 
@@ -393,6 +394,8 @@
                                                 <div class="img">
                                                     <img src="{{url('styles/admin/images/update_video.jpg')}}"
                                                          class="goods-img-show">
+                                                    <input type="hidden" name="goods_video_url"
+                                                           value="{{$goodsInfo->goods_video}}">
                                                 </div>
                                             </div>
                                             <div class="goods-video-div fl"
@@ -443,7 +446,8 @@
                                                 <select name="tid" id="" class="form-control max-wd-190 hg30 fl ft-12">
                                                     <option value="0">选择</option>
                                                     @foreach($transports as $transport)
-                                                        <option value="{{$transport->tid}}">{{$transport->title}}</option>
+                                                        <option value="{{$transport->tid}}"
+                                                                @if($transport->tid == $goodsInfo->tid) selected @endif>{{$transport->title}}</option>
 
                                                     @endforeach
                                                 </select>
@@ -520,6 +524,7 @@
                                                 <input type="hidden" name="user_price[{{$rank->rank_id}}]"
                                                        autocomplete="off"
                                                        value="@if(!empty($goodsInfo->member_price[$rank->rank_id])) {{$goodsInfo->member_price[$rank->rank_id]}} @else -1 @endif">
+                                                <input type="hidden" name="user_rank[]" value="{{$rank->rank_id}}">
                                             @endforeach
                                         @endif
                                     </div>
@@ -610,7 +615,7 @@
                                                                 class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
                                                         <input type="text" style="width: 300px" name="promote_date"
                                                                id="promote_date" class="form-control input-sm"
-                                                               value="@if($goodsInfo->is_promote == 1) {{$goodsInfo->promote_start_date}}～{{$goodsInfo->promote_end_date}} @else {{$now_date}} 00:00:00～{{$now_date}} 23:59:59 @endif">
+                                                               value="@if($goodsInfo->is_promote == 1) {{date('Y-m-d H:i:s',$goodsInfo->promote_start_date)}}～{{date('Y-m-d H:i:s',$goodsInfo->promote_end_date)}} @else {{$now_date}} 00:00:00～{{$now_date}} 23:59:59 @endif">
                                                         <input type="text"
                                                                class="form-control max-wd-100 fl mar-left-20 input-sm"
                                                                name="promote_price"
@@ -977,7 +982,8 @@
                         </div>
 
                         <!--第四步 填写商品属性 vue---id="appFour" v-cloak-->
-                        <div class="step step-four" id="appFour" ectype="step" data-step="4" style="" v-cloak>
+                        <div class="step step-four" id="appFour" ectype="step" data-step="4" style="display: none;"
+                             v-cloak>
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -1039,6 +1045,7 @@
                                                     <div class="item-right-list goods-attr-type fl">
                                                         <input type="hidden" name="attr_id_listO[]"
                                                                value="{{$attr_o->attr_id}}">
+                                                        <input type="hidden" name="goods_attr_id_list[]" value="{{$attr_o->goods_attr_id}}">
                                                         <div class="label fl"
                                                              title="{{$attr_o->attr_name}}">{{$attr_o->attr_name}}：
                                                         </div>
@@ -1143,7 +1150,7 @@
                                                 <td>
                                                     <input type="text" name="product_promote_price[]"
                                                            class="form-control max-wd-110 hg27" autocomplete="off"
-                                                           value="0">
+                                                           :value="product.product_promote_price">
                                                 </td>
                                                 <td>
                                                     <input type="text" name="product_number[]"
@@ -1166,7 +1173,8 @@
                                                 </td>
                                                 <td class="handle">
                                                     <a href="javascript:;" class="btn btn-danger btn-sm product-del"
-                                                       :data-product_id="product.changelog_product_id?0:product.product_id" v-if="!product.changelog_product_id">删除</a>
+                                                       :data-product_id="product.changelog_product_id?0:product.product_id"
+                                                       v-if="!product.changelog_product_id">删除</a>
                                                     <span v-if="product.changelog_product_id">N/A</span>
                                                     <input type="hidden" name="product_id[]"
                                                            :value="product.changelog_product_id?0:product.product_id">
@@ -1771,108 +1779,6 @@
                     }
                 });
             });
-            //选择商品规格属性
-            // $('.step-item-attr-checkbox .step-item-right').on('click', '.attr_value_list1', function () {
-            //     $('.step-item-attr-checkbox .step-item-right .attr_value_list1').each(function (k, v) {
-            //         if ($(v).is(':checked')) {
-            //             attrMulti[$(v).data('k')].attr_values[$(v).data('key')] = $(v).val();
-            //             var attr_id = $(v).data('attr_id');
-            //             attrList[$(v).data('k')][$(v).data('key')] = {attr_id: attr_id, attr_val: $(v).val()};
-            //         } else {
-            //             attrList[$(v).data('k')][$(v).data('key')] = null;
-            //         }
-            //     });
-            //
-            //     var productList = setProductSplicing(attrList.length - 1, 0, [], [], attrList);
-            //     if (productList.length > 0) {
-            //         $('#attribute-table').show();
-            //         $('.attr-gallerys').show();
-            //         var html_a_img = '';
-            //         $.each(attrList, function (key, val) {
-            //             var bool = false;
-            //             for (var i = 0; i < val.length; i++) {
-            //                 if (val[i] != null) {
-            //                     bool = true
-            //                 }
-            //             }
-            //             if (val.length != 0 && bool == true) {
-            //                 html_a_img += '<div class="step-content attr-gallery clearfix">' +
-            //                     '<div class="attr_tit">' + attrMulti[key].attr_name + '：</div>';
-            //                 $.each(val, function (k, v) {
-            //                     if (v != null) {
-            //                         html_a_img += '<div class="attr-item fl">' +
-            //                             '<div class="txt">' + attrMulti[key].attr_values[k] + '</div>' +
-            //                             '<div class="info fl">' +
-            //                             '<label class="fl hg27">排序：</label>' +
-            //                             '<input type="text" class="form-control max-wd-100 hg27" name="attr_sort[' + attrMulti[key].attr_id + '][]" size="10" value="1"></div>' +
-            //                             '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
-            //                             'data-goodsattrid="" data-attrid="' + attrMulti[key].attr_id + '" v-if="key == 0">' +
-            //                             '<input type="file" id="attr-img" name="attr-img[' + attrMulti[key].attr_id + '][]"' +
-            //                             'style="opacity: 0;max-width: 0;height: 0;margin: 0">' +
-            //                             '<label for="attr-img">上传图片</label></a>' +
-            //                             '<input name="attr_id" type="hidden" value="' + attrMulti[key].attr_id + '">' +
-            //                             '<input name="attr_value" type="hidden" value="' + attrMulti[key].attr_values[k] + '">' +
-            //                             '<input type="hidden" name="gallery_attr_value[]" value="' + attrMulti[key].attr_values[k] + '">' +
-            //                             '<input type="hidden" name="gallery_attr_id[]" value="' + attrMulti[key].attr_id + '"></div>';
-            //                     }
-            //                 });
-            //                 html_a_img += '</div>';
-            //             }
-            //         });
-            //         $('.attr-gallerys').html(html_a_img);
-            //     }
-            //     else {
-            //         $('#attribute-table').hide();
-            //         $('.attr-gallerys').hide();
-            //     }
-            //     var html = '';
-            //     $.each(productList, function (k, v) {
-            //
-            //         html += '<tr><td class="text-center">';
-            //         var i = 0;
-            //         $.each(v, function (key, val) {
-            //             if (val) {
-            //                 if ((key - i) == 0) {
-            //                     html += '' + val.attr_val +
-            //                         '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">';
-            //                 } else {
-            //                     html += ', ' + val.attr_val +
-            //                         '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">';
-            //                 }
-            //             } else {
-            //                 i++;
-            //             }
-            //         });
-            //         html += '</td><td>' +
-            //             '<input type="text" name="product_market_price[]"' +
-            //             'class="form-control max-wd-110 hg27" autocomplete="off" value="0.00"></td>' +
-            //             '<td>' +
-            //             '<input type="text" name="product_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
-            //             '</td>' +
-            //             '<td>' +
-            //             '<input type="text" name="product_promote_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
-            //             '</td>' +
-            //             '<td>' +
-            //             '<input type="text" name="product_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0">' +
-            //             '</td>' +
-            //             '<td>' +
-            //             '<input type="text" name="product_warn_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="1">' +
-            //             '</td>' +
-            //             '<td>' +
-            //             '<input type="text" name="product_sn[]" class="form-control hg27" autocomplete="off" value="">' +
-            //             '</td>' +
-            //             '<td>' +
-            //             '<input type="text" name="product_bar_code[]" class="form-control hg27" autocomplete="off" value="">' +
-            //             '</td>' +
-            //             '<td class="handle"> N/A <input type="hidden" name="product_id[]" value="">' +
-            //             '<input type="hidden" name="changelog_product_id[]" value="">' +
-            //             '</td>' +
-            //             '</tr>';
-            //     });
-            //
-            //
-            //     $('#attribute-table tbody').html(html);
-            // });
 
             //自定义商品规格属性
             $('.step-item-attr-checkbox .step-item-right').on('click', '.attr-custom', function () {

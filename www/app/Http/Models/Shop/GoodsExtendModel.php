@@ -24,8 +24,19 @@ class GoodsExtendModel extends Model
             ->get();
     }
 
+    public function setGoodsExtend($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
     public function addGoodsExtend($data)
     {
         return $this->create($data);
+    }
+
+    public function countGoodsExtend($where)
+    {
+        return $this->where($where)->count();
     }
 }

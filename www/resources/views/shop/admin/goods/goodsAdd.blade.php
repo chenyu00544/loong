@@ -463,8 +463,9 @@
                                     <div>
                                         @if(!empty($userRanks))
                                             @foreach($userRanks as $rank)
-                                                <input type="hidden" name="user_price[{{$rank->rank_id}}]"
+                                                <input type="hidden" name="user_price[]"
                                                        autocomplete="off" value="-1"/>
+                                                <input type="hidden" name="user_rank[]" value="{{$rank->rank_id}}">
                                             @endforeach
                                         @endif
                                     </div>

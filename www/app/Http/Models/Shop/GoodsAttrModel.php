@@ -23,6 +23,7 @@ class GoodsAttrModel extends Model
         return $this->select($column)
             ->join('attribute', 'attribute.attr_id', '=', 'goods_attr.attr_id')
             ->where($where)
+            ->orderBy('goods_attr.attr_id', 'asc')
             ->get();
     }
 

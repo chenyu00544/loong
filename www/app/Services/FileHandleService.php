@@ -13,7 +13,7 @@ class FileHandleService
     {
         $bool = $file->getClientOriginalExtension() == 'mp4' || $file->getClientOriginalExtension() == 'MP4';
         if ($bool) {
-            $filename = md5(time() . rand(10000, 99999)) . '.' . $file->getClientOriginalExtension();
+            $filename = time() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension();
             $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
 
             if ($path = $file->move($dir, $filename)) {
@@ -28,7 +28,7 @@ class FileHandleService
     {
         $bool = self::checkFile($file);
         if ($bool) {
-            $filename = md5(time() . rand(10000, 99999)) . '.' . $file->getClientOriginalExtension();
+            $filename = time() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension();
             $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
 
             if ($path = $file->move($dir, $filename)) {
@@ -48,7 +48,7 @@ class FileHandleService
             $ext = ['gif', 'jpg', 'png', 'swf', 'psd', 'bmp'];
             $img = self::thumpImage($sourceDir, ['width' => $width, 'height' => $height], 0, ['width' => 108, 'height' => 108], $ext[$e - 1]);
 
-            $filename = md5(time() . rand(10000, 99999)) . '.' . $ext[1];
+            $filename = time() . rand(10000, 99999) . '.' . $ext[1];
             $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
@@ -70,7 +70,7 @@ class FileHandleService
             $ext = ['gif', 'jpg', 'png', 'swf', 'psd', 'bmp'];
             $img = self::thumpImage($sourceDir, ['width' => $width, 'height' => $height], $percent, [], $ext[$e - 1]);
 
-            $filename = md5(time() . rand(10000, 99999)) . '.' . $ext[1];
+            $filename = time() . rand(10000, 99999) . '.' . $ext[1];
             $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
