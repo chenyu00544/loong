@@ -188,7 +188,7 @@
 
                         <!--第三步 填写通用信息-->
                         <div class="step step-three" ectype="step" data-step="3"
-                             style="@if($goodsInfo->goods_id == 0) display: none; @endif">
+                             style="@if($goodsInfo->goods_id != 0) display: none; @endif">
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -217,7 +217,7 @@
                                         <div class="step-value">
                                             <input type="text" name="goods_sn" class="form-control max-wd-190 hg30 fl "
                                                    autocomplete="off" value="{{$goodsInfo->goods_sn}}"
-                                                   placeholder="商品货号">
+                                                   placeholder="商品货号" readonly>
                                             <div class="form-prompt"></div>
                                             <div class="notic fl mar-left-10">如果您不输入商品货号，系统将自动生成一个唯一的货号。</div>
                                         </div>
@@ -977,7 +977,7 @@
                         </div>
 
                         <!--第四步 填写商品属性 vue---id="appFour" v-cloak-->
-                        <div class="step step-four" ectype="step" data-step="4" style="display: none;">
+                        <div class="step step-four" id="appFour" ectype="step" data-step="4" style="" v-cloak>
                             <div class="step-info clearfix">
                                 <div class="step-title">
                                     <i class="ui-step"></i>
@@ -1077,6 +1077,7 @@
                                                                            data-k="{{$loop->index}}"
                                                                            value="{{$attr_m->attr_values[$i]}}"
                                                                            data-attr_id="{{$attr_m->attr_id}}"
+                                                                           @click="selectValue"
                                                                            @if($attr_m->selected[$i] == 1) checked @endif>{{$attr_m->attr_values[$i]}}
                                                                 </label>
                                                             @endfor
@@ -1094,8 +1095,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="step-item-table" id="attribute-table"
-                                         style="@if($goodsInfo->products->count() == 0) display:none; @endif">
+                                    <div class="step-item-table" id="attribute-table" v-if="products.length > 0">
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
@@ -1118,62 +1118,62 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($goodsInfo->products as $product)
-                                                <tr>
-                                                    <td class="text-center">
-                                                        @foreach($product->goods_attr_names as $key => $value)
-                                                            @if($key > 0) , @endif{{$value}}
-                                                            <input type="hidden"
-                                                                   name="attr[{{$product->attr_ids[$key]}}][]"
-                                                                   value="{{$value}}">
-                                                            <input type="hidden"
-                                                                   name="goods_attr_id[{{$product->goods_attr[$key]}}][]"
-                                                                   value="{{$product->goods_attr[$key]}}">
-                                                        @endforeach
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="product_market_price[]"
-                                                               class="form-control max-wd-110 hg27" autocomplete="off"
-                                                               value="{{$product->product_market_price}}">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="product_price[]"
-                                                               class="form-control max-wd-110 hg27" autocomplete="off"
-                                                               value="{{$product->product_price}}">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="product_promote_price[]"
-                                                               class="form-control max-wd-110 hg27" autocomplete="off"
-                                                               value="{{$product->product_promote_price}}">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="product_number[]"
-                                                               class="form-control max-wd-110 hg27" autocomplete="off"
-                                                               value="{{$product->product_number}}">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="product_warn_number[]"
-                                                               class="form-control max-wd-110 hg27" autocomplete="off"
-                                                               value="{{$product->product_warn_number}}">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="product_sn[]" class="form-control hg27"
-                                                               autocomplete="off" value="{{$product->product_sn}}">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" name="product_bar_code[]"
-                                                               class="form-control hg27" autocomplete="off"
-                                                               value="{{$product->bar_code}}">
-                                                    </td>
-                                                    <td class="handle">
-                                                        <a href="javascript:;" class="btn btn-danger btn-sm product-del"
-                                                           data-product_id="{{$product->product_id}}">删除</a>
-                                                        <input type="hidden" name="product_id[]"
-                                                               value="{{$product->product_id}}">
-                                                        <input type="hidden" name="changelog_product_id[]" value="">
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                            <tr v-for="product in products">
+                                                <td class="text-center">
+                                                    <template v-for="(attr_name, k) in product.goods_attr_names">
+                                                        <template v-if="k != 0">,</template>
+                                                        ${attr_name}
+                                                        <input type="hidden" :name="product.attr_ids[k]"
+                                                               :value="attr_name">
+                                                        <input type="hidden"
+                                                               :name="product.goods_attr_id[k]"
+                                                               :value="product.goods_attr[k]">
+                                                    </template>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="product_market_price[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off"
+                                                           :value="product.product_market_price">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="product_price[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off"
+                                                           :value="product.product_price">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="product_promote_price[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off"
+                                                           value="0">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="product_number[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off"
+                                                           :value="product.product_number">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="product_warn_number[]"
+                                                           class="form-control max-wd-110 hg27" autocomplete="off"
+                                                           :value="product.product_warn_number">
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="product_sn[]" class="form-control hg27"
+                                                           autocomplete="off" :value="product.product_sn" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="text" name="product_bar_code[]"
+                                                           class="form-control hg27" autocomplete="off"
+                                                           :value="product.bar_code">
+                                                </td>
+                                                <td class="handle">
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm product-del"
+                                                       :data-product_id="product.changelog_product_id?0:product.product_id" v-if="!product.changelog_product_id">删除</a>
+                                                    <span v-if="product.changelog_product_id">N/A</span>
+                                                    <input type="hidden" name="product_id[]"
+                                                           :value="product.changelog_product_id?0:product.product_id">
+                                                    <input type="hidden" name="changelog_product_id[]"
+                                                           :value="product.changelog_product_id">
+                                                </td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -1187,38 +1187,29 @@
                                 </div>
                                 <div class="attr-gallerys ps-container ps-active-y"
                                      style="@if(empty($goodsInfo->goods_attr_m)) display:none; @endif">
-                                    @foreach($goodsInfo->goods_attr_m as $attr_img)
-                                        <div class="step-content attr-gallery clearfix">
-                                            <div class="attr_tit">{{$attr_img->attr_name}}：</div>
-                                            @for($i = 0; $i < count($attr_img->selected); $i++)
-                                                @if($attr_img->selected[$i] == 1)
-                                                    <div class="attr-item fl">
-                                                        <div class="txt">{{$attr_img->attr_values[$i]}}</div>
-                                                        <div class="info fl">
-                                                            <label class="fl hg27">排序：</label>
-                                                            <input type="text" class="form-control max-wd-100 hg27"
-                                                                   name="attr_sort[{{$attr_img->attr_id}}][]" size="10"
-                                                                   value="{{$attr_img->attr_sorts[$i]}}"></div>
-                                                        <a href="javascript:;"
-                                                           class="btn btn-danger btn-sm up_img mar-left-10"
-                                                           data-goodsattrid="{{$attr_img->goods_attr_ids[$i]}}"
-                                                           data-attrid="{{$attr_img->attr_id}}">
-                                                            <input type="file" id="attr-img"
-                                                                   name="attr-img[{{$attr_img->attr_id}}][]"
-                                                                   style="opacity: 0;max-width: 0;height: 0;margin: 0">
-                                                            <label for="attr-img">上传图片</label></a>
-                                                        <input name="attr_id" type="hidden"
-                                                               value="{{$attr_img->attr_id}}">
-                                                        <input name="attr_value" type="hidden"
-                                                               value="{{$attr_img->attr_values[$i]}}">
-                                                        <input type="hidden" name="gallery_attr_value[]"
-                                                               value="{{$attr_img->attr_values[$i]}}">
-                                                        <input type="hidden" name="gallery_attr_id[]"
-                                                               value="{{$attr_img->attr_values[$i]}}"></div>
-                                                @endif
-                                            @endfor
+                                    <div class="step-content attr-gallery clearfix" v-for="attrImg in goodsAttrImg">
+                                        <div class="attr_tit">${attrImg.attr_name}：</div>
+                                        <div class="attr-item fl" v-for="value in attrImg.values">
+                                            <div class="txt">${value.attr_value}</div>
+                                            <div class="info fl">
+                                                <label class="fl hg27">排序：</label>
+                                                <input type="text" class="form-control max-wd-100 hg27"
+                                                       :name="value.attr_sort_n" size="10"
+                                                       :value="value.attr_sort"></div>
+                                            <a href="javascript:;"
+                                               class="btn btn-danger btn-sm up_img mar-left-10"
+                                               :data-goodsattrid="value.goods_attr_id"
+                                               :data-attrid="value.attr_id">
+                                                <input type="file" id="attr-img"
+                                                       :name="value.attr_id_n"
+                                                       style="opacity: 0;max-width: 0;height: 0;margin: 0">
+                                                <label for="attr-img">上传图片</label></a>
+                                            <input name="attr_id" type="hidden"
+                                                   :value="value.attr_id">
+                                            <input name="attr_value" type="hidden"
+                                                   :value="value.attr_value">
                                         </div>
-                                    @endforeach
+                                    </div>
                                 </div>
                             </div>
 
@@ -1706,7 +1697,7 @@
             });
 
             //批量填充
-            $('#attribute-table .glyphicon-edit').on('click', function () {
+            $('.step-four').on('click', '.glyphicon-edit', function () {
                 if ($(this).hasClass('pro_market')) {
                     $('input[name="product_market_price[]"]').val($('input[name="product_market_price[]"]').first().val());
                 } else if ($(this).hasClass('pro_shop')) {
@@ -1715,6 +1706,8 @@
                     $('input[name="product_promote_price[]"]').val($('input[name="product_promote_price[]"]').first().val());
                 } else if ($(this).hasClass('pro_number')) {
                     $('input[name="product_number[]"]').val($('input[name="product_number[]"]').first().val());
+                } else if ($(this).hasClass('pro_warning')) {
+                    $('input[name="product_warn_number[]"]').val($('input[name="product_warn_number[]"]').first().val());
                 }
             });
 
@@ -1779,107 +1772,107 @@
                 });
             });
             //选择商品规格属性
-            $('.step-item-attr-checkbox .step-item-right').on('click', '.attr_value_list1', function () {
-                $('.step-item-attr-checkbox .step-item-right .attr_value_list1').each(function (k, v) {
-                    if ($(v).is(':checked')) {
-                        attrMulti[$(v).data('k')].attr_values[$(v).data('key')] = $(v).val();
-                        var attr_id = $(v).data('attr_id');
-                        attrList[$(v).data('k')][$(v).data('key')] = {attr_id: attr_id, attr_val: $(v).val()};
-                    } else {
-                        attrList[$(v).data('k')][$(v).data('key')] = null;
-                    }
-                });
-
-                var productList = setProductSplicing(attrList.length - 1, 0, [], [], attrList);
-                if (productList.length > 0) {
-                    $('#attribute-table').show();
-                    $('.attr-gallerys').show();
-                    var html_a_img = '';
-                    $.each(attrList, function (key, val) {
-                        var bool = false;
-                        for (var i = 0; i < val.length; i++) {
-                            if (val[i] != null) {
-                                bool = true
-                            }
-                        }
-                        if (val.length != 0 && bool == true) {
-                            html_a_img += '<div class="step-content attr-gallery clearfix">' +
-                                '<div class="attr_tit">' + attrMulti[key].attr_name + '：</div>';
-                            $.each(val, function (k, v) {
-                                if (v != null) {
-                                    html_a_img += '<div class="attr-item fl">' +
-                                        '<div class="txt">' + attrMulti[key].attr_values[k] + '</div>' +
-                                        '<div class="info fl">' +
-                                        '<label class="fl hg27">排序：</label>' +
-                                        '<input type="text" class="form-control max-wd-100 hg27" name="attr_sort[' + attrMulti[key].attr_id + '][]" size="10" value="1"></div>' +
-                                        '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
-                                        'data-goodsattrid="" data-attrid="' + attrMulti[key].attr_id + '" v-if="key == 0">' +
-                                        '<input type="file" id="attr-img" name="attr-img[' + attrMulti[key].attr_id + '][]"' +
-                                        'style="opacity: 0;max-width: 0;height: 0;margin: 0">' +
-                                        '<label for="attr-img">上传图片</label></a>' +
-                                        '<input name="attr_id" type="hidden" value="' + attrMulti[key].attr_id + '">' +
-                                        '<input name="attr_value" type="hidden" value="' + attrMulti[key].attr_values[k] + '">' +
-                                        '<input type="hidden" name="gallery_attr_value[]" value="' + attrMulti[key].attr_values[k] + '">' +
-                                        '<input type="hidden" name="gallery_attr_id[]" value="' + attrMulti[key].attr_id + '"></div>';
-                                }
-                            });
-                            html_a_img += '</div>';
-                        }
-                    });
-                    $('.attr-gallerys').html(html_a_img);
-                }
-                else {
-                    $('#attribute-table').hide();
-                    $('.attr-gallerys').hide();
-                }
-                var html = '';
-                $.each(productList, function (k, v) {
-
-                    html += '<tr><td class="text-center">';
-                    var i = 0;
-                    $.each(v, function (key, val) {
-                        if (val) {
-                            if ((key - i) == 0) {
-                                html += '' + val.attr_val +
-                                    '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">';
-                            } else {
-                                html += ', ' + val.attr_val +
-                                    '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">';
-                            }
-                        } else {
-                            i++;
-                        }
-                    });
-                    html += '</td><td>' +
-                        '<input type="text" name="product_market_price[]"' +
-                        'class="form-control max-wd-110 hg27" autocomplete="off" value="0.00"></td>' +
-                        '<td>' +
-                        '<input type="text" name="product_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
-                        '</td>' +
-                        '<td>' +
-                        '<input type="text" name="product_promote_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
-                        '</td>' +
-                        '<td>' +
-                        '<input type="text" name="product_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0">' +
-                        '</td>' +
-                        '<td>' +
-                        '<input type="text" name="product_warn_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="1">' +
-                        '</td>' +
-                        '<td>' +
-                        '<input type="text" name="product_sn[]" class="form-control hg27" autocomplete="off" value="">' +
-                        '</td>' +
-                        '<td>' +
-                        '<input type="text" name="product_bar_code[]" class="form-control hg27" autocomplete="off" value="">' +
-                        '</td>' +
-                        '<td class="handle"> N/A <input type="hidden" name="product_id[]" value="">' +
-                        '<input type="hidden" name="changelog_product_id[]" value="">' +
-                        '</td>' +
-                        '</tr>';
-                });
-
-
-                $('#attribute-table tbody').html(html);
-            });
+            // $('.step-item-attr-checkbox .step-item-right').on('click', '.attr_value_list1', function () {
+            //     $('.step-item-attr-checkbox .step-item-right .attr_value_list1').each(function (k, v) {
+            //         if ($(v).is(':checked')) {
+            //             attrMulti[$(v).data('k')].attr_values[$(v).data('key')] = $(v).val();
+            //             var attr_id = $(v).data('attr_id');
+            //             attrList[$(v).data('k')][$(v).data('key')] = {attr_id: attr_id, attr_val: $(v).val()};
+            //         } else {
+            //             attrList[$(v).data('k')][$(v).data('key')] = null;
+            //         }
+            //     });
+            //
+            //     var productList = setProductSplicing(attrList.length - 1, 0, [], [], attrList);
+            //     if (productList.length > 0) {
+            //         $('#attribute-table').show();
+            //         $('.attr-gallerys').show();
+            //         var html_a_img = '';
+            //         $.each(attrList, function (key, val) {
+            //             var bool = false;
+            //             for (var i = 0; i < val.length; i++) {
+            //                 if (val[i] != null) {
+            //                     bool = true
+            //                 }
+            //             }
+            //             if (val.length != 0 && bool == true) {
+            //                 html_a_img += '<div class="step-content attr-gallery clearfix">' +
+            //                     '<div class="attr_tit">' + attrMulti[key].attr_name + '：</div>';
+            //                 $.each(val, function (k, v) {
+            //                     if (v != null) {
+            //                         html_a_img += '<div class="attr-item fl">' +
+            //                             '<div class="txt">' + attrMulti[key].attr_values[k] + '</div>' +
+            //                             '<div class="info fl">' +
+            //                             '<label class="fl hg27">排序：</label>' +
+            //                             '<input type="text" class="form-control max-wd-100 hg27" name="attr_sort[' + attrMulti[key].attr_id + '][]" size="10" value="1"></div>' +
+            //                             '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
+            //                             'data-goodsattrid="" data-attrid="' + attrMulti[key].attr_id + '" v-if="key == 0">' +
+            //                             '<input type="file" id="attr-img" name="attr-img[' + attrMulti[key].attr_id + '][]"' +
+            //                             'style="opacity: 0;max-width: 0;height: 0;margin: 0">' +
+            //                             '<label for="attr-img">上传图片</label></a>' +
+            //                             '<input name="attr_id" type="hidden" value="' + attrMulti[key].attr_id + '">' +
+            //                             '<input name="attr_value" type="hidden" value="' + attrMulti[key].attr_values[k] + '">' +
+            //                             '<input type="hidden" name="gallery_attr_value[]" value="' + attrMulti[key].attr_values[k] + '">' +
+            //                             '<input type="hidden" name="gallery_attr_id[]" value="' + attrMulti[key].attr_id + '"></div>';
+            //                     }
+            //                 });
+            //                 html_a_img += '</div>';
+            //             }
+            //         });
+            //         $('.attr-gallerys').html(html_a_img);
+            //     }
+            //     else {
+            //         $('#attribute-table').hide();
+            //         $('.attr-gallerys').hide();
+            //     }
+            //     var html = '';
+            //     $.each(productList, function (k, v) {
+            //
+            //         html += '<tr><td class="text-center">';
+            //         var i = 0;
+            //         $.each(v, function (key, val) {
+            //             if (val) {
+            //                 if ((key - i) == 0) {
+            //                     html += '' + val.attr_val +
+            //                         '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">';
+            //                 } else {
+            //                     html += ', ' + val.attr_val +
+            //                         '<input type="hidden" name="attr[' + val.attr_id + '][]" value="' + val.attr_val + '">';
+            //                 }
+            //             } else {
+            //                 i++;
+            //             }
+            //         });
+            //         html += '</td><td>' +
+            //             '<input type="text" name="product_market_price[]"' +
+            //             'class="form-control max-wd-110 hg27" autocomplete="off" value="0.00"></td>' +
+            //             '<td>' +
+            //             '<input type="text" name="product_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
+            //             '</td>' +
+            //             '<td>' +
+            //             '<input type="text" name="product_promote_price[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0.00">' +
+            //             '</td>' +
+            //             '<td>' +
+            //             '<input type="text" name="product_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="0">' +
+            //             '</td>' +
+            //             '<td>' +
+            //             '<input type="text" name="product_warn_number[]" class="form-control max-wd-110 hg27" autocomplete="off" value="1">' +
+            //             '</td>' +
+            //             '<td>' +
+            //             '<input type="text" name="product_sn[]" class="form-control hg27" autocomplete="off" value="">' +
+            //             '</td>' +
+            //             '<td>' +
+            //             '<input type="text" name="product_bar_code[]" class="form-control hg27" autocomplete="off" value="">' +
+            //             '</td>' +
+            //             '<td class="handle"> N/A <input type="hidden" name="product_id[]" value="">' +
+            //             '<input type="hidden" name="changelog_product_id[]" value="">' +
+            //             '</td>' +
+            //             '</tr>';
+            //     });
+            //
+            //
+            //     $('#attribute-table tbody').html(html);
+            // });
 
             //自定义商品规格属性
             $('.step-item-attr-checkbox .step-item-right').on('click', '.attr-custom', function () {
@@ -2169,98 +2162,58 @@
             $('input[name=desc_mobile]').val(imgs);
         }
 
-        function setProductSplicing(i, j, obj, pList, aList) {
-            var bool = true;
-            var pr_list = [];
-            for (var k = 0; k < aList[j].length; k++) {
-                if (aList[j][k] != null && aList[j][k] != undefined) {
-                    obj[j] = aList[j][k];
-                    var obj_c = $.extend(true, [], obj);
-                    pr_list.push(obj_c);
-                    bool = false;
-                    if (i > j) {//还没到底层，继续进入下一层
-                        var p_list = setProductSplicing(i, j + 1, $.extend(true, [], obj), pList, aList);
-                        if (p_list.length == 0) {//只有第一层有数据
-                            pList = pr_list;
-                        } else {
-                            pList = p_list;
-                        }
-                    } else {//已经到底层,数据组合完毕压入栈中
-                        pList.push($.extend(true, [], obj));
-                    }
-                } else {
-                    continue;
-                }
-            }
-            if (i > j && bool) {//前一次没有选中数据
-                setProductSplicing(i, j + 1, obj, pList, aList);
-            }
-            return pList;
-        }
-
         var app = new Vue({
             el: '#appFour',
             data: {
-                url: "{{url('admin/attribute/getattributes/')}}/",
-                attrOnce: [],
-                attrMulti: [],
-                attrList: [],
-                productList: [],
+                goods_id: '{{$goodsInfo->goods_id}}',
+                model_price: '{{$goodsInfo->model_price}}',
+                url: "{{url('admin/goods/product/')}}/",
+                products: [],
+                goodsAttrImg: [],
             },
+
+            mounted: function () {
+                var that = this;
+                $.post(this.url + this.goods_id, {
+                    '_token': '{{csrf_token()}}',
+                    'model_price': this.model_price
+                }, function (data) {
+                    that.products = data.products;
+                    that.goodsAttrImg = data.goods_attr_img;
+                });
+            },
+
             methods: {
                 selectValue: function (e) {
-                    var that = this;
-                    var cat_id = e.target.value;
-                    $.post(this.url + cat_id, {'_token': '{{csrf_token()}}'}, function (data) {
-                        if (data.length > 0) {
-                            $.each(data, function (k, v) {
-                                if (v.attr_type == 1) {
-                                    that.attrMulti.push(v);
-                                    that.attrList.push([]);
-                                } else {
-                                    that.attrOnce.push(v);
+                    var attr_values = [];
+                    var attr_v = [];
+                    var attr_id = 0;
+                    $('.attr-multi').find('.checkbox-inline input').each(function (k, v) {
+                        if ($(v).is(':checked')) {
+                            if ($(v).data('attr_id') == attr_id) {
+                                attr_v.push([$(v).val(), attr_id]);
+                            } else {
+                                if (attr_v.length > 0) {
+                                    attr_values.push(attr_v);
                                 }
-                            });
-                        } else {
-                            that.attrMulti = [];
-                            that.attrOnce = [];
+                                attr_v = [];
+                                attr_id = $(v).data('attr_id');
+                                attr_v.push([$(v).val(), attr_id]);
+                            }
+                        }
+                        if (k == $('.attr-multi').find('.checkbox-inline input').length - 1) {
+                            attr_values.push(attr_v);
                         }
                     });
-                },
-                selectAttr: function (e) {
-                    if (e.target.checked) {
-                        this.attrList[e.target.dataset.key][e.target.dataset.k] = e.target.value;
-                    } else {
-                        this.attrList[e.target.dataset.key][e.target.dataset.k] = null;
-                    }
-                    console.log(this.attrList);
-                    this.productList = this.pSplicing(this.attrList.length - 1, 0, '', []);
-                },
-                pSplicing: function (i, j, pStr, pList) {
-                    var bool = true;
-                    var pr_list = [];
-                    for (var k = 0; k < this.attrList[j].length; k++) {
-                        if (this.attrList[j][k] != null && this.attrList[j][k] != undefined && this.attrList[j][k] != '') {
-                            pr_list.push(pStr + this.attrList[j][k]);
-                            bool = false;
-                            if (i > j) {
-                                var p_list = this.pSplicing(i, j + 1, pStr + this.attrList[j][k] + ',', pList);
-                                if (p_list.length == 0) {
-                                    pList = pr_list;
-                                } else {
-                                    pList.concat(p_list);
-                                }
-                            } else {
-                                pList.push(pStr + this.attrList[j][k]);
-                            }
-                        } else {
-                            continue;
-                        }
-                    }
-                    if (i > j && bool) {
-                        this.pSplicing(i, j + 1, pStr, pList);
-                    }
-                    return pList;
+                    var that = this;
+                    $.post(this.url + this.goods_id, {
+                        '_token': '{{csrf_token()}}',
+                        'model_price': this.model_price,
+                        'attr_values': attr_values
+                    }, function (data) {
+                        that.products = data.products;
+                        that.goodsAttrImg = data.goods_attr_img;
+                    });
                 },
             },
             delimiters: ['${', '}']

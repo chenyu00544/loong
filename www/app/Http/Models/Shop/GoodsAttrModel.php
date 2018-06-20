@@ -26,6 +26,12 @@ class GoodsAttrModel extends Model
             ->get();
     }
 
+    public function setGoodsAttr($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
     public function addGoodsAttr($data)
     {
         return $this->create($data);

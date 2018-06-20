@@ -100,6 +100,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/upgoodsgallery', 'GoodsController@upGoodsGalleryPic');
     Route::post('goods/delgoodsgallery', 'GoodsController@delGoodsGalleryPic');
     Route::post('goods/addgoodsattr', 'GoodsController@addGoodsAttr');
+    Route::post('goods/product/{id}', 'GoodsController@getGoodsByProduct');
     Route::resource('goods', 'GoodsController');
 
     Route::get('goodstype/goodstype/modal', 'GoodsTypeController@goodsTypeByModal');

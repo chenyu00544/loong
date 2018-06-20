@@ -177,6 +177,12 @@ class GoodsController extends CommonController
         return $this->goodsAttrRepository->addGoodsAttr($request->except('_token'));
     }
 
+    //获取商品属性货品
+    public function getGoodsByProduct(Request $request, $id)
+    {
+        return $this->goodsRepository->getProductAndGallerys($request->except('_token'), $id, $this->user->ru_id);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -246,7 +252,7 @@ class GoodsController extends CommonController
         $comCateSelect = $this->comCateRepository->getParentCate($goodsInfo->cat_id);
         //属性分类
         $goodsTypes = [];
-        if($goodsInfo->goods_type > 0){
+        if ($goodsInfo->goods_type > 0) {
             $goodsTypes = $this->goodsTypeRepository->getGoodsType(['cat_id' => $goodsInfo->goods_type]);
             $goodsTypeCates = $this->goodsTypeRepository->getGoodsTypeCateBySelect($goodsTypes->c_id);
             $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['c_id' => $goodsTypes->c_id]);
@@ -263,7 +269,12 @@ class GoodsController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["goods_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->goodsRepository->updateGoods($request->except('_token', '_method'), $id, $this->user->ru_id);
+        return view('shop.admin.success');
     }
 
     /**

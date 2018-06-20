@@ -11,11 +11,6 @@ namespace App\Services;
 
 class CommonService
 {
-    public static function test()
-    {
-        echo 111;
-    }
-
     //md5加密
     public static function md5Encrypt($pass, $salt)
     {
@@ -36,7 +31,7 @@ class CommonService
         $next = ($currentPage + 1) < $totalPages ? $currentPage + 1 : $totalPages;
         $req['prev'] = $prev;
         $req['next'] = $next;
-        if($count > 0){
+        if ($count > 0) {
             //中间数字分页
             $page = [];
             if ($currentPage <= 7) {
@@ -45,7 +40,7 @@ class CommonService
                     $page[$i] = $i;
                 }
                 if (($totalPages - 1) > 8) {
-                    if($isList){
+                    if ($isList) {
                         $page[] = '...';
                     }
                     $page[] = $totalPages - 1;
@@ -54,7 +49,7 @@ class CommonService
             } elseif ($currentPage > ($totalPages - 7)) {
                 $page = [1, 2];
                 if (($totalPages - 6) > 3) {
-                    if($isList){
+                    if ($isList) {
                         $page[] = '...';
                     }
                 }
@@ -63,23 +58,38 @@ class CommonService
                 }
             } else {
                 $page = [1, 2];
-                if($isList){
+                if ($isList) {
                     $page[] = '...';
                 }
-                $page[] = $currentPage-1;
+                $page[] = $currentPage - 1;
                 $page[] = $currentPage;
-                $page[] = $currentPage+1;
-                if($isList){
+                $page[] = $currentPage + 1;
+                if ($isList) {
                     $page[] = '...';
                 }
                 $page[] = $totalPages - 1;
                 $page[] = $totalPages;
             }
-        }else{
+        } else {
             $page[] = 1;
         }
 
         $req['page'] = $page;
         return $req;
+    }
+
+    //笛卡尔积
+    public static function cartesian($data, $layer = 0, $str = '', $pList = [])
+    {
+        $tlayer = count($data);
+        if ($tlayer > $layer) {
+            for ($i = 0; $i < count($data[$layer]); $i++) {
+                $pList = self::cartesian($data, $layer + 1, $str . '|' . $data[$layer][$i], $pList);
+            }
+        } else {
+            $pList[] = substr($str, 1);
+            return $pList;
+        }
+        return $pList;
     }
 }
