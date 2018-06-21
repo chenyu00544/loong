@@ -454,6 +454,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $value->attr_values = $attrValues;
             $value->attr_sort_n = 'attr_sort[' . $value->attr_id . '][]';
             $value->attr_id_n = 'attr-img[' . $value->attr_id . '][]';
+            $value->attr_img_flie_o = url($value->attr_img_flie);
             $goodsAttrM[$value->attr_id]['attr_name'] = $value->attr_name;
             $goodsAttrM[$value->attr_id]['values'][] = $value;
         }
@@ -631,7 +632,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                 }
             }
 
-            //添加商品属性
+            //添加商品唯一属性
             $attr_id_listO = !empty($data['attr_id_listO']) ? $data['attr_id_listO'] : [];
             $attr_value_list = !empty($data['attr_value_list']) ? $data['attr_value_list'] : [];
             $attrData['goods_id'] = $goods->goods_id;
@@ -644,16 +645,23 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $this->goodsAttrModel->addGoodsAttr($attrData);
             }
 
+            //添加商品多选属性
             $attr_id_listM = !empty($data['attr_id_listM']) ? $data['attr_id_listM'] : [];
             $attr_value_list1 = !empty($data['attr_value_list1']) ? $data['attr_value_list1'] : [];
             $attr_sort = !empty($data['attr_sort']) ? $data['attr_sort'] : [];
+            $attr_img = !empty($data['attr_img']) ? $data['attr_img'] : [];
             $attr = !empty($data['attr']) ? $data['attr'] : [];
+            $original_img = 'attr_image' . DIRECTORY_SEPARATOR . 'attr_image' . DIRECTORY_SEPARATOR . 'original_img';
+            $thumb_img = 'attr_image' . DIRECTORY_SEPARATOR . 'attr_image' . DIRECTORY_SEPARATOR . 'thumb_img';
             for ($i = 0; $i < count($attr_id_listM); $i++) {
                 $attrData['attr_id'] = $attr_id_listM[$i];
                 for ($j = 0; $j < count($attr_value_list1[$attr_id_listM[$i]]); $j++) {
                     $attrData['attr_value'] = $attr_value_list1[$attr_id_listM[$i]][$j];
                     $attrData['attr_sort'] = $attr_sort[$attr_id_listM[$i]][$j];
-
+                    if(!empty($attr_img[$attr_id_listM[$i]][$j])){
+                        $attrData['attr_img_flie'] = FileHandle::upLoadImage($attr_img[$attr_id_listM[$i]][$j], $original_img);
+                        $attrData['attr_gallery_flie'] = FileHandle::upLoadThumbImage($attrData['attr_img_flie'], $thumb_img);
+                    }
                     $attr_id = $this->goodsAttrModel->addGoodsAttr($attrData);
                     foreach ($attr[$attr_id_listM[$i]] as $k => $v) {
                         if ($attr[$attr_id_listM[$i]][$k] == $attr_value_list1[$attr_id_listM[$i]][$j]) {
@@ -973,7 +981,9 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
         }
         $this->productsChangeLogModel->delAll($where);
-        $rep = ['code' => 1, 'msg' => '修改成功'];
+        if(1){
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
         return $rep;
     }
 

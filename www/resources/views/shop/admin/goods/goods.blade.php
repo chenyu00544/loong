@@ -40,7 +40,7 @@
                             {{csrf_field()}}
                             <input type="text" name="keywords" value="{{$keywords}}"
                                    class="form-control input-sm max-wd-190" placeholder="名称">
-                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr" value="查询">
+                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr lh22" value="查询">
                         </form>
                     </div>
                 </div>
@@ -51,15 +51,15 @@
                             <th style="width: 40px">
                                 <input type="checkbox" name="all_list" class="checkbox check-all">
                             </th>
-                            <th class="col-md-1 text-center"><a>编号</a></th>
-                            <th class="col-md-4"><a>商品名称</a></th>
-                            <th class="col-md-1">商家名称</th>
-                            <th class="col-md-2">价格/货号/运费</th>
-                            <th class="col-md-2">标签</th>
-                            <th class="col-md-1">排序</th>
-                            <th class="col-md-1">SKU/库存</th>
-                            <th class="col-md-1">审核状态</th>
-                            <th class="col-md-1">操作</th>
+                            <th class="col-sm-1 text-center"><a>编号</a></th>
+                            <th class="col-sm-3"><a>商品名称</a></th>
+                            <th class="col-sm-1">商家名称</th>
+                            <th class="col-sm-2">价格/货号/运费</th>
+                            <th class="col-sm-1">标签</th>
+                            <th class="col-sm-1">排序</th>
+                            <th class="col-sm-1">SKU/库存</th>
+                            <th class="col-sm-1">审核状态</th>
+                            <th class="col-sm-1">操作</th>
                         </tr>
                         </thead>
                         <tbody>

@@ -1579,7 +1579,7 @@
                                         '<input type="text" class="form-control max-wd-100 hg27" name="attr_sort[' + attrMulti[key].attr_id + '][]" size="10" value="1"></div>' +
                                         '<a href="javascript:;" class="btn btn-danger btn-sm up_img mar-left-10"' +
                                         'data-goodsattrid="" data-attrid="' + attrMulti[key].attr_id + '" v-if="key == 0">' +
-                                        '<input type="file" id="attr-img" name="attr-img[' + attrMulti[key].attr_id + '][]"' +
+                                        '<input type="file" id="attr-img" name="attr_img[' + attrMulti[key].attr_id + '][]"' +
                                         'style="opacity: 0;max-width: 0;height: 0;margin: 0">' +
                                         '<label for="attr-img">上传图片</label></a>' +
                                         '<input name="attr_id" type="hidden" value="' + attrMulti[key].attr_id + '">' +

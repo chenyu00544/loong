@@ -16,6 +16,7 @@ return array(
     'system' => array(
         'setup' => '设置',
         'advertise' => '广告',
+        'users' => '会员',
     ),
     'setup' => array(
         'shopsetup' => array(
@@ -60,6 +61,12 @@ return array(
             'url' => 'admin/adposition',
         )
     ),
+    'users' => array(
+        'members' => array(
+            'name' => '会员列表',
+            'url' => 'admin/users',
+        ),
+    ),
     'info' => array(
         'infocenter' => array(
             'name' => '管理中心',
@@ -68,6 +75,7 @@ return array(
     ),
     'shop' => array(
         'commodity' => '商品',
+        'order' => '订单',
     ),
     'commodity' => array(
         'shopsetup' => array(
@@ -93,6 +101,12 @@ return array(
         'gallery' => array(
             'name' => '图片库管理',
             'url' => 'admin/gallery',
+        ),
+    ),
+    'order' => array(
+        'orders' => array(
+            'name' => '订单列表',
+            'url' => 'admin/order',
         ),
     ),
     'finance' => array(

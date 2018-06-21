@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\GoodsAttrRepositoryInterface;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\GoodsAttrModel;
 
 class GoodsAttrRepository implements GoodsAttrRepositoryInterface
@@ -21,6 +22,32 @@ class GoodsAttrRepository implements GoodsAttrRepositoryInterface
     )
     {
         $this->goodsAttrModel = $goodsAttrModel;
+    }
+
+    public function setGoodsAttr($data)
+    {
+        $rep = ['code' => 5, 'msg' => '修改失败'];
+        $where['goods_attr_id'] = $data['id'];
+        $original_img = 'attr_image' . DIRECTORY_SEPARATOR . 'attr_image' . DIRECTORY_SEPARATOR . 'original_img';
+        $thumb_img = 'attr_image' . DIRECTORY_SEPARATOR . 'attr_image' . DIRECTORY_SEPARATOR . 'thumb_img';
+        if (!empty($data['attr_sort'])) {
+            $updata['attr_sort'] = $data['attr_sort'];
+            $re = $this->goodsAttrModel->setGoodsAttr($where, $updata);
+        } elseif (!empty($data['attr_img'])) {
+            if (!empty($data['old_attr_img_o'])) {
+                FileHandle::deleteFile($data['old_attr_img_o']);
+            }
+            if (!empty($data['old_attr_img_t'])) {
+                FileHandle::deleteFile($data['old_attr_img_t']);
+            }
+            $updata['attr_img_flie'] = FileHandle::upLoadImage($data['attr_img'], $original_img);
+            $updata['attr_gallery_flie'] = FileHandle::upLoadThumbImage($updata['attr_img_flie'], $thumb_img);
+            $re = $this->goodsAttrModel->setGoodsAttr($where, $updata);
+        }
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
+        return $rep;
     }
 
     public function addGoodsAttr($data)
@@ -36,6 +63,4 @@ class GoodsAttrRepository implements GoodsAttrRepositoryInterface
         }
         return $req;
     }
-
-
 }

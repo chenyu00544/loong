@@ -182,6 +182,10 @@ input[type=checkbox], input[type=radio] {
     line-height: 48px;
 }
 
+.lh22 {
+    line-height: 22px;
+}
+
 .checkbox label, .radio label {
     min-height: 20px;
     padding-left: 20px;
@@ -357,6 +361,13 @@ input[type=checkbox], input[type=radio] {
     background-position: -25px -384px;
 }
 
+.current .icon_order {
+    background-position: -23px -266px;
+}
+.icon_order {
+    background-position: 2px -266px;
+}
+
 .icon_satistics {
     background-position: -0px -288px;
 }
@@ -379,6 +390,14 @@ input[type=checkbox], input[type=radio] {
 
 .current .icon_advertise {
     background-position: -25px -507px;
+}
+
+.icon_users {
+    background-position: 1px -50px;
+}
+
+.current .icon_users {
+    background-position: -25px -50px;
 }
 
 .nav-left .sub-nav .sub-item li {
@@ -1418,7 +1437,7 @@ input[type=checkbox], input[type=radio] {
     padding-top: 1px;
 }
 
-.padtop input[type=radio]{
+.padtop input[type=radio] {
     margin-top: 5px;
 }
 
@@ -1979,8 +1998,8 @@ input[type=file].upload-file {
     border-bottom: 1px solid #eaeaea;
 }
 
-.attr-gallerys{
-    overflow-y:scroll;
+.attr-gallerys {
+    overflow-y: scroll;
     height: 200px;
 }
 
@@ -2010,18 +2029,28 @@ input[type=file].upload-file {
     text-overflow: ellipsis;
 }
 
-.attr-gallery:not(:first-child) .up_img{
+.attr-gallery:not(:first-child) .up_img {
     display: none;
 }
 
-#ul-pics li:not(:first-child) .zt{
+#ul-pics li:not(:first-child) .zt {
     display: none;
 }
+
 .add-v-p {
     display: block;
     width: 20px;
     height: 20px;
     background: url(../../images/admin-icon.png) -230px -424px no-repeat;
     margin: 0 auto;
+}
+
+.attr-img-show {
+    display: none;
+    line-height: normal;
+}
+
+.attr-gallery:first-child .attr-img-show {
+    display: inline;
 }
 

@@ -1045,7 +1045,8 @@
                                                     <div class="item-right-list goods-attr-type fl">
                                                         <input type="hidden" name="attr_id_listO[]"
                                                                value="{{$attr_o->attr_id}}">
-                                                        <input type="hidden" name="goods_attr_id_list[]" value="{{$attr_o->goods_attr_id}}">
+                                                        <input type="hidden" name="goods_attr_id_list[]"
+                                                               value="{{$attr_o->goods_attr_id}}">
                                                         <div class="label fl"
                                                              title="{{$attr_o->attr_name}}">{{$attr_o->attr_name}}：
                                                         </div>
@@ -1195,23 +1196,39 @@
                                 </div>
                                 <div class="attr-gallerys ps-container ps-active-y"
                                      style="@if(empty($goodsInfo->goods_attr_m)) display:none; @endif">
-                                    <div class="step-content attr-gallery clearfix" v-for="attrImg in goodsAttrImg">
+                                    <div class="step-content attr-gallery clearfix"
+                                         v-for="(attrImg, key) in goodsAttrImg">
                                         <div class="attr_tit">${attrImg.attr_name}：</div>
                                         <div class="attr-item fl" v-for="value in attrImg.values">
                                             <div class="txt">${value.attr_value}</div>
                                             <div class="info fl">
                                                 <label class="fl hg27">排序：</label>
                                                 <input type="text" class="form-control max-wd-100 hg27"
+                                                       @blur="attrSortChange"
+                                                       :data-goodsattrid="value.goods_attr_id"
                                                        :name="value.attr_sort_n" size="10"
                                                        :value="value.attr_sort"></div>
                                             <a href="javascript:;"
-                                               class="btn btn-danger btn-sm up_img mar-left-10"
+                                               class="btn btn-danger btn-sm up_img mar-left-10 fl"
                                                :data-goodsattrid="value.goods_attr_id"
                                                :data-attrid="value.attr_id">
                                                 <input type="file" id="attr-img"
                                                        :name="value.attr_id_n"
+                                                       :data-goodsattrid="value.goods_attr_id"
+                                                       :data-oldattrimg_o="value.attr_img_flie"
+                                                       :data-oldattrimg_t="value.attr_gallery_flie"
+                                                       @change="upLoadAttrImg"
                                                        style="opacity: 0;max-width: 0;height: 0;margin: 0">
-                                                <label for="attr-img">上传图片</label></a>
+                                                <label for="attr-img">上传图片</label>
+                                            </a>
+                                            <span class="img-show attr-img-show fl">
+                                                <a :href="value.attr_img_flie_o" target="_blank"
+                                                   class="nyroModal">
+                                                    <i class="glyphicon glyphicon-picture top5"
+                                                       :data-tooltipimg="value.attr_img_flie_o"
+                                                       ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                                </a>
+                                            </span>
                                             <input name="attr_id" type="hidden"
                                                    :value="value.attr_id">
                                             <input name="attr_value" type="hidden"
@@ -1307,7 +1324,6 @@
             var goods_id = '{{$goodsInfo->goods_id}}';
             var attrList = [];
             var attrMulti = [];
-            var products = $('#attribute-table tbody').find('tr');
 
             @foreach($goodsInfo->goods_attr_m as $attr_m)
             attrList.push([]);
@@ -1317,6 +1333,8 @@
             $('body').on('click', function () {
                 $('.brand-select-container').hide();
             });
+
+            // $('.nyroModal').nyroModal();
 
             var ue = UE.getEditor('editor', {
                 initialFrameHeight: 500,
@@ -2074,22 +2092,36 @@
                 goods_id: '{{$goodsInfo->goods_id}}',
                 model_price: '{{$goodsInfo->model_price}}',
                 url: "{{url('admin/goods/product/')}}/",
+                goodsAttrUrl: "{{url('admin/goods/setgoodsattr/')}}",
                 products: [],
                 goodsAttrImg: [],
             },
 
             mounted: function () {
-                var that = this;
-                $.post(this.url + this.goods_id, {
-                    '_token': '{{csrf_token()}}',
-                    'model_price': this.model_price
-                }, function (data) {
-                    that.products = data.products;
-                    that.goodsAttrImg = data.goods_attr_img;
-                });
+                this.initData();
             },
 
             methods: {
+                initData: function () {
+                    var that = this;
+                    $.post(this.url + this.goods_id, {
+                        '_token': '{{csrf_token()}}',
+                        'model_price': this.model_price
+                    }, function (data) {
+                        that.products = data.products;
+                        that.goodsAttrImg = data.goods_attr_img;
+                    });
+                },
+                loading: function (bool) {
+                    layer.load();
+                    if (bool) {
+                        layer.closeAll('loading');
+                    } else {
+                        setTimeout(function () {
+                            layer.closeAll('loading');
+                        }, 10000);
+                    }
+                },
                 selectValue: function (e) {
                     var attr_values = [];
                     var attr_v = [];
@@ -2119,6 +2151,46 @@
                     }, function (data) {
                         that.products = data.products;
                         that.goodsAttrImg = data.goods_attr_img;
+                    });
+                },
+                attrSortChange: function (e) {
+                    var that = this;
+                    that.loading(false);
+                    var sort = $(e.target).val()
+                        , goodsAttrId = $(e.target).data('goodsattrid');
+                    $.post(this.goodsAttrUrl, {
+                        'id': goodsAttrId,
+                        '_token': '{{csrf_token()}}',
+                        'attr_sort': sort,
+                    }, function (data) {
+                        that.loading(true);
+                    });
+                },
+                upLoadAttrImg: function (e) {
+                    var that = this;
+                    that.loading(false);
+                    var imgFile = $(e.target)[0].files[0]
+                        , goodsAttrId = $(e.target).data('goodsattrid')
+                        , oldattrimg_o = $(e.target).data('oldattrimg_o')
+                        , oldattrimg_t = $(e.target).data('oldattrimg_t')
+                        , form = new FormData();
+                    form.append('attr_img', imgFile);
+                    form.append('id', goodsAttrId);
+                    form.append('old_attr_img_o', oldattrimg_o);
+                    form.append('old_attr_img_t', oldattrimg_t);
+                    form.append('_token', '{{csrf_token()}}');
+                    $.ajax({
+                        url: this.goodsAttrUrl,
+                        type: "POST",
+                        data: form,
+                        contentType: false,
+                        processData: false,
+                        success: function (data) {
+                            if (data.code == 1) {
+                                that.initData();
+                            }
+                            that.loading(true);
+                        }
                     });
                 },
             },

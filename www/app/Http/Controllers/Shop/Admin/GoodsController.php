@@ -136,12 +136,14 @@ class GoodsController extends CommonController
         return view('shop.admin.goods.modal.imgLibrary', compact('galleryPics', 'gallerys', 'type', 'goods_id'));
     }
 
+    //相册目录编辑窗口
     public function addGalleryShow()
     {
         $gallerys = $this->galleryRepository->getGallerys();
         return view('shop.admin.goods.modal.galleryAdd', compact('gallerys'));
     }
 
+    //添加商品相册
     public function addGallery(Request $request)
     {
         return $this->galleryRepository->addGallery($request->except('_token'));
@@ -175,6 +177,12 @@ class GoodsController extends CommonController
     public function addGoodsAttr(Request $request)
     {
         return $this->goodsAttrRepository->addGoodsAttr($request->except('_token'));
+    }
+
+    //更新商品属性
+    public function setGoodsAttr(Request $request)
+    {
+        return $this->goodsAttrRepository->setGoodsAttr($request->except('_token'));
     }
 
     //获取商品属性货品

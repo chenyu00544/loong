@@ -39,21 +39,26 @@ class FriendRepository implements FriendRepositoryInterface
             $where['link_id'] = $id;
         }
         $req = ['code' => 5, 'msg' => '修改失败'];
+        $link_logo_bak = '';
         foreach ($data as $key => $value) {
             if ($key == 'id') {
                 $where['link_id'] = $value;
             } elseif ($key == 'link_logo_bak') {
                 $updata['link_logo'] = $value;
             } elseif ($key == 'link_logo') {
-                $updata['link_logo'] = FileHandle::upLoadImage($value, 'friend_logo');
-                $link_logo_bak = $data['link_logo_bak'];
+                if(!empty($value)){
+                    $updata['link_logo'] = FileHandle::upLoadImage($value, 'friend_logo');
+                    $link_logo_bak = $data['link_logo_bak'];
+                }
             } else {
                 $updata[$key] = $value;
             }
         }
         $re = $this->friendModel->setFriend($where, $updata);
         if ($re) {
-            FileHandle::deleteFile($link_logo_bak);
+            if(!empty($link_logo_bak)){
+                FileHandle::deleteFile($link_logo_bak);
+            }
             $req = ['code' => 1, 'msg' => '修改成功'];
         }
         return $req;

@@ -100,6 +100,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/upgoodsgallery', 'GoodsController@upGoodsGalleryPic');
     Route::post('goods/delgoodsgallery', 'GoodsController@delGoodsGalleryPic');
     Route::post('goods/addgoodsattr', 'GoodsController@addGoodsAttr');
+    Route::post('goods/setgoodsattr', 'GoodsController@setGoodsAttr');
     Route::post('goods/product/{id}', 'GoodsController@getGoodsByProduct');
     Route::resource('goods', 'GoodsController');
 
@@ -142,4 +143,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('gallery/upgallerypic', 'GalleryController@upGalleryPic');
     Route::post('gallery/getgallerypics', 'GalleryController@getGalleryPics');
     Route::resource('gallery', 'GalleryController');
+
+    Route::resource('users', 'UsersController');
+
+    Route::resource('order', 'OrderController');
 });
