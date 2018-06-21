@@ -38,7 +38,7 @@ class UsersController extends CommonController
      */
     public function create()
     {
-        //
+        
     }
 
     /**
