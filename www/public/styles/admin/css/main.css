@@ -7,6 +7,12 @@
     url('//at.alicdn.com/t/font_595658_tab2sev5g8uuwhfr.svg#iconfont') format('svg');
 }
 
+* {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
 html {
     height: 100%;
 }
@@ -65,7 +71,7 @@ input[type="file"] {
 
 input[type="radio"] {
     width: 15px;
-    height: 19px;
+    height: 15px;
 }
 
 input[type="checkbox"] {
@@ -158,7 +164,7 @@ input[type=checkbox], input[type=radio] {
     top: 5px;
 }
 
-.fwb{
+.fwb {
     font-weight: bold;
 }
 
@@ -188,6 +194,22 @@ input[type=checkbox], input[type=radio] {
 
 .lh22 {
     line-height: 22px;
+}
+
+.lh26 {
+    line-height: 26px;
+}
+
+.mar-lr-auto {
+    margin: 0 auto;
+}
+
+.mar-tb-auto {
+    margin: auto 0;
+}
+
+.mar-auto {
+    margin: auto;
 }
 
 .checkbox label, .radio label {
@@ -368,6 +390,7 @@ input[type=checkbox], input[type=radio] {
 .current .icon_order {
     background-position: -23px -266px;
 }
+
 .icon_order {
     background-position: 2px -266px;
 }
@@ -735,6 +758,7 @@ input[type=checkbox], input[type=radio] {
 .pad-top-4 {
     padding-top: 4px;
 }
+
 .pad-top-7 {
     padding-top: 7px;
 }
@@ -836,7 +860,7 @@ input[type=checkbox], input[type=radio] {
 }
 
 .checkwrap .checkbox {
-    margin-top: 4px;
+    margin-top: 0px;
     margin-right: 5px;
 }
 
@@ -2059,5 +2083,9 @@ input[type=file].upload-file {
 
 .attr-gallery:first-child .attr-img-show {
     display: inline;
+}
+
+.regfield .switch{
+    float: none;
 }
 

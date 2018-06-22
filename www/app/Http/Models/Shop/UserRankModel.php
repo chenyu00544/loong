@@ -20,18 +20,25 @@ class UserRankModel extends Model
             ->get();
     }
 
-    public function setUserRanks($where, $data)
+    public function getUserRank($where = [], $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setUserRank($where, $data)
     {
         return $this->where($where)->update($data);
     }
 
-    public function addUserRanks($data)
+    public function addUserRank($data)
     {
         return $this->create($data);
     }
 
-    public function delUserRanks($where)
+    public function delUserRank($where)
     {
-        $this->where($where)->delete();
+        return $this->where($where)->delete();
     }
 }

@@ -16,7 +16,7 @@
             </div>
             <div class="fromlist clearfix">
                 <div>
-                    <a href="{{url('admin/userrank/create')}}"
+                    <a href="{{url('admin/regfields/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加　</a>
                 </div>
                 <div class="main-info">
@@ -24,42 +24,44 @@
                         <thead>
                         <tr>
                             <th class="col-sm-3">会员注册项名称</th>
-                            <th class="col-sm-2">排序权值</th>
-                            <th class="col-sm-2">是否显示</th>
-                            <th class="col-sm-1">是否必填</th>
-                            <th class="col-sm-4">操作</th>
+                            <th class="col-sm-1">排序权值</th>
+                            <th class="col-sm-3 text-center">是否显示</th>
+                            <th class="col-sm-3 text-center">是否必填</th>
+                            <th class="col-sm-3">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @if(count($ranks) > 0)
-                            @foreach($ranks as $rank)
+                        @if(count($regfields) > 0)
+                            @foreach($regfields as $regfield)
                                 <tr>
-                                    <th>{{$rank->rank_name}}</th>
+                                    <th>{{$regfield->reg_field_name}}</th>
                                     <td>
-                                        <input class="form-control input-sm chang-order" type="text"
-                                               data-id="{{$rank->rank_id}}"
-                                               name="discount" value="{{$rank->discount}}">
+                                        <input class="form-control input-sm chang-order" type="text" autocomplete="off"
+                                               data-id="{{$regfield->id}}"
+                                               name="discount" value="{{$regfield->dis_order}}">
                                     </td>
                                     <td>
-                                        <div class="switch-wrap clearfix">
-                                            <div class="switch @if($nav->ifshow) active @endif" data-type="ifshow"
+                                        <div class="switch-wrap clearfix regfield">
+                                            <div class="switch @if($regfield->display) active @endif mar-lr-auto"
+                                                 data-type="display"
                                                  title="是">
                                                 <div class="circle"></div>
-                                                <input type="hidden" value="{{$nav->id}}">
+                                                <input type="hidden" value="{{$regfield->id}}">
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <div class="switch-wrap clearfix">
-                                            <div class="switch @if($nav->opennew) active @endif" data-type="opennew"
+                                        <div class="switch-wrap clearfix regfield">
+                                            <div class="switch @if($regfield->is_need) active @endif mar-lr-auto"
+                                                 data-type="is_need"
                                                  title="是">
                                                 <div class="circle"></div>
-                                                <input type="hidden" value="{{$nav->id}}">
+                                                <input type="hidden" value="{{$regfield->id}}">
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <a type="button" href="{{url('admin/userrank/'.$nav->id.'/edit')}}"
+                                        <a type="button" href="{{url('admin/regfields/'.$regfield->id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>
                                     </td>
                                 </tr>
@@ -95,7 +97,7 @@
                 var tag = $(this).data('type');
                 var id = $(this).children('input').val();
                 $.post(
-                    '{{url("admin/userrank/change")}}',
+                    '{{url("admin/regfields/changes")}}',
                     {
                         id: id,
                         type: tag,
@@ -110,21 +112,15 @@
 
             $('.chang-order').change(function () {
                 $.post(
-                    '{{url("admin/userrank/change")}}',
+                    '{{url("admin/regfields/changes")}}',
                     {
                         id: $(this).data('id'),
-                        order: $(this).val(),
+                        val: $(this).val(),
+                        type: 'order',
                         _token: '{{csrf_token()}}'
                     },
                     function (data) {
-                        layer.open({
-                            title: '提示',
-                            content: data.msg,
-                            icon: data.code,
-                            success: function (layero, index) {
 
-                            }
-                        });
                     }
                 );
             });

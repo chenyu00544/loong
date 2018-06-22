@@ -157,5 +157,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('userrank/changes', 'UserRankController@changes');
     Route::resource('userrank', 'UserRankController');
 
+    Route::post('regfields/changes', 'RegFieldsController@changes');
+    Route::resource('regfields', 'RegFieldsController');
+
     Route::resource('order', 'OrderController');
 });

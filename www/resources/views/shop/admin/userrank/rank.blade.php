@@ -14,10 +14,19 @@
                     <li>会员等级相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
+            <div class="tabs mar-top-20">
+                <ul class="fl">
+                    @foreach($usersNav as $nav)
+                        <li class="@if($navType == $nav['navType']) curr @endif fl">
+                            <a href="{{url('admin/'.$nav['navType'])}}">{{$nav['title']}}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
             <div class="fromlist clearfix">
                 <div>
                     <a href="{{url('admin/userrank/create')}}"
-                       class="btn btn-success btn-add btn-sm">　添加会员等级　</a>
+                       class="btn btn-success btn-add btn-sm">添加会员等级</a>
                 </div>
                 <div class="main-info">
                     <table class="table table-hover">
@@ -26,10 +35,10 @@
                             <th class="col-sm-3">会员等级名称</th>
                             <th class="col-sm-2">积分下限</th>
                             <th class="col-sm-2">积分上限</th>
-                            <th class="col-sm-1">初始折扣率(%)</th>
+                            <th class="col-sm-2">初始折扣率(%)</th>
                             <th class="col-sm-1">特殊会员组</th>
                             <th class="col-sm-1">显示价格</th>
-                            <th class="col-sm-4">操作</th>
+                            <th class="col-sm-2">操作</th>
                         </tr>
                         </thead>
                         <tbody>

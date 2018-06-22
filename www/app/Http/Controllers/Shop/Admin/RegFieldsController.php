@@ -3,24 +3,19 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\UserRankRepository;
-use App\Repositories\UsersRepository;
+use App\Repositories\RegFieldsRepository;
 use Illuminate\Http\Request;
 
-class UserRankController extends CommonController
+class RegFieldsController extends CommonController
 {
-
-    private $userRankRepository;
-    private $usersRepository;
+    private $regFieldsRepository;
 
     public function __construct(
-        UsersRepository $usersRepository,
-        UserRankRepository $userRankRepository
+        RegFieldsRepository $regFieldsRepository
     )
     {
         parent::__construct();
-        $this->userRankRepository = $userRankRepository;
-        $this->usersRepository = $usersRepository;
+        $this->regFieldsRepository = $regFieldsRepository;
     }
 
     /**
@@ -30,15 +25,13 @@ class UserRankController extends CommonController
      */
     public function index()
     {
-        $navType = 'userrank';
-        $usersNav = $this->usersRepository->getUsersNav();
-        $ranks = $this->userRankRepository->getUserRanks();
-        return view('shop.admin.userrank.rank', compact('ranks', 'navType', 'usersNav'));
+        $regfields = $this->regFieldsRepository->getRegFields();
+        return view('shop.admin.regfields.regfields', compact('regfields'));
     }
 
     public function changes(Request $request)
     {
-        return $this->userRankRepository->change($request->except('_token'));
+        return $this->regFieldsRepository->changes($request->except('_token'));
     }
 
     /**
@@ -48,7 +41,7 @@ class UserRankController extends CommonController
      */
     public function create()
     {
-        return view('shop.admin.userrank.rankAdd');
+        return view('shop.admin.regfields.regfieldsAdd');
     }
 
     /**
@@ -59,11 +52,11 @@ class UserRankController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["rank_name" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["reg_field_name" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->userRankRepository->addUserRanks($request->except('_token'));
+        $re = $this->regFieldsRepository->addRegField($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -86,8 +79,8 @@ class UserRankController extends CommonController
      */
     public function edit($id)
     {
-        $rank = $this->userRankRepository->getUserRank($id);
-        return view('shop.admin.userrank.rankEdit', compact('rank'));
+        $regfield = $this->regFieldsRepository->getRegField($id);
+        return view('shop.admin.regfields.regfieldsEdit', compact('regfield'));
     }
 
     /**
@@ -99,11 +92,11 @@ class UserRankController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["rank_name" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["reg_field_name" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->userRankRepository->setUserRank($request->except('_token', '_method'), $id);
+        $re = $this->regFieldsRepository->setRegField($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -115,6 +108,6 @@ class UserRankController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->userRankRepository->delUserRank($id);
+        //
     }
 }
