@@ -19,4 +19,19 @@ class UserRankModel extends Model
             ->orderBy('rank_id', 'asc')
             ->get();
     }
+
+    public function setUserRanks($where, $data)
+    {
+        return $this->where($where)->update($data);
+    }
+
+    public function addUserRanks($data)
+    {
+        return $this->create($data);
+    }
+
+    public function delUserRanks($where)
+    {
+        $this->where($where)->delete();
+    }
 }

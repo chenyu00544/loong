@@ -13,6 +13,6 @@ class UserModel extends Model
 
     public function getOne($where)
     {
-        return $this->where('user_name', $where['username'])->get()[0];
+        return $this->where('user_name', $where['username'])->first();
     }
 }

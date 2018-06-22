@@ -17,6 +17,16 @@ class CommonService
         return md5(md5($pass) . $salt);
     }
 
+    public static function randStr($mun)
+    {
+        $key = '';
+        $pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
+        for ($i = 0; $i < $mun; $i++) {
+            $key .= $pattern{mt_rand(0,35)};    //生成php随机数
+        }
+        return $key;
+    }
+
     //分页列表
     public static function paginate($data, $count = 1, $currentPage = 1, $size = 20, $isList = true)
     {

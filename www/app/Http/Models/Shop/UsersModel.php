@@ -11,10 +11,40 @@ class UsersModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getUserByPage($where = [], $column = ['*'], $size = 15)
+    public function getUsersByPage($where = [], $column = ['*'], $size = 15)
+    {
+        return $this->select($column)
+            ->leftJoin('user_rank', 'users.user_rank', '=', 'user_rank.rank_id')
+            ->where($where)
+            ->paginate($size);
+    }
+
+    public function getUser($where = [], $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
-            ->paginate($size);
+            ->first();
+    }
+
+    public function setUser($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addUser($data)
+    {
+        return $this->create($data);
+    }
+
+    public function delUser($where)
+    {
+        return $this->where($where)->delete();
+    }
+
+    public function countUser($where)
+    {
+        return $this->where($where)
+            ->count();
     }
 }

@@ -26,5 +26,32 @@ class UserRankRepository implements UserRankRepositoryInterface
         return $this->userRankModel->getUserRanks([]);
     }
 
+    public function setUserRanks($data)
+    {
+        $rep = ['code' => 5, 'msg' => '修改失败'];
+        $where['rank_id'] = $data['id'];
+        $updata['show_price'] = $data['val'];
+        $re = $this->userRankModel->setUserRanks($where, $updata);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
+        return $rep;
+    }
+
+    public function addUserRanks($data)
+    {
+        return $this->userRankModel->addUserRanks($data);
+    }
+
+    public function delUserRanks($id)
+    {
+        $rep = ['code' => 5, 'msg' => '修改失败'];
+        $where['rank_id'] = $id;
+        $re = $this->userRankModel->delUserRanks($where);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
+        return $rep;
+    }
 
 }

@@ -18,7 +18,7 @@
                 <ul class="fl">
                     @foreach($usersNav as $nav)
                         <li class="@if($navType == $nav['navType']) curr @endif fl">
-                            <a href="{{url('admin/users/'.$nav['navType'])}}">{{$nav['title']}}</a>
+                            <a href="{{url('admin/'.$nav['navType'])}}">{{$nav['title']}}</a>
                         </li>
                     @endforeach
                 </ul>
@@ -44,7 +44,7 @@
                             <th width="3%">
                                 <input type="checkbox" name="all_list" class="checkbox check-all">
                             </th>
-                            <th class="text-center"  width="5%"><a>编号</a></th>
+                            <th class="text-center" width="5%"><a>编号</a></th>
                             <th width="15%"><a>会员名称</a></th>
                             <th width="10%">昵称</th>
                             <th width="20%">手机/邮箱</th>
@@ -70,13 +70,14 @@
                                     <td>
                                         {{$user->user_name}}
                                     </td>
-                                    <td><font class="red">{{$user->nick_name}}</font></td>
+                                    <td>@if($user->nick_name) {{$user->nick_name}} @else 未设置 @endif</td>
                                     <td>
                                         <div class="tDiv">
                                             <div class="tDiv_item clearfix">
                                                 <span class="fl">手机：</span>
                                                 <div class="value">
-                                                    <span>{{$user->mobile_phone}}</span>
+                                                    <span>@if($user->mobile_phone) {{$user->mobile_phone}} @else
+                                                            未设置 @endif</span>
                                                 </div>
                                             </div>
                                             <div class="tDiv_item clearfix">
@@ -112,19 +113,21 @@
                                                 <span class="fl">{{$user->rank_points}}</span>
                                             </div>
                                             <div class="tDiv_item clearfix">
-                                                <span class="fl">{{$user->user_rank}}</span>
+                                                <span class="fl">@if($user->rank_name) {{$user->rank_name}} @else
+                                                        试用用户 @endif</span>
                                             </div>
                                         </div>
                                     <td>
                                         <div class="switch-wrap clearfix">
-                                            <div class="switch" data-type="toggle_is_validated" title="是">
+                                            <div class="switch @if($user->is_validated) active @endif" data-type="toggle_is_validated" title="是"
+                                                 data-uid="{{$user->user_id}}">
                                                 <div class="circle"></div>
                                                 <input type="hidden" value="0">
                                             </div>
                                         </div>
                                     </td>
                                     <td class="text-center">
-                                        <a type="button" href="{{url('admin/users/'.$user->user_id.'/edit')}}"
+                                        <a type="button" href="{{url('admin/users/info/'.$user->user_id)}}"
                                            class="btn btn-info btn-edit btn-sm mar-all-5">查看</a>
                                         <a type="button" href="{{url('admin/users/log/'.$user->user_id)}}"
                                            class="btn btn-info btn-edit btn-sm mar-all-5">日志</a>
@@ -170,13 +173,20 @@
             //开关
             $('.switch').click(function () {
                 var val = 0;
+                var uid = $(this).data('uid');
                 if ($(this).hasClass('active')) {
-                    val = 0
+                    val = 0;
                     $(this).removeClass('active');
                 } else {
-                    val = 1
+                    val = 1;
                     $(this).addClass('active');
                 }
+                $.post(
+                    "{{url('admin/users/changes')}}",
+                    {'_token': '{{csrf_token()}}', 'type': 'validated', 'value': val, 'uid': uid},
+                    function (data) {
+                    }
+                );
             });
 
             //全选
@@ -202,7 +212,8 @@
                             if (data.code == 1) {
                                 $(that).parent().parent().remove();
                             }
-                        });
+                        }
+                    );
                 }, function () {
                 });
             });

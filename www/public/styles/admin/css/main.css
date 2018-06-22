@@ -158,6 +158,10 @@ input[type=checkbox], input[type=radio] {
     top: 5px;
 }
 
+.fwb{
+    font-weight: bold;
+}
+
 .ft-12 {
     font-size: 12px;
 }
@@ -730,6 +734,9 @@ input[type=checkbox], input[type=radio] {
 
 .pad-top-4 {
     padding-top: 4px;
+}
+.pad-top-7 {
+    padding-top: 7px;
 }
 
 .pad-top-13 {

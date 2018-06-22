@@ -66,6 +66,14 @@ return array(
             'name' => '会员列表',
             'url' => 'admin/users',
         ),
+        'account' => array(
+            'name' => '充值和提现申请',
+            'url' => 'admin/account',
+        ),
+        'regfields' => array(
+            'name' => '注册项设置',
+            'url' => 'admin/regfields',
+        ),
     ),
     'info' => array(
         'infocenter' => array(

@@ -144,7 +144,18 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('gallery/getgallerypics', 'GalleryController@getGalleryPics');
     Route::resource('gallery', 'GalleryController');
 
+    Route::get('users/info/{id}', 'UsersController@userInfo');
+    Route::get('users/address/{id}', 'UsersController@userAddress');
+    Route::get('users/userorder/{id}', 'UsersController@userOrder');
+    Route::get('users/baitiao/{id}', 'UsersController@userBaitiao');
+    Route::get('users/account/{id}', 'UsersController@userAccount');
+    Route::post('users/changes', 'UsersController@changes');
     Route::resource('users', 'UsersController');
+
+    Route::resource('address', 'UserAddressController');
+
+    Route::post('userrank/changes', 'UserRankController@changes');
+    Route::resource('userrank', 'UserRankController');
 
     Route::resource('order', 'OrderController');
 });

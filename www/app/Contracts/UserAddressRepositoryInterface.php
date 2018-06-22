@@ -7,6 +7,6 @@
  */
 namespace App\Contracts;
 
-interface GoodsTypeRepositoryInterface {
+interface UserAddressRepositoryInterface {
 
 }
