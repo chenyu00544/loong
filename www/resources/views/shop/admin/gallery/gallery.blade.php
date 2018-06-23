@@ -54,7 +54,7 @@
                                     <span class="show">
                                         <a href="@if($gallery->album_cover){{url($gallery->album_cover)}}@else{{url('styles/images/no_image.png')}}@endif"
                                            class="nyroModal">
-                                            <i class="glyphicon glyphicon-picture top5"
+                                            <i class="glyphicon glyphicon-picture top2"
                                                data-tooltipimg="@if($gallery->album_cover){{url($gallery->album_cover)}}@else{{url('styles/images/no_image.png')}}@endif"
                                                ctype="tooltip" title="tooltip"></i>
                                         </a>

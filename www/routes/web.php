@@ -160,5 +160,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('regfields/changes', 'RegFieldsController@changes');
     Route::resource('regfields', 'RegFieldsController');
 
+    Route::resource('usersreal', 'UsersRealController');
+
     Route::resource('order', 'OrderController');
 });

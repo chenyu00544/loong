@@ -150,7 +150,7 @@ class UsersRepository implements UsersRepositoryInterface
     {
         $nav['list'] = ['title' => '会员列表', 'navType' => 'users'];
         $nav['rank'] = ['title' => '会员等级', 'navType' => 'userrank'];
-        $nav['auth'] = ['title' => '实名认证', 'navType' => 'auth'];
+        $nav['auth'] = ['title' => '实名认证', 'navType' => 'usersreal'];
         return $nav;
     }
 

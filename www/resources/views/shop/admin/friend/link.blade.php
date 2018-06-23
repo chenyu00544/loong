@@ -42,7 +42,7 @@
                                 <td>
                                     <span class="img-show fl">
                                         <a href="{{url($friend->link_logo)}}" target="_blank" class="nyroModal">
-                                            <i class="glyphicon glyphicon-picture top5 img_{{$friend->link_id}}"
+                                            <i class="glyphicon glyphicon-picture top2 img_{{$friend->link_id}}"
                                                data-tooltipimg="{{$friend->link_logo}}" ectype="tooltip"
                                                data-toggle="tooltip" title="tooltip"></i>
                                         </a>

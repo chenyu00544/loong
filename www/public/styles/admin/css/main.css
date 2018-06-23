@@ -184,6 +184,10 @@ input[type=checkbox], input[type=radio] {
     background: url(../../images/nav_icon.png) no-repeat;
 }
 
+.glyphicon-picture {
+    font-size: 16px;
+}
+
 .lh60 {
     line-height: 60px;
 }
@@ -292,6 +296,14 @@ input[type=checkbox], input[type=radio] {
 
 .wd250 {
     min-width: 250px;
+}
+
+.wd360 {
+    min-width: 360px;
+}
+
+.pad-bt-15{
+    padding-bottom: 15px;
 }
 
 .xwd100 {
@@ -866,7 +878,7 @@ input[type=checkbox], input[type=radio] {
 
 .checkwrap .label-tip {
     margin-bottom: 0px;
-    padding: 5px 5px;
+    padding: 7px 5px;
 }
 
 .switch-wrap span {
@@ -2085,7 +2097,7 @@ input[type=file].upload-file {
     display: inline;
 }
 
-.regfield .switch{
+.regfield .switch {
     float: none;
 }
 

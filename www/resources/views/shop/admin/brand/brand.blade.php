@@ -47,7 +47,7 @@
                                 <td>
                                     <span class="show">
                                             <a href="{{url($brand->brand_logo)}}" class="nyroModal">
-                                                <i class="glyphicon glyphicon-picture top5"
+                                                <i class="glyphicon glyphicon-picture top2"
                                                    data-tooltipimg="{{url($brand->brand_logo)}}"
                                                    ctype="tooltip" title="tooltip"></i>
                                             </a>
