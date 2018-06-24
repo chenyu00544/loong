@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\UsersRealRepository;
 use App\Repositories\UsersRepository;
 use Illuminate\Http\Request;
@@ -26,12 +27,19 @@ class UsersRealController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $navType = 'usersreal';
+        $keywords = $request->get('keywords');
+        $review_status = $request->get('review_status') != -1 ? $request->get('review_status') : -1;
         $usersNav = $this->usersRepository->getUsersNav();
-        $userReals = $this->usersRealRepository->getUserRealsByPage();
-        return view('shop.admin.userreal.real', compact('usersNav', 'userReals', 'navType'));
+        $userReals = $this->usersRealRepository->getUserRealsByPage($request->except('_token'));
+        return view('shop.admin.userreal.real', compact('usersNav', 'userReals', 'navType', 'keywords', 'review_status'));
+    }
+
+    public function changes(Request $request)
+    {
+        return $this->usersRealRepository->changes($request->except('_token'));
     }
 
     /**
@@ -41,7 +49,7 @@ class UsersRealController extends CommonController
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -74,7 +82,8 @@ class UsersRealController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $userReal = $this->usersRealRepository->getUserReal($id);
+        return view('shop.admin.userreal.realEdit', compact('userReal'));
     }
 
     /**
@@ -86,7 +95,12 @@ class UsersRealController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["real_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->usersRealRepository->setUserReal($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
@@ -97,6 +111,6 @@ class UsersRealController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->usersRealRepository->delUserReal($id);
     }
 }

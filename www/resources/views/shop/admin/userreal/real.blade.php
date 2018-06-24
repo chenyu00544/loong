@@ -29,13 +29,13 @@
                         <form action="{{url('admin/usersreal/')}}" method="get">
                             {{csrf_field()}}
                             <select name="review_status" class="form-control input-sm max-wd-100 fl">
-                                <option value="-1">全部</option>
-                                <option value="0">未审核</option>
-                                <option value="1">审核通过</option>
-                                <option value="2">审核未通过</option>
+                                <option value="-1" @if($review_status == -1) selected @endif>全部</option>
+                                <option value="0" @if($review_status == 0) selected @endif>未审核</option>
+                                <option value="1" @if($review_status == 1) selected @endif>审核通过</option>
+                                <option value="2" @if($review_status == 2) selected @endif>审核未通过</option>
                             </select>
 
-                            <input type="text" name="keywords" value=""
+                            <input type="text" name="keywords" value="{{$keywords}}"
                                    class="form-control input-sm max-wd-190 fl mar-left-10" placeholder="名称">
                             <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 lh22 fl" value="查询">
                         </form>
@@ -110,8 +110,15 @@
                         <div class="fl mar-all-5">
                             <select name="select_type" class="form-control col-md-2 input-sm">
                                 <option value="0">请选择</option>
-                                <option value="is_best_on">删除</option>
-                                <option value="is_best_off">审核</option>
+                                <option value="is_delete">删除</option>
+                                <option value="is_examine">审核</option>
+                            </select>
+                        </div>
+
+                        <div class="fl mar-all-5 s-examine" style="display: none;">
+                            <select name="select_examine" class="form-control col-md-2 input-sm">
+                                <option value="1">审核通过</option>
+                                <option value="2">审核不通过</option>
                             </select>
                         </div>
                         <div class="fl">
@@ -133,10 +140,44 @@
         $(function () {
             //全选
             $('input[name=all_list]').click(function () {
-                var flage = $(this).is(':checked')
+                var flage = $(this).is(':checked');
                 $(".check-all").each(function () {
                     $(this).prop("checked", flage);
-                })
+                });
+            });
+
+            $('select[name=select_type]').change(function () {
+                if ($(this).val() == 'is_examine') {
+                    $('.s-examine').show();
+                } else {
+                    $('.s-examine').hide();
+                }
+            });
+
+            $('.btn-sure').click(function () {
+                var ids = [];
+                $("input[name=checkboxes]").each(function () {
+                    if ($(this).is(':checked')) {
+                        ids.push($(this).val());
+                    }
+                });
+                var s_type = $('select[name=select_type]').val();
+                if (s_type == 0 || ids.length == 0) {
+                    layer.msg('请选择', {icon: 5});
+                    return;
+                }
+                var s_examine = 0
+                if (s_type == 'is_examine') {
+                    s_examine = $('select[name=select_examine]').val();
+                }
+                $.post(
+                    "{{url('admin/usersreal/changes')}}",
+                    {'_token': '{{csrf_token()}}', real_type: s_type, ids: ids, s_examine: s_examine},
+                    function (data) {
+                        layer.msg(data.msg, {icon: data.code});
+                        location.href = location.href;
+                    }
+                );
             });
 
             //删除
