@@ -163,5 +163,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('usersreal/changes', 'UsersRealController@changes');
     Route::resource('usersreal', 'UsersRealController');
 
+    Route::get('uaccount/recharge', 'UserAccountController@recharge');
+    Route::resource('uaccount', 'UserAccountController');
+
     Route::resource('order', 'OrderController');
 });

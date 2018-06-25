@@ -67,8 +67,8 @@ return array(
             'url' => 'admin/users',
         ),
         'account' => array(
-            'name' => '充值和提现申请',
-            'url' => 'admin/account',
+            'name' => '提现申请',
+            'url' => 'admin/uaccount',
         ),
         'regfields' => array(
             'name' => '注册项设置',

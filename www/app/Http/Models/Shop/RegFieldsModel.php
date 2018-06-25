@@ -11,7 +11,7 @@ class RegFieldsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getRegFields($where =[], $column =['*'])
+    public function getRegFields($where =['display'=> 1], $column =['*'])
     {
         return $this->select($column)
             ->where($where)

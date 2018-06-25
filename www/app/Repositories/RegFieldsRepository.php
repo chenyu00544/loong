@@ -23,7 +23,7 @@ class RegFieldsRepository implements RegFieldsRepositoryInterface
 
     public function getRegFields()
     {
-        return $this->regFieldsModel->getRegFields();
+        return $this->regFieldsModel->getRegFields([]);
     }
 
     public function getRegField($id)
