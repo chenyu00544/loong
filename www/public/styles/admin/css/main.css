@@ -448,6 +448,14 @@ input[type=checkbox], input[type=radio] {
     background-position: -25px -50px;
 }
 
+.icon_examine {
+    background-position: 1px -77px;
+}
+
+.current .icon_examine {
+    background-position: -24px -77px;
+}
+
 .nav-left .sub-nav .sub-item li {
     height: 40px;
     width: 100%;

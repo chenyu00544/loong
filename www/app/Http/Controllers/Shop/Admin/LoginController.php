@@ -5,22 +5,32 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Common;
 use App\Facades\LangConfig;
 use App\Facades\Verifiable;
-use App\Http\Models\Shop\UserModel;
+use App\Repositories\AdminUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
 
 class LoginController extends CommonController
 {
+
+    private $adminUserRepository;
+
+    public function __construct(
+        AdminUserRepository $adminUserRepository
+    )
+    {
+        parent::__construct();
+        $this->adminUserRepository = $adminUserRepository;
+    }
+
     public function login(Request $request)
     {
         $lang = LangConfig::LangAdminConf();
         if ($input = Input::except('_token')) {
             $ip = $request->getClientIp();
             $validator = Verifiable::loginVer($input, $lang);
-
             if ($validator->passes()) {
-                $user = (new UserModel)->getOne($input);
+                $user = $this->adminUserRepository->getAdminUser(['user_name' => $input['username']]);
                 if ($user->user_name != $input['username']) {
                     return back()->with('errors', $lang['login_faild']);
                 }

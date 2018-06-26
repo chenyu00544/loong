@@ -117,6 +117,7 @@
                                                         试用用户 @endif</span>
                                             </div>
                                         </div>
+                                    </td>
                                     <td>
                                         <div class="switch-wrap clearfix">
                                             <div class="switch @if($user->is_validated) active @endif" data-type="toggle_is_validated" title="是"

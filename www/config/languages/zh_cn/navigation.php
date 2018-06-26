@@ -17,6 +17,7 @@ return array(
         'setup' => '设置',
         'advertise' => '广告',
         'users' => '会员',
+        'examine' => '权限',
     ),
     'setup' => array(
         'shopsetup' => array(
@@ -73,6 +74,12 @@ return array(
         'regfields' => array(
             'name' => '注册项设置',
             'url' => 'admin/regfields',
+        ),
+    ),
+    'examine' => array(
+        'privilege' => array(
+            'name' => '管理员列表',
+            'url' => 'admin/privilege',
         ),
     ),
     'info' => array(
