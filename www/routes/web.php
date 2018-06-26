@@ -28,7 +28,7 @@ Route::get('foo', function () {
 */
 Route::group(['namespace' => 'Shop\Home'], function () {
     Route::any('/', 'IndexController@index');
-    Route::any('test', 'TestController@index');
+    Route::any('test', 'IndexController@test');
 });
 /*
  **********

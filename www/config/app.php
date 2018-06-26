@@ -176,6 +176,10 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //第三方下载的
+        //composer require maatwebsite/excel=~2.0
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
         //cyc 添加的工具类
         App\Providers\CommonServiceProvider::class,
         App\Providers\LangConfigServiceProvider::class,
@@ -237,6 +241,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+
+        //第三方下载的
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
         //cyc 添加的工具类
         'Common' => App\Facades\Common::class,
         'LangConfig' => App\Facades\LangConfig::class,

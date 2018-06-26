@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 class IndexController extends CommonController
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        echo 1111;
+        return view('shop.home.index.index');
     }
 
-    public function info()
+    public function test(Request $request)
     {
+        dd($request->file('file'));
     }
 }
