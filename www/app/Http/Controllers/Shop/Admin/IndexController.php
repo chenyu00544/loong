@@ -10,10 +10,15 @@ use App\Http\Requests;
 class IndexController extends CommonController
 {
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
         $user = session('user');
-        $navs = LangConfig::LangAdminNavConf();
+        $navs = $this->nav;
         return view('shop.admin.index', compact('user', 'navs'));
     }
 

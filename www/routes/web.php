@@ -166,6 +166,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('uaccount/recharge', 'UserAccountController@recharge');
     Route::resource('uaccount', 'UserAccountController');
 
+
+    Route::post('privilege/distribution/{id}', 'PrivilegeController@distribution');
     Route::resource('privilege', 'PrivilegeController');
 
     Route::resource('order', 'OrderController');

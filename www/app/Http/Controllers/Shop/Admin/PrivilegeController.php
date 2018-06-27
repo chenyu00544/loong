@@ -29,6 +29,16 @@ class PrivilegeController extends CommonController
         return view('shop.admin.privilege.privilege', compact('usersList'));
     }
 
+    public function distribution(Request $request, $id)
+    {
+        $error = $this->adminUserRepository->setAdminUser($request->except('_token'), $id);
+        if (!empty($error['code']) && $error['code'] == 1) {
+            return view('shop.admin.failed', compact('error'));
+        } else {
+            return view('shop.admin.success', compact('error'));
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -68,7 +78,21 @@ class PrivilegeController extends CommonController
      */
     public function show($id)
     {
-        //
+        $user = $this->adminUserRepository->getAdminUser(['user_id' => $id]);
+        if ($this->user->user_name == $user->user_name || $user->parent_id != $this->user->user_id) {
+            $error = ['code' => 1, 'msg' => '你没有权限编辑此管理员'];
+            return view('shop.admin.failed', compact('error'));
+        }
+        $navs = [];
+        foreach ($this->nav['index'] as $key => $value) {
+            foreach ($this->nav[$key] as $k => $val) {
+                $navs[$k]['name'] = $val;
+                foreach ($this->nav[$k] as $n => $m) {
+                    $navs[$k]['list'][$n] = $m;
+                }
+            }
+        }
+        return view('shop.admin.privilege.distribution', compact('navs', 'user'));
     }
 
     /**

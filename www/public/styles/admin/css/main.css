@@ -212,7 +212,6 @@ input[type=checkbox], input[type=radio] {
     line-height: 60px;
 }
 
-
 .mar-lr-auto {
     margin: 0 auto;
 }
@@ -277,6 +276,7 @@ input[type=checkbox], input[type=radio] {
     color: #fff;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
     display: block;
+    font-size: 16px;
 }
 
 .admin-menu .active {
@@ -564,6 +564,7 @@ input[type=checkbox], input[type=radio] {
 
 .tabs ul li.curr a {
     color: #fff;
+    font-size: 14px;
 }
 
 .tabs ul li a {
@@ -2128,5 +2129,41 @@ input[type=file].upload-file {
 
 .regfield .switch {
     float: none;
+}
+
+.step-privilege .title {
+    height: 38px;
+    line-height: 38px;
+    background: #f2f2f2;
+}
+
+.step-privilege .checkbox-item .ui-checkbox{
+    width: 16px;
+    height: 16px;
+    display: block;
+    float: left;
+    margin-top: 12px;
+}
+
+.privilege-select-all .checkbox-item .ui-checkbox{
+    width: 16px;
+    height: 16px;
+    display: block;
+    float: left;
+    margin-top: 10px;
+}
+
+.step-privilege .checkbox-item label, .privilege-select-all .checkbox-item label{
+    font-size: 14px;
+    color: #707070;
+}
+
+.step-privilege .checkbox-item {
+    width: 180px;
+    line-height: 38px;
+}
+
+.privilege-sub {
+    padding: 20px 80px;
 }
 

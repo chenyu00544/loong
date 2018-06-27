@@ -48,9 +48,23 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         return $this->adminUserModel->getAdminUser($where);
     }
 
-    public function setAdminUser($data, $id, $user)
+    public function setAdminUser($data, $id)
     {
-        
+        $req = ['code' => 1, 'msg' => '操作失败'];
+        $where['user_id'] = $id;
+        $str = '';
+        foreach ($data as $key => $value) {
+            if(!empty($value['code'])){
+                $str .= $value['code'] . ',';
+            }
+        }
+        $str = substr($str, 0, -1);
+        $updata['action_list'] = $str;
+        $re = $this->adminUserModel->setAdminUser($where, $updata);
+        if ($re) {
+            $req = ['code' => 0, 'msg' => '操作成功'];
+        }
+        return $req;
     }
 
     public function addAdminUser($data, $user)
@@ -70,9 +84,9 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         $updata['email'] = $data['email'];
         $updata['last_ip'] = '';
         $re = $this->adminUserModel->addAdminUser($updata);
-        if($re){
+        if ($re) {
             return ['code' => 0, 'msg' => '操作成功'];
-        }else{
+        } else {
             return ['code' => 1, 'msg' => '操作失败'];
         }
     }
@@ -82,12 +96,12 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         $where['user_id'] = $id;
         $user = $this->adminUserModel->getAdminUser($where);
         $re = [];
-        if($user->parent_id == $adminUser->user_id){
+        if ($user->parent_id == $adminUser->user_id) {
             $re = $this->adminUserModel->delAdminUser($where);
         }
-        if($re){
+        if ($re) {
             return ['code' => 1, 'msg' => '操作成功'];
-        }else{
+        } else {
             return ['code' => 5, 'msg' => '操作失败,无权限'];
         }
     }
