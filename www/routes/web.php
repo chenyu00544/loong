@@ -40,6 +40,8 @@ Route::group(['namespace' => 'Shop\Home'], function () {
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Shop\Admin'], function () {
     Route::any('login', 'LoginController@login');
+    Route::any('logout', 'LoginController@logout');
+    Route::any('clearcache', 'LoginController@clearCache');
     Route::get('change', 'LoginController@change');
     Route::get('tool', 'LoginController@tool');
 });

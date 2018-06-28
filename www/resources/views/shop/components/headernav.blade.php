@@ -13,6 +13,14 @@
             @endforeach
         </ul>
     </div>
+    <div class="admin-fun-right fr">
+        <div class="manager"></div>
+        <div class="operate">
+            <li><a href="{{url('admin/clearcache')}}" class="clear sc-icon" title="清除缓存">&nbsp;</a></li>
+            <i class="sc-icon"></i>
+            <li><a href="{{url('admin/logout')}}" class="prompt sc-icon" title="安全退出">&nbsp;</a></li>
+        </div>
+    </div>
 </div>
 <div class="top-border"></div>
 <div class="nav-left">

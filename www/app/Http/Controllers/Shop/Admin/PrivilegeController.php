@@ -15,6 +15,7 @@ class PrivilegeController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('privilege');
         $this->adminUserRepository = $adminUserRepository;
     }
 

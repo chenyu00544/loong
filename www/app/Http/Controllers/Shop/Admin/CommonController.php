@@ -32,13 +32,42 @@ class CommonController extends Controller
     public function privilege()
     {
         $this->nav = LangConfig::LangAdminNavConf();
-        if ($this->user->action_list != 'all') {
-            $action = explode(',', $this->user->action_list);
+        if (!empty($this->user) && empty($this->user->action_list['all'])) {
             foreach ($this->nav['index'] as $key => $value) {
-
+                foreach ($this->nav[$key] as $k => $val) {
+                    if (empty($this->user->action_list[$k])) {
+                        unset($this->nav[$key][$k]);
+                    }
+                    foreach ($this->nav[$k] as $n => $m) {
+                        if (empty($this->user->action_list[$n])) {
+                            unset($this->nav[$k][$n]);
+                        }
+                    }
+                }
             }
         }
+        foreach ($this->nav as $key => $value) {
+            if (empty($this->nav[$key])) {
+                unset($this->nav[$key]);
+            }
+        }
+        foreach ($this->nav['index'] as $key => $value) {
+            if (empty($this->nav[$key])) {
+                unset($this->nav['index'][$key]);
+                unset($this->nav[$key]);
+            }
+        }
+    }
 
-//        dd($this->nav);
+    public function checkPrivilege($code)
+    {
+        $this->middleware(function ($request, $next) use ($code) {
+            if (!empty($this->user) && empty($this->user->action_list['all'])) {
+                if (!in_array($code, $this->user->action_list)) {
+                    return redirect('admin/info');
+                }
+            }
+            return $next($request);
+        });
     }
 }

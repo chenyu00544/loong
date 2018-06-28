@@ -25,10 +25,10 @@
                             <div class="step-privilege clearfix">
                                 <div class="title">
                                     <div class="checkbox-item fl mar-right-20">
-                                        <input type="checkbox" name="{{$key}}['code']" class="ui-checkbox nav-title"
+                                        <input type="checkbox" name="{{$key}}[code]" class="ui-checkbox nav-title"
                                                id="return_type_{{$key}}"
-                                               value="{{$key}}">
-                                        <input type="hidden" name="{{$key}}['name']" value="{{$nav['name']}}">
+                                               value="{{$key}}" @if(!empty($user->action_list[$key])) checked @endif>
+                                        <input type="hidden" name="{{$key}}[name]" value="{{$nav['name']}}">
                                         <label class="ui-label mar-left-5"
                                                for="return_type_{{$key}}">{{$nav['name']}}</label>
                                     </div>
@@ -36,12 +36,12 @@
                                 <div class="privilege-sub clearfix">
                                     @foreach($nav['list'] as $k => $val)
                                         <div class="checkbox-item fl">
-                                            <input type="checkbox" name="{{$k}}['code']"
+                                            <input type="checkbox" name="{{$k}}[code]"
                                                    class="ui-checkbox nav-sub-title"
                                                    id="return_type_{{$k}}"
-                                                   value="{{$k}}">
-                                            <input type="hidden" name="{{$k}}['name']" value="{{$val['name']}}">
-                                            <input type="hidden" name="{{$k}}['url']" value="{{$val['url']}}">
+                                                   value="{{$k}}" @if(!empty($user->action_list[$k])) checked @endif>
+                                            <input type="hidden" name="{{$k}}[name]" value="{{$val['name']}}">
+                                            <input type="hidden" name="{{$k}}[url]" value="{{$val['url']}}">
                                             <label class="ui-label mar-left-5"
                                                    for="return_type_{{$k}}">{{$val['name']}}</label>
                                         </div>

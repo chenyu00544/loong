@@ -49,6 +49,32 @@ class LoginController extends CommonController
         }
     }
 
+    public function logout(Request $request)
+    {
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        Cache::forget('adminUser' . md5($ip) . $uid);
+        if(!Cache::get('adminUser' . md5($ip) . $uid)){
+            return redirect('admin/login');
+        }
+        $error = ['code' => 1, 'msg' => '操作失败'];
+        return view('shop.admin.failed', compact('error'));
+    }
+
+    public function clearCache(Request $request)
+    {
+        //forever存放永久
+        //flush清除所有缓存
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        Cache::flush();
+        if(!Cache::get('adminUser' . md5($ip) . $uid)){
+            return redirect('admin/login');
+        }
+        $error = ['code' => 1, 'msg' => '操作失败'];
+        return view('shop.admin.failed', compact('error'));
+    }
+
     public function change(Request $request)
     {
         $lang = 'zh_cn';
