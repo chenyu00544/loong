@@ -13,6 +13,7 @@ class ExpressController extends CommonController
     public function __construct(ShippingRepository $shippingRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('areasetup');
         $this->shippingRepository = $shippingRepository;
     }
 

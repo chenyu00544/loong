@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Facades\ShopConfig;
-use App\Facades\Verifiable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
-class CaptchaController extends CommonController
+class DataBaseController extends CommonController
 {
+    private $prefix;
 
     public function __construct()
     {
         parent::__construct();
-        $this->checkPrivilege('codesetup');
+        $this->checkPrivilege('database');
+        $this->prefix = Config::get('database.connections.mysql.prefix');
     }
 
     /**
@@ -22,8 +24,38 @@ class CaptchaController extends CommonController
      */
     public function index()
     {
-        $captcha = ShopConfig::getConfHidden(['captcha','captcha_width','captcha_height','captcha_font_size','captcha_length']);
-        return view('shop.admin.code.captcha', compact('captcha'));
+        //
+    }
+
+    public function optimize()
+    {
+        $tables = DB::select("SHOW TABLE STATUS LIKE '" . $this->prefix . "%'");
+        $total = 0;
+        foreach ($tables as $key => $value) {
+            $tables[$key]->status = DB::select('CHECK TABLE ' . $value->Name);
+            $total += $value->Data_free;
+        }
+        return view('shop.admin.database.optimize', compact('tables', 'total'));
+    }
+
+    public function runOptimize(Request $request)
+    {
+        $req = ['code' => 5, 'msg' => '优化失败'];
+        $tables = DB::select("SHOW TABLES LIKE '" . $this->prefix . "%'");
+        foreach ($tables as $table) {
+            foreach ($table as $k => $val){
+                if ($row = DB::select('OPTIMIZE TABLE ' . $val)) {
+                    /* 优化出错，尝试修复 */
+                    if ($row[0]->Msg_type == 'error' && strpos($row[0]->Msg_text, 'repair') !== false) {
+                        DB::select('REPAIR TABLE ' . $val);
+                        return $req;
+                    }else{
+                        $req = ['code' => 1, 'msg' => '优化成功'];
+                    }
+                }
+            }
+        }
+        return $req;
     }
 
     /**
@@ -44,20 +76,7 @@ class CaptchaController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator(
-            $request->all(),
-            [
-                "captcha_width" => 'required',
-                "captcha_height" => 'required',
-                "captcha_font_size" => 'required',
-                "captcha_length" => 'required'
-            ]
-        );
-        if (!$ver->passes()) {
-            return view('shop.admin.failed');
-        }
-        $re = ShopConfig::setConfHidden($request->except('_token'));
-        return view('shop.admin.success');
+        //
     }
 
     /**

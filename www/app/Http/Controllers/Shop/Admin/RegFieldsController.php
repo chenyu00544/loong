@@ -15,6 +15,7 @@ class RegFieldsController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('regfields');
         $this->regFieldsRepository = $regFieldsRepository;
     }
 

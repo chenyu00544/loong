@@ -13,6 +13,7 @@ class FriendController extends CommonController
     public function __construct(FriendRepository $friendRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('friendsetup');
         $this->friendRepository = $friendRepository;
     }
 

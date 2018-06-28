@@ -16,6 +16,7 @@ class GoodsConfigController extends CommonController
     public function __construct(GoodsRepository $goodsRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('goodssetup');
         $this->goodsRepository = $goodsRepository;
     }
 

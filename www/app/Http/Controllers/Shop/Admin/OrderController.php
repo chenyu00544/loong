@@ -10,6 +10,7 @@ class OrderController extends CommonController
     public function __construct()
     {
         parent::__construct();
+        $this->checkPrivilege('order');
     }
 
     /**

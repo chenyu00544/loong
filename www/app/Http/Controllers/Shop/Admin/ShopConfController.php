@@ -12,6 +12,7 @@ class ShopConfController extends CommonController
     public function __construct()
     {
         parent::__construct();
+        $this->checkPrivilege('shopsetup');
     }
 
     public function index(Request $req)

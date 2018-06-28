@@ -21,6 +21,7 @@ class AttributeController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('goodstype');
         $this->attributeRepository = $attributeRepository;
         $this->goodsTypeRepository = $goodsTypeRepository;
     }

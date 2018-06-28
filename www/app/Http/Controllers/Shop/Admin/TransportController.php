@@ -19,6 +19,7 @@ class TransportController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('areasetup');
         $this->transportRepository = $transportRepository;
         $this->regionsRepository = $regionsRepository;
     }

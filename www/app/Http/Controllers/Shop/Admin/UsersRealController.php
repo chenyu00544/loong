@@ -18,6 +18,7 @@ class UsersRealController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('members');
         $this->usersRepository = $usersRepository;
         $this->usersRealRepository = $usersRealRepository;
     }

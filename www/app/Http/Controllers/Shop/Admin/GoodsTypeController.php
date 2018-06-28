@@ -13,6 +13,7 @@ class GoodsTypeController extends CommonController
     public function __construct(GoodsTypeRepository $goodsTypeRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('goodstype');
         $this->goodsTypeRepository = $goodsTypeRepository;
     }
 

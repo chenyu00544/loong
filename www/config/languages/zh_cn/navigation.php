@@ -28,6 +28,7 @@ return array(
         'advertise' => '广告',
         'users' => '会员',
         'examine' => '权限',
+        'database' => '数据',
     ),
 
 
@@ -139,6 +140,16 @@ return array(
         'privilege' => array(
             'name' => '管理员列表',
             'url' => 'admin/privilege',
+        ),
+    ),
+    'database' => array(
+        'database' => array(
+            'name' => '数据备份',
+            'url' => 'admin/database',
+        ),
+        'optimize' => array(
+            'name' => '数据表优化',
+            'url' => 'admin/database/optimize',
         ),
     ),
 );

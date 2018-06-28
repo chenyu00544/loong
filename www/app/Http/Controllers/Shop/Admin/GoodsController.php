@@ -39,6 +39,7 @@ class GoodsController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('goods');
         $this->goodsRepository = $goodsRepository;
         $this->comCateRepository = $comCateRepository;
         $this->brandRepository = $brandRepository;

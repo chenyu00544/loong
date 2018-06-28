@@ -18,6 +18,7 @@ class UserAddressController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('members');
         $this->userAddressRepository = $userAddressRepository;
         $this->regionsRepository = $regionsRepository;
     }

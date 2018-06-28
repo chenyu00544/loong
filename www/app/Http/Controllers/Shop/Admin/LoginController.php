@@ -31,10 +31,12 @@ class LoginController extends CommonController
             $validator = Verifiable::loginVer($input, $lang);
             if ($validator->passes()) {
                 $user = $this->adminUserRepository->getAdminUser(['user_name' => $input['username']]);
+                if(empty($user)){
+                    return back()->with('errors', $lang['login_faild']);
+                }
                 if ($user->user_name != $input['username']) {
                     return back()->with('errors', $lang['login_faild']);
                 }
-
                 if ($user->password != Common::md5Encrypt($input['password'], $user->salt)) {
                     return back()->with('errors', $lang['login_faild']);
                 }

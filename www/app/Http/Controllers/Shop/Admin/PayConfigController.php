@@ -14,6 +14,7 @@ class PayConfigController extends CommonController
     public function __construct(PaymentRepository $paymentRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('paysetup');
         $this->paymentRepository = $paymentRepository;
     }
 

@@ -15,6 +15,7 @@ class ComCateController extends CommonController
     public function __construct(ComCateRepository $comCateRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('comcate');
         $this->comCateRepository = $comCateRepository;
     }
 

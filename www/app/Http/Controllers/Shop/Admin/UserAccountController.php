@@ -21,6 +21,7 @@ class UserAccountController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('account');
         $this->userAccountRepository = $userAccountRepository;
         $this->usersRepository = $usersRepository;
         $this->paymentRepository = $paymentRepository;

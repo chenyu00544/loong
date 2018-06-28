@@ -2,16 +2,18 @@
 @section('content')
     <form class="form-horizontal" method="post" action="{{url('admin/login')}}">
         {{csrf_field()}}
-        <div class="error">
-            @if(count($errors) > 0)
-                @if(is_object($errors))
-                    <p style="color:red">{{$errors->all()[0]}}</p>
-                @else
-                    <p style="color:red">{{$errors}}</p>
-                @endif
-            @endif
-        </div>
         <div class="container-fluid">
+            <div class="form-group">
+                <div class="error text-center">
+                    @if(count($errors) > 0)
+                        @if(is_object($errors))
+                            <p style="color:red">{{$errors->all()[0]}}</p>
+                        @else
+                            <p style="color:red">{{$errors}}</p>
+                        @endif
+                    @endif
+                </div>
+            </div>
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-3 control-label">{{$lang['username']}}</label>
                 <div class="col-sm-7">

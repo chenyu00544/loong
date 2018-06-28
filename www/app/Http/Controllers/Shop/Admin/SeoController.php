@@ -13,6 +13,7 @@ class SeoController extends CommonController
     public function __construct(SeoRepository $seoRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('seosetup');
         $this->seoRepository = $seoRepository;
     }
 

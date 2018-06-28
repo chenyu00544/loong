@@ -13,7 +13,7 @@ class BrandController extends CommonController
     public function __construct(BrandRepository $brandRepository)
     {
         parent::__construct();
-        $this->checkPrivilege('');
+        $this->checkPrivilege('brandlist');
         $this->brandRepository = $brandRepository;
     }
 

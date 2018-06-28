@@ -13,6 +13,7 @@ class GalleryController extends CommonController
     public function __construct(GalleryRepository $galleryRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('gallery');
         $this->galleryRepository = $galleryRepository;
     }
 

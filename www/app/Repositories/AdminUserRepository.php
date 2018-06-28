@@ -46,11 +46,13 @@ class AdminUserRepository implements AdminUserRepositoryInterface
     public function getAdminUser($where)
     {
         $req = $this->adminUserModel->getAdminUser($where);
-        $action_list = explode(',', $req->action_list);
-        foreach ($action_list as $value){
-            $action_list[$value] = $value;
+        if($req){
+            $action_list = explode(',', $req->action_list);
+            foreach ($action_list as $value){
+                $action_list[$value] = $value;
+            }
+            $req->action_list = $action_list;
         }
-        $req->action_list = $action_list;
         return $req;
     }
 

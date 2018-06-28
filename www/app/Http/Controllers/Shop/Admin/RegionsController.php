@@ -13,6 +13,7 @@ class RegionsController extends CommonController
     public function __construct(RegionsRepository $regionsRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('areasetup');
         $this->regionsRepository = $regionsRepository;
     }
 

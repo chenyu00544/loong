@@ -14,6 +14,7 @@ class NavigationController extends CommonController
     public function __construct(NavigationRepository $navigationRepository)
     {
         parent::__construct();
+        $this->checkPrivilege('navsetup');
         $this->navigationRepository = $navigationRepository;
     }
 

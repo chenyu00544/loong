@@ -19,6 +19,7 @@ class UserRankController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('members');
         $this->userRankRepository = $userRankRepository;
         $this->usersRepository = $usersRepository;
     }
