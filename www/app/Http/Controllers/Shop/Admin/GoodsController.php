@@ -58,10 +58,11 @@ class GoodsController extends CommonController
     public function index(Request $request)
     {
         $navType = 'normal';
+        $seller = 'selfsale';
         $keywords = '';
         $goodsList = $this->goodsRepository->getGoodsPage($request->get('keywords'));
         $goodsNav = $this->goodsRepository->getGoodsNav();
-        return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav', 'navType', 'keywords'));
+        return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav', 'navType', 'keywords', 'seller'));
     }
 
     public function change(Request $request)
@@ -233,11 +234,17 @@ class GoodsController extends CommonController
      */
     public function show($id, Request $request)
     {
-        $navType = $id;
+        $seller = $request->get('seller');
+        if ($id == 'seller' || $id == 'selfsale') {
+            $navType = 'normal';
+            $seller = $id;
+        } else {
+            $navType = $id;
+        }
         $keywords = $request->get('keywords');
-        $goodsList = $this->goodsRepository->getGoodsPage($keywords, [$id]);
+        $goodsList = $this->goodsRepository->getGoodsPage($keywords, [$navType, $seller]);
         $goodsNav = $this->goodsRepository->getGoodsNav();
-        return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav', 'navType', 'keywords'));
+        return view('shop.admin.goods.goods', compact('goodsList', 'goodsNav', 'navType', 'keywords', 'seller'));
     }
 
     /**
@@ -258,6 +265,9 @@ class GoodsController extends CommonController
         $goodsInfo = $this->goodsRepository->getGoods($id);
         $brandName = $this->brandRepository->getBrand($goodsInfo->brand_id);
         $comCates = $this->comCateRepository->getParentCateBySelect($goodsInfo->cat_id);
+        if(empty($comCates)){
+            $comCates[] = $this->comCateRepository->getComCates();
+        }
         $comCateSelect = $this->comCateRepository->getParentCate($goodsInfo->cat_id);
         //属性分类
         $goodsTypes = [];

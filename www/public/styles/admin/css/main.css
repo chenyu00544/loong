@@ -184,6 +184,14 @@ input[type=checkbox], input[type=radio] {
     background: url(../../images/nav_icon.png) no-repeat;
 }
 
+.order_icon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: url(../../images/order_icon.png) no-repeat;
+    font-size: 0;
+}
+
 .glyphicon-picture {
     font-size: 16px;
 }
@@ -214,6 +222,26 @@ input[type=checkbox], input[type=radio] {
 
 .mar-lr-auto {
     margin: 0 auto;
+}
+
+.fs-10 {
+    font-size: 10px;
+}
+
+.fs-12 {
+    font-size: 12px;
+}
+
+.fs-14 {
+    font-size: 14px;
+}
+
+.fs-16 {
+    font-size: 16px;
+}
+
+.fs-18 {
+    font-size: 18px;
 }
 
 .mar-tb-auto {
@@ -511,7 +539,6 @@ input[type=checkbox], input[type=radio] {
     background-position: -24px -151px;
 }
 
-
 .nav-left .sub-nav .sub-item li {
     height: 40px;
     width: 100%;
@@ -805,6 +832,10 @@ input[type=checkbox], input[type=radio] {
     margin: 10px;
 }
 
+.mar-all-30 {
+    margin: 30px;
+}
+
 .mar-top-5 {
     margin-top: 5px;
 }
@@ -837,8 +868,20 @@ input[type=checkbox], input[type=radio] {
     margin-right: 20px;
 }
 
+.mar-bt-5 {
+    margin-bottom: 5px;
+}
+
+.mar-bt-20 {
+    margin-bottom: 20px;
+}
+
 .pad-all-5 {
     padding: 5px;
+}
+
+.pad-all-30 {
+    padding: 30px;
 }
 
 .pad-top-4 {
@@ -1032,6 +1075,10 @@ input[type=checkbox], input[type=radio] {
 
 .dark-red {
     color: #900000;
+}
+
+.gray {
+    color: gray;
 }
 
 .no-records {
@@ -2219,7 +2266,55 @@ input[type=file].upload-file {
     line-height: 38px;
 }
 
+.order-list .tr-order-sn {
+    color: #707070;
+}
+
 .privilege-sub {
     padding: 20px 80px;
 }
 
+.tr-order-sn {
+    background: #EAF8FF;
+    line-height: 20px;
+    height: 38px;
+}
+
+.order-list .current {
+    background: #fffef4;
+}
+
+.order-list td {
+    border: 1px solid #ECECEC;
+    padding: 10px;
+    white-space: normal;
+}
+
+.order-list .td-product .img {
+    width: 80px;
+    height: 80px;
+}
+
+.order-list .td-product .product-info {
+    padding-left: 90px;
+    text-align: left;
+}
+
+.order-list .td-product .product-info .name a {
+    color: #333;
+    max-height: 36px;
+    overflow: hidden;
+    display: block;
+}
+
+.order-list .td-product .product-info .name a:hover {
+    color: red;
+}
+
+.order-list .product-info .goods_sn {
+    color: #707070;
+}
+
+.order-list .order_icon_pt {
+    background-position: -250px 0;
+}

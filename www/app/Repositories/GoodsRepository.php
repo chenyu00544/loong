@@ -185,6 +185,12 @@ class GoodsRepository implements GoodsRepositoryInterface
                 case 'offsale':
                     $where[] = ['is_on_sale', '=', '0'];
                     break;
+                case 'selfsale':
+                    $where[] = ['user_id', '=', '0'];
+                    break;
+                case 'seller':
+                    $where[] = ['user_id', '<>', '0'];
+                    break;
                 default:
                     break;
             }

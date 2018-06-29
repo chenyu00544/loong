@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class OrderController extends CommonController
 {
-    public function __construct()
+    private $orderRepository;
+
+    public function __construct(
+        OrderRepository $orderRepository
+    )
     {
         parent::__construct();
         $this->checkPrivilege('order');
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -18,9 +23,14 @@ class OrderController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
+        $seller = 'selfsale';
+        $navType = '0';
+        $keywords = '';
+        $searchNav = $this->orderRepository->getSearchNav($seller);
+        $orders = $this->orderRepository->getOrdersByPage($request->get('keywords'), [$seller, $navType]);
+        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'keywords', 'orders'));
     }
 
     /**
@@ -50,9 +60,19 @@ class OrderController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        $seller = $request->get('seller');
+        if($id == 'selfsale' || $id == 'seller'){
+            $seller = $id;
+            $navType = '0';
+        }else{
+            $navType = $id;
+        }
+        $keywords = $request->get('keywords');;
+        $searchNav = $this->orderRepository->getSearchNav($seller);
+        $orders = $this->orderRepository->getOrdersByPage($keywords, [$seller, $navType]);
+        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'keywords', 'orders'));
     }
 
     /**

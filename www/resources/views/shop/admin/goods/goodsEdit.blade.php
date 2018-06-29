@@ -305,12 +305,13 @@
                                             <div class="selection">
                                                 <input type="text" id="brand_name"
                                                        class="form-control max-wd-190 hg30 fl" data-filter="brand_name"
-                                                       autocomplete="off" value="{{$brandName->brand_name}}"
+                                                       autocomplete="off"
+                                                       value="@if(empty($brandName->brand_name)){{'请选择'}}@else{{$brandName->brand_name}}@endif"
                                                        readonly="">
                                                 <a href="javascript:;"
                                                    class="btn btn-info btn-sm mar-left-20 brand-add">添加</a>
                                                 <input type="hidden" name="brand_id" id="brand_id"
-                                                       value="{{$goodsInfo->brand_id}}">
+                                                       value="@if(!empty($brandName->brand_name)){{$goodsInfo->brand_id}}@else{{0}}@endif">
                                                 <div class="form_prompt"></div>
                                             </div>
                                             <div class="brand-select-container" style="display: none;">

@@ -4,6 +4,16 @@
     <div class="warpper clearfix">
         <div class="title">商品管理 - 商品列表</div>
         <div class="content">
+            <div class="tabs mar-top-5">
+                <ul class="fl">
+                    <li class="@if($seller == 'selfsale') curr @endif fl">
+                        <a href="{{url('admin/goods/selfsale')}}">自营</a>
+                    </li>
+                    <li class="@if($seller == 'seller') curr @endif fl">
+                        <a href="{{url('admin/goods/seller')}}">店铺</a>
+                    </li>
+                </ul>
+            </div>
             <div class="tip">
                 <div class="tip_title">
                     <i class="tip_icon"></i>
@@ -18,7 +28,7 @@
                 <ul class="fl">
                     @foreach($goodsNav as $nav)
                         <li class="@if($navType == $nav['navType']) curr @endif fl">
-                            <a href="{{url('admin/goods/'.$nav['navType'])}}">{{$nav['title']}}(<font
+                            <a href="{{url('admin/goods/'.$nav['navType'].'?seller='.$seller)}}">{{$nav['title']}}(<font
                                         class="red">{{$nav['count']}}</font>)</a>
                         </li>
                     @endforeach
@@ -38,6 +48,7 @@
                     <div class="fr wd250">
                         <form action="{{url('admin/goods/'.$navType)}}" method="get">
                             {{csrf_field()}}
+                            <input type="hidden" name="seller" value="{{$seller}}">
                             <input type="text" name="keywords" value="{{$keywords}}"
                                    class="form-control input-sm max-wd-190" placeholder="名称">
                             <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr lh22" value="查询">
