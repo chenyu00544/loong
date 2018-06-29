@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Repositories\OrderRepository;
+use App\Repositories\RegionsRepository;
 use Illuminate\Http\Request;
 
 class OrderController extends CommonController
@@ -63,16 +64,17 @@ class OrderController extends CommonController
     public function show($id, Request $request)
     {
         $seller = $request->get('seller');
-        if($id == 'selfsale' || $id == 'seller'){
+        if ($id == 'selfsale' || $id == 'seller') {
             $seller = $id;
             $navType = '0';
-        }else{
+        } else {
             $navType = $id;
         }
-        $keywords = $request->get('keywords');;
+        $search['keywords'] = $request->get('keywords');;
         $searchNav = $this->orderRepository->getSearchNav($seller);
-        $orders = $this->orderRepository->getOrdersByPage($keywords, [$seller, $navType]);
-        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'keywords', 'orders'));
+        $orders = $this->orderRepository->getOrdersByPage($search, [$seller, $navType]);
+        $orders->appends(['keywords' => $search['keywords']]);
+        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders', 'regions'));
     }
 
     /**

@@ -11,12 +11,9 @@ class OrderInfoModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getOrderInfoByPage($where, $orWhere, $keywords, $column = ['*'], $size = 15)
+    public function getOrderInfoByPage($where, $orWhere, $search, $column = ['*'], $size = 15)
     {
         $m = $this->select($column)
-            ->join('order_goods', 'order_goods.order_id','=','order_info.order_id')
-            ->join('users', 'users.user_id','=','order_info.user_id')
-            ->join('merchants_shop_information', 'merchants_shop_information.user_id','=','order_goods.ru_id')
             ->where($where);
         if(!empty($orWhere)){
             $m->where(function ($query) use($orWhere){
@@ -25,8 +22,13 @@ class OrderInfoModel extends Model
                 }
             });
         }
-        if($keywords != ''){
-            $m->where('order_goods.goods_name', 'like', '%'.$keywords.'%');
+        if(!empty($search)){
+            $m->where(function($query) use ($search){
+                if(!empty($search['keywords'])){
+//                    $query->orWhere('order_goods.goods_name', 'like', '%'.$search['keywords'].'%');
+                    $query->orWhere('goods_sn', 'like', '%'.$search['keywords'].'%');
+                }
+            });
         }
 //        dd($m->toSql());
         return $m->paginate($size);

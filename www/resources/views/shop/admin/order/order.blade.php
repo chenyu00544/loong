@@ -41,8 +41,8 @@
                             {{csrf_field()}}
 
                             <input type="hidden" name="seller" value="{{$seller}}">
-                            <input type="text" name="keywords" value="{{$keywords}}"
-                                   class="form-control input-sm max-wd-190" placeholder="名称">
+                            <input type="text" name="keywords" value="{{$search['keywords']}}"
+                                   class="form-control input-sm max-wd-190" placeholder="订单编号">
                             <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr lh22" value="查询">
                         </form>
                     </div>
@@ -102,86 +102,135 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="">
-                                <td class="td-product">
-                                    <div>
-                                        <div class="img fl">
-                                            <img width="80"
-                                                 src="http://www.shopnc.com/images/201703/thumb_img/0_thumb_G_1490155064450.jpg">
+                            @foreach($order->order_goodses as $goods)
+                                <tr class="">
+                                    <td class="td-product">
+                                        <div>
+                                            <div class="img fl">
+                                                <img width="80"
+                                                     src="{{url($goods->goods_thumb)}}">
+                                            </div>
+                                            <div class="product-info">
+                                                <div class="name mar-bt-5">
+                                                    <a href="{{$goods->goods_id}}"
+                                                       target="_blank">{{$goods->goods_name}}
+                                                        @if($goods->brand_name)
+                                                            <span class="oranges">[ {{$goods->brand_name}}]</span>
+                                                        @endif
+                                                    </a>
+                                                </div>
+                                                @if($goods->goods_attr)
+                                                    <div class="attr gray">
+                                                        <span>{{$goods->goods_attr}}</span>
+                                                    </div>
+                                                @endif
+                                                <div class="goods_sn">商品编号：{{$goods->goods_sn}}
+                                                    <a href="{{url('tradesnapshot/'.$goods->trade_id)}}"
+                                                       target="_blank">
+                                                        <span class="oranges mar-left-10">[交易快照]</span>
+                                                    </a>
+                                                </div>
+                                                <div class="order_icon_items">
+                                                    <div class="order_icon @if($goods->extension_code == ''){{'order_icon_pt'}}@endif"
+                                                         title="普通订单">普通订单
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="product-info">
-                                            <div class="name mar-bt-5">
-                                                <a href="../goods.php?id=705" target="_blank">
-                                                    绿联 数据线安卓高速单头加长手机通用华为魅族小米2a快充电器2米 铝合金外壳+纯铜芯，充电快寿命长 <span
-                                                            class="oranges">[ 匡威 ]</span>
-                                                </a>
+                                    </td>
+                                    <td class="td-price text-center">
+                                        <div>{{$goods->goods_price}}</div>
+                                    </td>
+                                    <td class="td-number text-center">
+                                        <div>{{$goods->goods_number}}</div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div>
+                                            <div></div>
+                                        </div>
+                                    </td>
+                                    @if($loop->index == 0)
+                                        <td class="text-center" rowspan="2">
+                                            <div>
+                                                <font class="gray">{{$order->merchants_shop_info->shoprz_brandName}}{{$order->merchants_shop_info->shopNameSuffix}}</font>
                                             </div>
-                                            <div class="attr gray">
-                                                <span>颜色:暗夜黑</span>
-                                            </div>
-                                            <div class="goods_sn">商品编号：ECS000705<a
-                                                        href="../trade_snapshot.php?act=trade&amp;tradeId=21&amp;snapshot=true"
-                                                        target="_blank"><span class="oranges mar-left-10">[交易快照]</span></a>
-                                            </div>
-                                            <div class="order_icon_items">
-                                                <div class="order_icon order_icon_pt" title="普通订单">普通订单</div>
+                                        </td>
 
+                                        <td class="text-center" rowspan="2">
+                                            <div>
+                                                <a href="#">{{$order->user->user_name}}</a>
                                             </div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="td-price text-center">
-                                    <div>18.00</div>
-                                </td>
-                                <td class="td-number text-center">
-                                    <div>1</div>
-                                </td>
-                                <td class="text-center">
-                                    <div>
-                                        <div></div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div>
-                                        <font class="gray">绿联专卖店</font>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div>
-                                        <a href="users.php?act=edit&id=60">chenyu</a>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="gray">test<br> TEL:
-                                        18858786747<br>甘肃
-                                        白银 白银区 test
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div>
-                                        <span class="order-price fwb fs-16">¥22.30</span>
-                                        <div class="price-shipping gray">(顺丰速运：¥4.30)</div>
-                                        <div class="price-shipping gray">
-                                            <p>支付方式：余额支付</p>
-                                            <p>来源：PC</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div>
-                                        <div>已确认<br>已付款<br>已发货</div>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    <div>
-                                        <div class="btn-wrap">
-                                            <p><a href="{{url('admin/order/'.'1'.'/edit')}}"
-                                                  class="btn btn-info">查看</a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+                                        </td>
+                                        <td  rowspan="2">
+                                            <div class="gray">test<br> TEL:
+                                                18858786747<br>甘肃
+                                                白银 白银区 test
+                                            </div>
+                                        </td>
+                                        <td class="text-center"  rowspan="2">
+                                            <div>
+                                                <span class="order-price fwb fs-16">¥{{$order->goods_amount + $order->tax + $order->shipping_fee + $order->insure_fee + $order->pay_fee + $order->pack_fee + $order->card_fee - $order->discount}}</span>
+                                                <div class="price-shipping gray">(顺丰速运：¥{{$order->shipping_fee}})</div>
+                                                <div class="price-shipping gray">
+                                                    <p>支付方式：{{$order->pay_name}}</p>
+                                                    <p>来源：{{$order->froms}}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center" rowspan="2">
+                                            <div>
+                                                <div>@if($order->order_status == 0)
+                                                        未确认
+                                                    @elseif($order->order_status == 1)
+                                                        已确认
+                                                    @elseif($order->order_status == 2)
+                                                        已取消
+                                                    @elseif($order->order_status == 3)
+                                                        无效
+                                                    @elseif($order->order_status == 4)
+                                                        退货
+                                                    @endif
+                                                    <br>
+                                                    @if($order->pay_status == 0)
+                                                        未付款
+                                                    @elseif($order->pay_status == 1)
+                                                        付款中
+                                                    @elseif($order->pay_status == 2)
+                                                        已付款
+                                                    @elseif($order->pay_status == 3)
+                                                        部分付款
+                                                    @elseif($order->pay_status == 4)
+                                                        已退款
+                                                    @elseif($order->pay_status == 5)
+                                                        部分退款
+                                                    @endif
+                                                    <br>
+                                                    @if($order->shipping_status == 0)
+                                                        未发货
+                                                    @elseif($order->shipping_status == 1)
+                                                        已发货
+                                                    @elseif($order->shipping_status == 2)
+                                                        已收货
+                                                    @elseif($order->shipping_status == 3)
+                                                        备货中
+                                                    @elseif($order->shipping_status == 5)
+                                                        发货中
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center" rowspan="2">
+                                            <div>
+                                                <div class="btn-wrap">
+                                                    <p><a href="{{url('admin/order/'.$order->order_id.'/edit')}}"
+                                                          class="btn btn-info">查看</a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    @endif
+                                </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     @endforeach
@@ -228,67 +277,8 @@
 
             $("[data-toggle='tooltip']").tooltip();
 
-            //开关
-            $('.switch').click(function () {
-                var val = 0;
-                if ($(this).hasClass('active')) {
-                    val = 0
-                    $(this).removeClass('active');
-                } else {
-                    val = 1
-                    $(this).addClass('active');
-                }
-
-                var tag = $(this).data('type');
-                var id = $(this).children('input').val();
-                $.post(
-                    '{{url("admin/goods/change")}}',
-                    {
-                        id: id,
-                        type: tag,
-                        val: val,
-                        _token: '{{csrf_token()}}'
-                    },
-                    function (data) {
-
-                    }
-                );
-            });
-
-            //权重
-            $('.btn-weight-order').click(function () {
-                var goods_id = $(this).data('goodsid');
-
-                layer.open({
-                    type: 2,
-                    area: ['1000px', '350px'],
-                    fixed: true, //不固定
-                    maxmin: true,
-                    title: '权重排序',
-                    content: "{{url('admin/goods/weight/order/')}}" + "/" + goods_id
-                });
-            });
-
-            //审核
-            $('.btn-examine').click(function () {
-                var goods_id = $(this).data('id');
-
-                layer.open({
-                    type: 2,
-                    area: ['500px', '370px'],
-                    fixed: true, //不固定
-                    maxmin: true,
-                    title: '审核',
-                    content: ["{{url('admin/goods/examine/')}}" + "/" + goods_id, 'no'],
-                    success: function (layero, index) {
-                        layer.iframeAuto(index)
-                    }
-                });
-            });
-
             //批量修改
             $('.btn-sure').click(function () {
-
                 var goods_ids = $("input[name=checkboxes]");
 
                 var ids = [];
@@ -301,7 +291,7 @@
 
                 if (ids.length > 0 && select_type != 0) {
                     $.post(
-                        '{{url("admin/goods/changes")}}',
+                        '{{url("admin/order/changes")}}',
                         {
                             ids: ids,
                             type: select_type,
@@ -322,7 +312,12 @@
                 var flage = $(this).is(':checked')
                 $(".check-all").each(function () {
                     $(this).prop("checked", flage);
-                })
+                });
+                if(flage){
+
+                }else{
+
+                }
             });
 
             //删除
@@ -332,7 +327,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/goods/')}}/" + Id,
+                        "{{url('admin/order/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             if (data.code == 1) {
