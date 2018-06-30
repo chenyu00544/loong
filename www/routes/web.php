@@ -99,6 +99,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/addcateext', 'GoodsController@addCateExtend');
     Route::post('goods/delcateext/{id}', 'GoodsController@delCateExtend');
     Route::post('goods/addgoodsgallery', 'GoodsController@addGoodsGallery');
+    Route::post('goods/changegoodsgallery', 'GoodsController@changeGoodsGallery');
     Route::post('goods/upgoodsgallery', 'GoodsController@upGoodsGalleryPic');
     Route::post('goods/delgoodsgallery', 'GoodsController@delGoodsGalleryPic');
     Route::post('goods/addgoodsattr', 'GoodsController@addGoodsAttr');

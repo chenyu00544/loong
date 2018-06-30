@@ -80,9 +80,9 @@ class GalleryRepository implements GalleryRepositoryInterface
             $count = 0;
         }
         foreach ($re as $key => $value) {
-            $value->pic_image = '/'.$value->pic_image;
-            $value->pic_file = '/'.$value->pic_file;
-            $value->pic_thumb = '/'.$value->pic_thumb;
+            $value->pic_image = '/' . $value->pic_image;
+            $value->pic_file = '/' . $value->pic_file;
+            $value->pic_thumb = '/' . $value->pic_thumb;
         }
         $rep = Common::paginate($re, $count, $page, $pageSize);
         return $rep;
@@ -214,6 +214,28 @@ class GalleryRepository implements GalleryRepositoryInterface
         return $this->goodsGalleryModel->getGoodsGallerys($where);
     }
 
+    public function setGoodsGallery($data)
+    {
+        $req = ['code' => 5, 'msg' => '删除失败'];
+
+        if (!empty($data['cur_sort']) && !empty($data['cur_img_id']) && !empty($data['main_sort']) && !empty($data['main_img_id'])) {
+            $cWhere['img_id'] = $data['cur_img_id'];
+            $cData['img_desc'] = $data['main_sort'];
+
+            $mWhere['img_id'] = $data['main_img_id'];
+            $mData['img_desc'] = $data['cur_sort'];
+
+            $this->goodsGalleryModel->setGoodsGallery($cWhere, $cData);
+            $re = $this->goodsGalleryModel->setGoodsGallery($mWhere, $mData);
+            if($re){
+                $req['code'] = 1;
+                $req['msg'] = '删除成功';
+            }
+        }
+
+        return $req;
+    }
+
     public function addGoodsGallery($data)
     {
         $picIds = $data['pic_ids'];
@@ -231,7 +253,7 @@ class GalleryRepository implements GalleryRepositoryInterface
             $updata['thumb_url'] = $pic->pic_thumb;
             $updata['img_original'] = $pic->pic_file;
             $re = $this->goodsGalleryModel->addGoodsGallery($updata);
-            $re->img_original = '/'.$re->img_original;
+            $re->img_original = '/' . $re->img_original;
             $rep[] = $re;
         }
         return ['code' => 1, 'data' => $rep];
@@ -252,7 +274,7 @@ class GalleryRepository implements GalleryRepositoryInterface
             $updata['goods_id'] = $goods_id;
             $updata['is_source'] = 0;
             $re = $this->goodsGalleryModel->addGoodsGallery($updata);
-            $re->img_original = '/'.$re->img_original;
+            $re->img_original = '/' . $re->img_original;
             $rep[] = $re;
         }
         return $rep;
@@ -264,7 +286,7 @@ class GalleryRepository implements GalleryRepositoryInterface
         $where['img_id'] = $data['imgid'];
         $re = $this->goodsGalleryModel->getGoodsGallery($where);
         if ($re) {
-            if($re->is_source == 0){
+            if ($re->is_source == 0) {
                 FileHandle::deleteFile($re->img_url);
                 FileHandle::deleteFile($re->thumb_url);
                 FileHandle::deleteFile($re->img_original);

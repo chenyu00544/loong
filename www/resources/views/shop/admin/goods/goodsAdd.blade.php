@@ -1040,7 +1040,7 @@
                                            style="position: relative; z-index: 1;">
                                             <input type="file" multiple id="add-slide-img" class="add-slide-img"
                                                    style="opacity: 0;max-width: 0;height: 0;margin: 0">
-                                            <label for="add-slide-img"><i
+                                            <label for="add-slide-img" class="ft-16"><i
                                                         class="glyphicon glyphicon-plus"></i>添加图片</label>
                                         </a>
                                         <a href="javascript:;"
@@ -1734,7 +1734,23 @@
             });
             //替换轮播主图
             $('#ul-pics').on('click', 'li img', function () {
-                $('#ul-pics').prepend($(this).parent().parent());
+                var img = $(this).parent().parent();
+                var curSort = img.find('input[name="old_img_desc[]"]').val();
+                var curImgId = img.find('input[name="img_id[]"]').val();
+                var mainSort = $('#ul-pics li').first().find('input[name="old_img_desc[]"]').val();
+                var mainImgId = $('#ul-pics li').first().find('input[name="img_id[]"]').val();
+                $('#ul-pics li').first().find('input[name="old_img_desc[]"]').val(curSort);
+                img.find('input[name="old_img_desc[]"]').val(mainSort);
+                $('#ul-pics').prepend(img);
+                $.post("{{url('admin/goods/changegoodsgallery')}}", {
+                    '_token': "{{csrf_token()}}",
+                    cur_sort: curSort,
+                    cur_img_id: curImgId,
+                    main_sort: mainSort,
+                    main_img_id: mainImgId,
+                }, function (data) {
+
+                })
             });
 
             ///////////////////////////////////////////////////////////////
