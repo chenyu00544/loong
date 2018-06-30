@@ -94,7 +94,7 @@
                                     <div class="">
                                         <span class="sign mar-right-10">
                                             <input type="checkbox" name="checkboxes" value="{{$order->order_id}}"
-                                                   class="checkbox check-all fl"
+                                                   class="checkbox check-all-list fl"
                                                    id="checkbox_{{$order->order_id}}">
                                         </span>
                                         <span class="words">订单号：{{$order->order_sn}}</span>
@@ -161,13 +161,13 @@
                                                 <a href="#">{{$order->user->user_name}}</a>
                                             </div>
                                         </td>
-                                        <td  rowspan="2">
+                                        <td rowspan="2">
                                             <div class="gray">test<br> TEL:
                                                 18858786747<br>甘肃
                                                 白银 白银区 test
                                             </div>
                                         </td>
-                                        <td class="text-center"  rowspan="2">
+                                        <td class="text-center" rowspan="2">
                                             <div>
                                                 <span class="order-price fwb fs-16">¥{{$order->goods_amount + $order->tax + $order->shipping_fee + $order->insure_fee + $order->pay_fee + $order->pack_fee + $order->card_fee - $order->discount}}</span>
                                                 <div class="price-shipping gray">(顺丰速运：¥{{$order->shipping_fee}})</div>
@@ -184,11 +184,11 @@
                                                     @elseif($order->order_status == 1)
                                                         已确认
                                                     @elseif($order->order_status == 2)
-                                                        已取消
+                                                        <font class="red">已取消</font>
                                                     @elseif($order->order_status == 3)
-                                                        无效
+                                                        <font class="red">无效</font>
                                                     @elseif($order->order_status == 4)
-                                                        退货
+                                                        <font class="oranges">退货</font>
                                                     @endif
                                                     <br>
                                                     @if($order->pay_status == 0)
@@ -234,30 +234,30 @@
                             </tbody>
                         </table>
                     @endforeach
-                    <div class="clearfix bg-color-dray pad-top-4">
+                    <div class="clearfix bg-color-dray pad-top-4 bt-batch">
                         <div class="fl">
                             <a type="button" class="btn btn-primary btn-confirm btn-sm mar-all-8"
-                               disabled="disabled">确认</a>
+                               disabled="disabled" data-type="confirm">确认</a>
                         </div>
                         <div class="fl">
                             <a type="button" class="btn btn-primary btn-invalid btn-sm mar-all-8"
-                               disabled="disabled">无效</a>
+                               disabled="disabled" data-type="invalid">无效</a>
                         </div>
                         <div class="fl">
                             <a type="button" class="btn btn-primary btn-cancel btn-sm mar-all-8"
-                               disabled="disabled">取消</a>
+                               disabled="disabled" data-type="cancel">取消</a>
                         </div>
                         <div class="fl">
                             <a type="button" class="btn btn-primary btn-remove btn-sm mar-all-8"
-                               disabled="disabled">移除</a>
+                               disabled="disabled" data-type="remove">移除</a>
                         </div>
                         <div class="fl">
                             <a type="button" class="btn btn-primary btn-print btn-sm mar-all-8"
-                               disabled="disabled">打印订单</a>
+                               disabled="disabled" data-type="print">打印订单</a>
                         </div>
                         <div class="fl">
                             <a type="button" class="btn btn-primary btn-print_shipping btn-sm mar-all-8"
-                               disabled="disabled">打印快递单</a>
+                               disabled="disabled" data-type="print_shipping">打印快递单</a>
                         </div>
                     </div>
                     <div class="page_list">
@@ -278,22 +278,29 @@
             $("[data-toggle='tooltip']").tooltip();
 
             //批量修改
-            $('.btn-sure').click(function () {
-                var goods_ids = $("input[name=checkboxes]");
-
-                var ids = [];
-                $.each(goods_ids, function (k, v) {
-                    if ($(v).is(':checked')) {
-                        ids.push($(v).val());
+            $('.bt-batch').on('click', 'a', function () {
+                var order_ids = [];
+                $(".check-all-list").each(function () {
+                    if ($(this).is(':checked')) {
+                        order_ids.push($(this).val());
                     }
                 });
-                var select_type = $("select[name=select_type]").val();
 
-                if (ids.length > 0 && select_type != 0) {
+                if (order_ids.length == 0) {
+                    return;
+                }
+
+                var select_type = $(this).data('type');
+                if (select_type == 'print') {
+                    return;
+                } else if (select_type == 'print_shipping') {
+                    return;
+                }
+                if (order_ids.length > 0) {
                     $.post(
                         '{{url("admin/order/changes")}}',
                         {
-                            ids: ids,
+                            ids: order_ids,
                             type: select_type,
                             _token: '{{csrf_token()}}'
                         },
@@ -309,14 +316,39 @@
 
             //全选
             $('input[name=all_list]').click(function () {
-                var flage = $(this).is(':checked')
-                $(".check-all").each(function () {
+                var flage = $(this).is(':checked');
+                $(".check-all-list").each(function () {
                     $(this).prop("checked", flage);
+                    if (flage) {
+                        $('.bt-batch').find('a').removeAttr('disabled');
+                        $(this).parent().parent().parent().parent().addClass('current');
+                        $(this).parent().parent().parent().parent().parent().addClass('current');
+                    } else {
+                        $('.bt-batch').find('a').attr('disabled', true);
+                        $(this).parent().parent().parent().parent().removeClass('current');
+                        $(this).parent().parent().parent().parent().parent().removeClass('current');
+                    }
                 });
-                if(flage){
 
-                }else{
+            });
 
+            $(".check-all-list").on('click', function () {
+                if ($(this).is(':checked')) {
+                    $('.bt-batch').find('a').removeAttr('disabled');
+                    $(this).parent().parent().parent().parent().addClass('current');
+                    $(this).parent().parent().parent().parent().parent().addClass('current');
+                } else {
+                    var bool = true;
+                    $(".check-all-list").each(function () {
+                        if ($(this).is(':checked')) {
+                            bool = false;
+                        }
+                    });
+                    if (bool) {
+                        $('.bt-batch').find('a').attr('disabled', true);
+                    }
+                    $(this).parent().parent().parent().parent().removeClass('current');
+                    $(this).parent().parent().parent().parent().parent().removeClass('current');
                 }
             });
 

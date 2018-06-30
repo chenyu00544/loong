@@ -28,10 +28,15 @@ class OrderController extends CommonController
     {
         $seller = 'selfsale';
         $navType = '0';
-        $keywords = '';
+        $search['keywords'] = '';
         $searchNav = $this->orderRepository->getSearchNav($seller);
         $orders = $this->orderRepository->getOrdersByPage($request->get('keywords'), [$seller, $navType]);
-        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'keywords', 'orders'));
+        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders'));
+    }
+
+    public function changes(Request $request)
+    {
+        return $this->orderRepository->changes($request->except('_token'));
     }
 
     /**

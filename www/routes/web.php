@@ -175,5 +175,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('database/runoptimize', 'DataBaseController@runOptimize');
     Route::resource('database', 'DataBaseController');
 
+    Route::post('order/changes', 'OrderController@changes');
     Route::resource('order', 'OrderController');
 });
