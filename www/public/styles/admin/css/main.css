@@ -2318,3 +2318,10 @@ input[type=file].upload-file {
 .order-list .order_icon_pt {
     background-position: -250px 0;
 }
+
+.stepflex .s-time {
+    top: 60px;
+    width: 120px;
+    color: #00b7ee;
+    right: -40px;
+}

@@ -144,19 +144,19 @@
                                     <td class="td-number text-center">
                                         <div>{{$goods->goods_number}}</div>
                                     </td>
-                                    <td class="text-center">
+                                    <td class="text-center"f>
                                         <div>
                                             <div></div>
                                         </div>
                                     </td>
                                     @if($loop->index == 0)
-                                        <td class="text-center" rowspan="2">
+                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
                                             <div>
                                                 <font class="gray">{{$order->merchants_shop_info->shoprz_brandName}}{{$order->merchants_shop_info->shopNameSuffix}}</font>
                                             </div>
                                         </td>
 
-                                        <td class="text-center" rowspan="2">
+                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
                                             <div>
                                                 <a href="#">{{$order->user->user_name}}</a>
                                             </div>
@@ -167,7 +167,7 @@
                                                 白银 白银区 test
                                             </div>
                                         </td>
-                                        <td class="text-center" rowspan="2">
+                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
                                             <div>
                                                 <span class="order-price fwb fs-16">¥{{$order->goods_amount + $order->tax + $order->shipping_fee + $order->insure_fee + $order->pay_fee + $order->pack_fee + $order->card_fee - $order->discount}}</span>
                                                 <div class="price-shipping gray">(顺丰速运：¥{{$order->shipping_fee}})</div>
@@ -177,7 +177,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center" rowspan="2">
+                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
                                             <div>
                                                 <div>@if($order->order_status == 0)
                                                         未确认
@@ -219,7 +219,7 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center" rowspan="2">
+                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
                                             <div>
                                                 <div class="btn-wrap">
                                                     <p><a href="{{url('admin/order/'.$order->order_id.'/edit')}}"

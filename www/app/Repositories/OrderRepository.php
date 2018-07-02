@@ -126,6 +126,12 @@ class OrderRepository implements OrderRepositoryInterface
         return $req;
     }
 
+    public function getOrder($id)
+    {
+        $where['order_id'] = $id;
+        return $this->orderInfoModel->getOrderInfo($where);
+    }
+
     public function getSearchNav($seller)
     {
         $allOrder = $this->orderInfoModel->countOrder([], [], $seller);

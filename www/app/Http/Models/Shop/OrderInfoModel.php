@@ -35,6 +35,13 @@ class OrderInfoModel extends Model
         return $m->paginate($size);
     }
 
+    public function getOrderInfo($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
     public function setOrderInfo($where = [], $data, $whereIn = [])
     {
         $m = $this->where($where);

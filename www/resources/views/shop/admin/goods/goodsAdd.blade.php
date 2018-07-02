@@ -50,7 +50,10 @@
 
                         <!--第一步 选择商品模式-->
                         <div class="step step-one" ectype="step" data-step="1" style="">
-                            <h3>设置商品模式</h3>
+                            <div class="step-title">
+                                <i class="ui-step"></i>
+                                <h3>设置商品模式</h3>
+                            </div>
                             <div class="mos clearfix">
                                 <div class="mos_item mos_default active" data-model="0" data-stepmodel="3">
                                     <div class="mos_con">

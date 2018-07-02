@@ -90,7 +90,8 @@ class OrderController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $order = $this->orderRepository->getOrder($id);
+        return view('shop.admin.order.orderEdit', compact('order'));
     }
 
     /**
