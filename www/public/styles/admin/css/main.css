@@ -876,6 +876,10 @@ input[type=checkbox], input[type=radio] {
     margin-bottom: 20px;
 }
 
+.mar-bt-50 {
+    margin-bottom: 50px;
+}
+
 .pad-all-5 {
     padding: 5px;
 }
@@ -2324,4 +2328,48 @@ input[type=file].upload-file {
     width: 120px;
     color: #00b7ee;
     right: -40px;
+}
+
+.order-step .section dl {
+    float: left;
+    width: 16.667%;
+}
+
+.order-step .section dl dt {
+    color: #989898;
+}
+.order-step .section dl dt, .order-step .section dl dd {
+    height: 35px;
+    line-height: 35px;
+    padding-left: 30px;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: normal;
+}
+
+.order-goods .td-product .product-info{
+    padding-left: 90px;
+    text-align: left;
+    white-space: normal;
+}
+
+.order-goods .product-info .name{
+    float: left;
+    line-height: 25px;
+    min-height: 50px;
+    overflow: hidden;
+}
+
+.order-goods .td-product .product-info a{
+    color: #31b4e1;
+}
+
+.order-goods .td-product .product-info a:hover{
+    color: #ec5051;
+}
+
+.order-goods td {
+    height: 82px;
 }
