@@ -62,37 +62,48 @@
                             <div class="section">
                                 <dl>
                                     <dt>订单号：</dt>
-                                    <dd>2018070220185782655</dd>
+                                    <dd>{{$order->order_sn}}</dd>
                                     <dt>订单来源：</dt>
-                                    <dd>PC</dd>
+                                    <dd>{{$order->froms}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>购货人：</dt>
-                                    <dd>chenyu</dd>
+                                    <dd>{{$user->user_name}}</dd>
                                     <dt>订单状态：</dt>
-                                    <dd>PC</dd>
+                                    <dd>
+                                        @if($order->order_status == 0) 未确认 @elseif($order->order_status == 1)
+                                            已确认 @elseif($order->order_status == 2)
+                                            已取消 @elseif($order->order_status == 3) 无效 @elseif($order->order_status == 4)
+                                            退货 @endif
+                                        @if($order->pay_status == 0) 未付款 @elseif($order->pay_status == 2)
+                                            已付款 @elseif($order->pay_status == 4) 已退款 @endif
+                                        @if($order->shipping_status == 0) 未发货 @elseif($order->shipping_status == 1)
+                                            已发货 @elseif($order->shipping_status == 2) 已收货 @endif
+                                    </dd>
                                 </dl>
                                 <dl>
                                     <dt>支付方式：</dt>
-                                    <dd>银行汇款/转帐</dd>
+                                    <dd>{{$order->pay_name}}</dd>
                                     <dt>配送方式：</dt>
                                     <dd>顺丰速运</dd>
                                 </dl>
                                 <dl>
                                     <dt>下单时间：</dt>
-                                    <dd>2018-07-02 20:18:01</dd>
+                                    <dd>{{date('Y-m-d H:i:s',$order->add_time)}}</dd>
                                     <dt>付款时间：</dt>
-                                    <dd>未付款</dd>
+                                    <dd>@if($order->pay_time) {{date('Y-m-d H:i:s',$order->pay_time)}} @else
+                                            未付款 @endif</dd>
                                 </dl>
                                 <dl>
                                     <dt>发货时间：</dt>
-                                    <dd>未发货</dd>
+                                    <dd>@if($order->shipping_time) {{date('Y-m-d H:i:s',$order->shipping_time)}} @else
+                                            未发货 @endif</dd>
                                     <dt>发货单号：</dt>
-                                    <dd>未发货</dd>
+                                    <dd>@if($order->invoice_no) {{$order->invoice_no}} @else 未发货 @endif</dd>
                                 </dl>
                                 <dl>
                                     <dt>自动确认收货时间：</dt>
-                                    <dd>15 天</dd>
+                                    <dd>{{$order->auto_delivery_time}} 天</dd>
                                     <dt></dt>
                                     <dd></dd>
                                 </dl>
@@ -102,42 +113,88 @@
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>收货人信息</h3>
+                                <h3>收货人信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="section">
                                 <dl>
-                                    <dt>订单号：</dt>
-                                    <dd>2018070220185782655</dd>
-                                    <dt>订单来源：</dt>
-                                    <dd>PC</dd>
+                                    <dt>收货人：</dt>
+                                    <dd>{{$order->consignee}}</dd>
+                                    <dt>电子邮件：</dt>
+                                    <dd>@if($order->email) {{$order->email}} @else 无 @endif</dd>
                                 </dl>
                                 <dl>
-                                    <dt>购货人：</dt>
-                                    <dd>chenyu</dd>
-                                    <dt>订单状态：</dt>
-                                    <dd>PC</dd>
+                                    <dt>手机号码：</dt>
+                                    <dd>@if($order->mobile) {{$order->mobile}} @else 无 @endif</dd>
+                                    <dt>电话号码：</dt>
+                                    <dd>@if($order->tel) {{$order->tel}} @else 无 @endif</dd>
                                 </dl>
                                 <dl>
-                                    <dt>支付方式：</dt>
-                                    <dd>银行汇款/转帐</dd>
-                                    <dt>配送方式：</dt>
-                                    <dd>顺丰速运</dd>
+                                    <dt>送货时间：</dt>
+                                    <dd>@if($order->shipping_dateStr) {{$order->shipping_dateStr}} @else 无 @endif</dd>
+                                    <dt>地址别名：</dt>
+                                    <dd>@if($order->sign_building) {{$order->sign_building}} @else 无 @endif</dd>
                                 </dl>
                                 <dl>
-                                    <dt>下单时间：</dt>
-                                    <dd>2018-07-02 20:18:01</dd>
-                                    <dt>付款时间：</dt>
-                                    <dd>未付款</dd>
+                                    <dt>收货地址：</dt>
+                                    <dd>[{{$province['name']}} {{$city['name']}} {{$district['name']}}
+                                        ] {{$order->address}}</dd>
+                                    <dt>邮政编码：</dt>
+                                    <dd>@if($order->zipcode) {{$order->zipcode}} @else 无 @endif</dd>
                                 </dl>
                                 <dl>
-                                    <dt>发货时间：</dt>
-                                    <dd>未发货</dd>
-                                    <dt>发货单号：</dt>
-                                    <dd>未发货</dd>
+                                    <dt></dt>
+                                    <dd></dd>
+                                    <dt></dt>
+                                    <dd></dd>
                                 </dl>
                                 <dl>
-                                    <dt>自动确认收货时间：</dt>
-                                    <dd>15 天</dd>
+                                    <dt></dt>
+                                    <dd></dd>
+                                    <dt></dt>
+                                    <dd></dd>
+                                </dl>
+                            </div>
+                        </div>
+
+                        <div class="order-step clearfix mar-bt-50">
+                            <div class="step-title">
+                                <i class="ui-step"></i>
+                                <h3>其他信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a></h3>
+                            </div>
+                            <div class="section">
+                                <dl>
+                                    <dt>发票抬头：(企业普通发票)：</dt>
+                                    <dd>{{$order->consignee}}</dd>
+                                    <dt>发票内容：</dt>
+                                    <dd>@if($order->email) {{$order->email}} @else 无 @endif</dd>
+                                </dl>
+                                <dl>
+                                    <dt>缺货处理：</dt>
+                                    <dd>@if($order->mobile) {{$order->mobile}} @else 无 @endif</dd>
+                                    <dt>识别码：</dt>
+                                    <dd>@if($order->tel) {{$order->tel}} @else 无 @endif</dd>
+                                </dl>
+                                <dl>
+                                    <dt>卖家留言：</dt>
+                                    <dd>@if($order->shipping_dateStr) {{$order->shipping_dateStr}} @else 无 @endif</dd>
+                                    <dt>买家留言：</dt>
+                                    <dd>@if($order->sign_building) {{$order->sign_building}} @else 无 @endif</dd>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dd></dd>
+                                    <dt></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dd></dd>
+                                    <dt></dt>
+                                    <dd></dd>
+                                </dl>
+                                <dl>
+                                    <dt></dt>
+                                    <dd></dd>
                                     <dt></dt>
                                     <dd></dd>
                                 </dl>
@@ -147,7 +204,7 @@
                         <div class="order-step clearfix">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>商品信息</h3>
+                                <h3>商品信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="order-goods">
                                 <table class="table table-hover table-condensed">
@@ -168,40 +225,47 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td class="td-product">
-                                            <div>
-                                                <div class="img fl">
-                                                    <img width="80" src="http://localhost/images/201703/thumb_img/0_thumb_G_1490155064450.jpg">
-                                                </div>
-                                                <div class="product-info">
-                                                    <div class="name">
-                                                        <a href="705" target="_blank">绿联 数据线安卓高速单头加长手机通用华为魅族小米2a快充电器2米 铝合金外壳+纯铜芯，充电快寿命长
-                                                        </a>
+                                    @foreach($orderGoodses as $orderGoods)
+                                        <tr>
+                                            <td class="td-product">
+                                                <div>
+                                                    <div class="img fl">
+                                                        <img width="80"
+                                                             src="{{url($orderGoods->goods_thumb)}}">
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <div class="name">
+                                                            <a href="705"
+                                                               target="_blank">{{$orderGoods->goods_name}}</a>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="text-center">
-                                            <a type="button" href="{{url('admin/users/info/')}}"
-                                               class="btn btn-info btn-edit btn-sm mar-all-5">生成发货单</a>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{$orderGoods->goods_sn}}</td>
+                                            <td class="text-center"></td>
+                                            <td class="text-center">{{$orderGoods->product_sn}}</td>
+                                            <td class="text-center">¥{{$orderGoods->goods_price}}</td>
+                                            <td class="text-center">-1</td>
+                                            <td class="text-center">{{$orderGoods->o_goods_number}}</td>
+                                            <td class="text-center">
+                                                <div>{{$orderGoods->goods_attr}}</div>
+                                            </td>
+                                            <td class="text-center">{{$orderGoods->goods_number}}</td>
+                                            <td class="text-center">
+                                                ¥{{sprintf("%.2f",$orderGoods->o_goods_number * $orderGoods->goods_price)}}</td>
+                                            <td class="text-center">
+                                                <a type="button"
+                                                   href="{{url('admin/order/partship/'.$order->order_id)}}"
+                                                   class="btn btn-info btn-edit btn-sm mar-all-5">生成发货单</a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     <tr>
                                         <td colspan="12">
                                             <div class="order-total fr">
                                                 <strong>合计：</strong>
-                                                <span class="red ft-16"><em>¥</em>18.00</span>
+                                                <span class="red fs-18"><em>¥</em>{{$order->goods_amount}}</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -210,47 +274,55 @@
                             </div>
                         </div>
 
-                        <div class="order-step clearfix mar-bt-50">
+                        <div class="order-step clearfix mar-bt-50 order-total">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>费用信息</h3>
+                                <h3>费用信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="section">
                                 <dl>
-                                    <dt>订单号：</dt>
-                                    <dd>2018070220185782655</dd>
-                                    <dt>订单来源：</dt>
-                                    <dd>PC</dd>
+                                    <dt>商品总金额：</dt>
+                                    <dd>¥{{$order->goods_amount}}</dd>
+                                    <dt>使用余额：</dt>
+                                    <dd>- ¥{{$order->surplus}}</dd>
                                 </dl>
                                 <dl>
-                                    <dt>购货人：</dt>
-                                    <dd>chenyu</dd>
-                                    <dt>订单状态：</dt>
-                                    <dd>PC</dd>
+                                    <dt>发票税额：</dt>
+                                    <dd>+ ¥{{$order->tax}}</dd>
+                                    <dt>使用积分：</dt>
+                                    <dd>- ¥{{$order->integral_money}}</dd>
                                 </dl>
                                 <dl>
-                                    <dt>支付方式：</dt>
-                                    <dd>银行汇款/转帐</dd>
-                                    <dt>配送方式：</dt>
-                                    <dd>顺丰速运</dd>
+                                    <dt>配送费用：</dt>
+                                    <dd>+ ¥{{$order->shipping_fee}}</dd>
+                                    <dt>使用红包：</dt>
+                                    <dd>- ¥{{$order->bonus}}</dd>
                                 </dl>
                                 <dl>
-                                    <dt>下单时间：</dt>
-                                    <dd>2018-07-02 20:18:01</dd>
-                                    <dt>付款时间：</dt>
-                                    <dd>未付款</dd>
+                                    <dt>保价费用：</dt>
+                                    <dd>+ ¥{{$order->insure_fee}}</dd>
+                                    <dt>使用优惠券：</dt>
+                                    <dd>- ¥{{$order->coupons}}</dd>
                                 </dl>
                                 <dl>
-                                    <dt>发货时间：</dt>
-                                    <dd>未发货</dd>
-                                    <dt>发货单号：</dt>
-                                    <dd>未发货</dd>
+                                    <dt>支付费用：</dt>
+                                    <dd>+ ¥{{$order->pay_fee}}</dd>
+                                    <dt>使用储值卡：</dt>
+                                    <dd>- ¥{{$order->integral_money}}</dd>
                                 </dl>
                                 <dl>
-                                    <dt>自动确认收货时间：</dt>
-                                    <dd>15 天</dd>
-                                    <dt></dt>
-                                    <dd></dd>
+                                    <dt>折扣：</dt>
+                                    <dd>- ¥{{$order->discount}}</dd>
+                                    <dt>已付款金额</dt>
+                                    <dd>- ¥{{$order->money_paid}}</dd>
+                                </dl>
+                                <dl>
+                                    <dt>订单总金额：</dt>
+                                    <dd>
+                                        <font class="red">¥{{$order->goods_amount+$order->tax+$order->shipping_fee+$order->insure_fee+$order->pay_fee-$order->discount-$order->integral_money-$order->bonus-$order->coupons-$order->integral_money}}</font>
+                                    </dd>
+                                    <dt>应付款金额</dt>
+                                    <dd><font class="red">¥{{$order->order_amount}}</font></dd>
                                 </dl>
                             </div>
                         </div>
@@ -260,8 +332,22 @@
                                 <i class="ui-step"></i>
                                 <h3>操作信息</h3>
                             </div>
-                            <div class="order-operation">
-
+                            <div class="order-operation clearfix mar-auto wdh80">
+                                <div class="item mar-top-20">
+                                    <div class="step-label fl">操作备注：</div>
+                                    <div class="step-value fl">
+                                            <textarea class="form-control wd-750" rows="5"
+                                                      name="goods_product_tag"></textarea>
+                                        <div class="mar-top-20">
+                                            <a href="" class="btn btn-danger btn-sm">设为未付款</a>
+                                            <a href="" class="btn btn-danger btn-sm mar-left-5">设为未付款</a>
+                                            <a href="" class="btn btn-danger btn-sm mar-left-5">设为未付款</a>
+                                            <a href="" class="btn btn-danger btn-sm mar-left-5">设为未付款</a>
+                                            <a href="" class="btn btn-danger btn-sm mar-left-5">设为未付款</a>
+                                            <a href="" class="btn btn-primary btn-sm mar-left-5">打印订单</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>

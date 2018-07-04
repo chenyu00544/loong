@@ -244,6 +244,18 @@ input[type=checkbox], input[type=radio] {
     font-size: 18px;
 }
 
+.wdh40{
+    width: 40%;
+}
+
+.wdh60{
+    width: 60%;
+}
+
+.wdh80{
+    width: 80%;
+}
+
 .mar-tb-auto {
     margin: auto 0;
 }
@@ -2333,6 +2345,10 @@ input[type=file].upload-file {
 .order-step .section dl {
     float: left;
     width: 16.667%;
+}
+
+.order-total .section dl {
+    width: 14.285%;
 }
 
 .order-step .section dl dt {

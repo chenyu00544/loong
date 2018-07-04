@@ -4,19 +4,26 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Repositories\OrderRepository;
 use App\Repositories\RegionsRepository;
+use App\Repositories\UsersRepository;
 use Illuminate\Http\Request;
 
 class OrderController extends CommonController
 {
     private $orderRepository;
+    private $usersRepository;
+    private $regionsRepository;
 
     public function __construct(
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        UsersRepository $usersRepository,
+        RegionsRepository $regionsRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('order');
         $this->orderRepository = $orderRepository;
+        $this->usersRepository = $usersRepository;
+        $this->regionsRepository = $regionsRepository;
     }
 
     /**
@@ -91,7 +98,12 @@ class OrderController extends CommonController
     public function edit($id)
     {
         $order = $this->orderRepository->getOrder($id);
-        return view('shop.admin.order.orderEdit', compact('order'));
+        $orderGoodses = $this->orderRepository->getOrderGoodses($id);
+        $province = $this->regionsRepository->getArea($order->province);
+        $city = $this->regionsRepository->getArea($order->city);
+        $district = $this->regionsRepository->getArea($order->district);
+        $user = $this->usersRepository->getUser($order->user_id);
+        return view('shop.admin.order.orderEdit', compact('order', 'orderGoodses', 'user', 'province', 'city', 'district'));
     }
 
     /**

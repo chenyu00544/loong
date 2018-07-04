@@ -132,6 +132,13 @@ class OrderRepository implements OrderRepositoryInterface
         return $this->orderInfoModel->getOrderInfo($where);
     }
 
+    public function getOrderGoodses($id)
+    {
+        $where['order_id'] = $id;
+        $column = ['*'];
+        return $this->orderGoodsModel->getOrderGoodses($where, $column);
+    }
+
     public function getSearchNav($seller)
     {
         $allOrder = $this->orderInfoModel->countOrder([], [], $seller);
