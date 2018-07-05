@@ -72,7 +72,7 @@ class PaymentRepository implements PaymentRepositoryInterface
         foreach ($data as $key => $value) {
             if (in_array($key, $column)) {
                 $update[$key] = $value;
-            }else{
+            } else {
                 $payConf[$key] = $value;
             }
         }
@@ -87,6 +87,7 @@ class PaymentRepository implements PaymentRepositoryInterface
         $pay = $PayConfig[$data['code']];//
         foreach ($pay as $key => $value) {
             if ($key == 'pay_config') {
+                $conf = [];
                 foreach ($value as $val) {
                     $conf[$val['code']] = $val['value'];
                 }

@@ -209,4 +209,36 @@ class OrderRepository implements OrderRepositoryInterface
         }
         return $req;
     }
+
+    public function change($data)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $updata = [];
+        $where['order_id'] = $data['id'];
+        if (!empty($data['type'])) {
+            switch ($data['type']) {
+                case 'payment':
+                    $updata['pay_id'] = $data['pay_id'];
+                    $updata['pay_name'] = $data['pay_name'];
+                    break;
+                case 'shipping':
+                    $updata['shipping_id'] = $data['shipping_id'];
+                    $updata['shipping_name'] = $data['shipping_name'];
+                    break;
+                case 'cancel':
+
+                    break;
+                case 'remove':
+
+                    break;
+                default:
+                    break;
+            }
+        }
+        $re = $this->orderInfoModel->setOrderInfo($where, $updata);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
 }

@@ -82,10 +82,14 @@
                                     </dd>
                                 </dl>
                                 <dl>
-                                    <dt>支付方式：</dt>
+                                    <dt>支付方式：<a href="{{url('admin/order/paymentedit/'.$order->order_id)}}"
+                                                class="mar-left-10"><i
+                                                    class="glyphicon glyphicon-edit fs-14"></i></a></dt>
                                     <dd>{{$order->pay_name}}</dd>
-                                    <dt>配送方式：</dt>
-                                    <dd>顺丰速运</dd>
+                                    <dt>配送方式：<a href="{{url('admin/order/expressedit/'.$order->order_id)}}"
+                                                class="mar-left-10"><i
+                                                    class="glyphicon glyphicon-edit fs-14"></i></a></dt>
+                                    <dd>{{$order->shipping_name}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>下单时间：</dt>
@@ -98,12 +102,16 @@
                                     <dt>发货时间：</dt>
                                     <dd>@if($order->shipping_time) {{date('Y-m-d H:i:s',$order->shipping_time)}} @else
                                             未发货 @endif</dd>
-                                    <dt>发货单号：</dt>
+                                    <dt>发货单号：<a href="javascript:;" class="mar-left-10"><i
+                                                    class="glyphicon glyphicon-edit fs-14"></i></a></dt>
                                     <dd>@if($order->invoice_no) {{$order->invoice_no}} @else 未发货 @endif</dd>
                                 </dl>
                                 <dl>
                                     <dt>自动确认收货时间：</dt>
-                                    <dd>{{$order->auto_delivery_time}} 天</dd>
+                                    <dd><input type="text" name="auto_delivery_time"
+                                               class="form-control input-sm wdh40 fl"
+                                               value="{{$order->auto_delivery_time}}"> <span class="fl">天</span>
+                                    </dd>
                                     <dt></dt>
                                     <dd></dd>
                                 </dl>
@@ -113,7 +121,8 @@
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>收货人信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a></h3>
+                                <h3>收货人信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a>
+                                </h3>
                             </div>
                             <div class="section">
                                 <dl>
@@ -159,7 +168,8 @@
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>其他信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a></h3>
+                                <h3>其他信息<a href="#" class="mar-left-10"><i
+                                                class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="section">
                                 <dl>
@@ -204,7 +214,8 @@
                         <div class="order-step clearfix">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>商品信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a></h3>
+                                <h3>商品信息<a href="#" class="mar-left-10"><i
+                                                class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="order-goods">
                                 <table class="table table-hover table-condensed">
@@ -277,7 +288,8 @@
                         <div class="order-step clearfix mar-bt-50 order-total">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>费用信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a></h3>
+                                <h3>费用信息<a href="#" class="mar-left-10"><i
+                                                class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="section">
                                 <dl>

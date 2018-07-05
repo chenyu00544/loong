@@ -46,6 +46,11 @@ class TransportRepository implements TransportRepositoryInterface
 
     public function getTransportExpressByRuId($id)
     {
+        return $this->transportExpressModel->getExpressAll(['ru_id' => $id]);
+    }
+
+    public function getTransportByRuId($id)
+    {
         return $this->transportModel->getTransportAll(['ru_id' => $id]);
     }
 
@@ -109,9 +114,7 @@ class TransportRepository implements TransportRepositoryInterface
                     $regions[$key]['selected'] = false;
                 }
             }
-
         }
-
         return $regions;
     }
 

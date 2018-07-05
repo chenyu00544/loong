@@ -362,15 +362,10 @@
                         "{{url('admin/order/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
-                            if (data.code == 1) {
-                                layer.msg(data.msg, {icon: data.code});
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
-                            } else {
-                                layer.msg(data.msg, {icon: data.code});
-                            }
-
+                            layer.msg(data.msg, {icon: data.code});
+                            setTimeout(function () {
+                                location.href = location.href;
+                            }, 1000);
                         });
                 }, function () {
                 });

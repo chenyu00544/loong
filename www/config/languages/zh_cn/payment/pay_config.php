@@ -154,4 +154,24 @@ return array(
             ],
         )
     ),
+    'onlinepay' => array(
+        'pay_code' => 'onlinepay',
+        'pay_name' => '在线支付',
+        'pay_fee' => '0',
+        'enabled' => '1',
+        'pay_desc' => '想要使用在线支付的一系列方法如支付宝,余额支付,就必须安装该插件,否则订单结算页不会显示"在线支付"按钮',
+        'is_cod' => '0',
+        'is_online' => '1',
+        'pay_config' => array()
+    ),
+    'balance' => array(
+        'pay_code' => 'balance',
+        'pay_name' => '余额支付',
+        'pay_fee' => '0',
+        'enabled' => '1',
+        'pay_desc' => '使用帐户余额支付。',
+        'is_cod' => '0',
+        'is_online' => '1',
+        'pay_config' => array()
+    ),
 );

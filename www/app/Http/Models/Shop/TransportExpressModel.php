@@ -14,6 +14,7 @@ class TransportExpressModel extends Model
     public function getExpressAll($where = ['ru_id' => 0], $column = ['*'])
     {
         return $this->select($column)
+            ->join('shipping','shipping.shipping_id','=','transport_express.shipping_id')
             ->where($where)
             ->get();
     }

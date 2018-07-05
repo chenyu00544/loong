@@ -112,6 +112,10 @@ input[type=checkbox], input[type=radio] {
     display: none;
 }
 
+.oh{
+    overflow: hidden;
+}
+
 .select {
     width: auto;
 }
@@ -244,15 +248,15 @@ input[type=checkbox], input[type=radio] {
     font-size: 18px;
 }
 
-.wdh40{
+.wdh40 {
     width: 40%;
 }
 
-.wdh60{
+.wdh60 {
     width: 60%;
 }
 
-.wdh80{
+.wdh80 {
     width: 80%;
 }
 
@@ -2342,6 +2346,10 @@ input[type=file].upload-file {
     right: -40px;
 }
 
+.order-step .glyphicon:hover {
+    color: red;
+}
+
 .order-step .section dl {
     float: left;
     width: 16.667%;
@@ -2354,6 +2362,7 @@ input[type=file].upload-file {
 .order-step .section dl dt {
     color: #989898;
 }
+
 .order-step .section dl dt, .order-step .section dl dd {
     height: 35px;
     line-height: 35px;
@@ -2365,27 +2374,28 @@ input[type=file].upload-file {
     font-weight: normal;
 }
 
-.order-goods .td-product .product-info{
+.order-goods .td-product .product-info {
     padding-left: 90px;
     text-align: left;
     white-space: normal;
 }
 
-.order-goods .product-info .name{
+.order-goods .product-info .name {
     float: left;
     line-height: 25px;
     min-height: 50px;
     overflow: hidden;
 }
 
-.order-goods .td-product .product-info a{
+.order-goods .td-product .product-info a {
     color: #31b4e1;
 }
 
-.order-goods .td-product .product-info a:hover{
+.order-goods .td-product .product-info a:hover {
     color: #ec5051;
 }
 
 .order-goods td {
     height: 82px;
 }
+

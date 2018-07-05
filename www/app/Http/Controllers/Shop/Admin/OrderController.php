@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Repositories\OrderRepository;
+use App\Repositories\PaymentRepository;
 use App\Repositories\RegionsRepository;
+use App\Repositories\ShippingRepository;
+use App\Repositories\TransportRepository;
 use App\Repositories\UsersRepository;
 use Illuminate\Http\Request;
 
@@ -12,11 +15,15 @@ class OrderController extends CommonController
     private $orderRepository;
     private $usersRepository;
     private $regionsRepository;
+    private $paymentRepository;
+    private $transportRepository;
 
     public function __construct(
         OrderRepository $orderRepository,
         UsersRepository $usersRepository,
-        RegionsRepository $regionsRepository
+        RegionsRepository $regionsRepository,
+        PaymentRepository $paymentRepository,
+        TransportRepository $transportRepository
     )
     {
         parent::__construct();
@@ -24,6 +31,8 @@ class OrderController extends CommonController
         $this->orderRepository = $orderRepository;
         $this->usersRepository = $usersRepository;
         $this->regionsRepository = $regionsRepository;
+        $this->paymentRepository = $paymentRepository;
+        $this->transportRepository = $transportRepository;
     }
 
     /**
@@ -44,6 +53,25 @@ class OrderController extends CommonController
     public function changes(Request $request)
     {
         return $this->orderRepository->changes($request->except('_token'));
+    }
+
+    public function change(Request $request)
+    {
+        return $this->orderRepository->change($request->except('_token'));
+    }
+
+    public function paymentEdit($id)
+    {
+        $order = $this->orderRepository->getOrder($id);
+        $payment = $this->paymentRepository->getPaymentAll();
+        return view('shop.admin.order.paymentEdit', compact('order', 'payment'));
+    }
+
+    public function expressEdit($id)
+    {
+        $order = $this->orderRepository->getOrder($id);
+        $expresses = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
+        return view('shop.admin.order.expressEdit', compact('order', 'expresses'));
     }
 
     /**

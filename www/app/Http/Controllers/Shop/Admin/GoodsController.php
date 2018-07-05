@@ -207,7 +207,7 @@ class GoodsController extends CommonController
     {
         $comCates = $this->comCateRepository->getComCates();
         $brands = $this->brandRepository->search([], true);
-        $transports = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
+        $transports = $this->transportRepository->getTransportByRuId($this->user->ru_id);
         $goodsTypeCates = $this->goodsTypeRepository->getTypeCates();
         $goodsGallerys = $this->galleryRepository->getGoodsGallerys();
         $userRanks = $this->userRankRepository->getUserRanks();
@@ -260,7 +260,7 @@ class GoodsController extends CommonController
      */
     public function edit($id)
     {
-        $transports = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
+        $transports = $this->transportRepository->getTransportByRuId($this->user->ru_id);
         $goodsTypeCates[] = $this->goodsTypeRepository->getTypeCates();
         $goodsGallerys = $this->galleryRepository->getGoodsGallerys();
         $brands = $this->brandRepository->search([], true);
