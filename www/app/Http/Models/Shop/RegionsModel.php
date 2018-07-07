@@ -11,7 +11,7 @@ class RegionsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getRegions($type = 0, $parent = 0, $column = ['region_id', 'region_name', 'parent_id'])
+    public function getRegions($type = 0, $parent = 0, $column = ['region_id', 'region_name', 'parent_id','region_type'])
     {
         return $this->select($column)
             ->where([['region_type', $type], ['parent_id', $parent]])

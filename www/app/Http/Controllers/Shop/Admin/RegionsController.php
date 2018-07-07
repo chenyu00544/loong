@@ -44,6 +44,11 @@ class RegionsController extends CommonController
         return view('shop.admin.regions.regions', compact('typeNav', 'regions', 'parent_id', 'level'));
     }
 
+    public function nextRegionAll(Request $request)
+    {
+        return $this->regionsRepository->getNextRegionAll($request->except('_token'));
+    }
+
     public function addRegion($pid, $type)
     {
         $parent_id = $pid;

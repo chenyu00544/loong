@@ -89,6 +89,12 @@ class OrderController extends CommonController
         return view('shop.admin.order.consigneeEdit', compact('order', 'addresses', 'regions', 'provinces', 'citys', 'districts'));
     }
 
+    public function otherEdit($id)
+    {
+        $order = $this->orderRepository->getOrder($id);
+        return view('shop.admin.order.otherEdit', compact('order'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

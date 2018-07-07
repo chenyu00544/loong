@@ -115,7 +115,7 @@
                                 <dl>
                                     <dt>自动确认收货时间：</dt>
                                     <dd><input type="text" name="auto_delivery_time"
-                                               class="form-control input-sm wdh20 fl mar-top-5 hg25"
+                                               class="form-control input-sm wdh40 fl mar-top-5 hg25"
                                                value="{{$order->auto_delivery_time}}"> <span class="fl">天</span>
                                     </dd>
                                     <dt></dt>
@@ -174,27 +174,27 @@
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>其他信息<a href="#" class="mar-left-10"><i
+                                <h3>其他信息<a href="{{url('admin/order/otheredit/'.$order->order_id)}}" class="mar-left-10"><i
                                                 class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="section">
                                 <dl>
                                     <dt>发票抬头：(企业普通发票)：</dt>
-                                    <dd>{{$order->consignee}}</dd>
+                                    <dd>{{$order->inv_payee}}</dd>
                                     <dt>发票内容：</dt>
-                                    <dd>@if($order->email) {{$order->email}} @else 无 @endif</dd>
+                                    <dd>@if($order->inv_content) {{$order->inv_content}} @else 无 @endif</dd>
                                 </dl>
                                 <dl>
                                     <dt>缺货处理：</dt>
-                                    <dd>@if($order->mobile) {{$order->mobile}} @else 无 @endif</dd>
+                                    <dd>@if($order->how_oos) {{$order->how_oos}} @else 无 @endif</dd>
                                     <dt>识别码：</dt>
-                                    <dd>@if($order->tel) {{$order->tel}} @else 无 @endif</dd>
+                                    <dd>@if($order->tax_id) {{$order->tax_id}} @else 无 @endif</dd>
                                 </dl>
                                 <dl>
                                     <dt>卖家留言：</dt>
-                                    <dd>@if($order->shipping_dateStr) {{$order->shipping_dateStr}} @else 无 @endif</dd>
+                                    <dd>@if($order->to_buyer) {{$order->to_buyer}} @else 无 @endif</dd>
                                     <dt>买家留言：</dt>
-                                    <dd>@if($order->sign_building) {{$order->sign_building}} @else 无 @endif</dd>
+                                    <dd>@if($order->postscript) {{$order->postscript}} @else 无 @endif</dd>
                                 </dl>
                                 <dl>
                                     <dt></dt>

@@ -101,6 +101,10 @@ $(function () {
 
 });
 
+function log(obj) {
+    console.log(obj);
+}
+
 function region() {
     $('.shop_country')
 }

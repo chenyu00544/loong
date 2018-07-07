@@ -42,7 +42,7 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>所在地区：</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 @if($order->country)
                                     <div class="gallery-option fl">
                                         <select class="form-control select" name="country">
@@ -57,7 +57,7 @@
                                 @if($order->province)
                                     <div class="gallery-option fl mar-left-20">
                                         <select class="form-control select" name="province">
-                                            <option value="0">请选择</option>
+                                            <option value="0">省/直辖市</option>
                                             @foreach($provinces as $province)
                                                 <option value="{{$province['id']}}"
                                                         @if($order->province == $province['id']) selected @endif>{{$province['name']}}</option>
@@ -67,7 +67,7 @@
                                 @if($order->city)
                                     <div class="gallery-option fl mar-left-20">
                                         <select class="form-control select" name="city">
-                                            <option value="0">请选择</option>
+                                            <option value="0">市</option>
                                             @foreach($citys as $city)
                                                 <option value="{{$city['id']}}"
                                                         @if($order->city == $city['id']) selected @endif>{{$city['name']}}</option>
@@ -77,7 +77,7 @@
                                 @if($order->district)
                                     <div class="gallery-option fl mar-left-20">
                                         <select class="form-control select" name="district">
-                                            <option value="0">请选择</option>
+                                            <option value="0">区/县</option>
                                             @foreach($districts as $district)
                                                 <option value="{{$district['id']}}"
                                                         @if($order->district == $district['id']) selected @endif>{{$district['name']}}</option>
@@ -175,17 +175,76 @@
                 );
             });
 
-            $('select[name=country]').on('click', function () {
-                $('select[name=province]');
-                $('select[name=city]');
-                $('select[name=district]');
+            $('select[name=country]').on('change', function () {
+                var parent = $(this).val();
+                var provinceHtml = '<option value="0">省/直辖市</option>', cityHtml = '<option value="0">市</option>',
+                    districtHtml = '<option value="0">区/县</option>';
+                $.post("{{url('admin/regions/nextall')}}", {
+                    type: 1,
+                    parent: parent,
+                    _token: '{{csrf_token()}}'
+                }, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (i == 0) {
+                            for(var j = 0; j < data[i].length; j++){
+                                provinceHtml += '<option value="' + data[i][j].region_id + '">' + data[i][j].region_name + '</option>';
+                            }
+                        } else if (i == 1) {
+                            for(var j = 0; j < data[i].length; j++){
+                                cityHtml += '<option value="' + data[i][j].region_id + '">' + data[i][j].region_name + '</option>';
+                            }
+                        } else if (i == 2) {
+                            for(var j = 0; j < data[i].length; j++){
+                                districtHtml += '<option value="' + data[i][j].region_id + '">' + data[i][j].region_name + '</option>';
+                            }
+                        }
+                    }
+                    $('select[name=province]').html(provinceHtml);
+                    $('select[name=city]').html(cityHtml);
+                    $('select[name=district]').html(districtHtml);
+                });
             });
-            $('select[name=province]').on('click', function () {
-                $('select[name=city]');
-                $('select[name=district]');
+            $('select[name=province]').on('change', function () {
+                var parent = $(this).val();
+                var cityHtml = '<option value="0">市</option>',
+                    districtHtml = '<option value="0">区/县</option>';
+                $.post("{{url('admin/regions/nextall')}}", {
+                    type: 2,
+                    parent: parent,
+                    _token: '{{csrf_token()}}'
+                }, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (i == 0) {
+                            for(var j = 0; j < data[i].length; j++){
+                                cityHtml += '<option value="' + data[i][j].region_id + '">' + data[i][j].region_name + '</option>';
+                            }
+                        } else if (i == 1) {
+                            for(var j = 0; j < data[i].length; j++){
+                                districtHtml += '<option value="' + data[i][j].region_id + '">' + data[i][j].region_name + '</option>';
+                            }
+                        }
+                    }
+                    $('select[name=city]').html(cityHtml);
+                    $('select[name=district]').html(districtHtml);
+                });
             });
-            $('select[name=city]').on('click', function () {
-                $('select[name=district]');
+            $('select[name=city]').on('change', function () {
+                var parent = $(this).val();
+                var districtHtml = '<option value="0">区/县</option>';
+                $.post("{{url('admin/regions/nextall')}}", {
+                    type: 3,
+                    parent: parent,
+                    _token: '{{csrf_token()}}'
+                }, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        if (i == 0) {
+                            for(var j = 0; j < data[i].length; j++){
+                                districtHtml += '<option value="' + data[i][j].region_id + '">' + data[i][j].region_name + '</option>';
+                            }
+                        }
+                    }
+                    $('select[name=district]').html(districtHtml);
+                });
             });
         });
     </script>

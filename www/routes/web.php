@@ -65,6 +65,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('regions/nextregions/{id}/{tid}', 'RegionsController@nextRegions');
     Route::get('regions/addregion/{id}/{tid}', 'RegionsController@addRegion');
     Route::post('regions/changes', 'RegionsController@changes');
+    Route::post('regions/nextall', 'RegionsController@nextRegionAll');
     Route::resource('regions', 'RegionsController');
 
     Route::post('navsetup/show/or/view', 'NavigationController@showOrView');
@@ -180,7 +181,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('order/paymentedit/{id}', 'OrderController@paymentEdit');
     Route::get('order/expressedit/{id}', 'OrderController@expressEdit');
     Route::get('order/consigneeedit/{id}', 'OrderController@consigneeEdit');
-//    Route::get('order/paymentedit/{id}', 'OrderController@paymentEdit');
+    Route::get('order/otheredit/{id}', 'OrderController@otherEdit');
     Route::post('order/changes', 'OrderController@changes');
     Route::post('order/change', 'OrderController@change');
     Route::resource('order', 'OrderController');

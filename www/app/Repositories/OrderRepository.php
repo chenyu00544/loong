@@ -240,6 +240,11 @@ class OrderRepository implements OrderRepositoryInterface
                         }
                     }
                     break;
+                case 'other':
+                    foreach ($data['other'] as $key => $value){
+                        $updata[$value['name']] = $value['value'];
+                    }
+                    break;
                 default:
                     break;
             }

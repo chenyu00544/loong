@@ -65,6 +65,16 @@ class RegionsRepository implements RegionsRepositoryInterface
         return $re;
     }
 
+    public function getNextRegionAll($data, $region = [])
+    {
+        $re = $this->regionsModel->getRegions($data['type'], $data['parent']);
+        if ($re->count() > 0) {
+            $region[] = $re;
+            return $this->getNextRegionAll(['type' => $re[0]->region_type+1, 'parent' => $re[0]->region_id], $region);
+        }
+        return $region;
+    }
+
     public function getArea($id)
     {
         $reArr = [
