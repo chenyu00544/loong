@@ -225,11 +225,20 @@ class OrderRepository implements OrderRepositoryInterface
                     $updata['shipping_id'] = $data['shipping_id'];
                     $updata['shipping_name'] = $data['shipping_name'];
                     break;
-                case 'cancel':
-
+                case 'invoice_no':
+                    $updata['invoice_no'] = $data['invoice_no'];
+                    $updata['shipping_status'] = 1;
+                    $updata['shipping_time'] = time();
                     break;
-                case 'remove':
-
+                case 'auto_delivery_time':
+                    $updata['auto_delivery_time'] = $data['auto_delivery_time'];
+                    break;
+                case 'consignee':
+                    foreach ($data['address'] as $key => $value){
+                        if($value['name'] != 'addresslist' && $value['name'] != 'order_id'){
+                            $updata[$value['name']] = $value['value'];
+                        }
+                    }
                     break;
                 default:
                     break;

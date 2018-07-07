@@ -179,8 +179,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::get('order/paymentedit/{id}', 'OrderController@paymentEdit');
     Route::get('order/expressedit/{id}', 'OrderController@expressEdit');
-//    Route::post('order/paymentedit/{id}', 'OrderController@paymentEdit');
-//    Route::post('order/paymentedit/{id}', 'OrderController@paymentEdit');
+    Route::get('order/consigneeedit/{id}', 'OrderController@consigneeEdit');
+//    Route::get('order/paymentedit/{id}', 'OrderController@paymentEdit');
     Route::post('order/changes', 'OrderController@changes');
     Route::post('order/change', 'OrderController@change');
     Route::resource('order', 'OrderController');

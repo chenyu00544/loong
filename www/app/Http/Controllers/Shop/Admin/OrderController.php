@@ -7,6 +7,7 @@ use App\Repositories\PaymentRepository;
 use App\Repositories\RegionsRepository;
 use App\Repositories\ShippingRepository;
 use App\Repositories\TransportRepository;
+use App\Repositories\UserAddressRepository;
 use App\Repositories\UsersRepository;
 use Illuminate\Http\Request;
 
@@ -17,13 +18,15 @@ class OrderController extends CommonController
     private $regionsRepository;
     private $paymentRepository;
     private $transportRepository;
+    private $userAddressRepository;
 
     public function __construct(
         OrderRepository $orderRepository,
         UsersRepository $usersRepository,
         RegionsRepository $regionsRepository,
         PaymentRepository $paymentRepository,
-        TransportRepository $transportRepository
+        TransportRepository $transportRepository,
+        UserAddressRepository $userAddressRepository
     )
     {
         parent::__construct();
@@ -33,6 +36,7 @@ class OrderController extends CommonController
         $this->regionsRepository = $regionsRepository;
         $this->paymentRepository = $paymentRepository;
         $this->transportRepository = $transportRepository;
+        $this->userAddressRepository = $userAddressRepository;
     }
 
     /**
@@ -72,6 +76,17 @@ class OrderController extends CommonController
         $order = $this->orderRepository->getOrder($id);
         $expresses = $this->transportRepository->getTransportExpressByRuId($this->user->ru_id);
         return view('shop.admin.order.expressEdit', compact('order', 'expresses'));
+    }
+
+    public function consigneeEdit($id)
+    {
+        $order = $this->orderRepository->getOrder($id);
+        $addresses = $this->userAddressRepository->getUserAddresses($order->user_id);
+        $regions = $this->regionsRepository->getRegions();
+        $provinces = $this->regionsRepository->getRegions(1, $order->country);
+        $citys = $this->regionsRepository->getRegions(2, $order->province);
+        $districts = $this->regionsRepository->getRegions(3, $order->city);
+        return view('shop.admin.order.consigneeEdit', compact('order', 'addresses', 'regions', 'provinces', 'citys', 'districts'));
     }
 
     /**

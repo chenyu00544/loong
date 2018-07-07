@@ -54,6 +54,8 @@
                           class="form-horizontal">
                         {{csrf_field()}}
 
+                        <input type="hidden" name="order_id" value="{{$order->order_id}}">
+
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
                                 <i class="ui-step"></i>
@@ -102,14 +104,18 @@
                                     <dt>发货时间：</dt>
                                     <dd>@if($order->shipping_time) {{date('Y-m-d H:i:s',$order->shipping_time)}} @else
                                             未发货 @endif</dd>
-                                    <dt>发货单号：<a href="javascript:;" class="mar-left-10"><i
-                                                    class="glyphicon glyphicon-edit fs-14"></i></a></dt>
+                                    <dt>发货单号：
+                                        <a href="javascript:;" class="mar-left-10">
+                                            <i class="glyphicon glyphicon-edit fs-14 invoice_no"></i>
+                                        </a>
+                                        <input type="hidden" name="invoice_no" value="{{$order->invoice_no}}">
+                                    </dt>
                                     <dd>@if($order->invoice_no) {{$order->invoice_no}} @else 未发货 @endif</dd>
                                 </dl>
                                 <dl>
                                     <dt>自动确认收货时间：</dt>
                                     <dd><input type="text" name="auto_delivery_time"
-                                               class="form-control input-sm wdh40 fl"
+                                               class="form-control input-sm wdh20 fl mar-top-5 hg25"
                                                value="{{$order->auto_delivery_time}}"> <span class="fl">天</span>
                                     </dd>
                                     <dt></dt>
@@ -121,7 +127,7 @@
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>收货人信息<a href="#" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a>
+                                <h3>收货人信息<a href="{{url('admin/order/consigneeedit/'.$order->order_id)}}" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a>
                                 </h3>
                             </div>
                             <div class="section">
@@ -373,6 +379,36 @@
 @section('script')
     <script>
         $(function () {
+            $('.invoice_no').on('click', function () {
+                var invoice_no = $('input[name=invoice_no]').val();
+                $(this).parent().parent().next().html('<input type="text" name="invoice_no_input" class="form-control input-sm fl mar-top-5 hg25" value="' + invoice_no + '">');
+            });
+
+            $('body').on('blur', 'input[name=invoice_no_input]', function () {
+                var that = this;
+                var invoice_no = $(this).val();
+                var order_id = $('input[name=order_id]').val();
+                $.post("{{url('admin/order/change')}}", {
+                    id: order_id,
+                    type: 'invoice_no',
+                    invoice_no: invoice_no,
+                    _token: '{{csrf_token()}}'
+                }, function (data) {
+                    $(that).parent().html(invoice_no);
+                });
+            });
+
+            $('input[name=auto_delivery_time]').on('change', function () {
+                var auto_delivery_time = $(this).val();
+                var order_id = $('input[name=order_id]').val();
+                $.post("{{url('admin/order/change')}}", {
+                    id: order_id,
+                    type: 'auto_delivery_time',
+                    auto_delivery_time: auto_delivery_time,
+                    _token: '{{csrf_token()}}'
+                }, function (data) {
+                });
+            });
         });
     </script>
 @endsection
