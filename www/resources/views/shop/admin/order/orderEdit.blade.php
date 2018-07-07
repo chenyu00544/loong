@@ -220,8 +220,7 @@
                         <div class="order-step clearfix">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>商品信息<a href="#" class="mar-left-10"><i
-                                                class="glyphicon glyphicon-edit fs-16"></i></a></h3>
+                                <h3>商品信息</h3>
                             </div>
                             <div class="order-goods">
                                 <table class="table table-hover table-condensed">
@@ -294,7 +293,7 @@
                         <div class="order-step clearfix mar-bt-50 order-total">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>费用信息<a href="#" class="mar-left-10"><i
+                                <h3>费用信息<a href="{{url('admin/order/moneyedit/'.$order->order_id)}}" class="mar-left-10"><i
                                                 class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="section">
