@@ -1,7 +1,4 @@
 @extends('shop.layouts.index')
-@section('css')
-    <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.css')}}">
-@endsection
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
@@ -80,7 +77,9 @@
                                         @if($order->pay_status == 0) 未付款 @elseif($order->pay_status == 2)
                                             已付款 @elseif($order->pay_status == 4) 已退款 @endif
                                         @if($order->shipping_status == 0) 未发货 @elseif($order->shipping_status == 1)
-                                            已发货 @elseif($order->shipping_status == 2) 已收货 @endif
+                                            已发货 @elseif($order->shipping_status == 2)
+                                            已收货 @elseif($order->shipping_status == 3)
+                                            配货中 @elseif($order->shipping_status == 5) 发货中 @endif
                                     </dd>
                                 </dl>
                                 <dl>
@@ -127,7 +126,8 @@
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>收货人信息<a href="{{url('admin/order/consigneeedit/'.$order->order_id)}}" class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a>
+                                <h3>收货人信息<a href="{{url('admin/order/consigneeedit/'.$order->order_id)}}"
+                                            class="mar-left-10"><i class="glyphicon glyphicon-edit fs-16"></i></a>
                                 </h3>
                             </div>
                             <div class="section">
@@ -174,7 +174,8 @@
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>其他信息<a href="{{url('admin/order/otheredit/'.$order->order_id)}}" class="mar-left-10"><i
+                                <h3>其他信息<a href="{{url('admin/order/otheredit/'.$order->order_id)}}"
+                                           class="mar-left-10"><i
                                                 class="glyphicon glyphicon-edit fs-16"></i></a></h3>
                             </div>
                             <div class="section">
@@ -293,8 +294,12 @@
                         <div class="order-step clearfix mar-bt-50 order-total">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>费用信息<a href="{{url('admin/order/moneyedit/'.$order->order_id)}}" class="mar-left-10"><i
-                                                class="glyphicon glyphicon-edit fs-16"></i></a></h3>
+                                <h3>费用信息
+                                    <a href="{{url('admin/order/feeedit/'.$order->order_id)}}"
+                                       class="mar-left-10">
+                                        <i class="glyphicon glyphicon-edit fs-16"></i>
+                                    </a>
+                                </h3>
                             </div>
                             <div class="section">
                                 <dl>
@@ -355,13 +360,47 @@
                                     <div class="step-value fl">
                                             <textarea class="form-control wd-750" rows="5"
                                                       name="goods_product_tag"></textarea>
-                                        <div class="mar-top-20">
-                                            <a href="" class="btn btn-danger btn-sm">设为未付款</a>
-                                            <a href="" class="btn btn-danger btn-sm mar-left-5">设为未付款</a>
-                                            <a href="" class="btn btn-danger btn-sm mar-left-5">设为未付款</a>
-                                            <a href="" class="btn btn-danger btn-sm mar-left-5">设为未付款</a>
-                                            <a href="" class="btn btn-danger btn-sm mar-left-5">设为未付款</a>
-                                            <a href="" class="btn btn-primary btn-sm mar-left-5">打印订单</a>
+                                        <div class="mar-top-20 operation">
+                                            @if($order->order_status == 0)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="sure">确认</a>
+                                            @endif
+                                            @if($order->pay_status == 0 || $order->pay_status == 1)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="pay">付款</a>
+                                            @endif
+                                            @if($order->pay_status == 2 && ($order->shipping_status == 0 ||$order->shipping_status == 3))
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="no_pay">设为未付款</a>
+                                            @endif
+                                            @if($order->shipping_status == 0)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="prepare">配货</a>
+                                            @elseif($order->shipping_status == 1)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="unship">未发货</a>
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="receive">已收货</a>
+                                            @elseif($order->shipping_status == 2)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="return">退货</a>
+                                            @elseif($order->shipping_status == 3)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="ship">生成发货单</a>
+                                            @elseif($order->shipping_status == 5)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="to_delivery">去发货</a>
+                                            @endif
+                                            <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                               data-ope="after_service">售后</a>
+                                            @if($order->pay_status == 0)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="cancel">取消</a>
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="invalid">无效</a>
+                                            @endif
+                                            <a href="javascript:;" class="btn btn-primary btn-sm mar-left-5"
+                                               data-ope="order_print">打印订单</a>
                                         </div>
                                     </div>
                                 </div>
@@ -406,6 +445,27 @@
                     auto_delivery_time: auto_delivery_time,
                     _token: '{{csrf_token()}}'
                 }, function (data) {
+                });
+            });
+
+            $('.order-operation').on('click', 'a', function () {
+                var type = $(this).data('ope');
+                if (type == 'no_pay' || type == 'to_delivery') {
+                    return;
+                }
+                var order_id = $('input[name=order_id]').val();
+                var goods_product_tag = $('input[name=goods_product_tag]').val();
+                $.post("{{url('admin/order/change')}}", {
+                    id: order_id,
+                    type: 'operation',
+                    value: type,
+                    goods_product_tag: goods_product_tag,
+                    _token: '{{csrf_token()}}'
+                }, function (data) {
+                    layer.msg(data.msg, {icon: data.code});
+                    setTimeout(function () {
+                        location.href = "{{url('admin/order/')}}/" + order_id + "/edit";
+                    }, 2000);
                 });
             });
         });

@@ -234,15 +234,62 @@ class OrderRepository implements OrderRepositoryInterface
                     $updata['auto_delivery_time'] = $data['auto_delivery_time'];
                     break;
                 case 'consignee':
-                    foreach ($data['address'] as $key => $value){
-                        if($value['name'] != 'addresslist' && $value['name'] != 'order_id'){
+                    foreach ($data['address'] as $key => $value) {
+                        if ($value['name'] != 'addresslist' && $value['name'] != 'order_id') {
                             $updata[$value['name']] = $value['value'];
                         }
                     }
                     break;
                 case 'other':
-                    foreach ($data['other'] as $key => $value){
+                    foreach ($data['other'] as $key => $value) {
                         $updata[$value['name']] = $value['value'];
+                    }
+                    break;
+                case 'fee':
+                    foreach ($data['fee'] as $key => $value) {
+                        $updata[$value['name']] = $value['value'];
+                    }
+                    $updata['order_amount'] = $updata['goods_amount'] + $updata['tax'] + $updata['shipping_fee'] + $updata['insure_fee'] + $updata['pay_fee'] - $updata['discount'] - $updata['surplus'] - $updata['integral_money'] - $updata['bonus'] - $updata['coupons'] - $updata['integral_money'] - $updata['money_paid'];
+                    break;
+                case 'operation':
+                    switch ($data['value']){
+                        case 'sure':
+                            $updata['order_status'] = Config::get('define.OS_CONFIRMED');
+                            break;
+                        case 'pay':
+                            $updata['pay_status'] = Config::get('define.PS_PAYED');
+                            $updata['order_status'] = Config::get('define.OS_CONFIRMED');
+                            $updata['pay_time'] = time();
+                            break;
+                        case 'no_pay':
+                            $updata['pay_status'] = Config::get('define.PS_UNPAYED');
+                            break;
+                        case 'prepare':
+                            $updata['shipping_status'] = Config::get('define.SS_PREPARING');
+                            break;
+                        case 'ship':
+                            $updata['shipping_status'] = Config::get('define.SS_SHIPPED_ING');
+                            break;
+                        case 'to_delivery':
+                            $updata['shipping_status'] = Config::get('define.SS_SHIPPED');
+                            break;
+                        case 'unship':
+                            $updata['shipping_status'] = Config::get('define.SS_UNSHIPPED');
+                            break;
+                        case 'receive':
+                            $updata['shipping_status'] = Config::get('define.SS_RECEIVED');
+                            break;
+                        case 'return':
+                            $updata['order_status'] = Config::get('define.OS_RETURNED');
+                            break;
+                        case 'cancel':
+                            $updata['order_status'] = Config::get('define.OS_CANCELED');
+                            break;
+                        case 'invalid':
+                            $updata['order_status'] = Config::get('define.OS_INVALID');
+                            break;
+                        default:
+                            break;
                     }
                     break;
                 default:

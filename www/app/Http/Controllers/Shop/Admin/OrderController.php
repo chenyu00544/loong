@@ -101,6 +101,12 @@ class OrderController extends CommonController
         return view('shop.admin.order.moneyEdit', compact('order'));
     }
 
+    public function feeEdit($id)
+    {
+        $order = $this->orderRepository->getOrder($id);
+        return view('shop.admin.order.feeEdit', compact('order'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

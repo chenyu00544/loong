@@ -94,7 +94,7 @@
                     function (data) {
                         layer.msg(data.msg, {icon: data.code});
                         setTimeout(function () {
-                            history.go(-1);
+                            location.href = "{{url('admin/order/')}}/" + order_id + "/edit";
                         }, 2000);
                     }
                 );
