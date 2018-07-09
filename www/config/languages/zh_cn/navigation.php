@@ -71,6 +71,14 @@ return array(
             'name' => '订单列表',
             'url' => 'admin/order',
         ),
+        'delivery' => array(
+            'name' => '发货单列表',
+            'url' => 'admin/order/delivery',
+        ),
+        'back' => array(
+            'name' => '退货单列表',
+            'url' => 'admin/order/back',
+        ),
     ),
 
 

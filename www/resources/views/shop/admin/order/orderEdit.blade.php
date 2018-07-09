@@ -278,6 +278,7 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    <input type="hidden" name="ru_id" value="{{$orderGoods->ru_id}}">
                                     <tr>
                                         <td colspan="12">
                                             <div class="order-total fr">
@@ -361,46 +362,52 @@
                                             <textarea class="form-control wd-750" rows="5"
                                                       name="goods_product_tag"></textarea>
                                         <div class="mar-top-20 operation">
-                                            @if($order->order_status == 0)
+                                            @if($order->order_status != 2 && $order->order_status != 3)
+                                                @if($order->order_status == 0)
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="sure">确认</a>
+                                                @endif
+                                                @if($order->pay_status == 0 || $order->pay_status == 1)
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="pay">付款</a>
+                                                @endif
+                                                @if($order->pay_status == 2 && ($order->shipping_status == 0 ||$order->shipping_status == 3))
+                                                    <a href="{{url('admin/order/nopay/'.$order->order_id)}}"
+                                                       class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="no_pay">设为未付款</a>
+                                                @endif
+                                                @if($order->shipping_status == 0)
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="prepare">配货</a>
+                                                @elseif($order->shipping_status == 1)
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="unship">未发货</a>
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="receive">已收货</a>
+                                                @elseif($order->shipping_status == 2)
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="return">退货</a>
+                                                @elseif($order->shipping_status == 3)
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="ship">生成发货单</a>
+                                                @elseif($order->shipping_status == 5)
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="to_delivery">去发货</a>
+                                                @endif
                                                 <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="sure">确认</a>
+                                                   data-ope="after_service">售后</a>
+                                                @if($order->pay_status == 0)
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="cancel">取消</a>
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="invalid">无效</a>
+                                                @endif
+                                                <a href="javascript:;" class="btn btn-primary btn-sm mar-left-5"
+                                                   data-ope="order_print">打印订单</a>
+                                            @else
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="delete">移除</a>
                                             @endif
-                                            @if($order->pay_status == 0 || $order->pay_status == 1)
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="pay">付款</a>
-                                            @endif
-                                            @if($order->pay_status == 2 && ($order->shipping_status == 0 ||$order->shipping_status == 3))
-                                                <a href="{{url('admin/order/nopay/'.$order->order_id)}}" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="no_pay">设为未付款</a>
-                                            @endif
-                                            @if($order->shipping_status == 0)
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="prepare">配货</a>
-                                            @elseif($order->shipping_status == 1)
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="unship">未发货</a>
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="receive">已收货</a>
-                                            @elseif($order->shipping_status == 2)
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="return">退货</a>
-                                            @elseif($order->shipping_status == 3)
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="ship">生成发货单</a>
-                                            @elseif($order->shipping_status == 5)
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="to_delivery">去发货</a>
-                                            @endif
-                                            <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                               data-ope="after_service">售后</a>
-                                            @if($order->pay_status == 0)
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="cancel">取消</a>
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="invalid">无效</a>
-                                            @endif
-                                            <a href="javascript:;" class="btn btn-primary btn-sm mar-left-5"
-                                               data-ope="order_print">打印订单</a>
                                         </div>
                                     </div>
                                 </div>
@@ -449,6 +456,7 @@
             });
 
             $('.order-operation').on('click', 'a', function () {
+                var ru_id = $('input[name=ru_id]').val();
                 var type = $(this).data('ope');
                 if (type == 'no_pay' || type == 'to_delivery') {
                     return;
@@ -464,7 +472,16 @@
                 }, function (data) {
                     layer.msg(data.msg, {icon: data.code});
                     setTimeout(function () {
-                        location.href = "{{url('admin/order/')}}/" + order_id + "/edit";
+                        if(type == 'delete'){
+                            if(ru_id > 0){
+                                location.href = "{{url('admin/order/seller')}}";
+                            }else{
+                                location.href = "{{url('admin/order/')}}";
+                            }
+                        }else{
+                            location.href = "{{url('admin/order/')}}/" + order_id + "/edit";
+                        }
+
                     }, 2000);
                 });
             });

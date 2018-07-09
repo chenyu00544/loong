@@ -18,4 +18,9 @@ class OrderGoodsModel extends Model
             ->where($where)
             ->get();
     }
+
+    public function delOrderGoods($where)
+    {
+        return $this->where($where)->delete();
+    }
 }

@@ -73,6 +73,6 @@ class OrderInfoModel extends Model
 
     public function delOrderInfo($where = [], $whereIn = [])
     {
-        
+        return $this->where($where)->delete();
     }
 }

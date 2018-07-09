@@ -112,7 +112,7 @@ input[type=checkbox], input[type=radio] {
     display: none;
 }
 
-.oh{
+.oh {
     overflow: hidden;
 }
 
@@ -396,6 +396,10 @@ input[type=checkbox], input[type=radio] {
 
 .wd120 {
     min-width: 120px;
+}
+
+.wd140 {
+    min-width: 140px;
 }
 
 .wd250 {
@@ -766,6 +770,10 @@ input[type=checkbox], input[type=radio] {
 
 .n-wd110 {
     min-width: 110px;
+}
+
+.n-wd220 {
+    min-width: 220px;
 }
 
 .suc-tip {
@@ -1143,8 +1151,20 @@ input[type=checkbox], input[type=radio] {
     word-break: keep-all;
 }
 
+.wd-80 {
+    width: 80px;
+}
+
 .wd-120 {
     width: 120px;
+}
+
+.wd-180 {
+    width: 180px;
+}
+
+.wd-220 {
+    width: 220px;
 }
 
 .wd-240 {

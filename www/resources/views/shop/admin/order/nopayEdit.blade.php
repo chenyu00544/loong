@@ -29,12 +29,12 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">退款金额：</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-7">
                                 <span class="fl line-hg-30">金额：</span>
-                                <input name="money_paid" type="text" class="form-control wd-120 fl input-sm" size="10" value="{{$order->money_paid}}" autocomplete="off">
+                                <input name="money_paid" type="text" class="form-control wd-80 fl input-sm" size="10" value="{{$order->money_paid}}" autocomplete="off">
                                 <span class="fl line-hg-30">元&nbsp;&nbsp;运费：</span>
-                                <input type="text" name="shipping_fee" value="{{$order->shipping_fee}}" id="shippingFee" size="6" class="form-control wd-120 fl input-sm" autocomplete="off">
-                                <div class="col-sm-4 n-wd400">
+                                <input type="text" name="shipping_fee" value="{{$order->shipping_fee}}" id="shippingFee" size="6" class="form-control wd-80 fl input-sm" autocomplete="off">
+                                <div class="col-sm-3 n-wd220">
                                     <label class="radio-inline fl">
                                         <input type="radio" name="is_shipping" value="0" checked> 不退运费
                                     </label>
@@ -46,14 +46,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">退款方式：</label>
-                            <div class="col-sm-6 n-wd400">
-                                <label class="radio-inline fl">
+                            <div class="col-sm-2 wd-220">
+                                <label class="radio-inline">
                                     <input type="radio" name="refund" value="1" checked> 退回用户余额
                                 </label>
-                                <label class="radio-inline fl">
+                                <label class="radio-inline">
                                     <input type="radio" name="refund" value="2" > 生成退款申请
                                 </label>
-                                <label class="radio-inline fl">
+                                <label class="radio-inline">
                                     <input type="radio" name="refund" value="3" > 不处理，误操作时选择此项
                                 </label>
                             </div>
@@ -90,7 +90,8 @@
                     '{{url("admin/order/change")}}',
                     {
                         id: order_id,
-                        type: 'no_pay',
+                        type: 'operation',
+                        value: 'no_pay',
                         nopay: data,
                         _token: '{{csrf_token()}}'
                     },

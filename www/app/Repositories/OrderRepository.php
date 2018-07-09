@@ -266,29 +266,30 @@ class OrderRepository implements OrderRepositoryInterface
                             $updata['order_status'] = Config::get('define.OS_CONFIRMED');
                             break;
                         case 'pay':
-                            $order = $this->orderInfoModel->getOrderInfo(['order_id' => $data['id']]);
+                            $order = $this->orderInfoModel->getOrderInfo($where);
                             $updata['pay_status'] = Config::get('define.PS_PAYED');
                             $updata['order_status'] = Config::get('define.OS_CONFIRMED');
-                            $updata['money_paid'] = $order->order_amount;
+                            $updata['money_paid'] = $this->orderAmount($order);
                             $updata['order_amount'] = 0;
                             $updata['pay_time'] = time();
                             break;
                         case 'no_pay':
-                            $order = $this->orderInfoModel->getOrderInfo(['order_id' => $data['id']]);
+                            $order = $this->orderInfoModel->getOrderInfo($where);
                             $updata['pay_status'] = Config::get('define.PS_UNPAYED');
                             $updata['money_paid'] = 0;
-                            $updata['order_amount'] = $order->money_paid;
+                            $updata['order_amount'] = $this->orderAmount($order);
                             $return_money = $order->money_paid - $order->tax;
                             $ope_type = [];
                             foreach ($data['nopay'] as $key => $value) {
                                 $ope_type[$value['name']] = $value['value'];
                             }
+                            //不退运费
                             if ($ope_type['is_shipping'] == 0) {
                                 $return_money = $return_money - $order->shipping_fee;
                             }
                             if ($ope_type['refund'] == 1) {
                                 DB::beginTransaction();
-                                $res = $this->usersModel->setUser(['user_id' => $order->user_id], ['user_money' => 'user_money' + $return_money]);
+                                $res = $this->usersModel->setUserMoney(['user_id' => $order->user_id], $return_money);
                                 $re = $this->orderInfoModel->setOrderInfo($where, $updata);
                                 if ($re && $res) {
                                     DB::commit();
@@ -305,7 +306,7 @@ class OrderRepository implements OrderRepositoryInterface
                                 $account['process_type'] = 1;
                                 $payment = $this->paymentModel->getPayment([]);
                                 $account['payment'] = $payment->pay_name;
-                                $account['is_paid'] = $payment->pay_id;
+                                $account['pay_id'] = $payment->pay_id;
                                 DB::beginTransaction();
                                 $are = $this->userAccountModel->addAccount($account);
                                 $ure = $this->usersModel->setUser(['user_id' => $order->user_id], ['frozen_money' => 'frozen_money' + $return_money]);
@@ -318,7 +319,6 @@ class OrderRepository implements OrderRepositoryInterface
                                 }
                                 return $req;
                             }
-                            dd($data['nopay']);
                             break;
                         case 'prepare':
                             $updata['shipping_status'] = Config::get('define.SS_PREPARING');
@@ -344,6 +344,17 @@ class OrderRepository implements OrderRepositoryInterface
                         case 'invalid':
                             $updata['order_status'] = Config::get('define.OS_INVALID');
                             break;
+                        case 'delete':
+                            $order = $this->orderInfoModel->getOrderInfo($where);
+                            if($order->order_status ==2||$order->order_status ==3){
+                                $res = $this->orderGoodsModel->delOrderGoods($where);
+                                $re = $this->orderInfoModel->delOrderInfo($where);
+                                if ($re) {
+                                    $req = ['code' => 1, 'msg' => '操作成功'];
+                                }
+                            }
+                            return $req;
+                            break;
                         default:
                             break;
                     }
@@ -357,5 +368,10 @@ class OrderRepository implements OrderRepositoryInterface
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;
+    }
+
+    private function orderAmount($order)
+    {
+        return $order->goods_amount + $order->tax + $order->shipping_fee + $order->insure_fee + $order->pay_fee - $order->discount - $order->integral_money - $order->bonus - $order->coupons - $order->integral_money;
     }
 }

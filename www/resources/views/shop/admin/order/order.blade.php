@@ -273,10 +273,6 @@
 @section('script')
     <script>
         $(function () {
-            $('.nyroModal').nyroModal();
-
-            $("[data-toggle='tooltip']").tooltip();
-
             //批量修改
             $('.bt-batch').on('click', 'a', function () {
                 var order_ids = [];
