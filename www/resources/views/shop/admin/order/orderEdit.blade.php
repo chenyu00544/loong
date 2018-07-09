@@ -370,7 +370,7 @@
                                                    data-ope="pay">付款</a>
                                             @endif
                                             @if($order->pay_status == 2 && ($order->shipping_status == 0 ||$order->shipping_status == 3))
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                <a href="{{url('admin/order/nopay/'.$order->order_id)}}" class="btn btn-danger btn-sm mar-left-5"
                                                    data-ope="no_pay">设为未付款</a>
                                             @endif
                                             @if($order->shipping_status == 0)

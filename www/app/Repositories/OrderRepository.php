@@ -12,35 +12,44 @@ use App\Contracts\OrderRepositoryInterface;
 use App\Http\Models\Shop\MerchantsShopInformationModel;
 use App\Http\Models\Shop\OrderGoodsModel;
 use App\Http\Models\Shop\OrderInfoModel;
+use App\Http\Models\Shop\PaymentModel;
 use App\Http\Models\Shop\RegionsModel;
 use App\Http\Models\Shop\TradeSnapshotModel;
+use App\Http\Models\Shop\UserAccountModel;
 use App\Http\Models\Shop\UsersModel;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class OrderRepository implements OrderRepositoryInterface
 {
     private $orderInfoModel;
     private $orderGoodsModel;
     private $usersModel;
+    private $userAccountModel;
     private $regionsModel;
     private $merchantsShopInformationModel;
     private $tradeSnapshotModel;
+    private $paymentModel;
 
     public function __construct(
         OrderInfoModel $orderInfoModel,
         OrderGoodsModel $orderGoodsModel,
         UsersModel $usersModel,
+        UserAccountModel $userAccountModel,
         RegionsModel $regionsModel,
         MerchantsShopInformationModel $merchantsShopInformationModel,
-        TradeSnapshotModel $tradeSnapshotModel
+        TradeSnapshotModel $tradeSnapshotModel,
+        PaymentModel $paymentModel
     )
     {
         $this->orderInfoModel = $orderInfoModel;
         $this->orderGoodsModel = $orderGoodsModel;
         $this->usersModel = $usersModel;
+        $this->userAccountModel = $userAccountModel;
         $this->regionsModel = $regionsModel;
         $this->merchantsShopInformationModel = $merchantsShopInformationModel;
         $this->tradeSnapshotModel = $tradeSnapshotModel;
+        $this->paymentModel = $paymentModel;
     }
 
     public function getOrdersByPage($search, $parame = [])
@@ -210,7 +219,7 @@ class OrderRepository implements OrderRepositoryInterface
         return $req;
     }
 
-    public function change($data)
+    public function change($data, $admin)
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
         $updata = [];
@@ -252,17 +261,64 @@ class OrderRepository implements OrderRepositoryInterface
                     $updata['order_amount'] = $updata['goods_amount'] + $updata['tax'] + $updata['shipping_fee'] + $updata['insure_fee'] + $updata['pay_fee'] - $updata['discount'] - $updata['surplus'] - $updata['integral_money'] - $updata['bonus'] - $updata['coupons'] - $updata['integral_money'] - $updata['money_paid'];
                     break;
                 case 'operation':
-                    switch ($data['value']){
+                    switch ($data['value']) {
                         case 'sure':
                             $updata['order_status'] = Config::get('define.OS_CONFIRMED');
                             break;
                         case 'pay':
+                            $order = $this->orderInfoModel->getOrderInfo(['order_id' => $data['id']]);
                             $updata['pay_status'] = Config::get('define.PS_PAYED');
                             $updata['order_status'] = Config::get('define.OS_CONFIRMED');
+                            $updata['money_paid'] = $order->order_amount;
+                            $updata['order_amount'] = 0;
                             $updata['pay_time'] = time();
                             break;
                         case 'no_pay':
+                            $order = $this->orderInfoModel->getOrderInfo(['order_id' => $data['id']]);
                             $updata['pay_status'] = Config::get('define.PS_UNPAYED');
+                            $updata['money_paid'] = 0;
+                            $updata['order_amount'] = $order->money_paid;
+                            $return_money = $order->money_paid - $order->tax;
+                            $ope_type = [];
+                            foreach ($data['nopay'] as $key => $value) {
+                                $ope_type[$value['name']] = $value['value'];
+                            }
+                            if ($ope_type['is_shipping'] == 0) {
+                                $return_money = $return_money - $order->shipping_fee;
+                            }
+                            if ($ope_type['refund'] == 1) {
+                                DB::beginTransaction();
+                                $res = $this->usersModel->setUser(['user_id' => $order->user_id], ['user_money' => 'user_money' + $return_money]);
+                                $re = $this->orderInfoModel->setOrderInfo($where, $updata);
+                                if ($re && $res) {
+                                    DB::commit();
+                                    $req = ['code' => 1, 'msg' => '操作成功'];
+                                } else {
+                                    DB::rollBack();
+                                }
+                                return $req;
+                            } elseif ($ope_type['refund'] == 2) {
+                                $account['user_id'] = $order->user_id;
+                                $account['admin_user'] = $admin->user_name;
+                                $account['amount'] = -$return_money;
+                                $account['add_time'] = time();
+                                $account['process_type'] = 1;
+                                $payment = $this->paymentModel->getPayment([]);
+                                $account['payment'] = $payment->pay_name;
+                                $account['is_paid'] = $payment->pay_id;
+                                DB::beginTransaction();
+                                $are = $this->userAccountModel->addAccount($account);
+                                $ure = $this->usersModel->setUser(['user_id' => $order->user_id], ['frozen_money' => 'frozen_money' + $return_money]);
+                                $re = $this->orderInfoModel->setOrderInfo($where, $updata);
+                                if ($re && $ure && $are) {
+                                    DB::commit();
+                                    $req = ['code' => 1, 'msg' => '操作成功'];
+                                } else {
+                                    DB::rollBack();
+                                }
+                                return $req;
+                            }
+                            dd($data['nopay']);
                             break;
                         case 'prepare':
                             $updata['shipping_status'] = Config::get('define.SS_PREPARING');

@@ -184,6 +184,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('order/otheredit/{id}', 'OrderController@otherEdit');
     Route::get('order/moneyedit/{id}', 'OrderController@moneyEdit');
     Route::get('order/feeedit/{id}', 'OrderController@feeEdit');
+    Route::get('order/nopay/{id}', 'OrderController@nopayEdit');
     Route::post('order/changes', 'OrderController@changes');
     Route::post('order/change', 'OrderController@change');
     Route::resource('order', 'OrderController');

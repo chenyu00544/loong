@@ -61,7 +61,7 @@ class OrderController extends CommonController
 
     public function change(Request $request)
     {
-        return $this->orderRepository->change($request->except('_token'));
+        return $this->orderRepository->change($request->except('_token'), $this->user);
     }
 
     public function paymentEdit($id)
@@ -105,6 +105,12 @@ class OrderController extends CommonController
     {
         $order = $this->orderRepository->getOrder($id);
         return view('shop.admin.order.feeEdit', compact('order'));
+    }
+
+    public function nopayEdit($id)
+    {
+        $order = $this->orderRepository->getOrder($id);
+        return view('shop.admin.order.nopayEdit', compact('order'));
     }
 
     /**

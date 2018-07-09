@@ -37,6 +37,13 @@ class UsersModel extends Model
         return $this->create($data);
     }
 
+    public function setUserMoney($where, $user_money)
+    {
+        $re = $this->where($where)->first();
+        $res = $this->where($where)->update(['user_money' => ($re->user_money + $user_money)]);
+        return $res;
+    }
+
     public function delUser($where)
     {
         return $this->where($where)->delete();
