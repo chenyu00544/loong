@@ -144,7 +144,7 @@
                                     <td class="td-number text-center">
                                         <div>{{$goods->goods_number}}</div>
                                     </td>
-                                    <td class="text-center"f>
+                                    <td class="text-center" f>
                                         <div>
                                             <div></div>
                                         </div>
@@ -222,8 +222,13 @@
                                         <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
                                             <div>
                                                 <div class="btn-wrap">
-                                                    <p><a href="{{url('admin/order/'.$order->order_id.'/edit')}}"
-                                                          class="btn btn-info">查看</a>
+                                                    <p>
+                                                        <a href="{{url('admin/order/'.$order->order_id.'/edit')}}"
+                                                           class="btn btn-info">查看</a>
+                                                        @if($order->order_status == 2 || $order->order_status == 3)
+                                                            <a href="Javascript:;" data-id="{{$order->order_id}}"
+                                                               class="btn btn-danger mar-top-20 btn-del">移除</a>
+                                                        @endif
                                                     </p>
                                                 </div>
                                             </div>

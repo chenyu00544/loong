@@ -10,7 +10,7 @@
                           class="form-horizontal">
                         {{csrf_field()}}
 
-                        <input type="hidden" name="order_id" value="{{$order->ret_id}}">
+                        <input type="hidden" name="order_id" value="{{$rorder->ret_id}}">
 
                         <div class="order-step clearfix mar-bt-50">
                             <div class="step-title">
@@ -20,16 +20,15 @@
                             <div class="section">
                                 <dl>
                                     <dt>退货时间：</dt>
-                                    <dd></dd>
+                                    <dd>{{date('Y-m-d H:i:s', $order->add_time)}}</dd>
                                     <dt>购货人：</dt>
-                                    <dd></dd>
+                                    <dd>{{$user->user_name}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>流水号：</dt>
-                                    <dd></dd>
+                                    <dd>{{$rorder->return_sn}}</dd>
                                     <dt>配送费用：</dt>
-                                    <dd>
-                                    </dd>
+                                    <dd></dd>
                                 </dl>
                                 <dl>
                                     <dt>下单时间：</dt>
@@ -79,8 +78,7 @@
                                 </dl>
                                 <dl>
                                     <dt>收货地址：</dt>
-                                    <dd>[{{$province['name']}} {{$city['name']}} {{$district['name']}}
-                                        ] {{$order->address}}</dd>
+                                    <dd></dd>
                                     <dt>买家留言：</dt>
                                     <dd></dd>
                                 </dl>

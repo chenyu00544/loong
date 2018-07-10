@@ -118,7 +118,7 @@ class OrderController extends CommonController
     {
         $seller = $id;
         $search['keywords'] = $request->get('keywords');;
-        $orders = $this->orderRepository->getOrdersByPage($search, [$seller]);
+        $orders = $this->orderRepository->getDeliveryOrdersByPage($search, [$seller]);
         return view('shop.admin.order.orderDelivery', compact('orders', 'seller', 'search'));
     }
 
@@ -138,14 +138,15 @@ class OrderController extends CommonController
 
     public function returnInfo($id)
     {
-        $order = $this->orderRepository->getReturnOrder($id);
-        $orderGoodses = $this->orderRepository->getOrderGoodses($order->order_id);
-        $province = $this->regionsRepository->getArea($order->province);
-        $city = $this->regionsRepository->getArea($order->city);
-        $district = $this->regionsRepository->getArea($order->district);
-        $user = $this->usersRepository->getUser($order->user_id);
-        $returnGoodses = $this->orderRepository->getOrderReturnGoodses($order->ret_id);
-        return view('shop.admin.order.orderReturnInfo', compact('order', 'orderGoodses', 'province', 'city', 'district', 'user', 'returnGoodses'));
+        $rorder = $this->orderRepository->getReturnOrder($id);
+        $order = $this->orderRepository->getOrder($rorder->order_id);
+        $orderGoodses = $this->orderRepository->getOrderGoodses($rorder->order_id);
+        $province = $this->regionsRepository->getArea($rorder->province);
+        $city = $this->regionsRepository->getArea($rorder->city);
+        $district = $this->regionsRepository->getArea($rorder->district);
+        $user = $this->usersRepository->getUser($rorder->user_id);
+        $returnGoodses = $this->orderRepository->getOrderReturnGoodses($rorder->ret_id);
+        return view('shop.admin.order.orderReturnInfo', compact('order', 'rorder', 'orderGoodses', 'province', 'city', 'district', 'user', 'returnGoodses'));
     }
 
     /**
@@ -228,6 +229,6 @@ class OrderController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->orderRepository->delOrder($id);
     }
 }

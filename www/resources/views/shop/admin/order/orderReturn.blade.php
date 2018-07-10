@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商品管理 - 商品列表</div>
+        <div class="title">退货单管理 - 退货单列表</div>
         <div class="content">
             <div class="tabs mar-top-5">
                 <ul class="fl">

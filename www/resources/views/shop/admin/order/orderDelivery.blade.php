@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商品管理 - 商品列表</div>
+        <div class="title">发货单管理 - 发货单列表</div>
         <div class="content">
             <div class="tabs mar-top-5">
                 <ul class="fl">
@@ -27,7 +27,7 @@
             <div class="fromlist clearfix">
                 <div class="clearfix mar-bt-20">
                     <div class="fr wd250">
-                        <form action="{{url('admin/order/'.$seller)}}" method="get">
+                        <form action="{{url('admin/order/delivery/'.$seller)}}" method="get">
                             {{csrf_field()}}
 
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
@@ -40,17 +40,18 @@
                     <table class="table table-hover table-condensed" style="margin-bottom: 2px">
                         <thead>
                         <tr>
-                            <th width="19%">编号</th>
-                            <th width="8%" class="text-center">商家名称</th>
-                            <th width="6%" class="text-center">类型</th>
-                            <th width="10%" class="text-center">申请信息</th>
-                            <th width="6%" class="text-center">应退金额</th>
-                            <th width="6%" class="text-center">实退金额</th>
-                            <th width="6%" class="text-center">数量</th>
-                            <th width="20%" class="text-center">收货人</th>
-                            <th width="7%" class="text-center">退款方式</th>
-                            <th width="7%" class="text-center">订单状态</th>
-                            <th width="5%" class="text-center">操作</th>
+                            <th width="3%">
+                                <input type="checkbox" name="all_list" class="checkbox check-all">
+                            </th>
+                            <th width="10%">发货单流水号</th>
+                            <th width="12%">订单号</th>
+                            <th width="10%">商家名称</th>
+                            <th width="12%">下单时间</th>
+                            <th width="12%">收货人</th>
+                            <th width="12%">发货时间</th>
+                            <th width="8%">状态</th>
+                            <th width="8%">操作人</th>
+                            <th width="10%" class="text-center">操作</th>
                         </tr>
                         </thead>
                         @if($orders->count() == 0)
@@ -64,32 +65,36 @@
                             @foreach($orders as $order)
                                 <tr class="">
                                     <td>
-                                        <div>流水号：</div>
-                                        <div>订单号：</div>
+                                        <input type="checkbox" name="checkboxes" value="{{$order->delivery_id}}"
+                                               class="checkbox check-all-list fl" id="checkbox_{{$order->delivery_id}}">
                                     </td>
-                                    <td>绿联专卖店</td>
-                                    <td>退货</td>
-                                    <td>
-                                        <div>申请人：</div>
-                                        <div>申请时间：</div>
-                                    </td>
-                                    <td>¥149.00</td>
-                                    <td>¥149.00</td>
-                                    <td>1</td>
-                                    <td>test [TEL: 18858786747]
-                                        甘肃 白银 白银区
-                                    </td>
-                                    <td>退回到余额</td>
-                                    <td>由用户寄回- <b>未退款</b></td>
-                                    <td>
-                                        <a type="button" href="{{url('admin/order/returninfo/'.$order->ret_id)}}"
-                                           class="btn btn-info btn-edit btn-sm">查看</a>
+                                    <td>{{$order->delivery_sn}}</td>
+                                    <td>{{$order->order_sn}}</td>
+                                    <td>{{$order->shop_info->rz_shopName.$order->shop_info->shopNameSuffix}}</td>
+                                    <td>{{date('Y-m-d H:i:s', $order->order->pay_time)}}</td>
+                                    <td>{{$order->consignee}}</td>
+                                    <td>{{date('Y-m-d H:i:s', $order->add_time)}}</td>
+                                    <td>@if($order->status == 0) 已发货 @elseif($order->status == 1) 退货 @elseif($order->status == 2) 正常 @endif</td>
+                                    <td>{{$order->action_user}}</td>
+                                    <td class="text-center">
+                                        <a type="button" href="{{url('admin/order/delivery/info/'.$order->delivery_id)}}" class="btn btn-info btn-edit btn-sm">查看</a>
+                                        <a type="button" href="javascript:;" class="btn btn-danger btn-del btn-sm">删除</a>
                                     </td>
                                 </tr>
                             @endforeach
                             </tbody>
                         @endif
                     </table>
+                    <div class="clearfix bg-color-dray pad-top-4 bt-batch">
+                        <div class="fl">
+                            <a type="button" class="btn btn-primary btn-delete btn-sm mar-all-8"
+                               disabled="disabled" data-type="delete">删除</a>
+                        </div>
+                        <div class="fl">
+                            <a type="button" class="btn btn-primary btn-batch btn-sm mar-all-8"
+                               disabled="disabled" data-type="batch">批量发货</a>
+                        </div>
+                    </div>
                     <div class="page_list">
                         {{$orders->links()}}
                     </div>
@@ -117,11 +122,6 @@
                 }
 
                 var select_type = $(this).data('type');
-                if (select_type == 'print') {
-                    return;
-                } else if (select_type == 'print_shipping') {
-                    return;
-                }
                 if (order_ids.length > 0) {
                     $.post(
                         '{{url("admin/order/changes")}}',

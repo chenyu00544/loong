@@ -9,6 +9,8 @@
 namespace App\Repositories;
 
 use App\Contracts\OrderRepositoryInterface;
+use App\Http\Models\Shop\DeliveryGoodsModel;
+use App\Http\Models\Shop\DeliveryOrderModel;
 use App\Http\Models\Shop\MerchantsShopInformationModel;
 use App\Http\Models\Shop\OrderGoodsModel;
 use App\Http\Models\Shop\OrderInfoModel;
@@ -26,6 +28,8 @@ class OrderRepository implements OrderRepositoryInterface
 {
     private $orderInfoModel;
     private $orderGoodsModel;
+    private $deliveryOrderModel;
+    private $deliveryGoodsModel;
     private $orderReturnModel;
     private $orderReturnGoodsModel;
     private $usersModel;
@@ -38,6 +42,8 @@ class OrderRepository implements OrderRepositoryInterface
     public function __construct(
         OrderInfoModel $orderInfoModel,
         OrderGoodsModel $orderGoodsModel,
+        DeliveryOrderModel $deliveryOrderModel,
+        DeliveryGoodsModel $deliveryGoodsModel,
         OrderReturnModel $orderReturnModel,
         OrderReturnGoodsModel $orderReturnGoodsModel,
         UsersModel $usersModel,
@@ -50,6 +56,8 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $this->orderInfoModel = $orderInfoModel;
         $this->orderGoodsModel = $orderGoodsModel;
+        $this->deliveryOrderModel = $deliveryOrderModel;
+        $this->deliveryGoodsModel = $deliveryGoodsModel;
         $this->orderReturnModel = $orderReturnModel;
         $this->orderReturnGoodsModel = $orderReturnGoodsModel;
         $this->usersModel = $usersModel;
@@ -67,11 +75,9 @@ class OrderRepository implements OrderRepositoryInterface
         foreach ($parame as $val) {
             switch ($val) {
                 case 'selfsale':
-//                    $where[] = ['order_info.user_id', '=', '0'];
                     $where[] = ['ru_id', '=', '0'];
                     break;
                 case 'seller':
-//                    $where[] = ['order_info.user_id', '<>', '0'];
                     $where[] = ['ru_id', '<>', '0'];
                     break;
                 case '0':
@@ -143,6 +149,35 @@ class OrderRepository implements OrderRepositoryInterface
         return $req;
     }
 
+    public function getDeliveryOrdersByPage($search, $parame = [])
+    {
+        $where = [];
+        foreach ($parame as $val) {
+            switch ($val) {
+                case 'selfsale':
+                    $where[] = ['ru_id', '=', '0'];
+                    break;
+                case 'seller':
+                    $where[] = ['ru_id', '<>', '0'];
+                    break;
+                default:
+                    break;
+            }
+        }
+        $req = $this->deliveryOrderModel->getDeliveryOrderByPage($where, $search);
+        foreach ($req as $key => $value) {
+            $user = $this->usersModel->getUser(['user_id' => $value->user_id]);
+            $req[$key]->user = $user;
+            //获取商品所属店铺名称
+            $merchantsShopInfo = $this->merchantsShopInformationModel->getMerchantsShopInfo(['user_id' => $value->ru_id]);
+            $req[$key]->shop_info = $merchantsShopInfo;
+
+            $order = $this->orderInfoModel->getOrderInfo(['order_id' => $value->order_id]);
+            $req[$key]->order = $order;
+        }
+        return $req;
+    }
+
     public function getReturnOrdersByPage($search, $parame = [])
     {
         $where = [];
@@ -163,7 +198,7 @@ class OrderRepository implements OrderRepositoryInterface
 
             $returnGoodses = $this->orderReturnGoodsModel->getOrderReturnGoodses(['ret_id' => $value->ret_id]);
             $returnNum = 0;
-            foreach ($returnGoodses as $returnGoods){
+            foreach ($returnGoodses as $returnGoods) {
                 $returnNum += $returnGoods->return_number;
             }
             $req[$key]->return_number = $returnNum;
@@ -419,6 +454,18 @@ class OrderRepository implements OrderRepositoryInterface
             }
         }
         $re = $this->orderInfoModel->setOrderInfo($where, $updata);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
+
+    public function delOrder($id)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $where['order_id'] = $id;
+        $this->orderGoodsModel->delOrderGoods($where);
+        $re = $this->orderInfoModel->delOrderInfo($where);
         if ($re) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
