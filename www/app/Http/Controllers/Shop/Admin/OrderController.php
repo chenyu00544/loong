@@ -48,9 +48,9 @@ class OrderController extends CommonController
     {
         $seller = 'selfsale';
         $navType = '0';
-        $search['keywords'] = '';
+        $search['keywords'] = $request->get('keywords');
         $searchNav = $this->orderRepository->getSearchNav($seller);
-        $orders = $this->orderRepository->getOrdersByPage($request->get('keywords'), [$seller, $navType]);
+        $orders = $this->orderRepository->getOrdersByPage($search, [$seller, $navType]);
         return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders'));
     }
 
@@ -113,6 +113,41 @@ class OrderController extends CommonController
         return view('shop.admin.order.nopayEdit', compact('order'));
     }
 
+    //发货单列表
+    public function orderDelivery(Request $request, $id)
+    {
+        $seller = $id;
+        $search['keywords'] = $request->get('keywords');;
+        $orders = $this->orderRepository->getOrdersByPage($search, [$seller]);
+        return view('shop.admin.order.orderDelivery', compact('orders', 'seller', 'search'));
+    }
+
+    public function deliveryInfo($id)
+    {
+
+    }
+
+    //退货单列表
+    public function orderReturn(Request $request, $id)
+    {
+        $seller = $id;
+        $search['keywords'] = $request->get('keywords');;
+        $orders = $this->orderRepository->getReturnOrdersByPage($search, [$seller]);
+        return view('shop.admin.order.orderReturn', compact('orders', 'seller', 'search'));
+    }
+
+    public function returnInfo($id)
+    {
+        $order = $this->orderRepository->getReturnOrder($id);
+        $orderGoodses = $this->orderRepository->getOrderGoodses($order->order_id);
+        $province = $this->regionsRepository->getArea($order->province);
+        $city = $this->regionsRepository->getArea($order->city);
+        $district = $this->regionsRepository->getArea($order->district);
+        $user = $this->usersRepository->getUser($order->user_id);
+        $returnGoodses = $this->orderRepository->getOrderReturnGoodses($order->ret_id);
+        return view('shop.admin.order.orderReturnInfo', compact('order', 'orderGoodses', 'province', 'city', 'district', 'user', 'returnGoodses'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -149,7 +184,7 @@ class OrderController extends CommonController
         } else {
             $navType = $id;
         }
-        $search['keywords'] = $request->get('keywords');;
+        $search['keywords'] = $request->get('keywords');
         $searchNav = $this->orderRepository->getSearchNav($seller);
         $orders = $this->orderRepository->getOrdersByPage($search, [$seller, $navType]);
         $orders->appends(['keywords' => $search['keywords']]);

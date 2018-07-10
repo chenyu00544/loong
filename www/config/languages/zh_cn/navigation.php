@@ -73,11 +73,11 @@ return array(
         ),
         'delivery' => array(
             'name' => '发货单列表',
-            'url' => 'admin/order/delivery',
+            'url' => 'admin/order/delivery/selfsale',
         ),
         'back' => array(
             'name' => '退货单列表',
-            'url' => 'admin/order/back',
+            'url' => 'admin/order/return/selfsale',
         ),
     ),
 

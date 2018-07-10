@@ -12,6 +12,8 @@ use App\Contracts\OrderRepositoryInterface;
 use App\Http\Models\Shop\MerchantsShopInformationModel;
 use App\Http\Models\Shop\OrderGoodsModel;
 use App\Http\Models\Shop\OrderInfoModel;
+use App\Http\Models\Shop\OrderReturnGoodsModel;
+use App\Http\Models\Shop\OrderReturnModel;
 use App\Http\Models\Shop\PaymentModel;
 use App\Http\Models\Shop\RegionsModel;
 use App\Http\Models\Shop\TradeSnapshotModel;
@@ -24,6 +26,8 @@ class OrderRepository implements OrderRepositoryInterface
 {
     private $orderInfoModel;
     private $orderGoodsModel;
+    private $orderReturnModel;
+    private $orderReturnGoodsModel;
     private $usersModel;
     private $userAccountModel;
     private $regionsModel;
@@ -34,6 +38,8 @@ class OrderRepository implements OrderRepositoryInterface
     public function __construct(
         OrderInfoModel $orderInfoModel,
         OrderGoodsModel $orderGoodsModel,
+        OrderReturnModel $orderReturnModel,
+        OrderReturnGoodsModel $orderReturnGoodsModel,
         UsersModel $usersModel,
         UserAccountModel $userAccountModel,
         RegionsModel $regionsModel,
@@ -44,6 +50,8 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $this->orderInfoModel = $orderInfoModel;
         $this->orderGoodsModel = $orderGoodsModel;
+        $this->orderReturnModel = $orderReturnModel;
+        $this->orderReturnGoodsModel = $orderReturnGoodsModel;
         $this->usersModel = $usersModel;
         $this->userAccountModel = $userAccountModel;
         $this->regionsModel = $regionsModel;
@@ -60,11 +68,11 @@ class OrderRepository implements OrderRepositoryInterface
             switch ($val) {
                 case 'selfsale':
 //                    $where[] = ['order_info.user_id', '=', '0'];
-                    $where[] = ['user_id', '=', '0'];
+                    $where[] = ['ru_id', '=', '0'];
                     break;
                 case 'seller':
 //                    $where[] = ['order_info.user_id', '<>', '0'];
-                    $where[] = ['user_id', '<>', '0'];
+                    $where[] = ['ru_id', '<>', '0'];
                     break;
                 case '0':
                     break;
@@ -135,10 +143,50 @@ class OrderRepository implements OrderRepositoryInterface
         return $req;
     }
 
+    public function getReturnOrdersByPage($search, $parame = [])
+    {
+        $where = [];
+        foreach ($parame as $val) {
+            switch ($val) {
+                case 'selfsale':
+                    $where[] = ['ru_id', '=', '0'];
+                    break;
+                case 'seller':
+                    $where[] = ['ru_id', '<>', '0'];
+                    break;
+                default:
+                    break;
+            }
+        }
+        $req = $this->orderReturnModel->getOrderReturnByPage($where, $search);
+        foreach ($req as $key => $value) {
+
+            $returnGoodses = $this->orderReturnGoodsModel->getOrderReturnGoodses(['ret_id' => $value->ret_id]);
+            $returnNum = 0;
+            foreach ($returnGoodses as $returnGoods){
+                $returnNum += $returnGoods->return_number;
+            }
+            $req[$key]->return_number = $returnNum;
+            $user = $this->usersModel->getUser(['user_id' => $value->user_id]);
+            $req[$key]->user = $user;
+
+            $req[$key]->province = $this->regionsModel->getRegion($value->province)->region_name;
+            $req[$key]->city = $this->regionsModel->getRegion($value->city)->region_name;
+            $req[$key]->district = $this->regionsModel->getRegion($value->district)->region_name;
+        }
+        return $req;
+    }
+
     public function getOrder($id)
     {
         $where['order_id'] = $id;
         return $this->orderInfoModel->getOrderInfo($where);
+    }
+
+    public function getReturnOrder($id)
+    {
+        $where['ret_id'] = $id;
+        return $this->orderReturnModel->getReturnOrder($where);
     }
 
     public function getOrderGoodses($id)
@@ -146,6 +194,13 @@ class OrderRepository implements OrderRepositoryInterface
         $where['order_id'] = $id;
         $column = ['*'];
         return $this->orderGoodsModel->getOrderGoodses($where, $column);
+    }
+
+    public function getOrderReturnGoodses($id)
+    {
+        $where['ret_id'] = $id;
+        $column = ['*'];
+        return $this->orderReturnGoodsModel->getOrderReturnGoodses($where, $column);
     }
 
     public function getSearchNav($seller)
@@ -346,7 +401,7 @@ class OrderRepository implements OrderRepositoryInterface
                             break;
                         case 'delete':
                             $order = $this->orderInfoModel->getOrderInfo($where);
-                            if($order->order_status ==2||$order->order_status ==3){
+                            if ($order->order_status == 2 || $order->order_status == 3) {
                                 $res = $this->orderGoodsModel->delOrderGoods($where);
                                 $re = $this->orderInfoModel->delOrderInfo($where);
                                 if ($re) {
