@@ -218,6 +218,12 @@ class OrderRepository implements OrderRepositoryInterface
         return $this->orderInfoModel->getOrderInfo($where);
     }
 
+    public function getDeliveryOrder($id)
+    {
+        $where['delivery_id'] = $id;
+        return $this->deliveryOrderModel->getDeliveryOrder($where);
+    }
+    
     public function getReturnOrder($id)
     {
         $where['ret_id'] = $id;
@@ -236,6 +242,13 @@ class OrderRepository implements OrderRepositoryInterface
         $where['ret_id'] = $id;
         $column = ['*'];
         return $this->orderReturnGoodsModel->getOrderReturnGoodses($where, $column);
+    }
+
+    public function getDeliveryGoodses($id)
+    {
+        $where['delivery_id'] = $id;
+        $column = ['*'];
+        return $this->deliveryGoodsModel->getDeliveryGoodses($where, $column);
     }
 
     public function getSearchNav($seller)
@@ -460,12 +473,76 @@ class OrderRepository implements OrderRepositoryInterface
         return $req;
     }
 
+    public function deliveryChange($data)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $updata = [];
+        $where['delivery_id'] = $data['id'];
+        switch ($data['type']) {
+            case 'ship':
+                if($data['value'] == 'ship'){
+                    $updata['status'] = 0;
+                }else{
+                    $updata['status'] = 2;
+                }
+                $updata['invoice_no'] = $data['invoice_no'];
+                $updata['update_time'] = time();
+                break;
+            default:
+                break;
+        }
+
+        $re = $this->deliveryOrderModel->setDeliveryOrder($where, $updata);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
+
+    public function returnChange($data)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $updata = [];
+        $where['delivery_id'] = $data['id'];
+        switch ($data['type']) {
+            case 'ship':
+                if($data['value'] == 'ship'){
+                    $updata['status'] = 0;
+                }else{
+                    $updata['status'] = 2;
+                }
+                $updata['invoice_no'] = $data['invoice_no'];
+                $updata['update_time'] = time();
+                break;
+            default:
+                break;
+        }
+
+        $re = $this->deliveryOrderModel->setDeliveryOrder($where, $updata);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
+
     public function delOrder($id)
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where['order_id'] = $id;
         $this->orderGoodsModel->delOrderGoods($where);
         $re = $this->orderInfoModel->delOrderInfo($where);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
+
+    public function delDelivery($id)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $where['order_id'] = $id;
+        $this->deliveryGoodsModel->delDeliveryGoods($where);
+        $re = $this->deliveryOrderModel->delDelivery($where);
         if ($re) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }

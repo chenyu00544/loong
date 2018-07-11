@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="{{url('styles/admin/images/favicon.gif')}}" type="image/gif">
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/static/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.css')}}">
     <link rel="stylesheet" href="{{asset('styles/plugin/nyroModal/styles/nyroModal.css')}}">

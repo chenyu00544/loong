@@ -7,7 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class DeliveryGoodsModel extends Model
 {
     protected $table = 'delivery_goods';
-    protected $primaryKey = 'delivery_id';
+    protected $primaryKey = 'rec_id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function getDeliveryGoodses($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->join('goods','goods.goods_id','=','delivery_goods.goods_id')
+            ->where($where)
+            ->get();
+    }
+
+    public function delDeliveryGoods($where)
+    {
+        return $this->where($where)->delete();
+    }
 }

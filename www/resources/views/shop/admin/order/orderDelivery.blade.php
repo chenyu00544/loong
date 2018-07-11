@@ -180,17 +180,18 @@
 
             //删除
             $('.btn-del').click(function () {
+                var that = this;
                 var Id = $(this).data('id');
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/order/')}}/" + Id,
+                        "{{url('admin/order/delivery/del/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
                             setTimeout(function () {
-                                location.href = location.href;
+                                $(that).parent().parent().remove();
                             }, 1000);
                         });
                 }, function () {

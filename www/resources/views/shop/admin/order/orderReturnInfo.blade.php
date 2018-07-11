@@ -32,21 +32,21 @@
                                 </dl>
                                 <dl>
                                     <dt>下单时间：</dt>
-                                    <dd></dd>
+                                    <dd>{{date('Y-m-d H:i:s', $rorder->pay_time)}}</dd>
                                     <dt>订单状态：</dt>
                                     <dd></dd>
                                 </dl>
                                 <dl>
                                     <dt>订单号：</dt>
-                                    <dd></dd>
+                                    <dd>{{$order->order_sn}}</dd>
                                     <dt>退换货配送方式：</dt>
-                                    <dd></dd>
+                                    <dd>0.00</dd>
                                 </dl>
                                 <dl>
                                     <dt>退换货申请时间：</dt>
-                                    <dd></dd>
+                                    <dd>{{date('Y-m-d H:i:s', $rorder->apply_time)}}</dd>
                                     <dt>退换货发货单号：</dt>
-                                    <dd></dd>
+                                    <dd>{{$rorder->back_invoice_no}}</dd>
                                 </dl>
                                 <dl>
                                     <dt></dt>

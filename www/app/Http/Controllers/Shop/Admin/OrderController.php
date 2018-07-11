@@ -124,7 +124,24 @@ class OrderController extends CommonController
 
     public function deliveryInfo($id)
     {
+        $dorder = $this->orderRepository->getDeliveryOrder($id);
+        $order = $this->orderRepository->getOrder($dorder->order_id);
+        $province = $this->regionsRepository->getArea($dorder->province);
+        $city = $this->regionsRepository->getArea($dorder->city);
+        $district = $this->regionsRepository->getArea($dorder->district);
+        $user = $this->usersRepository->getUser($dorder->user_id);
+        $deliveryGoodses = $this->orderRepository->getDeliveryGoodses($dorder->delivery_id);
+        return view('shop.admin.order.orderDeliveryInfo', compact('order', 'dorder', 'province', 'city', 'district', 'user', 'deliveryGoodses'));
+    }
 
+    public function deliveryChange(Request $request)
+    {
+        return $this->orderRepository->deliveryChange($request->except('_token'));
+    }
+
+    public function deliveryDel($id)
+    {
+        return $this->orderRepository->delDelivery($id);
     }
 
     //退货单列表
@@ -147,6 +164,11 @@ class OrderController extends CommonController
         $user = $this->usersRepository->getUser($rorder->user_id);
         $returnGoodses = $this->orderRepository->getOrderReturnGoodses($rorder->ret_id);
         return view('shop.admin.order.orderReturnInfo', compact('order', 'rorder', 'orderGoodses', 'province', 'city', 'district', 'user', 'returnGoodses'));
+    }
+
+    public function returnChange(Request $request)
+    {
+        return $this->orderRepository->returnChange($request->except('_token'));
     }
 
     /**

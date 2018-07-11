@@ -14,6 +14,7 @@ class OrderReturnGoodsModel extends Model
     public function getOrderReturnGoodses($where, $column = ['*'])
     {
         return $this->select($column)
+            ->join('goods','goods.goods_id','=','order_return_goods.goods_id')
             ->where($where)
             ->get();
     }
