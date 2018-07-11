@@ -28,25 +28,40 @@
                                     <dt>流水号：</dt>
                                     <dd>{{$rorder->return_sn}}</dd>
                                     <dt>配送费用：</dt>
-                                    <dd></dd>
+                                    <dd>{{$dorder->shipping_fee}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>下单时间：</dt>
                                     <dd>{{date('Y-m-d H:i:s', $rorder->pay_time)}}</dd>
                                     <dt>订单状态：</dt>
-                                    <dd></dd>
+                                    <dd>
+                                        @if($rorder->return_status == 0)
+                                            由用户寄回
+                                        @elseif($rorder->return_status == 1)
+                                            收到退换货
+                                        @elseif($rorder->return_status == 2)
+                                            换出商品寄出[分单]
+                                        @elseif($rorder->return_status == 3)
+                                            换出商品寄出
+                                        @elseif($rorder->return_status == 4)
+                                            完成
+                                        @endif
+                                    </dd>
                                 </dl>
                                 <dl>
                                     <dt>订单号：</dt>
-                                    <dd>{{$order->order_sn}}</dd>
+                                    <dd>{{$rorder->order_sn}}</dd>
                                     <dt>退换货配送方式：</dt>
-                                    <dd>0.00</dd>
+                                    <dd>{{$rorder->back_shipping_name}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>退换货申请时间：</dt>
                                     <dd>{{date('Y-m-d H:i:s', $rorder->apply_time)}}</dd>
                                     <dt>退换货发货单号：</dt>
-                                    <dd>{{$rorder->back_invoice_no}}</dd>
+                                    <dd><input type="text" name="invoice_no"
+                                               class="form-control input-sm wdh60 mar-top-5 hg25"
+                                               value="{{$rorder->back_invoice_no}}"
+                                               disabled></dd>
                                 </dl>
                                 <dl>
                                     <dt></dt>
@@ -66,21 +81,22 @@
                             <div class="section">
                                 <dl>
                                     <dt>收货人：</dt>
-                                    <dd></dd>
+                                    <dd>{{$rorder->addressee}}</dd>
                                     <dt>手机号码：</dt>
-                                    <dd></dd>
+                                    <dd>{{$rorder->phone}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>邮政编码：</dt>
-                                    <dd></dd>
+                                    <dd>{{$rorder->zipcode}}</dd>
                                     <dt>问题描述：</dt>
-                                    <dd></dd>
+                                    <dd>{{$rorder->return_brief}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>收货地址：</dt>
-                                    <dd></dd>
+                                    <dd>[{{$province['name'] .' '. $city['name'] . ' ' . $district['name']}}
+                                        ] {{$rorder->address}}</dd>
                                     <dt>买家留言：</dt>
-                                    <dd></dd>
+                                    <dd>{{$rorder->remark}}</dd>
                                 </dl>
                                 <dl>
                                     <dt></dt>
@@ -126,51 +142,44 @@
                                                 <div>
                                                     <div class="img fl">
                                                         <img width="80"
-                                                             src="">
+                                                             src="{{url($orderGoods->goods_thumb)}}">
                                                     </div>
                                                     <div class="product-info">
                                                         <div class="name">
                                                             <a href="705"
-                                                               target="_blank"></a>
+                                                               target="_blank">{{$orderGoods->goods_name}}
+                                                                [{{$orderGoods->brand_name}}]</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
+                                            <td class="text-center">{{$orderGoods->goods_sn}}</td>
+                                            <td class="text-center">{{$orderGoods->product_sn}}</td>
+                                            <td class="text-center">{{$orderGoods->goods_attr}}</td>
+                                            <td class="text-center">{{$orderGoods->o_goods_number}}</td>
                                         </tr>
                                     @endforeach
-                                    <input type="hidden" name="ru_id" value="">
-                                    <tr>
-                                        <td colspan="12">
-                                            <div class="order-total fr">
-                                                <strong>合计：</strong>
-                                                <span class="red fs-18"><em>¥</em></span>
-                                            </div>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
 
-                        <div class="order-step clearfix">
+                        <div class="order-step clearfix b-b-t-e">
                             <div class="step-title">
                                 <i class="ui-step"></i>
-                                <h3>退货商品</h3>
+                                <h3>退换货商品</h3>
                             </div>
-                            <div class="order-goods">
+                            <div class="order-goods return-order-goods fl">
                                 <table class="table table-hover table-condensed">
                                     <thead>
                                     <tr>
-                                        <th width="25%">商品名称 [ 品牌 ]</th>
-                                        <th width="8%" class="text-center">货号</th>
-                                        <th width="7%" class="text-center">货品号</th>
-                                        <th width="7%" class="text-center">属性</th>
-                                        <th width="7%" class="text-center">商品价格</th>
-                                        <th width="6%" class="text-center">数量</th>
+                                        <th width="40%">商品名称 [ 品牌 ]</th>
+                                        <th width="10%" class="text-center">货号</th>
+                                        <th width="10%" class="text-center">货品号</th>
+                                        <th width="20%" class="text-center">属性</th>
+                                        <th width="12%" class="text-center">商品价格</th>
+                                        <th width="8%" class="text-center">数量</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -180,33 +189,49 @@
                                                 <div>
                                                     <div class="img fl">
                                                         <img width="80"
-                                                             src="">
+                                                             src="{{url($returnGoods->goods_thumb)}}">
                                                     </div>
                                                     <div class="product-info">
                                                         <div class="name">
                                                             <a href="705"
-                                                               target="_blank"></a>
+                                                               target="_blank">{{$returnGoods->goods_name}}
+                                                                [{{$returnGoods->brand_name}}]</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center"></td>
+                                            <td class="text-center">{{$returnGoods->goods_sn}}</td>
+                                            <td class="text-center">{{$returnGoods->product_sn}}</td>
+                                            <td class="text-center">{{$returnGoods->goods_attr}}</td>
+                                            <td class="text-center">￥{{$returnGoods->refound}}</td>
+                                            <td class="text-center">{{$returnGoods->return_number}}</td>
                                         </tr>
                                     @endforeach
-                                    <input type="hidden" name="ru_id" value="">
-                                    <tr>
-                                        <td colspan="12">
-                                            <div class="order-total fr">
-                                                <strong>合计：</strong>
-                                                <span class="red fs-18"><em>¥</em></span>
-                                            </div>
-                                        </td>
-                                    </tr>
                                     </tbody>
                                 </table>
+                            </div>
+
+                            <div class="return-order-desc fl">
+                                <div class="item">
+                                    <div class="label">买家退换货原因：</div>
+                                    <span class="red"> </span>
+                                </div>
+                                <div class="item">
+                                    <div class="label">商品退款：</div>
+                                    <span class="price"><em>¥</em>{{$rorder->should_return}}</span>
+                                    <input type="hidden" name="refound_amount" value="{{$rorder->should_return}}">
+                                </div>
+                                <div class="item">
+                                    <div class="label cl">退运费：</div>
+                                    <span class="price"><em>¥</em>{{$rorder->return_shipping_fee}}</span>
+                                    <input type="hidden" name="return_shipping_fee"
+                                           value="{{$rorder->return_shipping_fee}}">
+                                </div>
+
+                                <div class="item">
+                                    <div class="label cl">合计：</div>
+                                    <span class="price"><em>¥</em>{{$rorder->should_return+$rorder->return_shipping_fee}}</span>
+                                </div>
                             </div>
                         </div>
 

@@ -157,13 +157,14 @@ class OrderController extends CommonController
     {
         $rorder = $this->orderRepository->getReturnOrder($id);
         $order = $this->orderRepository->getOrder($rorder->order_id);
+        $dorder = $this->orderRepository->getDeliveryOrder($rorder->order_id);
         $orderGoodses = $this->orderRepository->getOrderGoodses($rorder->order_id);
         $province = $this->regionsRepository->getArea($rorder->province);
         $city = $this->regionsRepository->getArea($rorder->city);
         $district = $this->regionsRepository->getArea($rorder->district);
         $user = $this->usersRepository->getUser($rorder->user_id);
         $returnGoodses = $this->orderRepository->getOrderReturnGoodses($rorder->ret_id);
-        return view('shop.admin.order.orderReturnInfo', compact('order', 'rorder', 'orderGoodses', 'province', 'city', 'district', 'user', 'returnGoodses'));
+        return view('shop.admin.order.orderReturnInfo', compact('order', 'rorder', 'dorder', 'orderGoodses', 'province', 'city', 'district', 'user', 'returnGoodses'));
     }
 
     public function returnChange(Request $request)

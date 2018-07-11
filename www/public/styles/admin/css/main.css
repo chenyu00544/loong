@@ -272,6 +272,22 @@ input[type=checkbox], input[type=radio] {
     margin: auto;
 }
 
+.b-t-t-e {
+    border-top: 1px solid #eee;
+}
+
+.b-l-t-e {
+    border-left: 1px solid #eee;
+}
+
+.b-r-t-e {
+    border-right: 1px solid #eee;
+}
+
+.b-b-t-e {
+    border-bottom: 1px solid #eee;
+}
+
 .checkbox label, .radio label {
     min-height: 20px;
     padding-left: 20px;
@@ -2423,3 +2439,30 @@ input[type=file].upload-file {
     height: 82px;
 }
 
+.return-order-goods {
+    width: calc(100% - 470px);
+    border-right: 1px solid #eee;
+}
+
+.return-order-desc {
+    padding: 5px 0 0 20px;
+    overflow: hidden;
+}
+
+.return-order-desc .item {
+    line-height: 30px;
+    width: 100%;
+    float: left;
+}
+
+.return-order-desc .item .label {
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    width: auto;
+}
+
+.return-order-desc .price {
+    font-size: 18px;
+    color: #ec5051;
+}
