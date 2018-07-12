@@ -58,7 +58,7 @@
                                     <dt>退换货申请时间：</dt>
                                     <dd>{{date('Y-m-d H:i:s', $rorder->apply_time)}}</dd>
                                     <dt>退换货发货单号：</dt>
-                                    <dd><input type="text" name="invoice_no"
+                                    <dd><input type="text" name="back_invoice_no"
                                                class="form-control input-sm wdh60 mar-top-5 hg25"
                                                value="{{$rorder->back_invoice_no}}"
                                                disabled></dd>
@@ -146,7 +146,7 @@
                                                     </div>
                                                     <div class="product-info">
                                                         <div class="name">
-                                                            <a href="705"
+                                                            <a href="{{$orderGoods->goods_id}}"
                                                                target="_blank">{{$orderGoods->goods_name}}
                                                                 [{{$orderGoods->brand_name}}]</a>
                                                         </div>
@@ -193,7 +193,7 @@
                                                     </div>
                                                     <div class="product-info">
                                                         <div class="name">
-                                                            <a href="705"
+                                                            <a href="{{$returnGoods->goods_id}}"
                                                                target="_blank">{{$returnGoods->goods_name}}
                                                                 [{{$returnGoods->brand_name}}]</a>
                                                         </div>
@@ -242,27 +242,39 @@
                             </div>
                             <div class="order-operation clearfix mar-auto wdh80">
                                 <div class="item mar-top-20">
-                                    <div class="step-label fl">操作备注：</div>
-                                    <div class="step-value fl">
+                                    <div class="step-label fl wd-120 text-right">操作备注：</div>
+                                    <div class="step-value fl mar-left-5">
                                             <textarea class="form-control wd-750" rows="5"
                                                       name="goods_product_tag"></textarea>
-                                        <div class="mar-top-20 operation">
-                                            @if($order->agree_apply == 0)
+                                    </div>
+                                </div>
+                                <div class="item mar-top-20">
+                                    <div class="step-label fl wd-120 text-right">当前可执行操作：</div>
+                                    <div class="operation mar-left-5">
+                                        @if($rorder->return_status == 0)
+                                            @if($rorder->agree_apply == 0)
                                                 <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
                                                    data-ope="agree_apply">同意申请</a>
                                             @else
                                                 <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
                                                    data-ope="receive_goods">收到退回商品</a>
                                             @endif
-                                            @if($order->agree_apply == 0)
-                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                                   data-ope="refuse_apply">拒绝</a>
-                                            @endif
+                                        @endif
+                                        @if($rorder->return_status == 4)
                                             <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                               data-ope="complete">完成</a>
+                                        @endif
+                                        @if($rorder->refound_status == 0 && $rorder->agree_apply == 1)
+                                            <a href="{{url('admin/order/return/refound/'.$rorder->ret_id)}}"
+                                               class="btn btn-danger btn-sm mar-left-5"
                                                data-ope="refound">去退款</a>
+                                        @endif
+                                        @if($rorder->agree_apply == 0)
                                             <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                               data-ope="after_service">售后</a>
-                                        </div>
+                                               data-ope="refuse_apply">拒绝</a>
+                                        @endif
+                                        <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                           data-ope="after_service">售后</a>
                                     </div>
                                 </div>
                             </div>
@@ -278,64 +290,21 @@
 @section('script')
     <script>
         $(function () {
-            $('.invoice_no').on('click', function () {
-                var invoice_no = $('input[name=invoice_no]').val();
-                $(this).parent().parent().next().html('<input type="text" name="invoice_no_input" class="form-control input-sm fl mar-top-5 hg25" value="' + invoice_no + '">');
-            });
-
-            $('body').on('blur', 'input[name=invoice_no_input]', function () {
-                var that = this;
-                var invoice_no = $(this).val();
-                var order_id = $('input[name=order_id]').val();
-                $.post("{{url('admin/order/change')}}", {
-                    id: order_id,
-                    type: 'invoice_no',
-                    invoice_no: invoice_no,
-                    _token: '{{csrf_token()}}'
-                }, function (data) {
-                    $(that).parent().html(invoice_no);
-                });
-            });
-
-            $('input[name=auto_delivery_time]').on('change', function () {
-                var auto_delivery_time = $(this).val();
-                var order_id = $('input[name=order_id]').val();
-                $.post("{{url('admin/order/change')}}", {
-                    id: order_id,
-                    type: 'auto_delivery_time',
-                    auto_delivery_time: auto_delivery_time,
-                    _token: '{{csrf_token()}}'
-                }, function (data) {
-                });
-            });
-
             $('.order-operation').on('click', 'a', function () {
-                var ru_id = $('input[name=ru_id]').val();
                 var type = $(this).data('ope');
-                if (type == 'no_pay' || type == 'to_delivery') {
+                if (type == 'refound' || type == 'after_service') {
                     return;
                 }
                 var order_id = $('input[name=order_id]').val();
-                var goods_product_tag = $('input[name=goods_product_tag]').val();
-                $.post("{{url('admin/order/change')}}", {
+                $.post("{{url('admin/order/return/change')}}", {
                     id: order_id,
                     type: 'operation',
                     value: type,
-                    goods_product_tag: goods_product_tag,
                     _token: '{{csrf_token()}}'
                 }, function (data) {
                     layer.msg(data.msg, {icon: data.code});
                     setTimeout(function () {
-                        if (type == 'delete') {
-                            if (ru_id > 0) {
-                                location.href = "{{url('admin/order/seller')}}";
-                            } else {
-                                location.href = "{{url('admin/order/')}}";
-                            }
-                        } else {
-                            location.href = "{{url('admin/order/')}}/" + order_id + "/edit";
-                        }
-
+                        location.href = location.href;
                     }, 2000);
                 });
             });

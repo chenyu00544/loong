@@ -19,7 +19,7 @@
                     <form action="#" method="post" class="form-horizontal"
                           enctype="multipart/form-data">
 
-                        <input type="hidden" name="order_id" value="{{$order->order_id}}">
+                        <input type="hidden" name="order_id" value="{{$rorder->ret_id}}">
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>操作备注：</label>
@@ -31,9 +31,9 @@
                             <label class="col-sm-4 control-label">退款金额：</label>
                             <div class="col-sm-7">
                                 <span class="fl line-hg-30">金额：</span>
-                                <input name="money_paid" type="text" class="form-control wd-80 fl input-sm" size="10" value="{{$order->money_paid}}" autocomplete="off">
+                                <input name="refound_amount" type="text" class="form-control wd-80 fl input-sm" size="10" value="{{$rorder->should_return}}" autocomplete="off">
                                 <span class="fl line-hg-30">&nbsp;&nbsp;元&nbsp;&nbsp;运费：</span>
-                                <input type="text" name="shipping_fee" value="{{$order->shipping_fee}}" id="shippingFee" size="6" class="form-control wd-80 fl input-sm" autocomplete="off">
+                                <input type="text" name="shipping_fee" value="{{$dorder->shipping_fee}}" id="shippingFee" size="6" class="form-control wd-80 fl input-sm" autocomplete="off">
                                 <div class="col-sm-3 n-wd220">
                                     <label class="radio-inline fl">
                                         <input type="radio" name="is_shipping" value="0" checked> 不退运费
@@ -46,20 +46,17 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">退款方式：</label>
-                            <div class="col-sm-2 wd-220">
+                            <div class="col-sm-2 wd-180">
                                 <label class="radio-inline">
                                     <input type="radio" name="refund" value="1" checked> 退回用户余额
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="refund" value="2" > 生成退款申请
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="refund" value="3" > 不处理，误操作时选择此项
+                                    <input type="radio" name="refund" value="2" > 线下退款
                                 </label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><b>*</b>退款说明：</label>
+                            <label class="col-sm-4 control-label">退款说明：</label>
                             <div class="col-sm-4">
                                 <textarea name="refund_note" id="" cols="30" rows="5" class="form-control"></textarea>
                             </div>
@@ -87,18 +84,17 @@
                 var order_id = $('input[name=order_id]').val();
                 var data = $('.form-horizontal').serializeArray();
                 $.post(
-                    '{{url("admin/order/change")}}',
+                    '{{url("admin/order/return/change")}}',
                     {
                         id: order_id,
-                        type: 'operation',
-                        value: 'no_pay',
-                        nopay: data,
+                        type: 'refound',
+                        value: data,
                         _token: '{{csrf_token()}}'
                     },
                     function (data) {
                         layer.msg(data.msg, {icon: data.code});
                         setTimeout(function () {
-                            location.href = "{{url('admin/order/')}}/" + order_id + "/edit";
+                            location.href = "{{url('admin/order/return/info')}}/" + order_id;
                         }, 2000);
                     }
                 );

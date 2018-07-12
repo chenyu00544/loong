@@ -223,7 +223,7 @@ class OrderRepository implements OrderRepositoryInterface
         $where['delivery_id'] = $id;
         return $this->deliveryOrderModel->getDeliveryOrder($where);
     }
-    
+
     public function getReturnOrder($id)
     {
         $where['ret_id'] = $id;
@@ -390,7 +390,7 @@ class OrderRepository implements OrderRepositoryInterface
                             if ($ope_type['is_shipping'] == 0) {
                                 $return_money = $return_money - $order->shipping_fee;
                             }
-                            if ($ope_type['refund'] == 1) {
+                            if ($ope_type['refund'] == 1) {//退回用户余额
                                 DB::beginTransaction();
                                 $res = $this->usersModel->setUserMoney(['user_id' => $order->user_id], $return_money);
                                 $re = $this->orderInfoModel->setOrderInfo($where, $updata);
@@ -401,7 +401,7 @@ class OrderRepository implements OrderRepositoryInterface
                                     DB::rollBack();
                                 }
                                 return $req;
-                            } elseif ($ope_type['refund'] == 2) {
+                            } elseif ($ope_type['refund'] == 2) {//生成退款申请
                                 $account['user_id'] = $order->user_id;
                                 $account['admin_user'] = $admin->user_name;
                                 $account['amount'] = -$return_money;
@@ -480,9 +480,9 @@ class OrderRepository implements OrderRepositoryInterface
         $where['delivery_id'] = $data['id'];
         switch ($data['type']) {
             case 'ship':
-                if($data['value'] == 'ship'){
+                if ($data['value'] == 'ship') {
                     $updata['status'] = 0;
-                }else{
+                } else {
                     $updata['status'] = 2;
                 }
                 $updata['invoice_no'] = $data['invoice_no'];
@@ -499,26 +499,63 @@ class OrderRepository implements OrderRepositoryInterface
         return $req;
     }
 
-    public function returnChange($data)
+    public function returnChange($data, $admin)
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
         $updata = [];
-        $where['delivery_id'] = $data['id'];
+        $where['ret_id'] = $data['id'];
+        $rorder = $this->orderReturnModel->getReturnOrder($where);
         switch ($data['type']) {
-            case 'ship':
-                if($data['value'] == 'ship'){
-                    $updata['status'] = 0;
-                }else{
-                    $updata['status'] = 2;
+            case 'operation':
+                if ($data['value'] == 'agree_apply') {//同意申请
+                    $updata['agree_apply'] = 1;
+                    $this->orderInfoModel->setOrderInfo(['order_id'=>$rorder->order_id], ['order_status'=>Config::get('define.OS_RETURNED')]);
+                } elseif ($data['value'] == 'receive_goods') {//收到退换货商品
+                    $updata['return_status'] = 1;
+                } elseif ($data['value'] == 'refuse_apply') {//拒绝申请
+                    $updata['return_status'] = 6;
+                } elseif ($data['value'] == 'complete') {//完成退换货
+                    $updata['return_status'] = 4;
                 }
-                $updata['invoice_no'] = $data['invoice_no'];
-                $updata['update_time'] = time();
+                break;
+            case 'refound':
+                $updata_t = [];
+                $updata['actual_return'] = 0;
+                foreach ($data['value'] as $value) {
+                    $updata_t[$value['name']] = $value['value'];
+                }
+                if ($updata_t['refound_amount'] > $rorder->should_return) {
+                    return $req = ['code' => 5, 'msg' => '金额大于订单金额'];
+                }
+                $updata['actual_return'] = $updata_t['refound_amount'];
+                if ($updata_t['is_shipping'] == 1) {
+                    $updata['actual_return'] += $updata_t['shipping_fee'];
+                }
+                $updata['refund_type'] = $updata_t['refund'];
+                $updata['agree_apply'] = 1;
+                $updata['refound_status'] = 1;
+                $updata['return_shipping_fee'] = $updata_t['shipping_fee'];
+                $updata['return_time'] = time();
+                if ($updata_t['refund'] == 1) {//退回用户余额
+                    DB::beginTransaction();
+                    $res = $this->usersModel->setUserMoney(['user_id' => $rorder->user_id], $updata['actual_return']);
+                    $re = $this->orderReturnModel->setOrderReturn($where, $updata);
+                    if ($re && $res) {
+                        DB::commit();
+                        $this->orderInfoModel->setOrderInfo(['order_id'=>$rorder->order_id], ['pay_status'=>Config::get('define.PS_REFOUND')]);
+                        $req = ['code' => 1, 'msg' => '操作成功'];
+                    } else {
+                        DB::rollBack();
+                    }
+                    return $req;
+                }else{
+                    $this->orderInfoModel->setOrderInfo(['order_id'=>$rorder->order_id], ['pay_status'=>Config::get('define.PS_REFOUND')]);
+                }
                 break;
             default:
                 break;
         }
-
-        $re = $this->deliveryOrderModel->setDeliveryOrder($where, $updata);
+        $re = $this->orderReturnModel->setOrderReturn($where, $updata);
         if ($re) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }

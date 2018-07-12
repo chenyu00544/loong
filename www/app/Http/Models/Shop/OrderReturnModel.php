@@ -32,4 +32,10 @@ class OrderReturnModel extends Model
             ->where($where)
             ->first();
     }
+
+    public function setOrderReturn($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
 }

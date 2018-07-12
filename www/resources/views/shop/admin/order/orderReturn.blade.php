@@ -82,8 +82,8 @@
                                         <div>{{$order->province}} {{$order->city}} {{$order->district}} {{$order->address}}</div>
                                     </td>
                                     <td>商家自选</td>
-                                    <td>@if($order->return_status == 0) 由用户寄回 @elseif($order->return_status == 2)
-                                            收到商品 @elseif($order->return_status == 4) 完成 @endif -
+                                    <td>@if($order->return_status == 0) 由用户寄回 @elseif($order->return_status == 1)
+                                            收到退换货 @elseif($order->return_status == 2) 换出商品寄出【分单】 @elseif($order->return_status == 3) 换出商品寄出 @elseif($order->return_status == 4) 完成 @endif -
                                         <b>@if($order->refound_status == 0) 未退款 @elseif($order->refound_status == 1)
                                                 已换货 @elseif($order->refound_status == 2)
                                                 已维修 @elseif($order->refound_status == 3)

@@ -2453,6 +2453,7 @@ input[type=file].upload-file {
     line-height: 30px;
     width: 100%;
     float: left;
+    margin-bottom: 0;
 }
 
 .return-order-desc .item .label {

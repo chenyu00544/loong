@@ -191,6 +191,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('order/delivery/change', 'OrderController@deliveryChange');
     Route::get('order/return/{id}', 'OrderController@orderReturn');
     Route::get('order/return/info/{id}', 'OrderController@returnInfo');
+    Route::get('order/return/refound/{id}', 'OrderController@returnRefound');
     Route::post('order/return/change', 'OrderController@returnChange');
     Route::post('order/changes', 'OrderController@changes');
     Route::post('order/change', 'OrderController@change');

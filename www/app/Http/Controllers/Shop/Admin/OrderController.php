@@ -167,9 +167,16 @@ class OrderController extends CommonController
         return view('shop.admin.order.orderReturnInfo', compact('order', 'rorder', 'dorder', 'orderGoodses', 'province', 'city', 'district', 'user', 'returnGoodses'));
     }
 
+    public function returnRefound($id)
+    {
+        $rorder = $this->orderRepository->getReturnOrder($id);
+        $dorder = $this->orderRepository->getDeliveryOrder($rorder->order_id);
+        return view('shop.admin.order.orderReturnRefound', compact('rorder', 'dorder'));
+    }
+
     public function returnChange(Request $request)
     {
-        return $this->orderRepository->returnChange($request->except('_token'));
+        return $this->orderRepository->returnChange($request->except('_token'), $this->user);
     }
 
     /**
