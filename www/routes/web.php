@@ -196,4 +196,9 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('order/changes', 'OrderController@changes');
     Route::post('order/change', 'OrderController@change');
     Route::resource('order', 'OrderController');
+
+    Route::get('ad/pos/{id}', 'AdvertiseController@position');
+    Route::get('ad/posedit/{id}', 'AdvertiseController@positionEdit');
+    Route::get('ad/posadd', 'AdvertiseController@positionAdd');
+    Route::resource('ad', 'AdvertiseController');
 });

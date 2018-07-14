@@ -123,11 +123,11 @@ return array(
     'advertise' => array(
         'ad_list' => array(
             'name' => '广告列表',
-            'url' => 'admin/ad_list',
+            'url' => 'admin/ad',
         ),
         'ad_position' => array(
             'name' => '广告位置',
-            'url' => 'admin/adposition',
+            'url' => 'admin/ad/pos/pc',
         )
     ),
     'users' => array(

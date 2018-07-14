@@ -1195,6 +1195,10 @@ input[type=checkbox], input[type=radio] {
     width: 360px;
 }
 
+.wd-550 {
+    width: 550px;
+}
+
 .wd-750 {
     width: 750px;
 }

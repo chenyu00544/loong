@@ -244,7 +244,7 @@
                                 <div class="item mar-top-20">
                                     <div class="step-label fl wd-120 text-right">操作备注：</div>
                                     <div class="step-value fl mar-left-5">
-                                            <textarea class="form-control wd-750" rows="5"
+                                            <textarea class="form-control wd-550" rows="5"
                                                       name="goods_product_tag"></textarea>
                                     </div>
                                 </div>

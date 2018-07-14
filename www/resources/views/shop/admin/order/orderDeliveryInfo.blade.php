@@ -163,7 +163,7 @@
                                 <div class="item mar-top-20">
                                     <div class="step-label fl">操作备注：</div>
                                     <div class="step-value fl">
-                                            <textarea class="form-control wd-750" rows="5"
+                                            <textarea class="form-control wd-550" rows="5"
                                                       name="action_note"></textarea>
                                         <div class="mar-top-20 operation">
                                             @if($dorder->status == 2)
