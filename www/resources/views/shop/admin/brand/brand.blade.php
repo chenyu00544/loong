@@ -104,10 +104,10 @@
             $('.switch').click(function () {
                 var val = 0;
                 if ($(this).hasClass('active')) {
-                    val = 0
+                    val = 0;
                     $(this).removeClass('active');
                 } else {
-                    val = 1
+                    val = 1;
                     $(this).addClass('active');
                 }
 

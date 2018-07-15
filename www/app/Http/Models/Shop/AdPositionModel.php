@@ -14,12 +14,30 @@ class AdPositionModel extends Model
     public function getAdPosByPage($where, $search, $column = ['*'], $size = 15)
     {
         $m = $this->select($column)
-            ->leftJoin('merchants_shop_information', 'merchants_shop_information.user_id','=','ad_position.user_id')
+            ->leftJoin('merchants_shop_information', 'merchants_shop_information.user_id', '=', 'ad_position.user_id')
             ->where($where);
         if (!empty($search['keywords'])) {
             $m->where('position_name', 'like', '%' . $search['keywords'] . '%');
         }
         return $m->orderBy('position_id', 'desc')
             ->paginate($size);
+    }
+
+    public function getAdPos($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setAdPos($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addAdPos($data)
+    {
+        return $this->create($data);
     }
 }

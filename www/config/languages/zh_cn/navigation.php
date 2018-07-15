@@ -127,7 +127,7 @@ return array(
         ),
         'ad_position' => array(
             'name' => '广告位置',
-            'url' => 'admin/ad/pos/pc',
+            'url' => 'admin/adspos',
         )
     ),
     'users' => array(

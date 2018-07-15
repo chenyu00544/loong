@@ -2,21 +2,21 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">广告管理 - 广告位置</div>
+        <div class="title">广告管理 - 广告位置列表</div>
         <div class="content">
             <div class="tabs mar-top-5">
                 <ul class="fl">
                     <li class="@if($type == 'pc') curr @endif fl">
-                        <a href="{{url('admin/ad/pos/pc')}}">PC端</a>
+                        <a href="{{url('admin/adspos/pc')}}">PC端</a>
                     </li>
                     <li class="@if($type == 'web') curr @endif fl">
-                        <a href="{{url('admin/ad/pos/web')}}">WEB端</a>
+                        <a href="{{url('admin/adspos/web')}}">WEB端</a>
                     </li>
                     <li class="@if($type == 'app') curr @endif fl">
-                        <a href="{{url('admin/ad/pos/app')}}">APP端</a>
+                        <a href="{{url('admin/adspos/app')}}">APP端</a>
                     </li>
                     <li class="@if($type == 'wxapp') curr @endif fl">
-                        <a href="{{url('admin/ad/pos/wxapp')}}">微信小程序</a>
+                        <a href="{{url('admin/adspos/wxapp')}}">微信小程序</a>
                     </li>
                 </ul>
             </div>
@@ -32,12 +32,12 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="clearfix mar-bt-20">
-                    <div>
-                        <a href="{{url('admin/ad/posadd')}}"
+                    <div class="fl">
+                        <a href="{{url('admin/adspos/create')}}"
                            class="btn btn-success btn-add btn-sm">添加广告</a>
                     </div>
-                    <div class="fr wd250">
-                        <form action="{{url('admin/ad/pos/'.$type)}}" method="get">
+                    <div class="fr wd250 pad-top-7">
+                        <form action="{{url('admin/adspos/'.$type)}}" method="get">
                             {{csrf_field()}}
 
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
@@ -80,7 +80,7 @@
                                            href="{{url('admin/ad/'.$adPos->position_id)}}"
                                            class="btn btn-info btn-edit btn-sm">查看</a>
                                         <a type="button"
-                                           href="{{url('admin/ad/posedit/'.$adPos->position_id)}}"
+                                           href="{{url('admin/adspos/'.$adPos->position_id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>
                                         <a type="button" href="javascript:;"
                                            class="btn btn-danger btn-del btn-sm">删除</a>

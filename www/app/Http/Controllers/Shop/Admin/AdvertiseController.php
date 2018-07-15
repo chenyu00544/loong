@@ -22,28 +22,18 @@ class AdvertiseController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $type = 'pc';
-        $ads = $this->adRepository->getAdByPage($type);
-    }
-
-    public function position(Request $request, $id)
-    {
-        $type = $id ? $id : 'pc';
         $search['keywords'] = $request->get('keywords');
-        $adPoses = $this->adRepository->getAdPosByPage($type, $search);
-        return view('shop.admin.ads.position', compact('type', 'search', 'adPoses'));
+        $search['advance_date'] = $request->get('advance_date');
+        $ads = $this->adRepository->getAdByPage($type, $search);
+        return view('shop.admin.ads.ads', compact('type', 'search', 'ads'));
     }
 
-    public function positionAdd()
+    public function change(Request $request)
     {
-        return view('shop.admin.ads.positionAdd');
-    }
-
-    public function positionEdit()
-    {
-        return view('shop.admin.ads.positionEdit');
+        return $this->adRepository->adChange($request->except('_token'));
     }
 
     /**
@@ -73,9 +63,13 @@ class AdvertiseController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-
+        $type = $id ? $id : 'pc';
+        $search['keywords'] = $request->get('keywords');
+        $search['advance_date'] = $request->get('advance_date');
+        $ads = $this->adRepository->getAdByPage($type, $search);
+        return view('shop.admin.ads.ads', compact('type', 'search', 'ads'));
     }
 
     /**
@@ -109,6 +103,6 @@ class AdvertiseController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->adRepository->delAd($id);
     }
 }
