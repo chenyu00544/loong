@@ -36,6 +36,14 @@ class AdvertiseController extends CommonController
         return $this->adRepository->adChange($request->except('_token'));
     }
 
+    public function adAdd($id)
+    {
+        $type = $id;
+        $adsposes = $this->adRepository->getAdPoses($id);
+        $now_date = $this->now_date;
+        return view('shop.admin.ads.adsAdd', compact('adsposes', 'now_date', 'type'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -43,7 +51,6 @@ class AdvertiseController extends CommonController
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -54,7 +61,12 @@ class AdvertiseController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["ad_name" => 'required',"position_id" => 'required',"ad_img" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->adRepository->addAd($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**

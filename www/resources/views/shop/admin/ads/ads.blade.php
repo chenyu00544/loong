@@ -33,7 +33,7 @@
             <div class="fromlist clearfix">
                 <div class="clearfix mar-bt-20">
                     <div class="fl">
-                        <a href="{{url('admin/ad/create')}}"
+                        <a href="{{url('admin/ad/add/'.$type)}}"
                            class="btn btn-success btn-add btn-sm">添加广告</a>
                     </div>
                     <div class="fr wd250 pad-top-7">

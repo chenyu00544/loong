@@ -1167,6 +1167,10 @@ input[type=checkbox], input[type=radio] {
     word-break: keep-all;
 }
 
+.wd-40 {
+    width: 40px;
+}
+
 .wd-80 {
     width: 80px;
 }

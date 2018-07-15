@@ -23,6 +23,13 @@ class AdPositionModel extends Model
             ->paginate($size);
     }
 
+    public function getAdPoses($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->get();
+    }
+
     public function getAdPos($where, $column = ['*'])
     {
         return $this->select($column)

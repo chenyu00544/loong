@@ -34,6 +34,11 @@ class AdRepository implements AdRepositoryInterface
         return $this->adModel->getAdByPage($where, $search);
     }
 
+    public function getAd()
+    {
+
+    }
+
     public function adChange($data)
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
@@ -45,6 +50,32 @@ class AdRepository implements AdRepositoryInterface
             $req['msg'] = '操作成功';
         }
         return $req;
+    }
+
+    public function addAd($data)
+    {
+        $type = !empty($data['ad_terminal']) ? $data['ad_terminal'] : 'pc';
+        foreach ($data as $key => $value) {
+            if ($key == 'start_end_time') {
+                $time_arr = explode('～', $value);
+                $updata['start_time'] = strtotime($time_arr[0]);
+                $updata['end_time'] = strtotime($time_arr[1]);
+            } elseif ($key == 'ad_terminal') {
+                continue;
+            } elseif ($key == 'ad_img') {
+                $uri = 'ad' . DIRECTORY_SEPARATOR . $type;
+                $imgPath = FileHandle::upLoadImage($value, $uri);
+                $updata['ad_code'] = $imgPath;
+            } else {
+                $updata[$key] = $value;
+            }
+        }
+        return $this->adModel->addAd($updata);
+    }
+
+    public function setAd()
+    {
+
     }
 
     public function delAd($id)
@@ -66,6 +97,12 @@ class AdRepository implements AdRepositoryInterface
         return $this->adPositionModel->getAdPosByPage(['ad_terminal' => $type], $search);
     }
 
+    public function getAdPoses($type)
+    {
+        $where['ad_terminal'] = $type;
+        return $this->adPositionModel->getAdPoses($where);
+    }
+
     public function getAdPos($id)
     {
         $where['position_id'] = $id;
@@ -75,7 +112,7 @@ class AdRepository implements AdRepositoryInterface
     public function setAdPos($data, $id)
     {
         $where['position_id'] = $id;
-        foreach ($data as $key => $value){
+        foreach ($data as $key => $value) {
             $data[$key] = trim($value);
         }
         return $this->adPositionModel->setAdPos($where, $data);
@@ -83,7 +120,7 @@ class AdRepository implements AdRepositoryInterface
 
     public function addAdPos($data)
     {
-        foreach ($data as $key => $value){
+        foreach ($data as $key => $value) {
             $data[$key] = trim($value);
         }
         return $this->adPositionModel->addAdPos($data);

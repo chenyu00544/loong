@@ -43,6 +43,11 @@ class AdModel extends Model
             ->update($data);
     }
 
+    public function addAd($data)
+    {
+        return $this->create($data);
+    }
+
     public function delAd($where)
     {
         return $this->where($where)
