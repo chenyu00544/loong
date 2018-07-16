@@ -16,7 +16,8 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/ad/'.$adInfo->ad_id)}}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <form name="conf" action="{{url('admin/ad/'.$adInfo->ad_id)}}" method="post" class="form-horizontal"
+                          enctype="multipart/form-data">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
 
@@ -45,7 +46,8 @@
                                 <input type="hidden" name="ad_terminal" value="{{$type}}">
                                 <select name="position_id" id="" class="form-control">
                                     @foreach($adsposes as $adspos)
-                                        <option value="{{$adspos->position_id}}" @if($adspos->position_id == $adInfo->position_id) selected @endif >{{$adspos->position_name}}</option>
+                                        <option value="{{$adspos->position_id}}"
+                                                @if($adspos->position_id == $adInfo->position_id) selected @endif >{{$adspos->position_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -64,7 +66,8 @@
                                 <input type="file" name="ad_img" value="" class="fl">
                                 <span class="img-show fl">
                                     <a href="{{url($adInfo->ad_code)}}" target="_blank" class="nyroModal">
-                                        <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{url($adInfo->ad_code)}}" ectype="tooltip"
+                                        <i class="glyphicon glyphicon-picture top5"
+                                           data-tooltipimg="{{url($adInfo->ad_code)}}" ectype="tooltip"
                                            data-toggle="tooltip" title="tooltip"></i>
                                     </a>
                                 </span>
@@ -73,35 +76,36 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">或图片网址：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="img_url" class="form-control" value=""
+                                <input type="text" name="img_url" class="form-control" value="{{$adInfo->img_url}}"
                                        placeholder="或图片网址" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">广告链接：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="ad_link" class="form-control" value="http://"
+                                <input type="text" name="ad_link" class="form-control" value="{{$adInfo->ad_link}}"
                                        placeholder="广告链接" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">广告大标题：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="b_title" class="form-control" value=""
+                                <input type="text" name="b_title" class="form-control" value="{{$adInfo->b_title}}"
                                        placeholder="广告大标题" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">广告小标题：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="s_title" class="form-control" value=""
+                                <input type="text" name="s_title" class="form-control" value="{{$adInfo->s_title}}"
                                        placeholder="广告小标题" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">背景颜色：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="link_color" class="form-control" value=""
+                                <input type="text" name="link_color" class="form-control"
+                                       value="{{$adInfo->link_color}}"
                                        placeholder="背景颜色" autocomplete="off">
                             </div>
                         </div>
@@ -109,31 +113,35 @@
                             <label class="col-sm-4 control-label">是否开启：</label>
                             <div class="col-sm-4 n-wd400">
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="enabled" value="1" checked> 开启
+                                    <input type="radio" name="enabled" value="1"
+                                           @if($adInfo->enabled ==1) checked @endif> 开启
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="enabled" value="0"> 关闭
+                                    <input type="radio" name="enabled" value="0"
+                                           @if($adInfo->enabled ==0) checked @endif> 关闭
                                 </label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">广告联系人：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="link_man" class="form-control" value=""
+                                <input type="text" name="link_man" class="form-control" value="{{$adInfo->link_man}}"
                                        placeholder="广告联系人" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">联系人Email：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="link_email" class="form-control" value=""
+                                <input type="text" name="link_email" class="form-control"
+                                       value="{{$adInfo->link_email}}"
                                        placeholder="联系人Email" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">联系电话：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="link_phone" class="form-control" value=""
+                                <input type="text" name="link_phone" class="form-control"
+                                       value="{{$adInfo->link_phone}}"
                                        placeholder="联系电话" autocomplete="off">
                             </div>
                         </div>
@@ -193,20 +201,20 @@
             $('.num_reduce').on('click', function () {
                 var ad_name = $('input[name=ad_name]').data('name');
                 var id = parseInt($('.num_id').val());
-                if(id == 1){
+                if (id == 1) {
                     return;
-                }else{
+                } else {
                     id -= 1;
                 }
                 $('.num_id').val(id);
-                $('input[name=ad_name]').val(ad_name+'_'+id);
+                $('input[name=ad_name]').val(ad_name + '_' + id);
             });
             $('.num_add').on('click', function () {
                 var ad_name = $('input[name=ad_name]').data('name');
                 var id = parseInt($('.num_id').val());
                 id += 1;
                 $('.num_id').val(id);
-                $('input[name=ad_name]').val(ad_name+'_'+id);
+                $('input[name=ad_name]').val(ad_name + '_' + id);
             });
         });
     </script>

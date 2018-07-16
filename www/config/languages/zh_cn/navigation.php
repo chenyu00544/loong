@@ -19,6 +19,8 @@ return array(
     'shop' => array(
         'commodity' => '商品',
         'order' => '订单',
+        'promotion' => '促销',
+        'goods_storage' => '库存'
     ),
     'finance' => array(
         'satistics' => '统计',
@@ -78,6 +80,30 @@ return array(
         'back' => array(
             'name' => '退货单列表',
             'url' => 'admin/order/return/selfsale',
+        ),
+    ),
+    'promotion' => array(
+        'favourable' => array(
+            'name' => '优惠活动',
+            'url' => 'admin/favourable',
+        ),
+        'coupons' => array(
+            'name' => '优惠券',
+            'url' => 'admin/coupons',
+        ),
+        'bonus' => array(
+            'name' => '红包',
+            'url' => 'admin/bonus',
+        ),
+    ),
+    'goods_storage' => array(
+        'favouable' => array(
+            'name' => '仓库入口',
+            'url' => 'admin/favourable',
+        ),
+        'favouble' => array(
+            'name' => '仓库出口',
+            'url' => 'admin/favourable',
         ),
     ),
 

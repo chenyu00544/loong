@@ -579,6 +579,22 @@ input[type=checkbox], input[type=radio] {
     background-position: -24px -151px;
 }
 
+.icon_promotion {
+    background-position: 1px -241px;
+}
+
+.current .icon_promotion {
+    background-position: -24px -241px;
+}
+
+.icon_goods_storage{
+    background-position: 1px -217px;
+}
+
+.current .icon_goods_storage {
+    background-position: -24px -217px;
+}
+
 .nav-left .sub-nav .sub-item li {
     height: 40px;
     width: 100%;

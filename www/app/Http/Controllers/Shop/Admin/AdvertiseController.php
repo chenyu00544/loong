@@ -113,7 +113,12 @@ class AdvertiseController extends CommonController
      */
     public function update(Request $request, $id)
     {
-
+        $ver = Verifiable::Validator($request->all(), ["ad_name" => 'required', "position_id" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->adRepository->setAd($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**

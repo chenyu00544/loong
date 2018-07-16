@@ -74,9 +74,26 @@ class AdRepository implements AdRepositoryInterface
         return $this->adModel->addAd($updata);
     }
 
-    public function setAd($id)
+    public function setAd($data, $id)
     {
-
+        $type = !empty($data['ad_terminal']) ? $data['ad_terminal'] : 'pc';
+        $where['ad_id'] = $id;
+        foreach ($data as $key => $value) {
+            if ($key == 'start_end_time') {
+                $time_arr = explode('～', $value);
+                $updata['start_time'] = strtotime($time_arr[0]);
+                $updata['end_time'] = strtotime($time_arr[1]);
+            } elseif ($key == 'ad_terminal') {
+                continue;
+            } elseif ($key == 'ad_img') {
+                $uri = 'ad' . DIRECTORY_SEPARATOR . $type;
+                $imgPath = FileHandle::upLoadImage($value, $uri);
+                $updata['ad_code'] = $imgPath;
+            } else {
+                $updata[$key] = $value;
+            }
+        }
+        return $this->adModel->setAd($where, $updata);
     }
 
     public function delAd($id)
