@@ -34,9 +34,10 @@ class AdRepository implements AdRepositoryInterface
         return $this->adModel->getAdByPage($where, $search);
     }
 
-    public function getAd()
+    public function getAd($id)
     {
-
+        $where['ad_id'] = $id;
+        return $this->adModel->getAd($where);
     }
 
     public function adChange($data)
@@ -73,7 +74,7 @@ class AdRepository implements AdRepositoryInterface
         return $this->adModel->addAd($updata);
     }
 
-    public function setAd()
+    public function setAd($id)
     {
 
     }

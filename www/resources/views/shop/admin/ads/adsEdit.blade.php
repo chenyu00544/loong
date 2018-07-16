@@ -16,16 +16,17 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/ad')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <form name="conf" action="{{url('admin/ad/'.$adInfo->ad_id)}}" method="post" class="form-horizontal" enctype="multipart/form-data">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
 
                         <input type="hidden" name="ad_type" value="0">
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>广告名称：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="ad_name" class="form-control" value=""
-                                       placeholder="广告名称" autocomplete="off">
+                                <input type="text" name="ad_name" class="form-control" value="{{$adInfo->ad_name}}"
+                                       placeholder="广告名称" autocomplete="off" data-name="{{$adInfo->ad_name}}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -44,7 +45,7 @@
                                 <input type="hidden" name="ad_terminal" value="{{$type}}">
                                 <select name="position_id" id="" class="form-control">
                                     @foreach($adsposes as $adspos)
-                                        <option value="{{$adspos->position_id}}">{{$adspos->position_name}}</option>
+                                        <option value="{{$adspos->position_id}}" @if($adspos->position_id == $adInfo->position_id) selected @endif >{{$adspos->position_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -54,7 +55,7 @@
                             <div class="col-sm-4">
                                 <input type="text" style="width: 300px" name="start_end_time"
                                        id="start_end_time" class="form-control input-sm"
-                                       value="{{$now_date}}">
+                                       value="{{date('Y-m-d H:i:s', $adInfo->start_time).'～'.date('Y-m-d H:i:s', $adInfo->end_time)}}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -62,8 +63,8 @@
                             <div class="col-sm-4">
                                 <input type="file" name="ad_img" value="" class="fl">
                                 <span class="img-show fl">
-                                    <a href="" target="_blank" class="nyroModal">
-                                        <i class="glyphicon glyphicon-picture top5" data-tooltipimg="" ectype="tooltip"
+                                    <a href="{{url($adInfo->ad_code)}}" target="_blank" class="nyroModal">
+                                        <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{url($adInfo->ad_code)}}" ectype="tooltip"
                                            data-toggle="tooltip" title="tooltip"></i>
                                     </a>
                                 </span>

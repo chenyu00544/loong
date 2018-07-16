@@ -97,7 +97,7 @@
                                     </td>
                                     <td class="text-center">
                                         <a type="button"
-                                           href="{{url('admin/ad/'.$ad->ad_id.'/edit')}}"
+                                           href="{{url('admin/ad/edit/'.$ad->ad_id.'/'.$type)}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>
                                         <a type="button" href="javascript:;" data-id="{{$ad->ad_id}}"
                                            class="btn btn-danger btn-del btn-sm">删除</a>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\AdRepository;
 use Illuminate\Http\Request;
 
@@ -44,6 +45,14 @@ class AdvertiseController extends CommonController
         return view('shop.admin.ads.adsAdd', compact('adsposes', 'now_date', 'type'));
     }
 
+    public function adEdit($id, $ad_type)
+    {
+        $type = $ad_type;
+        $adsposes = $this->adRepository->getAdPoses($type);
+        $adInfo = $this->adRepository->getAd($id);
+        return view('shop.admin.ads.adsEdit', compact('adsposes', 'type', 'adInfo'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -61,7 +70,7 @@ class AdvertiseController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["ad_name" => 'required',"position_id" => 'required',"ad_img" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["ad_name" => 'required', "position_id" => 'required', "ad_img" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
@@ -104,7 +113,7 @@ class AdvertiseController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
