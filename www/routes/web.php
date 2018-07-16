@@ -203,4 +203,10 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('ad', 'AdvertiseController');
 
     Route::resource('adspos', 'AdvertisePositionController');
+
+    Route::resource('favourable', 'FavourableController');
+
+    Route::resource('coupons', 'CouponsController');
+
+    Route::resource('bonus', 'BonusController');
 });
