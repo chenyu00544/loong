@@ -73,6 +73,39 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">别名：</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="ad_alias" class="form-control" value=""
+                                       placeholder="别名" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">小程序导航：</label>
+                            <div class="col-sm-3">
+                                <select name="nav_id" id="" class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">广告类型：</label>
+                            <div class="col-sm-3">
+                                <select name="ad_type" id="" class="form-control">
+                                    <option value="ads" selected >排版广告</option>
+                                    <option value="slide">轮播广告</option>
+                                    <option value="insert">商品插入广告</option>
+                                    <option value="wxapp">小程序端</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">排序：</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="sort_order" class="form-control" value=""
+                                       placeholder="排序" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">是否公共：</label>
                             <div class="col-sm-4 n-wd400">
                                 <label class="radio-inline fl">
