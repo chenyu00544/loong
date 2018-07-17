@@ -54,9 +54,8 @@ class TransportRepository implements TransportRepositoryInterface
         return $this->transportModel->getTransportAll(['ru_id' => $id]);
     }
 
-    public function getTransportExtendByTid($id, $tid, $regions)
+    public function getTransportExtendByTid($id, $tid, $regions, $adminUser)
     {
-        $adminUser = Cache::get('adminUser');
         $userId = $adminUser->user_id;
         $res = $this->transportExtendModel->getExtendAll([['tid', '=', $tid], ['admin_id', '=', $userId]]);
         $topAreaId = [];
@@ -118,9 +117,8 @@ class TransportRepository implements TransportRepositoryInterface
         return $regions;
     }
 
-    public function getTransportExpressByTid($id, $tid)
+    public function getTransportExpressByTid($id, $tid, $adminUser)
     {
-        $adminUser = Cache::get('adminUser');
         $userId = $adminUser->user_id;
         $res = $this->transportExpressModel->getExpressAll([['tid', '=', $tid], ['admin_id', '=', $userId]]);
 
@@ -190,7 +188,6 @@ class TransportRepository implements TransportRepositoryInterface
                 $extend->area_html .= '</p>';
             }
         }
-
         $express = $this->transportExpressModel->getExpressAll(['ru_id' => 0, 'tid' => $id, 'admin_id' => $userId]);
         $shippings = $this->shippingModel->getShippingAll();
         $shipsArr = [];
@@ -219,9 +216,8 @@ class TransportRepository implements TransportRepositoryInterface
         return $req;
     }
 
-    public function setTransport($data)
+    public function setTransport($data, $adminUser)
     {
-        $adminUser = Cache::get('adminUser');
         $userId = $adminUser->user_id;
         $id = 0;
         $tid = 0;

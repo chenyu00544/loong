@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Cache;
 class CaptchaController extends CommonController
 {
 
-    protected $seKey = 'vchg.com';// 验证码加密密钥
+    protected $seKey = 'vcvbuy.com';// 验证码加密密钥
     protected $codeSet = '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY';// 验证码字符集合
     protected $expire = 1800;// 验证码过期时间（s）
     protected $useZh = false;// 使用中文验证码

@@ -38,19 +38,19 @@ class TransportController extends CommonController
 
     public function changes(Request $request)
     {
-        return $this->transportRepository->setTransport($request->except('_token'));
+        return $this->transportRepository->setTransport($request->except('_token'), $this->user);
     }
 
     public function regions($id, $tid)
     {
         $regions = $this->regionsRepository->getRegionsRange();
-        $regions = $this->transportRepository->getTransportExtendByTid($id, $tid, $regions);
+        $regions = $this->transportRepository->getTransportExtendByTid($id, $tid, $regions, $this->user);
         return view('shop.admin.shipping.modal.regions', compact('regions', 'id'));
     }
 
     public function express($id, $tid)
     {
-        $express = $this->transportRepository->getTransportExpressByTid($id, $tid);
+        $express = $this->transportRepository->getTransportExpressByTid($id, $tid, $this->user);
         return view('shop.admin.shipping.modal.express', compact('express', 'id'));
     }
 
@@ -59,11 +59,9 @@ class TransportController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        $uid = $request->cookie('user_id');
-        $ip = $request->getClientIp();
-        $userId = Cache::get('adminUser' . md5($ip) . $uid)->user_id;
+        $userId = $this->user->user_id;
         $transportInfo = $this->transportRepository->getTransportInfo(0, $userId);
         return view('shop.admin.shipping.transportAdd', compact('transportInfo', 'regions'));
     }
