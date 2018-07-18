@@ -212,6 +212,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::resource('adspos', 'AdvertisePositionController');
 
+    Route::post('favourable/change', 'FavourableController@change');
     Route::resource('favourable', 'FavourableController');
 
     Route::resource('coupons', 'CouponsController');

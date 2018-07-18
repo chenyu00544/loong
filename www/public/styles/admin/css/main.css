@@ -1709,7 +1709,7 @@ input[type=checkbox], input[type=radio] {
     margin-top: 5px;
 }
 
-.checkbox-item .ui-checkbox {
+.checkbox-items .ui-checkbox {
     width: 15px;
     height: 15px;
     display: block;
