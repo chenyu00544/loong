@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator - chenyu
+ * Date: 2018/6/22
+ * Time: 16:58
+ * Desc: 商品设置功能
+ */
 
 namespace App\Http\Controllers\Shop\Admin;
 
@@ -13,7 +20,6 @@ use App\Repositories\TransportRepository;
 use App\Repositories\UserRankRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-
 
 class GoodsController extends CommonController
 {

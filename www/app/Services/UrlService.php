@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\Config;
 
 class UrlService
 {
-    public static function test()
-    {
-        echo 111;
-    }
-
     public static function getImagePath($uri)
     {
         $shopConfig = Config::get('shopconfig');

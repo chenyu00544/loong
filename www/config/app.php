@@ -192,6 +192,7 @@ return [
         App\Providers\ExpressServiceProvider::class,
         App\Providers\TokenServiceProvider::class,
         App\Providers\PinyinServiceProvider::class,
+        App\Providers\RedisServiceProvider::class,
 //        Intervention\Image\ImageServiceProvider::class,
     ],
 
@@ -257,6 +258,7 @@ return [
         'Express' => App\Facades\Express::class,
         'Token' => App\Facades\Token::class,
         'Pinyin' => App\Facades\Pinyin::class,
+        'Redis' => App\Facades\Redis::class,
 //        'Image' => Intervention\Image\Facades\Image::class,
     ],
 

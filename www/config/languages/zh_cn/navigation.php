@@ -20,7 +20,8 @@ return array(
         'commodity' => '商品',
         'order' => '订单',
         'promotion' => '促销',
-        'goods_storage' => '库存'
+        'goods_storage' => '库存',
+        'store' => '店铺',
     ),
     'finance' => array(
         'satistics' => '统计',
@@ -106,6 +107,17 @@ return array(
             'url' => 'admin/favourable',
         ),
     ),
+    'store' => array(
+        'setup' => array(
+            'name' => '店铺设置',
+            'url' => 'admin/store',
+        ),
+        'list' => array(
+            'name' => '店铺列表',
+            'url' => 'admin/storelist',
+        ),
+    ),
+
 
 
     'satistics' => array(

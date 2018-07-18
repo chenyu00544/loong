@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator - chenyu
+ * Date: 2018/6/22
+ * Time: 16:58
+ * Desc: 商品分类设置功能
+ */
 
 namespace App\Http\Controllers\Shop\Admin;
 

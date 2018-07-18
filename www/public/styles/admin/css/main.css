@@ -595,6 +595,14 @@ input[type=checkbox], input[type=radio] {
     background-position: -24px -217px;
 }
 
+.icon_store{
+    background-position: 0px -387px;
+}
+
+.current .icon_store {
+    background-position: -25px -387px;
+}
+
 .nav-left .sub-nav .sub-item li {
     height: 40px;
     width: 100%;

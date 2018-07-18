@@ -197,6 +197,14 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('order/change', 'OrderController@change');
     Route::resource('order', 'OrderController');
 
+    Route::get('store/process', 'StoreController@process');
+    Route::get('store/privilege', 'StoreController@privilege');
+    Route::get('store/grade', 'StoreController@grade');
+    Route::resource('store', 'StoreController');
+
+    Route::get('storelist/real', 'StoreController@real');
+    Route::resource('storelist', 'StoreListController');
+
     Route::get('ad/add/{id}', 'AdvertiseController@adAdd');
     Route::get('ad/edit/{id}/{type}', 'AdvertiseController@adEdit');
     Route::post('ad/change', 'AdvertiseController@change');
