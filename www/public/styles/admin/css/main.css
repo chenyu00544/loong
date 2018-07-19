@@ -272,6 +272,10 @@ input[type=checkbox], input[type=radio] {
     margin: auto;
 }
 
+.bg-eee{
+    background: #eee;
+}
+
 .b-t-t-e {
     border-top: 1px solid #eee;
 }
@@ -286,6 +290,10 @@ input[type=checkbox], input[type=radio] {
 
 .b-b-t-e {
     border-bottom: 1px solid #eee;
+}
+
+.db {
+    display: block;
 }
 
 .checkbox label, .radio label {
@@ -424,6 +432,10 @@ input[type=checkbox], input[type=radio] {
 
 .wd360 {
     min-width: 360px;
+}
+
+.pad-bt-10 {
+    padding-bottom: 10px;
 }
 
 .pad-bt-15 {
@@ -587,7 +599,7 @@ input[type=checkbox], input[type=radio] {
     background-position: -24px -241px;
 }
 
-.icon_goods_storage{
+.icon_goods_storage {
     background-position: 1px -217px;
 }
 
@@ -595,7 +607,7 @@ input[type=checkbox], input[type=radio] {
     background-position: -24px -217px;
 }
 
-.icon_store{
+.icon_store {
     background-position: 0px -387px;
 }
 
@@ -950,6 +962,10 @@ input[type=checkbox], input[type=radio] {
 
 .pad-all-5 {
     padding: 5px;
+}
+
+.pad-all-15 {
+    padding: 15px;
 }
 
 .pad-all-30 {

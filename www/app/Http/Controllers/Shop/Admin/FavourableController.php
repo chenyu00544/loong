@@ -10,19 +10,23 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Repositories\FavourableActivityRepository;
+use App\Repositories\UserRankRepository;
 use Illuminate\Http\Request;
 
 class FavourableController extends CommonController
 {
 
     private $favourableActivityRepository;
+    private $userRankRepository;
 
     public function __construct(
-        FavourableActivityRepository $favourableActivityRepository
+        FavourableActivityRepository $favourableActivityRepository,
+        UserRankRepository $userRankRepository
     )
     {
         parent::__construct();
         $this->favourableActivityRepository = $favourableActivityRepository;
+        $this->userRankRepository = $userRankRepository;
     }
 
     /**
@@ -46,7 +50,8 @@ class FavourableController extends CommonController
     public function create()
     {
         $now_date = $this->now_date;
-        return view('shop.admin.faat.favourableActivityAdd', compact('now_date'));
+        $userRanks = $this->userRankRepository->getUserRanks();
+        return view('shop.admin.faat.favourableActivityAdd', compact('now_date', 'userRanks'));
     }
 
     /**

@@ -36,17 +36,14 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>享受优惠的会员等级：</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-8">
                                 <div class="checkbox">
-                                    <label class="mar-right-10">
-                                        <input type="checkbox" name="">会员
-                                    </label>
-                                    <label class="mar-right-10">
-                                        <input type="checkbox" name="">会员
-                                    </label>
-                                    <label class="mar-right-10">
-                                        <input type="checkbox" name="">会员
-                                    </label>
+                                    @foreach($userRanks as $userRank)
+                                        <label class="mar-right-10">
+                                            <input type="checkbox" name="rank[]"
+                                                   value="{{$userRank->rank_id}}">{{$userRank->rank_name}}
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -59,29 +56,109 @@
 
                         <div class="form-group">
                             <input type="hidden" name="c_id" value="0">
-                            <label class="col-sm-4 control-label">使用类型：</label>
-                            <div class="col-sm-4 pre-cate">
-                                <div class="cate-option fl">
-                                    <select name="userFav_type" class="form-control select input-sm">
-                                        <option value="0">自主使用</option>
-                                        <option value="1">全场通用</option>
-                                    </select>
-                                </div>
+                            <label class="col-sm-4 control-label"><b>*</b>使用类型：</label>
+                            <div class="col-sm-4">
+                                <select name="userFav_type" class="form-control select input-sm wd120">
+                                    <option value="0">自主使用</option>
+                                    <option value="1">全场通用</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">属性分组：</label>
-                            <div class="col-sm-4 n-wd400">
-                                <textarea name="attr_group" class="form-control ww" row="5"
-                                          placeholder="每行一个商品属性组。排序也将按照自然顺序排序。"
-                                          style="min-height:100px;"></textarea>
+                            <input type="hidden" name="c_id" value="0">
+                            <label class="col-sm-4 control-label"><b>*</b>优惠范围：</label>
+                            <div class="col-sm-4">
+                                <select name="act_range" class="form-control select input-sm wd120">
+                                    <option value="0">全部商品</option>
+                                    <option value="1">以下分类</option>
+                                    <option value="2">以下品牌</option>
+                                    <option value="3">以下商品</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group rang-ext-val">
+                            <label class="col-sm-4 control-label"></label>
+                            <div class="col-sm-8">
+                                <div class="checkbox bg-eee pad-bt-10">
+                                    <label class="mar-all-10 db">
+                                        <input type="checkbox" name="act_range_ext[]"
+                                               value="12312" checked>搜索并加入优惠范围
+                                    </label>
+                                    <label class="mar-all-10 db">
+                                        <input type="checkbox" name="act_range_ext[]"
+                                               value="12312" checked>搜索并加入优惠范围
+                                    </label>
+                                    <label class="mar-all-10 db">
+                                        <input type="checkbox" name="act_range_ext[]"
+                                               value="12312" checked>搜索并加入优惠范围
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group rang-ext" style="display: none;">
+                            <input type="hidden" name="c_id" value="0">
+                            <label class="col-sm-4 control-label"><b>*</b>搜索并加入优惠范围：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="keyword-1 form-control wd-120 input-sm fl" placeholder="关键字">
+                                <a href="javascript:;"
+                                   class="btn btn-info input-sm btn-search-1 fl mar-left-10">搜索</a>
+                                <div class="cate-option fl">
+                                    <select name="result_val_1" class="form-control select input-sm wd250">
+                                        <option value="0">请选择</option>
+                                    </select>
+                                </div>
+                                <a href="javascript:;" class="btn btn-info input-sm btn-add-1 fl mar-left-10">添加</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>金额下限：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="min_amount" class="form-control input-sm" value=""
+                                       placeholder="金额下限">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>金额上限：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="max_amount" class="form-control input-sm" value=""
+                                       placeholder="金额上限">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" name="c_id" value="0">
+                            <label class="col-sm-4 control-label"><b>*</b>优惠方式：</label>
+                            <div class="col-sm-4">
+                                <select name="act_type" class="form-control select input-sm wd120 fl">
+                                    <option value="0">享受赠品（特惠品）</option>
+                                    <option value="1">享受现金减免</option>
+                                    <option value="2">享受价格折扣</option>
+                                </select>
+                                <input type="text" name="act_type_ext"
+                                       class="form-control input-sm wd-80 fl mar-left-10" value=""
+                                       placeholder="数值">
+                            </div>
+                        </div>
+                        <div class="form-group act-type-ext" style="display: none;">
+                            <input type="hidden" name="c_id" value="0">
+                            <label class="col-sm-4 control-label"><b>*</b>搜索并加入赠品（特惠品）：</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="keyword_2 form-control wd-120 input-sm fl" placeholder="关键字">
+                                <a href="javascript:;"
+                                   class="btn btn-info input-sm btn-search-2 fl mar-left-10">搜索</a>
+                                <div class="cate-option fl">
+                                    <select name="result_val_2" class="form-control select input-sm wd250">
+                                        <option value="0">请选择</option>
+                                    </select>
+                                </div>
+                                <a href="javascript:;" class="btn btn-info input-sm btn-add-2 fl mar-left-10">添加</a>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 control-label">&nbsp;</div>
                             <div class="">
                                 <input type="submit" value="　确定　" class="btn btn-danger clearfix">
-                                <a type="button" class="btn btn-default clearfix mar-left-20" href="javascript:history.go(-1)">返回</a>
+                                <a type="button" class="btn btn-default clearfix mar-left-20"
+                                   href="javascript:history.go(-1)">返回</a>
                             </div>
                         </div>
                     </form>
