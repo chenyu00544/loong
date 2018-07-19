@@ -37,8 +37,17 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>享受优惠的会员等级：</label>
                             <div class="col-sm-4">
-                                <input type="checkbox" name="user_rank[]" id="is_best" value="0">
-                                <label class="ui-label mar-left-5" for="is_best">精品</label>
+                                <div class="checkbox">
+                                    <label class="mar-right-10">
+                                        <input type="checkbox" name="">会员
+                                    </label>
+                                    <label class="mar-right-10">
+                                        <input type="checkbox" name="">会员
+                                    </label>
+                                    <label class="mar-right-10">
+                                        <input type="checkbox" name="">会员
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">

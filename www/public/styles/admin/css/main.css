@@ -64,7 +64,7 @@ em {
 }
 
 input[type="file"] {
-    height: 30px;
+    height: 25px;
     margin-top: 4px;
     max-width: 200px;
 }
