@@ -34,11 +34,52 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
         return $this->favourableActivityModel->getFavourableActivityByPage($where, $search);
     }
 
+    public function addFavourableActivity($data, $admin)
+    {
+        $inarr = ['gift_id', 'gift_price', 'gift_name'];
+        $gift = [];
+        foreach ($data as $key => $value) {
+            if (in_array($key, $inarr)) {
+                foreach ($value as $k => $val) {
+                    $gift[$k][str_replace('gift_', '', $key)] = $value;
+                }
+                unset($data[$key]);
+            }
+
+            switch ($key) {
+                case 'start_end_date':
+                    $date_arr = explode('～', $value);
+                    if (count($date_arr) == 2) {
+                        $updata['start_time'] = strtotime($date_arr[0]);
+                        $updata['end_time'] = strtotime($date_arr[1]);
+                    }
+                    break;
+                case 'rank':
+                    $updata['user_rank'] = implode(',', $value);
+                    break;
+                case 'act_range_ext':
+                    $updata['act_range_ext'] = implode(',', $value);
+                    break;
+                case 'activity_thumb':
+                    $updata['act_range_ext'] = implode(',', $value);
+                    break;
+                default:
+                    $updata[$key] = $value;
+                    break;
+            }
+        }
+        $updata['gift'] = serialize($gift);
+        $updata['user_id'] = $admin->user_id;
+        $updata['sort_order'] = 50;
+        $updata['review_status'] = 3;
+        return $this->favourableActivityModel->addFavourableActivity($updata);
+    }
+
     public function change($data)
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where['act_id'] = $data['id'];
-        switch ($data['type']){
+        switch ($data['type']) {
             case 'sort_order':
                 $updata['sort_order'] = $data['value'];
                 break;

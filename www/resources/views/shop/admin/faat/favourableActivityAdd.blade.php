@@ -16,7 +16,7 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="brand" action="{{url('admin/goodstype')}}" method="post" class="form-horizontal"
+                    <form name="brand" action="{{url('admin/favourable')}}" method="post" class="form-horizontal"
                           enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="form-group">
@@ -55,7 +55,6 @@
                         </div>
 
                         <div class="form-group">
-                            <input type="hidden" name="c_id" value="0">
                             <label class="col-sm-4 control-label">使用类型：</label>
                             <div class="col-sm-4">
                                 <select name="userFav_type" class="form-control select input-sm wd120">
@@ -65,7 +64,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="hidden" name="c_id" value="0">
                             <label class="col-sm-4 control-label"><b>*</b>优惠范围：</label>
                             <div class="col-sm-4">
                                 <select name="act_range" class="form-control select input-sm wd120">
@@ -84,7 +82,6 @@
                             </div>
                         </div>
                         <div class="form-group rang-ext" style="display: none;">
-                            <input type="hidden" name="c_id" value="0">
                             <label class="col-sm-4 control-label"><b>*</b>搜索并加入优惠范围：</label>
                             <div class="col-sm-6">
                                 <input type="text" class="keyword-1 form-control wd-120 input-sm fl" placeholder="关键字">
@@ -114,7 +111,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="hidden" name="c_id" value="0">
                             <label class="col-sm-4 control-label">优惠方式：</label>
                             <div class="col-sm-4">
                                 <select name="act_type" class="form-control select input-sm wd120 fl">
@@ -128,7 +124,6 @@
                             </div>
                         </div>
                         <div class="form-group act-type-ext">
-                            <input type="hidden" name="c_id" value="0">
                             <label class="col-sm-4 control-label">搜索并加入赠品（特惠品）：</label>
                             <div class="col-sm-6">
                                 <input type="text" class="keyword-2 form-control wd-120 input-sm fl" placeholder="关键字">
@@ -144,7 +139,6 @@
                             </div>
                         </div>
                         <div class="form-group act-ext-val" style="display: none;">
-                            <input type="hidden" name="c_id" value="0">
                             <label class="col-sm-4 control-label"></label>
                             <div class="col-sm-6">
                                 <table class="table table-hover table-bordered">

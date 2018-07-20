@@ -63,11 +63,12 @@ class FavourableController extends CommonController
      */
     public function store(Request $request)
     {
+        dd($request->except('_token'));
         $ver = Verifiable::Validator($request->all(), ["act_name" => 'required', "start_end_date" => 'required',"act_range" => 'required', "min_amount" => 'required', "max_amount" => 'required', ]);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->friendRepository->addFriend($request->except('_token'));
+        $re = $this->favourableActivityRepository->addFavourableActivity($request->except('_token'), $this->user);
         return view('shop.admin.success');
     }
 

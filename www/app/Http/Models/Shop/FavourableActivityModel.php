@@ -31,6 +31,11 @@ class FavourableActivityModel extends Model
             ->update($updata);
     }
 
+    public function addFavourableActivity($updata)
+    {
+        return $this->create($updata);
+    }
+
     public function delFavourableActivity($where)
     {
         return $this->where($where)
