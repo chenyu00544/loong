@@ -104,6 +104,10 @@ input[type=checkbox], input[type=radio] {
     margin: 1px 0 0;
 }
 
+option{
+    margin: 3px;
+}
+
 [v-cloak] {
     display: none;
 }
@@ -444,6 +448,10 @@ input[type=checkbox], input[type=radio] {
 
 .xwd100 {
     max-width: 100px;
+}
+
+.xwd400 {
+    max-width: 400px;
 }
 
 .hg25 {

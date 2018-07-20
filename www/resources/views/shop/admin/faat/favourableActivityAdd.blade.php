@@ -31,7 +31,7 @@
                             <div class="col-sm-4">
                                 <input type="text" style="width: 300px" name="start_end_date"
                                        id="start_end_date" class="form-control input-sm"
-                                       value="{{$now_date}} 00:00:00～{{$now_date}} 23:59:59">
+                                       value="{{$now_date}}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><b>*</b>上传图片：</label>
+                            <label class="col-sm-4 control-label">上传图片：</label>
                             <div class="col-sm-4">
                                 <input type="file" name="activity_thumb">
                             </div>
@@ -56,7 +56,7 @@
 
                         <div class="form-group">
                             <input type="hidden" name="c_id" value="0">
-                            <label class="col-sm-4 control-label"><b>*</b>使用类型：</label>
+                            <label class="col-sm-4 control-label">使用类型：</label>
                             <div class="col-sm-4">
                                 <select name="userFav_type" class="form-control select input-sm wd120">
                                     <option value="0">自主使用</option>
@@ -76,22 +76,10 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group rang-ext-val">
+                        <div class="form-group rang-ext-val" style="display: none;">
                             <label class="col-sm-4 control-label"></label>
-                            <div class="col-sm-8">
-                                <div class="checkbox bg-eee pad-bt-10">
-                                    <label class="mar-all-10 db">
-                                        <input type="checkbox" name="act_range_ext[]"
-                                               value="12312" checked>搜索并加入优惠范围
-                                    </label>
-                                    <label class="mar-all-10 db">
-                                        <input type="checkbox" name="act_range_ext[]"
-                                               value="12312" checked>搜索并加入优惠范围
-                                    </label>
-                                    <label class="mar-all-10 db">
-                                        <input type="checkbox" name="act_range_ext[]"
-                                               value="12312" checked>搜索并加入优惠范围
-                                    </label>
+                            <div class="col-sm-6">
+                                <div class="checkbox bg-eee pad-bt-10 rang-ext-val-list">
                                 </div>
                             </div>
                         </div>
@@ -101,13 +89,14 @@
                             <div class="col-sm-6">
                                 <input type="text" class="keyword-1 form-control wd-120 input-sm fl" placeholder="关键字">
                                 <a href="javascript:;"
-                                   class="btn btn-info input-sm btn-search-1 fl mar-left-10">搜索</a>
+                                   class="btn btn-info input-sm btn-search-1 fl mar-left-10" style="padding: 4px 10px;">搜索</a>
                                 <div class="cate-option fl">
-                                    <select name="result_val_1" class="form-control select input-sm wd250">
+                                    <select class="result_val_1 form-control select input-sm xwd400">
                                         <option value="0">请选择</option>
                                     </select>
                                 </div>
-                                <a href="javascript:;" class="btn btn-info input-sm btn-add-1 fl mar-left-10">添加</a>
+                                <a href="javascript:;" class="btn btn-info input-sm btn-add-1 fl mar-left-10"
+                                   style="padding: 4px 10px;">添加</a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -126,7 +115,7 @@
                         </div>
                         <div class="form-group">
                             <input type="hidden" name="c_id" value="0">
-                            <label class="col-sm-4 control-label"><b>*</b>优惠方式：</label>
+                            <label class="col-sm-4 control-label">优惠方式：</label>
                             <div class="col-sm-4">
                                 <select name="act_type" class="form-control select input-sm wd120 fl">
                                     <option value="0">享受赠品（特惠品）</option>
@@ -134,23 +123,40 @@
                                     <option value="2">享受价格折扣</option>
                                 </select>
                                 <input type="text" name="act_type_ext"
-                                       class="form-control input-sm wd-80 fl mar-left-10" value=""
+                                       class="form-control input-sm wd-80 fl mar-left-10" value="1"
                                        placeholder="数值">
                             </div>
                         </div>
-                        <div class="form-group act-type-ext" style="display: none;">
+                        <div class="form-group act-type-ext">
                             <input type="hidden" name="c_id" value="0">
-                            <label class="col-sm-4 control-label"><b>*</b>搜索并加入赠品（特惠品）：</label>
+                            <label class="col-sm-4 control-label">搜索并加入赠品（特惠品）：</label>
                             <div class="col-sm-6">
-                                <input type="text" class="keyword_2 form-control wd-120 input-sm fl" placeholder="关键字">
+                                <input type="text" class="keyword-2 form-control wd-120 input-sm fl" placeholder="关键字">
                                 <a href="javascript:;"
-                                   class="btn btn-info input-sm btn-search-2 fl mar-left-10">搜索</a>
+                                   class="btn btn-info input-sm btn-search-2 fl mar-left-10" style="padding: 4px 10px;">搜索</a>
                                 <div class="cate-option fl">
-                                    <select name="result_val_2" class="form-control select input-sm wd250">
+                                    <select class="result_val_2 form-control select input-sm xwd400">
                                         <option value="0">请选择</option>
                                     </select>
                                 </div>
-                                <a href="javascript:;" class="btn btn-info input-sm btn-add-2 fl mar-left-10">添加</a>
+                                <a href="javascript:;" class="btn btn-info input-sm btn-add-2 fl mar-left-10"
+                                   style="padding: 4px 10px;">添加</a>
+                            </div>
+                        </div>
+                        <div class="form-group act-ext-val" style="display: none;">
+                            <input type="hidden" name="c_id" value="0">
+                            <label class="col-sm-4 control-label"></label>
+                            <div class="col-sm-6">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th width="80%" class="text-center">赠品（特惠品）</th>
+                                        <th width="20%" class="text-center">价格</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="act-ext-val-list">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="form-group">
@@ -174,33 +180,140 @@
             src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
-            var optionSet = {
-                timePicker: true,
-                timePickerIncrement: 1,
-                format: 'YYYY-MM-DD hh:mm:ss',
-                timePicker24Hour: true,
-                timePickerSeconds: true,
-                locale: {
-                    "separator": " -222 ",
-                    "applyLabel": "确定",
-                    "cancelLabel": "取消",
-                    "fromLabel": "起始",
-                    "toLabel": "结束",
-                    "customRangeLabel": "自定义",
-                    "weekLabel": "W",
-                    "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
-                    "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                    "firstDay": 1
-                }
-            };
-            $('#start_end_date').daterangepicker(optionSet, function (start, end) {
+            $('#start_end_date').daterangepicker(optionDateSet, function (start, end) {
                 var s = start.format('YYYY-MM-DD HH:mm:ss');
                 var e = end.format('YYYY-MM-DD HH:mm:ss');
                 var t = s + '～' + e;
                 $('#start_end_date').val(t);
             });
-        });
 
+            //优惠范围选择
+            $('select[name=act_range]').on('change', function () {
+                $('.rang-ext-val-list').html('');
+                $('.rang-ext-val').hide();
+                if ($(this).val() != 0) {
+                    $('.rang-ext').show();
+                } else {
+                    $('.rang-ext').hide();
+                }
+            });
+            //优惠范围搜索
+            $('.btn-search-1').on('click', function () {
+                var keywords = $('.keyword-1').val();
+                var type = $('select[name=act_range]').val();
+                if (keywords != '') {
+                    $.post("{{url('admin/search')}}", {
+                        keywords: keywords,
+                        type: type,
+                        '_token': '{{csrf_token()}}'
+                    }, function (data) {
+                        var html = '<option value="0">请选择</option>';
+                        if (data.code == 1) {
+                            for (var i in data.data) {
+                                html += '<option value="' + data.data[i].id + '">' + data.data[i].name + '</option>'
+                            }
+                        } else {
+                            layer.msg(data.msg, {icon: data.code});
+                            html += '<option value="0">没有搜索到相关记录，请重新搜索</option>'
+                        }
+                        $('.result_val_1').html(html)
+                    })
+                } else {
+                    layer.msg('请输入关键字', {icon: 5});
+                }
+            });
+
+            //优惠范围添加
+            $('.btn-add-1').on('click', function () {
+                var bool = false;
+                var val = $('.result_val_1').val();
+                $('input[name="act_range_ext[]"]').each(function () {
+                    if (val == $(this).val()) {
+                        bool = true;
+                    }
+                });
+                if (bool || val == 0) {
+                    layer.msg('选择错误或已经存在', {icon: 4})
+                } else {
+                    var text = $('.result_val_1').find("option:selected").text();
+                    $('.rang-ext-val').show();
+                    var html = '<label class="mar-all-10 db">' +
+                        '<input type="checkbox" name="act_range_ext[]" value="' + val + '" checked>' + text + '</label>';
+                    $('.rang-ext-val-list').append(html);
+                }
+            });
+
+            //优惠方式选择
+            $('select[name=act_type]').on('change', function () {
+                $('.act-ext-val').hide();
+                $('.act-ext-val-list').html('');
+
+                if ($(this).val() == 0) {
+                    $('.act-type-ext').show();
+                    $('input[name=act_type_ext]').val(1);
+                } else if ($(this).val() == 1) {
+                    $('.act-type-ext').hide();
+                    $('input[name=act_type_ext]').val(0);
+                } else if ($(this).val() == 2) {
+                    $('.act-type-ext').hide();
+                    $('input[name=act_type_ext]').val(0.99);
+                }
+            });
+
+            //优惠方式搜索
+            $('.btn-search-2').on('click', function () {
+                var keywords = $('.keyword-2').val();
+                if (keywords != '') {
+                    $.post("{{url('admin/search')}}", {
+                        keywords: keywords,
+                        type: 3,
+                        '_token': '{{csrf_token()}}'
+                    }, function (data) {
+                        var html = '<option value="0">请选择</option>';
+                        if (data.code == 1) {
+                            for (var i in data.data) {
+                                html += '<option value="' + data.data[i].id + '">' + data.data[i].name + '</option>'
+                            }
+                        } else {
+                            layer.msg(data.msg, {icon: data.code});
+                            html += '<option value="0">没有搜索到相关记录，请重新搜索</option>'
+                        }
+                        $('.result_val_2').html(html)
+                    })
+                } else {
+                    layer.msg('请输入关键字', {icon: 5});
+                }
+            });
+
+            //优惠方式添加
+            $('.btn-add-2').on('click', function () {
+                var bool = false;
+                var val = $('.result_val_2').val();
+                $('input[name="gift_id[]"]').each(function () {
+                    if (val == $(this).val()) {
+                        bool = true;
+                    }
+                });
+                if (bool || val == 0) {
+                    layer.msg('选择错误或已经存在', {icon: 4})
+                } else {
+                    var text = $('.result_val_2').find("option:selected").text();
+                    $('.act-ext-val').show();
+                    var html = '<tr>' +
+                        '<td>' +
+                        '<label class="checkbox-items">' +
+                        '<input type="checkbox" name="gift_id[]" class="ui-checkbox" value="' + val + '" checked>' + text +
+                        '</label>' +
+                        '</td>' +
+                        '<td class="text-center">' +
+                        '<input type="text" name="gift_price[]" class="form-control input-sm wd-80" value="0" placeholder="价格" style="display: inline-block"> ' +
+                        '<input name="gift_name[]" type="hidden" value="' + text + '"> ' +
+                        '</td> ' +
+                        '</tr>';
+                    $('.act-ext-val-list').append(html);
+                }
+            });
+        });
     </script>
 @endsection
 @endsection

@@ -35,6 +35,15 @@ class BrandModel extends Model
         return $res;
     }
 
+    public function searchBrands($search, $column = ['*'])
+    {
+        $m = $this->select($column);
+        foreach ($search as $key => $value) {
+            $m->orWhere($key, 'like', '%' . $value . '%');
+        }
+        return $m->get();
+    }
+
     public function getBrand($id)
     {
         return $this->where('id', $id)

@@ -24,13 +24,22 @@ class CategoryModel extends Model
             ->first();
     }
 
+    public function searchComCates($search, $column = ['*'])
+    {
+        $m = $this->select($column);
+        foreach ($search as $key => $value) {
+            $m->orWhere($key, 'like', '%' . $value . '%');
+        }
+        return $m->get();
+    }
+
     public function getComParentCate($id, $cates = [])
     {
         $rep = $this->where('id', $id)->first();
         $cates[] = $rep;
-        if($rep->parent_id != 0){
+        if ($rep->parent_id != 0) {
             return $this->getComParentCate($rep->parent_id, $cates);
-        }else{
+        } else {
             return $cates;
         }
     }

@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\FavourableActivityRepository;
 use App\Repositories\UserRankRepository;
 use Illuminate\Http\Request;
@@ -62,7 +63,12 @@ class FavourableController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["act_name" => 'required', "start_end_date" => 'required',"act_range" => 'required', "min_amount" => 'required', "max_amount" => 'required', ]);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->friendRepository->addFriend($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**

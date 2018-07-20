@@ -17,8 +17,8 @@ class GoodsModel extends Model
         if (!empty($where)) {
             $goods->where($where);
         }
-        if(!empty($keywords)){
-            $goods->where('goods_name', 'like', '%'.$keywords.'%');
+        if (!empty($keywords)) {
+            $goods->where('goods_name', 'like', '%' . $keywords . '%');
         }
         return $goods->orderBy('goods_id', 'desc')
             ->paginate($size);
@@ -29,6 +29,15 @@ class GoodsModel extends Model
         return $this->select($columns)
             ->where('goods_id', $id)
             ->first();
+    }
+
+    public function searchGoodses($search, $column = ['*'])
+    {
+        $m = $this->select($column);
+        foreach ($search as $key => $value) {
+            $m->orWhere($key, 'like', '%' . $value . '%');
+        }
+        return $m->get();
     }
 
     public function getGoodsCount($where = [], $orwhere = [], $inwhere = [])

@@ -50,6 +50,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('index', 'IndexController@index');
     Route::get('info', 'IndexController@info');
 
+    Route::resource('search', 'SearchController');
+
 //    Route::get('shopsetup', 'ShopConfController@index');
     Route::resource('shopconf', 'ShopConfController');
 
