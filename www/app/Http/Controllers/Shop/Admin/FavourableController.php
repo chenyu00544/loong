@@ -63,7 +63,6 @@ class FavourableController extends CommonController
      */
     public function store(Request $request)
     {
-        dd($request->except('_token'));
         $ver = Verifiable::Validator($request->all(), ["act_name" => 'required', "start_end_date" => 'required',"act_range" => 'required', "min_amount" => 'required', "max_amount" => 'required', ]);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
@@ -99,7 +98,9 @@ class FavourableController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $userRanks = $this->userRankRepository->getUserRanks();
+        $faat = $this->favourableActivityRepository->getFavourableActivity($id);
+        return view('shop.admin.faat.favourableActivityEdit', compact('userRanks', 'faat'));
     }
 
     /**
@@ -111,7 +112,12 @@ class FavourableController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["act_name" => 'required', "start_end_date" => 'required',"act_range" => 'required', "min_amount" => 'required', "max_amount" => 'required', ]);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->favourableActivityRepository->setFavourableActivity($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**

@@ -25,6 +25,20 @@ class FavourableActivityModel extends Model
         return $m->paginate($size);
     }
 
+    public function getFavourableActivitys($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->whereIn('act_id', $where)
+            ->get();
+    }
+
+    public function getFavourableActivity($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
     public function setFavourableActivity($where, $updata)
     {
         return $this->where($where)
@@ -44,7 +58,7 @@ class FavourableActivityModel extends Model
 
     public function delFavourableActivitys($where)
     {
-        return $this->whereIn('act_id',$where)
+        return $this->whereIn('act_id', $where)
             ->delete();
     }
 }

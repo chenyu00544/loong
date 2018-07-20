@@ -239,4 +239,3 @@ var optionDateSet = {
         "firstDay": 1
     }
 };
-

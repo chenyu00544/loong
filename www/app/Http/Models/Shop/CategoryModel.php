@@ -24,6 +24,13 @@ class CategoryModel extends Model
             ->first();
     }
 
+    public function getComCatesByIn($in)
+    {
+        return $this->whereIn('id', $in)
+            ->orderBy('sort_order', 'asc')
+            ->get();
+    }
+
     public function searchComCates($search, $column = ['*'])
     {
         $m = $this->select($column);

@@ -25,6 +25,13 @@ class BrandModel extends Model
             ->get();
     }
 
+    public function getBrandByIn($in)
+    {
+        return $this->whereIn('id', $in)
+            ->orderBy('sort_order', 'asc')
+            ->get();
+    }
+
     public function getBrandsBySearch($where, $whereIn = [])
     {
         $brand = $this->where($where);

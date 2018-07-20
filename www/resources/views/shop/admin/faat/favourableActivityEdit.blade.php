@@ -16,13 +16,16 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="brand" action="{{url('admin/favourable')}}" method="post" class="form-horizontal"
-                          enctype="multipart/form-data">
+                    <form name="brand" action="{{url('admin/favourable/'.$faat->act_id)}}" method="post"
+                          class="form-horizontal" enctype="multipart/form-data">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
+
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>优惠活动名称：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="act_name" class="form-control input-sm" value=""
+                                <input type="text" name="act_name" class="form-control input-sm"
+                                       value="{{$faat->act_name}}"
                                        placeholder="优惠活动名称" autocomplete="off">
                             </div>
                         </div>
@@ -31,7 +34,7 @@
                             <div class="col-sm-4">
                                 <input type="text" style="width: 300px" name="start_end_date"
                                        id="start_end_date" class="form-control input-sm"
-                                       value="{{$now_date}}">
+                                       value="{{date('Y-m-d H:i:s',$faat->start_time)}}～{{date('Y-m-d H:i:s',$faat->end_time)}}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -41,7 +44,8 @@
                                     @foreach($userRanks as $userRank)
                                         <label class="mar-right-10">
                                             <input type="checkbox" name="rank[]"
-                                                   value="{{$userRank->rank_id}}">{{$userRank->rank_name}}
+                                                   value="{{$userRank->rank_id}}"
+                                                   @if(in_array($userRank->rank_id, $faat->user_rank)) checked @endif>{{$userRank->rank_name}}
                                         </label>
                                     @endforeach
                                 </div>
@@ -50,7 +54,14 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">上传图片：</label>
                             <div class="col-sm-4">
-                                <input type="file" name="activity_thumb">
+                                <input type="file" name="activity_thumb" class="fl">
+                                <span class="img-show">
+                                        <a href="{{url($faat->activity_thumb)}}" class="nyroModal">
+                                            <i class="glyphicon glyphicon-picture top2"
+                                               data-tooltipimg="{{url($faat->activity_thumb)}}"
+                                               ctype="tooltip" title="tooltip"></i>
+                                        </a>
+                                    </span>
                             </div>
                         </div>
 
@@ -58,8 +69,8 @@
                             <label class="col-sm-4 control-label">使用类型：</label>
                             <div class="col-sm-4">
                                 <select name="userFav_type" class="form-control select input-sm wd120">
-                                    <option value="0">自主使用</option>
-                                    <option value="1">全场通用</option>
+                                    <option value="0" @if($faat->userFav_type == 0) selected @endif>自主使用</option>
+                                    <option value="1" @if($faat->userFav_type == 1) selected @endif>全场通用</option>
                                 </select>
                             </div>
                         </div>
@@ -67,17 +78,24 @@
                             <label class="col-sm-4 control-label"><b>*</b>优惠范围：</label>
                             <div class="col-sm-4">
                                 <select name="act_range" class="form-control select input-sm wd120">
-                                    <option value="0">全部商品</option>
-                                    <option value="1">以下分类</option>
-                                    <option value="2">以下品牌</option>
-                                    <option value="3">以下商品</option>
+                                    <option value="0" @if($faat->act_range == 0) selected @endif>全部商品</option>
+                                    <option value="1" @if($faat->act_range == 1) selected @endif>以下分类</option>
+                                    <option value="2" @if($faat->act_range == 2) selected @endif>以下品牌</option>
+                                    <option value="3" @if($faat->act_range == 3) selected @endif>以下商品</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group rang-ext-val" style="display: none;">
+                        <div class="form-group rang-ext-val"
+                             style="@if(empty($faat->act_range_ext)) display: none; @endif">
                             <label class="col-sm-4 control-label"></label>
                             <div class="col-sm-7">
                                 <div class="checkbox bg-eee pad-bt-10 rang-ext-val-list">
+                                    @foreach($faat->act_range_ext as $range_ext)
+                                        <label class="mar-all-10 db">
+                                            <input type="checkbox" name="act_range_ext[]"
+                                                   value="{{$range_ext['id']}}"
+                                                   checked>{{$range_ext['name']}}</label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -99,14 +117,16 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>金额下限：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="min_amount" class="form-control input-sm" value=""
+                                <input type="text" name="min_amount" class="form-control input-sm"
+                                       value="{{$faat->min_amount}}"
                                        placeholder="金额下限">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>金额上限：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="max_amount" class="form-control input-sm" value="0"
+                                <input type="text" name="max_amount" class="form-control input-sm"
+                                       value="{{$faat->max_amount}}"
                                        placeholder="金额上限">
                             </div>
                         </div>
@@ -114,12 +134,13 @@
                             <label class="col-sm-4 control-label">优惠方式：</label>
                             <div class="col-sm-4">
                                 <select name="act_type" class="form-control select input-sm wd120 fl">
-                                    <option value="0">享受赠品（特惠品）</option>
-                                    <option value="1">享受现金减免</option>
-                                    <option value="2">享受价格折扣</option>
+                                    <option value="0" @if($faat->act_type == 0) selected @endif>享受赠品（特惠品）</option>
+                                    <option value="1" @if($faat->act_type == 1) selected @endif>享受现金减免</option>
+                                    <option value="2" @if($faat->act_type == 2) selected @endif>享受价格折扣</option>
                                 </select>
                                 <input type="text" name="act_type_ext"
-                                       class="form-control input-sm wd-80 fl mar-left-10" value="1"
+                                       class="form-control input-sm wd-80 fl mar-left-10"
+                                       value="{{$faat->act_type_ext}}"
                                        placeholder="数值">
                             </div>
                         </div>
@@ -138,7 +159,7 @@
                                    style="padding: 4px 10px;">添加</a>
                             </div>
                         </div>
-                        <div class="form-group act-ext-val" style="display: none;">
+                        <div class="form-group act-ext-val" style="@if(empty($faat->gift)) display: none; @endif">
                             <label class="col-sm-4 control-label"></label>
                             <div class="col-sm-6">
                                 <table class="table table-hover table-bordered">
@@ -149,6 +170,24 @@
                                     </tr>
                                     </thead>
                                     <tbody class="act-ext-val-list">
+                                    @foreach($faat->gift as $gift)
+                                        <tr>
+                                            <td>
+                                                <label class="checkbox-items">
+                                                    <input type="checkbox" name="gift_id[]" class="ui-checkbox"
+                                                           value="{{$gift['id']}}"
+                                                           checked>{{$gift['name']}}
+                                                </label>
+                                            </td>
+                                            <td class="text-center">
+                                                <input type="text" name="gift_price[]"
+                                                       class="form-control input-sm wd-80" value="{{$gift['price']}}"
+                                                       placeholder="价格"
+                                                       style="display: inline-block">
+                                                <input name="gift_name[]" type="hidden" value="{{$gift['name']}}">
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -174,6 +213,8 @@
             src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
+            $('.nyroModal').nyroModal();
+
             $('#start_end_date').daterangepicker(optionDateSet, function (start, end) {
                 var s = start.format('YYYY-MM-DD HH:mm:ss');
                 var e = end.format('YYYY-MM-DD HH:mm:ss');
@@ -310,9 +351,9 @@
                         '</label>' +
                         '</td>' +
                         '<td class="text-center">' +
-                        '<input type="text" name="gift_price[]" class="form-control input-sm wd-80" value="0" placeholder="价格" style="display: inline-block"> ' +
-                        '<input name="gift_name[]" type="hidden" value="' + text + '"> ' +
-                        '</td> ' +
+                        '<input type="text" name="gift_price[]" class="form-control input-sm wd-80" value="0" placeholder="价格" style="display: inline-block">' +
+                        '<input name="gift_name[]" type="hidden" value="' + text + '">' +
+                        '</td>' +
                         '</tr>';
                     $('.act-ext-val-list').append(html);
                 }
