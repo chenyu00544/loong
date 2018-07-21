@@ -9,11 +9,16 @@
 namespace App\Repositories;
 
 use App\Contracts\CouponsRepositoryInterface;
+use App\Http\Models\Shop\CouponsModel;
 
 class CouponsRepository implements CouponsRepositoryInterface
 {
 
-    public function __construct()
+    private $couponsModel;
+
+    public function __construct(
+        CouponsModel $couponsModel
+    )
     {
     }
 }

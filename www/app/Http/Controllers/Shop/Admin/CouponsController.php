@@ -26,7 +26,7 @@ class CouponsController extends CommonController
      */
     public function index()
     {
-        //
+        return view('shop.admin.faat.coupons');
     }
 
     /**
