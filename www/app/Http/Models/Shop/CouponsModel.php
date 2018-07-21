@@ -10,4 +10,31 @@ class CouponsModel extends Model
     protected $primaryKey = 'cou_id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function getCouponsByPage($where, $search, $column = ['*'], $size = 15)
+    {
+        $m = $this->select($column)
+            ->where($where);
+        if (!empty($search)) {
+            $m->where(function ($query) use ($search) {
+                if (!empty($search['keywords'])) {
+                    $query->orWhere('cou_name', 'like', '%' . $search['keywords'] . '%');
+                }
+            });
+        }
+        return $m->orderBy('cou_id', 'desc')
+            ->paginate($size);
+    }
+
+    public function delCoupons($where)
+    {
+        return $this->where($where)
+            ->delete();
+    }
+
+    public function delCouponsByIn($where)
+    {
+        return $this->whereIn('cou_id', $where)
+            ->delete();
+    }
 }

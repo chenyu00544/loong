@@ -10,4 +10,16 @@ class CouponsUserModel extends Model
     protected $primaryKey = 'cu_id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function delCouponsUser($where)
+    {
+        return $this->where($where)
+            ->delete();
+    }
+
+    public function delCouponsUserByIn($where)
+    {
+        return $this->whereIn('cou_id', $where)
+            ->delete();
+    }
 }

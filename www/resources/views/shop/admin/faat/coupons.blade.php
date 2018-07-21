@@ -2,15 +2,15 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">促销管理 - 优惠活动列表</div>
+        <div class="title">促销管理 - 优惠券列表</div>
         <div class="content">
             <div class="tabs mar-top-5">
                 <ul class="fl">
                     <li class="@if($seller == 'selfsale') curr @endif fl">
-                        <a href="{{url('admin/favourable/selfsale')}}">自营</a>
+                        <a href="{{url('admin/coupons/selfsale')}}">自营</a>
                     </li>
                     <li class="@if($seller == 'seller') curr @endif fl">
-                        <a href="{{url('admin/favourable/seller')}}">店铺</a>
+                        <a href="{{url('admin/coupons/seller')}}">店铺</a>
                     </li>
                 </ul>
             </div>
@@ -26,13 +26,13 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="clearfix mar-bt-20">
-                    <a href="{{url('admin/favourable/create')}}" class="btn btn-success btn-add btn-sm">添加优惠活动</a>
+                    <a href="{{url('admin/coupons/create')}}" class="btn btn-success btn-add btn-sm">添加优惠券</a>
                     <div class="fr wd250">
-                        <form action="{{url('admin/favourable/'.$seller)}}" method="get">
+                        <form action="{{url('admin/coupons/'.$seller)}}" method="get">
                             {{csrf_field()}}
 
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
-                                   class="form-control input-sm max-wd-190" placeholder="活动名称">
+                                   class="form-control input-sm max-wd-190" placeholder="优惠券名称">
                             <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr lh22" value="查询">
                         </form>
                     </div>
@@ -45,18 +45,19 @@
                                 <input type="checkbox" name="all_list" class="checkbox check-all">
                             </th>
                             <th width="5%">编号</th>
-                            <th width="17%">优惠活动名称</th>
-                            <th width="10%">商家名称</th>
-                            <th width="12%">开始时间</th>
-                            <th width="12%">结束时间</th>
-                            <th width="8%">金额下限</th>
-                            <th width="8%">金额上限</th>
-                            <th width="8%">排序</th>
+                            <th width="20%">优惠活动名称</th>
+                            <th width="9%">优惠券类型</th>
+                            <th width="8%">使用商品</th>
+                            <th width="7%">使用门槛</th>
+                            <th width="5%">面值</th>
+                            <th width="7%">发行量</th>
+                            <th width="12%">有效范围</th>
+                            <th width="7%">是否过期</th>
                             <th width="7%">审核状态</th>
-                            <th width="10%" class="text-center">操作</th>
+                            <th width="8%" class="text-center">操作</th>
                         </tr>
                         </thead>
-                        @if($faats->count() == 0)
+                        @if($couponses->count() == 0)
                             <tbody>
                             <tr class="">
                                 <td class="no-records" colspan="20">没有找到任何记录</td>
@@ -64,36 +65,62 @@
                             </tbody>
                         @else
                             <tbody>
-                            @foreach($faats as $faat)
+                            @foreach($couponses as $coupons)
                                 <tr class="">
                                     <td>
-                                        <input type="checkbox" name="checkboxes" value="{{$faat->act_id}}"
-                                               class="checkbox check-all-list fl" id="checkbox_{{$faat->act_id}}">
+                                        <input type="checkbox" name="checkboxes" value="{{$coupons->cou_id}}"
+                                               class="checkbox check-all-list fl" id="checkbox_{{$coupons->cou_id}}">
                                     </td>
-                                    <td>{{$faat->act_id}}</td>
-                                    <td>{{$faat->act_name}}</td>
-                                    <td>@if($faat->user_id == 0) <font class="red">自营</font> @else <font
-                                                class="blue">其他</font> @endif</td>
-                                    <td>{{date('Y-m-d H:i:s', $faat->start_time)}}</td>
-                                    <td>{{date('Y-m-d H:i:s', $faat->end_time)}}</td>
-                                    <td>{{$faat->min_amount}}</td>
-                                    <td>{{$faat->max_amount}}</td>
-                                    <td><input class="form-control input-sm chang-order" name="sort_order" type="text"
-                                               data-id="{{$faat->act_id}}" value="{{$faat->sort_order}}"
-                                               autocomplete="off"></td>
-                                    <td>@if($faat->review_status == 3)
-                                            <font class="blue">审核已通过</font>
-                                        @elseif($faat->review_status == 1)
+                                    <td>{{$coupons->cou_id}}</td>
+                                    <td>{{$coupons->cou_name}}</td>
+                                    <td>
+                                        @if($coupons->cou_type == 1)
+                                            <font class="red">注册赠券</font>
+                                        @elseif($coupons->cou_type == 2)
+                                            <font class="blue">购物赠券</font>
+                                        @elseif($coupons->cou_type == 3)
+                                            <font class="oranges">全场赠券</font>
+                                        @elseif($coupons->cou_type == 4)
+                                            <font class="green">会员赠券</font>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if(!$coupons->cou_goods && !$coupons->spec_cat)
+                                            <font class="red">全部商品</font>
+                                        @elseif($coupons->cou_goods && !$coupons->spec_cat)
+                                            <font class="blue">指定商品</font>
+                                        @elseif(!$coupons->cou_goods && $coupons->spec_cat)
+                                            <font class="oranges">指定分类</font>
+                                        @endif
+                                    </td>
+                                    <td>{{$coupons->cou_man}}</td>
+                                    <td>{{$coupons->cou_money}}</td>
+                                    <td>{{$coupons->cou_total}}</td>
+                                    <td>
+                                        {{date('Y-m-d H:i:s', $coupons->cou_start_time)}}<br>
+                                        {{date('Y-m-d H:i:s', $coupons->cou_end_time)}}</td>
+                                    <td>
+                                        @if($coupons->cou_end_time > time())
+                                            <font class="green">未过期</font>
+                                        @else
+                                            <font class="red">已过期</font>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($coupons->review_status == 1)
                                             <font class="oranges">未审核</font>
-                                        @elseif($faat->review_status == 2)
+                                        @elseif($coupons->review_status == 2)
                                             <font class="red">审核未通过</font>
-                                        @endif</td>
+                                        @elseif($coupons->review_status == 3)
+                                            <font class="blue">审核已通过</font>
+                                        @endif
+                                    </td>
                                     <td class="text-center">
-                                        <a type="button" href="{{url('admin/favourable/'.$faat->act_id.'/edit')}}"
+                                        <a type="button" href="{{url('admin/coupons/'.$coupons->cou_id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>
                                         <a type="button" href="javascript:;"
                                            class="btn btn-danger btn-del btn-sm"
-                                           data-id="{{$faat->act_id}}">删除</a>
+                                           data-id="{{$coupons->cou_id}}">删除</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -107,7 +134,7 @@
                         </div>
                     </div>
                     <div class="page_list">
-                        {{$faats->links()}}
+                        {{$couponses->links()}}
                     </div>
                 </div>
             </div>
@@ -134,7 +161,7 @@
 
                 if (ids.length > 0) {
                     $.post(
-                        '{{url("admin/favourable/change")}}',
+                        '{{url("admin/coupons/change")}}',
                         {
                             id: ids,
                             type: 'delete',
@@ -154,7 +181,7 @@
                 var sort = $(this).val();
                 var id = $(this).data('id');
                 $.post(
-                    '{{url("admin/favourable/change")}}',
+                    '{{url("admin/coupons/change")}}',
                     {
                         id: id,
                         type: 'sort_order',
@@ -213,7 +240,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/favourable/')}}/" + Id,
+                        "{{url('admin/coupons/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});

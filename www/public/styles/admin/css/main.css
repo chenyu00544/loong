@@ -1177,6 +1177,10 @@ option{
     color: gray;
 }
 
+.yellow {
+    color: yellow;
+}
+
 .no-records {
     text-align: center;
     height: 200px;

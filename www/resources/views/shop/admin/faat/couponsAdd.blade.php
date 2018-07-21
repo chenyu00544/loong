@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">促销管理 - 优惠活动</div>
+        <div class="title">促销管理 - 优惠券添加</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -11,7 +11,7 @@
                 </div>
                 <ul>
                     <li>标识<em>"*"</em>的选项为必填项，其余为选填项。</li>
-                    <li>优惠活动相关信息设置，请谨慎填写信息。</li>
+                    <li>优惠券相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
             <div class="fromlist clearfix">
@@ -19,11 +19,59 @@
                     <form name="brand" action="{{url('admin/favourable')}}" method="post" class="form-horizontal"
                           enctype="multipart/form-data">
                         {{csrf_field()}}
+
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><b>*</b>优惠活动名称：</label>
+                            <label class="col-sm-4 control-label">优惠券类型：</label>
+                            <div class="col-sm-4">
+                                <select name="cou_type" class="form-control select input-sm">
+                                    <option value="1">注册赠券</option>
+                                    <option value="2">购物赠券</option>
+                                    <option value="3">全场赠券</option>
+                                    <option value="4">会员赠券</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>优惠券名称：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="act_name" class="form-control input-sm" value=""
-                                       placeholder="优惠活动名称" autocomplete="off">
+                                <input type="text" name="cou_name" class="form-control input-sm" value=""
+                                       placeholder="优惠券名称" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>优惠券标题：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="cou_title" class="form-control input-sm" value=""
+                                       placeholder="优惠券标题" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>优惠劵总张数：</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="cou_total" class="form-control input-sm" value=""
+                                       placeholder="总张数" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>面值：</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="cou_money" class="form-control input-sm" value=""
+                                       placeholder="面值" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>使用门槛：</label>
+                            <div class="col-sm-2">
+                                <input type="text" name="cou_man" class="form-control input-sm" value=""
+                                       placeholder="购满使用，无门槛为0" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">每人限领：</label>
+                            <div class="col-sm-1">
+                                <input type="text" name="cou_user_num" class="form-control input-sm" value="1"
+                                       placeholder="每人限领" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
@@ -47,13 +95,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">上传图片：</label>
-                            <div class="col-sm-4">
-                                <input type="file" name="activity_thumb">
-                            </div>
-                        </div>
-
                         <div class="form-group">
                             <label class="col-sm-4 control-label">使用类型：</label>
                             <div class="col-sm-4">

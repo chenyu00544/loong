@@ -9,14 +9,24 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\CouponsRepository;
+use App\Repositories\UserRankRepository;
 use Illuminate\Http\Request;
 
 class CouponsController extends CommonController
 {
 
-    public function __construct()
+    private $couponsRepository;
+    private $userRankRepository;
+
+    public function __construct(
+        CouponsRepository $couponsRepository,
+        UserRankRepository $userRankRepository
+    )
     {
         parent::__construct();
+        $this->couponsRepository = $couponsRepository;
+        $this->userRankRepository = $userRankRepository;
     }
 
     /**
@@ -24,9 +34,17 @@ class CouponsController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('shop.admin.faat.coupons');
+        $seller = 'selfsale';
+        $search['keywords'] = $request->get('keywords');
+        $couponses = $this->couponsRepository->getCouponsByPage($search, $seller);
+        return view('shop.admin.faat.coupons', compact('seller', 'search', 'couponses'));
+    }
+
+    public function change(Request $request)
+    {
+        return $this->couponsRepository->change($request->except('_token'));
     }
 
     /**
@@ -36,7 +54,9 @@ class CouponsController extends CommonController
      */
     public function create()
     {
-        //
+        $now_date = $this->now_date;
+        $userRanks = $this->userRankRepository->getUserRanks();
+        return view('shop.admin.faat.couponsAdd', compact('now_date', 'userRanks'));
     }
 
     /**
@@ -56,9 +76,12 @@ class CouponsController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $seller = $id;
+        $search['keywords'] = $request->get('keywords');
+        $couponses = $this->couponsRepository->getCouponsByPage($search, $seller);
+        return view('shop.admin.faat.coupons', compact('seller', 'search', 'couponses'));
     }
 
     /**
@@ -92,6 +115,6 @@ class CouponsController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->couponsRepository->delCoupons($id);
     }
 }
