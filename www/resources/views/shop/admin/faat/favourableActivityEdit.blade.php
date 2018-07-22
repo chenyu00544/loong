@@ -193,6 +193,30 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">审核：</label>
+                            <div class="col-sm-4">
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="1"
+                                           @if($faat->review_status == 1) checked @endif> 未审核
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="3"
+                                           @if($faat->review_status == 3) checked @endif> 审核通过
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="2"
+                                           @if($faat->review_status == 2) checked @endif> 审核未通过
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">审核备注：</label>
+                            <div class="col-sm-4">
+                                <textarea name="review_content" id="" cols="30" rows="5"
+                                          class="form-control">{{$faat->review_content}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-sm-4 control-label">&nbsp;</div>
                             <div class="">
                                 <input type="submit" value="　确定　" class="btn btn-danger clearfix">

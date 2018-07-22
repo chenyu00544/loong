@@ -85,11 +85,11 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if(!$coupons->cou_goods && !$coupons->spec_cat)
+                                        @if(!$coupons->cou_goods && !$coupons->cou_cate)
                                             <font class="red">全部商品</font>
-                                        @elseif($coupons->cou_goods && !$coupons->spec_cat)
+                                        @elseif($coupons->cou_goods && !$coupons->cou_cate)
                                             <font class="blue">指定商品</font>
-                                        @elseif(!$coupons->cou_goods && $coupons->spec_cat)
+                                        @elseif(!$coupons->cou_goods && $coupons->cou_cate)
                                             <font class="oranges">指定分类</font>
                                         @endif
                                     </td>

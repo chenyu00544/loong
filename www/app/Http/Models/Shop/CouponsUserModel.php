@@ -17,6 +17,11 @@ class CouponsUserModel extends Model
             ->delete();
     }
 
+    public function addCouponsUser($data)
+    {
+        return $this->create($data);
+    }
+
     public function delCouponsUserByIn($where)
     {
         return $this->whereIn('cou_id', $where)

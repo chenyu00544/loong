@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\CouponsRepository;
 use App\Repositories\UserRankRepository;
 use Illuminate\Http\Request;
@@ -67,7 +68,13 @@ class CouponsController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+
+        $ver = Verifiable::Validator($request->all(), ["cou_name" => 'required', "cou_title" => 'required', "start_end_date" => 'required', "cou_total" => 'required', "cou_money" => 'required', "cou_man" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->couponsRepository->addCoupons($request->except('_token'), $this->user);
+        return view('shop.admin.success');
     }
 
     /**
@@ -92,7 +99,9 @@ class CouponsController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $userRanks = $this->userRankRepository->getUserRanks();
+        $coupons = $this->couponsRepository->getCoupons($id);
+        return view('shop.admin.faat.couponsEdit', compact('userRanks', 'coupons'));
     }
 
     /**

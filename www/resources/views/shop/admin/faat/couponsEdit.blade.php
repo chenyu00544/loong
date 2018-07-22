@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">促销管理 - 优惠券添加</div>
+        <div class="title">促销管理 - 优惠券编辑</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -16,18 +16,19 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="brand" action="{{url('admin/coupons')}}" method="post" class="form-horizontal"
-                          enctype="multipart/form-data">
+                    <form name="brand" action="{{url('admin/coupons/'.$coupons->cou_id)}}" method="post"
+                          class="form-horizontal" enctype="multipart/form-data">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label">优惠券类型：</label>
                             <div class="col-sm-4">
                                 <select name="cou_type" class="form-control select input-sm">
-                                    <option value="1">注册赠券</option>
-                                    <option value="2">购物赠券</option>
-                                    <option value="3">全场赠券</option>
-                                    <option value="4">会员赠券</option>
+                                    <option value="1" @if($coupons->cou_type==1) selected @endif>注册赠券</option>
+                                    <option value="2" @if($coupons->cou_type==2) selected @endif>购物赠券</option>
+                                    <option value="3" @if($coupons->cou_type==3) selected @endif>全场赠券</option>
+                                    <option value="4" @if($coupons->cou_type==4) selected @endif>会员赠券</option>
                                 </select>
                             </div>
                         </div>
@@ -35,14 +36,16 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>优惠券名称：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="cou_name" class="form-control input-sm" value=""
+                                <input type="text" name="cou_name" class="form-control input-sm"
+                                       value="{{$coupons->cou_name}}"
                                        placeholder="优惠券名称" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>优惠券标题：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="cou_title" class="form-control input-sm" value=""
+                                <input type="text" name="cou_title" class="form-control input-sm"
+                                       value="{{$coupons->cou_title}}"
                                        placeholder="优惠券标题" autocomplete="off">
                             </div>
                         </div>
@@ -51,34 +54,38 @@
                             <div class="col-sm-4">
                                 <input type="text" style="width: 300px" name="start_end_date"
                                        id="start_end_date" class="form-control input-sm"
-                                       value="{{$now_date}}">
+                                       value="{{date('Y-m-d H:i:s',$coupons->cou_start_time)}}～{{date('Y-m-d H:i:s',$coupons->cou_end_time)}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>优惠劵总张数：</label>
                             <div class="col-sm-2">
-                                <input type="text" name="cou_total" class="form-control input-sm" value=""
+                                <input type="text" name="cou_total" class="form-control input-sm"
+                                       value="{{$coupons->cou_total}}"
                                        placeholder="总张数" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>面值：</label>
                             <div class="col-sm-2">
-                                <input type="text" name="cou_money" class="form-control input-sm" value=""
+                                <input type="text" name="cou_money" class="form-control input-sm"
+                                       value="{{$coupons->cou_money}}"
                                        placeholder="面值" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>使用门槛：</label>
                             <div class="col-sm-2">
-                                <input type="text" name="cou_man" class="form-control input-sm" value=""
+                                <input type="text" name="cou_man" class="form-control input-sm"
+                                       value="{{$coupons->cou_man}}"
                                        placeholder="购物满多少可使用" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">每人限领：</label>
                             <div class="col-sm-1">
-                                <input type="text" name="cou_user_num" class="form-control input-sm" value="1"
+                                <input type="text" name="cou_user_num" class="form-control input-sm"
+                                       value="{{$coupons->cou_user_num}}"
                                        placeholder="每人限领" autocomplete="off" readonly>
                             </div>
                         </div>
@@ -86,20 +93,41 @@
                             <label class="col-sm-4 control-label">可使用商品：</label>
                             <div class="col-sm-4">
                                 <select name="act_range" class="form-control select input-sm wd120">
-                                    <option value="0">全部商品</option>
-                                    <option value="1">指定分类</option>
-                                    <option value="3">指定商品</option>
+                                    <option value="0"
+                                            @if(empty($coupons->cou_goods) && empty($coupons->cou_cate)) selected @endif>
+                                        全部商品
+                                    </option>
+                                    <option value="1"
+                                            @if(empty($coupons->cou_goods) && !empty($coupons->cou_cate)) selected @endif>
+                                        指定分类
+                                    </option>
+                                    <option value="3"
+                                            @if(!empty($coupons->cou_goods) && empty($coupons->cou_cate)) selected @endif>
+                                        指定商品
+                                    </option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group rang-ext-val" style="display: none;">
+                        <div class="form-group rang-ext-val"
+                             style="@if(empty($coupons->cou_goods) && empty($coupons->cou_cate)) display: none; @endif">
                             <label class="col-sm-4 control-label"></label>
                             <div class="col-sm-7">
                                 <div class="checkbox bg-eee pad-bt-10 rang-ext-val-list">
+                                    @if(!empty($coupons->cou_goods))
+                                        @foreach($coupons->cou_goods as $cou_goods)
+                                            <label class="mar-all-10 db">
+                                                <input type="checkbox" name="cou_gift[]"
+                                                       value="{{$cou_goods->goods_id}}"
+                                                       checked>{{$cou_goods->goods_name}}
+                                            </label>
+                                        @endforeach
+                                    @else
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group rang-ext" style="display: none;">
+                        <div class="form-group rang-ext"
+                             style="@if(empty($coupons->cou_goods) && empty($coupons->cou_cate)) display: none; @endif">
                             <label class="col-sm-4 control-label">搜索加入优惠范围：</label>
                             <div class="col-sm-8">
                                 <input type="text" class="keyword-1 form-control wd-120 input-sm fl" placeholder="关键字">
@@ -114,37 +142,50 @@
                                    style="padding: 4px 10px;">添加</a>
                             </div>
                         </div>
-                        <div class="form-group cou_get_man" style="display: none;">
+                        <div class="form-group cou_get_man" style="@if($coupons->cou_type!=2) display: none; @endif">
                             <label class="col-sm-4 control-label"><b>*</b>获取门槛：</label>
                             <div class="col-sm-2">
-                                <input type="text" name="cou_get_man" class="form-control input-sm" value=""
+                                <input type="text" name="cou_get_man" class="form-control input-sm"
+                                       value="{{$coupons->cou_get_man}}"
                                        placeholder="购物满多少可获得" autocomplete="off">
                             </div>
                         </div>
-                        <div class="form-group cou-rank" style="display: none;">
+                        <div class="form-group cou-rank"
+                             style="@if($coupons->cou_type!=2 && $coupons->cou_type!=4) display: none; @endif">
                             <label class="col-sm-4 control-label">参加会员：</label>
                             <div class="col-sm-8">
                                 <div class="checkbox">
                                     @foreach($userRanks as $userRank)
                                         <label class="mar-right-10">
                                             <input type="checkbox" name="cou_ok_user[]"
-                                                   value="{{$userRank->rank_id}}">{{$userRank->rank_name}}
+                                                   value="{{$userRank->rank_id}}"
+                                                   @if(in_array($userRank->rank_id, $coupons->cou_ok_user)) checked @endif>{{$userRank->rank_name}}
                                         </label>
                                     @endforeach
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group cou-goods-gift" style="display: none;">
+                        <div class="form-group cou-goods-gift" style="@if($coupons->cou_type!=2) display: none; @endif">
                             <label class="col-sm-4 control-label">可赠券商品：</label>
                             <div class="col-sm-4">
                                 <select name="act_type" class="form-control select input-sm wd120 fl">
-                                    <option value="0">全部商品</option>
-                                    <option value="1">指定分类</option>
-                                    <option value="3">指定商品</option>
+                                    <option value="0"
+                                            @if(empty($coupons->cou_ok_goods) && empty($coupons->cou_ok_cate)) selected @endif>
+                                        全部商品
+                                    </option>
+                                    <option value="1"
+                                            @if(empty($coupons->cou_ok_goods) && !empty($coupons->cou_ok_cate)) selected @endif>
+                                        指定分类
+                                    </option>
+                                    <option value="3"
+                                            @if(!empty($coupons->cou_ok_goods) && empty($coupons->cou_ok_cate)) selected @endif>
+                                        指定商品
+                                    </option>
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group cou-goods-s" style="display: none;">
+                        <div class="form-group cou-goods-s"
+                             style="@if(empty($coupons->cou_ok_goods) && empty($coupons->cou_ok_cate)) display: none; @endif">
                             <label class="col-sm-4 control-label">搜索加入优惠范围：</label>
                             <div class="col-sm-8">
                                 <input type="text" class="keyword-2 form-control wd-120 input-sm fl" placeholder="关键字">
@@ -169,7 +210,32 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">备注：</label>
                             <div class="col-sm-4">
-                                <textarea name="cou_intro" id="" cols="30" rows="5" class="form-control"></textarea>
+                                <textarea name="cou_intro" id="" cols="30" rows="5"
+                                          class="form-control">{{$coupons->cou_intro}}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">审核：</label>
+                            <div class="col-sm-4">
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="1"
+                                           @if($coupons->review_status == 1) checked @endif> 未审核
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="3"
+                                           @if($coupons->review_status == 3) checked @endif> 审核通过
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="2"
+                                           @if($coupons->review_status == 2) checked @endif> 审核未通过
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">审核备注：</label>
+                            <div class="col-sm-4">
+                                <textarea name="review_content" id="" cols="30" rows="5"
+                                          class="form-control">{{$coupons->review_content}}</textarea>
                             </div>
                         </div>
                         <div class="form-group">

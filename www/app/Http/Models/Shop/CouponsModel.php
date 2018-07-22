@@ -26,6 +26,18 @@ class CouponsModel extends Model
             ->paginate($size);
     }
 
+    public function getCoupons($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function addCoupons($data)
+    {
+        return $this->create($data);
+    }
+
     public function delCoupons($where)
     {
         return $this->where($where)

@@ -31,9 +31,10 @@ class GoodsModel extends Model
             ->first();
     }
 
-    public function getGoodsesByIn($in)
+    public function getGoodsesByIn($in, $columns = ['*'])
     {
-        return $this->whereIn('goods_id', $in)
+        return $this->select($columns)
+            ->whereIn('goods_id', $in)
             ->get();
     }
 
