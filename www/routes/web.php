@@ -220,5 +220,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('coupons/change', 'CouponsController@change');
     Route::resource('coupons', 'CouponsController');
 
+    Route::get('bonus/user/{id}', 'BonusController@bonusUser');
+    Route::post('bonus/change', 'BonusController@change');
     Route::resource('bonus', 'BonusController');
 });

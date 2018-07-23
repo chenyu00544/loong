@@ -10,4 +10,10 @@ class BonusUserModel extends Model
     protected $primaryKey = 'bu_id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function delBonusUser($where)
+    {
+        return $this->where($where)
+            ->delete();
+    }
 }

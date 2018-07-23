@@ -11,7 +11,12 @@ class BonusModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function BonusUser()
+    public function useBonus()
+    {
+        return $this->hasMany('App\Http\Models\Shop\BonusUserModel', 'bonus_type_id', 'bonus_id');
+    }
+
+    public function UseBonusUser()
     {
         return $this->hasMany('App\Http\Models\Shop\BonusUserModel', 'bonus_type_id', 'bonus_id');
     }
@@ -19,8 +24,11 @@ class BonusModel extends Model
     public function getBonusByPage($where, $search, $column = ['*'], $size = 15)
     {
         $m = $this->select($column)
-            ->with(['BonusUser' => function ($query) {
-                $query->select(['*'])->where('order_id','=', '0')->count();
+            ->with(['UseBonusUser' => function ($query) {
+                $query->select(['bonus_type_id'])->count();
+            }])
+            ->with(['useBonus' => function ($query) {
+                $query->select(['bonus_type_id'])->where('order_id','<>', '0')->count();
             }])
             ->where($where);
         if (!empty($search)) {
@@ -31,7 +39,30 @@ class BonusModel extends Model
             });
         }
         return $m->orderBy('bonus_id', 'desc')
-//            ->toSql();
             ->paginate($size);
+    }
+
+    public function getBonus($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setBonus($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addBonus($data)
+    {
+        return $this->create($data);
+    }
+
+    public function delBonus($where)
+    {
+        return $this->where($where)
+            ->delete();
     }
 }

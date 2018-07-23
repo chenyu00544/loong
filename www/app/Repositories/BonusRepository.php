@@ -10,16 +10,20 @@ namespace App\Repositories;
 
 use App\Contracts\BonusRepositoryInterface;
 use App\Http\Models\Shop\BonusModel;
+use App\Http\Models\Shop\BonusUserModel;
 
 class BonusRepository implements BonusRepositoryInterface
 {
     private $bonusModel;
+    private $bonusUserModel;
 
     public function __construct(
-        BonusModel $bonusModel
+        BonusModel $bonusModel,
+        BonusUserModel $bonusUserModel
     )
     {
         $this->bonusModel = $bonusModel;
+        $this->bonusUserModel = $bonusUserModel;
     }
 
     public function getBonusByPage($search, $seller = 'selfsale')
@@ -32,6 +36,97 @@ class BonusRepository implements BonusRepositoryInterface
         }
         $re = $this->bonusModel->getBonusByPage($where, $search);
         return $re;
+    }
+
+    public function getBonus($id)
+    {
+        $where['bonus_id'] = $id;
+        return $this->bonusModel->getBonus($where);
+    }
+
+    public function setBonus($data, $id)
+    {
+        $where['bonus_id'] = $id;
+        if (isset($data['send_type'])) {
+            if ($data['send_type'] == 0 || $data['send_type'] == 3 || $data['send_type'] == 4) {
+                unset($data['send_start_end_date']);
+                unset($data['min_amount']);
+            } elseif ($data['send_type'] == 1) {
+                unset($data['min_amount']);
+            }
+        }
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case 'use_start_end_date':
+                    $date_arr = explode('～', $value);
+                    if (count($date_arr) == 2) {
+                        $updata['use_start_date'] = strtotime($date_arr[0]);
+                        $updata['use_end_date'] = strtotime($date_arr[1]);
+                    }
+                    break;
+                case 'send_start_end_date':
+                    $date_arr = explode('～', $value);
+                    if (count($date_arr) == 2) {
+                        $updata['send_start_date'] = strtotime($date_arr[0]);
+                        $updata['send_end_date'] = strtotime($date_arr[1]);
+                    }
+                    break;
+                default:
+                    $updata[$key] = $value;
+                    break;
+            }
+        }
+        return $this->bonusModel->setBonus($where, $updata);
+    }
+
+    public function addBonus($data, $admin)
+    {
+        $updata = [];
+        if (isset($data['send_type'])) {
+            if ($data['send_type'] == 0 || $data['send_type'] == 3 || $data['send_type'] == 4) {
+                unset($data['send_start_end_date']);
+                unset($data['min_amount']);
+            } elseif ($data['send_type'] == 1) {
+                unset($data['min_amount']);
+            }
+        }
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case 'use_start_end_date':
+                    $date_arr = explode('～', $value);
+                    if (count($date_arr) == 2) {
+                        $updata['use_start_date'] = strtotime($date_arr[0]);
+                        $updata['use_end_date'] = strtotime($date_arr[1]);
+                    }
+                    break;
+                case 'send_start_end_date':
+                    $date_arr = explode('～', $value);
+                    if (count($date_arr) == 2) {
+                        $updata['send_start_date'] = strtotime($date_arr[0]);
+                        $updata['send_end_date'] = strtotime($date_arr[1]);
+                    }
+                    break;
+                default:
+                    $updata[$key] = $value;
+                    break;
+            }
+        }
+        $updata['user_id'] = $admin->ru_id;
+        $updata['review_status'] = 3;
+        return $this->bonusModel->addBonus($updata);
+    }
+
+    public function delBonus($id)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $where['bonus_id'] = $id;
+        $where_t['bonus_type_id'] = $id;
+        $this->bonusUserModel->delBonusUser($where_t);
+        $re = $this->bonusModel->delBonus($where);
+        if (!empty($re)) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
     }
 
 }

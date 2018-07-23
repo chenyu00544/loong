@@ -223,11 +223,16 @@ function setPages(data) {
 var optionDateSet = {
     timePicker: true,
     timePickerIncrement: 1,
-    format: 'YYYY-MM-DD hh:mm:ss',
-    timePicker24Hour: true,
+    timePicker24Hour: true, //新版本
+    timePicker12Hour: false, //老版本
     timePickerSeconds: true,
+    // showDropdowns:true,
+    format: "YYYY-MM-DD hh:mm:ss",
+    time: {
+        enabled: true
+    },
     locale: {
-        "separator": " -222 ",
+        "separator": "～",
         "applyLabel": "确定",
         "cancelLabel": "取消",
         "fromLabel": "起始",

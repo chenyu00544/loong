@@ -170,14 +170,12 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
-    <script type="text/javascript"
-            src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
             $('#start_end_date').daterangepicker(optionDateSet, function (start, end) {
                 var s = start.format('YYYY-MM-DD HH:mm:ss');
-                var e = end.format('YYYY-MM-DD HH:mm:ss');
-                var t = s + '～' + e;
+                var e = end.format('YYYY-MM-DD HH:mm');
+                var t = s + '～' + e + ':59';
                 $('#start_end_date').val(t);
             });
 

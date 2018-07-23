@@ -93,7 +93,7 @@ return array(
             'url' => 'admin/coupons',
         ),
         'bonus' => array(
-            'name' => '红包',
+            'name' => '红　包',
             'url' => 'admin/bonus',
         ),
     ),

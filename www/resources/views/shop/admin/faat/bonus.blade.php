@@ -94,8 +94,8 @@
                                     </td>
                                     <td>{{$bonus->type_money}}</td>
                                     <td>{{$bonus->min_goods_amount}}</td>
-                                    <td>{{$bonus->min_amount}}</td>
-                                    <td>{{$bonus->max_amount}}</td>
+                                    <td>{{$bonus->UseBonusUser->count()}}</td>
+                                    <td>{{$bonus->useBonus->count()}}</td>
                                     <td>@if($bonus->review_status == 3)
                                             <font class="blue">审核已通过</font>
                                         @elseif($bonus->review_status == 1)
@@ -104,7 +104,7 @@
                                             <font class="red">审核未通过</font>
                                         @endif</td>
                                     <td class="text-center">
-                                        <a type="button" href="{{url('admin/bonus/'.$bonus->bonus_id.'/edit')}}"
+                                        <a type="button" href="{{url('admin/bonus/user/'.$bonus->bonus_id)}}"
                                            class="btn btn-info btn-edit btn-sm">查看</a>
                                         <a type="button" href="{{url('admin/bonus/'.$bonus->bonus_id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>

@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\BonusRepository;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,6 @@ class BonusController extends CommonController
         $seller = 'selfsale';
         $search['keywords'] = $request->get('keywords');
         $bonuses = $this->bonusRepository->getBonusByPage($search, $seller);
-        dd($bonuses[0]->BonusUser);
         return view('shop.admin.faat.bonus', compact('seller', 'search', 'bonuses'));
     }
 
@@ -45,7 +45,8 @@ class BonusController extends CommonController
      */
     public function create()
     {
-        //
+        $now_date = $this->now_date;
+        return view('shop.admin.faat.bonusAdd', compact('now_date'));
     }
 
     /**
@@ -56,7 +57,12 @@ class BonusController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["type_name" => 'required', "type_money" => 'required', "min_goods_amount" => 'required', "use_start_end_date" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->bonusRepository->addBonus($request->except('_token'), $this->user);
+        return view('shop.admin.success');
     }
 
     /**
@@ -65,9 +71,12 @@ class BonusController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $seller = $id;
+        $search['keywords'] = $request->get('keywords');
+        $bonuses = $this->bonusRepository->getBonusByPage($search, $seller);
+        return view('shop.admin.faat.bonus', compact('seller', 'search', 'bonuses'));
     }
 
     /**
@@ -78,7 +87,8 @@ class BonusController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $bonus = $this->bonusRepository->getBonus($id);
+        return view('shop.admin.faat.bonusEdit', compact('bonus'));
     }
 
     /**
@@ -90,7 +100,12 @@ class BonusController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["type_name" => 'required', "type_money" => 'required', "min_goods_amount" => 'required', "use_start_end_date" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->bonusRepository->setBonus($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
@@ -101,6 +116,6 @@ class BonusController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->bonusRepository->delBonus($id);
     }
 }
