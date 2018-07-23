@@ -33,6 +33,12 @@ class CouponsModel extends Model
             ->first();
     }
 
+    public function setCoupons($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
     public function addCoupons($data)
     {
         return $this->create($data);

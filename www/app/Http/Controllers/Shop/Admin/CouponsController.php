@@ -113,7 +113,12 @@ class CouponsController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["cou_name" => 'required', "cou_title" => 'required', "start_end_date" => 'required', "cou_total" => 'required', "cou_money" => 'required', "cou_man" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->couponsRepository->setCoupons($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**

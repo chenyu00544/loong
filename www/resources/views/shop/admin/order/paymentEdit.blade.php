@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-    @component('shop.components.copyright',['copyright'=>''])@endcomponent
+    @component('shop.components.copyright',['copyright'=>$copyright])@endcomponent
     <div style="height: 30px">　</div>
     </body>
 @section('script')

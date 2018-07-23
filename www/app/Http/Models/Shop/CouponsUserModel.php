@@ -27,4 +27,10 @@ class CouponsUserModel extends Model
         return $this->whereIn('cou_id', $where)
             ->delete();
     }
+
+    public function countCouponsUser($where)
+    {
+        return $this->where($where)
+            ->count();
+    }
 }

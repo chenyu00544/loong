@@ -75,6 +75,88 @@ class CouponsRepository implements CouponsRepositoryInterface
         return $re;
     }
 
+    public function setCoupons($data, $id)
+    {
+        $where['cou_id'] = $id;
+        if ($data['cou_type'] == 1 || $data['cou_type'] == 3) {
+            unset($data['cou_get_man']);
+            unset($data['cou_ok_user']);
+            unset($data['act_type']);
+            unset($data['cou_gift_1']);
+        } elseif ($data['cou_type'] == 4) {
+            unset($data['cou_get_man']);
+            unset($data['act_type']);
+            unset($data['cou_gift_1']);
+        }
+        foreach ($data as $key => $value) {
+            switch ($key) {
+                case 'cou_gift':
+                    break;
+                case 'cou_gift_1':
+                    break;
+                case 'start_end_date':
+                    $date_arr = explode('～', $value);
+                    if (count($date_arr) == 2) {
+                        $updata['cou_start_time'] = strtotime($date_arr[0]);
+                        $updata['cou_end_time'] = strtotime($date_arr[1]);
+                    }
+                    break;
+                case 'act_range':
+                    if ($value != 0) {
+                        if(!empty($data['cou_gift'])){
+                            $gift_str = implode(',', $data['cou_gift']);
+                            if ($value == 1) {
+                                $updata['cou_cate'] = $gift_str;
+                            } elseif ($value == 3) {
+                                $updata['cou_goods'] = $gift_str;
+                            }
+                            unset($data['cou_gift']);
+                        }
+                    }
+                    unset($data[$key]);
+                    break;
+                case 'cou_ok_user':
+                    $updata['cou_ok_user'] = implode(',', $value);
+                    break;
+                case 'act_type':
+                    if ($value != 0) {
+                        if(!empty($data['cou_gift_1'])){
+                            $gift_str = implode(',', $data['cou_gift_1']);
+                            if ($value == 1) {
+                                $updata['cou_ok_cate'] = $gift_str;
+                            } elseif ($value == 3) {
+                                $updata['cou_ok_goods'] = $gift_str;
+                            }
+                            unset($data['cou_gift_1']);
+                        }
+                    }
+                    unset($data[$key]);
+                    break;
+                default:
+                    $updata[$key] = $value;
+                    break;
+            }
+        }
+        $cuCount = $this->couponsUserModel->countCouponsUser($where);
+        $re = $this->couponsModel->setCoupons($where, $updata);
+        if ($re) {
+            $cudata['cou_id'] = $id;
+            $cudata['user_id'] = 0;
+            $cudata['cou_money'] = 0;
+            $cudata['is_use'] = 0;
+            $cudata['order_id'] = 0;
+            $cudata['is_use_time'] = 0;
+            if (!empty($updata['cou_total']) && $updata['cou_total'] > $cuCount) {
+                for ($i = 0; $i < ($updata['cou_total'] - $cuCount); $i++) {
+                    $cudata['uc_sn'] = Common::randStr(11);
+                    $this->couponsUserModel->addCouponsUser($cudata);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public function addCoupons($data, $admin)
     {
         if ($data['cou_type'] == 1 || $data['cou_type'] == 3) {
@@ -102,13 +184,15 @@ class CouponsRepository implements CouponsRepositoryInterface
                     break;
                 case 'act_range':
                     if ($value != 0) {
-                        $gift_str = implode(',', $data['cou_gift']);
-                        if ($value == 1) {
-                            $updata['cou_cate'] = $gift_str;
-                        } elseif ($value == 3) {
-                            $updata['cou_goods'] = $gift_str;
+                        if(!empty($data['cou_gift'])){
+                            $gift_str = implode(',', $data['cou_gift']);
+                            if ($value == 1) {
+                                $updata['cou_cate'] = $gift_str;
+                            } elseif ($value == 3) {
+                                $updata['cou_goods'] = $gift_str;
+                            }
+                            unset($data['cou_gift']);
                         }
-                        unset($data['cou_gift']);
                     }
                     unset($data[$key]);
                     break;
@@ -117,13 +201,15 @@ class CouponsRepository implements CouponsRepositoryInterface
                     break;
                 case 'act_type':
                     if ($value != 0) {
-                        $gift_str = implode(',', $data['cou_gift_1']);
-                        if ($value == 1) {
-                            $updata['cou_ok_cate'] = $gift_str;
-                        } elseif ($value == 3) {
-                            $updata['cou_ok_goods'] = $gift_str;
+                        if(!empty($data['cou_gift_1'])){
+                            $gift_str = implode(',', $data['cou_gift_1']);
+                            if ($value == 1) {
+                                $updata['cou_ok_cate'] = $gift_str;
+                            } elseif ($value == 3) {
+                                $updata['cou_ok_goods'] = $gift_str;
+                            }
+                            unset($data['cou_gift_1']);
                         }
-                        unset($data['cou_gift_1']);
                     }
                     unset($data[$key]);
                     break;

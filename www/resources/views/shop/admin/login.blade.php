@@ -43,7 +43,7 @@
                     <input type="submit" class="btn btn-primary n-wd110" value="{{$lang['login']}}">
                 </div>
             </div>
-            @component('shop.components.copyright',['copyright'=>''])@endcomponent
+            @component('shop.components.copyright',['copyright'=>$copyright])@endcomponent
         </div>
     </form>
 @endsection

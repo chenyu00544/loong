@@ -122,6 +122,13 @@
                                             </label>
                                         @endforeach
                                     @else
+                                        @foreach($coupons->cou_cate as $cou_cate)
+                                            <label class="mar-all-10 db">
+                                                <input type="checkbox" name="cou_gift[]"
+                                                       value="{{$cou_cate->id}}"
+                                                       checked>{{$cou_cate->cat_name}}
+                                            </label>
+                                        @endforeach
                                     @endif
                                 </div>
                             </div>
@@ -200,10 +207,27 @@
                                    style="padding: 4px 10px;">添加</a>
                             </div>
                         </div>
-                        <div class="form-group cou-goods-gift-val" style="display: none;">
+                        <div class="form-group cou-goods-gift-val" style="@if(empty($coupons->cou_ok_goods) && empty($coupons->cou_ok_cate)) display: none; @endif">
                             <label class="col-sm-4 control-label"></label>
                             <div class="col-sm-7">
                                 <div class="checkbox bg-eee pad-bt-10 cou-gift-val-list">
+                                    @if(!empty($coupons->cou_ok_goods))
+                                        @foreach($coupons->cou_ok_goods as $cou_ok_goods)
+                                            <label class="mar-all-10 db">
+                                                <input type="checkbox" name="cou_gift_1[]"
+                                                       value="{{$cou_ok_goods->goods_id}}"
+                                                       checked>{{$cou_ok_goods->goods_name}}
+                                            </label>
+                                        @endforeach
+                                    @else
+                                        @foreach($coupons->cou_ok_cate as $cou_ok_cate)
+                                            <label class="mar-all-10 db">
+                                                <input type="checkbox" name="cou_gift_1[]"
+                                                       value="{{$cou_ok_cate->id}}"
+                                                       checked>{{$cou_ok_cate->cat_name}}
+                                            </label>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -251,7 +275,7 @@
             </div>
         </div>
     </div>
-    @component('shop.components.copyright',['copyright'=>''])@endcomponent
+    @component('shop.components.copyright',['copyright'=>$copyright])@endcomponent
     <div style="height: 30px">　</div>
     </body>
 @section('script')

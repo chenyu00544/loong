@@ -2,15 +2,15 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">促销管理 - 优惠活动列表</div>
+        <div class="title">促销管理 - 红包列表</div>
         <div class="content">
             <div class="tabs mar-top-5">
                 <ul class="fl">
                     <li class="@if($seller == 'selfsale') curr @endif fl">
-                        <a href="{{url('admin/favourable/selfsale')}}">自营</a>
+                        <a href="{{url('admin/bonus/selfsale')}}">自营</a>
                     </li>
                     <li class="@if($seller == 'seller') curr @endif fl">
-                        <a href="{{url('admin/favourable/seller')}}">店铺</a>
+                        <a href="{{url('admin/bonus/seller')}}">店铺</a>
                     </li>
                 </ul>
             </div>
@@ -26,9 +26,9 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="clearfix mar-bt-20">
-                    <a href="{{url('admin/favourable/create')}}" class="btn btn-success btn-add btn-sm">添加优惠活动</a>
+                    <a href="{{url('admin/bonus/create')}}" class="btn btn-success btn-add btn-sm">添加红包</a>
                     <div class="fr wd250">
-                        <form action="{{url('admin/favourable/'.$seller)}}" method="get">
+                        <form action="{{url('admin/bonus/'.$seller)}}" method="get">
                             {{csrf_field()}}
 
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
@@ -45,18 +45,18 @@
                                 <input type="checkbox" name="all_list" class="checkbox check-all">
                             </th>
                             <th width="5%">编号</th>
-                            <th width="17%">优惠活动名称</th>
+                            <th width="17%">类型名称</th>
                             <th width="10%">商家名称</th>
-                            <th width="12%">开始时间</th>
-                            <th width="12%">结束时间</th>
-                            <th width="8%">金额下限</th>
-                            <th width="8%">金额上限</th>
-                            <th width="8%">排序</th>
+                            <th width="10%">发放类型</th>
+                            <th width="12%">红包金额</th>
+                            <th width="12%">最小订单金额</th>
+                            <th width="8%">发放量</th>
+                            <th width="8%">使用量</th>
                             <th width="7%">审核状态</th>
                             <th width="10%" class="text-center">操作</th>
                         </tr>
                         </thead>
-                        @if($faats->count() == 0)
+                        @if($bonuses->count() == 0)
                             <tbody>
                             <tr class="">
                                 <td class="no-records" colspan="20">没有找到任何记录</td>
@@ -64,36 +64,53 @@
                             </tbody>
                         @else
                             <tbody>
-                            @foreach($faats as $faat)
+                            @foreach($bonuses as $bonus)
                                 <tr class="">
                                     <td>
-                                        <input type="checkbox" name="checkboxes" value="{{$faat->act_id}}"
-                                               class="checkbox check-all-list fl" id="checkbox_{{$faat->act_id}}">
+                                        <input type="checkbox" name="checkboxes" value="{{$bonus->bonus_id}}"
+                                               class="checkbox check-all-list fl" id="checkbox_{{$bonus->bonus_id}}">
                                     </td>
-                                    <td>{{$faat->act_id}}</td>
-                                    <td>{{$faat->act_name}}</td>
-                                    <td>@if($faat->user_id == 0) <font class="red">自营</font> @else <font
-                                                class="blue">其他</font> @endif</td>
-                                    <td>{{date('Y-m-d H:i:s', $faat->start_time)}}</td>
-                                    <td>{{date('Y-m-d H:i:s', $faat->end_time)}}</td>
-                                    <td>{{$faat->min_amount}}</td>
-                                    <td>{{$faat->max_amount}}</td>
-                                    <td><input class="form-control input-sm chang-order" name="sort_order" type="text"
-                                               data-id="{{$faat->act_id}}" value="{{$faat->sort_order}}"
-                                               autocomplete="off"></td>
-                                    <td>@if($faat->review_status == 3)
+                                    <td>{{$bonus->bonus_id}}</td>
+                                    <td>{{$bonus->type_name}}</td>
+                                    <td>
+                                        @if($bonus->user_id == 0)
+                                            <font class="red">自营</font>
+                                        @else
+                                            <font class="blue">其他</font>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($bonus->send_type == 0)
+                                            <font class="red">按用户发放</font>
+                                        @elseif($bonus->send_type == 1)
+                                            <font class="blue">按商品发放</font>
+                                        @elseif($bonus->send_type == 2)
+                                            <font class="oranges">按订单金额发放</font>
+                                        @elseif($bonus->send_type == 3)
+                                            <font class="yellow">线下发放的红包</font>
+                                        @elseif($bonus->send_type == 4)
+                                            <font class="green">自行领取</font>
+                                        @endif
+                                    </td>
+                                    <td>{{$bonus->type_money}}</td>
+                                    <td>{{$bonus->min_goods_amount}}</td>
+                                    <td>{{$bonus->min_amount}}</td>
+                                    <td>{{$bonus->max_amount}}</td>
+                                    <td>@if($bonus->review_status == 3)
                                             <font class="blue">审核已通过</font>
-                                        @elseif($faat->review_status == 1)
+                                        @elseif($bonus->review_status == 1)
                                             <font class="oranges">未审核</font>
-                                        @elseif($faat->review_status == 2)
+                                        @elseif($bonus->review_status == 2)
                                             <font class="red">审核未通过</font>
                                         @endif</td>
                                     <td class="text-center">
-                                        <a type="button" href="{{url('admin/favourable/'.$faat->act_id.'/edit')}}"
+                                        <a type="button" href="{{url('admin/bonus/'.$bonus->bonus_id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm">查看</a>
+                                        <a type="button" href="{{url('admin/bonus/'.$bonus->bonus_id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>
                                         <a type="button" href="javascript:;"
                                            class="btn btn-danger btn-del btn-sm"
-                                           data-id="{{$faat->act_id}}">删除</a>
+                                           data-id="{{$bonus->bonus_id}}">删除</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -107,13 +124,13 @@
                         </div>
                     </div>
                     <div class="page_list">
-                        {{$faats->links()}}
+                        {{$bonuses->links()}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    @component('shop.components.copyright',['copyright'=>''])@endcomponent
+    @component('shop.components.copyright',['copyright'=>$copyright])@endcomponent
     <div style="height: 30px">　</div>
     </body>
 @section('script')
@@ -134,7 +151,7 @@
 
                 if (ids.length > 0) {
                     $.post(
-                        '{{url("admin/favourable/change")}}',
+                        '{{url("admin/bonus/change")}}',
                         {
                             id: ids,
                             type: 'delete',
@@ -154,7 +171,7 @@
                 var sort = $(this).val();
                 var id = $(this).data('id');
                 $.post(
-                    '{{url("admin/favourable/change")}}',
+                    '{{url("admin/bonus/change")}}',
                     {
                         id: id,
                         type: 'sort_order',
@@ -213,7 +230,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/favourable/')}}/" + Id,
+                        "{{url('admin/bonus/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
