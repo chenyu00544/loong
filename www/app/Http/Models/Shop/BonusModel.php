@@ -13,14 +13,14 @@ class BonusModel extends Model
 
     public function BonusUser()
     {
-        return self::belongsTo('App\Http\Models\Shop\BonusUserModel', 'bonus_id', 'bonus_type_id');
+        return $this->hasMany('App\Http\Models\Shop\BonusUserModel', 'bonus_type_id', 'bonus_id');
     }
-    
+
     public function getBonusByPage($where, $search, $column = ['*'], $size = 15)
     {
         $m = $this->select($column)
             ->with(['BonusUser' => function ($query) {
-                $query->select('bu_id')->where('order_id','>','0')->count();
+                $query->where('order_id', '0')->count();
             }])
             ->where($where);
         if (!empty($search)) {
@@ -31,7 +31,7 @@ class BonusModel extends Model
             });
         }
         return $m->orderBy('bonus_id', 'desc')
-            ->toSql();
-//            ->paginate($size);
+//            ->toSql();
+            ->paginate($size);
     }
 }
