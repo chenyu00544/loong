@@ -34,7 +34,7 @@ class BonusController extends CommonController
         $seller = 'selfsale';
         $search['keywords'] = $request->get('keywords');
         $bonuses = $this->bonusRepository->getBonusByPage($search, $seller);
-        dd($bonuses);
+        dd($bonuses[0]->BonusUser);
         return view('shop.admin.faat.bonus', compact('seller', 'search', 'bonuses'));
     }
 

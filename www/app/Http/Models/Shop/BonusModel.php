@@ -20,7 +20,7 @@ class BonusModel extends Model
     {
         $m = $this->select($column)
             ->with(['BonusUser' => function ($query) {
-                $query->where('order_id', '0')->count();
+                $query->select(['*'])->where('order_id','=', '0')->count();
             }])
             ->where($where);
         if (!empty($search)) {
