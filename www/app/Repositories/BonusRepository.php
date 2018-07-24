@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\BonusRepositoryInterface;
+use App\Facades\Common;
 use App\Http\Models\Shop\BonusModel;
 use App\Http\Models\Shop\BonusUserModel;
 
@@ -123,6 +124,40 @@ class BonusRepository implements BonusRepositoryInterface
         $where_t['bonus_type_id'] = $id;
         $this->bonusUserModel->delBonusUser($where_t);
         $re = $this->bonusModel->delBonus($where);
+        if (!empty($re)) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
+
+    public function getBonusUserByPage($id)
+    {
+        $where['bonus_type_id'] = $id;
+        return $this->bonusUserModel->getBonusUserByPage($where);
+    }
+
+    public function addBonusUser($data)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        if (!empty($data['bonus_sum'])) {
+            $updata['bonus_type_id'] = $data['bonus_type_id'];
+            for ($i = 0; $i < $data['bonus_sum']; $i++) {
+                $updata['bonus_sn'] = time() . Common::randStr(6);
+                $updata['bonus_password'] = Common::randStr(10);
+                $re = $this->bonusUserModel->addBonusUser($updata);
+            }
+        }
+        if (!empty($re)) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
+
+    public function delBonusUser($ids)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $where = $ids['ids'];
+        $re = $this->bonusUserModel->delBonusUsers($where);
         if (!empty($re)) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }

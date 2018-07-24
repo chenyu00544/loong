@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Verifiable;
 use App\Repositories\BonusRepository;
 use Illuminate\Http\Request;
+use function Sodium\compare;
 
 class BonusController extends CommonController
 {
@@ -36,6 +37,34 @@ class BonusController extends CommonController
         $search['keywords'] = $request->get('keywords');
         $bonuses = $this->bonusRepository->getBonusByPage($search, $seller);
         return view('shop.admin.faat.bonus', compact('seller', 'search', 'bonuses'));
+    }
+
+    public function send($id)
+    {
+        $bonus = $this->bonusRepository->getBonus($id);
+        if ($bonus->send_type == 0) {
+            return view('shop.admin.faat.bonusSendUser', compact('bonus'));
+        }elseif ($bonus->send_type == 1) {
+            return view('shop.admin.faat.bonusSendGoods', compact('bonus'));
+        }elseif ($bonus->send_type == 4) {
+            return view('shop.admin.faat.bonusSendReceive', compact('bonus'));
+        }
+    }
+
+    public function bonusUser($id)
+    {
+        $bonusUser = $this->bonusRepository->getBonusUserByPage($id);
+        return view('shop.admin.faat.bonusUser', compact('bonusUser'));
+    }
+
+    public function addBonusUser(Request $request)
+    {
+        return $this->bonusRepository->addBonusUser($request->except('_token'));
+    }
+
+    public function delBonusUser(Request $request)
+    {
+        return $this->bonusRepository->delBonusUser($request->except('token'));
     }
 
     /**

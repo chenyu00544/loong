@@ -104,7 +104,7 @@ input[type=checkbox], input[type=radio] {
     margin: 1px 0 0;
 }
 
-option{
+option {
     margin: 3px;
 }
 
@@ -276,7 +276,7 @@ option{
     margin: auto;
 }
 
-.bg-eee{
+.bg-eee {
     background: #eee;
 }
 
@@ -2526,4 +2526,62 @@ input[type=file].upload-file {
 .return-order-desc .price {
     font-size: 18px;
     color: #ec5051;
+}
+
+.goods-s {
+    font-size: 14px;
+    padding: 10px;
+    text-align: center;
+    width: 50%;
+}
+
+.sort-info .sort-list .sort-list-warp li .sc_icon_ok {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    background-position: -118px -479px;
+    margin: 12px 8px 0;
+    vertical-align: middle;
+    float: left;
+    position: relative;
+    top: auto;
+    right: auto;
+}
+
+.sort-info .sort-list .sort-list-warp li.current .sc_icon_ok {
+    background-position: -140px -479px;
+}
+
+.sort-info .sort-list .sort-list-warp li .s-goods-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sort-info .sort-list .sort-list-warp li.current {
+    background: #f5faff;
+}
+
+.sort-info .sort-list .sort-list-warp li.current .s-goods-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #707070;
+}
+
+.sort-info .sort-list .sort-list-warp li .sc_icon_no {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    background-position: -155px -501px;
+    margin: 12px 8px 0;
+    vertical-align: middle;
+    float: left;
+    position: relative;
+    top: auto;
+    right: auto;
+}
+
+.sort-info .sort-list .sort-list-warp li.current .sc_icon_no {
+    background-position: -140px -501px;
 }
