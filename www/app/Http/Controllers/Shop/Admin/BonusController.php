@@ -11,19 +11,23 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
 use App\Repositories\BonusRepository;
+use App\Repositories\GoodsRepository;
 use Illuminate\Http\Request;
 use function Sodium\compare;
 
 class BonusController extends CommonController
 {
     private $bonusRepository;
+    private $goodsRepository;
 
     public function __construct(
-        BonusRepository $bonusRepository
+        BonusRepository $bonusRepository,
+        GoodsRepository $goodsRepository
     )
     {
         parent::__construct();
         $this->bonusRepository = $bonusRepository;
+        $this->goodsRepository = $goodsRepository;
     }
 
     /**
@@ -42,11 +46,13 @@ class BonusController extends CommonController
     public function send($id)
     {
         $bonus = $this->bonusRepository->getBonus($id);
+
         if ($bonus->send_type == 0) {
-            return view('shop.admin.faat.bonusSendUser', compact('bonus'));
-        }elseif ($bonus->send_type == 1) {
-            return view('shop.admin.faat.bonusSendGoods', compact('bonus'));
-        }elseif ($bonus->send_type == 4) {
+            return view('shop.admin.faat.bonusSendUsers', compact('bonus'));
+        } elseif ($bonus->send_type == 1) {
+            $goodses = $this->goodsRepository->getGoodses(['bonus_type_id'=>$id]);
+            return view('shop.admin.faat.bonusSendGoods', compact('bonus', 'goodses'));
+        } elseif ($bonus->send_type == 4) {
             return view('shop.admin.faat.bonusSendReceive', compact('bonus'));
         }
     }

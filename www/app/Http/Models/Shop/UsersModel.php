@@ -44,6 +44,15 @@ class UsersModel extends Model
         return $res;
     }
 
+    public function searchUsers($search, $column = ['*'])
+    {
+        $m = $this->select($column);
+        foreach ($search as $key => $value) {
+            $m->orWhere($key, 'like', '%' . $value . '%');
+        }
+        return $m->get();
+    }
+
     public function delUser($where)
     {
         return $this->where($where)->delete();

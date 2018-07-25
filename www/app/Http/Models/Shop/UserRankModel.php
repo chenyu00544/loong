@@ -37,6 +37,15 @@ class UserRankModel extends Model
         return $this->create($data);
     }
 
+    public function searchUserRanks($search, $column = ['*'])
+    {
+        $m = $this->select($column);
+        foreach ($search as $key => $value) {
+            $m->orWhere($key, 'like', '%' . $value . '%');
+        }
+        return $m->get();
+    }
+
     public function delUserRank($where)
     {
         return $this->where($where)->delete();

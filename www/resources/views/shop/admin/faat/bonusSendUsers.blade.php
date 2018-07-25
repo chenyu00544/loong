@@ -17,6 +17,19 @@
             <div class="fromlist clearfix">
                 <div class="main-info">
                     <div class="step">
+                        <div class="clearfix pad-all-15 center wd-550">
+                            <div class="fl">
+                                <label class="radio-inline fs-16">
+                                    <input type="radio" name="user_or_rank" class="radio-20" value="1" checked>　根据会员名称发放红包
+                                </label>
+                            </div>
+                            <div class="fl mar-left-60">
+                                <label class="radio-inline fs-16">
+                                    <input type="radio" name="user_or_rank" class="radio-20" value="2">　根据会员等级发放红包
+                                </label>
+                            </div>
+                        </div>
+                        <input type="hidden" name="send_user" value="4">
                         <div class="step-near clearfix" style="margin-left:1%;">
                             <input name="keywords" value="" class="form-control fl max-wd-350 input-sm"
                                    placeholder="关键字">
@@ -27,7 +40,7 @@
                         <div class="sort-info clearfix">
                             <div id="cate-add" class="clearfix">
                                 <div class="clearfix">
-                                    <h4 class="fl goods-s">可选商品</h4><h4 class="fl goods-s">发放此类型红包的商品</h4>
+                                    <h4 class="fl goods-s">会员列表</h4><h4 class="fl goods-s">给下列用户发放红包</h4>
                                 </div>
                                 <div class="sort-list sort-list-one" style="width: 45%;margin-left:1%;margin-right: 8%">
                                     <div class="sort-list-warp">
@@ -42,10 +55,7 @@
                                     <div class="sort-list-warp">
                                         <div class="category-list ps-container ps-active-y">
                                             <ul class="sd-list">
-                                                @foreach($goodses as $goods)
-                                                    <li class=""><i class="sc-icon sc_icon_no"></i><a href="javascript:;" data-value="{{$goods->goods_id}}"
-                                                        class="s-goods-name">{{$goods->goods_name}}</a></li>
-                                                @endforeach
+
                                             </ul>
                                         </div>
                                     </div>
@@ -61,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="clearfix text-center pad-bt-15">
-                                    <a href="javascript:history.back();" class="btn btn-danger select-send">发放</a>
+                                    <a href="javascript:;" class="btn btn-danger select-send">确认发送红包</a>
                                 </div>
                                 <input type="hidden" value="{{$bonus->bonus_id}}" name="bonus_id">
                             </div>
@@ -77,14 +87,23 @@
 @section('script')
     <script>
         $(function () {
+            $('input[name=user_or_rank]').click(function () {
+                if ($(this).val() == 1) {
+                    $('input[name=send_user]').val(4);
+                } else {
+                    $('input[name=send_user]').val(5);
+                }
+            });
+
             $('.btn-search').on('click', function () {
                 var keywords = $('input[name=keywords]').val();
                 if (!keywords) {
                     layer.msg('请填写关键字');
                 }
+                var type = $('input[name=send_user]').val();
                 $.post("{{url('admin/search')}}", {
                     '_token': "{{csrf_token()}}",
-                    type: 3,
+                    type: type,
                     keywords: keywords
                 }, function (data) {
                     var html = '';
@@ -95,7 +114,7 @@
                             '</li>';
                     }
                     $('.s-list').html(html);
-                })
+                });
             });
 
             $('.s-list, .sd-list').on('click', 'li', function () {
@@ -122,26 +141,14 @@
             });
             //添加
             $('.select-add').on('click', function () {
-                var ids = [];
-                var bonus_id = $('input[name=bonus_id]').val();
                 $('.s-list').find('li').each(function () {
                     if ($(this).hasClass('current')) {
                         var text = $(this).find('a').html();
-                        var goods_id = $(this).find('input').val();
-                        ids.push(goods_id);
-                        var html = '<li class=""><i class="sc-icon sc_icon_no"></i><a href="javascript:;" data-value="' + goods_id + '"' +
+                        var id = $(this).find('input').val();
+                        var html = '<li class=""><i class="sc-icon sc_icon_no"></i><a href="javascript:;" data-value="' + id + '"' +
                             'class="s-goods-name">' + text + '</a></li>';
                         $('.sd-list').append(html);
                     }
-                });
-
-                $.post("{{url('admin/goods/changes')}}", {
-                    '_token': "{{csrf_token()}}",
-                    bonus_id: bonus_id,
-                    ids: ids,
-                    type: 'add_bonus'
-                }, function (data) {
-
                 });
             });
 
@@ -161,24 +168,36 @@
             });
             //移除
             $('.select-remove').on('click', function () {
-                var bonus_id = $('input[name=bonus_id]').val();
-                var ids = [];
                 $('.sd-list').find('li').each(function () {
                     if ($(this).hasClass('current')) {
-                        var goods_id = $(this).find('a').data('value');
-                        ids.push(goods_id);
                         $(this).remove();
                     }
                 });
+            });
 
-                $.post("{{url('admin/goods/changes')}}", {
-                    '_token': "{{csrf_token()}}",
-                    bonus_id: bonus_id,
-                    ids: ids,
-                    type: 'remove_bonus'
-                }, function (data) {
-
+            //发放红包
+            $('.select-send').on('click', function () {
+                var bonus_id = $('input[name=bonus_id]').val();
+                var type = $('input[name=send_user]').val();
+                var ids = [];
+                $('.sd-list').find('li').each(function () {
+                    ids.push($(this).find('a').data());
                 });
+                $.post("{{url('admin/bonus/adduser')}}", {
+                    '_token': "{{csrf_token()}}",
+                    type: type,
+                    ids: ids,
+                    bonus_id: bonus_id
+                }, function (data) {
+                    var html = '';
+                    for (i in data.data) {
+                        html += '<li class=""><i class="sc-icon sc_icon_ok"></i>' +
+                            '<a href="javascript:;" data-value="787" class="s-goods-name">' + data.data[i].name + '</a>' +
+                            '<input type="hidden" name="search[]" value="' + data.data[i].id + '">' +
+                            '</li>';
+                    }
+                    $('.s-list').html(html);
+                })
             });
         });
     </script>

@@ -31,6 +31,13 @@ class GoodsModel extends Model
             ->first();
     }
 
+    public function getGoodses($where, $columns = ['*'])
+    {
+        return $this->select($columns)
+            ->where($where)
+            ->get();
+    }
+
     public function getGoodsesByIn($in, $columns = ['*'])
     {
         return $this->select($columns)

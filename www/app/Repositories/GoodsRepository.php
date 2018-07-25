@@ -226,6 +226,12 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $goods;
     }
 
+    //多个商品
+    public function getGoodses($where)
+    {
+        return $this->goodsModel->getGoodses($where);
+    }
+
     //单个商品
     public function getGoods($id)
     {
@@ -323,6 +329,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $req;
     }
 
+    //
     public function getProductAndGallerys($data, $id, $ru_id = 0)
     {
         $goodsAttr = $this->goodsAttrModel->getGoodsAttrsJoinAttr(['goods_id' => $id]);
@@ -664,7 +671,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                 for ($j = 0; $j < count($attr_value_list1[$attr_id_listM[$i]]); $j++) {
                     $attrData['attr_value'] = $attr_value_list1[$attr_id_listM[$i]][$j];
                     $attrData['attr_sort'] = $attr_sort[$attr_id_listM[$i]][$j];
-                    if(!empty($attr_img[$attr_id_listM[$i]][$j])){
+                    if (!empty($attr_img[$attr_id_listM[$i]][$j])) {
                         $attrData['attr_img_flie'] = FileHandle::upLoadImage($attr_img[$attr_id_listM[$i]][$j], $original_img);
                         $attrData['attr_gallery_flie'] = FileHandle::upLoadThumbImage($attrData['attr_img_flie'], $thumb_img);
                     }
@@ -952,24 +959,24 @@ class GoodsRepository implements GoodsRepositoryInterface
         $product_sn = !empty($data['product_sn']) ? $data['product_sn'] : [];
         $product_bar_code = !empty($data['product_bar_code']) ? $data['product_bar_code'] : [];
         $pdids = $this->productsModel->getProducts($where, ['product_id']);
-        foreach ($pdids as $pid){
-            if(!in_array($pid->product_id, $product_id)){
-                $this->productsModel->delProduct(['product_id'=>$pid->product_id]);
+        foreach ($pdids as $pid) {
+            if (!in_array($pid->product_id, $product_id)) {
+                $this->productsModel->delProduct(['product_id' => $pid->product_id]);
             }
         }
         $maxProductsId = $this->productsModel->getMaxProductsId() + 1;
-        foreach ($product_id as $key => $value){
-            if($value != 0){
+        foreach ($product_id as $key => $value) {
+            if ($value != 0) {
                 $product['product_number'] = empty($product_number[$key]) ? 0 : $product_number[$key];
                 $product['product_price'] = empty($product_price[$key]) ? 0.00 : $product_price[$key];
                 $product['product_promote_price'] = empty($product_promote_price[$key]) ? 0.00 : $product_promote_price[$key];
                 $product['product_market_price'] = empty($product_market_price[$key]) ? 0.00 : $product_market_price[$key];
                 $product['product_warn_number'] = empty($product_warn_number[$key]) ? 1 : $product_warn_number[$key];
-                $this->productsModel->setProduct(['product_id'=>$value], $product);
-            }else{
+                $this->productsModel->setProduct(['product_id' => $value], $product);
+            } else {
                 $goods_attr = '';
-                foreach ($goods_attr_id as $k => $val){
-                    $goods_attr .= $val[$key].'|';
+                foreach ($goods_attr_id as $k => $val) {
+                    $goods_attr .= $val[$key] . '|';
                 }
                 $goods_attr = substr($goods_attr, 0, -1);
                 $maxProductsId += $i;
@@ -987,7 +994,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
         }
         $this->productsChangeLogModel->delAll($where);
-        if(1){
+        if (1) {
             $rep = ['code' => 1, 'msg' => '修改成功'];
         }
         return $rep;
@@ -1083,6 +1090,12 @@ class GoodsRepository implements GoodsRepositoryInterface
                 break;
             case 'is_delete':
                 $updata['is_delete'] = 1;
+                break;
+            case 'add_bonus':
+                $updata['bonus_type_id'] = $data['bonus_id'];
+                break;
+            case 'remove_bonus':
+                $updata['bonus_type_id'] = 0;
                 break;
             default:
                 break;

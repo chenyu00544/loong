@@ -300,6 +300,11 @@ option {
     display: block;
 }
 
+.radio-inline .radio-20{
+    width: 20px;
+    height: 20px;
+}
+
 .checkbox label, .radio label {
     min-height: 20px;
     padding-left: 20px;
@@ -946,6 +951,10 @@ option {
 
 .mar-left-20 {
     margin-left: 20px;
+}
+
+.mar-left-60 {
+    margin-left: 60px;
 }
 
 .mar-right-10 {
@@ -2535,6 +2544,17 @@ input[type=file].upload-file {
     width: 50%;
 }
 
+.goods-s-left {
+    padding: 20px 0 20px 30px;
+    width: 50%;
+}
+
+.goods-s-right {
+    padding: 20px 0 20px 80px;
+    width: 50%;
+}
+
+
 .sort-info .sort-list .sort-list-warp li .sc_icon_ok {
     width: 12px;
     height: 12px;
@@ -2559,6 +2579,10 @@ input[type=file].upload-file {
 }
 
 .sort-info .sort-list .sort-list-warp li.current {
+    background: #f5faff;
+}
+
+.sort-info .sort-list .sort-list-warp li:hover {
     background: #f5faff;
 }
 
