@@ -12,16 +12,12 @@ use Illuminate\Support\Facades\Validator;
 
 class VerifiableService
 {
-    public static function loginVer($input, $lang)
+    public static function loginVer($input, $lang, $rules = ["username" => 'required', "password" => 'required'])
     {
-        $rules = [
-            "username" => 'required',
-            "password" => 'required',
-        ];
-
         $message = [
             "username.required" => $lang['username_required'],
             "password.required" => $lang['password_required'],
+            "captcha.required" => $lang['captcha_required'],
         ];
 
         return Validator::make($input, $rules, $message);

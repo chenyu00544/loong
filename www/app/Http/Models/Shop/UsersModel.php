@@ -26,6 +26,15 @@ class UsersModel extends Model
             ->first();
     }
 
+    public function getUsersByOr($wheres = [], $column = ['*'])
+    {
+        $m = $this->select($column);
+        foreach ($wheres as $where){
+            $m->orWhere($where);
+        }
+        return $m->get();
+    }
+
     public function setUser($where, $data)
     {
         return $this->where($where)

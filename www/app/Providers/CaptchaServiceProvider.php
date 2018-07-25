@@ -8,10 +8,10 @@
 
 namespace App\Providers;
 
-use App\Services\RedisService;
+use App\Services\CaptchaService;
 use Illuminate\Support\ServiceProvider;
 
-class RedisServiceProvider extends ServiceProvider
+class CaptchaServiceProvider extends ServiceProvider
 {
     /**
      * Register the application services.
@@ -20,8 +20,8 @@ class RedisServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('RedisService', function () {
-            return new RedisService();
+        $this->app->singleton('CaptchaService', function () {
+            return new CaptchaService();
         });
     }
 }

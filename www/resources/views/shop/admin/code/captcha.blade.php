@@ -84,10 +84,10 @@
                                     </div>
                                     <div class="fl mar-left-20 pad-top-30">
                                         <label class="radio-inline fl">
-                                            <input type="radio" name="captcha_login_fail" value="32" @if($captcha['captcha']->value[5] != 0) checked="true" @endif > 是
+                                            <input type="radio" name="captcha_login_fail" value="32" style="margin-top: 7px" @if($captcha['captcha']->value[5] != 0) checked="true" @endif > 是
                                         </label>
                                         <label class="radio-inline fl">
-                                            <input type="radio" name="captcha_login_fail" value="0" @if($captcha['captcha']->value[5] == 0) checked="true" @endif> 否
+                                            <input type="radio" name="captcha_login_fail" value="0"  style="margin-top: 7px" @if($captcha['captcha']->value[5] == 0) checked="true" @endif> 否
                                         </label>
                                     </div>
                                 </td>

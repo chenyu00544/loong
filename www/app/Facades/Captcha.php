@@ -10,10 +10,10 @@ namespace App\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Redis extends Facade
+class Captcha extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'RedisService';
+        return 'CaptchaService';
     }
 }

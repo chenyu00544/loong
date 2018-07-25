@@ -8,7 +8,7 @@
 
 namespace App\Services;
 
-class RedisService
+class RedisCacheService
 {
     private static $redis;
 

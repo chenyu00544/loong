@@ -145,9 +145,17 @@
                     if ($(this).hasClass('current')) {
                         var text = $(this).find('a').html();
                         var id = $(this).find('input').val();
+                        var bool = true;
+                        $('.sd-list').find('li').each(function () {
+                            if(id == $(this).find('a').data('value')){
+                                bool = false;
+                            }
+                        });
                         var html = '<li class=""><i class="sc-icon sc_icon_no"></i><a href="javascript:;" data-value="' + id + '"' +
                             'class="s-goods-name">' + text + '</a></li>';
-                        $('.sd-list').append(html);
+                        if(bool){
+                            $('.sd-list').append(html);
+                        }
                     }
                 });
             });
@@ -181,7 +189,7 @@
                 var type = $('input[name=send_user]').val();
                 var ids = [];
                 $('.sd-list').find('li').each(function () {
-                    ids.push($(this).find('a').data());
+                    ids.push($(this).find('a').data('value'));
                 });
                 $.post("{{url('admin/bonus/adduser')}}", {
                     '_token': "{{csrf_token()}}",
@@ -189,14 +197,7 @@
                     ids: ids,
                     bonus_id: bonus_id
                 }, function (data) {
-                    var html = '';
-                    for (i in data.data) {
-                        html += '<li class=""><i class="sc-icon sc_icon_ok"></i>' +
-                            '<a href="javascript:;" data-value="787" class="s-goods-name">' + data.data[i].name + '</a>' +
-                            '<input type="hidden" name="search[]" value="' + data.data[i].id + '">' +
-                            '</li>';
-                    }
-                    $('.s-list').html(html);
+                    layer.msg(data.msg, {icon: data.code});
                 })
             });
         });

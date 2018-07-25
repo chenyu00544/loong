@@ -15,17 +15,30 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputEmail3" class="col-sm-3 control-label">{{$lang['username']}}</label>
+                <label class="col-sm-3 control-label">{{$lang['username']}}</label>
                 <div class="col-sm-7">
-                    <input type="text" name="username" class="form-control" id="inputEmail3" placeholder="{{$lang['username']}}">
+                    <input type="text" name="username" class="form-control"
+                           placeholder="{{$lang['username']}}">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputPassword3" class="col-sm-3 control-label">{{$lang['password']}}</label>
+                <label class="col-sm-3 control-label">{{$lang['password']}}</label>
                 <div class="col-sm-7">
-                    <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="{{$lang['password']}}">
+                    <input type="password" name="password" class="form-control"
+                           placeholder="{{$lang['password']}}">
                 </div>
             </div>
+            @if($captcha->value[3] != 0)
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{$lang['captcha']}}</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="captcha" class="form-control fl wd-110"
+                               placeholder="{{$lang['captcha']}}">
+                        <img src="{{url('api/web/captcha')}}" onclick="this.src = this.src;" alt=""
+                             class="fl captcha-login">
+                    </div>
+                </div>
+            @endif
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-9">
                     <div class="checkbox">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Models\Shop;
 
+use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 
 class UserRankModel extends Model
@@ -25,6 +26,13 @@ class UserRankModel extends Model
         return $this->select($column)
             ->where($where)
             ->first();
+    }
+
+    public function getUserRanksByIn($where = [], $column = ['*'])
+    {
+        return $this->select($column)
+            ->whereIn('rank_id', $where)
+            ->get();
     }
 
     public function setUserRank($where, $data)

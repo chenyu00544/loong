@@ -192,7 +192,8 @@ return [
         App\Providers\ExpressServiceProvider::class,
         App\Providers\TokenServiceProvider::class,
         App\Providers\PinyinServiceProvider::class,
-        App\Providers\RedisServiceProvider::class,
+        App\Providers\RedisCacheServiceProvider::class,
+        App\Providers\CaptchaServiceProvider::class,
 //        Intervention\Image\ImageServiceProvider::class,
     ],
 
@@ -258,7 +259,8 @@ return [
         'Express' => App\Facades\Express::class,
         'Token' => App\Facades\Token::class,
         'Pinyin' => App\Facades\Pinyin::class,
-        'Redis' => App\Facades\Redis::class,
+        'RedisCache' => App\Facades\RedisCache::class,
+        'Captcha' => App\Facades\Captcha::class,
 //        'Image' => Intervention\Image\Facades\Image::class,
     ],
 

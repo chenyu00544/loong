@@ -9,8 +9,10 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Captcha;
 use App\Facades\Common;
 use App\Facades\LangConfig;
+use App\Facades\ShopConfig;
 use App\Facades\Verifiable;
 use App\Repositories\AdminUserRepository;
 use Illuminate\Http\Request;
@@ -33,9 +35,14 @@ class LoginController extends CommonController
     public function login(Request $request)
     {
         $lang = LangConfig::LangAdminConf();
+        $captcha = ShopConfig::getConfHidden(['captcha'])['captcha'];
         if ($input = Input::except('_token')) {
             $ip = $request->getClientIp();
-            $validator = Verifiable::loginVer($input, $lang);
+            $rules = ["username" => 'required', "password" => 'required'];
+            if($captcha->value[3] != 0){
+                $rules['captcha'] = 'required';
+            }
+            $validator = Verifiable::loginVer($input, $lang, $rules);
             if ($validator->passes()) {
                 $user = $this->adminUserRepository->getAdminUser(['user_name' => $input['username']]);
                 if(empty($user)){
@@ -47,6 +54,9 @@ class LoginController extends CommonController
                 if ($user->password != Common::md5Encrypt($input['password'], $user->salt)) {
                     return back()->with('errors', $lang['login_faild']);
                 }
+                if (!Captcha::check($input['captcha'])) {
+                    return back()->with('errors', $lang['login_faild']);
+                }
 //                session(['user'=>$user]);
                 Cache::put('adminUser' . md5($ip) . $user->user_id, $user, 600);
                 return redirect('admin/index')->cookie('user_id', $user->user_id, 720);
@@ -54,7 +64,7 @@ class LoginController extends CommonController
                 return back()->withErrors($validator);
             }
         } else {
-            return view('shop.admin.login', compact('lang'));
+            return view('shop.admin.login', compact('lang', 'captcha'));
         }
     }
 

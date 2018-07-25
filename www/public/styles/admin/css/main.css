@@ -1236,6 +1236,10 @@ option {
     width: 80px;
 }
 
+.wd-110 {
+    width: 110px;
+}
+
 .wd-120 {
     width: 120px;
 }
@@ -1266,6 +1270,13 @@ option {
 
 .wd-750 {
     width: 750px;
+}
+
+.captcha-login{
+    width: 90px;
+    height: 33px;
+    margin-left: 10px;
+    border-radius: 5px;
 }
 
 .flexilist {

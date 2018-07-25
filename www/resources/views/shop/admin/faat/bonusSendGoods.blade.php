@@ -128,21 +128,30 @@
                     if ($(this).hasClass('current')) {
                         var text = $(this).find('a').html();
                         var goods_id = $(this).find('input').val();
-                        ids.push(goods_id);
+                        var bool = true;
+                        $('.sd-list').find('li').each(function () {
+                            if(goods_id == $(this).find('a').data('value')){
+                                bool = false;
+                            }
+                        });
                         var html = '<li class=""><i class="sc-icon sc_icon_no"></i><a href="javascript:;" data-value="' + goods_id + '"' +
                             'class="s-goods-name">' + text + '</a></li>';
-                        $('.sd-list').append(html);
+                        if(bool){
+                            ids.push(goods_id);
+                            $('.sd-list').append(html);
+                        }
                     }
                 });
+                if(ids.length > 0){
+                    $.post("{{url('admin/goods/changes')}}", {
+                        '_token': "{{csrf_token()}}",
+                        bonus_id: bonus_id,
+                        ids: ids,
+                        type: 'add_bonus'
+                    }, function (data) {
 
-                $.post("{{url('admin/goods/changes')}}", {
-                    '_token': "{{csrf_token()}}",
-                    bonus_id: bonus_id,
-                    ids: ids,
-                    type: 'add_bonus'
-                }, function (data) {
-
-                });
+                    });
+                }
             });
 
             //已选全选

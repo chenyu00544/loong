@@ -12,19 +12,27 @@ use App\Contracts\BonusRepositoryInterface;
 use App\Facades\Common;
 use App\Http\Models\Shop\BonusModel;
 use App\Http\Models\Shop\BonusUserModel;
+use App\Http\Models\Shop\UserRankModel;
+use App\Http\Models\Shop\UsersModel;
 
 class BonusRepository implements BonusRepositoryInterface
 {
     private $bonusModel;
     private $bonusUserModel;
+    private $userRankModel;
+    private $usersModel;
 
     public function __construct(
         BonusModel $bonusModel,
-        BonusUserModel $bonusUserModel
+        BonusUserModel $bonusUserModel,
+        UserRankModel $userRankModel,
+        UsersModel $usersModel
     )
     {
         $this->bonusModel = $bonusModel;
         $this->bonusUserModel = $bonusUserModel;
+        $this->userRankModel = $userRankModel;
+        $this->usersModel = $usersModel;
     }
 
     public function getBonusByPage($search, $seller = 'selfsale')
@@ -145,6 +153,28 @@ class BonusRepository implements BonusRepositoryInterface
                 $updata['bonus_sn'] = time() . Common::randStr(6);
                 $updata['bonus_password'] = Common::randStr(10);
                 $re = $this->bonusUserModel->addBonusUser($updata);
+            }
+        } elseif (!empty($data['type'])) {
+            $updata['bonus_type_id'] = $data['bonus_id'];
+            if ($data['type'] == 4) {
+                foreach ($data['ids'] as $id){
+                    $updata['bonus_sn'] = time() . Common::randStr(6);
+                    $updata['bonus_password'] = Common::randStr(10);
+                    $updata['user_id'] = $id;
+                    $re = $this->bonusUserModel->addBonusUser($updata);
+                }
+            }elseif ($data['type'] == 5) {
+                $ranks = $this->userRankModel->getUserRanksByIn($data['ids']);
+                foreach ($ranks as $rank){
+                    $where[] = [['rank_points','>=',$rank->min_points],['rank_points','<',$rank->max_points]];
+                }
+                $users = $this->usersModel->getUsersByOr($where);
+                foreach ($users as $user){
+                    $updata['bonus_sn'] = time() . Common::randStr(6);
+                    $updata['bonus_password'] = Common::randStr(10);
+                    $updata['user_id'] = $user->user_id;
+                    $re = $this->bonusUserModel->addBonusUser($updata);
+                }
             }
         }
         if (!empty($re)) {
