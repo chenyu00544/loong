@@ -54,8 +54,10 @@ class LoginController extends CommonController
                 if ($user->password != Common::md5Encrypt($input['password'], $user->salt)) {
                     return back()->with('errors', $lang['login_faild']);
                 }
-                if (!Captcha::check($input['captcha'])) {
-                    return back()->with('errors', $lang['login_faild']);
+                if($captcha->value[3] != 0){
+                    if (!Captcha::check($input['captcha'])) {
+                        return back()->with('errors', $lang['login_faild']);
+                    }
                 }
 //                session(['user'=>$user]);
                 Cache::put('adminUser' . md5($ip) . $user->user_id, $user, 600);
