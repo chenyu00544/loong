@@ -37,6 +37,7 @@ class PrivilegeController extends CommonController
         return view('shop.admin.privilege.privilege', compact('usersList'));
     }
 
+    //设置权限
     public function distribution(Request $request, $id)
     {
         $error = $this->adminUserRepository->setAdminUser($request->except('_token'), $id);

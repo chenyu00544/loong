@@ -226,4 +226,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('bonus/delbu', 'BonusController@delBonusUser');
     Route::post('bonus/adduser', 'BonusController@addBonusUser');
     Route::resource('bonus', 'BonusController');
+
+    Route::get('satistics/order', 'SatisticsController@order');
+
 });

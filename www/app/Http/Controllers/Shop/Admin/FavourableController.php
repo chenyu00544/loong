@@ -26,6 +26,7 @@ class FavourableController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('favourable');
         $this->favourableActivityRepository = $favourableActivityRepository;
         $this->userRankRepository = $userRankRepository;
     }

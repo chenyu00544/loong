@@ -4,16 +4,29 @@
     <div class="warpper clearfix">
         <div class="title">商品管理 - 商品列表</div>
         <div class="content">
-            <div class="tabs mar-top-5">
-                <ul class="fl">
-                    <li class="@if($seller == 'selfsale') curr @endif fl">
-                        <a href="{{url('admin/order/selfsale')}}">自营</a>
-                    </li>
-                    <li class="@if($seller == 'seller') curr @endif fl">
-                        <a href="{{url('admin/order/seller')}}">店铺</a>
-                    </li>
-                </ul>
-            </div>
+            @if(empty($id))
+                <div class="tabs mar-top-5">
+                    <ul class="fl">
+                        <li class="@if($seller == 'selfsale') curr @endif fl">
+                            <a href="{{url('admin/order/selfsale')}}">自营</a>
+                        </li>
+                        <li class="@if($seller == 'seller') curr @endif fl">
+                            <a href="{{url('admin/order/seller')}}">店铺</a>
+                        </li>
+                    </ul>
+                </div>
+            @endif
+            @if(!empty($id))
+                <div class="tabs mar-top-20">
+                    <ul class="fl">
+                        @foreach($userNav as $nav)
+                            <li class="@if($unav == $nav['navType']) curr @endif fl">
+                                <a href="{{url('admin/users/'.$nav['navType'].'/'.$id)}}">{{$nav['title']}}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="tip">
                 <div class="tip_title">
                     <i class="tip_icon"></i>
@@ -24,6 +37,7 @@
                     <li>商城相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
+
             <div class="tabs mar-top-20">
                 <ul class="fl">
                     @foreach($searchNav as $nav)
@@ -34,19 +48,23 @@
                     @endforeach
                 </ul>
             </div>
-            <div class="fromlist clearfix">
-                <div class="clearfix mar-bt-20">
-                    <div class="fr wd250">
-                        <form action="{{url('admin/order/'.$navType)}}" method="get">
-                            {{csrf_field()}}
 
-                            <input type="hidden" name="seller" value="{{$seller}}">
-                            <input type="text" name="keywords" value="{{$search['keywords']}}"
-                                   class="form-control input-sm max-wd-190" placeholder="订单编号">
-                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr lh22" value="查询">
-                        </form>
+            <div class="fromlist clearfix">
+                @if(empty($id))
+                    <div class="clearfix mar-bt-20">
+                        <div class="fr wd250">
+                            <form action="{{url('admin/order/'.$navType)}}" method="get">
+                                {{csrf_field()}}
+
+                                <input type="hidden" name="seller" value="{{$seller}}">
+                                <input type="text" name="keywords" value="{{$search['keywords']}}"
+                                       class="form-control input-sm max-wd-190" placeholder="订单编号">
+                                <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr lh22"
+                                       value="查询">
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @endif
                 <div class="main-info">
                     <table class="table table-hover table-condensed" style="margin-bottom: 2px">
                         <thead>
@@ -102,7 +120,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            @foreach($order->order_goodses as $goods)
+                            @foreach($order->Goods as $goods)
                                 <tr class="">
                                     <td class="td-product">
                                         <div>
@@ -115,7 +133,8 @@
                                                     <a href="{{$goods->goods_id}}"
                                                        target="_blank">{{$goods->goods_name}}
                                                         @if($goods->brand_name)
-                                                            <span class="oranges">[ {{$goods->brand_name}}]</span>
+                                                            <span class="oranges">[ {{$goods->brand_name}}
+                                                                ]</span>
                                                         @endif
                                                     </a>
                                                 </div>
@@ -125,10 +144,12 @@
                                                     </div>
                                                 @endif
                                                 <div class="goods_sn">商品编号：{{$goods->goods_sn}}
-                                                    <a href="{{url('tradesnapshot/'.$goods->trade_id)}}"
-                                                       target="_blank">
-                                                        <span class="oranges mar-left-10">[交易快照]</span>
-                                                    </a>
+                                                    @if($order->TradeSnapshot['trade_id'])
+                                                        <a href="{{url('tradesnapshot/'.$order->TradeSnapshot['trade_id'])}}"
+                                                           target="_blank">
+                                                            <span class="oranges mar-left-10">[交易快照]</span>
+                                                        </a>
+                                                    @endif
                                                 </div>
                                                 <div class="order_icon_items">
                                                     <div class="order_icon @if($goods->extension_code == ''){{'order_icon_pt'}}@endif"
@@ -150,34 +171,36 @@
                                         </div>
                                     </td>
                                     @if($loop->index == 0)
-                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
+                                        <td class="text-center" rowspan="{{$order->Goods->count()}}">
                                             <div>
-                                                <font class="gray">{{$order->merchants_shop_info->shoprz_brandName}}{{$order->merchants_shop_info->shopNameSuffix}}</font>
+                                                <font class="gray">{{$order->TradeSnapshot['rz_shopName']}}</font>
                                             </div>
                                         </td>
 
-                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
+                                        <td class="text-center" rowspan="{{$order->Goods->count()}}">
                                             <div>
-                                                <a href="#">{{$order->user->user_name}}</a>
+                                                <a href="#">{{$order->User['user_name']}}</a>
                                             </div>
                                         </td>
                                         <td rowspan="2">
-                                            <div class="gray">test<br> TEL:
-                                                18858786747<br>甘肃
-                                                白银 白银区 test
+                                            <div class="gray">{{$order->consignee}}<br> TEL:
+                                                {{$order->mobile}}<br>
+                                                {{$order->province}} {{$order->city}} {{$order->district}} {{$order->address}}
                                             </div>
                                         </td>
-                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
+                                        <td class="text-center" rowspan="{{$order->Goods->count()}}">
                                             <div>
                                                 <span class="order-price fwb fs-16">¥{{$order->goods_amount + $order->tax + $order->shipping_fee + $order->insure_fee + $order->pay_fee + $order->pack_fee + $order->card_fee - $order->discount}}</span>
-                                                <div class="price-shipping gray">(顺丰速运：¥{{$order->shipping_fee}})</div>
+                                                <div class="price-shipping gray">(顺丰速运：¥{{$order->shipping_fee}}
+                                                    )
+                                                </div>
                                                 <div class="price-shipping gray">
                                                     <p>支付方式：{{$order->pay_name}}</p>
                                                     <p>来源：{{$order->froms}}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
+                                        <td class="text-center" rowspan="{{$order->Goods->count()}}">
                                             <div>
                                                 <div>@if($order->order_status == 0)
                                                         未确认
@@ -219,14 +242,15 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="text-center" rowspan="{{$order->order_goodses->count()}}">
+                                        <td class="text-center" rowspan="{{$order->Goods->count()}}">
                                             <div>
                                                 <div class="btn-wrap">
                                                     <p>
                                                         <a href="{{url('admin/order/'.$order->order_id.'/edit')}}"
                                                            class="btn btn-info">查看</a>
                                                         @if($order->order_status == 2 || $order->order_status == 3)
-                                                            <a href="Javascript:;" data-id="{{$order->order_id}}"
+                                                            <a href="Javascript:;"
+                                                               data-id="{{$order->order_id}}"
                                                                class="btn btn-danger mar-top-20 btn-del">移除</a>
                                                         @endif
                                                     </p>

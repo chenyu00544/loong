@@ -123,7 +123,7 @@ return array(
     'satistics' => array(
         'ordersatistics' => array(
             'name' => '订单统计',
-            'url' => '',
+            'url' => 'admin/satistics/order',
         ),
     ),
 

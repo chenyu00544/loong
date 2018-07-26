@@ -22,6 +22,7 @@ class AdvertiseController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('ad_list');
         $this->adRepository = $adRepository;
     }
 

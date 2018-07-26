@@ -84,11 +84,12 @@ class UsersController extends CommonController
     {
         $seller = 'selfsale';
         $navType = '0';
+        $unav = 'userorder';
         $search['keywords'] = '';
-        $user_id = $id;
         $searchNav = $this->orderRepository->getSearchNav($seller);
-        $orders = $this->orderRepository->getOrdersByPage([], ['byUser'], $user_id);
-        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders', 'regions', 'user_id'));
+        $userNav = $this->usersRepository->getUserEditNav();
+        $orders = $this->orderRepository->getOrdersByPage([], ['byUser'], $id);
+        return view('shop.admin.order.order', compact('seller', 'userNav', 'navType', 'searchNav', 'search', 'orders', 'regions', 'id', 'unav'));
     }
 
     public function userBaitiao($id)

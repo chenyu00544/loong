@@ -26,6 +26,7 @@ class CouponsController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('coupons');
         $this->couponsRepository = $couponsRepository;
         $this->userRankRepository = $userRankRepository;
     }

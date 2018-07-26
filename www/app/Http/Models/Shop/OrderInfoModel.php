@@ -12,9 +12,34 @@ class OrderInfoModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function Goods()
+    {
+        //GoodsModel前必须加App\Http\Models\Shop, 第二个参数是表名，无需前缀，第三个参数是本类的字段，第四个参数是要查找的字段
+        return $this->belongsToMany('App\Http\Models\Shop\GoodsModel', 'order_goods', 'order_id', 'goods_id');
+    }
+
+    public function TradeSnapshot()
+    {
+        return $this->hasOne('App\Http\Models\Shop\TradeSnapshotModel', 'order_sn','order_sn');
+    }
+
+    public function User()
+    {
+        return $this->hasOne('App\Http\Models\Shop\UsersModel', 'user_id','user_id');
+    }
+
     public function getOrderInfoByPage($where, $orWhere, $search, $column = ['*'], $size = 15)
     {
         $m = $this->select($column)
+            ->with(['Goods'=>function($query){
+                $query->select(['*'])->get();
+            }])
+            ->with(['TradeSnapshot'=>function($query){
+                $query->select(['*'])->get();
+            }])
+            ->with(['User'=>function($query){
+                $query->select(['*'])->get();
+            }])
             ->where($where);
         if (!empty($orWhere)) {
             $m->where(function ($query) use ($orWhere) {

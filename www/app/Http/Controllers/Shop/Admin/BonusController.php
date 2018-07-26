@@ -26,6 +26,7 @@ class BonusController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('bonus');
         $this->bonusRepository = $bonusRepository;
         $this->goodsRepository = $goodsRepository;
     }

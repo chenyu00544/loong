@@ -53,6 +53,7 @@ class OrderController extends CommonController
      */
     public function index(Request $request)
     {
+
         $seller = 'selfsale';
         $navType = '0';
         $search['keywords'] = $request->get('keywords');

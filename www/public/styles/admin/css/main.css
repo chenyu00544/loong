@@ -108,6 +108,10 @@ option {
     margin: 3px;
 }
 
+.monthselect{
+    float: left;
+}
+
 [v-cloak] {
     display: none;
 }
@@ -2619,4 +2623,12 @@ input[type=file].upload-file {
 
 .sort-info .sort-list .sort-list-warp li.current .sc_icon_no {
     background-position: -140px -501px;
+}
+
+.border-right{
+    border-right: 1px solid #ddd;
+}
+
+.pad-sat{
+    padding: 5px 25px;
 }
