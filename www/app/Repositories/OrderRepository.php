@@ -68,7 +68,7 @@ class OrderRepository implements OrderRepositoryInterface
         $this->paymentModel = $paymentModel;
     }
 
-    public function getOrdersByPage($search, $parame = [])
+    public function getOrdersByPage($search, $parame = [], $user_id = 0)
     {
         $where = [];
         $orWhere = [];
@@ -79,6 +79,9 @@ class OrderRepository implements OrderRepositoryInterface
                     break;
                 case 'seller':
                     $where[] = ['ru_id', '<>', '0'];
+                    break;
+                case 'byUser':
+                    $where[] = ['user_id', '=', $user_id];
                     break;
                 case '0':
                     break;
@@ -509,7 +512,7 @@ class OrderRepository implements OrderRepositoryInterface
             case 'operation':
                 if ($data['value'] == 'agree_apply') {//同意申请
                     $updata['agree_apply'] = 1;
-                    $this->orderInfoModel->setOrderInfo(['order_id'=>$rorder->order_id], ['order_status'=>Config::get('define.OS_RETURNED')]);
+                    $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['order_status' => Config::get('define.OS_RETURNED')]);
                 } elseif ($data['value'] == 'receive_goods') {//收到退换货商品
                     $updata['return_status'] = 1;
                 } elseif ($data['value'] == 'refuse_apply') {//拒绝申请
@@ -542,14 +545,14 @@ class OrderRepository implements OrderRepositoryInterface
                     $re = $this->orderReturnModel->setOrderReturn($where, $updata);
                     if ($re && $res) {
                         DB::commit();
-                        $this->orderInfoModel->setOrderInfo(['order_id'=>$rorder->order_id], ['pay_status'=>Config::get('define.PS_REFOUND')]);
+                        $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['pay_status' => Config::get('define.PS_REFOUND')]);
                         $req = ['code' => 1, 'msg' => '操作成功'];
                     } else {
                         DB::rollBack();
                     }
                     return $req;
-                }else{
-                    $this->orderInfoModel->setOrderInfo(['order_id'=>$rorder->order_id], ['pay_status'=>Config::get('define.PS_REFOUND')]);
+                } else {
+                    $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['pay_status' => Config::get('define.PS_REFOUND')]);
                 }
                 break;
             default:

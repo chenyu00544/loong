@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
+use App\Repositories\OrderRepository;
 use App\Repositories\RegFieldsRepository;
 use App\Repositories\UserAddressRepository;
 use App\Repositories\UserRankRepository;
@@ -22,12 +23,14 @@ class UsersController extends CommonController
     private $userRankRepository;
     private $regFieldsRepository;
     private $userAddressRepository;
+    private $orderRepository;
 
     public function __construct(
         UsersRepository $usersRepository,
         UserRankRepository $userRankRepository,
         RegFieldsRepository $regFieldsRepository,
-        UserAddressRepository $userAddressRepository
+        UserAddressRepository $userAddressRepository,
+        OrderRepository $orderRepository
     )
     {
         parent::__construct();
@@ -36,6 +39,7 @@ class UsersController extends CommonController
         $this->userRankRepository = $userRankRepository;
         $this->regFieldsRepository = $regFieldsRepository;
         $this->userAddressRepository = $userAddressRepository;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -63,7 +67,7 @@ class UsersController extends CommonController
         $now_date = date('Y-m-d');
         $user = $this->usersRepository->getUser($id);
         $userRanks = $this->userRankRepository->getUserRanks();
-        $regFields = $this->regFieldsRepository->getRegFields(['display'=> 1]);
+        $regFields = $this->regFieldsRepository->getRegFields(['display' => 1]);
         $userNav = $this->usersRepository->getUserEditNav();
         return view('shop.admin.users.userEdit', compact('user', 'regFields', 'userRanks', 'userNav', 'navType', 'now_date'));
     }
@@ -78,13 +82,13 @@ class UsersController extends CommonController
 
     public function userOrder($id)
     {
-        $navType = 'userorder';
-        $now_date = date('Y-m-d');
-        $user = $this->usersRepository->getUser($id);
-        $userRanks = $this->userRankRepository->getUserRanks();
-        $regFields = $this->regFieldsRepository->getRegFields();
-        $userNav = $this->usersRepository->getUserEditNav();
-        return view('shop.admin.users.userEdit', compact('user', 'regFields', 'userRanks', 'userNav', 'navType', 'now_date'));
+        $seller = 'selfsale';
+        $navType = '0';
+        $search['keywords'] = '';
+        $user_id = $id;
+        $searchNav = $this->orderRepository->getSearchNav($seller);
+        $orders = $this->orderRepository->getOrdersByPage([], ['byUser'], $user_id);
+        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders', 'regions', 'user_id'));
     }
 
     public function userBaitiao($id)
