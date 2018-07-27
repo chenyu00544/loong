@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 class SatisticsController extends CommonController
 {
     private $date;
+    private $rdate;
     private $orderRepository;
     private $satisticsRepository;
 
@@ -34,12 +35,13 @@ class SatisticsController extends CommonController
             $data[] = date('Y-m', time() - ((86400 * 30) * ($k - $i)));
         }
         $this->date = $data;
+        $this->rdate = date('Y-m-d', time() - 84600 * 6) . ' 08:00:00～' . date('Y-m-d', time() + 84600) . ' 08:00:00';
     }
 
     //订单统计
     public function order(Request $request)
     {
-        $now_date = $this->now_date;
+        $now_date = $this->rdate;
         $data = $this->date;
         $ordersat = $this->orderRepository->getOrderSatistics();
         return view('shop.admin.satistics.orderSat', compact('now_date', 'data'));

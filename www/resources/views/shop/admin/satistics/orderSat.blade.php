@@ -99,20 +99,6 @@
 
             //图表订单数量
             var orderNumChart = echarts.init(document.getElementById('order-num'));
-
-            var range = [];
-            $('input[name=date]').each(function () {
-                range.push($(this).val());
-            });
-            //订单数量
-            $.post("{{url('admin/satistics/getsat')}}", {
-                '_token': '{{csrf_token()}}',
-                type: 'order',
-                range: range
-            }, function (data) {
-
-            });
-
             // 指定图表的配置项和数据
             var orderNumOption = {
                 itemStyle: {
@@ -123,24 +109,34 @@
                 },
                 tooltip: {},
                 legend: {
-                    data: ['销量', '订单数量']
+                    data: ['订单数量']
                 },
                 xAxis: {
-                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+                    data: []
                 },
                 yAxis: {},
                 series: [{
-                    name: '销量',
-                    type: 'bar',
-                    data: [3, 21, 35, 19, 20, 30]
-                }, {
                     name: '订单数量',
                     type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20]
+                    data: []
                 }]
             };
-            // 使用刚指定的配置项和数据显示图表。
-            orderNumChart.setOption(orderNumOption);
+            var range = $('input[name=start_end_date]').val();
+            //订单数量
+            $.post("{{url('admin/satistics/getsat')}}", {
+                '_token': '{{csrf_token()}}',
+                type: 'order',
+                range: range,
+                opt: 'range',
+            }, function (data) {
+                for(i in data.data){
+                    orderNumOption.xAxis.data[i] = data.data[i].name;
+                    orderNumOption.series.data[i].data.data[i].value;
+                }
+                // 使用刚指定的配置项和数据显示图表。
+                orderNumChart.setOption(orderNumOption);
+            });
+
             //销售总额
             var saleTotalChart = echarts.init(document.getElementById('sale-total'));
             // 指定图表的配置项和数据
@@ -160,7 +156,7 @@
                 },
                 yAxis: {},
                 series: [{
-                    name: '销量',
+                    name: '销售额',
                     type: 'bar',
                     data: [5, 20, 36, 10, 10, 20]
                 }]

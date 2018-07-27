@@ -100,8 +100,8 @@ $(function () {
     });
 
     //修正多个时间控件daterangepicker无法收藏
-    $('input[type=text]').blur(function () {
-        $(this).removeClass('active');
+    $('input[type=text]').click(function () {
+        $('input[type=text]').removeClass('active');
         $('.daterangepicker').hide();
     });
 });
@@ -114,7 +114,7 @@ function region() {
     $('.shop_country')
 }
 
-//建立一個可存取到file的url
+//建立一個可预览到file的url
 function getImageURL(file) {
     var url = null;
     if (window.createObjectURL != undefined) { // basic

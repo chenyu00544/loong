@@ -81,9 +81,9 @@ class OrderInfoModel extends Model
         $m = $this->where($where);
 
         if ($seller == 'selfsale') {
-            $m->where('user_id', '=', '0');
-        } else {
-            $m->where('user_id', '<>', '0');
+            $m->where('ru_id', '=', '0');
+        } elseif($seller == 'seller') {
+            $m->where('ru_id', '<>', '0');
         }
 
         if (!empty($orWhere)) {
