@@ -2625,10 +2625,6 @@ input[type=file].upload-file {
     background-position: -140px -501px;
 }
 
-.border-right{
-    border-right: 1px solid #ddd;
-}
-
 .pad-sat{
     padding: 5px 25px;
 }

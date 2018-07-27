@@ -30,18 +30,28 @@ class SatisticsRepository implements SatisticsRepositoryInterface
             case 'order':
                 if ($data['opt'] == 'part') {
                     foreach ($data['range'] as $range) {
-
+                        $arr = explode('-', $range);
+                        $stime = strtotime($arr[0] . '-' . $arr[1]);
+                        $etime = strtotime($arr[0] . '-' . ($arr[1] + 1)) - 1;
+                        $where = [['pay_time', '>', $stime], ['pay_time', '<', $etime], ['pay_status', '=', 2]];
+                        $count = $this->orderInfoModel->countOrder($where, [], '');
+                        $sum = $this->orderInfoModel->sumOrder($where, [], '');
+                        $re[] = ['name' => $range, 'value_on' => $count, 'value_st' => $sum];
+                        $rep['data'] = $re;
+                        $rep['msg'] = '';
+                        $rep['code'] = 1;
                     }
                 } elseif ($data['opt'] == 'range') {
                     $arr = explode('～', $data['range']);
                     $stime = strtotime($arr[0]);
                     $etime = strtotime($arr[1]);
-                    $rtime = $etime - $stime;
-                    $part = ceil($rtime / 86400);
+                    $part = ceil(($etime - $stime) / 86400);
+                    $part = $part <= 30 ? $part : 30;
                     for ($i = 0; $i < $part; $i++) {
-                        $where = [['pay_time', '>', $stime + 86400 * $i], ['pay_time', '<', $stime + 86400 * ($i + 1)], ['pay_status', '=', 2]];
+                        $where = [['pay_time', '>', $etime - 86400 * ($part - $i)], ['pay_time', '<', $etime - 86400 * ($part - $i - 1)], ['pay_status', '=', 2]];
                         $count = $this->orderInfoModel->countOrder($where, [], '');
-                        $re[] = ['name' => date('Y-m-d', $stime + 86400 * $i), 'value' => $count];
+                        $sum = $this->orderInfoModel->sumOrder($where, [], '');
+                        $re[] = ['name' => date('Y-m-d', $etime - 86400 * ($part - $i)), 'value_on' => $count, 'value_st' => $sum];
                         $rep['data'] = $re;
                         $rep['msg'] = '';
                         $rep['code'] = 1;
@@ -52,5 +62,17 @@ class SatisticsRepository implements SatisticsRepositoryInterface
             default:
                 break;
         }
+    }
+
+    public function satisticsAmount()
+    {
+        $where = ['pay_status' => 2];
+        return $this->orderInfoModel->sumOrder($where, [], '');
+    }
+
+    public function satisticsOrderNum()
+    {
+        $where = ['pay_status' => 2];
+        return $this->orderInfoModel->countOrder($where, [], '');
     }
 }

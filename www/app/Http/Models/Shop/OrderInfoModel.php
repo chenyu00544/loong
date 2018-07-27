@@ -4,6 +4,7 @@ namespace App\Http\Models\Shop;
 
 use function foo\func;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class OrderInfoModel extends Model
 {
@@ -20,24 +21,24 @@ class OrderInfoModel extends Model
 
     public function TradeSnapshot()
     {
-        return $this->hasOne('App\Http\Models\Shop\TradeSnapshotModel', 'order_sn','order_sn');
+        return $this->hasOne('App\Http\Models\Shop\TradeSnapshotModel', 'order_sn', 'order_sn');
     }
 
     public function User()
     {
-        return $this->hasOne('App\Http\Models\Shop\UsersModel', 'user_id','user_id');
+        return $this->hasOne('App\Http\Models\Shop\UsersModel', 'user_id', 'user_id');
     }
 
     public function getOrderInfoByPage($where, $orWhere, $search, $column = ['*'], $size = 15)
     {
         $m = $this->select($column)
-            ->with(['Goods'=>function($query){
+            ->with(['Goods' => function ($query) {
                 $query->select(['*'])->get();
             }])
-            ->with(['TradeSnapshot'=>function($query){
+            ->with(['TradeSnapshot' => function ($query) {
                 $query->select(['*'])->get();
             }])
-            ->with(['User'=>function($query){
+            ->with(['User' => function ($query) {
                 $query->select(['*'])->get();
             }])
             ->where($where);
@@ -82,7 +83,7 @@ class OrderInfoModel extends Model
 
         if ($seller == 'selfsale') {
             $m->where('ru_id', '=', '0');
-        } elseif($seller == 'seller') {
+        } elseif ($seller == 'seller') {
             $m->where('ru_id', '<>', '0');
         }
 
@@ -94,6 +95,24 @@ class OrderInfoModel extends Model
             });
         }
         return $m->count();
+    }
+
+    public function sumOrder($where, $orWhere = [], $seller = 'selfsale', $field = 'money_paid')
+    {
+        $m = $this->where($where);
+        if ($seller == 'selfsale') {
+            $m->where('ru_id', '=', '0');
+        } elseif ($seller == 'seller') {
+            $m->where('ru_id', '<>', '0');
+        }
+        if (!empty($orWhere)) {
+            $m->where(function ($query) use ($orWhere) {
+                foreach ($orWhere as $value) {
+                    $query->orWhere($value);
+                }
+            });
+        }
+        return $m->sum($field);
     }
 
     public function delOrderInfo($where = [], $whereIn = [])

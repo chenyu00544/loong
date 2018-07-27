@@ -24,12 +24,13 @@ class BonusModel extends Model
     public function getBonusByPage($where, $search, $column = ['*'], $size = 15)
     {
         $m = $this->select($column)
-            ->with(['UseBonusUser' => function ($query) {
-                $query->select(['bonus_type_id'])->count();
+//            ->with(['UseBonusUser' => function ($query) {
+//                $query->select(['bonus_type_id']);
+//            }])
+            ->withCount(['useBonus' => function ($query) {
+                $query->where('order_id','<>', '0');
             }])
-            ->with(['useBonus' => function ($query) {
-                $query->select(['bonus_type_id'])->where('order_id','<>', '0')->count();
-            }])
+            ->withCount(['UseBonusUser'])
             ->where($where);
         if (!empty($search)) {
             $m->where(function ($query) use ($search) {

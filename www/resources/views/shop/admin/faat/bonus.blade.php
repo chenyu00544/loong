@@ -94,8 +94,8 @@
                                     </td>
                                     <td>{{$bonus->type_money}}</td>
                                     <td>{{$bonus->min_goods_amount}}</td>
-                                    <td>{{$bonus->UseBonusUser->count()}}</td>
-                                    <td>{{$bonus->useBonus->count()}}</td>
+                                    <td>{{$bonus->use_bonus_user_count}}</td>
+                                    <td>{{$bonus->use_bonus_count}}</td>
                                     <td>@if($bonus->review_status == 3)
                                             <font class="blue">审核已通过</font>
                                         @elseif($bonus->review_status == 1)

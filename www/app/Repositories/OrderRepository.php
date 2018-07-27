@@ -570,12 +570,6 @@ class OrderRepository implements OrderRepositoryInterface
         return $req;
     }
 
-    //订单统计
-    public function getOrderSatistics()
-    {
-
-    }
-
     private function orderAmount($order)
     {
         return $order->goods_amount + $order->tax + $order->shipping_fee + $order->insure_fee + $order->pay_fee - $order->discount - $order->integral_money - $order->bonus - $order->coupons - $order->integral_money;

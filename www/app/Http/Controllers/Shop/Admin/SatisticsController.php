@@ -17,17 +17,14 @@ class SatisticsController extends CommonController
 {
     private $date;
     private $rdate;
-    private $orderRepository;
     private $satisticsRepository;
 
     public function __construct(
-        OrderRepository $orderRepository,
         SatisticsRepository $satisticsRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('satistics');
-        $this->orderRepository = $orderRepository;
         $this->satisticsRepository = $satisticsRepository;
         $k = 4;
         $data = [];
@@ -35,16 +32,18 @@ class SatisticsController extends CommonController
             $data[] = date('Y-m', time() - ((86400 * 30) * ($k - $i)));
         }
         $this->date = $data;
-        $this->rdate = date('Y-m-d', time() - 84600 * 6) . ' 08:00:00～' . date('Y-m-d', time() + 84600) . ' 08:00:00';
+        $this->rdate = date('Y-m-d', time() - 84600 * 7) . ' 08:00:00～' . date('Y-m-d', time() + 84600) . ' 08:00:00';
     }
 
     //订单统计
     public function order(Request $request)
     {
         $now_date = $this->rdate;
-        $data = $this->date;
-        $ordersat = $this->orderRepository->getOrderSatistics();
-        return view('shop.admin.satistics.orderSat', compact('now_date', 'data'));
+        $date = $this->date;
+        $ordersat = $this->satisticsRepository->getSatistics(['type' => 'order', 'range' => $now_date, 'opt' => 'range']);
+        $sumAmount = $this->satisticsRepository->satisticsAmount();
+        $countOrder = $this->satisticsRepository->satisticsOrderNum();
+        return view('shop.admin.satistics.orderSat', compact('now_date', 'date', 'ordersat', 'sumAmount', 'countOrder'));
     }
 
     public function getSatistics(Request $request)
