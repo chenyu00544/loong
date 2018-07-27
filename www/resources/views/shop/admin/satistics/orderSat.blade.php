@@ -33,36 +33,32 @@
                         </div>
                         <div class="form-group mar-top-20">
                             <label class="col-sm-2 control-label wd-120">起止日期：</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-5">
                                 <input type="text" style="width: 350px" name="start_end_date"
-                                       id="start_end_date" class="form-control input-sm"
+                                       id="start_end_date" class="form-control input-sm fl"
                                        value="{{$now_date}}">
-                            </div>
-                            <div class="col-sm-1">
                                 <a type="button" href="javascript:;"
-                                   class="btn btn-info btn-edit btn-sm search1" style="padding: 5px 20px;">查询</a>
+                                   class="btn btn-info btn-edit btn-sm search1 mar-left-20" style="padding: 5px 20px;">查询</a>
                             </div>
                         </div>
                         <div class="form-group mar-top-20">
                             <label class="col-sm-2 control-label wd-120">查询年月：</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-10">
                                 @foreach($data as $k => $v)
                                     <input type="text" style="width: 145px" name="date"
                                            id="date_{{$k}}"
                                            class="form-control input-sm fl @if($k!=0) mar-left-15 @endif"
                                            value="{{$v}}">
                                 @endforeach
-                            </div>
-                            <div class="col-sm-1">
                                 <a type="button" href="javascript:;"
-                                   class="btn btn-info btn-search2 btn-sm" style="padding: 5px 20px;">查询</a>
+                                   class="btn btn-info btn-search2 btn-sm mar-left-20" style="padding: 5px 20px;">查询</a>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="main-info">
-
-
+                    <div id="order-num"></div>
+                    <div id="sale-total" class="mar-top-20"></div>
                 </div>
             </div>
         </div>
@@ -100,6 +96,77 @@
                 var s = start.format('YYYY-MM');
                 $('#date_4').val(s);
             });
+
+            //图表订单数量
+            var orderNumChart = echarts.init(document.getElementById('order-num'));
+
+            var range = [];
+            $('input[name=date]').each(function () {
+                range.push($(this).val());
+            });
+            //订单数量
+            $.post("{{url('admin/satistics/getsat')}}", {
+                '_token': '{{csrf_token()}}',
+                type: 'order',
+                range: range
+            }, function (data) {
+
+            });
+
+            // 指定图表的配置项和数据
+            var orderNumOption = {
+                itemStyle: {
+                    color: '#37a2da'
+                },
+                title: {
+                    text: '订单数量'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['销量', '订单数量']
+                },
+                xAxis: {
+                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '销量',
+                    type: 'bar',
+                    data: [3, 21, 35, 19, 20, 30]
+                }, {
+                    name: '订单数量',
+                    type: 'bar',
+                    data: [5, 20, 36, 10, 10, 20]
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            orderNumChart.setOption(orderNumOption);
+            //销售总额
+            var saleTotalChart = echarts.init(document.getElementById('sale-total'));
+            // 指定图表的配置项和数据
+            var saleTotalOption = {
+                itemStyle: {
+                    color: '#37a2da'
+                },
+                title: {
+                    text: '销售额'
+                },
+                tooltip: {},
+                legend: {
+                    data: ['销售额']
+                },
+                xAxis: {
+                    data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '销量',
+                    type: 'bar',
+                    data: [5, 20, 36, 10, 10, 20]
+                }]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            saleTotalChart.setOption(saleTotalOption);
         });
     </script>
 @endsection
