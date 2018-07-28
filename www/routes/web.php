@@ -229,5 +229,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::post('satistics/getsat', 'SatisticsController@getSatistics');
     Route::get('satistics/order', 'SatisticsController@order');
+    Route::get('satistics/user', 'SatisticsController@user');
 
 });

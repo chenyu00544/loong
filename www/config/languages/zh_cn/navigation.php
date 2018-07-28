@@ -125,6 +125,10 @@ return array(
             'name' => '订单统计',
             'url' => 'admin/satistics/order',
         ),
+        'usersatistics' => array(
+            'name' => '订单统计',
+            'url' => 'admin/satistics/user',
+        ),
     ),
 
 
