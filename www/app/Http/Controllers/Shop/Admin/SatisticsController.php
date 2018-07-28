@@ -49,12 +49,19 @@ class SatisticsController extends CommonController
     //会员统计
     public function user(Request $request)
     {
+        $usernav = 'user';
         $now_date = $this->rdate;
         $date = $this->date;
-        $ordersat = $this->satisticsRepository->getSatistics(['type' => 'order', 'range' => $now_date, 'opt' => 'range']);
-        $sumAmount = $this->satisticsRepository->satisticsAmount();
-        $countOrder = $this->satisticsRepository->satisticsOrderNum();
-        return view('shop.admin.satistics.usersSat', compact('now_date', 'date', 'ordersat', 'sumAmount', 'countOrder'));
+        $usersat = $this->satisticsRepository->getSatistics(['type' => 'user', 'range' => $now_date, 'opt' => 'range']);
+        return view('shop.admin.satistics.usersSat', compact('now_date', 'date', 'usernav', 'usersat'));
+    }
+
+    //会员区域统计
+    public function userArea(Request $request)
+    {
+        $usernav = 'area';
+        $userareasat = $this->satisticsRepository->getSatistics(['type' => 'userarea']);
+        return view('shop.admin.satistics.usersAreaSat', compact('usernav', 'userareasat'));
     }
 
     public function getSatistics(Request $request)

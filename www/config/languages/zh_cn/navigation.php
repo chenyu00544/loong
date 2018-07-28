@@ -126,7 +126,7 @@ return array(
             'url' => 'admin/satistics/order',
         ),
         'usersatistics' => array(
-            'name' => '订单统计',
+            'name' => '会员统计',
             'url' => 'admin/satistics/user',
         ),
     ),
