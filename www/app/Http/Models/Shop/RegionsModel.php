@@ -11,7 +11,17 @@ class RegionsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getRegions($type = 0, $parent = 0, $column = ['region_id', 'region_name', 'parent_id','region_type'])
+    public function Users()
+    {
+        return $this->belongsToMany('App\Http\Models\Shop\UsersModel', 'user_address', 'province', 'user_id');
+    }
+
+    public function Order()
+    {
+        return $this->hasMany('App\Http\Models\Shop\OrderInfoModel', 'province', 'region_id');
+    }
+
+    public function getRegions($type = 0, $parent = 0, $column = ['region_id', 'region_name', 'parent_id', 'region_type'])
     {
         return $this->select($column)
             ->where([['region_type', $type], ['parent_id', $parent]])
@@ -48,5 +58,30 @@ class RegionsModel extends Model
     {
         return $this->where($where)
             ->delete();
+    }
+
+    public function getRegionsByUser($type = 1, $parent = 1)
+    {
+        return $this->withCount(['Users'])
+            ->where([['region_type', $type], ['parent_id', $parent]])
+            ->get();
+    }
+
+    public function getRegionsBySale($type = 1, $parent = 1)
+    {
+        return $this->with(['Order' => function ($query) {
+            $query->select(['pay_status','money_paid','province'])->where(['pay_status' => 2]);
+        }])
+            ->where([['region_type', $type], ['parent_id', $parent]])
+            ->get();
+    }
+
+    public function getRegionsByOrder($type = 1, $parent = 1)
+    {
+        return $this->withCount(['Order' => function ($query) {
+            $query->where(['pay_status' => 2]);
+        }])
+            ->where([['region_type', $type], ['parent_id', $parent]])
+            ->get();
     }
 }

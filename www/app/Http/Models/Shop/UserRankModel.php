@@ -2,8 +2,9 @@
 
 namespace App\Http\Models\Shop;
 
-use function foo\func;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class UserRankModel extends Model
 {
@@ -52,6 +53,12 @@ class UserRankModel extends Model
             $m->orWhere($key, 'like', '%' . $value . '%');
         }
         return $m->get();
+    }
+
+    public function getUserRankByUser()
+    {
+        $prefix = Config::get('database.connections.mysql.prefix');
+        return DB::table('user_rank')->select('*', DB::raw("(select count(*) from `{$prefix}users` where `rank_points` between {$prefix}user_rank.min_points and {$prefix}user_rank.max_points) as `user_count`"))->get();
     }
 
     public function delUserRank($where)

@@ -115,6 +115,17 @@ class OrderInfoModel extends Model
         return $m->sum($field);
     }
 
+    public function sumOrderByUser()
+    {
+        return $this->select(DB::raw('sum(money_paid) as total, user_id'))
+            ->with(['User' => function ($query) {
+                $query->select(['user_name', 'user_id']);
+            }])
+            ->groupBy('user_id')
+            ->limit(10)
+            ->get();
+    }
+
     public function delOrderInfo($where = [], $whereIn = [])
     {
         return $this->where($where)->delete();

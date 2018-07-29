@@ -129,6 +129,10 @@ return array(
             'name' => '会员统计',
             'url' => 'admin/satistics/user',
         ),
+        'industryatistics' => array(
+            'name' => '行业统计',
+            'url' => 'admin/satistics/industry',
+        ),
     ),
 
 

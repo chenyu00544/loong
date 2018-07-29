@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Regions;
 use App\Repositories\OrderRepository;
 use App\Repositories\SatisticsRepository;
 use Illuminate\Http\Request;
@@ -60,12 +61,41 @@ class SatisticsController extends CommonController
     public function userArea(Request $request)
     {
         $usernav = 'area';
-        $userareasat = $this->satisticsRepository->getSatistics(['type' => 'userarea']);
+        $userareasat = $this->satisticsRepository->getSatistics(['type' => 'userarea', 'opt' => 'user']);
         return view('shop.admin.satistics.usersAreaSat', compact('usernav', 'userareasat'));
     }
 
+    //会员区域统计
+    public function userRank(Request $request)
+    {
+        $usernav = 'rank';
+        $userranksat = $this->satisticsRepository->getSatistics(['type' => 'userrank', 'opt' => 'rank']);
+        return view('shop.admin.satistics.usersRankSat', compact('usernav', 'userranksat'));
+    }
+
+    //会员消费统计
+    public function userConsumption(Request $request)
+    {
+        $usernav = 'consumption';
+        $userconsumptionsat = $this->satisticsRepository->getSatistics(['type' => 'userconsumption', 'opt' => 'consumption']);
+        return view('shop.admin.satistics.usersConsumptionSat', compact('usernav', 'userconsumptionsat'));
+    }
+
+    //行业统计
+    public function industry(Request $request)
+    {
+
+    }
+
+    //ajax获取统计数据
     public function getSatistics(Request $request)
     {
         return $this->satisticsRepository->getSatistics($request->except('_token'));
     }
+
+    public function getGeoJson(Request $request)
+    {
+        return Regions::getGeoJson();
+    }
+
 }

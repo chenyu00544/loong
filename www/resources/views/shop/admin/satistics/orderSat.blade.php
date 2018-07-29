@@ -148,7 +148,7 @@
                 },
                 yAxis: {},
                 series: [{
-                    name: '销售额',
+                    name: '销售额（元）',
                     type: 'bar',
                     data: [
                         @foreach($ordersat['data'] as $val)

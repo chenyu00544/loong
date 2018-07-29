@@ -8,8 +8,8 @@
 
 namespace App\Services;
 
-
 use App\Http\Models\Shop\RegionsModel;
+use Illuminate\Support\Facades\Config;
 
 class RegionsService
 {
@@ -36,4 +36,10 @@ class RegionsService
         $reArr['name'] = $arr->region_name;
         return $reArr;
     }
+
+    public static function getGeoJson()
+    {
+        return file_get_contents(base_path().'/public/geojson/china.json');
+    }
+
 }
