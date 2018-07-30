@@ -138,14 +138,14 @@ class SatisticsRepository implements SatisticsRepositoryInterface
                 return $rep;
                 break;
             case 'industry':
-                $cate = $this->categoryModel->getComCatesById();
-                $ct = [];
-                foreach ($cate as $c){
-                    $ct[] = $c->id;
+                $cates = $this->categoryModel->getComCates(0, ['id','cat_name','cat_alias_name']);
+                foreach ($cates as $cate){
+                    $ids = $this->categoryModel->getSubComCates([$cate->id]);
+                    $re = $this->orderGoodsModel->sumOrderGoodsByCate($ids);
+                    $cate->sat = $re;
                 }
-                $re = $this->orderGoodsModel->sumOrderGoodsByCate($ct);
                 $rep['msg'] = '';
-                $rep['data'] = $re;
+                $rep['data'] = $cates;
                 $rep['code'] = 1;
                 return $rep;
                 break;

@@ -6,22 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryModel extends Model
 {
-    protected $table = 'category';
+    protected $table = 'category_t';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getComCates($id = 0)
+    public function getComCates($id = 0, $column = ['*'])
     {
-        return $this->where('parent_id', $id)
+        return $this->select($column)
+            ->where('parent_id', $id)
             ->orderBy('sort_order', 'asc')
             ->get();
     }
 
-    public function getComCatesById()
+    public function getSubComCates($pids = [0], $ids = [])
     {
-        return $this->select(['id'])
-            ->get();
+        $res = $this->select('id')->whereIn('parent_id', $pids)->get();
+        $arr = [];
+        if ($res->count() > 0) {
+            foreach ($res as $re) {
+                $arr[] = $re->id;
+            }
+            $ids = array_merge($ids, $arr);
+            return $this->getSubComCates($arr, $ids);
+        }
+        return $ids;
     }
 
     public function getComCate($id)

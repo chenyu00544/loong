@@ -29,7 +29,7 @@ class OrderGoodsModel extends Model
             ->leftJoin('goods as g', 'g.goods_id', '=', 'og.goods_id')
             ->leftJoin('category as c', 'c.id', '=', 'g.cat_id')
             ->whereIn('c.id', $cate)
-            ->get();
+            ->first();
     }
 
     public function delOrderGoods($where)
