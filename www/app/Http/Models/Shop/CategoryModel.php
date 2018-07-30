@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CategoryModel extends Model
 {
     protected $table = 'category';
-    protected $primaryKey = 'cat_id';
+    protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
 
@@ -15,6 +15,12 @@ class CategoryModel extends Model
     {
         return $this->where('parent_id', $id)
             ->orderBy('sort_order', 'asc')
+            ->get();
+    }
+
+    public function getComCatesById()
+    {
+        return $this->select(['id'])
             ->get();
     }
 

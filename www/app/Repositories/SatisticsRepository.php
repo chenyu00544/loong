@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 use App\Contracts\SatisticsRepositoryInterface;
 use App\Http\Models\shop\CategoryModel;
+use App\Http\Models\Shop\OrderGoodsModel;
 use App\Http\Models\Shop\OrderInfoModel;
 use App\Http\Models\Shop\RegionsModel;
 use App\Http\Models\Shop\UserRankModel;
@@ -22,6 +23,7 @@ class SatisticsRepository implements SatisticsRepositoryInterface
     private $usersModel;
     private $regionsModel;
     private $userRankModel;
+    private $orderGoodsModel;
     private $categoryModel;
 
     public function __construct(
@@ -29,6 +31,7 @@ class SatisticsRepository implements SatisticsRepositoryInterface
         UsersModel $usersModel,
         RegionsModel $regionsModel,
         UserRankModel $userRankModel,
+        OrderGoodsModel $orderGoodsModel,
         CategoryModel $categoryModel
     )
     {
@@ -36,6 +39,7 @@ class SatisticsRepository implements SatisticsRepositoryInterface
         $this->usersModel = $usersModel;
         $this->regionsModel = $regionsModel;
         $this->userRankModel = $userRankModel;
+        $this->orderGoodsModel = $orderGoodsModel;
         $this->categoryModel = $categoryModel;
     }
 
@@ -134,7 +138,12 @@ class SatisticsRepository implements SatisticsRepositoryInterface
                 return $rep;
                 break;
             case 'industry':
-                $re = $this->categoryModel->sumOrderByUser();
+                $cate = $this->categoryModel->getComCatesById();
+                $ct = [];
+                foreach ($cate as $c){
+                    $ct[] = $c->id;
+                }
+                $re = $this->orderGoodsModel->sumOrderGoodsByCate($ct);
                 $rep['msg'] = '';
                 $rep['data'] = $re;
                 $rep['code'] = 1;

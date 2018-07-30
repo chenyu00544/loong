@@ -85,6 +85,7 @@ class SatisticsController extends CommonController
     public function industry(Request $request)
     {
         $industrysat = $this->satisticsRepository->getSatistics(['type' => 'industry', 'opt' => 'industry']);
+        dd($industrysat);
         return view('shop.admin.satistics.industrySat', compact('usernav', 'industrysat'));
     }
 
