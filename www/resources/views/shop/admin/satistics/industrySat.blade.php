@@ -33,31 +33,93 @@
             var industryNumChart = echarts.init(document.getElementById('industry-num'));
             //指定图表的配置项和数据
             var industryNumOption = {
-                itemStyle: {
-                    color: '#ff4500'
-                },
+
                 title: {
                     text: '行业分析概况'
                 },
                 tooltip: {},
                 legend: {
-                    data: ['订单金额']
+                    data: ['订单总金额', '订单总数', '订单商品总数']
                 },
                 xAxis: {
                     data: [
                         @foreach($industrysat['data'] as $val)
-                        "{{$val['name']}}",
+                            "{{$val['cat_alias_name']}}",
                         @endforeach
                     ]
                 },
                 yAxis: {},
-                series: [{
-                    name: '订单金额',
-                    type: 'bar',
-                    data: [@foreach($industrysat['data'] as $val)
-                        "{{$val['value']}}",
-                        @endforeach]
-                }]
+                series: [
+                    {
+                        name: '订单总金额',
+                        itemStyle: {
+                            color: '#a12a00'
+                        },
+                        type: 'bar',
+                        data: [
+                            @foreach($industrysat['data'] as $val)
+                                "{{$val['sat']->order_fee?$val['sat']->order_fee:0}}",
+                            @endforeach
+                        ],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        },
+                    },
+                    {
+                        name: '订单总数',
+                        itemStyle: {
+                            color: '#060d89'
+                        },
+                        type: 'bar',
+                        data: [
+                            @foreach($industrysat['data'] as $val)
+                                "{{$val['sat']->order_num?$val['sat']->order_num:0}}",
+                            @endforeach
+                        ],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        },
+                    },
+                    {
+                        name: '订单商品总数',
+                        itemStyle: {
+                            color: '#0f9c7e'
+                        },
+                        type: 'bar',
+                        data: [
+                            @foreach($industrysat['data'] as $val)
+                                "{{$val['sat']->order_goods_num?$val['sat']->order_goods_num:0}}",
+                            @endforeach
+                        ],
+                        markPoint : {
+                            data : [
+                                {type : 'max', name: '最大值'},
+                                {type : 'min', name: '最小值'}
+                            ]
+                        },
+                        markLine : {
+                            data : [
+                                {type : 'average', name: '平均值'}
+                            ]
+                        },
+                    }
+                ]
             };
             industryNumChart.setOption(industryNumOption);
 
