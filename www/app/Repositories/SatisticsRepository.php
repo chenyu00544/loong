@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\SatisticsRepositoryInterface;
+use App\Http\Models\shop\CategoryModel;
 use App\Http\Models\Shop\OrderInfoModel;
 use App\Http\Models\Shop\RegionsModel;
 use App\Http\Models\Shop\UserRankModel;
@@ -21,18 +22,21 @@ class SatisticsRepository implements SatisticsRepositoryInterface
     private $usersModel;
     private $regionsModel;
     private $userRankModel;
+    private $categoryModel;
 
     public function __construct(
         OrderInfoModel $orderInfoModel,
         UsersModel $usersModel,
         RegionsModel $regionsModel,
-        UserRankModel $userRankModel
+        UserRankModel $userRankModel,
+        CategoryModel $categoryModel
     )
     {
         $this->orderInfoModel = $orderInfoModel;
         $this->usersModel = $usersModel;
         $this->regionsModel = $regionsModel;
         $this->userRankModel = $userRankModel;
+        $this->categoryModel = $categoryModel;
     }
 
     public function getSatistics($data)
@@ -97,17 +101,17 @@ class SatisticsRepository implements SatisticsRepositoryInterface
                 if ($data['opt'] == 'user') {
                     $re = $this->regionsModel->getRegionsByUser();
                     $rep['msg'] = '用户数（个）';
-                }elseif($data['opt'] == 'sale'){
+                } elseif ($data['opt'] == 'sale') {
                     $re = $this->regionsModel->getRegionsBySale();
-                    foreach ($re as $r){
+                    foreach ($re as $r) {
                         $sale_count = 0;
-                        foreach ($r->order as $sale){
+                        foreach ($r->order as $sale) {
                             $sale_count += $sale->money_paid;
                         }
                         $r->sale_count = $sale_count;
                     }
                     $rep['msg'] = '销售额（元）';
-                }elseif($data['opt'] == 'order'){
+                } elseif ($data['opt'] == 'order') {
                     $re = $this->regionsModel->getRegionsByOrder();
                     $rep['msg'] = '订单数（单）';
                 }
@@ -124,6 +128,13 @@ class SatisticsRepository implements SatisticsRepositoryInterface
                 break;
             case 'userconsumption':
                 $re = $this->orderInfoModel->sumOrderByUser();
+                $rep['msg'] = '';
+                $rep['data'] = $re;
+                $rep['code'] = 1;
+                return $rep;
+                break;
+            case 'industry':
+                $re = $this->categoryModel->sumOrderByUser();
                 $rep['msg'] = '';
                 $rep['data'] = $re;
                 $rep['code'] = 1;

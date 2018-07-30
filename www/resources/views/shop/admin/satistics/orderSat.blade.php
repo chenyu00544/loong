@@ -137,7 +137,7 @@
                 },
                 tooltip: {},
                 legend: {
-                    data: ['销售额']
+                    data: ['销售额（元）']
                 },
                 xAxis: {
                     data: [

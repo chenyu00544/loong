@@ -84,7 +84,8 @@ class SatisticsController extends CommonController
     //行业统计
     public function industry(Request $request)
     {
-
+        $industrysat = $this->satisticsRepository->getSatistics(['type' => 'industry', 'opt' => 'industry']);
+        return view('shop.admin.satistics.industrySat', compact('usernav', 'industrysat'));
     }
 
     //ajax获取统计数据

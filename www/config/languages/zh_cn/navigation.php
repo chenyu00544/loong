@@ -7,12 +7,16 @@
  */
 
 return array(
+    //一级导航
     'index' => array(
         'home' => '首页',
         'shop' => '商城',
+        'phone' => '手机',
         'finance' => '财务',
         'system' => '系统',
     ),
+
+    //二级导航
     'home' => array(
         'info' => '首页',
     ),
@@ -22,6 +26,11 @@ return array(
         'promotion' => '促销',
         'goods_storage' => '库存',
         'store' => '店铺',
+    ),
+    'phone' => array(
+        'web' => '手机',
+        'wechat' => '微信',
+        'wxapp' => '小程序',
     ),
     'finance' => array(
         'satistics' => '统计',
@@ -34,7 +43,7 @@ return array(
         'database' => '数据',
     ),
 
-
+    //三级导航
     'info' => array(
         'infocenter' => array(
             'name' => '管理中心',
@@ -118,6 +127,25 @@ return array(
         ),
     ),
 
+
+    'web' => array(
+        'authlogin' => array(
+            'name' => '授权登录',
+            'url' => 'admin/authlogin',
+        ),
+    ),
+    'wechat' => array(
+        'authlogin' => array(
+            'name' => '公众号设置',
+            'url' => 'admin/authlogin',
+        ),
+    ),
+    'wxapp' => array(
+        'authlogin' => array(
+            'name' => '小程序设置',
+            'url' => 'admin/authlogin',
+        ),
+    ),
 
 
     'satistics' => array(

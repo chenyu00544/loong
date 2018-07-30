@@ -505,6 +505,7 @@ option {
 }
 
 .nav-left .sub-nav .item .title a {
+    padding-top: 1px;
     color: #fff;
     display: block;
     height: 68px;
@@ -513,21 +514,25 @@ option {
 
 .nav-left .sub-nav .item .title i {
     width: 22px;
-    height: 20px;
-    display: inline-block;
-    margin: 12px 0 5px 20px;
+    height: 22px;
+    display: block;
+    margin: 12px auto 5px auto;
 }
 
 .nav-left .sub-nav .item .title h6 {
-    margin: -2px 0 0 17px;
     font-weight: normal;
     height: 16px;
-    width: 28px;
+    width: 100%;
     overflow: hidden;
+    text-align: center;
 }
 
 .nav-left .sub-nav .current .title {
-    background-color: #000000;
+    background-color: #292929;
+}
+
+.nav-left .sub-nav .item .title:hover {
+    background-color: #292929;
 }
 
 .nav-left .sub-nav .item .sub-item {
@@ -537,99 +542,123 @@ option {
 }
 
 .icon_info {
-    background-position: -0px -0px;
+    background-position: 2px -0px;
 }
 
 .current .icon_info {
-    background-position: -25px -0px;
+    background-position: -23px -0px;
 }
 
 .icon_commodity {
-    background-position: 1px -192px;
+    background-position: 3px -192px;
 }
 
 .current .icon_commodity {
-    background-position: -24px -192px;
+    background-position: -22px -192px;
 }
 
 .current .icon_order {
-    background-position: -23px -266px;
+    background-position: -21px -266px;
 }
 
 .icon_order {
-    background-position: 2px -266px;
+    background-position: 4px -266px;
 }
 
 .icon_satistics {
-    background-position: -0px -288px;
+    background-position: 2px -288px;
 }
 
 .current .icon_satistics {
-    background-position: -25px -288px;
+    background-position: -23px -288px;
 }
 
 .icon_setup {
-    background-position: -0px -102px;
+    background-position: 2px -102px;
 }
 
 .current .icon_setup {
-    background-position: -25px -102px;
+    background-position: -23px -102px;
 }
 
 .icon_advertise {
-    background-position: -0px -507px;
+    background-position: 2px -507px;
 }
 
 .current .icon_advertise {
-    background-position: -25px -507px;
+    background-position: -23px -507px;
 }
 
 .icon_users {
-    background-position: 1px -50px;
+    background-position: 3px -50px;
 }
 
 .current .icon_users {
-    background-position: -25px -50px;
+    background-position: -23px -50px;
 }
 
 .icon_examine {
-    background-position: 1px -77px;
+    background-position: 2px -77px;
 }
 
 .current .icon_examine {
-    background-position: -24px -77px;
+    background-position: -23px -77px;
 }
 
 .icon_database {
-    background-position: 1px -151px;
+    background-position: 2px -151px;
 }
 
 .current .icon_database {
-    background-position: -24px -151px;
+    background-position: -23px -151px;
 }
 
 .icon_promotion {
-    background-position: 1px -241px;
+    background-position: 2px -241px;
 }
 
 .current .icon_promotion {
-    background-position: -24px -241px;
+    background-position: -23px -241px;
 }
 
 .icon_goods_storage {
-    background-position: 1px -217px;
+    background-position: 2px -217px;
 }
 
 .current .icon_goods_storage {
-    background-position: -24px -217px;
+    background-position: -23px -217px;
 }
 
 .icon_store {
-    background-position: 0px -387px;
+    background-position: 2px -387px;
 }
 
 .current .icon_store {
-    background-position: -25px -387px;
+    background-position: -23px -387px;
+}
+
+.icon_web {
+    background-position: 4px -464px;
+}
+
+.current .icon_web {
+    background-position: -21px -464px;
+}
+
+.icon_wechat {
+    background-position: 2px -537px;
+}
+
+.current .icon_wechat {
+    background-position: -24px -537px;
+}
+
+.icon_wxapp {
+    background-position: -1px -874px;
+}
+
+.current .icon_wxapp {
+    background-position: -26px -874px;
 }
 
 .nav-left .sub-nav .sub-item li {
@@ -2628,7 +2657,7 @@ input[type=file].upload-file {
     padding: 5px 25px;
 }
 
-#order-num, #sale-total, #user-num {
+#order-num, #sale-total, #user-num, #industry-num {
     width: 100%;
     height: 400px;
 }
