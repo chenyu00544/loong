@@ -4,9 +4,9 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MoveNavModel extends Model
+class MobileNavModel extends Model
 {
-    protected $table = 'move_nav';
+    protected $table = 'mobile_nav';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];

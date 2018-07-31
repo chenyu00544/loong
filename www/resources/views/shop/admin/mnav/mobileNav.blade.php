@@ -16,7 +16,7 @@
             </div>
             <div class="fromlist clearfix">
                 <div>
-                    <a href="{{url('admin/movenav/create')}}"
+                    <a href="{{url('admin/mobilenav/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加　</a>
                 </div>
                 <div class="main-info">
@@ -59,7 +59,7 @@
                                            value="{{$nav->vieworder}}"></td>
                                 <td>{{$nav->type}}</td>
                                 <td>
-                                    <a type="button" href="{{url('admin/movenav/'.$nav->id.'/edit')}}"
+                                    <a type="button" href="{{url('admin/mobilenav/'.$nav->id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
                                     <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$nav->id}}">删除</a>
                                 </td>
@@ -94,7 +94,7 @@
                 var tag = $(this).data('type');
                 var id = $(this).children('input').val();
                 $.post(
-                    '{{url("admin/movenav/change")}}',
+                    '{{url("admin/mobilenav/change")}}',
                     {
                         id: id,
                         type: tag,
@@ -109,7 +109,7 @@
 
             $('.chang-order').change(function () {
                 $.post(
-                    '{{url("admin/movenav/change")}}',
+                    '{{url("admin/mobilenav/change")}}',
                     {
                         id: $(this).data('id'),
                         val: $(this).val(),
@@ -136,7 +136,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/movenav/')}}/" + Id,
+                        "{{url('admin/mobilenav/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});

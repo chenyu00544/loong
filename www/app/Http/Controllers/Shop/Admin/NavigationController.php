@@ -10,19 +10,25 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\LangConfig;
+use App\Repositories\ComCateRepository;
 use App\Repositories\NavigationRepository;
 use Illuminate\Http\Request;
 
 class NavigationController extends CommonController
 {
 
-    protected $navigationRepository;
+    private $navigationRepository;
+    private $comCateRepository;
 
-    public function __construct(NavigationRepository $navigationRepository)
+    public function __construct(
+        NavigationRepository $navigationRepository,
+        ComCateRepository $comCateRepository
+    )
     {
         parent::__construct();
         $this->checkPrivilege('navsetup');
         $this->navigationRepository = $navigationRepository;
+        $this->comCateRepository = $comCateRepository;
     }
 
     /**
@@ -57,8 +63,9 @@ class NavigationController extends CommonController
      */
     public function create()
     {
-        $navsTop = $this->navigationRepository->getNavsTop();
-        return view('shop.admin.nav.navAdd', compact('navsTop'));
+        $navsTop = $this->navigationRepository->getNavsMenulist();
+        $cates = $this->comCateRepository->getComCates();
+        return view('shop.admin.nav.navAdd', compact('navsTop', 'cates'));
     }
 
     /**
@@ -93,8 +100,12 @@ class NavigationController extends CommonController
     public function edit($id)
     {
         $field = $this->navigationRepository->getNav($id);
-        $navsTop = $this->navigationRepository->getNavsTop();
-        return view('shop.admin.nav.navEdit',compact('field','navsTop'));
+        $navsTop = $this->navigationRepository->getNavsMenulist();
+        $cates = $this->comCateRepository->getComCates();
+        $cate = $this->comCateRepository->getComCate($field->cid);
+        $parentCates = $this->comCateRepository->getParentCate($field->cid);
+        $parentCates[] = $cate;
+        return view('shop.admin.nav.navEdit',compact('field','navsTop', 'cates', 'parentCates'));
     }
 
     /**

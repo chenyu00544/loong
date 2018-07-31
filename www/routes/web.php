@@ -236,6 +236,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('satistics/user/consumption', 'SatisticsController@userConsumption');
     Route::get('satistics/industry', 'SatisticsController@industry');
 
-    Route::post('movenav/change', 'MoveNavigationController@change');
-    Route::resource('movenav', 'MoveNavigationController');
+    Route::post('mobilenav/change', 'MobileNavigationController@change');
+    Route::resource('mobilenav', 'MobileNavigationController');
 });

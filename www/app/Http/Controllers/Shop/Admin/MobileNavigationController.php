@@ -9,21 +9,21 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Repositories\MoveNavRepository;
+use App\Repositories\MobileNavRepository;
 use Illuminate\Http\Request;
 
-class MoveNavigationController extends CommonController
+class MobileNavigationController extends CommonController
 {
 
-    private $moveNavRepository;
+    private $mobileNavRepository;
 
     public function __construct(
-        MoveNavRepository $moveNavRepository
+        MobileNavRepository $mobileNavRepository
     )
     {
         parent::__construct();
-        $this->checkPrivilege('movenav');
-        $this->moveNavRepository = $moveNavRepository;
+        $this->checkPrivilege('mobilenav');
+        $this->mobileNavRepository = $mobileNavRepository;
     }
 
     /**
@@ -33,13 +33,13 @@ class MoveNavigationController extends CommonController
      */
     public function index()
     {
-        $navs = $this->moveNavRepository->getMoveNavByPage();
-        return view('shop.admin.mnav.moveNav', compact('navs'));
+        $navs = $this->mobileNavRepository->getMoveNavByPage();
+        return view('shop.admin.mnav.mobileNav', compact('navs'));
     }
 
     public function change(Request $request)
     {
-        return $this->moveNavRepository->change($request->except('_token'));
+        return $this->mobileNavRepository->change($request->except('_token'));
     }
 
     /**
@@ -105,6 +105,6 @@ class MoveNavigationController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->moveNavRepository->delMoveNav($id);
+        return $this->mobileNavRepository->delMoveNav($id);
     }
 }

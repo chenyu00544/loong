@@ -7,6 +7,6 @@
  */
 namespace App\Contracts;
 
-interface MoveNavRepositoryInterface {
+interface MobileNavRepositoryInterface {
 
 }

@@ -8,24 +8,24 @@
 
 namespace App\Repositories;
 
-use App\Contracts\MoveNavRepositoryInterface;
-use App\Http\Models\Shop\MoveNavModel;
+use App\Contracts\MobileNavRepositoryInterface;
+use App\Http\Models\Shop\MobileNavModel;
 
-class MoveNavRepository implements MoveNavRepositoryInterface
+class MobileNavRepository implements MobileNavRepositoryInterface
 {
 
-    private $moveNavModel;
+    private $mobileNavModel;
 
     public function __construct(
-        MoveNavModel $moveNavModel
+        MobileNavModel $mobileNavModel
     )
     {
-        $this->moveNavModel = $moveNavModel;
+        $this->mobileNavModel = $mobileNavModel;
     }
 
     public function getMoveNavByPage()
     {
-        return $this->moveNavModel->getMoveNavByPage([]);
+        return $this->mobileNavModel->getMoveNavByPage([]);
     }
 
     public function change($data)
@@ -46,7 +46,7 @@ class MoveNavRepository implements MoveNavRepositoryInterface
             default:
                 break;
         }
-        $re = $this->moveNavModel->setMoveNav($where, $updata);
+        $re = $this->mobileNavModel->setMoveNav($where, $updata);
         if (!empty($re)) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
@@ -57,7 +57,7 @@ class MoveNavRepository implements MoveNavRepositoryInterface
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where['id'] = $id;
-        $re = $this->moveNavModel->delMoveNav($where);
+        $re = $this->mobileNavModel->delMoveNav($where);
         if (!empty($re)) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }

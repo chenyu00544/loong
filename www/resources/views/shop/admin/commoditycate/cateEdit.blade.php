@@ -178,12 +178,11 @@
 @section('script')
     <script>
         $(function () {
-
             $('.btn-reset').click(function () {
                 $('.pre-cate-sel').hide();
                 $('.pre-cate').show();
                 $('input[name="c_id"]').val(0);
-            })
+            });
         });
 
         function setNextCate(that) {

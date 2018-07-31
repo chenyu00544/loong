@@ -27,20 +27,19 @@ class CaptchaService
         // 设置背景颜色
         $builder->setBackgroundColor(220, 210, 230);
         $builder->setMaxAngle(25);
-        $builder->setMaxBehindLines(0);
-        $builder->setMaxFrontLines(0);
+        $builder->setMaxBehindLines(10);
+        $builder->setMaxFrontLines(10);
         // 可以设置图片宽高及字体
-        $builder->build($width = 100, $height = 40, $font = null);
+        $builder->build($width = 120, $height = 40, $font = null);
         // 获取验证码的内容
         $phrase = $builder->getPhrase();
         Cache::put('captcha', $phrase, 30);
 
         // 生成图片
-
         //清除缓存
         ob_clean();
-//        header("Cache-Control: no-cache, must-revalidate");
-        header("Content-Type:image/jpeg");
+        header("Cache-Control: no-cache, must-revalidate");
+        header('Content-type: image/jpeg');
         $builder->output();
     }
 

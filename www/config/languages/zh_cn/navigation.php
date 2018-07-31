@@ -133,9 +133,9 @@ return array(
             'name' => '授权登录',
             'url' => 'admin/authlogin',
         ),
-        'movenav' => array(
+        'mobilenav' => array(
             'name' => '移动导航',
-            'url' => 'admin/movenav',
+            'url' => 'admin/mobilenav',
         ),
     ),
     'wechat' => array(
