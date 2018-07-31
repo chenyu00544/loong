@@ -68,10 +68,10 @@
                             <label class="col-sm-4 control-label">是否显示：</label>
                             <div class="col-sm-4 n-wd400">
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="ifshow" value="1" checked > 是
+                                    <input type="radio" name="ifshow" value="1" checked> 是
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="ifshow" value="0" > 否
+                                    <input type="radio" name="ifshow" value="0"> 否
                                 </label>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                                     <input type="radio" name="opennew" value="1"> 是
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="opennew" value="0" checked > 否
+                                    <input type="radio" name="opennew" value="0" checked> 否
                                 </label>
                             </div>
                         </div>
@@ -107,7 +107,8 @@
                             <div class="col-sm-4 control-label">&nbsp;</div>
                             <div class="">
                                 <input type="submit" value="　确定　" class="btn btn-danger clearfix">
-                                <a type="button" class="btn btn-default clearfix mar-left-20" href="javascript:history.go(-1)" >返回</a>
+                                <a type="button" class="btn btn-default clearfix mar-left-20"
+                                   href="javascript:history.go(-1)">返回</a>
                             </div>
                         </div>
                     </form>
@@ -122,13 +123,33 @@
     <script>
         $(function () {
             $('select[name=ctype]').on('change', function () {
-                if($(this).val() == 1){
+                if ($(this).val() == 1) {
                     $('.cate').show();
-                }else{
+                } else {
                     $('.cate').hide();
                 }
             });
         });
+        function setNextCate(that) {
+            var id = $(that).val();
+            $('input[name="cid"]').val(id);
+            if (id > 0) {
+                var html = '';
+                $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
+                    if (data.code == 1) {
+                        html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
+                        $.each(data.data, function (k, v) {
+                            html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
+                        })
+                        html += '</select></div>';
+                        $(that).parent().nextAll().remove();
+                        $('.pre-cate').append(html);
+                    } else {
+                        $(that).parent().nextAll().remove();
+                    }
+                })
+            }
+        }
     </script>
 @endsection
 @endsection
