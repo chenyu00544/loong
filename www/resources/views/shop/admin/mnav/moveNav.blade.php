@@ -26,7 +26,7 @@
                             <th class="col-sm-3">名称</th>
                             <th class="col-sm-2">是否显示</th>
                             <th class="col-sm-2">是否新窗口</th>
-                            <th class="col-sm-1">排序</th>
+                            <th class="col-sm-2">排序</th>
                             <th class="col-sm-2">位置</th>
                             <th class="col-sm-4">操作</th>
                         </tr>
@@ -53,12 +53,13 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><input class="form-control input-sm chang-order" type="text" data-id="{{$nav->id}}"
-                                           name="ord[]"
+                                <td><input class="form-control input-sm chang-order wd-80" type="text"
+                                           data-id="{{$nav->id}}"
+                                           name="order_sort"
                                            value="{{$nav->vieworder}}"></td>
-                                <td>{{$nav->position}}</td>
+                                <td>{{$nav->type}}</td>
                                 <td>
-                                    <a type="button" href="{{url('admin/navsetup/'.$nav->id.'/edit')}}"
+                                    <a type="button" href="{{url('admin/movenav/'.$nav->id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
                                     <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$nav->id}}">删除</a>
                                 </td>
@@ -93,7 +94,7 @@
                 var tag = $(this).data('type');
                 var id = $(this).children('input').val();
                 $.post(
-                    '{{url("admin/navsetup/show/or/view")}}',
+                    '{{url("admin/movenav/change")}}',
                     {
                         id: id,
                         type: tag,
@@ -108,10 +109,11 @@
 
             $('.chang-order').change(function () {
                 $.post(
-                    '{{url("admin/navsetup/change/order")}}',
+                    '{{url("admin/movenav/change")}}',
                     {
                         id: $(this).data('id'),
-                        order: $(this).val(),
+                        val: $(this).val(),
+                        type: 'order',
                         _token: '{{csrf_token()}}'
                     },
                     function (data) {
@@ -128,22 +130,20 @@
             });
 
             $('.btn-del').click(function () {
+                var that = this;
                 var Id = $(this).data('id');
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/navsetup/')}}/" + Id,
+                        "{{url('admin/movenav/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
-                            if (data.code == 1) {
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
-                            }
+                            setTimeout(function () {
+                                $(that).parent().parent().remove();
+                            }, 1000);
                         });
-                    // layer.msg('的确很重要', {icon: 1});
                 }, function () {
                 });
             });

@@ -9,15 +9,21 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\MoveNavRepository;
 use Illuminate\Http\Request;
 
 class MoveNavigationController extends CommonController
 {
 
-    public function __construct( )
+    private $moveNavRepository;
+
+    public function __construct(
+        MoveNavRepository $moveNavRepository
+    )
     {
         parent::__construct();
         $this->checkPrivilege('movenav');
+        $this->moveNavRepository = $moveNavRepository;
     }
 
     /**
@@ -27,7 +33,13 @@ class MoveNavigationController extends CommonController
      */
     public function index()
     {
-        return view('shop.admin.mnav.moveNav');
+        $navs = $this->moveNavRepository->getMoveNavByPage();
+        return view('shop.admin.mnav.moveNav', compact('navs'));
+    }
+
+    public function change(Request $request)
+    {
+        return $this->moveNavRepository->change($request->except('_token'));
     }
 
     /**
@@ -43,7 +55,7 @@ class MoveNavigationController extends CommonController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -54,7 +66,7 @@ class MoveNavigationController extends CommonController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -65,7 +77,7 @@ class MoveNavigationController extends CommonController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -76,8 +88,8 @@ class MoveNavigationController extends CommonController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -88,11 +100,11 @@ class MoveNavigationController extends CommonController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        return $this->moveNavRepository->delMoveNav($id);
     }
 }

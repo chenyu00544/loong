@@ -128,6 +128,7 @@
             });
 
             $('.btn-del').click(function () {
+                var that = this;
                 var Id = $(this).data('id');
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
@@ -137,13 +138,10 @@
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
-                            if (data.code == 1) {
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
-                            }
+                            setTimeout(function () {
+                                $(that).parent().parent().remove();
+                            }, 1000);
                         });
-                    // layer.msg('的确很重要', {icon: 1});
                 }, function () {
                 });
             });
