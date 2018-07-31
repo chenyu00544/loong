@@ -11,20 +11,32 @@ class MobileNavModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getMoveNavByPage($where, $column = ['*'], $size = 15)
+    public function getMobileNavByPage($where, $column = ['*'], $size = 15)
     {
         return $this->select($column)
             ->where($where)
             ->paginate($size);
     }
 
-    public function setMoveNav($where, $data)
+    public function getMobileNav($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setMobileNav($where, $data)
     {
         return $this->where($where)
             ->update($data);
     }
 
-    public function delMoveNav($where)
+    public function addMobileNav($data)
+    {
+        return $this->create($data);
+    }
+
+    public function delMobileNav($where)
     {
         return $this->where($where)->delete();
     }

@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\LangConfig;
+use App\Facades\Verifiable;
 use App\Repositories\ComCateRepository;
 use App\Repositories\NavigationRepository;
 use Illuminate\Http\Request;
@@ -76,6 +77,10 @@ class NavigationController extends CommonController
      */
     public function store(Request $request)
     {
+        $ver = Verifiable::Validator($request->all(), ["name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
         $re = $this->navigationRepository->addNav($request->except('_token'));
         return view('shop.admin.success');
     }
@@ -117,6 +122,10 @@ class NavigationController extends CommonController
      */
     public function update(Request $request, $id)
     {
+        $ver = Verifiable::Validator($request->all(), ["name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
         $re = $this->navigationRepository->upDateNav($request->except('_token','_method'),$id);
         return view('shop.admin.success');
     }

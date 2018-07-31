@@ -49,7 +49,13 @@
                                     <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{url($link->link_logo)}}" ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
                                 </a>
                             </div>
-                            <input type="hidden" name="link_logo_bak" value="{{$link->link_logo}}">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">或LOGO地址：</label>
+                            <div class="col-sm-4 n-wd400">
+                                <input type="text" name="link_logo_url" class="form-control" value="{{$link->link_logo}}"
+                                       placeholder="或LOGO地址">
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 control-label">&nbsp;</div>

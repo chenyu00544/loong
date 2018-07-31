@@ -16,20 +16,39 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/navsetup/'.$field->id)}}" class="form-horizontal" method="post">
+                    <form name="conf" action="{{url('admin/mobilenav/'.$field->id)}}" class="form-horizontal" method="post">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
+
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">顶级导航：</label>
+                            <label class="col-sm-4 control-label">导航内容：</label>
                             <div class="col-sm-3">
-                                <select name="cid" class="form-control">
-                                    <option value="0">==顶级导航==</option>
-                                    @foreach($navsTop as $v)
-                                        <option value="{{$v->id}}"
-                                                @if($v->id == $field->cid) selected @endif
-                                        >{{$v->name}}</option>
+                                <select name="ctype" class="form-control">
+                                    @foreach($navsTop as $nav)
+                                        <option value="{{$nav['value']}}" @if($nav['value'] == $field->ctype) selected @endif>{{$nav['title']}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group  cate" style="@if($field->ctype != 1) display: none; @endif">
+                            <label class="col-sm-4 control-label"></label>
+                            <div class="col-sm-8 pre-cate-sel" style="@if($field->cid == 0) display: none; @endif">
+                                @foreach($parentCates as $val)
+                                    @if($loop->index != 0)　>　@endif<span>{{$val['cat_name']}}</span>
+                                @endforeach
+                                <a href="javascript:;" class="btn btn-warning btn-reset btn-sm">重置</a>
+                                <input type="hidden" name="cid" value="{{$field->cid}}">
+                            </div>
+                            <div class="col-sm-8 pre-cate" style="@if($field->cid != 0) display: none; @endif">
+                                <div class="cate-option fl">
+                                    <select class="form-control select"
+                                            onchange="setNextCate(this)">
+                                        <option value="0">顶级分类</option>
+                                        @foreach($cates as $cate)
+                                            <option value="{{$cate->id}}">{{$cate->cat_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -76,13 +95,23 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">位置：</label>
+                            <label class="col-sm-4 control-label">手机类型：</label>
                             <div class="col-sm-2">
-                                <select name="position" class="form-control">
-                                    <option value="home_head" @if($field->position == 'home_head') selected @endif>首页顶部</option>
-                                    <option value="home_nav" @if($field->position == 'home_nav') selected @endif>首页导航</option>
-                                    <option value="bottom" @if($field->position == 'bottom') selected @endif>底部导航</option>
+                                <select name="type" class="form-control">
+                                    <option value="pc" @if($field->type == 'pc') selected @endif>PC端</option>
+                                    <option value="web" @if($field->type == 'web') selected @endif>WEB端</option>
+                                    <option value="app" @if($field->type == 'app') selected @endif>APP端</option>
+                                    <option value="wxapp" @if($field->type == 'wxapp') selected @endif>微信小程序</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">导航图片：</label>
+                            <div class="col-sm-4 n-wd400">
+                                <input type="file" name="pic" class="fl">
+                                <a href="{{url($field->pic)}}" target="_blank" class="nyroModal">
+                                    <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{url($field->pic)}}" ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                </a>
                             </div>
                         </div>
                         <div class="form-group">
@@ -103,7 +132,21 @@
 @section('script')
     <script>
         $(function () {
+            $('.nyroModal').nyroModal();
 
+            $('select[name=ctype]').on('change', function () {
+                if($(this).val() == 1){
+                    $('.cate').show();
+                }else{
+                    $('.cate').hide();
+                }
+            });
+
+            $('.btn-reset').click(function () {
+                $('.pre-cate-sel').hide();
+                $('.pre-cate').show();
+                $('input[name="cid"]').val(0);
+            });
         });
     </script>
 @endsection

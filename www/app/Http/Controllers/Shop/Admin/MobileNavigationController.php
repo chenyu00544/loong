@@ -9,21 +9,26 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\MobileNavRepository;
+use App\Repositories\ComCateRepository;
 use Illuminate\Http\Request;
 
 class MobileNavigationController extends CommonController
 {
 
     private $mobileNavRepository;
+    private $comCateRepository;
 
     public function __construct(
-        MobileNavRepository $mobileNavRepository
+        MobileNavRepository $mobileNavRepository,
+        ComCateRepository $comCateRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('mobilenav');
         $this->mobileNavRepository = $mobileNavRepository;
+        $this->comCateRepository = $comCateRepository;
     }
 
     /**
@@ -33,7 +38,7 @@ class MobileNavigationController extends CommonController
      */
     public function index()
     {
-        $navs = $this->mobileNavRepository->getMoveNavByPage();
+        $navs = $this->mobileNavRepository->getMobileNavByPage();
         return view('shop.admin.mnav.mobileNav', compact('navs'));
     }
 
@@ -49,7 +54,9 @@ class MobileNavigationController extends CommonController
      */
     public function create()
     {
-        //
+        $navsTop = $this->mobileNavRepository->getNavsMenulist();
+        $cates = $this->comCateRepository->getComCates();
+        return view('shop.admin.mnav.mobileNavAdd', compact('navsTop', 'cates'));
     }
 
     /**
@@ -60,7 +67,12 @@ class MobileNavigationController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->mobileNavRepository->addMobileNav($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**
@@ -82,7 +94,13 @@ class MobileNavigationController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $field = $this->mobileNavRepository->getMobileNav($id);
+        $navsTop = $this->mobileNavRepository->getNavsMenulist();
+        $cates = $this->comCateRepository->getComCates();
+        $cate = $this->comCateRepository->getComCate($field->cid);
+        $parentCates = $this->comCateRepository->getParentCate($field->cid);
+        $parentCates[] = $cate;
+        return view('shop.admin.mnav.mobileNavEdit',compact('field','navsTop', 'cates', 'parentCates'));
     }
 
     /**
@@ -94,7 +112,12 @@ class MobileNavigationController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->mobileNavRepository->setMobileNav($request->except('_token'), $id);
+        return view('shop.admin.success');
     }
 
     /**
@@ -105,6 +128,6 @@ class MobileNavigationController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->mobileNavRepository->delMoveNav($id);
+        return $this->mobileNavRepository->delMobileNav($id);
     }
 }

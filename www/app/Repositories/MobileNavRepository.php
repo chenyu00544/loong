@@ -23,9 +23,27 @@ class MobileNavRepository implements MobileNavRepositoryInterface
         $this->mobileNavModel = $mobileNavModel;
     }
 
-    public function getMoveNavByPage()
+    public function getMobileNavByPage()
     {
-        return $this->mobileNavModel->getMoveNavByPage([]);
+        return $this->mobileNavModel->getMobileNavByPage([]);
+    }
+
+    public function getMobileNav($id)
+    {
+        $where['id'] = $id;
+        return $this->mobileNavModel->getMobileNav($where);
+    }
+
+    public function setMobileNav($data, $id)
+    {
+        $where['id'] = $id;
+        $updata = $data;
+        return $this->mobileNavModel->setMobileNav($where, $updata);
+    }
+
+    public function addMobileNav($data)
+    {
+        return $this->mobileNavModel->addMobileNav($data);
     }
 
     public function change($data)
@@ -46,21 +64,43 @@ class MobileNavRepository implements MobileNavRepositoryInterface
             default:
                 break;
         }
-        $re = $this->mobileNavModel->setMoveNav($where, $updata);
+        $re = $this->mobileNavModel->setMobileNav($where, $updata);
         if (!empty($re)) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;
     }
 
-    public function delMoveNav($id)
+    public function delMobileNav($id)
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where['id'] = $id;
-        $re = $this->mobileNavModel->delMoveNav($where);
+        $re = $this->mobileNavModel->delMobileNav($where);
         if (!empty($re)) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;
+    }
+
+    public function getNavsMenulist()
+    {
+        return [
+            ['title' => '请选择', 'value' => '0'],
+            ['title' => '商品分类', 'value' => '1'],
+            ['title' => '购物车', 'value' => '2'],
+            ['title' => '店铺街', 'value' => '3'],
+            ['title' => '品牌街', 'value' => '4'],
+            ['title' => '促销活动', 'value' => '5'],
+            ['title' => '最新团购', 'value' => '6'],
+            ['title' => '积分换购', 'value' => '7'],
+            ['title' => '微社区', 'value' => '8'],
+            ['title' => '微众筹', 'value' => '9'],
+            ['title' => '拍卖活动', 'value' => '10'],
+            ['title' => '超值礼包', 'value' => '11'],
+            ['title' => '专题汇', 'value' => '12'],
+            ['title' => '新品预售', 'value' => '13'],
+            ['title' => '内容文章', 'value' => '14'],
+            ['title' => '会员中心', 'value' => '15'],
+        ];
     }
 }

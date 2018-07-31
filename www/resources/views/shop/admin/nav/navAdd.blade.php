@@ -19,7 +19,7 @@
                     <form name="conf" action="{{url('admin/navsetup')}}" method="post" class="form-horizontal">
                         {{csrf_field()}}
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">顶级导航：</label>
+                            <label class="col-sm-4 control-label">导航内容：</label>
                             <div class="col-sm-3">
                                 <select name="ctype" class="form-control">
                                     @foreach($navsTop as $nav)
@@ -122,27 +122,6 @@
                 }
             });
         });
-
-        function setNextCate(that) {
-            var id = $(that).val();
-            $('input[name="cid"]').val(id);
-            if (id > 0) {
-                var html = '';
-                $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
-                    if (data.code == 1) {
-                        html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
-                        $.each(data.data, function (k, v) {
-                            html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
-                        })
-                        html += '</select></div>';
-                        $(that).parent().nextAll().remove();
-                        $('.pre-cate').append(html);
-                    } else {
-                        $(that).parent().nextAll().remove();
-                    }
-                })
-            }
-        }
     </script>
 @endsection
 @endsection

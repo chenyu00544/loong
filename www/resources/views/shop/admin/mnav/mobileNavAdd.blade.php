@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">系统设置 - 添加编辑导航栏</div>
+        <div class="title">手机设置 - 添加编辑导航栏</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -11,22 +11,36 @@
                 </div>
                 <ul>
                     <li>标识<em>"*"</em>的选项为必填项，其余为选填项。</li>
-                    <li>商店相关信息设置，请谨慎填写信息。</li>
+                    <li>导航栏相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/navsetup')}}" method="post" class="form-horizontal">
+                    <form name="conf" action="{{url('admin/mobilenav')}}" method="post" class="form-horizontal">
                         {{csrf_field()}}
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">顶级导航：</label>
+                            <label class="col-sm-4 control-label">导航内容：</label>
                             <div class="col-sm-3">
-                                <select name="cid" class="form-control">
-                                    <option value="0">==顶级导航==</option>
-                                    @foreach($navsTop as $v)
-                                        <option value="{{$v->id}}">{{$v->name}}</option>
+                                <select name="ctype" class="form-control">
+                                    @foreach($navsTop as $nav)
+                                        <option value="{{$nav['value']}}">{{$nav['title']}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group cate" style="display: none;">
+                            <label class="col-sm-4 control-label"></label>
+                            <input type="hidden" name="cid" value="">
+                            <div class="col-sm-8 pre-cate">
+                                <div class="cate-option fl">
+                                    <select class="form-control select"
+                                            onchange="setNextCate(this)">
+                                        <option value="0">顶级分类</option>
+                                        @foreach($cates as $cate)
+                                            <option value="{{$cate->id}}">{{$cate->cat_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -73,13 +87,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">位置：</label>
+                            <label class="col-sm-4 control-label">手机类型：</label>
                             <div class="col-sm-2">
-                                <select name="position" class="form-control">
-                                    <option value="home_head">首页顶部</option>
-                                    <option value="home_nav">首页导航</option>
-                                    <option value="bottom">底部导航</option>
+                                <select name="type" class="form-control">
+                                    <option value="pc">PC端</option>
+                                    <option value="web">WEB端</option>
+                                    <option value="app">APP端</option>
+                                    <option value="wxapp">微信小程序</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">导航图片：</label>
+                            <div class="col-sm-4 n-wd400">
+                                <input type="file" name="pic" class="fl">
                             </div>
                         </div>
                         <div class="form-group">
@@ -100,7 +121,13 @@
 @section('script')
     <script>
         $(function () {
-
+            $('select[name=ctype]').on('change', function () {
+                if($(this).val() == 1){
+                    $('.cate').show();
+                }else{
+                    $('.cate').hide();
+                }
+            });
         });
     </script>
 @endsection
