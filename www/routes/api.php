@@ -30,5 +30,5 @@ Route::group(['prefix' => 'region', 'namespace' => 'Shop\Api'], function () {
 });
 
 Route::group(['prefix' => 'web', 'namespace' => 'Shop\Api'], function () {
-    Route::any('captcha', 'CaptchaController@index');
+    Route::any('captcha/{id}', 'CaptchaController@index');
 });

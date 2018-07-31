@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Shop\Api;
 
 use App\Facades\Captcha;
-use Illuminate\Http\Request;
+
 
 class CaptchaController extends CommonController
 {
@@ -13,8 +13,9 @@ class CaptchaController extends CommonController
 
     }
 
-    public function index(Request $request)
+    public function index($id)
     {
         Captcha::entry();
+
     }
 }

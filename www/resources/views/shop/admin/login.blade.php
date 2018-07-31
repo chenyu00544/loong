@@ -34,8 +34,8 @@
                     <div class="col-sm-7">
                         <input type="text" name="captcha" class="form-control fl wd-110"
                                placeholder="{{$lang['captcha']}}">
-                        <img src="{{url('api/web/captcha')}}" onclick="this.src = this.src;" alt=""
-                             class="fl captcha-login">
+                        <img src="{{url('api/web/captcha/1')}}" alt=""
+                             class="fl captcha-login cursor">
                     </div>
                 </div>
             @endif
@@ -59,4 +59,13 @@
             @component('shop.components.copyright',['copyright'=>$copyright])@endcomponent
         </div>
     </form>
+@section('script')
+    <script>
+        $(function () {
+            $('.captcha-login').on('click', function () {
+                $(this).attr('src', "{{url('api/web/captcha/')}}/" + Math.random());
+            })
+        });
+    </script>
+@endsection
 @endsection
