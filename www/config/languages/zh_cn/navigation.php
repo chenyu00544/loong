@@ -133,6 +133,10 @@ return array(
             'name' => '授权登录',
             'url' => 'admin/authlogin',
         ),
+        'movenav' => array(
+            'name' => '移动导航',
+            'url' => 'admin/movenav',
+        ),
     ),
     'wechat' => array(
         'authlogin' => array(
