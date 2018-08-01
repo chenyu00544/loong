@@ -25,14 +25,77 @@
                         	<span class="status-txt">
 	                        	<div class="list-div">
 	                        		<div class="handle">
-	                        			<a href="" class="btn btn-default btn-sm">安装插件</a>
-                                        <a href="" class="btn btn-default btn-sm">安装插件</a>
+                                        @if(!empty($auths['wechat']))
+                                            <a href="{{url('admin/mobileoauth/'.$auths['wechat']->type)}}"
+                                               class="btn btn-default btn-sm">编辑</a>
+                                            <a href="javascript:;" class="btn btn-danger btn-sm btn-del"
+                                               data-id="{{$auths['wechat']->id}}">删除</a>
+                                        @else
+                                            <a href="{{url('admin/mobileoauth/addauth/wechat')}}"
+                                               class="btn btn-default btn-sm">安装插件</a>
+                                        @endif
 	                        		</div>
 	                        	</div>
                         	</span>
                             </div>
                             <div class="plugin-content">
                                 <h3 class="title">WeChat</h3>
+                                <p class="desc">版本:1.0</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-wrap">
+                        <div class="plugin-item" style="clear:both">
+                            <div class="plugin-icon">
+                                <img src="{{url('styles/admin/images/sns_qq.png')}}" alt="">
+                            </div>
+                            <div class="plugin-status">
+                        	<span class="status-txt">
+	                        	<div class="list-div">
+	                        		<div class="handle">
+                                        @if(!empty($auths['qq']))
+                                            <a href="{{url('admin/mobileoauth/'.$auths['qq']->type)}}"
+                                               class="btn btn-default btn-sm">编辑</a>
+                                            <a href="javascript:;" class="btn btn-danger btn-sm btn-del"
+                                               data-id="{{$auths['qq']->id}}">删除</a>
+                                        @else
+                                            <a href="{{url('admin/mobileoauth/addauth/qq')}}"
+                                               class="btn btn-default btn-sm">安装插件</a>
+                                        @endif
+	                        		</div>
+	                        	</div>
+                        	</span>
+                            </div>
+                            <div class="plugin-content">
+                                <h3 class="title">QQ</h3>
+                                <p class="desc">版本:1.0</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="item-wrap">
+                        <div class="plugin-item" style="clear:both">
+                            <div class="plugin-icon">
+                                <img src="{{url('styles/admin/images/sns_weibo.png')}}" alt="">
+                            </div>
+                            <div class="plugin-status">
+                        	<span class="status-txt">
+	                        	<div class="list-div">
+	                        		<div class="handle">
+                                        @if(!empty($auths['qq']))
+                                            <a href="{{url('admin/mobileoauth/'.$auths['weibo']->type)}}"
+                                               class="btn btn-default btn-sm">编辑</a>
+                                            <a href="javascript:;" class="btn btn-danger btn-sm btn-del"
+                                               data-id="{{$auths['weibo']->id}}">删除</a>
+                                        @else
+                                            <a href="{{url('admin/mobileoauth/addauth/weibo')}}"
+                                               class="btn btn-default btn-sm">安装插件</a>
+                                        @endif
+	                        		</div>
+	                        	</div>
+                        	</span>
+                            </div>
+                            <div class="plugin-content">
+                                <h3 class="title">Weibo</h3>
                                 <p class="desc">版本:1.0</p>
                             </div>
                         </div>
@@ -47,6 +110,24 @@
 @section('script')
     <script>
         $(function () {
+            $('.btn-del').click(function () {
+                var that = this;
+                var Id = $(this).data('id');
+                layer.confirm('您确定要删除吗', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    $.post(
+                        "{{url('admin/mobileoauth/')}}/" + Id,
+                        {'_method': 'delete', '_token': '{{csrf_token()}}'},
+                        function (data) {
+                            layer.msg(data.msg, {icon: data.code});
+                            setTimeout(function () {
+                                location.href = location.href;
+                            }, 1000);
+                        });
+                }, function () {
+                });
+            });
         });
     </script>
 @endsection

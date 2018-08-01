@@ -9,49 +9,54 @@
 namespace App\Repositories;
 
 use App\Contracts\WxappRepositoryInterface;
+use App\Http\Models\Shop\WxappModel;
 
 class WxappRepository implements WxappRepositoryInterface
 {
 
-    private $wechatModel;
+    private $wxappModel;
 
     public function __construct(
-        WechatModel $wechatModel
+        WxappModel $wxappModel
     )
     {
-        $this->wechatModel = $wechatModel;
+        $this->wxappModel = $wxappModel;
     }
 
-    public function getWechat($user)
+    public function getWxapp($user)
     {
         $where['ru_id'] = $user->ru_id;
-        $req = $this->wechatModel->getWechat($where);
+        $req = $this->wxappModel->getWxapp($where);
         if ($req) {
             $str = '';
             $start = 3;
-            for ($i = 0; $i < strlen($req->appsecret); $i++) {
+            for ($i = 0; $i < strlen($req->wx_appsecret); $i++) {
                 if ($i < $start) {
-                    $str .= $req->appsecret[$i];
-                } elseif ($i >= strlen($req->appsecret) - $start) {
-                    $str .= $req->appsecret[$i];
+                    $str .= $req->wx_appsecret[$i];
+                } elseif ($i >= strlen($req->wx_appsecret) - $start) {
+                    $str .= $req->wx_appsecret[$i];
                 } else {
                     $str .= '*';
                 }
             }
-            $req->appsecret = $str;
+            $req->wx_appsecret = $str;
         }
         return $req;
     }
 
-    public function setWechat($data, $id)
+    public function setWxapp($data, $id)
     {
         $where['ru_id'] = $id;
-        return $this->wechatModel->setWechat($where, $data);
+        if (strpos($data['wx_appsecret'], '******') !== false) {
+            unset($data['wx_appsecret']);
+        }
+        return $this->wxappModel->setWxapp($where, $data);
     }
 
-    public function addWechat($data, $user)
+    public function addWxapp($data, $user)
     {
         $data['ru_id'] = $user->ru_id;
-        return $this->wechatModel->addWechat($data);
+        $data['add_time'] = time();
+        return $this->wxappModel->addWxapp($data);
     }
 }

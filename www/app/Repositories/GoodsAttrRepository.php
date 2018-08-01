@@ -26,7 +26,7 @@ class GoodsAttrRepository implements GoodsAttrRepositoryInterface
 
     public function setGoodsAttr($data)
     {
-        $rep = ['code' => 5, 'msg' => '修改失败'];
+        $rep = ['code' => 5, 'msg' => '操作失败'];
         $where['goods_attr_id'] = $data['id'];
         $original_img = 'attr_image' . DIRECTORY_SEPARATOR . 'attr_image' . DIRECTORY_SEPARATOR . 'original_img';
         $thumb_img = 'attr_image' . DIRECTORY_SEPARATOR . 'attr_image' . DIRECTORY_SEPARATOR . 'thumb_img';
@@ -45,7 +45,7 @@ class GoodsAttrRepository implements GoodsAttrRepositoryInterface
             $re = $this->goodsAttrModel->setGoodsAttr($where, $updata);
         }
         if ($re) {
-            $rep = ['code' => 1, 'msg' => '修改成功'];
+            $rep = ['code' => 1, 'msg' => '操作成功'];
         }
         return $rep;
     }

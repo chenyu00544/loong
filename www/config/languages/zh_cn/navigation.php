@@ -14,6 +14,7 @@ return array(
         'phone' => '手机',
         'finance' => '财务',
         'system' => '系统',
+        'third_party' => '第三方',
     ),
 
     //二级导航
@@ -41,6 +42,11 @@ return array(
         'users' => '会员',
         'examine' => '权限',
         'database' => '数据',
+    ),
+    'third_party' => array(
+        'sms' => '短信管理',
+        'file' => '文件管理',
+        'interface' => '接口管理',
     ),
 
     //三级导航
@@ -91,9 +97,9 @@ return array(
             'name' => '退货单列表',
             'url' => 'admin/order/return/selfsale',
         ),
-        'cause' => array(
+        'returncause' => array(
             'name' => '退货原因',
-            'url' => 'admin/order/return/cause',
+            'url' => 'admin/returncause',
         ),
 
     ),
@@ -241,6 +247,26 @@ return array(
         'optimize' => array(
             'name' => '数据表优化',
             'url' => 'admin/database/optimize',
+        ),
+    ),
+
+
+    'sms' => array(
+        'sms_setup' => array(
+            'name' => '短信设置',
+            'url' => 'admin/sms/setup',
+        ),
+    ),
+    'file' => array(
+        'oss' => array(
+            'name' => '阿里云OSS配置',
+            'url' => 'admin/oss',
+        ),
+    ),
+    'interface' => array(
+        'kdniao' => array(
+            'name' => '快递鸟配置',
+            'url' => 'admin/kdniao',
         ),
     ),
 );

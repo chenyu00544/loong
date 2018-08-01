@@ -47,12 +47,16 @@ class WechatRepository implements WechatRepositoryInterface
     public function setWechat($data, $id)
     {
         $where['ru_id'] = $id;
+        if (strpos($data['appsecret'], '******') !== false) {
+            unset($data['appsecret']);
+        }
         return $this->wechatModel->setWechat($where, $data);
     }
 
     public function addWechat($data, $user)
     {
         $data['ru_id'] = $user->ru_id;
+        $data['time'] = time();
         return $this->wechatModel->addWechat($data);
     }
 }

@@ -17,20 +17,20 @@ class WxappModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getWechat($where, $column = ['*'])
+    public function getWxapp($where, $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
             ->first();
     }
 
-    public function setWechat($where, $data)
+    public function setWxapp($where, $data)
     {
         return $this->where($where)
             ->update($data);
     }
 
-    public function addWechat($data)
+    public function addWxapp($data)
     {
         return $this->create($data);
     }

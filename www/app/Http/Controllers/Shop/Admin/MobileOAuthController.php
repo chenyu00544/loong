@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
+use App\Repositories\MobileOAuthRepository;
 use Illuminate\Http\Request;
 
 class MobileOAuthController extends CommonController
 {
-    public function __construct()
+    private $mobileOAuthRepository;
+
+    public function __construct(
+        MobileOAuthRepository $mobileOAuthRepository
+    )
     {
         parent::__construct();
         $this->checkPrivilege('mobileoauth');
+        $this->mobileOAuthRepository = $mobileOAuthRepository;
     }
 
     /**
@@ -19,7 +26,13 @@ class MobileOAuthController extends CommonController
      */
     public function index()
     {
-        return view('shop.admin.oauth.auth');
+        $auths = $this->mobileOAuthRepository->getMobileOAuths();
+        return view('shop.admin.oauth.auth', compact('auths'));
+    }
+
+    public function addAuth($id)
+    {
+        return view('shop.admin.oauth.authAdd', compact('id'));
     }
 
     /**
@@ -29,7 +42,7 @@ class MobileOAuthController extends CommonController
      */
     public function create()
     {
-        //
+        return view('shop.admin.oauth.authAdd');
     }
 
     /**
@@ -40,7 +53,12 @@ class MobileOAuthController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->mobileOAuthRepository->addWxapp($request->except('_token'), $this->user);
+        return view('shop.admin.success');
     }
 
     /**
@@ -51,7 +69,8 @@ class MobileOAuthController extends CommonController
      */
     public function show($id)
     {
-        //
+        $auth = $this->mobileOAuthRepository->getMobileOAuth($id);
+        return view('shop.admin.oauth.authEdit', compact('auth'));
     }
 
     /**
@@ -62,7 +81,7 @@ class MobileOAuthController extends CommonController
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -74,7 +93,12 @@ class MobileOAuthController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->mobileOAuthRepository->setMobileOAuth($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
@@ -85,6 +109,6 @@ class MobileOAuthController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->mobileOAuthRepository->delMobileOAuth($id);
     }
 }

@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\WxappRepository;
 use Illuminate\Http\Request;
 
@@ -32,9 +33,9 @@ class WxappConfigController extends CommonController
      */
     public function index()
     {
-        $weapp = $this->wxappRepository->getWeapp($this->user);
+        $wxapp = $this->wxappRepository->getWxapp($this->user);
         $ru_id = $this->user->ru_id;
-        return view('shop.admin.wechat.wxappConfig', compact('weapp', 'ru_id'));
+        return view('shop.admin.wxapp.wxappConfig', compact('wxapp', 'ru_id'));
     }
 
     /**
@@ -50,23 +51,23 @@ class WxappConfigController extends CommonController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required', "orgid" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["wx_appid" => 'required', "wx_appsecret" => 'required', "wx_mch_id" => 'required', "wx_mch_key" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->wechatRepository->addWechat($request->except('_token'), $this->user);
+        $re = $this->wxappRepository->addWxapp($request->except('_token'), $this->user);
         return view('shop.admin.success');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -77,7 +78,7 @@ class WxappConfigController extends CommonController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -88,24 +89,24 @@ class WxappConfigController extends CommonController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required', "orgid" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["wx_appid" => 'required', "wx_appsecret" => 'required', "wx_mch_id" => 'required', "wx_mch_key" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->wechatRepository->setWechat($request->except('_token', '_method'), $id);
+        $re = $this->wxappRepository->setWxapp($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
