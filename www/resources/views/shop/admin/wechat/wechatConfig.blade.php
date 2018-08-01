@@ -227,6 +227,13 @@
                 var str = Date.parse(new Date())+'';
                 $('input[name=token]').val($.md5(str));
             });
+
+            // H5 复制粘贴 兼容IE8+，Chrome 45+, Firefox 43+
+            var copyUrl = document.querySelector('.copy-url');
+            copyUrl.onclick = function() {
+                var url = $('.url').val();
+                copyTextToClipboard(url);
+            };
         });
     </script>
 @endsection

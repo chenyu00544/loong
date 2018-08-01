@@ -225,6 +225,32 @@ function setPages(data) {
     $('.pagination').html(html);
 }
 
+function copyTextToClipboard(text) {
+    var textArea = document.createElement("textarea");
+    textArea.style.position = 'fixed';
+    textArea.style.top = 0;
+    textArea.style.left = 0;
+    textArea.style.width = '2em';
+    textArea.style.height = '2em';
+    textArea.style.padding = 0;
+    textArea.style.border = 'none';
+    textArea.style.outline = 'none';
+    textArea.style.boxShadow = 'none';
+    textArea.style.background = 'transparent';
+    textArea.value = text;
+    document.body.appendChild(textArea);
+
+    textArea.select();
+    try {
+        var msg = document.execCommand('copy') ? '成功' : '失败';
+        layer.msg('复制内容 ' + msg);
+    } catch (err) {
+        console.log('浏览器不支持此复制方法');
+        layer.msg('浏览器不支持此复制方法');
+    }
+    document.body.removeChild(textArea);
+}
+
 var optionDateSet = {
     timePicker: true,
     timePickerIncrement: 1,

@@ -89,6 +89,7 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
+    <script type="text/javascript" src="{{url('styles/plugin/jquery/jquery.md5.js')}}"></script>
     <script>
         $(function () {
         });
