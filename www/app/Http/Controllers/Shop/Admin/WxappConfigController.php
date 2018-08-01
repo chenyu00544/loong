@@ -32,7 +32,9 @@ class WxappConfigController extends CommonController
      */
     public function index()
     {
-        return view('shop.admin.wxapp.wxappConfig');
+        $weapp = $this->wxappRepository->getWeapp($this->user);
+        $ru_id = $this->user->ru_id;
+        return view('shop.admin.wechat.wxappConfig', compact('weapp', 'ru_id'));
     }
 
     /**
@@ -53,7 +55,12 @@ class WxappConfigController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required', "orgid" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->wechatRepository->addWechat($request->except('_token'), $this->user);
+        return view('shop.admin.success');
     }
 
     /**
@@ -75,7 +82,7 @@ class WxappConfigController extends CommonController
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -87,7 +94,12 @@ class WxappConfigController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required', "orgid" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->wechatRepository->setWechat($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**

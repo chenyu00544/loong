@@ -12,5 +12,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class WxappModel extends Model
 {
-    //
+    protected $table = 'wxapp';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
+    protected $guarded = [];
+
+    public function getWechat($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setWechat($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addWechat($data)
+    {
+        return $this->create($data);
+    }
 }

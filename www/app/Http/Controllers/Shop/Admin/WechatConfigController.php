@@ -45,7 +45,7 @@ class WechatConfigController extends CommonController
      */
     public function create()
     {
-        return view('shop.admin.wechat.wechatConfig');
+        //
     }
 
     /**
