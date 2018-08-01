@@ -10,34 +10,27 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RegFieldsModel extends Model
+class WechatModel extends Model
 {
-    protected $table = 'reg_fields';
+    protected $table = 'wechat';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getRegFields($where =['display'=> 1], $column =['*'])
-    {
-        return $this->select($column)
-            ->where($where)
-            ->get();
-    }
-
-    public function getRegField($where, $column =['*'])
+    public function getWechat($where, $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
             ->first();
     }
 
-    public function setRegField($where, $data)
+    public function setWechat($where, $data)
     {
         return $this->where($where)
             ->update($data);
     }
 
-    public function addRegField($data)
+    public function addWechat($data)
     {
         return $this->create($data);
     }

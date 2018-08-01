@@ -238,4 +238,10 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::post('mobilenav/change', 'MobileNavigationController@change');
     Route::resource('mobilenav', 'MobileNavigationController');
+
+    Route::resource('mobileoauth', 'MobileOAuthController');
+
+    Route::resource('wechatconfig', 'WechatConfigController');
+
+    Route::resource('wxappconfig', 'WxappConfigController');
 });

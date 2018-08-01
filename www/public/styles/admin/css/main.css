@@ -922,10 +922,6 @@ option {
     background: url(../../images/close.png);
 }
 
-.btn-group-sm > .btn, .btn-sm {
-    padding: 3px 10px;
-}
-
 .pre-cate {
     padding: 0px;
 }
@@ -1291,6 +1287,10 @@ option {
 
 .wd-250 {
     width: 250px;
+}
+
+.wd-300 {
+    width: 300px;
 }
 
 .wd-360 {
@@ -2665,4 +2665,68 @@ input[type=file].upload-file {
 #user-area-map, #user-rank {
     width: 100%;
     height: 500px;
+}
+
+.items-box {
+    overflow: hidden;
+    margin-right: -24px;
+    padding: 0;
+}
+
+.item-wrap {
+    width: 50%;
+    float: left;
+    display: inline-block;
+    position: relative;
+}
+
+.plugin-item {
+    display: block;
+    overflow: hidden;
+    margin-right: 24px;
+    margin-bottom: 24px;
+    color: #222;
+    height: 94px;
+    padding-left: 94px;
+    border: 1px solid #e7e7eb;
+}
+
+.plugin-icon {
+    width: 94px;
+    height: 94px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.plugin-status {
+    position: relative;
+    float: right;
+    text-align: right;
+    padding: 54px 12px 0px;
+}
+
+.plugin-content {
+    padding: 10px 0 10px 20px;
+    overflow: hidden;
+}
+
+.plugin-content .title {
+    width: 216px;
+    font-size: 18px;
+    line-height: 30px;
+    font-weight: 400;
+    font-style: normal;
+    border-bottom: 0px;
+    color: #343434;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+.plugin-content .desc {
+    color: #8d8d8d;
+    font-size: 12px;
+    line-height: 32px;
+    width: 238px;
 }

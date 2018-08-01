@@ -129,9 +129,9 @@ return array(
 
 
     'web' => array(
-        'authlogin' => array(
+        'mobileoauth' => array(
             'name' => '授权登录',
-            'url' => 'admin/authlogin',
+            'url' => 'admin/mobileoauth',
         ),
         'mobilenav' => array(
             'name' => '移动导航',
@@ -139,15 +139,15 @@ return array(
         ),
     ),
     'wechat' => array(
-        'authlogin' => array(
+        'wechatconfig' => array(
             'name' => '公众号设置',
-            'url' => 'admin/authlogin',
+            'url' => 'admin/wechatconfig',
         ),
     ),
     'wxapp' => array(
-        'authlogin' => array(
+        'wxappconfig' => array(
             'name' => '小程序设置',
-            'url' => 'admin/authlogin',
+            'url' => 'admin/wxappconfig',
         ),
     ),
 
