@@ -199,6 +199,9 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('order/change', 'OrderController@change');
     Route::resource('order', 'OrderController');
 
+    Route::post('returncause/change', 'ReturnCauseController@change');
+    Route::resource('returncause', 'ReturnCauseController');
+
     Route::get('store/process', 'StoreController@process');
     Route::get('store/privilege', 'StoreController@privilege');
     Route::get('store/grade', 'StoreController@grade');

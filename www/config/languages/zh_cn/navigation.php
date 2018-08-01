@@ -91,6 +91,11 @@ return array(
             'name' => '退货单列表',
             'url' => 'admin/order/return/selfsale',
         ),
+        'cause' => array(
+            'name' => '退货原因',
+            'url' => 'admin/order/return/cause',
+        ),
+
     ),
     'promotion' => array(
         'favourable' => array(
