@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\MobileNavRepositoryInterface;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\MobileNavModel;
 
 class MobileNavRepository implements MobileNavRepositoryInterface
@@ -37,13 +38,59 @@ class MobileNavRepository implements MobileNavRepositoryInterface
     public function setMobileNav($data, $id)
     {
         $where['id'] = $id;
-        $updata = $data;
+        $updata = [];
+        foreach ($data as $key => $value){
+            switch ($key){
+                case 'ctype':
+                    if($value == 1){
+                        $updata['cid'] = $data['cid'];
+                    }
+                    $updata[$key] = $value;
+                    break;
+                case 'pic':
+                    if($value){
+                        $path = 'nav';
+                        $uri = FileHandle::upLoadImage($value, $path);
+                        $updata[$key] = $uri;
+                    }
+                    break;
+                case 'pic_bak':
+                    if(!empty($data['pic'])){
+                        FileHandle::deleteFile($value);
+                    }
+                    break;
+                default:
+                    $updata[$key] = $value;
+                    break;
+            }
+        }
         return $this->mobileNavModel->setMobileNav($where, $updata);
     }
 
     public function addMobileNav($data)
     {
-        return $this->mobileNavModel->addMobileNav($data);
+        $updata = [];
+        foreach ($data as $key => $value){
+            switch ($key){
+                case 'ctype':
+                    if($value == 1){
+                        $updata['cid'] = $data['cid'];
+                    }
+                    $updata[$key] = $value;
+                    break;
+                case 'pic':
+                    if($value){
+                        $path = 'nav';
+                        $uri = FileHandle::upLoadImage($value, $path);
+                        $updata[$key] = $uri;
+                    }
+                    break;
+                default:
+                    $updata[$key] = $value;
+                    break;
+            }
+        }
+        return $this->mobileNavModel->addMobileNav($updata);
     }
 
     public function change($data)
@@ -75,6 +122,8 @@ class MobileNavRepository implements MobileNavRepositoryInterface
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where['id'] = $id;
+        $res = $this->mobileNavModel->getMobileNav($where);
+        FileHandle::deleteFile($res->pic);
         $re = $this->mobileNavModel->delMobileNav($where);
         if (!empty($re)) {
             $req = ['code' => 1, 'msg' => '操作成功'];

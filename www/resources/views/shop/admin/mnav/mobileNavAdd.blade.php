@@ -16,7 +16,7 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/mobilenav')}}" method="post" class="form-horizontal">
+                    <form name="conf" action="{{url('admin/mobilenav')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="form-group">
                             <label class="col-sm-4 control-label">导航内容：</label>

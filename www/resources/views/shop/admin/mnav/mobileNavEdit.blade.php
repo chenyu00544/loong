@@ -16,7 +16,7 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/mobilenav/'.$field->id)}}" class="form-horizontal" method="post">
+                    <form name="conf" action="{{url('admin/mobilenav/'.$field->id)}}" class="form-horizontal" method="post" enctype="multipart/form-data">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
 
@@ -108,6 +108,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">导航图片：</label>
                             <div class="col-sm-4 n-wd400">
+                                <input type="hidden" name="pic_bak" value="{{$field->pic}}">
                                 <input type="file" name="pic" class="fl">
                                 <a href="{{url($field->pic)}}" target="_blank" class="nyroModal">
                                     <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{url($field->pic)}}" ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
