@@ -75,6 +75,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">终端类型：</label>
+                            <div class="col-sm-4">
+                                <select name="terminal_type" class="form-control select input-sm wd120">
+                                    <option value="all" @if($faat->userFav_type == 'all') selected @endif>全部通用</option>
+                                    <option value="pc" @if($faat->userFav_type == 'pc') selected @endif>PC端</option>
+                                    <option value="web" @if($faat->userFav_type == 'web') selected @endif>WEB端</option>
+                                    <option value="app" @if($faat->userFav_type == 'app') selected @endif>APP端</option>
+                                    <option value="wxapp" @if($faat->userFav_type == 'wxapp') selected @endif>微信小程序</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>优惠范围：</label>
                             <div class="col-sm-4">
                                 <select name="act_range" class="form-control select input-sm wd120">

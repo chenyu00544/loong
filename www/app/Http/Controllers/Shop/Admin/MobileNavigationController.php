@@ -97,10 +97,8 @@ class MobileNavigationController extends CommonController
         $field = $this->mobileNavRepository->getMobileNav($id);
         $navsTop = $this->mobileNavRepository->getNavsMenulist();
         $cates = $this->comCateRepository->getComCates();
-        $cate = $this->comCateRepository->getComCate($field->cid);
         $parentCates = $this->comCateRepository->getParentCate($field->cid);
-        $parentCates[] = $cate;
-        return view('shop.admin.mnav.mobileNavEdit',compact('field','navsTop', 'cates', 'parentCates'));
+        return view('shop.admin.mnav.mobileNavEdit', compact('field', 'navsTop', 'cates', 'parentCates'));
     }
 
     /**
@@ -116,7 +114,7 @@ class MobileNavigationController extends CommonController
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->mobileNavRepository->setMobileNav($request->except('_token'), $id);
+        $re = $this->mobileNavRepository->setMobileNav($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 

@@ -25,7 +25,7 @@ class CaptchaService
         // 生成验证码图片的Builder对象，配置相应属性
         $builder = new CaptchaBuilder($code, $phrase);
         // 设置背景颜色
-        $builder->setBackgroundColor(220, 210, 230);
+        $builder->setBackgroundColor(212, 251, 255);
         $builder->setMaxAngle(25);
         $builder->setMaxBehindLines(10);
         $builder->setMaxFrontLines(10);

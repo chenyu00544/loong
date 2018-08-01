@@ -64,6 +64,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">终端类型：</label>
+                            <div class="col-sm-4">
+                                <select name="terminal_type" class="form-control select input-sm wd120">
+                                    <option value="all">全部通用</option>
+                                    <option value="pc">PC端</option>
+                                    <option value="web">WEB端</option>
+                                    <option value="app">APP端</option>
+                                    <option value="wxapp">微信小程序</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>优惠范围：</label>
                             <div class="col-sm-4">
                                 <select name="act_range" class="form-control select input-sm wd120">

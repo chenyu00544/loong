@@ -107,9 +107,7 @@ class NavigationController extends CommonController
         $field = $this->navigationRepository->getNav($id);
         $navsTop = $this->navigationRepository->getNavsMenulist();
         $cates = $this->comCateRepository->getComCates();
-        $cate = $this->comCateRepository->getComCate($field->cid);
         $parentCates = $this->comCateRepository->getParentCate($field->cid);
-        $parentCates[] = $cate;
         return view('shop.admin.nav.navEdit',compact('field','navsTop', 'cates', 'parentCates'));
     }
 
