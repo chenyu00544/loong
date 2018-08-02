@@ -66,7 +66,7 @@
                         </tbody>
                     </table>
                     <div class="page_list">
-                        {{$alidayu->links()}}
+                        {{$alisms->links()}}
                     </div>
                 </div>
             </div>
