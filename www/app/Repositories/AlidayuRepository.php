@@ -9,11 +9,22 @@
 namespace App\Repositories;
 
 use App\Contracts\AlidayuRepositoryInterface;
+use App\Http\Models\Shop\AlidayuConfigureModel;
 
 class AlidayuRepository implements AlidayuRepositoryInterface
 {
 
-    public function __construct()
+    private $alidayuConfigureModel;
+
+    public function __construct(
+        AlidayuConfigureModel $alidayuConfigureModel
+    )
     {
+        $this->alidayuConfigureModel = $alidayuConfigureModel;
+    }
+
+    public function getAlidayuByPage()
+    {
+        return $this->alidayuConfigureModel->getAlidayuByPage();
     }
 }

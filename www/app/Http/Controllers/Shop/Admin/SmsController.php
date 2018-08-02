@@ -24,6 +24,7 @@ class SmsController extends CommonController
         parent::__construct();
         $this->smsRepository = $smsRepository;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +32,8 @@ class SmsController extends CommonController
      */
     public function index()
     {
-
+        $sms = $this->smsRepository->getSmsConfig();
+        return view('shop.admin.sms.smsSetup', compact('sms'));
     }
 
     /**
@@ -41,7 +43,7 @@ class SmsController extends CommonController
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -52,7 +54,8 @@ class SmsController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $this->smsRepository->setSmsConfig($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**

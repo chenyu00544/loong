@@ -30,7 +30,8 @@ class AlismsController extends CommonController
      */
     public function index()
     {
-
+        $alisms = $this->alismsRepository->getAlismsByPage();
+        return view('shop.admin.sms.alisms', compact('alisms'));
     }
 
     /**

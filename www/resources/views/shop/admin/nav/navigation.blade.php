@@ -32,6 +32,11 @@
                         </tr>
                         </thead>
                         <tbody>
+                        @if(count($navs) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
+                            </tr>
+                        @endif
                         @foreach($navs as $nav)
                             <tr>
                                 <th>{{$nav->name}}</th>

@@ -9,11 +9,22 @@
 namespace App\Repositories;
 
 use App\Contracts\AlismsRepositoryInterface;
+use App\Http\Models\Shop\AlismsConfigureModel;
 
 class AlismsRepository implements AlismsRepositoryInterface
 {
 
-    public function __construct()
+    private $alismsConfigureModel;
+
+    public function __construct(
+        AlismsConfigureModel $alismsConfigureModel
+    )
     {
+        $this->alismsConfigureModel = $alismsConfigureModel;
+    }
+
+    public function getAlismsByPage()
+    {
+        return $this->alismsConfigureModel->getAlismsByPage();
     }
 }

@@ -24,6 +24,7 @@ class AlidayuController extends CommonController
         parent::__construct();
         $this->alidayuRepository = $alidayuRepository;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +32,8 @@ class AlidayuController extends CommonController
      */
     public function index()
     {
-
+        $alidayu = $this->alidayuRepository->getAlidayuByPage();
+        return view('shop.admin.sms.alidayu', compact('alidayu'));
     }
 
     /**

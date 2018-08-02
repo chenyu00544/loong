@@ -9,11 +9,22 @@
 namespace App\Repositories;
 
 use App\Contracts\SmsRepositoryInterface;
+use App\Facades\ShopConfig;
 
 class SmsRepository implements SmsRepositoryInterface
 {
 
     public function __construct()
     {
+    }
+
+    public function getSmsConfig()
+    {
+        return ShopConfig::getSmsConfig();
+    }
+
+    public function setSmsConfig($data)
+    {
+        return ShopConfig::setConf($data, 'sms');
     }
 }

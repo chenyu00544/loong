@@ -191,6 +191,16 @@ class ShopConfigService
         $shopConfig->setConf($whereOther, $dataOther);
     }
 
+    public static function getSmsConfig()
+    {
+        $req = [];
+        $smsConfig = (new ShopConfigModel)->getGroupsConfig(['shop_group' => 'sms']);
+        foreach ($smsConfig as $val){
+            $req[$val->code] = $val;
+        }
+        return $req;
+    }
+
     public static function getConfigAll()
     {
         $list = Cache::get('shopConfig');
