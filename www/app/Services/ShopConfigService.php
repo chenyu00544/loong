@@ -201,6 +201,16 @@ class ShopConfigService
         return $req;
     }
 
+    public static function getTpApiConfig()
+    {
+        $req = [];
+        $tpConfig = (new ShopConfigModel)->getGroupsConfig(['shop_group' => 'tp_api']);
+        foreach ($tpConfig as $val){
+            $req[$val->code] = $val;
+        }
+        return $req;
+    }
+
     public static function getConfigAll()
     {
         $list = Cache::get('shopConfig');

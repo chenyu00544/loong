@@ -32,9 +32,9 @@
                             <label class="col-sm-4 control-label">广告名称序号：</label>
                             <div class="col-sm-3">
                                 <div class="quantity-form">
-                                    <a href="javascript:;" class="num_reduce btn btn-info fl wd-40 btn-sm lh22">-</a>
+                                    <a href="javascript:;" class="num_reduce btn btn-info fl wd-40 btn-sm">-</a>
                                     <input type="text" value="1" class="form-control wd-80 fl input-sm num_id" readonly>
-                                    <a href="javascript:;" class="num_add btn btn-info fl wd-40 btn-sm lh22">+</a>
+                                    <a href="javascript:;" class="num_add btn btn-info fl wd-40 btn-sm">+</a>
                                 </div>
                             </div>
                         </div>

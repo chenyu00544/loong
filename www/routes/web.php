@@ -251,8 +251,10 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::resource('sms', 'SmsController');
 
+    Route::post('alidayu/temp', 'AlidayuController@temp');
     Route::resource('alidayu', 'AlidayuController');
 
+    Route::post('alisms/temp', 'AlismsController@temp');
     Route::resource('alisms', 'AlismsController');
 
     Route::resource('oss', 'OssController');

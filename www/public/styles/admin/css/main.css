@@ -87,6 +87,10 @@ p {
     white-space: normal;
 }
 
+.wsn{
+    white-space: normal;
+}
+
 strong {
     color: #707070;
 }

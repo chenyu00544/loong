@@ -44,9 +44,9 @@ return array(
         'database' => '数据',
     ),
     'third_party' => array(
-        'sms' => '短信管理',
-        'file' => '文件管理',
-        'interface' => '接口管理',
+        'sms' => '短信',
+        'file' => '文件',
+        'interface' => '接口',
     ),
 
     //三级导航
@@ -272,9 +272,9 @@ return array(
         ),
     ),
     'interface' => array(
-        'kdniao' => array(
+        'interface' => array(
             'name' => '快递鸟配置',
-            'url' => 'admin/interface',
+            'url' => 'admin/interface/kdniao',
         ),
     ),
 );

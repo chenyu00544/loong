@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\AlidayuRepository;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,7 @@ class AlidayuController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('alidayu');
         $this->alidayuRepository = $alidayuRepository;
     }
 
@@ -33,7 +35,13 @@ class AlidayuController extends CommonController
     public function index()
     {
         $alidayu = $this->alidayuRepository->getAlidayuByPage();
-        return view('shop.admin.sms.alidayu', compact('alidayu'));
+        $sendTime = $this->alidayuRepository->getSendTime();
+        return view('shop.admin.sms.alidayu', compact('alidayu', 'sendTime'));
+    }
+
+    public function temp(Request $request)
+    {
+        return $this->alidayuRepository->getSendTemplate($request->except('_token'));
     }
 
     /**
@@ -43,7 +51,8 @@ class AlidayuController extends CommonController
      */
     public function create()
     {
-        //
+        $sendTime = $this->alidayuRepository->getSendTime();
+        return view('shop.admin.sms.alidayuAdd', compact('sendTime'));
     }
 
     /**
@@ -54,7 +63,12 @@ class AlidayuController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["set_sign" => 'required', "temp_id" => 'required', "temp_content" => 'required', "send_time" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->alidayuRepository->addAlidayu($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**
@@ -76,7 +90,9 @@ class AlidayuController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $alidayu = $this->alidayuRepository->getAlidayu($id);
+        $sendTime = $this->alidayuRepository->getSendTime();
+        return view('shop.admin.sms.alidayuEdit', compact('alidayu', 'sendTime'));
     }
 
     /**
@@ -88,7 +104,12 @@ class AlidayuController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["set_sign" => 'required', "temp_id" => 'required', "temp_content" => 'required', "send_time" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->alidayuRepository->setAlidayu($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
@@ -99,6 +120,6 @@ class AlidayuController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->alidayuRepository->delAlidayu($id);
     }
 }

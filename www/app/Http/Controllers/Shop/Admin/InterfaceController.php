@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\ShopConfig;
 use App\Repositories\InterfaceRepository;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,7 @@ class InterfaceController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('interface');
         $this->interfaceRepository = $interfaceRepository;
     }
 
@@ -31,6 +33,11 @@ class InterfaceController extends CommonController
      * @return \Illuminate\Http\Response
      */
     public function index()
+    {
+
+    }
+
+    public function kdniao(Request $request)
     {
 
     }
@@ -64,7 +71,10 @@ class InterfaceController extends CommonController
      */
     public function show($id)
     {
-        //
+        if($id == 'kdniao'){
+            $kdniao = ShopConfig::getTpApiConfig();
+            return view('shop.admin.interface.kdniao', compact('kdniao'));
+        }
     }
 
     /**
@@ -87,7 +97,10 @@ class InterfaceController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        if($id == 'kdniao'){
+            ShopConfig::setConf($request->except('_token', '_method'), 'tp_api');
+            return view('shop.admin.success');
+        }
     }
 
     /**

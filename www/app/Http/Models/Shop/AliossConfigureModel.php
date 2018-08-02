@@ -11,14 +11,14 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AlidayuConfigureModel extends Model
+class AliossConfigureModel extends Model
 {
-    protected $table = 'alidayu_configure';
+    protected $table = 'alioss_configure';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getAlidayuByPage($where = [], $column = ['*'], $size = 15)
+    public function getAliossByPage($where = [], $column = ['*'], $size = 15)
     {
         return $this->select($column)
             ->where($where)
@@ -26,25 +26,25 @@ class AlidayuConfigureModel extends Model
             ->paginate($size);
     }
 
-    public function getAlidayu($where = [], $column = ['*'])
+    public function getAlioss($where = [], $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
             ->first();
     }
 
-    public function setAlidayu($where, $data)
+    public function setAlioss($where, $data)
     {
         return $this->where($where)
             ->update($data);
     }
 
-    public function addAlidayu($data)
+    public function addAlioss($data)
     {
         return $this->create($data);
     }
 
-    public function delAlidayu($where)
+    public function delAlioss($where)
     {
         return $this->where($where)
             ->delete();

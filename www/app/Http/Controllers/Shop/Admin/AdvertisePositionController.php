@@ -22,6 +22,7 @@ class AdvertisePositionController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('ad_position');
         $this->adRepository = $adRepository;
     }
 

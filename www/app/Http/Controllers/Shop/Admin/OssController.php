@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\OssRepository;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,7 @@ class OssController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('oss');
         $this->ossRepository = $ossRepository;
     }
 
@@ -30,9 +32,10 @@ class OssController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
+        $alioss = $this->ossRepository->getAliossByPage($request);
+        return view('shop.admin.oss.oss', compact('alioss'));
     }
 
     /**
@@ -42,7 +45,7 @@ class OssController extends CommonController
      */
     public function create()
     {
-        //
+        return view('shop.admin.oss.ossAdd');
     }
 
     /**
@@ -53,7 +56,12 @@ class OssController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["bucket" => 'required', "keyid" => 'required', "keysecret" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->ossRepository->addAlioss($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**
@@ -75,7 +83,8 @@ class OssController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $alioss = $this->ossRepository->getAlioss($id);
+        return view('shop.admin.oss.ossEdit', compact('alioss'));
     }
 
     /**
@@ -87,7 +96,12 @@ class OssController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["bucket" => 'required', "keyid" => 'required', "keysecret" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->ossRepository->setAlioss($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**
@@ -98,6 +112,6 @@ class OssController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->ossRepository->delAlioss($id);
     }
 }

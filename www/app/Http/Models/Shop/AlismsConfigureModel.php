@@ -25,4 +25,28 @@ class AlismsConfigureModel extends Model
             ->orderBy('id', 'desc')
             ->paginate($size);
     }
+
+    public function getAlisms($where = [], $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setAlisms($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addAlisms($data)
+    {
+        return $this->create($data);
+    }
+
+    public function delAlisms($where)
+    {
+        return $this->where($where)
+            ->delete();
+    }
 }

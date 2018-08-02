@@ -57,7 +57,7 @@ class MobileOAuthController extends CommonController
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->mobileOAuthRepository->addWxapp($request->except('_token'), $this->user);
+        $re = $this->mobileOAuthRepository->addMobileOAuth($request->except('_token'));
         return view('shop.admin.success');
     }
 

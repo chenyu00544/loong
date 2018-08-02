@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">短信管理 - 大于短信</div>
+        <div class="title">文件管理 - 阿里云OSS配置</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -10,13 +10,14 @@
                     <h5>操作提示</h5>
                 </div>
                 <ul>
-                    <li>列表页展示所有短信配置模板的信息列表。</li>
-                    <li>每条信息可以进行编辑和删除操作。</li>
+                    <li>该页面展示OSS配置的列表信息。</li>
+                    <li>可以直接在列表页面进行编辑和删除。</li>
+                    <li>OSS可用于图片、音视频、日志等海量文件的存储。</li>
                 </ul>
             </div>
             <div class="fromlist clearfix">
                 <div>
-                    <a href="{{url('admin/alidayu/create')}}"
+                    <a href="{{url('admin/oss/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加　</a>
                 </div>
                 <div class="main-info">
@@ -24,40 +25,54 @@
                         <thead>
                         <tr>
                             <th class="col-sm-1">编号</th>
-                            <th class="col-sm-1">短信签名</th>
-                            <th class="col-sm-1">短信模板</th>
-                            <th class="col-sm-3">发送短信的内容</th>
-                            <th class="col-sm-2">添加时间</th>
-                            <th class="col-sm-1">发送时机</th>
+                            <th class="col-sm-1">Bucket名称</th>
+                            <th class="col-sm-1">Bucket地域</th>
+                            <th class="col-sm-2">域名绑定</th>
+                            <th class="col-sm-2">外网域名</th>
+                            <th class="col-sm-2">内网域名</th>
+                            <th class="col-sm-2">是否使用</th>
                             <th class="col-sm-2">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @if(count($alidayu) == 0)
+                        @if(count($alioss) == 0)
                             <tr class="">
                                 <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
                         @endif
-                        @foreach($alidayu as $ali)
+                        @foreach($alioss as $ali)
                             <tr>
                                 <th>{{$ali->id}}</th>
                                 <td>
-                                    {{$ali->set_sign}}
+                                    {{$ali->bucket}}
                                 </td>
                                 <td>
-                                    {{$ali->temp_id}}
+                                    {{$ali->regional_name}}
+                                </td>
+                                <td>
+                                    @if($ali->is_cname==0)
+                                        否
+                                    @else
+                                        是
+                                    @endif
+                                    <br>
+                                    {{$ali->endpoint}}
                                 </td>
                                 <td class="wsn">
-                                    {{$ali->temp_content}}
+                                    {{$ali->outside_site}}
+                                </td>
+                                <td class="wsn">
+                                    {{$ali->inside_site}}
                                 </td>
                                 <td>
-                                    {{date('Y-m-d H:i:s', $ali->add_time)}}
+                                    @if($ali->is_use==0)
+                                        <img src="{{url('styles/images/no.png')}}" class="pointer">
+                                    @else
+                                        <img src="{{url('styles/images/yes.png')}}" class="pointer">
+                                    @endif
                                 </td>
                                 <td>
-                                    {{$sendTime[$ali->send_time]}}
-                                </td>
-                                <td>
-                                    <a type="button" href="{{url('admin/alidayu/'.$ali->id.'/edit')}}"
+                                    <a type="button" href="{{url('admin/oss/'.$ali->id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
                                     <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$ali->id}}">删除</a>
                                 </td>
@@ -66,7 +81,7 @@
                         </tbody>
                     </table>
                     <div class="page_list">
-                        {{$alidayu->links()}}
+                        {{$alioss->links()}}
                     </div>
                 </div>
             </div>
@@ -85,7 +100,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/alidayu/')}}/" + Id,
+                        "{{url('admin/oss/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});

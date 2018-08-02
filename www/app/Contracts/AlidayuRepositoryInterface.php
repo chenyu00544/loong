@@ -8,5 +8,4 @@
 namespace App\Contracts;
 
 interface AlidayuRepositoryInterface {
-
 }

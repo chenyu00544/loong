@@ -81,7 +81,7 @@
                         	<span class="status-txt">
 	                        	<div class="list-div">
 	                        		<div class="handle">
-                                        @if(!empty($auths['qq']))
+                                        @if(!empty($auths['weibo']))
                                             <a href="{{url('admin/mobileoauth/'.$auths['weibo']->type)}}"
                                                class="btn btn-default btn-sm">编辑</a>
                                             <a href="javascript:;" class="btn btn-danger btn-sm btn-del"

@@ -28,7 +28,7 @@
                             <th class="col-sm-1">短信模板</th>
                             <th class="col-sm-3">发送短信的内容</th>
                             <th class="col-sm-2">添加时间</th>
-                            <th class="col-sm-2">发送时机</th>
+                            <th class="col-sm-1">发送时机</th>
                             <th class="col-sm-2">操作</th>
                         </tr>
                         </thead>
@@ -47,14 +47,14 @@
                                 <td>
                                     {{$ali->temp_id}}
                                 </td>
-                                <td>
+                                <td class="wsn">
                                     {{$ali->temp_content}}
                                 </td>
                                 <td>
-                                    {{$ali->add_time}}
+                                    {{date('Y-m-d H:i:s', $ali->add_time)}}
                                 </td>
                                 <td>
-                                    {{$ali->send_time}}
+                                    {{$sendTime[$ali->send_time]}}
                                 </td>
                                 <td>
                                     <a type="button" href="{{url('admin/alisms/'.$ali->id.'/edit')}}"

@@ -21,7 +21,7 @@ class RegFieldsRepository implements RegFieldsRepositoryInterface
         $this->regFieldsModel = $regFieldsModel;
     }
 
-    public function getRegFields($where = [])
+    public function getRegFields($where = ['display'=> 1])
     {
         return $this->regFieldsModel->getRegFields($where);
     }
