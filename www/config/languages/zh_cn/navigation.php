@@ -14,7 +14,7 @@ return array(
         'phone' => '手机',
         'finance' => '财务',
         'system' => '系统',
-        'third_party' => '第三方',
+        'third_party' => '第三方服务',
     ),
 
     //二级导航
@@ -254,7 +254,15 @@ return array(
     'sms' => array(
         'sms_setup' => array(
             'name' => '短信设置',
-            'url' => 'admin/sms/setup',
+            'url' => 'admin/sms',
+        ),
+        'alidayu' => array(
+            'name' => '大于短信',
+            'url' => 'admin/alidayu',
+        ),
+        'alisms' => array(
+            'name' => '阿里短信',
+            'url' => 'admin/alisms',
         ),
     ),
     'file' => array(
@@ -266,7 +274,7 @@ return array(
     'interface' => array(
         'kdniao' => array(
             'name' => '快递鸟配置',
-            'url' => 'admin/kdniao',
+            'url' => 'admin/interface',
         ),
     ),
 );

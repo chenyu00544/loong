@@ -149,10 +149,10 @@
                                 <label class="col-sm-4 control-label">状态：</label>
                                 <div class="col-sm-4 n-wd400">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="status" value="1" checked> 是
+                                        <input type="radio" name="status" value="1" checked> 开启
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="status" value="0"> 否
+                                        <input type="radio" name="status" value="0"> 关闭
                                     </label>
                                 </div>
                             </div>

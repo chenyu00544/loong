@@ -8,7 +8,7 @@
     <div class="fl admin-menu">
         <ul>
             @foreach($navs['index'] as $k => $v)
-                <li data-param="{{$k}}" class="col-xs-1 wd80 text-center lh48 @if($loop->index == 0) active @endif"><a href="{{url($navs[array_keys($navs[$k])[0]][array_keys($navs[array_keys($navs[$k])[0]])[0]]['url'])}}" target="main">{{$v}}</a>
+                <li data-param="{{$k}}" class="fl text-center lh48 @if($loop->index == 0) active @endif"><a href="{{url($navs[array_keys($navs[$k])[0]][array_keys($navs[array_keys($navs[$k])[0]])[0]]['url'])}}" target="main">{{$v}}</a>
                 </li>
             @endforeach
         </ul>
