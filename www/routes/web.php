@@ -207,6 +207,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('msp/change', 'MerchantsStepsProcessController@change');
     Route::resource('msp', 'MerchantsStepsProcessController');
 
+    Route::resource('applyprocess', 'ApplyProcessController');
+
     Route::get('storelist/real', 'StoreController@real');
     Route::resource('storelist', 'StoreListController');
 

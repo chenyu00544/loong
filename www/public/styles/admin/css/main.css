@@ -112,6 +112,10 @@ option {
     margin: 3px;
 }
 
+.btn-group-sm>.btn, .btn-sm{
+    padding: 3px 10px;
+}
+
 .monthselect {
     float: left;
 }

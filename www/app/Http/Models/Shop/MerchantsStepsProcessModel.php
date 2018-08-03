@@ -27,6 +27,15 @@ class MerchantsStepsProcessModel extends Model
             ->paginate($size);
     }
 
+    public function getMerchantsStepsProcesses($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->orderBy('process_steps', 'asc')
+            ->orderBy('steps_sort', 'asc')
+            ->get();
+    }
+
     public function setMerchantsStepsProcess($where, $data)
     {
         return $this->where($where)

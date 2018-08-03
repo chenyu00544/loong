@@ -133,7 +133,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                         }
                         $item->display_options = $options;
                     }
-dd($item);
+
                     if ($item) {
                         if ($item->type == 'file' && in_array($item->code, $code_arr) && $item->value) {
                             $item->del_img = 1;

@@ -2,38 +2,21 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">店铺管理 - 店铺设置</div>
+        <div class="title">商家 - 申请流程信息列表</div>
         <div class="content">
-            <div class="tabs mar-top-5">
-                <ul class="fl">
-                    <li class="@if($nav == 'store') curr @endif fl">
-                        <a href="{{url('admin/store')}}">店铺设置</a>
-                    </li>
-                    <li class="@if($nav == 'process') curr @endif fl">
-                        <a href="{{url('admin/msp')}}">入驻流程</a>
-                    </li>
-                    <li class="@if($nav == 'rank') curr @endif fl">
-                        <a href="{{url('admin/store/privilege')}}">入驻初始化权限</a>
-                    </li>
-                    <li class="@if($nav == 'grade') curr @endif fl">
-                        <a href="{{url('admin/store/grade')}}">店铺等级</a>
-                    </li>
-                </ul>
-            </div>
             <div class="tip">
                 <div class="tip_title">
                     <i class="tip_icon"></i>
                     <h5>操作提示</h5>
                 </div>
                 <ul>
-                    <li>商家入驻申请流程步骤信息管理。</li>
-                    <li>平台按实际业务需要设定流程步骤。</li>
-                    <li>如不清楚流程设定请谨慎删除通用流程。</li>
+                    <li>流程内容信息管理。</li>
+                    <li>可编辑流程内容和添加流程内容。</li>
                 </ul>
             </div>
             <div class="fromlist clearfix">
                 <div>
-                    <a href="{{url('admin/msp/create')}}"
+                    <a href="{{url('admin/applyprocess/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加　</a>
                 </div>
                 <div class="main-info">
@@ -41,61 +24,65 @@
                         <thead>
                         <tr>
                             <th class="col-sm-1">编号</th>
-                            <th class="col-sm-3">流程信息标题</th>
+                            <th class="col-sm-2">内容标题</th>
                             <th class="col-sm-2">所属流程</th>
-                            <th class="col-sm-1">排序</th>
-                            <th class="col-sm-1">是否显示</th>
+                            <th class="col-sm-1">显示样式</th>
+                            <th class="col-sm-3">特殊说明</th>
+                            <th class="col-sm-1">显示位置</th>
                             <th class="col-sm-2 text-center">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @if(count($process) == 0)
+                        @if(count($applyProcesses) == 0)
                             <tr class="">
                                 <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
                         @endif
-                        @foreach($process as $pro)
+                        @foreach($applyProcesses as $pro)
                             <tr>
-                                <th>{{$pro->id}}</th>
+                                <th>{{$pro->tid}}</th>
                                 <td>
-                                    {{$pro->process_title}}
+                                    {{$pro->fields_titles}}
                                 </td>
                                 <td>
-                                    @if($pro->process_steps == 1)
-                                        入驻须知
-                                    @elseif($pro->process_steps == 2)
-                                        公司信息认证
-                                    @elseif($pro->process_steps == 3)
-                                        店铺信息认证
+                                    {{$pro->msp->process_title}}
+                                </td>
+                                <td>
+                                    @if($pro->steps_style == 0)
+                                        基本信息
+                                    @elseif($pro->steps_style == 1)
+                                        店铺类型
+                                    @elseif($pro->steps_style == 2)
+                                        类目信息
+                                    @elseif($pro->steps_style == 3)
+                                        品牌信息
+                                    @elseif($pro->steps_style == 4)
+                                        店铺信息
                                     @endif
                                 </td>
-                                <td>
-                                    <input class="form-control input-sm order wd-120" type="text" data-id="{{$pro->id}}"
-                                           name="ord[]"
-                                           value="{{$pro->steps_sort}}">
+                                <td class="wsn">
+                                    {!! $pro->fields_special !!}
                                 </td>
                                 <td>
-                                    <div class="switch-wrap clearfix">
-                                        <div class="switch @if($pro->is_show) active @endif" data-type="is_show"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$pro->id}}">
-                                        </div>
-                                    </div>
+                                    @if($pro->special_type == 0)
+                                        无
+                                    @elseif($pro->special_type == 1)
+                                        上面
+                                    @elseif($pro->special_type == 2)
+                                        下面
+                                    @endif
                                 </td>
                                 <td class="text-center">
-                                    <a class="btn btn-primary btn-edit btn-sm"
-                                       href="{{url('admin/applyprocess/'.$pro->id)}}">查看</a>
-                                    <a href="{{url('admin/msp/'.$pro->id.'/edit')}}"
+                                    <a href="{{url('admin/applyprocess/'.$pro->tid.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$pro->id}}">删除</a>
+                                    <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$pro->tid}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
                     <div class="page_list">
-                        {{$process->links()}}
+                        {{$applyProcesses->links()}}
                     </div>
                 </div>
             </div>

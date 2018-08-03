@@ -4,7 +4,7 @@
  * User: Administrator - chenyu
  * Date: 2018/6/22
  * Time: 16:58
- * Desc: 店铺设置功能
+ * Desc:
  */
 
 namespace App\Http\Controllers\Shop\Admin;
@@ -13,9 +13,8 @@ use App\Facades\Verifiable;
 use App\Repositories\MerchantsRepository;
 use Illuminate\Http\Request;
 
-class MerchantsStepsProcessController extends CommonController
+class ApplyProcessController extends CommonController
 {
-
     private $merchantsRepository;
 
     public function __construct(
@@ -31,16 +30,8 @@ class MerchantsStepsProcessController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $nav = 'process';
-        $process = $this->merchantsRepository->getMerchantsStepsProcessByPage();
-        return view('shop.admin.store.process', compact('process', 'nav'));
-    }
-
-    public function change(Request $request)
-    {
-        return $this->merchantsRepository->merchantsStepsProcessChange($request->except('_token'));
     }
 
     /**
@@ -50,7 +41,8 @@ class MerchantsStepsProcessController extends CommonController
      */
     public function create()
     {
-        return view('shop.admin.store.processAdd');
+        $process = $this->merchantsRepository->getMerchantsStepsProcesses();
+        return view('shop.admin.store.applyProcessAdd', compact('process'));
     }
 
     /**
@@ -61,11 +53,11 @@ class MerchantsStepsProcessController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["process_title" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["bucket" => 'required', "keyid" => 'required', "keysecret" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->merchantsRepository->addMerchantsStepsProcess($request->except('_token'));
+        $re = $this->ossRepository->addAlioss($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -77,7 +69,8 @@ class MerchantsStepsProcessController extends CommonController
      */
     public function show($id)
     {
-        //
+        $applyProcesses = $this->merchantsRepository->getMerchantsStepsTitleByPage($id);
+        return view('shop.admin.store.applyProcess', compact('applyProcesses'));
     }
 
     /**
@@ -88,8 +81,9 @@ class MerchantsStepsProcessController extends CommonController
      */
     public function edit($id)
     {
-        $msp = $this->merchantsRepository->getMerchantsStepsProcess($id);
-        return view('shop.admin.store.processEdit', compact('msp'));
+        $applyProcess = $this->merchantsRepository->getMerchantsStepsTitle($id);
+        $process = $this->merchantsRepository->getMerchantsStepsProcesses();
+        return view('shop.admin.store.applyProcessEdit', compact('applyProcess', 'process'));
     }
 
     /**
@@ -101,11 +95,11 @@ class MerchantsStepsProcessController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["process_title" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["bucket" => 'required', "keyid" => 'required', "keysecret" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->merchantsRepository->setMerchantsStepsProcess($request->except('_token','_method'), $id);
+        $re = $this->ossRepository->setAlioss($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -117,6 +111,6 @@ class MerchantsStepsProcessController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->merchantsRepository->delMerchantsStepsProcess($id);
+        return $this->ossRepository->delAlioss($id);
     }
 }
