@@ -58,9 +58,11 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><input class="form-control input-sm chang-order" type="text" data-id="{{$nav->id}}"
+                                <td>
+                                    <input class="form-control input-sm chang-order" type="text" data-id="{{$nav->id}}"
                                            name="ord[]"
-                                           value="{{$nav->vieworder}}"></td>
+                                           value="{{$nav->vieworder}}">
+                                </td>
                                 <td>{{$nav->position}}</td>
                                 <td>
                                     <a type="button" href="{{url('admin/navsetup/'.$nav->id.'/edit')}}"

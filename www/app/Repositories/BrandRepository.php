@@ -83,7 +83,7 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function changBrand($data)
     {
-        $rep = ['code' => 5, 'msg' => '修改失败'];
+        $rep = ['code' => 5, 'msg' => '操作失败'];
 
         $where['id'] = $data['id'];
         $keys = array_keys($data);
@@ -104,7 +104,7 @@ class BrandRepository implements BrandRepositoryInterface
         }
         $re = $this->brandModel->upDateBrand($where, $updata);
         if ($re) {
-            $rep = ['code' => 1, 'msg' => '修改成功'];
+            $rep = ['code' => 1, 'msg' => '操作成功'];
         }
 
         return $rep;

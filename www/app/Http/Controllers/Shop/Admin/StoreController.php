@@ -9,16 +9,27 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Facades\Redis;
+use App\Facades\Html;
+use App\Facades\ShopConfig;
+use App\Repositories\MerchantsRepository;
+use App\Repositories\StoreRepository;
 use Illuminate\Http\Request;
 
 class StoreController extends CommonController
 {
-    public function __construct()
+
+    private $storeRepository;
+    private $merchantsRepository;
+
+    public function __construct(
+        StoreRepository $storeRepository
+    )
     {
         parent::__construct();
+        $this->checkPrivilege('store');
+        $this->storeRepository = $storeRepository;
     }
-//composer require predis/predis
+
     /**
      * Display a listing of the resource.
      *
@@ -26,8 +37,10 @@ class StoreController extends CommonController
      */
     public function index()
     {
-        $rr = ['library' => 'library'];
-        dd(Redis::get('library'));
+        $nav = 'store';
+        $configs = $this->storeRepository->getGroupsConfig('seller');
+        $conf = Html::StoreConfHtml($configs);
+        return view('shop.admin.store.storeSetup', compact('conf', 'nav'));
     }
 
     /**
@@ -48,7 +61,8 @@ class StoreController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        ShopConfig::setConf($request->all(), 'seller');
+        return view('shop.admin.success');
     }
 
     /**

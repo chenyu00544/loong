@@ -32,7 +32,7 @@ class HtmlService
                     case 'manual':
                         if ($var['code'] == 'shop_country') {
                             $countryId = $var['value'];
-                            $area = Regions::getRegion(0,0);
+                            $area = Regions::getRegion(0, 0);
 
                             $var['html'] = '<select name="value[' . $var['id'] . ']" class="form-control ' . $var['code'] . '" value="' . $var['value'] . '"><option>国家</option>';
 
@@ -55,10 +55,10 @@ class HtmlService
                             $vars[$key][] = $var;
                             $conf[$key]['vars'] = $vars[$key];
                         }
-                        foreach ($area as $item){
-                            if ($item['id'] == $var['value']){
+                        foreach ($area as $item) {
+                            if ($item['id'] == $var['value']) {
                                 $var['html'] .= '<option value="' . $item['id'] . '" selected >' . $item['name'] . '</option>';
-                            }else{
+                            } else {
                                 $var['html'] .= '<option value="' . $item['id'] . '" >' . $item['name'] . '</option>';
                             }
                         }
@@ -106,7 +106,7 @@ class HtmlService
     public function PayConfHtml($conf = [], $payInfo = [])
     {
         foreach ($conf as $key => $item) {
-            switch ($item['type']){
+            switch ($item['type']) {
                 case 'text':
                     $item['html'] = '<input type="text" name="' . $item['code'] . '" class="form-control ' . $item['code'] . '" value="' . $payInfo[$item['code']] . '" placeholder="' . $item['name'] . '"/>';
                     break;
@@ -115,14 +115,51 @@ class HtmlService
                     break;
                 case 'select':
                     $item['html'] = '<select name="' . $item['code'] . '" class="form-control ' . $item['code'] . '">';
-                    foreach ($item['sel_val'] as $k => $val){
-                        $item['html'] .= '<option value="'.$val;
-                        if($payInfo[$item['code']] == $val){
+                    foreach ($item['sel_val'] as $k => $val) {
+                        $item['html'] .= '<option value="' . $val;
+                        if ($payInfo[$item['code']] == $val) {
                             $item['html'] .= ' selected ';
                         }
-                        $item['html'] .= '">'.$k.'</option>';
+                        $item['html'] .= '">' . $k . '</option>';
                     }
                     $item['html'] .= '</select>';
+                    break;
+                default:
+                    break;
+            }
+            $conf[$key] = $item;
+        }
+
+        return $conf;
+    }
+
+    public function StoreConfHtml($conf = [])
+    {
+        foreach ($conf as $key => $item) {
+            switch ($item->type) {
+                case 'text':
+                    $item->html = '<input type="text" name="value[' . $item->id . ']" class="form-control ' . $item->code . '" value="' . $item->value . '" placeholder="' . $item->name . '"/>';
+                    break;
+                case 'select':
+                    foreach ($item->store_options as $n => $opt) {
+                        $item->html .= '<label class="radio-inline fl"><input type="radio" name="value[' . $item->id . ']" id="value_' . $item->id . '_' . $n . '" value="' . $opt . '"';
+                        if ($item->value == $opt) {
+                            $item->html .= 'checked="true"';
+                        }
+
+                        $item->html .= '> ' . $item->display_options[$n] . '</label>';
+                    }
+                    break;
+                case 'options':
+                    $item->html = '<select name="value[' . $item->id . ']" class="form-control ' . $item->code . '">';
+                    foreach ($item->store_options as $k => $val) {
+                        $item->html .= '<option value="' . $val . '"';
+                        if ($item->value == $val) {
+                            $item->html .= ' selected ';
+                        }
+                        $item->html .= '>' . $item->display_options[$k] . '</option>';
+                    }
+                    $item->html .= '</select>';
                     break;
                 default:
                     break;

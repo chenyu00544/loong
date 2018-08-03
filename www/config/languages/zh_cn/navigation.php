@@ -128,11 +128,11 @@ return array(
         ),
     ),
     'store' => array(
-        'setup' => array(
+        'store' => array(
             'name' => '店铺设置',
             'url' => 'admin/store',
         ),
-        'list' => array(
+        'storelist' => array(
             'name' => '店铺列表',
             'url' => 'admin/storelist',
         ),

@@ -22,6 +22,7 @@ class SmsController extends CommonController
     )
     {
         parent::__construct();
+        $this->checkPrivilege('sms_setup');
         $this->smsRepository = $smsRepository;
     }
 
