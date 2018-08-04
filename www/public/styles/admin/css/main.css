@@ -87,7 +87,7 @@ p {
     white-space: normal;
 }
 
-.wsn{
+.wsn {
     white-space: normal;
 }
 
@@ -112,7 +112,7 @@ option {
     margin: 3px;
 }
 
-.btn-group-sm>.btn, .btn-sm{
+.btn-group-sm > .btn, .btn-sm {
     padding: 3px 10px;
 }
 
@@ -121,10 +121,6 @@ option {
 }
 
 [v-cloak] {
-    display: none;
-}
-
-.hide {
     display: none;
 }
 
@@ -158,6 +154,7 @@ option {
 
 .fl {
     float: left;
+!important;
 }
 
 .fr {
@@ -466,6 +463,10 @@ option {
 
 .xwd100 {
     max-width: 100px;
+}
+
+.xwd150 {
+    max-width: 150px;
 }
 
 .xwd400 {
@@ -995,8 +996,12 @@ option {
     margin-left: 60px;
 }
 
+.mar-right-5 {
+    margin-right: 5px;
+}
+
 .mar-right-10 {
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .mar-right-20 {
@@ -1067,6 +1072,27 @@ option {
 
 .switch, .circle, .sort-point, i.sc-icon, .admin-fun-right .operate a {
     background: url(../../images/admin-icon.png) no-repeat;
+}
+
+i.sc-icon-add {
+    width: 24px;
+    height: 24px;
+    background-position: -45px -326px;
+    display: inline-block;
+}
+
+i.sc-icon-add-small {
+    width: 19px;
+    height: 19px;
+    display: inline-block;
+    background-position: -162px -453px;
+}
+
+i.sc-icon-sub-small {
+    width: 19px;
+    height: 19px;
+    background-position: -162px -476px;
+    display: inline-block;
 }
 
 .em-blue {
@@ -2738,4 +2764,36 @@ input[type=file].upload-file {
     font-size: 12px;
     line-height: 32px;
     width: 238px;
+}
+
+.f-item {
+    padding: 20px 0px 10px 0px;
+}
+
+.f-item-section {
+    width: 95%;
+    margin: auto;
+    border-top: 2px solid #62b3ff;
+    border-bottom: 2px solid #62b3ff;
+}
+
+.add-item, .sub-add-item {
+    width: 60px;
+    text-align: center;
+    margin-top: 42px;
+}
+
+.add-subitem {
+    width: 30px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.f-item-curr {
+    background: #f5faff;
+}
+
+.form-text {
+    margin-right: 24px;
+    margin-bottom: 10px;
 }

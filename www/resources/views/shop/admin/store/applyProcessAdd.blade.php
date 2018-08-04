@@ -58,183 +58,144 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="m-item m-item-curr">
-                                <div class="handle" ectype="addMerchants"><i class="sc_icon sc_icon_jia"></i></div>
-                                <div class="info">
-                                    <div class="p-item">
-                                            <span class="ipt_text">
-                                                <strong class="fl">表单字段：</strong>
-                                                <input type="text" name="merchants_date[]" class="text w150">
-                                            </span>
-                                        <span class="ipt_text">
-                                                <strong class="fl">数据类型：</strong>
-                                                <div class="imitate_select select_w140">
-                                                    <div class="cite">VARCHAR</div>
-                                                    <ul style="display: none;" class="ps-container">
-                                                        <li><a href="javascript:;" data-value="VARCHAR" class="ftx-01">VARCHAR</a></li>
-                                                        <li><a href="javascript:;" data-value="CHAR"
-                                                               class="ftx-01">CHAR</a></li>
-                                                        <li><a href="javascript:;" data-value="INT"
-                                                               class="ftx-01">INT</a></li>
-                                                        <li><a href="javascript:;" data-value="MEDIUMINT"
-                                                               class="ftx-01">MEDIUMINT</a></li>
-                                                        <li><a href="javascript:;" data-value="SMALLINT" class="ftx-01">SMALLINT</a></li>
-                                                        <li><a href="javascript:;" data-value="TINYINT" class="ftx-01">TINYINT</a></li>
-                                                        <li><a href="javascript:;" data-value="TEXT"
-                                                               class="ftx-01">TEXT</a></li>
-                                                        <li><a href="javascript:;" data-value="DECIMAL" class="ftx-01">DECIMAL</a></li>
-                                                    <div class="ps-scrollbar-x-rail"
-                                                         style="width: 139px; display: none; left: 0px; bottom: 3px;"><div
-                                                                class="ps-scrollbar-x"
-                                                                style="left: 0px; width: 0px;"></div></div><div
-                                                                class="ps-scrollbar-y-rail"
-                                                                style="top: 0px; height: 224px; display: none; right: 0px;"><div
-                                                                    class="ps-scrollbar-y"
-                                                                    style="top: 0px; height: 0px;"></div></div></ul>
-                                                    <input name="merchants_dateType[]" type="hidden" value="VARCHAR"
-                                                           id="merchants_dateType_val">
-                                                </div>
-                                            </span>
-                                        <span class="ipt_text">
-                                                <strong class="fl">表单标题：</strong>
-                                                <input type="text" name="merchants_formName[]" class="text w150"
-                                                       autocomplete="off">
-                                            </span>
-                                        <span class="ipt_text">
-                                                <strong class="fl">数据长度：</strong>
-                                                <input type="text" name="merchants_length[]" class="text w50"
-                                                       autocomplete="off">
-                                            </span>
-                                        <span style="display:none">
-												&nbsp;&nbsp;
-												是否为空&nbsp;
-												<select name="merchants_notnull[]">
-												<option value="NOT NULL" selected="selected">NOT NULL</option>
-												<option value="NULL">NULL</option>
-												</select>
-												&nbsp;&nbsp;
-												数据编码&nbsp;
-												<select name="merchants_coding[]">
-												<option value="GBK">GBK</option>
-												<option value="UTF8" selected="selected">UTF8</option>
-												</select>
-											</span>
-                                        <span class="ipt_text">
-                                                <strong class="fl">显示排序：</strong>
-                                                <input type="text" name="fields_sort[]" class="text w50"
-                                                       autocomplete="off">
-                                            </span>
-                                        <span class="ipt_text">
-                                                <strong class="fl">必选项：</strong>
-                                                <div class="imitate_select select_w60">
-                                                    <div class="cite">否</div>
-                                                    <ul class="ps-container" style="display: none;">
-                                                        <li><a href="javascript:;" data-value="0"
-                                                               class="ftx-01">否</a></li>
-                                                        <li><a href="javascript:;" data-value="1"
-                                                               class="ftx-01">是</a></li>
-                                                    <div class="ps-scrollbar-x-rail"
-                                                         style="width: 59px; display: none; left: 0px; bottom: 3px;"><div
-                                                                class="ps-scrollbar-x"
-                                                                style="left: 0px; width: 0px;"></div></div><div
-                                                                class="ps-scrollbar-y-rail"
-                                                                style="top: 0px; height: 56px; display: none; right: 0px;"><div
-                                                                    class="ps-scrollbar-y"
-                                                                    style="top: 0px; height: 0px;"></div></div></ul>
-                                                    <input name="will_choose_0" type="hidden" value="0">
-                                                </div>
-                                            </span>
-                                    </div>
-                                    <div class="p-item">
-                                        	<span class="ipt_text">
-                                            	<strong class="fl">表单注释：</strong>
-                                                <input type="text" name="formName_special[]" class="text w400"
-                                                       autocomplete="off">
-                                            </span>
-                                        <span class="ipt_text">
-                                            	<strong class="fl">表单类型：</strong>
-                                                <div class="imitate_select select_w140" data-tab="formType">
-                                                    <div class="cite">文本字段(input)</div>
-                                                    <ul style="display: none;" class="ps-container">
-                                                        <li><a href="javascript:;" data-value="input" class="ftx-01">文本字段(input)</a></li>
-                                                        <li><a href="javascript:;" data-value="textarea" class="ftx-01">文本区域(textarea)</a></li>
-                                                        <li><a href="javascript:;" data-value="radio" class="ftx-01">单选按钮(radio)</a></li>
-                                                        <li><a href="javascript:;" data-value="checkbox" class="ftx-01">多选按钮(checkbox)</a></li>
-                                                        <li><a href="javascript:;" data-value="select" class="ftx-01">下拉菜单(select)</a></li>
-                                                        <li><a href="javascript:;" data-value="other" class="ftx-01">其他(other)</a></li>
-                                                    <div class="ps-scrollbar-x-rail"
-                                                         style="width: 139px; display: none; left: 0px; bottom: 3px;"><div
-                                                                class="ps-scrollbar-x"
-                                                                style="left: 0px; width: 0px;"></div></div><div
-                                                                class="ps-scrollbar-y-rail"
-                                                                style="top: 0px; height: 168px; display: none; right: 0px;"><div
-                                                                    class="ps-scrollbar-y"
-                                                                    style="top: 0px; height: 0px;"></div></div></ul>
-                                                    <input name="merchants_form[]" type="hidden" value="input">
-                                                </div>
-                                            </span>
-                                        <span class="ipt_text merchantsForm" ectype="merchantsForm_text">
-                                            	<strong class="fl">表单长度：</strong>
-                                                <input type="text" name="merchants_formSize[]" class="text w50"
-                                                       autocomplete="off">
-                                            </span>
-                                        <span class="ipt_text merchantsForm" ectype="merchantsForm_textarea">
-                                            	<strong class="fl">行数以及宽度：</strong>
-                                                <input type="text" name="merchants_rows[]" class="text w50"
-                                                       autocomplete="off">
-                                                <span class="bolang">&nbsp;&nbsp;~&nbsp;&nbsp;</span>
-                                                <input type="text" name="merchants_cols[]" class="text w50"
-                                                       autocomplete="off">
-                                            </span>
-                                        <span class="ipt_text merchantsForm" style="" ectype="merchantsForm_select">
-												<strong class="fl">选择类型：</strong>
-												<div class="imitate_select select_w140">
-													<div class="cite">地区类型</div>
-													<ul style="display: none;">
-														<li><a href="javascript:;" data-value="textArea" class="ftx-01">地区类型</a></li>
-														<li><a href="javascript:;" data-value="dateTime" class="ftx-01">日期类型</a></li>
-														<li><a href="javascript:;" data-value="dateFile" class="ftx-01">文件上传</a></li>
-													</ul>
-													<input name="merchants_formOther[]" type="hidden" value="">
-												</div>
+                            <div class="f-item-section">
+                                <div class="f-item f-item-curr clearfix">
+                                    <div class="add-item fl"><i class="sc-icon sc-icon-add cursor"></i></div>
+                                    <div class="item-info fl">
+                                        <div class="p-item clearfix">
+                                            <div class="form-text fl clearfix">
+                                                <strong class="fl lh30 mar-right-5">表单字段：</strong>
+                                                <input type="text" name="merchants_date[]"
+                                                       class="form-control xwd150 input-sm">
+                                            </div>
+                                            <div class="form-text fl clearfix">
+                                                <strong class="fl lh30 mar-right-5">数据类型：</strong>
+                                                <select name="merchants_dateType[]"
+                                                        class="form-control select input-sm">
+                                                    <option value="VARCHAR">VARCHAR</option>
+                                                    <option value="CHAR">CHAR</option>
+                                                    <option value="INT">INT</option>
+                                                    <option value="MEDIUMINT">MEDIUMINT</option>
+                                                    <option value="SMALLINT">SMALLINT</option>
+                                                    <option value="TINYINT">TINYINT</option>
+                                                    <option value="DECIMAL">DECIMAL</option>
+                                                    <option value="TEXT">TEXT</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-text fl clearfix">
+                                                <strong class="fl lh30 mar-right-5">表单标题：</strong>
+                                                <input type="text" name="merchants_formName[]"
+                                                       class="form-control xwd150 input-sm">
+                                            </div>
+                                            <div class="form-text fl clearfix">
+                                                <strong class="fl lh30 mar-right-5">数据长度：</strong>
+                                                <input type="text" name="merchants_length[]"
+                                                       class="form-control xwd100 input-sm">
+                                            </div>
+                                            <div class="form-text fl clearfix">
+                                                <strong class="fl lh30 mar-right-5">显示排序：</strong>
+                                                <input type="text" name="fields_sort[]"
+                                                       class="form-control xwd100 input-sm">
+                                            </div>
+                                            <div class="form-text fl clearfix">
+                                                <strong class="fl lh30 mar-right-5">必选项：</strong>
+                                                <select name="will_choose_0" class="form-control select input-sm">
+                                                    <option value="0">否</option>
+                                                    <option value="1">是</option>
+                                                </select>
+                                            </div>
+                                        </div>
 
-												<span name="merchantsForm_dateTime[]"
-                                                      ectype="merchantsForm_select_content" class="fl hide">
-													<strong class="fl">日期表单长度：</strong>
-													<input name="merchants_formOtherSize[]" type="text" size="10"
-                                                           value="" class="text w50 valid">
-												</span>
-											</span>
-                                        <span class="ipt_text merchantsForm relative" ectype="merchantsForm_checkbox"
-                                              style="width:580px;">
-                                            	<div class="ipt-icon"><i class="sc_icon sc_icon_jia2"></i></div>
-                                                <div class="item-item">
-                                                	<strong class="fl">单选或多选按钮名称：</strong>
-                                                    <input type="text" name="radio_checkbox_0[]" class="text w150"
-                                                           autocomplete="off">
-                                                    <strong class="fl">显示排序：</strong>
-                                                    <input type="text" name="rc_sort_0[]" class="text w50"
-                                                           autocomplete="off">
-                                                    <a href="javascript:;" class="btn_trash"><i
-                                                                class="icon icon-trash"></i>删除</a>
+                                        <div class="p-item clearfix">
+                                            <div class="form-text fl clearfix" style="width: 465px">
+                                                <strong class="fl lh30 mar-right-5">表单注释：</strong>
+                                                <input type="text" name="formName_special[]"
+                                                       class="form-control xwd400 input-sm">
+                                            </div>
+                                            <div class="form-text fl clearfix">
+                                                <strong class="fl lh30 mar-right-5">表单类型：</strong>
+                                                <select name="merchants_form[]" class="form-control select input-sm">
+                                                    <option value="input">文本字段(input)</option>
+                                                    <option value="textarea">文本区域(textarea)</option>
+                                                    <option value="radio">单选按钮(radio)</option>
+                                                    <option value="checkbox">多选按钮(checkbox)</option>
+                                                    <option value="select">下拉菜单(select)</option>
+                                                    <option value="other">其他(other)</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-text fl clearfix merchants-other hide">
+                                                <strong class="fl lh30 mar-right-5">选择类型：</strong>
+                                                <select name="merchants_formOther[]"
+                                                        class="form-control select input-sm">
+                                                    <option value="textArea">地区类型</option>
+                                                    <option value="dateTime">日期类型</option>
+                                                    <option value="file">文件上传</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-text fl clearfix merchants-other-date hide">
+                                                <strong class="fl lh30 mar-right-5">日期表单长度：</strong>
+                                                <input type="text" name="merchants_formOtherSize[]"
+                                                       class="form-control xwd100 input-sm">
+                                            </div>
+                                        </div>
+                                        <div class="p-item clearfix">
+                                            <div class="merchants-text">
+                                                <div class="form-text fl clearfix">
+                                                    <strong class="fl lh30 mar-right-5">表单长度：</strong>
+                                                    <input type="text" name="merchants_formSize[]"
+                                                           class="form-control xwd100 input-sm">
                                                 </div>
-                                            </span>
-                                        <span class="ipt_text merchantsForm relative" ectype="merchantsForm_select_opt">
-                                            	<div class="ipt-icon"><i class="sc_icon sc_icon_jia2"></i></div>
-                                                <div class="item-item">
-                                                    <strong class="fl">下拉菜单值：</strong>
-                                                    <input type="text" name="select_0[]" class="text w150"
-                                                           autocomplete="off">
-                                                    <a href="javascript:;" class="btn_trash"><i
-                                                                class="icon icon-trash"></i>删除</a>
+                                            </div>
+                                            <div class="merchants-textarea hide">
+                                                <div class="form-text fl clearfix">
+                                                    <strong class="fl lh30 mar-right-5">行数以及宽度：</strong>
+                                                    <input type="text" name="merchants_rows[]"
+                                                           class="form-control xwd100 input-sm fl">
                                                 </div>
-                                            </span>
+                                                <div class="form-text fl clearfix">
+                                                    <strong class="fl lh30 mar-right-5">~</strong>
+                                                    <input type="text" name="merchants_cols[]"
+                                                           class="form-control xwd100 input-sm fl">
+                                                </div>
+                                            </div>
+                                            <div class="merchants-radio hide">
+                                                <div class="wrap fl">
+                                                    <div class="add-subitem fl"><i
+                                                                class="sc-icon sc-icon-add-small cursor"></i></div>
+                                                    <div class="form-text fl clearfix merchants-radio"
+                                                         style="width: 525px">
+                                                        <strong class="fl lh30 mar-right-5">单选或多选按钮名称：</strong>
+                                                        <input type="text" name="merchants_rows[]"
+                                                               class="form-control xwd400 input-sm fl">
+                                                    </div>
+                                                    <div class="form-text fl clearfix merchants-radio">
+                                                        <strong class="fl lh30 mar-right-5">显示排序</strong>
+                                                        <input type="text" name="merchants_cols[]"
+                                                               class="form-control xwd100 input-sm fl">
+                                                    </div>
+                                                    <div class="add-subitem fl"><i
+                                                                class="sc-icon sc-icon-sub-small cursor"></i></div>
+                                                </div>
+                                            </div>
+                                            <div class="merchants-select hide">
+                                                <div class="wrap fl">
+                                                    <div class="add-subitem fl"><i
+                                                                class="sc-icon sc-icon-add-small cursor"></i></div>
+                                                    <div class="form-text fl clearfix merchants-radio">
+                                                        <strong class="fl lh30 mar-right-5">下拉菜单值：</strong>
+                                                        <input type="text" name="select_0[]"
+                                                               class="form-control xwd150 input-sm fl">
+                                                    </div>
+                                                    <div class="add-subitem fl"><i
+                                                                class="sc-icon sc-icon-sub-small cursor"></i></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
-                                <div class="m-btn-trash"><a href="javascript:;" class="btn_trash"><i
-                                                class="icon icon-trash"></i>删除</a></div>
                             </div>
-
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">特殊说明：</label>
@@ -272,7 +233,46 @@
 @section('script')
     <script>
         $(function () {
+            $('.add-item').on('click', function () {
+                var item = $(this).next().html();
+                var html = '<div class="f-item clearfix">' +
+                    '<div class="add-item fl"></div>' +
+                    '<div class="item-info fl">' + item + '</div>' +
+                    '<div class="sub-add-item fl"><i class="sc-icon sc-icon-sub-small cursor"></i></div></div>';
+                $(this).parent().parent().append(html);
+            });
 
+            $('.f-item-section').on('click', '.sub-add-item', function () {
+                $(this).parent().remove();
+            });
+
+            $('body').on('change', 'select[name="merchants_form[]"]', function () {
+                $('.merchants-other').hide();
+                $('.merchants-other-date').hide();
+                $('.merchants-text').hide();
+                $('.merchants-textarea').hide();
+                $('.merchants-radio').hide();
+                $('.merchants-select').hide();
+
+                switch ($(this).val()){
+                    case 'input':
+                        $('.merchants-text').show();
+                        break;
+                    case 'textarea':
+                        $('.merchants-textarea').show();
+                        break;
+                    case 'radio':
+                    case 'checkbox':
+                        $('.merchants-radio').show();
+                        break;
+                    case 'select':
+                        $('.merchants-select').show();
+                        break;
+                    case 'other':
+                        $('.merchants-other').show();
+                        break;
+                }
+            });
         });
     </script>
 @endsection

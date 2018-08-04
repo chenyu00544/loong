@@ -66,6 +66,7 @@ class MerchantsStepsProcessController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->merchantsRepository->addMerchantsStepsProcess($request->except('_token'));
+        dd($re->id);
         return view('shop.admin.success');
     }
 
