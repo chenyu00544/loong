@@ -53,11 +53,11 @@ class ApplyProcessController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["bucket" => 'required', "keyid" => 'required', "keysecret" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["fields_steps" => 'required', "fields_titles" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->ossRepository->addAlioss($request->except('_token'));
+        $re = $this->merchantsRepository->addMerchantsStepsFieldsCentent($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -81,9 +81,9 @@ class ApplyProcessController extends CommonController
      */
     public function edit($id)
     {
-        $applyProcess = $this->merchantsRepository->getMerchantsStepsTitle($id);
         $process = $this->merchantsRepository->getMerchantsStepsProcesses();
-        return view('shop.admin.store.applyProcessEdit', compact('applyProcess', 'process'));
+        $mst = $this->merchantsRepository->getMerchantsStepsTitle($id);
+        return view('shop.admin.store.applyProcessEdit', compact('mst', 'process'));
     }
 
     /**
@@ -95,11 +95,11 @@ class ApplyProcessController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["bucket" => 'required', "keyid" => 'required', "keysecret" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["fields_steps" => 'required', "fields_titles" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->ossRepository->setAlioss($request->except('_token', '_method'), $id);
+        $re = $this->merchantsRepository->setMerchantsStepsFieldsCentent($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -111,6 +111,6 @@ class ApplyProcessController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->ossRepository->delAlioss($id);
+        return $this->merchantsRepository->delMerchantsStepsTitle($id);
     }
 }

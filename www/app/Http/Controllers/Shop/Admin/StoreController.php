@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Html;
 use App\Facades\ShopConfig;
-use App\Repositories\MerchantsRepository;
+use App\Facades\Verifiable;
 use App\Repositories\StoreRepository;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,6 @@ class StoreController extends CommonController
 {
 
     private $storeRepository;
-    private $merchantsRepository;
 
     public function __construct(
         StoreRepository $storeRepository
@@ -41,6 +40,25 @@ class StoreController extends CommonController
         $configs = $this->storeRepository->getGroupsConfig('seller');
         $conf = Html::StoreConfHtml($configs);
         return view('shop.admin.store.storeSetup', compact('conf', 'nav'));
+    }
+
+    //编辑初始化权限
+    public function privilegeEdit()
+    {
+        $nav = 'privilege';
+        $navs = $this->sellerPrivilege();dd($navs);
+        return view('shop.admin.store.privilege', compact('navs', 'nav'));
+    }
+
+    //分配初始化权限
+    public function allot(Request $request, $id)
+    {
+        $ver = Verifiable::Validator($request->all(), ["fields_steps" => 'required', "fields_titles" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->merchantsRepository->addMerchantsStepsFieldsCentent($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**

@@ -23,6 +23,11 @@ class MerchantsStepsTitleModel extends Model
         return $this->hasOne('App\Http\Models\Shop\MerchantsStepsProcessModel','id','fields_steps');
     }
 
+    public function msfc()
+    {
+        return $this->hasOne('App\Http\Models\Shop\MerchantsStepsFieldsCententModel','tid','tid');
+    }
+
     public function getMerchantsStepsTitleByPage($where, $column = ['*'], $size = 15)
     {
         return $this->select($column)
@@ -31,17 +36,18 @@ class MerchantsStepsTitleModel extends Model
             ->paginate($size);
     }
 
+    public function getMerchantsStepsTitle($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->with(['msfc'])
+            ->where($where)
+            ->first();
+    }
+
     public function setMerchantsStepsTitle($where, $data)
     {
         return $this->where($where)
             ->update($data);
-    }
-
-    public function getMerchantsStepsTitle($where, $column = ['*'])
-    {
-        return $this->select($column)
-            ->where($where)
-            ->first();
     }
 
     public function addMerchantsStepsTitle($data)

@@ -87,10 +87,6 @@ p {
     white-space: normal;
 }
 
-.wsn {
-    white-space: normal;
-}
-
 strong {
     color: #707070;
 }
@@ -112,6 +108,14 @@ option {
     margin: 3px;
 }
 
+.wsn {
+    white-space: normal;
+}
+
+.disn {
+    display: none;
+}
+
 .btn-group-sm > .btn, .btn-sm {
     padding: 3px 10px;
 }
@@ -129,6 +133,10 @@ option {
 }
 
 .select {
+    width: auto;
+}
+
+.wa {
     width: auto;
 }
 
@@ -2777,13 +2785,17 @@ input[type=file].upload-file {
     border-bottom: 2px solid #62b3ff;
 }
 
-.add-item, .sub-add-item {
+.add-item, .sub-item-form {
     width: 60px;
     text-align: center;
     margin-top: 42px;
 }
 
-.add-subitem {
+.item-info {
+    width: 88%;
+}
+
+.add-sub-item, .sub-sub-item {
     width: 30px;
     text-align: center;
     margin-top: 5px;
@@ -2796,4 +2808,8 @@ input[type=file].upload-file {
 .form-text {
     margin-right: 24px;
     margin-bottom: 10px;
+}
+
+.merchants-wrap{
+    margin-right: 20px;
 }

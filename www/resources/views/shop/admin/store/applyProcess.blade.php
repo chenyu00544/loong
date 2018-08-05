@@ -94,47 +94,6 @@
 @section('script')
     <script>
         $(function () {
-            $('.switch').click(function () {
-                var val = 0;
-                if ($(this).hasClass('active')) {
-                    val = 0;
-                    $(this).removeClass('active');
-                } else {
-                    val = 1;
-                    $(this).addClass('active');
-                }
-
-                var tag = $(this).data('type');
-                var id = $(this).children('input').val();
-                $.post(
-                    '{{url("admin/msp/change")}}',
-                    {
-                        id: id,
-                        type: tag,
-                        val: val,
-                        _token: '{{csrf_token()}}'
-                    },
-                    function (data) {
-
-                    }
-                );
-            });
-
-            $('.order').change(function () {
-                $.post(
-                    '{{url("admin/msp/change")}}',
-                    {
-                        id: $(this).data('id'),
-                        val: $(this).val(),
-                        type: 'order',
-                        _token: '{{csrf_token()}}'
-                    },
-                    function (data) {
-                        layer.msg(data.msg, {icon: data.code});
-                    }
-                );
-            });
-
             $('.btn-del').click(function () {
                 var that = this;
                 var Id = $(this).data('id');
@@ -142,7 +101,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/msp/')}}/" + Id,
+                        "{{url('admin/applyprocess/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});

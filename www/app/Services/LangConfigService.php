@@ -28,6 +28,11 @@ class LangConfigService
         return Config::get('languages.'.Config::get('config')['lang_type'].'.navigation');
     }
 
+    public static function LangSellerNavConf()
+    {
+        return Config::get('languages.'.Config::get('config')['lang_type'].'.seller_navigation');
+    }
+
     public static function LangAdminShopConf()
     {
         return Config::get('languages.'.Config::get('config')['lang_type'].'.admin.shop_config');

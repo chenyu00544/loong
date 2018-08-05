@@ -16,7 +16,7 @@
                         <a href="{{url('admin/store/privilege')}}">入驻初始化权限</a>
                     </li>
                     <li class="@if($nav == 'grade') curr @endif fl">
-                        <a href="{{url('admin/store/grade')}}">店铺等级</a>
+                        <a href="{{url('admin/grade')}}">店铺等级</a>
                     </li>
                 </ul>
             </div>

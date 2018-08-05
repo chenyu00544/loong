@@ -202,15 +202,17 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('returncause/change', 'ReturnCauseController@change');
     Route::resource('returncause', 'ReturnCauseController');
 
+    Route::get('store/privilege', 'StoreController@privilegeEdit');
+    Route::post('store/allot/{id}', 'StoreController@allot');
     Route::resource('store', 'StoreController');
+
+    Route::get('storelist/real', 'StoreListController@real');
+    Route::resource('storelist', 'StoreListController');
 
     Route::post('msp/change', 'MerchantsStepsProcessController@change');
     Route::resource('msp', 'MerchantsStepsProcessController');
 
     Route::resource('applyprocess', 'ApplyProcessController');
-
-    Route::get('storelist/real', 'StoreController@real');
-    Route::resource('storelist', 'StoreListController');
 
     Route::get('ad/add/{id}', 'AdvertiseController@adAdd');
     Route::get('ad/edit/{id}/{type}', 'AdvertiseController@adEdit');
