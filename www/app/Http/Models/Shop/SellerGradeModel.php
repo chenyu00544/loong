@@ -27,7 +27,7 @@ class SellerGradeModel extends Model
     {
         return $this->select($column)
             ->where($where)
-            ->orderBy('is_default', 'desc')
+            ->orderBy('id', 'asc')
             ->paginate($size);
     }
 
@@ -45,5 +45,29 @@ class SellerGradeModel extends Model
             ->with(['mpri'])
             ->where($where)
             ->first();
+    }
+
+    public function getSellerGrade($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setSellerGrade($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addSellerGrade($data)
+    {
+        return $this->create($data);
+    }
+
+    public function delSellerGrade($where)
+    {
+        return $this->where($where)
+            ->delete();
     }
 }

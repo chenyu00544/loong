@@ -34,6 +34,8 @@
                 <div>
                     <a href="{{url('admin/sellergrade/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加　</a>
+                    <a href="{{url('admin/entrycriteria')}}"
+                       class="btn btn-info btn-add btn-sm">　加入标准　</a>
                 </div>
                 <div class="main-info">
                     <table class="table table-hover">
@@ -58,26 +60,27 @@
                         @endif
                         @foreach($grades as $grade)
                             <tr>
-                                <th>{{$grade->id}}</th>
+                                <th>{{$grade->grade_name}}</th>
                                 <td>
-                                    <input class="form-control input-sm order wd-120" type="text" data-id="{{$grade->id}}"
-                                           name="ord[]"
-                                           value="{{$grade->steps_sort}}">
+                                    <input class="form-control input-sm order wd-80" type="text"
+                                           data-id="{{$grade->id}}" name="goods_sun" data-type="goods_sun"
+                                           value="{{$grade->goods_sun}}">
                                 </td>
                                 <td>
-                                    <input class="form-control input-sm order wd-120" type="text" data-id="{{$grade->id}}"
-                                           name="ord[]"
-                                           value="{{$grade->steps_sort}}">
+                                    <input class="form-control input-sm order wd-80" type="text"
+                                           data-id="{{$grade->id}}" data-type="seller_temp"
+                                           name="seller_temp"
+                                           value="{{$grade->seller_temp}}">
                                 </td>
                                 <td>
-                                    {{$grade->id}}
+                                    {{$grade->grade_introduce}}
                                 </td>
                                 <td>
-                                    {{$grade->id}}
+                                    {{$grade->entry_criteria}}
                                 </td>
                                 <td>
                                     <div class="switch-wrap clearfix">
-                                        <div class="switch @if($grade->is_show) active @endif" data-type="is_show"
+                                        <div class="switch @if($grade->is_open) active @endif" data-type="is_open"
                                              title="是">
                                             <div class="circle"></div>
                                             <input type="hidden" value="{{$grade->id}}">
@@ -85,17 +88,18 @@
                                     </div>
                                 </td>
                                 <td>
-                                    {{$grade->id}}
+                                    @if($grade->is_default == 1) 是 @else - @endif
                                 </td>
                                 <td>
-                                    {{$grade->id}}
+                                    <img src="{{url($grade->grade_img)}}" width="25" height="25">
                                 </td>
                                 <td class="text-center">
                                     <a class="btn btn-primary btn-edit btn-sm"
-                                       href="{{url('admin/applyprocess/'.$grade->id)}}">分配等级权限</a>
+                                       href="{{url('admin/store/privilege')}}">分配等级权限</a>
                                     <a href="{{url('admin/sellergrade/'.$grade->id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$grade->id}}">删除</a>
+                                    <a type="button" class="btn btn-danger btn-del btn-sm"
+                                       data-id="{{$grade->id}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -131,6 +135,24 @@
                     {
                         id: id,
                         type: tag,
+                        val: val,
+                        _token: '{{csrf_token()}}'
+                    },
+                    function (data) {
+
+                    }
+                );
+            });
+
+            $('input').change(function () {
+                var type = $(this).data('type');
+                var id = $(this).data('id');
+                var val = $(this).val();
+                $.post(
+                    '{{url("admin/sellergrade/change")}}',
+                    {
+                        id: id,
+                        type: type,
                         val: val,
                         _token: '{{csrf_token()}}'
                     },

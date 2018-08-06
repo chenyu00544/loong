@@ -4,26 +4,22 @@
  * User: Administrator - chenyu
  * Date: 2018/6/22
  * Time: 16:58
- * Desc:
+ * Desc: 
  */
 
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\SellerGradeRepository;
 use Illuminate\Http\Request;
 
-class SellerGradeController extends CommonController
+class EntryCriteriaController extends CommonController
 {
-    private $sellerGradeRepository;
 
     public function __construct(
-        SellerGradeRepository $sellerGradeRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('store');
-        $this->sellerGradeRepository = $sellerGradeRepository;
     }
 
     /**
@@ -31,18 +27,10 @@ class SellerGradeController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $nav = 'grade';
-        $grades = $this->sellerGradeRepository->getSellerGradesByPage();
-        return view('shop.admin.sellergrade.grade', compact('nav', 'grades'));
-    }
 
-    public function change(Request $request)
-    {
-        return $this->sellerGradeRepository->change($request->except('_token'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -51,8 +39,6 @@ class SellerGradeController extends CommonController
      */
     public function create()
     {
-        $ecs = $this->sellerGradeRepository->getEntryCriterias(['parent_id' => 0]);
-        return view('shop.admin.sellergrade.gradeAdd', compact('ecs'));
     }
 
     /**
@@ -63,11 +49,11 @@ class SellerGradeController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ['grade_name' => 'required']);
+        $ver = Verifiable::Validator($request->all(), []);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->sellerGradeRepository->addSellerGrade($request->except('_token'));
+        $re = $this->xxxxxxxxxxxxxx->xxxxxxxxxxxxxx($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -90,9 +76,7 @@ class SellerGradeController extends CommonController
      */
     public function edit($id)
     {
-        $grade = $this->sellerGradeRepository->getSellerGrade($id);
-        $ecs = $this->sellerGradeRepository->getEntryCriterias(['parent_id' => 0]);
-        return view('shop.admin.sellergrade.gradeEdit', compact('grade', 'ecs'));
+        //
     }
 
     /**
@@ -104,11 +88,11 @@ class SellerGradeController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ['grade_name' => 'required']);
+        $ver = Verifiable::Validator($request->all(), []);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->sellerGradeRepository->setSellerGrade($request->except('_token', '_method'), $id);
+        $re = $this->xxxxxxxxxxxxxx->XXXXXXXXXXXXXX($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -120,6 +104,6 @@ class SellerGradeController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->sellerGradeRepository->delSellerGrade($id);
+
     }
 }
