@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AccountLogModel extends Model
 {
-    protected $table = ' account_log';
+    protected $table = 'account_log';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];

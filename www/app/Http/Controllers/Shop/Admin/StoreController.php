@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Html;
 use App\Facades\ShopConfig;
 use App\Facades\Verifiable;
+use App\Repositories\MerchantsRepository;
 use App\Repositories\StoreRepository;
 use Illuminate\Http\Request;
 
@@ -19,14 +20,17 @@ class StoreController extends CommonController
 {
 
     private $storeRepository;
+    private $merchantsRepository;
 
     public function __construct(
-        StoreRepository $storeRepository
+        StoreRepository $storeRepository,
+        MerchantsRepository $merchantsRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('store');
         $this->storeRepository = $storeRepository;
+        $this->merchantsRepository = $merchantsRepository;
     }
 
     /**
@@ -46,18 +50,24 @@ class StoreController extends CommonController
     public function privilegeEdit()
     {
         $nav = 'privilege';
-        $navs = $this->sellerPrivilege();dd($navs);
-        return view('shop.admin.store.privilege', compact('navs', 'nav'));
+        $sellernavs = $this->sellerPrivilege();
+        $gradeprivilege = $this->merchantsRepository->getSellerGradesByPri();
+        return view('shop.admin.store.privilege', compact('sellernavs', 'nav', 'gradeprivilege'));
+    }
+
+    public function searchSellerGradesByPri(Request $request)
+    {
+        return $this->merchantsRepository->getSellerGradeByPri($request->except('_token'));
     }
 
     //分配初始化权限
-    public function allot(Request $request, $id)
+    public function allot(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["fields_steps" => 'required', "fields_titles" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["grade" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->merchantsRepository->addMerchantsStepsFieldsCentent($request->except('_token'));
+        $re = $this->merchantsRepository->setSellerGrade($request->except('_token'));
         return view('shop.admin.success');
     }
 

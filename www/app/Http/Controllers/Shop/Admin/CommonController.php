@@ -70,32 +70,12 @@ class CommonController extends Controller
     public function sellerPrivilege()
     {
         $nav = LangConfig::LangSellerNavConf();
-        if (!empty($this->user) && empty($this->user->action_list['all'])) {
-            foreach ($nav['index'] as $key => $value) {
-                foreach ($nav[$key] as $k => $val) {
-                    if (empty($this->user->action_list[$k])) {
-                        unset($nav[$key][$k]);
-                    }
-                    foreach ($nav[$k] as $n => $m) {
-                        if (empty($this->user->action_list[$n])) {
-                            unset($nav[$k][$n]);
-                        }
-                    }
-                }
-            }
-        }
-        foreach ($nav as $key => $value) {
-            if (empty($nav[$key])) {
-                unset($nav[$key]);
-            }
-        }
         foreach ($nav['index'] as $key => $value) {
             if (empty($nav[$key])) {
                 unset($nav['index'][$key]);
                 unset($nav[$key]);
             }
         }
-
         return $nav;
     }
 

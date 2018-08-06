@@ -179,7 +179,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('database/runoptimize', 'DataBaseController@runOptimize');
     Route::resource('database', 'DataBaseController');
 
-
     Route::get('order/paymentedit/{id}', 'OrderController@paymentEdit');
     Route::get('order/expressedit/{id}', 'OrderController@expressEdit');
     Route::get('order/consigneeedit/{id}', 'OrderController@consigneeEdit');
@@ -203,8 +202,12 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('returncause', 'ReturnCauseController');
 
     Route::get('store/privilege', 'StoreController@privilegeEdit');
-    Route::post('store/allot/{id}', 'StoreController@allot');
+    Route::post('store/searchpriv', 'StoreController@searchSellerGradesByPri');
+    Route::post('store/allot/', 'StoreController@allot');
     Route::resource('store', 'StoreController');
+
+    Route::resource('sellergrade/priv', 'SellerGradeController@privilege');
+    Route::resource('sellergrade', 'SellerGradeController');
 
     Route::get('storelist/real', 'StoreListController@real');
     Route::resource('storelist', 'StoreListController');

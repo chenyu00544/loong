@@ -12,6 +12,7 @@ use App\Contracts\SearchRepositoryInterface;
 use App\Http\Models\Shop\BrandModel;
 use App\Http\Models\shop\CategoryModel;
 use App\Http\Models\Shop\GoodsModel;
+use App\Http\Models\Shop\SellerGradeModel;
 use App\Http\Models\Shop\UserRankModel;
 use App\Http\Models\Shop\UsersModel;
 
@@ -95,4 +96,5 @@ class SearchRepository implements SearchRepositoryInterface
         }
         return $req;
     }
+
 }

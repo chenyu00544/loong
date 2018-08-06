@@ -9,25 +9,33 @@
 namespace App\Repositories;
 
 use App\Contracts\MerchantsRepositoryInterface;
+use App\Http\Models\Shop\MerchantsPrivilegeModel;
 use App\Http\Models\Shop\MerchantsStepsFieldsCententModel;
 use App\Http\Models\Shop\MerchantsStepsProcessModel;
 use App\Http\Models\Shop\MerchantsStepsTitleModel;
+use App\Http\Models\Shop\SellerGradeModel;
 
 class MerchantsRepository implements MerchantsRepositoryInterface
 {
     private $merchantsStepsProcessModel;
     private $merchantsStepsTitleModel;
     private $merchantsStepsFieldsCententModel;
+    private $sellerGradeModel;
+    private $merchantsPrivilegeModel;
 
     public function __construct(
         MerchantsStepsProcessModel $merchantsStepsProcessModel,
         MerchantsStepsTitleModel $merchantsStepsTitleModel,
-        MerchantsStepsFieldsCententModel $merchantsStepsFieldsCententModel
+        MerchantsStepsFieldsCententModel $merchantsStepsFieldsCententModel,
+        SellerGradeModel $sellerGradeModel,
+        MerchantsPrivilegeModel $merchantsPrivilegeModel
     )
     {
         $this->merchantsStepsProcessModel = $merchantsStepsProcessModel;
         $this->merchantsStepsTitleModel = $merchantsStepsTitleModel;
         $this->merchantsStepsFieldsCententModel = $merchantsStepsFieldsCententModel;
+        $this->sellerGradeModel = $sellerGradeModel;
+        $this->merchantsPrivilegeModel = $merchantsPrivilegeModel;
     }
 
     public function getMerchantsStepsProcessByPage()
@@ -136,7 +144,7 @@ class MerchantsRepository implements MerchantsRepositoryInterface
             } elseif ($fieldsArr[0] == 'other') {
                 $arr = explode(',', $fieldsSub[0]);
                 $merchants_formOther[$key] = $arr[0];
-                if($arr[0] == 'dateTime'){
+                if ($arr[0] == 'dateTime') {
                     $merchants_formOtherSize[$key] = $arr[1];
                 }
             }
@@ -223,23 +231,23 @@ class MerchantsRepository implements MerchantsRepositoryInterface
                         foreach ($value as $k => $v) {
                             switch ($v) {
                                 case 'input':
-                                    $fieldsForm .= $v . ':' . $data['merchants_formSize'][$k] . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                    $fieldsForm .= $v . ':' . $data['merchants_formSize'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     break;
                                 case 'textarea':
-                                    $fieldsForm .= $v . ':' . $data['merchants_rows'][$k] . ',' . $data['merchants_cols'][$k] . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                    $fieldsForm .= $v . ':' . $data['merchants_rows'][$k] . ',' . $data['merchants_cols'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     break;
                                 case 'radio':
                                 case 'checkbox':
-                                    $fieldsForm .= $v . ':' . implode(',', $data['radio_checkbox'][$k]) . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                    $fieldsForm .= $v . ':' . implode(',', $data['radio_checkbox'][$k]) . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     break;
                                 case 'select':
                                     $fieldsForm .= $v . ':' . implode(',', $data['select'][$k]) . '+' . $data['formName_special'][$k] . '|';
                                     break;
                                 case 'other':
                                     if ($data['merchants_formOther'][$k] == 'textArea' || $data['merchants_formOther'][$k] == 'file') {
-                                        $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                        $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     } elseif ($data['merchants_formOther'][$k] == 'dateTime') {
-                                        $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . ',' . $data['merchants_formOtherSize'][$k] . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                        $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . ',' . $data['merchants_formOtherSize'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     }
                                     break;
                             }
@@ -259,7 +267,7 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         unset($tupdata['tid']);
         $re = $this->merchantsStepsTitleModel->setMerchantsStepsTitle($twhere, $tupdata);
         $res = $this->merchantsStepsFieldsCententModel->setMerchantsStepsFieldsCentent($cwhere, $cupdata);
-        if($re && $res){
+        if ($re && $res) {
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;
@@ -303,23 +311,23 @@ class MerchantsRepository implements MerchantsRepositoryInterface
                         foreach ($value as $k => $v) {
                             switch ($v) {
                                 case 'input':
-                                    $fieldsForm .= $v . ':' . $data['merchants_formSize'][$k] . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                    $fieldsForm .= $v . ':' . $data['merchants_formSize'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     break;
                                 case 'textarea':
-                                    $fieldsForm .= $v . ':' . $data['merchants_rows'][$k] . ',' . $data['merchants_cols'][$k] . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                    $fieldsForm .= $v . ':' . $data['merchants_rows'][$k] . ',' . $data['merchants_cols'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     break;
                                 case 'radio':
                                 case 'checkbox':
-                                    $fieldsForm .= $v . ':' . implode(',', $data['radio_checkbox'][$k]) . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                    $fieldsForm .= $v . ':' . implode(',', $data['radio_checkbox'][$k]) . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     break;
                                 case 'select':
-                                    $fieldsForm .= $v . ':' . implode(',', $data['select'][$k]) . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                    $fieldsForm .= $v . ':' . implode(',', $data['select'][$k]) . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     break;
                                 case 'other':
                                     if ($data['merchants_formOther'][$k] == 'textArea' || $data['merchants_formOther'][$k] == 'file') {
-                                        $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                        $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     } elseif ($data['merchants_formOther'][$k] == 'dateTime') {
-                                        $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . ',' . $data['merchants_formOtherSize'][$k] . '+' . ($data['formName_special'][$k]?$data['formName_special'][$k]:' ') . '|';
+                                        $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . ',' . $data['merchants_formOtherSize'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     }
                                     break;
                             }
@@ -344,4 +352,45 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         }
     }
 
+    public function getSellerGradesByPri()
+    {
+        $rep = $this->sellerGradeModel->getSellerGradesByPri();
+        foreach ($rep as $val) {
+            $val->mpri->action_list = explode(',', $val->mpri->action_list);
+        }
+        return $rep;
+    }
+
+    public function getSellerGradeByPri($data)
+    {
+        $where['id'] = $data['id'];
+        $rep = $this->sellerGradeModel->getSellerGradeByPri($where);
+        $rep->mpri->action_list = explode(',', $rep->mpri->action_list);
+        return $rep->mpri->action_list;
+    }
+
+    public function setSellerGrade($data)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $where['grade_id'] = $data['grade'];
+        $code = [];
+        foreach ($data as $key => $val){
+            if($key == 'grade'){
+                unset($data[$key]);
+            }elseif($key == 'initialize_allot'){
+                unset($data[$key]);
+            }else{
+                if(!empty($val['code'])){
+                    $code[] = $val['code'];
+                }
+            }
+        }
+
+        $updata['action_list'] = implode(',', $code);
+        $re = $this->merchantsPrivilegeModel->setMerchantsPrivilege($where, $updata);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
 }
