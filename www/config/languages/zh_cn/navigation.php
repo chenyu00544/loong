@@ -42,6 +42,7 @@ return array(
         'users' => '会员',
         'examine' => '权限',
         'database' => '数据',
+        'selfshop' => '自营',
     ),
     'third_party' => array(
         'sms' => '短信',
@@ -247,6 +248,12 @@ return array(
         'optimize' => array(
             'name' => '数据表优化',
             'url' => 'admin/database/optimize',
+        ),
+    ),
+    'selfshop' => array(
+        'self' => array(
+            'name' => '自营设置',
+            'url' => 'admin/shopconf/self',
         ),
     ),
 

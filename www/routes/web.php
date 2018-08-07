@@ -52,7 +52,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::resource('search', 'SearchController');
 
-//    Route::get('shopsetup', 'ShopConfController@index');
+    Route::get('shopconf/self', 'ShopConfController@selfShopConf');
     Route::resource('shopconf', 'ShopConfController');
 
     Route::post('express/install/{id}', 'ExpressController@install');
@@ -213,6 +213,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('entrycriteria', 'EntryCriteriaController');
 
     Route::get('storelist/real', 'StoreListController@real');
+    Route::post('storelist/change', 'StoreListController@change');
     Route::resource('storelist', 'StoreListController');
 
     Route::post('msp/change', 'MerchantsStepsProcessController@change');

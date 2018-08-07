@@ -65,4 +65,10 @@ class MerchantsShopInformationModel extends Model
             ->where($where)
             ->first();
     }
+
+    public function setMerchantsShopInfo($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
 }

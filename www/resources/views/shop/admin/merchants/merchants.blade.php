@@ -48,17 +48,17 @@
                     <table class="table table-hover table-condensed" style="margin-bottom: 2px">
                         <thead>
                         <tr>
-                            <th width="3%">店铺编号</th>
-                            <th width="10%">【ID】会员名称</th>
+                            <th width="5%">编号</th>
+                            <th width="10%">[ID]会员名称</th>
                             <th width="12%">店铺名称</th>
                             <th width="8%">公司类型</th>
                             <th width="5%">等级</th>
-                            <th width="10%">主营类目</th>
-                            <th width="8%">入驻审核状态</th>
-                            <th width="5%">排序</th>
+                            <th width="12%">主营类目</th>
+                            <th width="10%">入驻审核状态</th>
+                            <th width="7%">排序</th>
                             <th width="5%">店铺街</th>
-                            <th width="5%">在线客服</th>
-                            <th width="5%">店铺信息</th>
+                            <th width="6%">在线客服</th>
+                            <th width="7%">店铺信息</th>
                             <th width="14%" class="text-center">操作</th>
                         </tr>
                         </thead>
@@ -73,7 +73,7 @@
                             @foreach($stores as $store)
                                 <tr class="">
                                     <td>{{$store->shop_id}}</td>
-                                    <td>【{{$store->user_id}}】{{$store->rz_shopName}}</td>
+                                    <td>[{{$store->user_id}}]{{$store->user->user_name}}</td>
                                     <td>
                                         <font class="red">{{$store->rz_shopName}}</font>
                                     </td>
@@ -134,15 +134,19 @@
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        <a type="button" href="{{url('admin/storelist/'.$store->cou_id.'/edit')}}"
-                                           class="btn btn-info btn-edit btn-sm">店铺管理</a>
-                                        <a type="button" href="{{url('admin/storelist/'.$store->cou_id.'/edit')}}"
-                                           class="btn btn-info btn-edit btn-sm">入驻信息</a>
-                                        <a type="button" href="{{url('admin/storelist/'.$store->cou_id.'/edit')}}"
-                                           class="btn btn-info btn-edit btn-sm">编辑</a>
-                                        <a type="button" href="javascript:;"
-                                           class="btn btn-danger btn-del btn-sm"
-                                           data-id="{{$store->cou_id}}">删除</a>
+                                        <div>
+                                            <a type="button" href="{{url('admin/storelist/'.$store->cou_id.'/edit')}}"
+                                               class="btn btn-info btn-edit btn-sm">店铺管理</a>
+                                            <a type="button" href="{{url('admin/storelist/'.$store->cou_id.'/edit')}}"
+                                               class="btn btn-info btn-edit btn-sm">入驻信息</a>
+                                        </div>
+                                        <div>
+                                            <a type="button" href="{{url('admin/storelist/'.$store->shop_id.'/edit')}}"
+                                               class="btn btn-info btn-edit btn-sm">编辑</a>
+                                            <a type="button" href="javascript:;"
+                                               class="btn btn-danger btn-del btn-sm"
+                                               data-id="{{$store->cou_id}}">删除</a>
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
@@ -218,7 +222,7 @@
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
                             if (data.code == 1) {
-                                $(that).parent().parent().remove();
+                                $(that).parent().parent().parent().remove();
                             }
                         });
                 }, function () {

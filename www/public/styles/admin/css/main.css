@@ -108,6 +108,10 @@ option {
     margin: 3px;
 }
 
+textarea{
+    min-height: 100px;
+}
+
 .wsn {
     white-space: normal;
 }
@@ -677,6 +681,14 @@ option {
 
 .current .icon_wxapp {
     background-position: -26px -874px;
+}
+
+.icon_selfshop {
+    background-position: 2px -440px;
+}
+
+.current .icon_selfshop {
+    background-position: -23px -440px;
 }
 
 .nav-left .sub-nav .sub-item li {

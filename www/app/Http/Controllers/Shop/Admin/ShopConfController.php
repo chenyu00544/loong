@@ -12,17 +12,28 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Html;
 use App\Facades\LangConfig;
 use App\Facades\ShopConfig;
+use App\Repositories\RegionsRepository;
+use App\Repositories\SellerGradeRepository;
 use Illuminate\Http\Request;
 
 class ShopConfController extends CommonController
 {
-    public function __construct()
+
+    private $sellerGradeRepository;
+    private $regionsRepository;
+
+    public function __construct(
+        SellerGradeRepository $sellerGradeRepository,
+        RegionsRepository $regionsRepository
+    )
     {
         parent::__construct();
         $this->checkPrivilege('shopsetup');
+        $this->sellerGradeRepository = $sellerGradeRepository;
+        $this->regionsRepository = $regionsRepository;
     }
 
-    public function index(Request $req)
+    public function index(Request $request)
     {
         $lang = LangConfig::LangAdminConf();
         $lang += LangConfig::LangAdminShopConf();
@@ -31,10 +42,21 @@ class ShopConfController extends CommonController
         return view('shop.admin.shopConf', compact('lang', 'conf'));
     }
 
-    //post/config  添加提交的数据
-    public function store(Request $req)
+    public function store(Request $request)
     {
-        ShopConfig::setConf($req->all());
+        ShopConfig::setConf($request->all());
+        return view('shop.admin.success');
+    }
+
+    public function selfShopConf(Request $request)
+    {
+        $self = $this->sellerGradeRepository->getSellerShopInfo(['ru_id' => $this->user->ru_id]);
+        return view('shop.admin.self.selfShopConf', compact('self'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $re = $this->sellerGradeRepository->setSellerShopInfo($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 }

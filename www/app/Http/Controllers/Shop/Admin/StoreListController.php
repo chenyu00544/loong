@@ -34,8 +34,13 @@ class StoreListController extends CommonController
     {
         $snav = 'storelist';
         $search['keywords'] = '';
-        $stores = $this->storeListRepository->getStoreListByPage($search);
+        $stores = $this->storeListRepository->getStoresByPage($search);
         return view('shop.admin.merchants.merchants', compact('snav', 'search', 'stores'));
+    }
+
+    public function change(Request $request)
+    {
+        return $this->storeListRepository->setStore($request->except('_token'));
     }
 
     /**

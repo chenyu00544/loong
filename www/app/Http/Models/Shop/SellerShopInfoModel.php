@@ -17,4 +17,17 @@ class SellerShopInfoModel extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function getSellerShopInfo($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setSellerShopInfo($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
 }
