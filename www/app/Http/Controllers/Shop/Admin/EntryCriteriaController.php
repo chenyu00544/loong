@@ -10,16 +10,21 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
+use App\Repositories\EntryCriteriaRepository;
 use Illuminate\Http\Request;
 
 class EntryCriteriaController extends CommonController
 {
 
+    private $entryCriteriaRepository;
+
     public function __construct(
+        EntryCriteriaRepository $entryCriteriaRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('store');
+        $this->entryCriteriaRepository = $entryCriteriaRepository;
     }
 
     /**
@@ -27,9 +32,10 @@ class EntryCriteriaController extends CommonController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-
+        $criterias = $this->entryCriteriaRepository->getEntryCriteriasByPage(['parent_id'=>0]);
+        return view('shop.admin.entrycriteria.criteria', compact('criterias'));
     }
 
     /**
@@ -39,6 +45,8 @@ class EntryCriteriaController extends CommonController
      */
     public function create()
     {
+        $parents = $this->entryCriteriaRepository->getEntryCriterias(['parent_id'=>0]);
+        return view('shop.admin.entrycriteria.criteriaAdd', compact('parents'));
     }
 
     /**
@@ -49,11 +57,11 @@ class EntryCriteriaController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), []);
+        $ver = Verifiable::Validator($request->all(), ["criteria_name" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->xxxxxxxxxxxxxx->xxxxxxxxxxxxxx($request->except('_token'));
+        $re = $this->entryCriteriaRepository->addEntryCriteria($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -65,7 +73,8 @@ class EntryCriteriaController extends CommonController
      */
     public function show(Request $request, $id)
     {
-
+        $criterias = $this->entryCriteriaRepository->getEntryCriteriasByPage(['parent_id'=>$id]);
+        return view('shop.admin.entrycriteria.criteria', compact('criterias'));
     }
 
     /**
@@ -76,7 +85,9 @@ class EntryCriteriaController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $parents = $this->entryCriteriaRepository->getEntryCriterias(['parent_id'=>0]);
+        $ec = $this->entryCriteriaRepository->getEntryCriteria($id);
+        return view('shop.admin.entrycriteria.criteriaEdit', compact('parents', 'ec'));
     }
 
     /**
@@ -88,11 +99,11 @@ class EntryCriteriaController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), []);
+        $ver = Verifiable::Validator($request->all(), ["criteria_name" => 'required', "type" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->xxxxxxxxxxxxxx->XXXXXXXXXXXXXX($request->except('_token', '_method'), $id);
+        $re = $this->entryCriteriaRepository->setEntryCriteria($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -104,6 +115,6 @@ class EntryCriteriaController extends CommonController
      */
     public function destroy($id)
     {
-
+        return $this->entryCriteriaRepository->delEntryCriterias($id);
     }
 }

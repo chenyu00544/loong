@@ -63,7 +63,6 @@ class OrderInfoModel extends Model
                 }
             });
         }
-//        dd($m->toSql());
         return $m->paginate($size);
     }
 

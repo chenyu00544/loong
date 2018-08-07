@@ -42,7 +42,7 @@
 
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
                                    class="form-control input-sm max-wd-190" placeholder="广告名称">
-                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr lh22" value="查询">
+                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr" value="查询">
                         </form>
                     </div>
                 </div>

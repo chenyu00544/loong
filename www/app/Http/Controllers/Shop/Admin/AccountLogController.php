@@ -67,7 +67,7 @@ class AccountLogController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), []);
+        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
@@ -106,7 +106,7 @@ class AccountLogController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), []);
+        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }

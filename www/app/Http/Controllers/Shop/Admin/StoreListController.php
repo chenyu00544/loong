@@ -9,15 +9,20 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\StoreListRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class StoreListController extends CommonController
 {
-    public function __construct()
+    private $storeListRepository;
+
+    public function __construct(
+        StoreListRepository $storeListRepository
+    )
     {
         parent::__construct();
         $this->checkPrivilege('storelist');
+        $this->storeListRepository = $storeListRepository;
     }
 
     /**
@@ -27,7 +32,10 @@ class StoreListController extends CommonController
      */
     public function index()
     {
-        //
+        $snav = 'storelist';
+        $search['keywords'] = '';
+        $stores = $this->storeListRepository->getStoreListByPage($search);
+        return view('shop.admin.merchants.merchants', compact('snav', 'search', 'stores'));
     }
 
     /**
@@ -57,9 +65,12 @@ class StoreListController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        //
+        $snav = 'storelist';
+        $search['keywords'] = $request->get('keywords');
+        $stores = $this->storeListRepository->getStoreListByPage($search);
+        return view('shop.admin.merchants.merchants', compact('snav', 'search', 'stores'));
     }
 
     /**

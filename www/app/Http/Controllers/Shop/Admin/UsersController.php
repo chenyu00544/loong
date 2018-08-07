@@ -67,7 +67,7 @@ class UsersController extends CommonController
         $now_date = date('Y-m-d');
         $user = $this->usersRepository->getUser($id);
         $userRanks = $this->userRankRepository->getUserRanks();
-        $regFields = $this->regFieldsRepository->getRegFields(['display' => 1]);
+        $regFields = $this->regFieldsRepository->getRegFields();
         $userNav = $this->usersRepository->getUserEditNav();
         return view('shop.admin.users.userEdit', compact('user', 'regFields', 'userRanks', 'userNav', 'navType', 'now_date'));
     }

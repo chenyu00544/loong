@@ -117,7 +117,7 @@ option {
 }
 
 .btn-group-sm > .btn, .btn-sm {
-    padding: 3px 10px;
+    padding: 5px 10px;
 }
 
 .monthselect {
@@ -1260,6 +1260,10 @@ i.sc-icon-sub-small {
 
 .yellow {
     color: yellow;
+}
+
+.skyblue {
+    color: #4374dd;
 }
 
 .no-records {

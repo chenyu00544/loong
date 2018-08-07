@@ -33,7 +33,7 @@ class RegFieldsController extends CommonController
      */
     public function index()
     {
-        $regfields = $this->regFieldsRepository->getRegFields();
+        $regfields = $this->regFieldsRepository->getRegFields([]);
         return view('shop.admin.regfields.regfields', compact('regfields'));
     }
 
