@@ -10,21 +10,30 @@ namespace App\Repositories;
 
 use App\Contracts\StoreListRepositoryInterface;
 use App\Http\Models\Shop\MerchantsShopInformationModel;
+use App\Http\Models\Shop\RegionsModel;
 
 class StoreListRepository implements StoreListRepositoryInterface
 {
 
     private $merchantsShopInformationModel;
+    private $regionsModel;
 
     public function __construct(
-        MerchantsShopInformationModel $merchantsShopInformationModel
+        MerchantsShopInformationModel $merchantsShopInformationModel,
+        RegionsModel $regionsModel
     )
     {
         $this->merchantsShopInformationModel = $merchantsShopInformationModel;
+        $this->regionsModel = $regionsModel;
     }
 
-    public function getStoresByPage($search, $where= [])
+    public function getStoresByPage($search, $where= [], $type = '')
     {
+        if($type == 'maudit'){
+            $search['examine'] = 1;
+        }elseif ($type == 'saudit'){
+            $search['examine'] = 2;
+        }
         return $this->merchantsShopInformationModel->getMerchantsShopsByPage($where, $search);
     }
 
@@ -53,4 +62,5 @@ class StoreListRepository implements StoreListRepositoryInterface
         }
         return $req;
     }
+
 }

@@ -13,23 +13,23 @@ use App\Facades\Html;
 use App\Facades\LangConfig;
 use App\Facades\ShopConfig;
 use App\Repositories\RegionsRepository;
-use App\Repositories\SellerGradeRepository;
+use App\Repositories\SellerRepository;
 use Illuminate\Http\Request;
 
 class ShopConfController extends CommonController
 {
 
-    private $sellerGradeRepository;
+    private $sellerRepository;
     private $regionsRepository;
 
     public function __construct(
-        SellerGradeRepository $sellerGradeRepository,
+        SellerRepository $sellerRepository,
         RegionsRepository $regionsRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('shopsetup');
-        $this->sellerGradeRepository = $sellerGradeRepository;
+        $this->sellerRepository = $sellerRepository;
         $this->regionsRepository = $regionsRepository;
     }
 
@@ -50,13 +50,13 @@ class ShopConfController extends CommonController
 
     public function selfShopConf(Request $request)
     {
-        $self = $this->sellerGradeRepository->getSellerShopInfo(['ru_id' => $this->user->ru_id]);
+        $self = $this->sellerRepository->getSellerShopInfo(['ru_id' => $this->user->ru_id]);
         return view('shop.admin.self.selfShopConf', compact('self'));
     }
 
     public function update(Request $request, $id)
     {
-        $re = $this->sellerGradeRepository->setSellerShopInfo($request->except('_token', '_method'), $id);
+        $re = $this->sellerRepository->setSellerShopInfo($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 }

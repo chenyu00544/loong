@@ -9,20 +9,24 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\SellerRepository;
 use App\Repositories\StoreListRepository;
 use Illuminate\Http\Request;
 
 class StoreListController extends CommonController
 {
     private $storeListRepository;
+    private $sellerRepository;
 
     public function __construct(
-        StoreListRepository $storeListRepository
+        StoreListRepository $storeListRepository,
+        SellerRepository $sellerRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('storelist');
         $this->storeListRepository = $storeListRepository;
+        $this->sellerRepository = $sellerRepository;
     }
 
     /**
@@ -41,6 +45,25 @@ class StoreListController extends CommonController
     public function change(Request $request)
     {
         return $this->storeListRepository->setStore($request->except('_token'));
+    }
+
+    public function info($id)
+    {
+        $nav = 'info';
+        $info = $this->sellerRepository->getSellerShopInfo(['ru_id' => $id]);
+        dd($info);
+        return view('shop.admin.merchants.shopSetup', compact('id', 'nav', 'info'));
+    }
+
+    public function setShopInfo()
+    {
+
+    }
+
+    public function privilegeEdit($id)
+    {
+        $nav = 'priv';
+        return view('shop.admin.merchants.shopSetup', compact('id', 'nav'));
     }
 
     /**
@@ -74,7 +97,7 @@ class StoreListController extends CommonController
     {
         $snav = 'storelist';
         $search['keywords'] = $request->get('keywords');
-        $stores = $this->storeListRepository->getStoreListByPage($search);
+        $stores = $this->storeListRepository->getStoresByPage($search, [], $id);
         return view('shop.admin.merchants.merchants', compact('snav', 'search', 'stores'));
     }
 

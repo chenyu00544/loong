@@ -206,13 +206,16 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('store/allot/', 'StoreController@allot');
     Route::resource('store', 'StoreController');
 
-    Route::get('sellergrade/priv', 'SellerGradeController@privilege');
+    Route::get('sellergrade/priv', 'SellerGradeController@privilegeEdit');
     Route::post('sellergrade/change', 'SellerGradeController@change');
     Route::resource('sellergrade', 'SellerGradeController');
 
     Route::resource('entrycriteria', 'EntryCriteriaController');
 
     Route::get('storelist/real', 'StoreListController@real');
+    Route::get('storelist/priv/{id}', 'StoreListController@privilegeEdit');
+    Route::get('storelist/info/{id}', 'StoreListController@info');
+    Route::post('storelist/setinfo/{id}', 'StoreListController@setShopInfo');
     Route::post('storelist/change', 'StoreListController@change');
     Route::resource('storelist', 'StoreListController');
 

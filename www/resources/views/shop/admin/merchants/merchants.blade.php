@@ -31,9 +31,8 @@
             <div class="fromlist clearfix">
                 <div class="clearfix mar-bt-20">
                     <a href="{{url('admin/storelist/create')}}" class="btn btn-success btn-add btn-sm">添加店铺</a>
-                    <a href="{{url('admin/storelist/create')}}" class="btn btn-success btn-add btn-sm">初始化店铺等级</a>
-                    <a href="{{url('admin/storelist/create')}}" class="btn btn-success btn-add btn-sm">入驻未审核</a>
-                    <a href="{{url('admin/storelist/create')}}" class="btn btn-success btn-add btn-sm">店铺信息未审核</a>
+                    <a href="{{url('admin/storelist/maudit')}}" class="btn btn-success btn-add btn-sm">入驻未审核</a>
+                    <a href="{{url('admin/storelist/saudit')}}" class="btn btn-success btn-add btn-sm">店铺信息未审核</a>
                     <div class="fr wd250">
                         <form action="{{url('admin/storelist/'.$snav)}}" method="get">
                             {{csrf_field()}}
@@ -91,7 +90,7 @@
                                     <td>
                                         @if($store->steps_audit == 1)
                                             @if($store->merchants_audit == 0)
-                                                <font class="gray">审核已通过</font>
+                                                <font class="gray">未审核</font>
                                             @elseif($store->merchants_audit == 1)
                                                 <font class="skyblue">审核已通过</font>
                                             @elseif($store->merchants_audit == 2)
@@ -108,7 +107,8 @@
                                     </td>
                                     <td>
                                         <div class="switch-wrap clearfix">
-                                            <div class="switch @if($store->is_street) active @endif" data-type="is_street"
+                                            <div class="switch @if($store->is_street) active @endif"
+                                                 data-type="is_street"
                                                  title="是">
                                                 <div class="circle"></div>
                                                 <input type="hidden" value="{{$store->shop_id}}">
@@ -125,28 +125,21 @@
                                         </div>
                                     </td>
                                     <td>
-                                        @if($store->shopinfo->review_status == 1)
+                                        @if($store->review_status == 1)
                                             <font class="gray">未审核</font>
-                                        @elseif($store->shopinfo->review_status == 2)
+                                        @elseif($store->review_status == 2)
                                             <font class="red">审核未通过</font>
-                                        @elseif($store->shopinfo->review_status == 3)
+                                        @elseif($store->review_status == 3)
                                             <font class="skyblue">审核已通过</font>
                                         @endif
                                     </td>
                                     <td class="text-center">
-                                        <div>
-                                            <a type="button" href="{{url('admin/storelist/'.$store->cou_id.'/edit')}}"
-                                               class="btn btn-info btn-edit btn-sm">店铺管理</a>
-                                            <a type="button" href="{{url('admin/storelist/'.$store->cou_id.'/edit')}}"
-                                               class="btn btn-info btn-edit btn-sm">入驻信息</a>
-                                        </div>
-                                        <div>
-                                            <a type="button" href="{{url('admin/storelist/'.$store->shop_id.'/edit')}}"
-                                               class="btn btn-info btn-edit btn-sm">编辑</a>
-                                            <a type="button" href="javascript:;"
-                                               class="btn btn-danger btn-del btn-sm"
-                                               data-id="{{$store->cou_id}}">删除</a>
-                                        </div>
+                                        <a type="button" href="{{url('admin/storelist/info/'.$store->user_id)}}"
+                                           class="btn btn-info btn-edit btn-sm">店铺管理</a>
+                                        <a type="button" href="{{url('admin/storelist/'.$store->user_id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm">编辑</a>
+                                        <a type="button" href="javascript:;" class="btn btn-danger btn-del btn-sm"
+                                           data-id="{{$store->cou_id}}">删除</a>
                                     </td>
                                 </tr>
                             @endforeach

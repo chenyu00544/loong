@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <title>商城</title>
+	    <meta name="Keywords" content=""/>
+	    <meta name="description" content="" />
+	    <script src="js/mui.min.js"></script>
+	    <link href="css/mui.min.css" rel="stylesheet"/>
+	    <link rel="stylesheet" href="css/style.css" />
+	    <script type="text/javascript"> 
+	        !function(J){function H(){var d=E.getBoundingClientRect().width;var e=(d/7.5>100*B?100*B:(d/7.5<42?42:d/7.5));E.style.fontSize=e+"px",J.rem=e}var G,F=J.document,E=F.documentElement,D=F.querySelector('meta[name="viewport"]'),B=0,A=0;if(D){var y=D.getAttribute("content").match(/initial\-scale=([\d\.]+)/);y&&(A=parseFloat(y[1]),B=parseInt(1/A))}if(!B&&!A){var u=(J.navigator.appVersion.match(/android/gi),J.navigator.appVersion.match(/iphone/gi)),t=J.devicePixelRatio;B=u?t>=3&&(!B||B>=3)?3:t>=2&&(!B||B>=2)?2:1:1,A=1/B}if(E.setAttribute("data-dpr",B),!D){if(D=F.createElement("meta"),D.setAttribute("name","viewport"),D.setAttribute("content","initial-scale="+A+", maximum-scale="+A+", minimum-scale="+A+", user-scalable=no"),E.firstElementChild){E.firstElementChild.appendChild(D)}else{var s=F.createElement("div");s.appendChild(D),F.write(s.innerHTML)}}J.addEventListener("resize",function(){clearTimeout(G),G=setTimeout(H,300)},!1),J.addEventListener("pageshow",function(b){b.persisted&&(clearTimeout(G),G=setTimeout(H,300))},!1),H()}(window);
+	        if (typeof(M) == 'undefined' || !M){
+	            window.M = {};
+	        }
+	    </script>
+	</head>
+	<body>
+		<div class="shop-street-top">
+			<div class="header">
+				<div class="shop-street-left">
+					<a href="javascript:history.back(-1)" class="sb-back" title="返回"></a>
+				</div>
+				<div class="header-middle">
+					<div class="search-box">
+						<input name="name" id="shop_name" type="text" placeholder="请输入店铺名称" class="text" value="">
+						<input type="submit" class="submit" id="shop_search" value="">
+					</div>
+				</div>
+				<div class="header-right">
+					<aside class="show-menu-btn">
+						<div id="show_more" class="show-menu"></div>
+					</aside>
+				</div>
+			</div>
+			
+		</div>
+		<div class="menu">
+	<div class="con_2 menu_nav">
+    	<span>全部分类</span>|<span>商圈</span>|<span>离我最近</span>               
+    </div>
+    <div class="menu_down_bg">
+    	<div class="con_2 menu_down">        
+       		<ul class="menu_sort">
+            	<li>
+                	<h2 class="sort_this"><a href=""><span class="sort_1">全部分类<font>（124）</font></span></a></h2>                    
+                </li> 
+                <li>
+                	<h2><span class="sort_2">餐饮<font>（124）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">全部</a>
+                        <a href="">火锅<font>1512</font></a>
+                        <a href="">蛋糕<font>15</font></a>
+                        <a href="">甜品<font>151</font></a>
+                        <a href="">自助餐<font>512</font></a>
+                        <a href="">小吃快餐<font>10</font></a>                       
+                        <a href="">火锅<font>1512</font></a>
+                        <a href="">蛋糕<font>15</font></a>
+                        <a href="">甜品<font>151</font></a>
+                        <a href="">自助餐<font>512</font></a>
+                        <a href="">小吃快餐<font>10</font></a>
+                    </div>
+                </li>
+                <li>
+                	<h2><span class="sort_3">电影<font>（78）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">电影<font>1512</font></a>                        
+                    </div>
+                </li>
+                <li>
+                	<h2><span class="sort_4">KTV<font>（24）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">KTV<font>1512</font></a>                        
+                    </div>
+                </li>
+                <li>
+                	<h2><span class="sort_5">美容美发<font>（10）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">美容美发<font>1512</font></a>                        
+                    </div>
+                </li>
+                <li>
+                	<h2><span class="sort_6">健身保健<font>（22）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">健身保健<font>1512</font></a>                        
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="con_2 menu_down">
+       		<ul class="menu_sort">
+            	<li>
+                	<h2 class="sort_this"><span>附近<font>（124）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">1千米</a>
+                        <a href="">3千米</a>
+                        <a href="">全程</a>
+                    </div>                    
+                </li> 
+                <li>
+                	<h2><span>桓台县<font>（124）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">全部</a>
+                        <a href="">信誉楼<font>1512</font></a>
+                        <a href="">喜乐佳<font>15</font></a>
+                    </div>
+                </li>
+                <li>
+                	<h2><span>沂源县<font>（78）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">沿东路<font>1512</font></a>                        
+                    </div>
+                </li>
+                <li>
+                	<h2><span>张店区<font>（24）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">美食街<font>1512</font></a>                        
+                    </div>
+                </li>
+                <li>
+                	<h2><span>淄川区<font>（10）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">全部<font>1512</font></a>                        
+                    </div>
+                </li>
+                <li>
+                	<h2><span>博山区<font>（22）</font></span></h2>
+                    <div class="menu_open">
+                    	<a href="">中心路<font>1512</font></a>                        
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="con_2 menu_down">
+       		<div class="menu_far">
+            	<a href="" class="far_this">智能排序</a>
+                <a href="">好评优先</a>
+                <a href="">离我最近</a>
+                <a href="">人均最低</a>
+                <a href="">人均最高</a>               
+            </div>
+        </div>
+    </div>
+</div>
+<div class="menu_bg"></div>
+<div class="shops-box">
+		<div class="shops-list tablelist-append">
+			<div class="shops-info SZY-IS-OPEN" data-shop_id="2">
+           		<a href="">
+					<div class="shop-logo">
+						<img src="images/s1.jpg" alt="达芙妮旗舰店">
+					</div>
+				<dl class="shop-content">
+					<dt><span class="shop-name">达芙妮旗舰店</span></dt>
+					<dd class="is-opening-2">
+						<span class="shop-rank">
+							<img src="images/14827402454984.gif" title="二星">
+						</span>
+						<span class="shop-sold">销量：5400</span>
+                        <span class="shop-address">[海港区白塔岭街道岭前街海碧台]</span>
+					</dd>
+					<dd class="shop-desc"><p>1<br>2<br>33234</p></dd>
+				</dl>
+                </a>
+            </div>
+			<div class="shops-info SZY-IS-OPEN" data-shop_id="6">
+           		<a href="">
+					<div class="shop-logo">
+						<img src="images/s2.jpg" alt="吃子之心零食店">
+					</div>
+					<dl class="shop-content">
+						<dt><span class="shop-name">吃子之心零食店</span></dt>
+						<dd class="is-opening-6">
+							<span class="shop-rank">
+								<img src="images/14827402454984.gif" title="二星">
+							</span>
+							<span class="shop-sold">销量：<!-- -->102133</span>
+	                        <span class="shop-address">[临河里]</span>
+						</dd>
+						<dd class="shop-desc"><p>美食天下，无所不在</p></dd>
+					</dl>
+                </a>
+           </div>
+			<div class="shops-info SZY-IS-OPEN" data-shop_id="7">
+           		<a href="">
+					<div class="shop-logo"><img src="images/s3.jpg" alt="卡饰社官方旗舰店"></div>
+					<dl class="shop-content">
+						<dt><span class="shop-name">卡饰社官方旗舰店</span></dt>
+						<dd class="is-opening-7"><span class="shop-rest">商家休息</span></dd>
+						<dd class="shop-desc"><p>呵呵哒</p></dd>
+					</dl>
+                </a>
+           </div>
+		</div>
+	</div>
+	<nav class="mui-bar mui-bar-tab footer">
+	    <a class="mui-tab-item mui-active" href="index.html">
+	        <span class="mui-icon"><i class="iconfont">&#xe623;</i></span>
+	        <span class="mui-tab-label">首页</span>
+	    </a>
+	    <a class="mui-tab-item" href="category.html">
+	        <span class="mui-icon"><i class="iconfont">&#xe60a;</i></span>
+	        <span class="mui-tab-label">分类</span>
+	    </a>
+	    <a class="mui-tab-item" href="shop.html">
+	        <span class="mui-icon"><i class="iconfont">&#xe612;</i></span>
+	        <span class="mui-tab-label">附近商家</span>
+	    </a>
+	    <a class="mui-tab-item" href="shapcar.html">
+	        <span class="mui-icon"><i class="iconfont">&#xe63b;</i></span>
+	        <span class="mui-tab-label">购物车</span>
+	    </a>
+	    <a class="mui-tab-item" href="member.html">
+	        <span class="mui-icon"><i class="iconfont">&#xe600;</i></span>
+	        <span class="mui-tab-label">我的</span>
+	    </a>
+	</nav> 
+<script type="text/javascript" src="js/jquery-1.10.1.min.js" ></script>
+<script>
+	//链接跳转问题
+		mui('body').on('tap', 'a', function() {
+			document.location.href = this.href;
+		});
+$(document).ready(function(){
+    var deviceWidth=$(window).outerWidth();
+	if(deviceWidth>1080){
+    	$("html").css("font-size","100px");    	
+	}else{
+    	$("html").css("font-size",deviceWidth/1080*100+'px');    	
+	}
+	var menu_t=$(".menu_nav span");
+	var menu_c=$(".menu_down");
+	var menu_bg=$(".menu_bg");
+	
+	menu_t.each(function(index){
+		$(this).click(function(){
+			$(this).siblings("span").removeClass("menu_this");						
+			$(this).addClass("menu_this");	
+			var m_this=menu_c.eq(index);			
+			m_this.siblings("div").hide();			
+			m_this.toggle();
+		
+			if(m_this.is(':visible')){
+				$(this).addClass("menu_this");
+				}
+			else{
+				$(this).removeClass("menu_this");
+				}			
+			
+			if(menu_c.is(':visible')){
+				menu_bg.show();				
+				$("html,body").css({"height":"100%","overflow":"hidden"});
+				
+				}
+			else{
+				menu_bg.hide();
+				$("html,body").css({"height":"auto","overflow":"auto"});
+				}			
+			});
+		});		
+		
+//二级
+	var down_t=$(".menu_sort h2");
+	var down_c=$(".menu_open");
+	down_t.each(function(){
+		$(this).click(function(){
+			down_t.removeClass("sort_this");
+			$(this).addClass("sort_this");
+			down_c.hide();
+			$(this).next("div").show();
+			});
+	});
+//点击背景隐藏	
+	menu_bg.click(function(){
+		$(this).hide();
+		menu_t.removeClass("menu_this");
+		menu_c.hide();		
+		down_t.removeClass("sort_this");
+		down_c.hide();
+		$("html,body").css({"height":"auto","overflow":"auto"});
+		});
+		
+});
+</script>
+	</body>
+</html>

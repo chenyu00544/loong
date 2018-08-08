@@ -137,6 +137,10 @@ return array(
             'name' => '店铺列表',
             'url' => 'admin/storelist',
         ),
+        'sellerdomain' => array(
+            'name' => '店铺二级域名',
+            'url' => 'admin/sellerdomain',
+        ),
     ),
 
 

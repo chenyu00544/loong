@@ -24,8 +24,7 @@
                         {{method_field('PUT')}}
 
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">店铺名称
-                                ：</label>
+                            <label class="col-sm-4 control-label">店铺名称：</label>
                             <div class="col-sm-4">
                                 <input type="text" name="shop_name" class="form-control input-sm"
                                        value="{{$self->shop_name}}"

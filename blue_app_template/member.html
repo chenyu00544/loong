@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <title>商城</title>
+	    <meta name="Keywords" content=""/>
+	    <meta name="description" content="" />
+	    <script src="js/mui.min.js"></script>
+	    <link href="css/mui.min.css" rel="stylesheet"/>
+	    <link rel="stylesheet" href="css/style.css" />
+	    <script type="text/javascript"> 
+	        !function(J){function H(){var d=E.getBoundingClientRect().width;var e=(d/7.5>100*B?100*B:(d/7.5<42?42:d/7.5));E.style.fontSize=e+"px",J.rem=e}var G,F=J.document,E=F.documentElement,D=F.querySelector('meta[name="viewport"]'),B=0,A=0;if(D){var y=D.getAttribute("content").match(/initial\-scale=([\d\.]+)/);y&&(A=parseFloat(y[1]),B=parseInt(1/A))}if(!B&&!A){var u=(J.navigator.appVersion.match(/android/gi),J.navigator.appVersion.match(/iphone/gi)),t=J.devicePixelRatio;B=u?t>=3&&(!B||B>=3)?3:t>=2&&(!B||B>=2)?2:1:1,A=1/B}if(E.setAttribute("data-dpr",B),!D){if(D=F.createElement("meta"),D.setAttribute("name","viewport"),D.setAttribute("content","initial-scale="+A+", maximum-scale="+A+", minimum-scale="+A+", user-scalable=no"),E.firstElementChild){E.firstElementChild.appendChild(D)}else{var s=F.createElement("div");s.appendChild(D),F.write(s.innerHTML)}}J.addEventListener("resize",function(){clearTimeout(G),G=setTimeout(H,300)},!1),J.addEventListener("pageshow",function(b){b.persisted&&(clearTimeout(G),G=setTimeout(H,300))},!1),H()}(window);
+	        if (typeof(M) == 'undefined' || !M){
+	            window.M = {};
+	        }
+	    </script>
+	</head>
+
+	<body>
+		<div class="member-top">
+			<div class="header-r">
+				<a href=""><i class="iconfont"></i></a>
+			</div>
+			<div class="member-info">
+				<div class="user-avatar"><img src="images/default_user_portrait_0.png"></div>
+				<div class="user-name"><span>SZY187TBNZ3959	<sup>注册会员</sup></span></div>
+			</div>
+			<div class="member-collect">
+				<span><a href=""><em id="surplus_div">0元</em><p>账户余额</p></a></span>
+				<span><a href=""><em>0</em><p>我的红包</p></a></span>
+			</div>
+		</div>
+		<div class="user-order-box">
+			<dl>
+				<a href="allorder.html">
+				<dt>
+					<strong>全部订单</strong>
+					<span>查看全部订单</span>
+				</dt>
+				</a>
+			</dl>
+			<ul>
+				<li>
+					<a href="allorder.html">
+						<div class="user_order">
+							<i class="iconfont">&#xe631;</i>
+						</div>
+						<span>待付款</span>
+					</a>
+				</li>
+				<li>
+					<a href="allorder.html">
+						<div class="user_order">
+							<i class="iconfont">&#xe67b;</i>
+						</div>
+						<span>待发货</span>
+					</a>
+				</li>
+				<li>
+					<a href="allorder.html">
+						<div class="user_order">
+							<i class="iconfont">&#xe775;</i>
+						</div>
+						<span>待收货</span>
+					</a>
+				</li>
+				<li>
+					<a href="allorder.html">
+						<div class="user_order">
+							<i class="iconfont">&#xe663;</i>
+						</div>
+						<span>待评价</span>
+					</a>
+				</li>
+				<li>
+					<a href="allorder.html">
+						<div class="user_order">
+							<i class="iconfont">&#xe605;</i>
+						</div>
+						<span>退换货</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="uset-center-content">
+			<a href="">
+				<em class="goods-collection-icon"></em>
+				<dl>
+					<dt>我的收藏</dt>
+					<dd>商品收藏/店铺收藏</dd>
+				</dl>
+			</a>
+
+			<a href="">
+				<em class="groupon-icon"></em>
+				<dl>
+					<dt>我的拼团</dt>
+					<dd></dd>
+				</dl>
+			</a>
+
+			<a href="">
+				<em class="bargain-icon"></em>
+				<dl>
+					<dt>我的砍价</dt>
+					<dd></dd>
+				</dl>
+			</a>
+
+			<a href="">
+				<em class="exchange-icon"></em>
+				<dl>
+					<dt>我的积分</dt>
+					<dd></dd>
+				</dl>
+			</a>
+			<a href="">
+				<em class="recharge-card-icon"></em>
+				<dl>
+					<dt>我的储值卡</dt>
+					<dd></dd>
+				</dl>
+			</a>
+			<a href="">
+				<em class="consignee-address-icon"></em>
+				<dl class="border_bottm">
+					<dt>收货地址</dt>
+					<dd>添加/修改</dd>
+				</dl>
+			</a>
+			<a href="">
+				<em class="review-icon"></em>
+				<dl class="border_bottm">
+					<dt>评价/晒单</dt>
+					<dd>查看评价/晒单</dd>
+				</dl>
+			</a>
+			<a href="">
+				<em class="user-info-icon"></em>
+				<dl>
+					<dt>个人资料</dt>
+					<dd>查看/修改</dd>
+				</dl>
+			</a>
+		</div>
+		<div class="uset-center-content">
+			<a href="">
+				<em class="btn-popularize-icon"></em>
+				<dl>
+					<dt>我的推广</dt>
+					<dd></dd>
+				</dl>
+			</a>
+			<a href="">
+				<em class="btn-recommend-icon"></em>
+				<dl>
+					<dt>我的推荐</dt>
+					<dd></dd>
+				</dl>
+			</a>
+			<a href="">
+				<em class="btn-distribution-icon"></em>
+				<dl>
+					<dt>申请合伙人12</dt>
+					<dd></dd>
+				</dl>
+			</a>
+		</div>
+		<div class="uset-center-content">
+			<a href="">
+				<em class="btn-shop-apply-icon"></em>
+				<dl>
+					<dt>商家入驻</dt>
+				</dl>
+			</a>
+
+			<a href="">
+				<em class="btn-recommend-shop-icon"></em>
+				<dl>
+					<dt>推荐店铺</dt>
+				</dl>
+			</a>
+		</div>
+		<div class="uset-center-content">
+			<a href="javascript:logout()">
+				<em class="sign-off-icon"></em>
+				<dl>
+					<dt>注销登录</dt>
+				</dl>
+			</a>
+		</div>
+		<div class="h50"></div>
+		<nav class="mui-bar mui-bar-tab footer">
+			<a class="mui-tab-item" href="index.html">
+				<span class="mui-icon"><i class="iconfont">&#xe623;</i></span>
+				<span class="mui-tab-label">首页</span>
+			</a>
+			<a class="mui-tab-item" href="category.html">
+				<span class="mui-icon"><i class="iconfont">&#xe60a;</i></span>
+				<span class="mui-tab-label">分类</span>
+			</a>
+			<a class="mui-tab-item" href="shop.html">
+				<span class="mui-icon"><i class="iconfont">&#xe612;</i></span>
+				<span class="mui-tab-label">附近商家</span>
+			</a>
+			<a class="mui-tab-item" href="shapcar.html">
+				<span class="mui-icon"><i class="iconfont">&#xe63b;</i></span>
+				<span class="mui-tab-label">购物车</span>
+			</a>
+			<a class="mui-tab-item  mui-active" href="member.html">
+				<span class="mui-icon"><i class="iconfont">&#xe600;</i></span>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+	</body>
+
+</html>
