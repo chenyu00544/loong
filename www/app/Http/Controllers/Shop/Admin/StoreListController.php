@@ -51,13 +51,18 @@ class StoreListController extends CommonController
     {
         $nav = 'info';
         $info = $this->sellerRepository->getSellerShopInfo(['ru_id' => $id]);
-        dd($info);
         return view('shop.admin.merchants.shopSetup', compact('id', 'nav', 'info'));
     }
 
     public function setShopInfo()
     {
 
+    }
+
+    public function geoModal($id)
+    {
+        $info = $this->sellerRepository->getSellerShopInfo(['ru_id' => $id]);
+        return view('shop.admin.merchants.modal.geo');
     }
 
     public function privilegeEdit($id)

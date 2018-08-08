@@ -213,6 +213,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('entrycriteria', 'EntryCriteriaController');
 
     Route::get('storelist/real', 'StoreListController@real');
+    Route::get('storelist/geo/{id}', 'StoreListController@geoModal');
     Route::get('storelist/priv/{id}', 'StoreListController@privilegeEdit');
     Route::get('storelist/info/{id}', 'StoreListController@info');
     Route::post('storelist/setinfo/{id}', 'StoreListController@setShopInfo');
@@ -223,6 +224,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('msp', 'MerchantsStepsProcessController');
 
     Route::resource('applyprocess', 'ApplyProcessController');
+
+    Route::resource('sellerdomain', 'SellerDomainController');
 
     Route::get('ad/add/{id}', 'AdvertiseController@adAdd');
     Route::get('ad/edit/{id}/{type}', 'AdvertiseController@adEdit');

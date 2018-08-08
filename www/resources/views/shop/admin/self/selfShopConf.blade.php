@@ -51,6 +51,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">店铺二级域名：</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="domain_name" class="form-control input-sm"
+                                       value="{{!empty($info->domain_name)?$info->domain_name->domain_name:''}}"
+                                       placeholder="店铺二级域名"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">所在国家：</label>
                             <div class="col-sm-4">
                                 <select name="country" class="form-control input-sm shop_country">

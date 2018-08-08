@@ -996,6 +996,10 @@ textarea{
     margin-top: 20px;
 }
 
+.mar-top-200 {
+    margin-top: 200px;
+}
+
 .mar-left-5 {
     margin-left: 5px;
 }
@@ -2828,4 +2832,9 @@ input[type=file].upload-file {
 
 .merchants-wrap{
     margin-right: 20px;
+}
+
+#geo-container{
+    width: 700px;
+    height: 400px;
 }

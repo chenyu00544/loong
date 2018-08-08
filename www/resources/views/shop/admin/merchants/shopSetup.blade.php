@@ -33,11 +33,44 @@
                         {{csrf_field()}}
 
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">店铺名称：</label>
+                            <label class="col-sm-4 control-label">公司名称：</label>
                             <div class="col-sm-4">
                                 <input type="text" name="shop_name" class="form-control input-sm"
                                        value="{{$info->shop_name}}"
                                        placeholder="店铺名称"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">品牌店铺名称：</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="shop_name" class="form-control input-sm"
+                                       value="{{$info->merchants_shop->shoprz_brandName}}{{$info->merchants_shop->shopNameSuffix}}"
+                                       placeholder="店铺名称" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">自创店铺名称：</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="shop_name" class="form-control input-sm"
+                                       value="{{$info->merchants_shop->rz_shopName}}"
+                                       placeholder="入住店铺名称" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">显示店铺名称：</label>
+                            <div class="col-sm-4">
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="check_sellername" value="0"
+                                           @if($info->check_sellername == 0) checked @endif> 品牌店铺名称
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="check_sellername" value="1"
+                                           @if($info->check_sellername == 1) checked @endif> 自创店铺名称
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="check_sellername" value="2"
+                                           @if($info->check_sellername == 2) checked @endif> 公司名称
+                                </label>
                             </div>
                         </div>
 
@@ -55,6 +88,15 @@
                             <div class="col-sm-4">
                                 <input type="text" name="shop_keyword" class="form-control input-sm"
                                        value="{{$info->shop_keyword}}"
+                                       placeholder="店铺关键字"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">店铺二级域名：</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="domain_name" class="form-control input-sm"
+                                       value="{{!empty($info->domain_name)?$info->domain_name->domain_name:''}}"
                                        placeholder="店铺关键字"/>
                             </div>
                         </div>
@@ -120,6 +162,29 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">经度（Y）：</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="longitude" class="form-control input-sm"
+                                       value="{{$info->longitude}}" placeholder="经度"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"></label>
+                            <div class="col-sm-4">
+                                <a href="javascript:;" class="btn btn-default btn-sm geo" data-ruid="{{$id}}">获取经纬度</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">纬度（X）：</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="latitude" class="form-control input-sm"
+                                       value="{{$info->latitude}}" placeholder="纬度"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">配送方式：</label>
                             <div class="col-sm-4">
                                 <select name="shipping_id" class="form-control input-sm">
@@ -166,21 +231,6 @@
                                           placeholder="客服淘宝旺旺">{{$info->kf_ww}}</textarea>
                             </div>
                             <div class="notic col-sm-3">旺旺客服名称和号码请用“|”隔开（如：客服2|654321），如果您有多个客服的旺旺号码，请换行。</div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">是否开启IM在线客服：</label>
-                            <div class="col-sm-4">
-                                <label class="radio-inline fl">
-                                    <input type="radio" name="kf_im_switch" value="0"
-                                           @if($info->kf_im_switch == 0) checked @endif> 否
-                                </label>
-                                <label class="radio-inline fl">
-                                    <input type="radio" name="kf_im_switch" value="1"
-                                           @if($info->kf_im_switch == 1) checked @endif> 是
-                                </label>
-                            </div>
-                            <div class="notic col-sm-3">开启后即可使用IM在线客服,否则只能使用默认的 (平台)</div>
                         </div>
 
                         <div class="form-group">
@@ -263,6 +313,72 @@
                         </div>
 
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">默认店铺页头部LOGO：</label>
+                            <div class="col-sm-4 n-wd400">
+                                <input type="file" name="shop_logo" class="fl">
+                                <a href="{{url($info->shop_logo)}}" target="_blank" class="nyroModal">
+                                    <i class="glyphicon glyphicon-picture top5"
+                                       data-tooltipimg="{{url($info->shop_logo)}}"
+                                       ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                </a>
+                            </div>
+                            <div class="notic col-sm-3">无限制*128像素</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Logo缩略图：</label>
+                            <div class="col-sm-4 n-wd400">
+                                <input type="file" name="pic" class="fl">
+                                <a href="{{url($info->logo_thumb)}}" target="_blank" class="nyroModal">
+                                    <i class="glyphicon glyphicon-picture top5"
+                                       data-tooltipimg="{{url($info->logo_thumb)}}"
+                                       ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                </a>
+                            </div>
+                            <div class="notic col-sm-3">120*120像素</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">店铺街封面图：</label>
+                            <div class="col-sm-4">
+                                <input type="file" name="street_thumb" class="fl">
+                                <a href="{{url($info->street_thumb)}}" target="_blank" class="nyroModal">
+                                    <i class="glyphicon glyphicon-picture top5"
+                                       data-tooltipimg="{{url($info->street_thumb)}}"
+                                       ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                </a>
+                            </div>
+                            <div class="notic col-sm-3">新模板：278*无限制；老模板：388*187像素；</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">店铺街品牌图：</label>
+                            <div class="col-sm-4">
+                                <input type="file" name="brand_thumb" class="fl">
+                                <a href="{{url($info->brand_thumb)}}" target="_blank" class="nyroModal">
+                                    <i class="glyphicon glyphicon-picture top5"
+                                       data-tooltipimg="{{url($info->brand_thumb)}}"
+                                       ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                </a>
+                            </div>
+                            <div class="notic col-sm-3">新模板：120*60像素；老模板：180*60像素。</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">二维码中间Logo：</label>
+                            <div class="col-sm-4">
+                                <input type="file" name="qrcode_thumb" class="fl">
+                                <a href="{{url(!empty($info->qrcode->qrcode_thumb)?$info->qrcode->qrcode_thumb:'')}}"
+                                   target="_blank" class="nyroModal">
+                                    <i class="glyphicon glyphicon-picture top5"
+                                       data-tooltipimg="{{url(!empty($info->qrcode->qrcode_thumb)?$info->qrcode->qrcode_thumb:'')}}"
+                                       ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                </a>
+                            </div>
+                            <div class="notic col-sm-3">80*80像素。</div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">扫码appkey（极速数据）：</label>
                             <div class="col-sm-4">
                                 <input type="text" name="js_appkey" class="form-control input-sm"
@@ -306,8 +422,41 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">店铺公告：</label>
                             <div class="col-sm-4">
-                                    <textarea name="notice" class="form-control" row="5"
-                                              placeholder="店铺公告">{{$info->notice}}</textarea>
+                                <textarea name="notice" class="form-control" row="5"
+                                          placeholder="店铺公告">{{$info->notice}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">店铺街描述：</label>
+                            <div class="col-sm-4">
+                                <textarea name="street_desc" class="form-control" row="5"
+                                          placeholder="店铺公告">{{$info->street_desc}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">审核状态：</label>
+                            <div class="col-sm-4">
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="1"
+                                           @if($info->review_status == 1) checked @endif> 未审核
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="2"
+                                           @if($info->review_status == 2) checked @endif> 审核未通过
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="review_status" value="3"
+                                           @if($info->review_status == 3) checked @endif> 审核已通过
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group review_content disn">
+                            <label class="col-sm-4 control-label">审核回复：</label>
+                            <div class="col-sm-4">
+                                <textarea name="review_content" class="form-control" row="5"
+                                          placeholder="">{{$info->notice}}</textarea>
                             </div>
                         </div>
 
@@ -368,8 +517,29 @@
                         $('.shop_district').html($html);
                     }
                 });
-            })
+            });
 
+            $('.geo').click(function () {
+                var ru_id = $(this).data('ruid');
+                layer.open({
+                    type: 2,
+                    area: ['1050px', '482px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '获取经纬度',
+                    content: ["{{url('admin/storelist/geo/')}}" + "/" + ru_id, 'no'],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+
+            $('input[name=review_status]').click(function () {
+                $('.review_content').hide();
+                if ($(this).val() == 2) {
+                    $('.review_content').show();
+                }
+            });
         });
     </script>
 @endsection

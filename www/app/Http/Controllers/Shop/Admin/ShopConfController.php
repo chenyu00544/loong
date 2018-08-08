@@ -56,7 +56,7 @@ class ShopConfController extends CommonController
 
     public function update(Request $request, $id)
     {
-        $re = $this->sellerRepository->setSellerShopInfo($request->except('_token', '_method'), $id);
+        $re = $this->sellerRepository->setSellerShopInfo($request->except('_token', '_method'), $this->user->ru_id);
         return view('shop.admin.success');
     }
 }

@@ -11,26 +11,20 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SellerDomainModel extends Model
+class SellerQrcodeModel extends Model
 {
-    protected $table = 'seller_domain';
-    protected $primaryKey = 'id';
+    protected $table = 'seller_qrcode';
+    protected $primaryKey = 'qrcode_id';
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getSellerDomainsByPage($size = 15)
-    {
-        return $this->orderBy('id', 'desc')
-            ->paginate($size);
-    }
-
-    public function getSellerDomain($where)
+    public function getSellerQrcode($where)
     {
         return $this->where($where)
             ->first();
     }
 
-    public function setSellerDomain($where, $data)
+    public function setSellerQrcode($where, $data)
     {
         return $this->where($where)
             ->update($data);
