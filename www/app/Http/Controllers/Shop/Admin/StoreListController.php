@@ -81,12 +81,12 @@ class StoreListController extends CommonController
     {
         $shopSteps = $this->storeListRepository->getStepsByShopInfo();
 
-        foreach ($shopSteps as $key => $value){
-            if($key > 4){
-                unset($shopSteps[$key]);
-            }
-        }
-        dd($shopSteps);
+//        foreach ($shopSteps as $key => $value){
+//            if($key > 5){
+//                unset($shopSteps[$key]);
+//            }
+//        }
+//        dd($shopSteps);
         return view('shop.admin.merchants.merchantsAdd', compact('shopSteps'));
     }
 

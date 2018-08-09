@@ -50,7 +50,7 @@ class MerchantsStepsProcessModel extends Model
     {
         return $this->select($column)
             ->with(['mst' => function ($query) {
-                $query->join('merchants_steps_fields_centent', 'merchants_steps_fields_centent.tid', '=', 'merchants_steps_title.tid');
+                $query->leftJoin('merchants_steps_fields_centent', 'merchants_steps_fields_centent.tid', '=', 'merchants_steps_title.tid');
             }])
             ->where([['process_steps', '<>', 1], ['is_show', '=', 1], ['id', '<>', 10]])
             ->orderBy('process_steps', 'asc')

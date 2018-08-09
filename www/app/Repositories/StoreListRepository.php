@@ -82,9 +82,9 @@ class StoreListRepository implements StoreListRepositoryInterface
                 $mst->fields_sort = explode(',', $mst->fields_sort);
                 $mst->will_choose = explode(',', $mst->will_choose);
                 $field = [];
-                foreach ($mst->fieldsForm as $key => $fields) {print_r(trim($fields));
+                foreach ($mst->fieldsForm as $key => $fields) {
                     $field[$key] = [];
-                    if (!empty($fields) && $fields != '') {
+                    if (!empty($fields)) {
                         $arr = explode('+', $fields);
                         if (!empty($arr[0])) {
                             $form = explode(':', $arr[0]);
