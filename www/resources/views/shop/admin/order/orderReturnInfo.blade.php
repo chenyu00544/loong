@@ -251,27 +251,49 @@
                                 <div class="item mar-top-20">
                                     <div class="step-label fl wd-120 text-right">当前可执行操作：</div>
                                     <div class="operation mar-left-5">
-                                        @if($rorder->return_status == 0)
-                                            @if($rorder->agree_apply == 0)
+                                        @if($rorder->return_status != 6)
+                                            @if($rorder->agree_apply != 1)
                                                 <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
                                                    data-ope="agree_apply">同意申请</a>
-                                            @else
+                                            @endif
+
+                                            @if($rorder->return_status < 1 && $rorder->return_status >= 1 && $rorder->agree_apply)
                                                 <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
                                                    data-ope="receive_goods">收到退回商品</a>
                                             @endif
+
+                                            @if($rorder->return_type == 1 || $rorder->return_type == 3 && $rorder->chargeoff_status == 0 && $rorder->agree_apply)
+                                                @if($rorder->return_status == 0 )
+                                                    <a href="{{url('admin/order/return/refound/'.$rorder->ret_id)}}"
+                                                       class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="refound">去退款</a>
+                                                @endif
+                                            @endif
+
+                                            @if($rorder->return_type != 1)
+                                                @if($rorder->return_status < 2 && $rorder->return_status >= 0)
+                                                    <a href="javascript:;"
+                                                       class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="swapped_out_single">换出商品寄出【分单】</a>
+                                                    <a href="javascript:;"
+                                                       class="btn btn-danger btn-sm mar-left-5"
+                                                       data-ope="swapped_out">换出商品寄出</a>
+                                                @endif
+                                            @endif
+                                            @if($rorder->return_status >= 2 && $rorder->return_status < 4)
+                                                <a href="javascript:;"
+                                                   class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="complete">完成退换货</a>
+                                            @endif
                                         @endif
-                                        @if($rorder->return_status == 4)
-                                            <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                               data-ope="complete">完成</a>
-                                        @endif
-                                        @if($rorder->refound_status == 0 && $rorder->agree_apply == 1)
-                                            <a href="{{url('admin/order/return/refound/'.$rorder->ret_id)}}"
-                                               class="btn btn-danger btn-sm mar-left-5"
-                                               data-ope="refound">去退款</a>
-                                        @endif
-                                        @if($rorder->agree_apply == 0)
-                                            <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
-                                               data-ope="refuse_apply">拒绝</a>
+                                        @if($rorder->refound_status != 1 && $rorder->agree_apply != 1)
+                                            @if($rorder->return_status != 6)
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="refuse_apply">拒绝</a>
+                                            @else
+                                                <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="">已拒绝申请</a>
+                                            @endif
                                         @endif
                                         <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
                                            data-ope="after_service">售后</a>
@@ -292,7 +314,7 @@
         $(function () {
             $('.order-operation').on('click', 'a', function () {
                 var type = $(this).data('ope');
-                if (type == 'refound' || type == 'after_service') {
+                if (type == 'refound' || type == 'after_service' || type == '') {
                     return;
                 }
                 var order_id = $('input[name=order_id]').val();

@@ -2838,3 +2838,24 @@ input[type=file].upload-file {
     width: 700px;
     height: 400px;
 }
+
+.merchants-section {
+    border-top: 2px solid #dbdbdb;
+    padding-bottom: 12px;
+}
+
+.merchants-section .tit{
+    height: 38px;
+    line-height: 38px;
+    background: #f2f2f2;
+    margin-bottom: 24px;
+}
+
+.merchants-section .tit h4{
+    font-weight: bold;
+    color: #333;
+    padding-left: 23px;
+    float: left;
+    font-size: 12px;
+    line-height: 38px;
+}

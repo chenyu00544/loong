@@ -27,7 +27,7 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form enctype="multipart/form-data" name="conf" action="{{url('admin/setinfo/'.$id)}}"
+                    <form enctype="multipart/form-data" name="conf" action="{{url('admin/storelist/setinfo/'.$id)}}"
                           method="post"
                           class="form-horizontal">
                         {{csrf_field()}}
@@ -314,8 +314,9 @@
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label">默认店铺页头部LOGO：</label>
-                            <div class="col-sm-4 n-wd400">
+                            <div class="col-sm-4">
                                 <input type="file" name="shop_logo" class="fl">
+                                <input type="hidden" name="shop_logo_bak" value="{{$info->shop_logo}}">
                                 <a href="{{url($info->shop_logo)}}" target="_blank" class="nyroModal">
                                     <i class="glyphicon glyphicon-picture top5"
                                        data-tooltipimg="{{url($info->shop_logo)}}"
@@ -327,8 +328,9 @@
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label">Logo缩略图：</label>
-                            <div class="col-sm-4 n-wd400">
-                                <input type="file" name="pic" class="fl">
+                            <div class="col-sm-4">
+                                <input type="file" name="logo_thumb" class="fl">
+                                <input type="hidden" name="logo_thumb_bak" value="{{$info->logo_thumb}}">
                                 <a href="{{url($info->logo_thumb)}}" target="_blank" class="nyroModal">
                                     <i class="glyphicon glyphicon-picture top5"
                                        data-tooltipimg="{{url($info->logo_thumb)}}"
@@ -342,6 +344,7 @@
                             <label class="col-sm-4 control-label">店铺街封面图：</label>
                             <div class="col-sm-4">
                                 <input type="file" name="street_thumb" class="fl">
+                                <input type="hidden" name="street_thumb_bak" value="{{$info->street_thumb}}">
                                 <a href="{{url($info->street_thumb)}}" target="_blank" class="nyroModal">
                                     <i class="glyphicon glyphicon-picture top5"
                                        data-tooltipimg="{{url($info->street_thumb)}}"
@@ -355,6 +358,7 @@
                             <label class="col-sm-4 control-label">店铺街品牌图：</label>
                             <div class="col-sm-4">
                                 <input type="file" name="brand_thumb" class="fl">
+                                <input type="hidden" name="brand_thumb_bak" value="{{$info->brand_thumb}}">
                                 <a href="{{url($info->brand_thumb)}}" target="_blank" class="nyroModal">
                                     <i class="glyphicon glyphicon-picture top5"
                                        data-tooltipimg="{{url($info->brand_thumb)}}"
@@ -368,6 +372,7 @@
                             <label class="col-sm-4 control-label">二维码中间Logo：</label>
                             <div class="col-sm-4">
                                 <input type="file" name="qrcode_thumb" class="fl">
+                                <input type="hidden" name="qrcode_thumb_bak" value="{{!empty($info->qrcode->qrcode_thumb)?$info->qrcode->qrcode_thumb:''}}">
                                 <a href="{{url(!empty($info->qrcode->qrcode_thumb)?$info->qrcode->qrcode_thumb:'')}}"
                                    target="_blank" class="nyroModal">
                                     <i class="glyphicon glyphicon-picture top5"

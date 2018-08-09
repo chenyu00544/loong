@@ -65,7 +65,40 @@ class SellerRepository implements SellerRepositoryInterface
         $where['ru_id'] = $id;
         $updata['domain_name'] = $data['domain_name'];
         unset($data['domain_name']);
+
         $this->sellerDomainModel->setSellerDomain($where, $updata);
+        $img_file = ['shop_logo', 'logo_thumb', 'street_thumb', 'brand_thumb', 'qrcode_thumb'];
+        foreach ($data as $key => $value) {
+            if (in_array($key, $img_file)) {
+                if ($key == 'qrcode_thumb') {
+                    $path = 'seller' . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . $id;
+                    $uri = FileHandle::upLoadImage($value, $path);
+                    $qrdata[$key] = $uri;
+                    FileHandle::deleteFile($data[$key . '_bak']);
+                    $qr = $this->sellerQrcodeModel->setSellerQrcode($where, $qrdata);
+                    if (!$qr) {
+                        $qrdata['ru_id'] = $id;
+                        $this->sellerQrcodeModel->addSellerQrcode($qrdata);
+                    }
+                    unset($data[$key . '_bak']);
+                    unset($data[$key]);
+                } else {
+                    $path = 'seller' . DIRECTORY_SEPARATOR . $key . DIRECTORY_SEPARATOR . $id;
+                    $uri = FileHandle::upLoadImage($value, $path);
+                    $data[$key] = $uri;
+                    FileHandle::deleteFile($data[$key . '_bak']);
+                }
+            } else {
+                if (empty($value) && $key != 'qrcode_thumb_bak') {
+                    unset($data[$key]);
+                }
+            }
+        }
+        unset($data['shop_logo_bak']);
+        unset($data['logo_thumb_bak']);
+        unset($data['street_thumb_bak']);
+        unset($data['brand_thumb_bak']);
+        unset($data['qrcode_thumb_bak']);
         return $this->sellerShopInfoModel->setSellerShopInfo($where, $data);
     }
 }

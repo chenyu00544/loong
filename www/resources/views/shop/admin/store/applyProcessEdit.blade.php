@@ -65,222 +65,363 @@
                         <div class="form-group">
                             <div class="f-item-section">
                                 @foreach($mst->msfc->textFields as $key => $value)
-                                    <div class="f-item @if($key == 0) f-item-curr @endif clearfix">
-                                        <div class="add-item fl">@if($key == 0) <i
-                                                    class="sc-icon sc-icon-add cursor"></i> @endif</div>
-                                        <div class="item-info fl">
-                                            <div class="p-item clearfix">
-                                                <div class="form-text fl clearfix">
-                                                    <strong class="fl lh30 mar-right-5">表单字段：</strong>
-                                                    <input type="text" name="merchants_date[]"
-                                                           class="form-control xwd150 input-sm" value="{{$value}}">
-                                                </div>
-                                                <div class="form-text fl clearfix">
-                                                    <strong class="fl lh30 mar-right-5">数据类型：</strong>
-                                                    <select name="merchants_dateType[]"
-                                                            class="form-control wa input-sm">
-                                                        <option value="VARCHAR"
-                                                                @if($mst->msfc->fieldsDateType[$key] == 'VARCHAR') selected @endif>
-                                                            VARCHAR
-                                                        </option>
-                                                        <option value="CHAR"
-                                                                @if($mst->msfc->fieldsDateType[$key] == 'CHAR') selected @endif>
-                                                            CHAR
-                                                        </option>
-                                                        <option value="INT"
-                                                                @if($mst->msfc->fieldsDateType[$key] == 'INT') selected @endif>
-                                                            INT
-                                                        </option>
-                                                        <option value="MEDIUMINT"
-                                                                @if($mst->msfc->fieldsDateType[$key] == 'MEDIUMINT') selected @endif>
-                                                            MEDIUMINT
-                                                        </option>
-                                                        <option value="SMALLINT"
-                                                                @if($mst->msfc->fieldsDateType[$key] == 'SMALLINT') selected @endif>
-                                                            SMALLINT
-                                                        </option>
-                                                        <option value="TINYINT"
-                                                                @if($mst->msfc->fieldsDateType[$key] == 'TINYINT') selected @endif>
-                                                            TINYINT
-                                                        </option>
-                                                        <option value="DECIMAL"
-                                                                @if($mst->msfc->fieldsDateType[$key] == 'DECIMAL') selected @endif>
-                                                            DECIMAL
-                                                        </option>
-                                                        <option value="TEXT"
-                                                                @if($mst->msfc->fieldsDateType[$key] == 'TEXT') selected @endif>
-                                                            TEXT
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-text fl clearfix">
-                                                    <strong class="fl lh30 mar-right-5">表单标题：</strong>
-                                                    <input type="text" name="merchants_formName[]"
-                                                           class="form-control xwd150 input-sm"
-                                                           value="{{$mst->msfc->fieldsFormName[$key]}}">
-                                                </div>
-                                                <div class="form-text fl clearfix">
-                                                    <strong class="fl lh30 mar-right-5">数据长度：</strong>
-                                                    <input type="text" name="merchants_length[]"
-                                                           class="form-control xwd100 input-sm"
-                                                           value="{{$mst->msfc->fieldsLength[$key]}}">
-                                                </div>
-                                                <div class="form-text fl clearfix">
-                                                    <strong class="fl lh30 mar-right-5">显示排序：</strong>
-                                                    <input type="text" name="fields_sort[]"
-                                                           class="form-control xwd100 input-sm"
-                                                           value="{{$mst->msfc->fields_sort[$key]}}">
-                                                </div>
-                                                <div class="form-text fl clearfix">
-                                                    <strong class="fl lh30 mar-right-5">必选项：</strong>
-                                                    <select name="will_choose[]" class="form-control wa input-sm">
-                                                        <option value="0"
-                                                                @if($mst->msfc->will_choose[$key] == 0) selected @endif>
-                                                            否
-                                                        </option>
-                                                        <option value="1"
-                                                                @if($mst->msfc->will_choose[$key] == 1) selected @endif>
-                                                            是
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            <div class="p-item clearfix">
-                                                <div class="form-text fl clearfix" style="width: 465px">
-                                                    <strong class="fl lh30 mar-right-5">表单注释：</strong>
-                                                    <input type="text" name="formName_special[]"
-                                                           class="form-control xwd400 input-sm"
-                                                           value="{{$mst->msfc->formName_special[$key]}}">
-                                                </div>
-                                                <div class="form-text fl clearfix">
-                                                    <strong class="fl lh30 mar-right-5">表单类型：</strong>
-                                                    <select name="merchants_form[]" class="form-control wa input-sm">
-                                                        <option value="input"
-                                                                @if($mst->msfc->merchants_form[$key] == 'input') selected @endif>
-                                                            文本字段(input)
-                                                        </option>
-                                                        <option value="textarea"
-                                                                @if($mst->msfc->merchants_form[$key] == 'textarea') selected @endif>
-                                                            文本区域(textarea)
-                                                        </option>
-                                                        <option value="radio"
-                                                                @if($mst->msfc->merchants_form[$key] == 'radio') selected @endif>
-                                                            单选按钮(radio)
-                                                        </option>
-                                                        <option value="checkbox"
-                                                                @if($mst->msfc->merchants_form[$key] == 'checkbox') selected @endif>
-                                                            多选按钮(checkbox)
-                                                        </option>
-                                                        <option value="select"
-                                                                @if($mst->msfc->merchants_form[$key] == 'select') selected @endif>
-                                                            下拉菜单(select)
-                                                        </option>
-                                                        <option value="other"
-                                                                @if($mst->msfc->merchants_form[$key] == 'other') selected @endif>
-                                                            其他(other)
-                                                        </option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="form-text fl clearfix merchants-other @if($mst->msfc->merchants_form[$key] != 'other') disn @endif">
-                                                    <strong class="fl lh30 mar-right-5">选择类型：</strong>
-                                                    <select name="merchants_formOther[]"
-                                                            class="form-control wa input-sm">
-                                                        <option value="textArea"
-                                                                @if(!empty($mst->msfc->merchants_formOther[$key]) && $mst->msfc->merchants_formOther[$key] == 'textArea') selected @endif>
-                                                            地区类型
-                                                        </option>
-                                                        <option value="dateTime"
-                                                                @if(!empty($mst->msfc->merchants_formOther[$key]) && $mst->msfc->merchants_formOther[$key] == 'dateTime') selected @endif>
-                                                            日期类型
-                                                        </option>
-                                                        <option value="dateFile"
-                                                                @if(!empty($mst->msfc->merchants_formOther[$key]) && $mst->msfc->merchants_formOther[$key] == 'dateFile') selected @endif>
-                                                            文件上传
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-text fl clearfix merchants-other-date @if(empty($mst->msfc->merchants_formOther[$key]) || $mst->msfc->merchants_formOther[$key] != 'dateTime') disn @endif">
-                                                    <strong class="fl lh30 mar-right-5">日期表单长度：</strong>
-                                                    <input type="text" name="merchants_formOtherSize[]"
-                                                           class="form-control xwd100 input-sm"
-                                                           value="@if(!empty($mst->msfc->merchants_formOtherSize[$key])){{$mst->msfc->merchants_formOtherSize[$key]}}@endif">
-                                                </div>
-                                            </div>
-
-                                            <div class="p-item clearfix">
-                                                <div class="merchants-text @if($mst->msfc->merchants_form[$key] != 'input') disn @endif">
+                                    @if(!empty($value))
+                                        <div class="f-item @if($key == 0) f-item-curr @endif clearfix">
+                                            <div class="add-item fl">@if($key == 0) <i
+                                                        class="sc-icon sc-icon-add cursor"></i> @endif</div>
+                                            <div class="item-info fl">
+                                                <div class="p-item clearfix">
                                                     <div class="form-text fl clearfix">
-                                                        <strong class="fl lh30 mar-right-5">表单长度：</strong>
-                                                        <input type="text" name="merchants_formSize[]"
+                                                        <strong class="fl lh30 mar-right-5">表单字段：</strong>
+                                                        <input type="text" name="merchants_date[]"
+                                                               class="form-control xwd150 input-sm" value="{{$value}}">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">数据类型：</strong>
+                                                        <select name="merchants_dateType[]"
+                                                                class="form-control wa input-sm">
+                                                            <option value="VARCHAR"
+                                                                    @if($mst->msfc->fieldsDateType[$key] == 'VARCHAR') selected @endif>
+                                                                VARCHAR
+                                                            </option>
+                                                            <option value="CHAR"
+                                                                    @if($mst->msfc->fieldsDateType[$key] == 'CHAR') selected @endif>
+                                                                CHAR
+                                                            </option>
+                                                            <option value="INT"
+                                                                    @if($mst->msfc->fieldsDateType[$key] == 'INT') selected @endif>
+                                                                INT
+                                                            </option>
+                                                            <option value="MEDIUMINT"
+                                                                    @if($mst->msfc->fieldsDateType[$key] == 'MEDIUMINT') selected @endif>
+                                                                MEDIUMINT
+                                                            </option>
+                                                            <option value="SMALLINT"
+                                                                    @if($mst->msfc->fieldsDateType[$key] == 'SMALLINT') selected @endif>
+                                                                SMALLINT
+                                                            </option>
+                                                            <option value="TINYINT"
+                                                                    @if($mst->msfc->fieldsDateType[$key] == 'TINYINT') selected @endif>
+                                                                TINYINT
+                                                            </option>
+                                                            <option value="DECIMAL"
+                                                                    @if($mst->msfc->fieldsDateType[$key] == 'DECIMAL') selected @endif>
+                                                                DECIMAL
+                                                            </option>
+                                                            <option value="TEXT"
+                                                                    @if($mst->msfc->fieldsDateType[$key] == 'TEXT') selected @endif>
+                                                                TEXT
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">表单标题：</strong>
+                                                        <input type="text" name="merchants_formName[]"
+                                                               class="form-control xwd150 input-sm"
+                                                               value="{{$mst->msfc->fieldsFormName[$key]}}">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">数据长度：</strong>
+                                                        <input type="text" name="merchants_length[]"
                                                                class="form-control xwd100 input-sm"
-                                                               value="@if(!empty($mst->msfc->merchants_formSize[$key])){{$mst->msfc->merchants_formSize[$key]}}@endif">
-                                                    </div>
-                                                </div>
-                                                <div class="merchants-textarea @if($mst->msfc->merchants_form[$key] != 'textarea') disn @endif">
-                                                    <div class="form-text fl clearfix">
-                                                        <strong class="fl lh30 mar-right-5">行数以及宽度：</strong>
-                                                        <input type="text" name="merchants_rows[]"
-                                                               class="form-control xwd100 input-sm fl"
-                                                               value="@if(!empty($mst->msfc->merchants_rows[$key])){{$mst->msfc->merchants_rows[$key]}}@endif">
+                                                               value="{{$mst->msfc->fieldsLength[$key]}}">
                                                     </div>
                                                     <div class="form-text fl clearfix">
-                                                        <strong class="fl lh30 mar-right-5">~</strong>
-                                                        <input type="text" name="merchants_cols[]"
-                                                               class="form-control xwd100 input-sm fl"
-                                                               value="@if(!empty($mst->msfc->merchants_cols[$key])){{$mst->msfc->merchants_cols[$key]}}@endif">
+                                                        <strong class="fl lh30 mar-right-5">显示排序：</strong>
+                                                        <input type="text" name="fields_sort[]"
+                                                               class="form-control xwd100 input-sm"
+                                                               value="{{$mst->msfc->fields_sort[$key]}}">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">必选项：</strong>
+                                                        <select name="will_choose[]" class="form-control wa input-sm">
+                                                            <option value="0"
+                                                                    @if($mst->msfc->will_choose[$key] == 0) selected @endif>
+                                                                否
+                                                            </option>
+                                                            <option value="1"
+                                                                    @if($mst->msfc->will_choose[$key] == 1) selected @endif>
+                                                                是
+                                                            </option>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="merchants-radio @if($mst->msfc->merchants_form[$key] != 'radio' && $mst->msfc->merchants_form[$key] != 'checkbox') disn @endif">
-                                                    @if(!empty($mst->msfc->radio_checkbox[$key]))
-                                                        @foreach($mst->msfc->radio_checkbox[$key] as $k => $val)
-                                                            <div class="merchants-wrap fl">
-                                                                <div class="add-sub-item fl">@if($k == 0) <i
-                                                                            class="sc-icon sc-icon-add-small cursor"></i> @endif
-                                                                </div>
-                                                                <div class="fl">
-                                                                    <div class="form-text fl clearfix"
-                                                                         style="width: 525px">
-                                                                        <strong class="fl lh30 mar-right-5">单选或多选按钮名称：</strong>
-                                                                        <input type="text"
-                                                                               name="radio_checkbox[{{$key}}][]"
-                                                                               class="form-control xwd400 input-sm fl radio_checkbox" value="{{$val}}">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="sub-sub-item fl">@if($k != 0) <i
-                                                                            class="sc-icon sc-icon-sub-small cursor"></i> @endif
-                                                                </div>
-                                                            </div>
-                                                        @endforeach
-                                                    @endif
+
+                                                <div class="p-item clearfix">
+                                                    <div class="form-text fl clearfix" style="width: 465px">
+                                                        <strong class="fl lh30 mar-right-5">表单注释：</strong>
+                                                        <input type="text" name="formName_special[]"
+                                                               class="form-control xwd400 input-sm"
+                                                               value="{{$mst->msfc->formName_special[$key]}}">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">表单类型：</strong>
+                                                        <select name="merchants_form[]"
+                                                                class="form-control wa input-sm">
+                                                            <option value="input"
+                                                                    @if($mst->msfc->merchants_form[$key] == 'input') selected @endif>
+                                                                文本字段(input)
+                                                            </option>
+                                                            <option value="textarea"
+                                                                    @if($mst->msfc->merchants_form[$key] == 'textarea') selected @endif>
+                                                                文本区域(textarea)
+                                                            </option>
+                                                            <option value="radio"
+                                                                    @if($mst->msfc->merchants_form[$key] == 'radio') selected @endif>
+                                                                单选按钮(radio)
+                                                            </option>
+                                                            <option value="checkbox"
+                                                                    @if($mst->msfc->merchants_form[$key] == 'checkbox') selected @endif>
+                                                                多选按钮(checkbox)
+                                                            </option>
+                                                            <option value="select"
+                                                                    @if($mst->msfc->merchants_form[$key] == 'select') selected @endif>
+                                                                下拉菜单(select)
+                                                            </option>
+                                                            <option value="other"
+                                                                    @if($mst->msfc->merchants_form[$key] == 'other') selected @endif>
+                                                                其他(other)
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-text fl clearfix merchants-other @if($mst->msfc->merchants_form[$key] != 'other') disn @endif">
+                                                        <strong class="fl lh30 mar-right-5">选择类型：</strong>
+                                                        <select name="merchants_formOther[]"
+                                                                class="form-control wa input-sm">
+                                                            <option value="textArea"
+                                                                    @if(!empty($mst->msfc->merchants_formOther[$key]) && $mst->msfc->merchants_formOther[$key] == 'textArea') selected @endif>
+                                                                地区类型
+                                                            </option>
+                                                            <option value="dateTime"
+                                                                    @if(!empty($mst->msfc->merchants_formOther[$key]) && $mst->msfc->merchants_formOther[$key] == 'dateTime') selected @endif>
+                                                                日期类型
+                                                            </option>
+                                                            <option value="dateFile"
+                                                                    @if(!empty($mst->msfc->merchants_formOther[$key]) && $mst->msfc->merchants_formOther[$key] == 'dateFile') selected @endif>
+                                                                文件上传
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-text fl clearfix merchants-other-date @if(empty($mst->msfc->merchants_formOther[$key]) || $mst->msfc->merchants_formOther[$key] != 'dateTime') disn @endif">
+                                                        <strong class="fl lh30 mar-right-5">日期表单长度：</strong>
+                                                        <input type="text" name="merchants_formOtherSize[]"
+                                                               class="form-control xwd100 input-sm"
+                                                               value="@if(!empty($mst->msfc->merchants_formOtherSize[$key])){{$mst->msfc->merchants_formOtherSize[$key]}}@endif">
+                                                    </div>
                                                 </div>
-                                                <div class="merchants-select @if($mst->msfc->merchants_form[$key] != 'select') disn @endif">
-                                                    @if(!empty($mst->msfc->select[$key]))
-                                                        @foreach($mst->msfc->select[$key] as $k => $val)
-                                                            <div class="merchants-wrap fl">
-                                                                <div class="add-sub-item fl">@if($k == 0) <i
-                                                                            class="sc-icon sc-icon-add-small cursor"></i> @endif
-                                                                </div>
-                                                                <div class="fl">
-                                                                    <div class="form-text fl clearfix">
-                                                                        <strong class="fl lh30 mar-right-5">下拉菜单值：</strong>
-                                                                        <input type="text" name="select[{{$key}}][]"
-                                                                               class="form-control xwd150 input-sm fl select" value="{{$val}}">
+
+                                                <div class="p-item clearfix">
+                                                    <div class="merchants-text @if($mst->msfc->merchants_form[$key] != 'input') disn @endif">
+                                                        <div class="form-text fl clearfix">
+                                                            <strong class="fl lh30 mar-right-5">表单长度：</strong>
+                                                            <input type="text" name="merchants_formSize[]"
+                                                                   class="form-control xwd100 input-sm"
+                                                                   value="@if(!empty($mst->msfc->merchants_formSize[$key])){{$mst->msfc->merchants_formSize[$key]}}@endif">
+                                                        </div>
+                                                    </div>
+                                                    <div class="merchants-textarea @if($mst->msfc->merchants_form[$key] != 'textarea') disn @endif">
+                                                        <div class="form-text fl clearfix">
+                                                            <strong class="fl lh30 mar-right-5">行数以及宽度：</strong>
+                                                            <input type="text" name="merchants_rows[]"
+                                                                   class="form-control xwd100 input-sm fl"
+                                                                   value="@if(!empty($mst->msfc->merchants_rows[$key])){{$mst->msfc->merchants_rows[$key]}}@endif">
+                                                        </div>
+                                                        <div class="form-text fl clearfix">
+                                                            <strong class="fl lh30 mar-right-5">~</strong>
+                                                            <input type="text" name="merchants_cols[]"
+                                                                   class="form-control xwd100 input-sm fl"
+                                                                   value="@if(!empty($mst->msfc->merchants_cols[$key])){{$mst->msfc->merchants_cols[$key]}}@endif">
+                                                        </div>
+                                                    </div>
+                                                    <div class="merchants-radio @if($mst->msfc->merchants_form[$key] != 'radio' && $mst->msfc->merchants_form[$key] != 'checkbox') disn @endif">
+                                                        @if(!empty($mst->msfc->radio_checkbox[$key]))
+                                                            @foreach($mst->msfc->radio_checkbox[$key] as $k => $val)
+                                                                <div class="merchants-wrap fl">
+                                                                    <div class="add-sub-item fl">@if($k == 0) <i
+                                                                                class="sc-icon sc-icon-add-small cursor"></i> @endif
+                                                                    </div>
+                                                                    <div class="fl">
+                                                                        <div class="form-text fl clearfix"
+                                                                             style="width: 525px">
+                                                                            <strong class="fl lh30 mar-right-5">单选或多选按钮名称：</strong>
+                                                                            <input type="text"
+                                                                                   name="radio_checkbox[{{$key}}][]"
+                                                                                   class="form-control xwd400 input-sm fl radio_checkbox"
+                                                                                   value="{{$val}}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sub-sub-item fl">@if($k != 0) <i
+                                                                                class="sc-icon sc-icon-sub-small cursor"></i> @endif
                                                                     </div>
                                                                 </div>
-                                                                <div class="sub-sub-item fl">@if($k != 0) <i
-                                                                            class="sc-icon sc-icon-sub-small cursor"></i> @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                    <div class="merchants-select @if($mst->msfc->merchants_form[$key] != 'select') disn @endif">
+                                                        @if(!empty($mst->msfc->select[$key]))
+                                                            @foreach($mst->msfc->select[$key] as $k => $val)
+                                                                <div class="merchants-wrap fl">
+                                                                    <div class="add-sub-item fl">@if($k == 0) <i
+                                                                                class="sc-icon sc-icon-add-small cursor"></i> @endif
+                                                                    </div>
+                                                                    <div class="fl">
+                                                                        <div class="form-text fl clearfix">
+                                                                            <strong class="fl lh30 mar-right-5">下拉菜单值：</strong>
+                                                                            <input type="text" name="select[{{$key}}][]"
+                                                                                   class="form-control xwd150 input-sm fl select"
+                                                                                   value="{{$val}}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="sub-sub-item fl">@if($k != 0) <i
+                                                                                class="sc-icon sc-icon-sub-small cursor"></i> @endif
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="sub-item-form fl">@if($key != 0) <i
+                                                        class="sc-icon sc-icon-sub-small cursor"></i> @endif</div>
+                                        </div>
+                                    @else
+                                        <div class="f-item f-item-curr clearfix">
+                                            <div class="add-item fl"><i class="sc-icon sc-icon-add cursor"></i></div>
+                                            <div class="item-info fl">
+                                                <div class="p-item clearfix">
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">表单字段：</strong>
+                                                        <input type="text" name="merchants_date[]"
+                                                               class="form-control xwd150 input-sm">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">数据类型：</strong>
+                                                        <select name="merchants_dateType[]"
+                                                                class="form-control wa input-sm">
+                                                            <option value="VARCHAR">VARCHAR</option>
+                                                            <option value="CHAR">CHAR</option>
+                                                            <option value="INT">INT</option>
+                                                            <option value="MEDIUMINT">MEDIUMINT</option>
+                                                            <option value="SMALLINT">SMALLINT</option>
+                                                            <option value="TINYINT">TINYINT</option>
+                                                            <option value="DECIMAL">DECIMAL</option>
+                                                            <option value="TEXT">TEXT</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">表单标题：</strong>
+                                                        <input type="text" name="merchants_formName[]"
+                                                               class="form-control xwd150 input-sm">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">数据长度：</strong>
+                                                        <input type="text" name="merchants_length[]"
+                                                               class="form-control xwd100 input-sm">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">显示排序：</strong>
+                                                        <input type="text" name="fields_sort[]"
+                                                               class="form-control xwd100 input-sm">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">必选项：</strong>
+                                                        <select name="will_choose[]" class="form-control wa input-sm">
+                                                            <option value="0">否</option>
+                                                            <option value="1">是</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="p-item clearfix">
+                                                    <div class="form-text fl clearfix" style="width: 465px">
+                                                        <strong class="fl lh30 mar-right-5">表单注释：</strong>
+                                                        <input type="text" name="formName_special[]"
+                                                               class="form-control xwd400 input-sm">
+                                                    </div>
+                                                    <div class="form-text fl clearfix">
+                                                        <strong class="fl lh30 mar-right-5">表单类型：</strong>
+                                                        <select name="merchants_form[]"
+                                                                class="form-control wa input-sm">
+                                                            <option value="input">文本字段(input)</option>
+                                                            <option value="textarea">文本区域(textarea)</option>
+                                                            <option value="radio">单选按钮(radio)</option>
+                                                            <option value="checkbox">多选按钮(checkbox)</option>
+                                                            <option value="select">下拉菜单(select)</option>
+                                                            <option value="other">其他(other)</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-text fl clearfix merchants-other disn">
+                                                        <strong class="fl lh30 mar-right-5">选择类型：</strong>
+                                                        <select name="merchants_formOther[]"
+                                                                class="form-control wa input-sm">
+                                                            <option value="textArea">地区类型</option>
+                                                            <option value="dateTime">日期类型</option>
+                                                            <option value="file">文件上传</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-text fl clearfix merchants-other-date disn">
+                                                        <strong class="fl lh30 mar-right-5">日期表单长度：</strong>
+                                                        <input type="text" name="merchants_formOtherSize[]"
+                                                               class="form-control xwd100 input-sm">
+                                                    </div>
+                                                </div>
+                                                <div class="p-item clearfix">
+                                                    <div class="merchants-text">
+                                                        <div class="form-text fl clearfix">
+                                                            <strong class="fl lh30 mar-right-5">表单长度：</strong>
+                                                            <input type="text" name="merchants_formSize[]"
+                                                                   class="form-control xwd100 input-sm">
+                                                        </div>
+                                                    </div>
+                                                    <div class="merchants-textarea disn">
+                                                        <div class="form-text fl clearfix">
+                                                            <strong class="fl lh30 mar-right-5">行数以及宽度：</strong>
+                                                            <input type="text" name="merchants_rows[]"
+                                                                   class="form-control xwd100 input-sm fl">
+                                                        </div>
+                                                        <div class="form-text fl clearfix">
+                                                            <strong class="fl lh30 mar-right-5">~</strong>
+                                                            <input type="text" name="merchants_cols[]"
+                                                                   class="form-control xwd100 input-sm fl">
+                                                        </div>
+                                                    </div>
+                                                    <div class="merchants-radio disn">
+                                                        <div class="merchants-wrap fl">
+                                                            <div class="add-sub-item fl"><i
+                                                                        class="sc-icon sc-icon-add-small cursor"></i>
+                                                            </div>
+                                                            <div class="fl">
+                                                                <div class="form-text fl clearfix"
+                                                                     style="width: 525px">
+                                                                    <strong class="fl lh30 mar-right-5">单选或多选按钮名称：</strong>
+                                                                    <input type="text" name="radio_checkbox[0][]"
+                                                                           class="form-control xwd400 input-sm fl radio_checkbox">
                                                                 </div>
                                                             </div>
-                                                        @endforeach
-                                                    @endif
+                                                            <div class="sub-sub-item fl"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="merchants-select disn">
+                                                        <div class="merchants-wrap fl">
+                                                            <div class="add-sub-item fl"><i
+                                                                        class="sc-icon sc-icon-add-small cursor"></i>
+                                                            </div>
+                                                            <div class="fl">
+                                                                <div class="form-text fl clearfix">
+                                                                    <strong class="fl lh30 mar-right-5">下拉菜单值：</strong>
+                                                                    <input type="text" name="select[0][]"
+                                                                           class="form-control xwd150 input-sm fl select">
+                                                                </div>
+                                                            </div>
+                                                            <div class="sub-sub-item fl"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="sub-item-form fl">@if($key != 0) <i
-                                                    class="sc-icon sc-icon-sub-small cursor"></i> @endif</div>
-                                    </div>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>

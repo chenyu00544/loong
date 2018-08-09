@@ -125,27 +125,29 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         $merchants_formOther = [];
         $merchants_formOtherSize = [];
         foreach ($fieldsForm as $key => $value) {
-            $fieldsArr = explode(':', $value);
-            $merchants_form[$key] = $fieldsArr[0];
-            $fieldsSub = explode('+', $fieldsArr[1]);
-            $formName_special[$key] = $fieldsSub[1];
-            if ($fieldsArr[0] == 'input') {
-                $merchants_formSize[$key] = $fieldsSub[0];
-            } elseif ($fieldsArr[0] == 'textarea') {
-                $arr = explode(',', $fieldsSub[0]);
-                $merchants_rows[$key] = $arr[0];
-                $merchants_cols[$key] = $arr[1];
-            } elseif ($fieldsArr[0] == 'radio' || $fieldsArr[0] == 'checkbox') {
-                $arr = explode(',', $fieldsSub[0]);
-                $radio_checkbox[$key] = $arr;
-            } elseif ($fieldsArr[0] == 'select') {
-                $arr = explode(',', $fieldsSub[0]);
-                $select[$key] = $arr;
-            } elseif ($fieldsArr[0] == 'other') {
-                $arr = explode(',', $fieldsSub[0]);
-                $merchants_formOther[$key] = $arr[0];
-                if ($arr[0] == 'dateTime') {
-                    $merchants_formOtherSize[$key] = $arr[1];
+            if(!empty($value)){
+                $fieldsArr = explode(':', $value);
+                $merchants_form[$key] = $fieldsArr[0];
+                $fieldsSub = explode('+', $fieldsArr[1]);
+                $formName_special[$key] = $fieldsSub[1];
+                if ($fieldsArr[0] == 'input') {
+                    $merchants_formSize[$key] = $fieldsSub[0];
+                } elseif ($fieldsArr[0] == 'textarea') {
+                    $arr = explode(',', $fieldsSub[0]);
+                    $merchants_rows[$key] = $arr[0];
+                    $merchants_cols[$key] = $arr[1];
+                } elseif ($fieldsArr[0] == 'radio' || $fieldsArr[0] == 'checkbox') {
+                    $arr = explode(',', $fieldsSub[0]);
+                    $radio_checkbox[$key] = $arr;
+                } elseif ($fieldsArr[0] == 'select') {
+                    $arr = explode(',', $fieldsSub[0]);
+                    $select[$key] = $arr;
+                } elseif ($fieldsArr[0] == 'other') {
+                    $arr = explode(',', $fieldsSub[0]);
+                    $merchants_formOther[$key] = $arr[0];
+                    if ($arr[0] == 'dateTime') {
+                        $merchants_formOtherSize[$key] = $arr[1];
+                    }
                 }
             }
         }

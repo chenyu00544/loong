@@ -54,9 +54,10 @@ class StoreListController extends CommonController
         return view('shop.admin.merchants.shopSetup', compact('id', 'nav', 'info'));
     }
 
-    public function setShopInfo()
+    public function setShopInfo(Request $request, $id)
     {
-
+        $re = $this->sellerRepository->setSellerShopInfo($request->except('_token'), $id);
+        return view('shop.admin.success');
     }
 
     public function geoModal($id)
@@ -78,7 +79,15 @@ class StoreListController extends CommonController
      */
     public function create()
     {
-        //
+        $shopSteps = $this->storeListRepository->getStepsByShopInfo();
+
+        foreach ($shopSteps as $key => $value){
+            if($key > 4){
+                unset($shopSteps[$key]);
+            }
+        }
+        dd($shopSteps);
+        return view('shop.admin.merchants.merchantsAdd', compact('shopSteps'));
     }
 
     /**

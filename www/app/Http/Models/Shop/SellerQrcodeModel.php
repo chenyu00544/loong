@@ -29,4 +29,9 @@ class SellerQrcodeModel extends Model
         return $this->where($where)
             ->update($data);
     }
+
+    public function addSellerQrcode($data)
+    {
+        return $this->create($data);
+    }
 }
