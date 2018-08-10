@@ -9,6 +9,10 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Repositories\ComCateRepository;
+use App\Repositories\MerchantsRepository;
+use App\Repositories\RegionsRepository;
+use App\Repositories\SellerGradeRepository;
 use App\Repositories\SellerRepository;
 use App\Repositories\StoreListRepository;
 use Illuminate\Http\Request;
@@ -17,16 +21,28 @@ class StoreListController extends CommonController
 {
     private $storeListRepository;
     private $sellerRepository;
+    private $regionsRepository;
+    private $comCateRepository;
+    private $merchantsRepository;
+    private $sellerGradeRepository;
 
     public function __construct(
         StoreListRepository $storeListRepository,
-        SellerRepository $sellerRepository
+        SellerRepository $sellerRepository,
+        RegionsRepository $regionsRepository,
+        ComCateRepository $comCateRepository,
+        MerchantsRepository $merchantsRepository,
+        SellerGradeRepository $sellerGradeRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('storelist');
         $this->storeListRepository = $storeListRepository;
         $this->sellerRepository = $sellerRepository;
+        $this->regionsRepository = $regionsRepository;
+        $this->comCateRepository = $comCateRepository;
+        $this->merchantsRepository = $merchantsRepository;
+        $this->sellerGradeRepository = $sellerGradeRepository;
     }
 
     /**
@@ -80,14 +96,11 @@ class StoreListController extends CommonController
     public function create()
     {
         $shopSteps = $this->storeListRepository->getStepsByShopInfo();
-
-//        foreach ($shopSteps as $key => $value){
-//            if($key > 5){
-//                unset($shopSteps[$key]);
-//            }
-//        }
-//        dd($shopSteps);
-        return view('shop.admin.merchants.merchantsAdd', compact('shopSteps'));
+        $regions = $this->regionsRepository->getRegions();
+        $cates = $this->comCateRepository->getComCates();
+        $brands = $this->merchantsRepository->getMerchantsBrands(0);
+        $grades = $this->sellerGradeRepository->getSellerGrades();
+        return view('shop.admin.merchants.merchantsAdd', compact('shopSteps', 'regions', 'cates', 'brands', 'grades'));
     }
 
     /**

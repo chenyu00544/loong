@@ -276,7 +276,7 @@ var optionDateSet = {
     }
 };
 
-var optionDateDay = {
+var optionDateRangDay = {
     timePicker: true,
     timePickerIncrement: 1,
     timePicker24Hour: true, //新版本
@@ -305,6 +305,27 @@ var optionDateSingle = {
     singleDatePicker: true,
     showDropdowns:true,
     format: "YYYY-MM",
+    time: {
+        enabled: true
+    },
+    locale: {
+        "separator": "～",
+        "applyLabel": "确定",
+        "cancelLabel": "取消",
+        "fromLabel": "起始",
+        "toLabel": "结束",
+        "customRangeLabel": "自定义",
+        "weekLabel": "W",
+        "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
+        "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+        "firstDay": 1
+    }
+};
+
+var optionDateDay = {
+    singleDatePicker: true,
+    showDropdowns:true,
+    format: "YYYY-MM-DD",
     time: {
         enabled: true
     },

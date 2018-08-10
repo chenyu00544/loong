@@ -46,6 +46,11 @@ class SellerGradeRepository implements SellerGradeRepositoryInterface
         return $rep;
     }
 
+    public function getSellerGrades()
+    {
+        return $this->sellerGradeModel->getSellerGrades();
+    }
+
     public function getSellerGrade($id)
     {
         $where['id'] = $id;

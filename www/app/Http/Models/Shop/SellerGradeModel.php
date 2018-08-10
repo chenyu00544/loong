@@ -47,6 +47,12 @@ class SellerGradeModel extends Model
             ->first();
     }
 
+    public function getSellerGrades($column = ['*'])
+    {
+        return $this->select($column)
+            ->get();
+    }
+
     public function getSellerGrade($where, $column = ['*'])
     {
         return $this->select($column)

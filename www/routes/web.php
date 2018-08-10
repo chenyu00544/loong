@@ -277,4 +277,11 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('oss', 'OssController');
 
     Route::resource('interface', 'InterfaceController');
+
+    Route::get('dialog/merchants/brand/{id}', 'DialogController@merchantsBrand');
+    Route::get('dialog/merchants/brand/edit/{id}', 'DialogController@editMerchantsBrand');
+    Route::post('dialog/merchants/brand/modify', 'DialogController@modifyMerchantsBrand');
+    Route::post('dialog/merchants/brand/del/{id}', 'DialogController@delMerchantsBrand');
+
+
 });

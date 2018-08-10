@@ -9,7 +9,10 @@
 namespace App\Repositories;
 
 use App\Contracts\MerchantsRepositoryInterface;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\MerchantsPrivilegeModel;
+use App\Http\Models\Shop\MerchantsShopBrandFileModel;
+use App\Http\Models\Shop\MerchantsShopBrandModel;
 use App\Http\Models\Shop\MerchantsStepsFieldsCententModel;
 use App\Http\Models\Shop\MerchantsStepsProcessModel;
 use App\Http\Models\Shop\MerchantsStepsTitleModel;
@@ -22,13 +25,17 @@ class MerchantsRepository implements MerchantsRepositoryInterface
     private $merchantsStepsFieldsCententModel;
     private $sellerGradeModel;
     private $merchantsPrivilegeModel;
+    private $merchantsShopBrandModel;
+    private $merchantsShopBrandFileModel;
 
     public function __construct(
         MerchantsStepsProcessModel $merchantsStepsProcessModel,
         MerchantsStepsTitleModel $merchantsStepsTitleModel,
         MerchantsStepsFieldsCententModel $merchantsStepsFieldsCententModel,
         SellerGradeModel $sellerGradeModel,
-        MerchantsPrivilegeModel $merchantsPrivilegeModel
+        MerchantsPrivilegeModel $merchantsPrivilegeModel,
+        MerchantsShopBrandModel $merchantsShopBrandModel,
+        MerchantsShopBrandFileModel $merchantsShopBrandFileModel
     )
     {
         $this->merchantsStepsProcessModel = $merchantsStepsProcessModel;
@@ -36,6 +43,8 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         $this->merchantsStepsFieldsCententModel = $merchantsStepsFieldsCententModel;
         $this->sellerGradeModel = $sellerGradeModel;
         $this->merchantsPrivilegeModel = $merchantsPrivilegeModel;
+        $this->merchantsShopBrandModel = $merchantsShopBrandModel;
+        $this->merchantsShopBrandFileModel = $merchantsShopBrandFileModel;
     }
 
     public function getMerchantsStepsProcessByPage()
@@ -125,7 +134,7 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         $merchants_formOther = [];
         $merchants_formOtherSize = [];
         foreach ($fieldsForm as $key => $value) {
-            if(!empty($value)){
+            if (!empty($value)) {
                 $fieldsArr = explode(':', $value);
                 $merchants_form[$key] = $fieldsArr[0];
                 $fieldsSub = explode('+', $fieldsArr[1]);
@@ -376,13 +385,13 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where['grade_id'] = $data['grade'];
         $code = [];
-        foreach ($data as $key => $val){
-            if($key == 'grade'){
+        foreach ($data as $key => $val) {
+            if ($key == 'grade') {
                 unset($data[$key]);
-            }elseif($key == 'initialize_allot'){
+            } elseif ($key == 'initialize_allot') {
                 unset($data[$key]);
-            }else{
-                if(!empty($val['code'])){
+            } else {
+                if (!empty($val['code'])) {
                     $code[] = $val['code'];
                 }
             }
@@ -394,5 +403,83 @@ class MerchantsRepository implements MerchantsRepositoryInterface
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;
+    }
+
+    public function getMerchantsBrands($id)
+    {
+        $res = $this->merchantsShopBrandModel->getMerchantsShopBrands(['user_id' => $id]);
+        $brand_type = ['请选择...', '国内品牌', '国外品牌'];
+        $brand_operate_type = ['请选择...', '自有品牌', '代理品牌'];
+        foreach ($res as $val) {
+            $val->brand_type = $brand_type[$val->brand_type];
+            $val->brand_operate_type = $brand_operate_type[$val->brand_operate_type];
+        }
+        return $res;
+    }
+
+    public function getMerchantsBrand($id)
+    {
+        return $this->merchantsShopBrandModel->getMerchantsShopBrand(['bid' => $id]);
+    }
+
+    public function setMerchantsBrand($data)
+    {
+    }
+
+    public function addMerchantsBrand($data)
+    {
+        $updata = [];
+        $bfupdata = [];
+        $brand_file = ['qualification_name_input', 'qualification_img', 'expired_date', 'expired_date_permanent'];
+        foreach ($data as $key => $value) {
+            if ($key == 'brand_logo') {
+                $path = 'merchants_brand_logo';
+                $uri = FileHandle::upLoadImage($value, $path);
+                $updata[$key] = $uri;
+            } elseif (in_array($key, $brand_file)) {
+                if ($key == 'qualification_img') {
+                    $path = 'merchants_qualification_img';
+                    $uri = FileHandle::upLoadImage($value, $path);
+                    $bfupdata[$key] = $uri;
+                } else {
+                    $bfupdata[$key] = !empty($value) ? $value : 0;
+                }
+            } else {
+                $updata[$key] = !empty($value) ? $value : 0;
+            }
+        }
+        $re = $this->merchantsShopBrandModel->addMerchantsShopBrand($updata);
+        if ($re) {
+            $brand_type = ['请选择...', '国内品牌', '国外品牌'];
+            $brand_operate_type = ['请选择...', '自有品牌', '代理品牌'];
+            $bfupdata['bid'] = $re->bid;
+            $this->merchantsShopBrandFileModel->addMerchantsShopBrandFile($bfupdata);
+            $res = $this->merchantsShopBrandModel->getMerchantsShopBrands(['user_id' => $updata['user_id']]);
+            foreach ($res as $val) {
+                $val->brand_type = $brand_type[$val->brand_type];
+                $val->brand_operate_type = $brand_operate_type[$val->brand_operate_type];
+            }
+            return ['code' => 1, 'msg' => '操作成功', 'data' => $res];
+        }
+        return ['code' => 5, 'msg' => '操作失败', 'data' => ''];
+    }
+
+    public function delMerchantsBrand($id)
+    {
+        $rep = ['code' => 5, 'msg' => '操作失败'];
+        $re = $this->merchantsShopBrandModel->getMerchantsShopBrand(['bid' => $id]);
+        $ref = $this->merchantsShopBrandFileModel->getMerchantsShopBrandFile(['bid' => $id]);
+        if($re){
+            if($ref){
+                FileHandle::deleteFile($ref->qualification_img);
+                $this->merchantsShopBrandFileModel->delMerchantsShopBrandFile(['bid' => $id]);
+            }
+            FileHandle::deleteFile($re->brand_logo);
+            $re = $this->merchantsShopBrandModel->delMerchantsBrand(['bid' => $id]);
+            if($re){
+                $rep = ['code' => 1, 'msg' => '操作成功'];
+            }
+        }
+        return $rep;
     }
 }
