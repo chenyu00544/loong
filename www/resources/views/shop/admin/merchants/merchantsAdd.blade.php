@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">会员名称：</label>
                                 <div class="col-sm-6">
-                                    <select name="user_name" class="form-control input-sm fl wd-250">
+                                    <select name="user_id" class="form-control input-sm fl wd-250">
                                         <option value="0">名称</option>
                                     </select>
 
@@ -582,7 +582,7 @@
                 var parent = $(this).val();
                 $.post("{{url('api/region/getCountries')}}", {type: 1, parent: parent}, function (data) {
                     if (data.data.length > 0) {
-                        var html = '';
+                        var html = '<option value="0">省/直辖市</option>';
                         $.each(data.data, function (k, v) {
                             html += '<option value="' + v.id + '">' + v.name + '</option>';
                         });
@@ -595,7 +595,7 @@
                 var parent = $(this).val();
                 $.post("{{url('api/region/getCountries')}}", {type: 2, parent: parent}, function (data) {
                     if (data.data.length > 0) {
-                        var html = '';
+                        var html = '<option value="0">市</option>';
                         $.each(data.data, function (k, v) {
                             html += '<option value="' + v.id + '">' + v.name + '</option>';
                         });
@@ -608,7 +608,7 @@
                 var parent = $(this).val();
                 $.post("{{url('api/region/getCountries')}}", {type: 3, parent: parent}, function (data) {
                     if (data.data.length > 0) {
-                        var html = '';
+                        var html = '<option value="0">区/县</option>';
                         $.each(data.data, function (k, v) {
                             html += '<option value="' + v.id + '">' + v.name + '</option>';
                         });
@@ -631,7 +631,7 @@
                         $.each(data.data, function (k, v) {
                             $html += '<option value="' + v.id + '">' + v.name + '</option>';
                         });
-                        $('select[name=user_name]').html($html);
+                        $('select[name=user_id]').html($html);
                     }
                 });
             });
@@ -724,7 +724,7 @@
                 var user_id = $('select[name=user_name]').val();
                 layer.open({
                     type: 2,
-                    area: ['1200px', '600px'],
+                    area: ['1100px', '500px'],
                     fixed: true, //不固定
                     maxmin: true,
                     title: '添加品牌',
@@ -738,7 +738,7 @@
                 var id = $(this).data('id');
                 layer.open({
                     type: 2,
-                    area: ['1200px', '600px'],
+                    area: ['1100px', '500px'],
                     fixed: true, //不固定
                     maxmin: true,
                     title: '添加品牌',

@@ -17,4 +17,16 @@ class MerchantsStepsFieldsModel extends Model
     protected $primaryKey = 'fid';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function getMerchantsStepsFields($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function addMerchantsStepsFields($data)
+    {
+        return $this->create($data);
+    }
 }

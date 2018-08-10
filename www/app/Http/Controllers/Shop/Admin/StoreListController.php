@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\Verifiable;
 use App\Repositories\ComCateRepository;
 use App\Repositories\MerchantsRepository;
 use App\Repositories\RegionsRepository;
@@ -111,7 +112,12 @@ class StoreListController extends CommonController
      */
     public function store(Request $request)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["user_id" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->storeListRepository->addStore($request->except('_token'));
+        return view('shop.admin.success');
     }
 
     /**

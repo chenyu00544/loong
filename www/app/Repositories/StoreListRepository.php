@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 use App\Contracts\StoreListRepositoryInterface;
 use App\Http\Models\Shop\MerchantsShopInformationModel;
+use App\Http\Models\Shop\MerchantsStepsFieldsModel;
 use App\Http\Models\Shop\MerchantsStepsProcessModel;
 use App\Http\Models\Shop\RegionsModel;
 
@@ -18,16 +19,19 @@ class StoreListRepository implements StoreListRepositoryInterface
 
     private $merchantsShopInformationModel;
     private $merchantsStepsProcessModel;
+    private $merchantsStepsFieldsModel;
     private $regionsModel;
 
     public function __construct(
         MerchantsShopInformationModel $merchantsShopInformationModel,
         MerchantsStepsProcessModel $merchantsStepsProcessModel,
+        MerchantsStepsFieldsModel $merchantsStepsFieldsModel,
         RegionsModel $regionsModel
     )
     {
         $this->merchantsShopInformationModel = $merchantsShopInformationModel;
         $this->merchantsStepsProcessModel = $merchantsStepsProcessModel;
+        $this->merchantsStepsFieldsModel = $merchantsStepsFieldsModel;
         $this->regionsModel = $regionsModel;
     }
 
@@ -65,6 +69,20 @@ class StoreListRepository implements StoreListRepositoryInterface
             $req['msg'] = '操作成功';
         }
         return $req;
+    }
+
+    public function addStore($data)
+    {
+        dd($data);
+        if (!empty($data['user_id'])) {
+            $fid = $this->merchantsStepsFieldsModel->getMerchantsStepsFields(['user_id' => $data['user_id']], ['fid']);
+            if ($fid) {
+                return ['code' => 5, 'msg' => '已经申请过'];
+            } else {
+                $msfData = [];
+                $this->merchantsStepsFieldsModel->addMerchantsStepsFields($msfData);
+            }
+        }
     }
 
     public function getStepsByShopInfo()

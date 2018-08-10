@@ -101,7 +101,7 @@
                                        class="form-control input-sm wd-180 fl"
                                        value="{{$mBrand->msbf->qualification_name_input}}"
                                        placeholder="">
-                                <div class="col-sm-5">
+                                <div class="col-sm-6">
                                     <label class="col-sm-4 control-label">资质电子版：</label>
                                     <input type="file" name="qualification_img" class="fl">
                                     <span>
