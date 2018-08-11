@@ -255,7 +255,7 @@ class MerchantsRepository implements MerchantsRepositoryInterface
                                     $fieldsForm .= $v . ':' . implode(',', $data['select'][$k]) . '+' . $data['formName_special'][$k] . '|';
                                     break;
                                 case 'other':
-                                    if ($data['merchants_formOther'][$k] == 'textArea' || $data['merchants_formOther'][$k] == 'file') {
+                                    if ($data['merchants_formOther'][$k] == 'textArea' || $data['merchants_formOther'][$k] == 'dateFile') {
                                         $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';
                                     } elseif ($data['merchants_formOther'][$k] == 'dateTime') {
                                         $fieldsForm .= $v . ':' . $data['merchants_formOther'][$k] . ',' . $data['merchants_formOtherSize'][$k] . '+' . ($data['formName_special'][$k] ? $data['formName_special'][$k] : ' ') . '|';

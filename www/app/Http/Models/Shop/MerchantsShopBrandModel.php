@@ -38,6 +38,15 @@ class MerchantsShopBrandModel extends Model
             ->first();
     }
 
+    public function setMerchantsShopBrand($where, $data, $whereIn = [])
+    {
+        $m =  $this->where($where);
+        if(count($whereIn) > 0){
+            $m->whereIn('bid', $whereIn);
+        }
+        return $m->update($data);
+    }
+
     public function addMerchantsShopBrand($data)
     {
         return $this->create($data);

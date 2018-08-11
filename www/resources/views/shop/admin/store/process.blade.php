@@ -88,7 +88,7 @@
                                        href="{{url('admin/applyprocess/'.$pro->id)}}">查看</a>
                                     <a href="{{url('admin/msp/'.$pro->id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$pro->id}}">删除</a>
+                                    {{--<a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$pro->id}}">删除</a>--}}
                                 </td>
                             </tr>
                         @endforeach

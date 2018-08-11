@@ -10,3 +10,11 @@ php artisan db:seed  执行创建测试数据文件
 php artisan make:controller ****\***\**
 
 php artisan make:model ****\***\**
+
+
+
+添加表字段
+ALTER TABLE cyc_seo add xxxxxxyy VARCHAR(6) NOT NULL DEFAULT ''
+
+修改表字段
+ALTER TABLE cyc_seo CHANGE xxxxxxyy xyy VARCHAR(50) NOT NULL DEFAULT ''

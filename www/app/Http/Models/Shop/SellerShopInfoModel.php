@@ -30,4 +30,9 @@ class SellerShopInfoModel extends Model
         return $this->where($where)
             ->update($data);
     }
+
+    public function addSellerShopInfo($data)
+    {
+        return $this->create($data);
+    }
 }
