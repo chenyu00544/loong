@@ -10,12 +10,15 @@ namespace App\Repositories;
 
 use App\Contracts\StoreListRepositoryInterface;
 use App\Facades\FileHandle;
+use App\Http\Models\Shop\AdminUserModel;
 use App\Http\Models\Shop\MerchantsGradeModel;
+use App\Http\Models\Shop\MerchantsPrivilegeModel;
 use App\Http\Models\Shop\MerchantsShopBrandModel;
 use App\Http\Models\Shop\MerchantsShopInformationModel;
 use App\Http\Models\Shop\MerchantsStepsFieldsModel;
 use App\Http\Models\Shop\MerchantsStepsProcessModel;
 use App\Http\Models\Shop\RegionsModel;
+use App\Http\Models\Shop\SellerGradeModel;
 use App\Http\Models\Shop\SellerShopInfoModel;
 
 class StoreListRepository implements StoreListRepositoryInterface
@@ -26,7 +29,10 @@ class StoreListRepository implements StoreListRepositoryInterface
     private $merchantsStepsFieldsModel;
     private $merchantsGradeModel;
     private $merchantsShopBrandModel;
+    private $merchantsPrivilegeModel;
     private $sellerShopInfoModel;
+    private $sellerGradeModel;
+    private $adminUserModel;
     private $regionsModel;
 
     public function __construct(
@@ -35,7 +41,10 @@ class StoreListRepository implements StoreListRepositoryInterface
         MerchantsStepsFieldsModel $merchantsStepsFieldsModel,
         MerchantsGradeModel $merchantsGradeModel,
         MerchantsShopBrandModel $merchantsShopBrandModel,
+        MerchantsPrivilegeModel $merchantsPrivilegeModel,
         SellerShopInfoModel $sellerShopInfoModel,
+        SellerGradeModel $sellerGradeModel,
+        AdminUserModel $adminUserModel,
         RegionsModel $regionsModel
     )
     {
@@ -44,7 +53,10 @@ class StoreListRepository implements StoreListRepositoryInterface
         $this->merchantsStepsFieldsModel = $merchantsStepsFieldsModel;
         $this->merchantsGradeModel = $merchantsGradeModel;
         $this->merchantsShopBrandModel = $merchantsShopBrandModel;
+        $this->merchantsPrivilegeModel = $merchantsPrivilegeModel;
         $this->sellerShopInfoModel = $sellerShopInfoModel;
+        $this->sellerGradeModel = $sellerGradeModel;
+        $this->adminUserModel = $adminUserModel;
         $this->regionsModel = $regionsModel;
     }
 
@@ -97,8 +109,29 @@ class StoreListRepository implements StoreListRepositoryInterface
 
                 //添加店铺等级
                 if ($data['merchants_audit'] == 1) {
-                    $mgData = ['grade_id' => $data['grade_id'], 'year_num' => $data['year_num'], 'ru_id' => $uid, 'add_time' => time()];
-                    $this->merchantsGradeModel->addMerchantsGrade($mgData);
+                    //店铺等级
+                    if (empty($data['grade_id'])) {
+                        $sg = $this->sellerGradeModel->getSellerGrade(['is_default' => 1]);
+                        $grade_id = $sg->id;
+                    } else {
+                        $grade_id = $data['grade_id'];
+                    }
+                    $mgData = [
+                        'year_num' => $data['year_num'],
+                        'grade_id' => $grade_id
+                    ];
+                    $mg = $this->merchantsGradeModel->setMerchantsGrade(['ru_id' => $uid], $mgData);
+                    if (!$mg) {
+                        $mgData['ru_id'] = $uid;
+                        $mgData['add_time'] = time();
+                        $this->merchantsGradeModel->addMerchantsGrade($mgData);
+                    }
+
+                    //更新商家权限
+                    $mpriv = $this->merchantsPrivilegeModel->getMerchantsPrivilege(['grade_id' => $grade_id]);
+                    if ($mpriv) {
+                        $this->adminUserModel->setAdminUser(['ru_id' => $uid], ['action_list' => $mpriv->action_list]);
+                    }
                 }
 
                 $msp = $this->merchantsStepsProcessModel->getMerchantsStepsProcessesByTitleAndContent();
@@ -113,7 +146,7 @@ class StoreListRepository implements StoreListRepositoryInterface
                 foreach ($data as $key => $value) {
                     if (in_array($key, $formKey)) {//处理上传的图片
                         if (strpos($key, '_fileImg') !== false) {
-                            $path = 'merchants_fields' . DIRECTORY_SEPARATOR . str_replace('_fileImg', '', $key);
+                            $path = 'merchants_fields' . DIRECTORY_SEPARATOR . strtolower($key);
                             $uri = FileHandle::upLoadImage($value, $path);
                             $msfData[$key] = $uri;
                         } else {
@@ -130,8 +163,8 @@ class StoreListRepository implements StoreListRepositoryInterface
                 $msfData['user_id'] = $uid;
                 $msfData['agreement'] = 1;
                 $this->merchantsStepsFieldsModel->addMerchantsStepsFields($msfData);
-                dd($msfData);
 
+                //商家入驻后设置店铺基本信息
                 $ssiData = array(
                     'shopname_audit' => $data['shopname_audit'],
                     'shop_close' => $data['shop_close']
@@ -156,17 +189,18 @@ class StoreListRepository implements StoreListRepositoryInterface
                     $this->sellerShopInfoModel->addSellerShopInfo($ssiData);
                 }
 
+
+                //商家入驻时基本信息
                 $shop_expireDate = explode('～', $data['shop_expireDate']);
                 $authorizeFile = '';
                 $shop_hypermarketFile = '';
-                if($data['subShoprz_type'] == 2){
+                if ($data['subShoprz_type'] == 2) {
                     $path = 'merchants_shop_info' . DIRECTORY_SEPARATOR . $uid;
                     $authorizeFile = FileHandle::upLoadImage($data['authorizeFile'], $path);
-                }elseif($data['subShoprz_type'] == 3){
+                } elseif ($data['subShoprz_type'] == 3) {
                     $path = 'merchants_shop_info' . DIRECTORY_SEPARATOR . $uid;
                     $authorizeFile = FileHandle::upLoadImage($data['shop_hypermarketFile'], $path);
                 }
-
                 $msiData = [
                     'shoprz_type' => $data['shoprz_type'],
                     'subShoprz_type' => $data['subShoprz_type'],
@@ -175,16 +209,21 @@ class StoreListRepository implements StoreListRepositoryInterface
                     'shop_permanent' => $data['shop_permanent'],
                     'authorizeFile' => $authorizeFile,
                     'shop_hypermarketFile' => $shop_hypermarketFile,
-                    'shop_categoryMain' => $data['shop_categoryMain']
+                    'shop_categoryMain' => $data['shop_categoryMain'],
+                    'merchants_audit' => $data['merchants_audit'],
+                    'review_goods' => $data['review_goods'],
+                    'self_run' => $data['self_run'],
+                    'shop_categoryMain' => $data['shop_categoryMain'],
                 ];
-
                 $msi = $this->merchantsShopInformationModel->setMerchantsShopInfo(['user_id' => $uid], $msiData);
-                if(!$msi){
+                if (!$msi) {
                     $msiData['user_id'] = $uid;
+                    $this->merchantsShopInformationModel->addMerchantsShopInfo($msiData);
                 }
 
+                //店铺品牌
                 $msbData['user_id'] = $uid;
-                if(!empty($data['bid'])){
+                if (!empty($data['bid'])) {
                     $this->merchantsShopBrandModel->setMerchantsShopBrand([], $msbData, $data['bid']);
                 }
 

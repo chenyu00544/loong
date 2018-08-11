@@ -137,7 +137,7 @@
                                                                 <div class="col-sm-3">
                                                                     <div class="checkbox">
                                                                         <label class="mar-right-10">
-                                                                            <input type="checkbox" name="shop_permanent"
+                                                                            <input type="checkbox" name="shopTime_term"
                                                                                    value="1">永久
                                                                         </label>
                                                                     </div>
@@ -179,7 +179,7 @@
                                                 <div class="col-sm-3">
                                                     <div class="checkbox">
                                                         <label class="mar-right-10">
-                                                            <input type="checkbox" name="rank[]" value="1">永久
+                                                            <input type="checkbox" name="shop_permanent" value="1">永久
                                                         </label>
                                                     </div>
                                                 </div>
@@ -257,7 +257,7 @@
                                                         <th width="20%" class="text-center">操作</th>
                                                     </tr>
                                                     </thead>
-                                                    @if(1)
+                                                    @if(count($mcts['mcts']) == 0)
                                                         <tbody>
                                                         <tr class="">
                                                             <td class="no-records" colspan="4" style="height: 80px;">
@@ -267,15 +267,18 @@
                                                         </tbody>
                                                     @else
                                                         <tbody>
-                                                        @foreach($stores as $store)
+                                                        @foreach($mcts['mcts'] as $mct)
                                                             <tr class="">
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
+                                                                <td class="text-center">
+                                                                    <input type="hidden" name="cat_id[]"
+                                                                           value="{{$mct->cat_id}}">
+                                                                    {{$loop->index+1}}</td>
+                                                                <td class="text-center">{{$mct->parent_name}}</td>
+                                                                <td class="text-center">{{$mct->cat_name}}</td>
                                                                 <td class="text-center">
                                                                     <a type="button" href="javascript:;"
-                                                                       class="btn btn-danger btn-del btn-sm"
-                                                                       data-id="">删除</a>
+                                                                       class="btn btn-danger cate-del btn-sm"
+                                                                       data-id="{{$mct->ct_id}}">删除</a>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -295,16 +298,16 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label"></label>
                                             <div class="col-sm-9">
-                                                <table class="table table-hover table-bordered">
+                                                <table class="table table-hover table-bordered doc-t">
                                                     <thead>
                                                     <tr>
                                                         <th width="10%" class="text-center">类目名称</th>
-                                                        <th width="35%" class="text-center">资质名称</th>
-                                                        <th width="35%" class="text-center">资质电子版</th>
-                                                        <th width="20%" class="text-center">到期日</th>
+                                                        <th width="20%" class="text-center">资质名称</th>
+                                                        <th width="30%" class="text-center">资质电子版</th>
+                                                        <th width="30%" class="text-center">到期日</th>
                                                     </tr>
                                                     </thead>
-                                                    @if(1)
+                                                    @if(count($mcts['dt']) == 0)
                                                         <tbody>
                                                         <tr class="">
                                                             <td class="no-records" colspan="4">
@@ -314,15 +317,37 @@
                                                         </tbody>
                                                     @else
                                                         <tbody>
-                                                        @foreach($stores as $store)
+                                                        @foreach($mcts['dt'] as $dt)
                                                             <tr class="">
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
                                                                 <td class="text-center">
-                                                                    <a type="button" href="javascript:;"
-                                                                       class="btn btn-danger btn-del btn-sm"
-                                                                       data-id="">删除</a>
+                                                                    <input type="hidden" name="dt[]"
+                                                                           value="{{$dt->dt_id}}">
+                                                                    {{$mct->parent_name}}</td>
+                                                                <td class="text-center">{{$dt->dt_title}}</td>
+                                                                <td class="text-center">
+                                                                    <input type="file" name="permanent_file"
+                                                                           class="fl" style="line-height: 1.4">
+                                                                    <span>
+                                                                        <a href="{{url(empty($dt->mdf->permanent_file)?'':$dt->mdf->permanent_file)}}"
+                                                                           target="_blank" class="nyroModal">
+                                                                            <i class="glyphicon glyphicon-picture top5"
+                                                                               data-tooltipimg="" ectype="tooltip"
+                                                                               data-toggle="tooltip"
+                                                                               title="tooltip"></i>
+                                                                        </a>
+                                                                    </span>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <input type="date" class="form-control wd-160 fl"
+                                                                           value="{{date('Y-m-d', empty($dt->mdf->permanent_date)?0:$dt->mdf->permanent_date)}}"
+                                                                           name="permanent_date[]">
+                                                                    <label class="checkbox fl mar-left-40"
+                                                                           style="padding-top: 3px;">
+                                                                        <input type="checkbox"
+                                                                               name="cate_title_permanent[]" value="1"
+                                                                               style="margin-top: 8px"
+                                                                               @if(!empty($dt->mdf->cate_title_permanent)) checked @endif>永久
+                                                                    </label>
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -363,7 +388,8 @@
                                                         <tbody>
                                                         @foreach($brands as $brand)
                                                             <tr class="text-center">
-                                                                <input type="hidden" name="bid[]" value="{{$brand->bid}}">
+                                                                <input type="hidden" name="bid[]"
+                                                                       value="{{$brand->bid}}">
                                                                 <td>{{$brand->bid}}</td>
                                                                 <td>{{$brand->brand_name}}</td>
                                                                 <td>{{$brand->brand_name_letter}}</td>
@@ -690,32 +716,67 @@
             });
             //全选
             $('input[name=all_list]').click(function () {
-                var flage = $(this).is(':checked')
+                var flage = $(this).is(':checked');
                 $(".check-all").each(function () {
                     $(this).prop("checked", flage);
                 })
             });
             $('.cate-add').click(function () {
-                var cate = $('select[name=addCategoryMain]').val();
-                var cate_name = $('select[name=addCategoryMain]').find('option:selected').text();
-                var html = ''
+                var cates = [];
+                var uid = $('select[name=user_id]').val();
                 $(".check-all").each(function (k, v) {
-
-                    var id = $(v).val();
-                    var name = $(v).data('name');
-                    html += '<tr class=""><td class="text-center"f><input type="hidden" name="cat_id[]" value="' + id + '">' + k + '</td>' +
-                        '<td class="text-center"><input type="hidden" name="parent_name[]" value="' + cate_name + '">' + cate_name + '</td>' +
-                        '<td class="text-center"><input type="hidden" value="' + name + '" name="cat_name[]">' + name + '</td>' +
-                        '<td class="text-center">' +
-                        '<a type="button" href="javascript:;" class="btn btn-danger cate-del btn-sm" data-id="">删除</a>' +
-                        '</td></tr>'
+                    if ($(v).is(':checked')) {
+                        cates.push($(v).val());
+                    }
                 });
 
-                $('.cate tbody').html(html);
+                $.post("{{url('admin/storelist/cate/add')}}", {
+                    '_token': '{{csrf_token()}}',
+                    user_id: uid,
+                    cat_ids: cates
+                }, function (data) {
+                    var html = '';
+                    if (data.code == 1) {
+                        var parent_name = '';
+                        $.each(data.data.cate, function (k, v) {
+                            parent_name = v.parent_name;
+                            html += '<tr class=""><td class="text-center"><input type="hidden" name="cat_id[]" value="' + v.cat_id + '">' + (k + 1) + '</td>' +
+                                '<td class="text-center">' + v.parent_name + '</td>' +
+                                '<td class="text-center">' + v.cat_name + '</td>' +
+                                '<td class="text-center">' +
+                                '<a type="button" href="javascript:;" class="btn btn-danger cate-del btn-sm" data-id="' + v.ct_id + '">删除</a>' +
+                                '</td></tr>';
+                        });
+                        $('.cate tbody').html(html);
+                        var html_t = '';
+                        $.each(data.data.dt, function (k, v) {
+                            html_t += '<tr class=""><td class="text-center"><input type="hidden" name="dt[]" value="' + v.dt_id + '">' + parent_name + '</td>' +
+                                '<td class="text-center">' + v.dt_title + '</td>' +
+                                '<td class="text-center"><input type="file" name="permanent_file" style="line-height: 1.4"></td>' +
+                                '<td class="text-center">' +
+                                '<input type="date" class="form-control wd-160 fl" name="permanent_date[]">' +
+                                '<label class="checkbox fl mar-left-40" style="padding-top: 3px;">' +
+                                '<input type="checkbox" name="cate_title_permanent[]" value="1" style="margin-top: 8px">永久' +
+                                '</label>' +
+                                '</td></tr>';
+                        });
+                        $('.doc-t tbody').html(html_t);
+                    }
+                });
+
+
             });
             //删除类目
             $('.cate').on('click', '.cate-del', function () {
-                $(this).parent().parent().remove();
+                var that = this;
+                var id = $(this).data('id');
+                $.post("{{url('admin/storelist/cate/del')}}/" + id, {
+                    '_token': '{{csrf_token()}}'
+                }, function (data) {
+                    if (data.code == 1) {
+                        $(that).parent().parent().remove();
+                    }
+                });
             });
 
 

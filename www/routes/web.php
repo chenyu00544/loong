@@ -218,6 +218,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('storelist/info/{id}', 'StoreListController@info');
     Route::post('storelist/setinfo/{id}', 'StoreListController@setShopInfo');
     Route::post('storelist/change', 'StoreListController@change');
+    Route::post('storelist/cate/add', 'StoreListController@addCate');
+    Route::post('storelist/cate/del/{id}', 'StoreListController@delCate');
     Route::resource('storelist', 'StoreListController');
 
     Route::post('msp/change', 'MerchantsStepsProcessController@change');

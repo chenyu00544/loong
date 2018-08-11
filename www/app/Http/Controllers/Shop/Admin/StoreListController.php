@@ -89,6 +89,16 @@ class StoreListController extends CommonController
         return view('shop.admin.merchants.shopSetup', compact('id', 'nav'));
     }
 
+    public function addCate(Request $request)
+    {
+        return $this->merchantsRepository->addMerchantsCateTemporarydate($request->except('_token'));
+    }
+
+    public function delCate($id)
+    {
+        return $this->merchantsRepository->delMerchantsCateTemporarydate($id);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -101,7 +111,8 @@ class StoreListController extends CommonController
         $cates = $this->comCateRepository->getComCates();
         $brands = $this->merchantsRepository->getMerchantsBrands(0);
         $grades = $this->sellerGradeRepository->getSellerGrades();
-        return view('shop.admin.merchants.merchantsAdd', compact('shopSteps', 'regions', 'cates', 'brands', 'grades'));
+        $mcts = $this->merchantsRepository->getMerchantsCateTemporarydates(0);
+        return view('shop.admin.merchants.merchantsAdd', compact('shopSteps', 'regions', 'cates', 'brands', 'grades', 'mcts'));
     }
 
     /**
@@ -165,6 +176,27 @@ class StoreListController extends CommonController
      */
     public function destroy($id)
     {
-        //
+//        $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+//
+//        $sql = "delete from " .$ecs->table('merchants_shop_information'). " where user_id = '$id'";
+//        $db->query($sql);
+//
+//        $sql = "delete from " .$ecs->table('merchants_steps_fields'). " where user_id = '$id'";
+//        $db->query($sql);
+//
+//        if($GLOBALS['_CFG']['delete_seller'] && $id){
+//            get_delete_seller_info('seller_shopbg', "ru_id = '$id'"); //删除店铺背景
+//            get_delete_seller_info('seller_shopwindow', "ru_id = '$id'"); //删除店铺橱窗
+//            get_delete_seller_info('seller_shopheader', "ru_id = '$id'"); //删除店铺头部
+//            get_delete_seller_info('seller_shopslide', "ru_id = '$id'"); //删除店铺轮播图
+//            get_delete_seller_info('seller_shop_info', "ru_id = '$id'"); //删除店铺基本信息
+//            get_delete_seller_info('seller_domain', "ru_id = '$id'"); //删除店铺二级域名
+//            get_delete_seller_info('admin_user', "ru_id = '$id'"); //删除商家管理员身份
+//
+//            get_seller_delete_order_list($id); //删除商家订单
+//            get_seller_delete_goods_list($id); //删除商家商品
+//
+//            get_delete_seller_info('merchants_category', "user_id = '$id'"); //删除商家店铺分类
+//        }
     }
 }

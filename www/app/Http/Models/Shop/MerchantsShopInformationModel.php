@@ -71,4 +71,9 @@ class MerchantsShopInformationModel extends Model
         return $this->where($where)
             ->update($data);
     }
+
+    public function addMerchantsShopInfo($data)
+    {
+        return $this->create($data);
+    }
 }

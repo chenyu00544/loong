@@ -10,6 +10,11 @@ namespace App\Repositories;
 
 use App\Contracts\MerchantsRepositoryInterface;
 use App\Facades\FileHandle;
+use App\Http\Models\shop\CategoryModel;
+use App\Http\Models\Shop\MerchantsCategoryModel;
+use App\Http\Models\Shop\MerchantsCategoryTemporarydateModel;
+use App\Http\Models\Shop\MerchantsDocumentTitleModel;
+use App\Http\Models\Shop\MerchantsDtFileModel;
 use App\Http\Models\Shop\MerchantsPrivilegeModel;
 use App\Http\Models\Shop\MerchantsShopBrandFileModel;
 use App\Http\Models\Shop\MerchantsShopBrandModel;
@@ -27,6 +32,10 @@ class MerchantsRepository implements MerchantsRepositoryInterface
     private $merchantsPrivilegeModel;
     private $merchantsShopBrandModel;
     private $merchantsShopBrandFileModel;
+    private $merchantsCategoryTemporarydateModel;
+    private $merchantsDocumentTitleModel;
+    private $merchantsDtFileModel;
+    private $categoryModel;
 
     public function __construct(
         MerchantsStepsProcessModel $merchantsStepsProcessModel,
@@ -35,7 +44,11 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         SellerGradeModel $sellerGradeModel,
         MerchantsPrivilegeModel $merchantsPrivilegeModel,
         MerchantsShopBrandModel $merchantsShopBrandModel,
-        MerchantsShopBrandFileModel $merchantsShopBrandFileModel
+        MerchantsShopBrandFileModel $merchantsShopBrandFileModel,
+        MerchantsCategoryTemporarydateModel $merchantsCategoryTemporarydateModel,
+        MerchantsDocumentTitleModel $merchantsDocumentTitleModel,
+        MerchantsDtFileModel $merchantsDtFileModel,
+        CategoryModel $categoryModel
     )
     {
         $this->merchantsStepsProcessModel = $merchantsStepsProcessModel;
@@ -44,7 +57,10 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         $this->sellerGradeModel = $sellerGradeModel;
         $this->merchantsPrivilegeModel = $merchantsPrivilegeModel;
         $this->merchantsShopBrandModel = $merchantsShopBrandModel;
-        $this->merchantsShopBrandFileModel = $merchantsShopBrandFileModel;
+        $this->merchantsCategoryTemporarydateModel = $merchantsCategoryTemporarydateModel;
+        $this->merchantsDocumentTitleModel = $merchantsDocumentTitleModel;
+        $this->merchantsDtFileModel = $merchantsDtFileModel;
+        $this->categoryModel = $categoryModel;
     }
 
     public function getMerchantsStepsProcessByPage()
@@ -469,16 +485,86 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         $rep = ['code' => 5, 'msg' => '操作失败'];
         $re = $this->merchantsShopBrandModel->getMerchantsShopBrand(['bid' => $id]);
         $ref = $this->merchantsShopBrandFileModel->getMerchantsShopBrandFile(['bid' => $id]);
-        if($re){
-            if($ref){
+        if ($re) {
+            if ($ref) {
                 FileHandle::deleteFile($ref->qualification_img);
                 $this->merchantsShopBrandFileModel->delMerchantsShopBrandFile(['bid' => $id]);
             }
             FileHandle::deleteFile($re->brand_logo);
             $re = $this->merchantsShopBrandModel->delMerchantsBrand(['bid' => $id]);
-            if($re){
+            if ($re) {
                 $rep = ['code' => 1, 'msg' => '操作成功'];
             }
+        }
+        return $rep;
+    }
+
+    public function getMerchantsCateTemporarydates($id)
+    {
+        $where['user_id'] = $id;
+        $mcts = $this->merchantsCategoryTemporarydateModel->getMerchantsCategoryTemporarydates($where);
+        $rep['mcts'] = $mcts;
+        $cat_ids = [];
+        foreach ($mcts as $mct) {
+            $cat_ids[] = $mct->cat_id;
+        }
+        $rep['dt'] = $this->merchantsDocumentTitleModel->getMerchantsDocumentTitles($cat_ids, $id);
+        return $rep;
+    }
+
+    public function addMerchantsCateTemporarydate($data)
+    {
+        $updata['user_id'] = empty($data['user_id']) ? 0 : $data['user_id'];
+        $cates = $this->categoryModel->getComCatesByIn($data['cat_ids']);
+        $pCate = $this->categoryModel->getComParentCate($cates[0]->parent_id);
+        $updata['is_add'] = 0;
+
+        $res = [];
+        $mcts = $this->merchantsCategoryTemporarydateModel->getMerchantsCategoryTemporarydates(['user_id' => $updata['user_id']]);
+        $cateIds = [];
+        foreach ($mcts as $mct) {
+            $cateIds[$mct->cat_id] = $mct->cat_id;
+            $res['cate'][] = $mct;
+        }
+
+        foreach ($cates as $cate) {
+            $updata['cat_id'] = $cate->id;
+            $updata['parent_id'] = $cate->parent_id;
+            $updata['cat_name'] = $cate->cat_name;
+            $updata['parent_name'] = $pCate[0]->cat_name;
+
+            if (empty($cateIds[$cate->id]) || $cateIds[$cate->id] != $cate->id) {
+                $res['cate'][] = $this->merchantsCategoryTemporarydateModel->addMerchantsCategoryTemporarydate($updata);
+            }
+        }
+        if ($res) {
+            $res['dt'] = $this->merchantsDocumentTitleModel->getMerchantsDocumentTitles($data['cat_ids'], $updata['user_id']);
+            $mdfData['user_id'] = $updata['user_id'];
+            foreach ($res['dt'] as $dt){
+                if(empty($dt->mdf)){
+                    $mdfData['dt_id'] = $dt->dt_id;
+                    $mdfData['cat_id'] = $dt->cat_id;
+                    $mdfData['cate_title_permanent'] = 0;
+                    $this->merchantsDtFileModel->addMerchantsDtFile($mdfData);
+                }
+            }
+            $res['dt'] = $this->merchantsDocumentTitleModel->getMerchantsDocumentTitles($data['cat_ids'], $updata['user_id']);
+            return ['code' => 1, 'msg' => '操作成功', 'data' => $res];
+        }
+        return ['code' => 5, 'msg' => '操作失败', 'data' => ''];
+    }
+
+    public function delMerchantsCateTemporarydate($id)
+    {
+        $rep = ['code' => 5, 'msg' => '操作失败'];
+        $where['ct_id'] = $id;
+        $mct = $this->merchantsCategoryTemporarydateModel->getMerchantsCategoryTemporarydate($where);
+        $dfwhere['user_id'] = $mct->user_id;
+        $dfwhere['cat_id'] = $mct->cat_id;
+        $this->merchantsDtFileModel->delMerchantsDtFile($dfwhere);
+        $re = $this->merchantsCategoryTemporarydateModel->delMerchantsCategoryTemporarydate($where);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '操作成功'];
         }
         return $rep;
     }

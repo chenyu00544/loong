@@ -39,13 +39,13 @@ class LoginController extends CommonController
         if ($input = Input::except('_token')) {
             $ip = $request->getClientIp();
             $rules = ["username" => 'required', "password" => 'required'];
-            if($captcha->value[3] != 0){
+            if ($captcha->value[3] != 0) {
                 $rules['captcha'] = 'required';
             }
             $validator = Verifiable::loginVer($input, $lang, $rules);
             if ($validator->passes()) {
                 $user = $this->adminUserRepository->getAdminUser(['user_name' => $input['username']]);
-                if(empty($user)){
+                if (empty($user)) {
                     return back()->with('errors', $lang['login_faild']);
                 }
                 if ($user->user_name != $input['username']) {
@@ -54,10 +54,13 @@ class LoginController extends CommonController
                 if ($user->password != Common::md5Encrypt($input['password'], $user->salt)) {
                     return back()->with('errors', $lang['login_faild']);
                 }
-                if($captcha->value[3] != 0){
+                if ($captcha->value[3] != 0) {
                     if (!Captcha::check($input['captcha'])) {
                         return back()->with('errors', $lang['login_faild']);
                     }
+                }
+                if ($user->ru_id != 0) {
+                    return back()->with('errors', $lang['login_faild']);
                 }
 //                session(['user'=>$user]);
                 Cache::put('adminUser' . md5($ip) . $user->user_id, $user, 600);
@@ -75,7 +78,7 @@ class LoginController extends CommonController
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
         Cache::forget('adminUser' . md5($ip) . $uid);
-        if(!Cache::get('adminUser' . md5($ip) . $uid)){
+        if (!Cache::get('adminUser' . md5($ip) . $uid)) {
             return redirect('admin/login');
         }
         $error = ['code' => 1, 'msg' => '操作失败'];
@@ -89,7 +92,7 @@ class LoginController extends CommonController
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
         Cache::flush();
-        if(!Cache::get('adminUser' . md5($ip) . $uid)){
+        if (!Cache::get('adminUser' . md5($ip) . $uid)) {
             return redirect('admin/login');
         }
         $error = ['code' => 1, 'msg' => '操作失败'];

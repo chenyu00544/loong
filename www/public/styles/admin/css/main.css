@@ -1026,6 +1026,10 @@ textarea{
     margin-left: 20px;
 }
 
+.mar-left-40 {
+    margin-left: 40px;
+}
+
 .mar-left-60 {
     margin-left: 60px;
 }
@@ -1348,6 +1352,10 @@ i.sc-icon-sub-small {
 
 .wd-120 {
     width: 120px;
+}
+
+.wd-160 {
+    width: 160px;
 }
 
 .wd-180 {
