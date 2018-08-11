@@ -1,0 +1,45 @@
+<!--index.wxml-->
+<view class="container">
+  <!--代言header-s-->
+  <view class="speak_header">
+    <view class="speak_bg">
+      <image src="../../images/user-speak.png" />
+    </view>
+    <view class="speak_cont">
+      <view class=" dis-box cont-section">
+        <view class="left">
+          <view class="img">
+            <image src="{{goods.user.pic}}"></image>
+          </view>
+        </view>
+        <view class="right">
+          <text class="name">我是{{goods.user.name}}</text>
+          <text class="cont">我为《{{goods.user.shop_name}}》代言</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <!--代言header-e-->
+  <view class="speak_cont_box">
+    <view class="img">
+       <image src="{{goods.user.image_name}}"></image> 
+    </view>
+  </view>
+  <navigator url="../goods/index?objectId={{goods.goods_cont.id}}">
+    <view class="dis-box goods_shop_list">
+      <view class="left">
+        <image src="{{goods.goods_cont.pic}}" />
+      </view>
+      <view class="right box-flex">
+        <text class="f-26 col-3 twolist-hidden">{{goods.goods_cont.name}}</text>
+      </view>
+    </view>
+  </navigator>
+  <!--推广内容-s-->
+  <view class="footer_cont cont-box">
+    <text class="title">推广规则</text>
+    <text class="cont">1、点击右上角分享给你的好友；</text>
+    <text class="cont">2、分享好商品给朋友是最好的帮助；</text>
+  </view>
+  <!--推广内容-e-->
+</view>

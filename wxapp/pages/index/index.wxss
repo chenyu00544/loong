@@ -1,0 +1,288 @@
+page {
+  background: #fff;
+}
+
+scroll-view {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.nav-header {
+  width: 750rpx;
+  background: #fafafb;
+  position: fixed;
+  z-index: 9;
+}
+
+.navhide {
+  margin-top: -75rpx;
+}
+
+.fc-99 {
+  color: #999;
+}
+
+.fc-4f {
+  color: #4f4f4f;
+}
+
+.fc-44 {
+  color: #444;
+}
+
+/*轮播图切换样式*/
+
+.swiper-box .wx-swiper-dots.wx-swiper-dots-horizontal {
+  margin-bottom: 2rpx;
+}
+
+.swiper-box .wx-swiper-dot {
+  width: 20rpx;
+  display: inline-flex;
+  height: 8rpx;
+  margin-left: 10rpx;
+  justify-content: space-between;
+}
+
+.swiper-box .wx-swiper-dot::before {
+  content: '';
+  flex-grow: 1;
+  background: #fff;
+  border-radius: 13rpx;
+}
+
+.swiper-box .wx-swiper-dot-active::before {
+  background: #292929;
+  display: inline-flex;
+}
+
+.nav {
+  padding-top: 16rpx;
+  padding-bottom: 6rpx;
+  padding-left: 25rpx;
+  padding-right: 25rpx;
+  display: inline-block;
+  background-color: "#ff0";
+  text-align: center;
+  color: #999;
+}
+
+.nav.selected {
+  color: #292929;
+}
+
+.nav.selected:after {
+  content: " ";
+  display: block;
+  width: 120%;
+  height: 2px;
+  background: #292929;
+  margin-top: 10rpx;
+  margin-left: -10%;
+}
+
+.fill-h-70 {
+  width: 100%;
+  height: 70rpx;
+}
+
+.ad-submit-cyc {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+.ad-submit-cyc::after {
+  border: none;
+}
+
+/* 广告组合 */
+
+.ads image {
+  width: 100%;
+  height: 100%;
+}
+
+.matrix-one {
+  width: 750rpx;
+  height: 375rpx;
+}
+
+.matrix-two {
+  width: 375rpx;
+  height: 188rpx;
+}
+
+.matrix-three {
+  width: 250rpx;
+  height: 170rpx;
+}
+
+.matrix-four {
+  width: 150rpx;
+  height: 150rpx;
+}
+
+.matrix-five {
+  width: 375rpx;
+}
+
+.ads-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.once {
+  margin-left: 15rpx;
+  margin-right: 7rpx;
+  width: 349rpx;
+}
+
+.muce {
+  margin-left: 8rpx;
+  margin-right: 15rpx;
+  width: 365rpx;
+}
+
+.ads-insert image {
+  width: 360rpx;
+}
+
+.img-wrap {
+  overflow: hidden;
+  height: 520rpx;
+  border-radius: 10rpx 10rpx 0 0;
+}
+
+.index-goods-list .list-box:nth-child(2n) {
+  /* margin-left: 5rpx; */
+  border: 1rpx solid #ddd;
+  border-radius: 10rpx;
+}
+
+.index-goods-list .list-box:nth-child(2n-1) {
+  /* margin-right: 5rpx; */
+  border: 1rpx solid #ddd;
+  border-radius: 10rpx;
+}
+
+.index-goods-list .list-box image {
+  width: 520rpx;
+  height: 520rpx;
+  margin-left: -80rpx;
+}
+
+.index-goods-list .list-box .title {
+  line-height: 40rpx;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: calc(48vw - 40rpx);
+  height: 40rpx;
+}
+
+.sale-info {
+  display: flex;
+  align-items: center;
+}
+
+.sale-info .sale image {
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0;
+}
+
+.list-box .sale-info .price {
+  flex: 1;
+  padding: 0;
+}
+
+.sale {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 10rpx;
+}
+
+.flex-five {
+  flex: 0;
+  margin-top: 20rpx;
+  background: #f6f6f6;
+}
+
+.faat {
+  width: 100%;
+  height: 80rpx;
+  position: fixed;
+  background: #eee;
+}
+
+.faat scroll-view {
+  height: 100rpx;
+  display: flex;
+  align-content: space-between;
+}
+
+.faat .sub-nav {
+  background: #eee;
+  /* float:left; */
+  display: inline-block;
+  width: 120rpx;
+  height: 60rpx;
+  padding: 10rpx 40rpx;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-break: break-all;
+  text-align: center;
+  line-height: 30rpx;
+  color: #999;
+}
+
+.faat .sub-nav:before {
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 2rpx;
+  height: 60rpx;
+  background: #ddd;
+  margin-left: 156rpx;
+  top: 10rpx;
+}
+
+.faat .sub-nav.active:before {
+  width: 0;
+}
+
+.faat .sub-nav text {
+  display: flex;
+  height: 60rpx;
+  align-items: center;
+}
+
+.faat .sub-nav image {
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.faat .sub-nav.active image {
+  width: 14rpx;
+  height: 7rpx;
+  display: block;
+  margin-left: 50rpx;
+  margin-top: 10rpx;
+  position: absolute;
+  z-index: 99;
+}
+
+.faat .sub-nav.active {
+  background: rgb(73, 4, 4);
+  color: #fff;
+}
+
+.faat .index-goods-list {
+  margin-top: 0;
+}

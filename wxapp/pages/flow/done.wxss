@@ -1,0 +1,74 @@
+button[type=primary].done-header {
+  padding: 90rpx 0;
+}
+
+.done-header .money-icon {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 100%;
+  background: #efce0c;
+  margin: 30rpx auto 0 auto;
+  text-align: center;
+  line-height: 180rpx;
+  font-size: 100rpx;
+  color: #fff;
+}
+
+.done-header .h4 {
+  text-align: center;
+  display: block;
+  font-size: 30rpx;
+  margin-top: 15rpx;
+  color: #777;
+}
+
+.done-header .p {
+  text-align: center;
+  display: block;
+  font-size: 50rpx;
+  color: #444;
+}
+
+.done-list {
+  font-size: 30rpx;
+  color: #444;
+  padding: 30rpx 0;
+  border-bottom: 1px solid #f6f6f9;
+}
+
+.done-list .done-list-right {
+  text-align: right;
+}
+
+button[type="submitOrder"] {
+  color: #fff;
+  background-color: #df2e26;
+}
+
+.tip {
+  text-align: center;
+  border: 1rpx solid #ccc;
+  font-size: 33rpx;
+  border-radius: 10rpx;
+  width: 650rpx;
+  margin: 100rpx auto;
+  padding: 50rpx 20rpx;
+  background: #FBFBFB;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tip text {
+  width: 100%;
+  margin-bottom: 20rpx;
+  color:#666666;
+}
+
+.tip .content {
+  width: 100%;
+  color:#A1A1A1;
+}
+
+.tip .content text{
+  color:#A1A1A1;
+}

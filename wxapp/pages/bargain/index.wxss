@@ -1,0 +1,167 @@
+/* 轮播图更新 */
+
+.swiper-box .wx-swiper-dots.wx-swiper-dots-horizontal {
+  margin-bottom: 2rpx;
+}
+
+.swiper-box .wx-swiper-dot {
+  width: 13rpx;
+  display: inline-flex;
+  height: 13rpx;
+  margin-left: 10rpx;
+  justify-content: space-between;
+}
+
+.swiper-box .wx-swiper-dot::before {
+  content: '';
+  flex-grow: 1;
+  background: #fff;
+  border-radius: 13rpx;
+}
+
+.swiper-box .wx-swiper-dot-active::before {
+  background: #df2e26;
+}
+
+.index_sale .price {
+  font-size: 30rpx;
+  color: #df2e26;
+  margin-top: 10rpx;
+  display: block;
+  text-align: center;
+}
+
+.index-title {
+  padding: 16rpx 12px;
+  border-bottom: 1px solid #f6f6f9;
+}
+
+.index-title .title {
+  font-size: 30rpx;
+  color: #333;
+  padding-left: 4rpx;
+}
+
+.index-title .icon-shugang {
+  font-size: 28rpx;
+}
+
+.dis-box {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-box;
+  display: box;
+}
+
+.bargain-btn {
+  font-size: 30rpx;
+  position: absolute;
+  display: inline-block;
+  right: 15rpx;
+  bottom: 15rpx;
+  background: #df2e26;
+  border-radius: 8rpx;
+  color: #fff;
+  padding: 7rpx 22rpx;
+}
+
+.bargain-num {
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 18rpx;
+  font-size: 22rpx;
+  position: absolute;
+  right: 20rpx;
+  bottom: 20rpx;
+  color: #fff;
+  padding: 5rpx 15rpx;
+}
+
+.flex-five {
+  flex: 100%;
+}
+
+.flex-five .wrap-img {
+  width: 240rpx;
+  height: 240rpx;
+  float: left;
+}
+
+.clearfix {
+  clear: both;
+}
+
+.index-goods-list .list-box .wrap-img image {
+  width: 100%;
+  height: 240rpx;
+  display: block;
+}
+
+.index-goods-list .list-box .title {
+  margin: 0;
+  padding: 15rpx 15rpx 0 25rpx;
+  height: 82rpx;
+  width: 470rpx;
+  font-size: 28rpx;
+}
+
+.index-goods-list .list-box .price {
+  padding: 25rpx 15rpx 15rpx 25rpx;
+  display: block;
+  float: left;
+  width: 465rpx;
+}
+
+.index-goods-list .list-box:nth-child(2n-1) {
+  border-right: 0;
+  border-bottom: 10px solid #efeff4;
+}
+
+.index-goods-list .list-box:nth-child(2n) {
+  border-left: 0;
+  border-bottom: 10px solid #efeff4;
+}
+
+.flex-five .time {
+  width: 400rpx;
+  height: 40rpx;
+  display: flex;
+  float: left;
+  overflow: hidden;
+  margin-top: 12rpx;
+  margin-bottom: 5rpx;
+  padding-left: 25rpx;
+}
+
+.flex-five .time text {
+  background: #000;
+  border-radius: 8rpx;
+  color: #fff;
+  line-height: 40rpx;
+  padding: 0 5rpx;
+  font-size: 30rpx;
+}
+
+.flex-five .time .split {
+  background: #fff;
+  border-radius: 5rpx;
+  color: #000;
+  line-height: 40rpx;
+  font-size: 30rpx;
+  margin: 0 0rpx;
+}
+
+.loading {
+  padding: 10rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.loading image {
+  width: 40rpx;
+  height: 40rpx;
+  animation: rotate 1s linear infinite;
+  vertical-align: middle;
+  position: relative;
+  top: -4rpx;
+}

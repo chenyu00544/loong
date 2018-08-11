@@ -1,0 +1,225 @@
+@import "pages/common/lib/iconfont.wxss";
+@import "pages/common/lib/style.wxss";
+
+
+.hide{
+ display: none;
+}
+.show{ 
+ display: block;
+}
+
+
+
+
+/*弹窗广告
+
+老的
+
+.mask{
+	width:100%;
+	height: 100%;
+	background: rgba(0,0,0,0.3);
+	position: fixed;
+	top:0;
+	left: 0;
+	z-index: 10;
+}
+.close-btn{
+	width:60rpx;
+	position: absolute;
+	right: 2%;
+	top:2%;
+	z-index: 11;
+  padding: 0;
+  background: transparent;
+  line-height: auto;
+  border-radius: 0;
+}
+.close-btn::after{
+  border: none;
+}
+.redpage .close-btn image{
+	width:60rpx; 
+  height:60rpx;
+}
+.redpage ,.redpage-bg{
+    position: fixed;
+    width: 80%;
+    height: 800rpx;
+    margin: auto;
+    padding: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+}
+.redpage image{
+	width: 100%;
+  height: 800rpx;
+}
+.redpage .red-btn{
+	position: absolute;
+	top: 430rpx;
+	display: block;
+	width: 35%;
+	height: 29vw;
+	left: 33%;
+}
+.redpage-bg image{
+	width: 100%;
+  height: 29vw;
+}
+.redpage-bg{
+	display: none;
+}
+.redpage-bg1{
+	position: absolute;
+	top: 0px;
+}
+.redpage-bg2{
+	position: absolute;
+	top:42%;
+}
+
+*/
+
+
+
+
+
+
+
+/*弹窗广告*/
+.mask{
+	width:100%;
+	height: 100%;
+	background: rgba(0,0,0,0.3);
+	position: fixed;
+	top:0;
+	left: 0;
+	z-index: 10;
+}
+.close-btn{
+	width:60rpx;
+	position: absolute;
+	right: 6%;
+	top:11%;
+	z-index: 16;
+  padding: 0;
+  background: transparent;
+  line-height: auto;
+  border-radius: 0;
+}
+.close-btn::after{
+  border: none;
+}
+
+.redpage .close-btn image{
+	width:32rpx; 
+  height:32rpx;
+}
+.redpage ,.redpage-bg{
+    position: fixed;
+    width: 80%;
+    height: 800rpx;
+    margin: auto;
+    padding: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
+}
+
+.redpage .red-btn{
+	position: absolute;
+	top: 430rpx;
+	display: block;
+	width: 35%;
+	height: 29vw;
+	left: 33%;
+}
+.redpage-bg image{
+	width: 100%;
+  height: 29vw;
+}
+.redpage-bg{
+	display: none;
+}
+.redpage-bg1{
+	position: absolute;
+	top: 0px;
+}
+.redpage-bg2{
+	position: absolute;
+	top:42%;
+}
+
+
+.close-btn2{
+	width:100%;
+  height:100%;
+	position: absolute;
+	left: 0;
+	top:0;
+	z-index: 50;
+  padding: 0;
+  background: transparent;
+  line-height: auto;
+  border-radius: 0;
+}
+.close-btn2::after,.mask-img::after{
+  border: none;
+}
+.mask-img{
+  width:80%;
+  height: 600rpx;
+  position:absolute;
+  z-index: 15;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  margin:auto;
+  background: transparent;
+  line-height: auto;
+  border-radius: 0;
+}
+.mask-img image{
+	width: 100%;
+  height: 600rpx;
+}
+
+
+/* cyc 自定义tabbar */
+.tabbar_box{  
+    display: flex;  
+    flex-direction: row;  
+    justify-content: space-around;  
+    position: fixed;  
+    bottom: 0;  
+    left: 0;  
+    z-index: 999;  
+    width: 100%;  
+    height: 95rpx;
+    border-top: 1rpx solid #cccdcd;   
+}  
+  
+.tabbar_nav{  
+    display: flex;  
+    flex-direction: column;  
+    align-items: center;  
+    font-size: 22rpx;  
+    height: 100%;  
+}  
+  
+.tabbar_icon{  
+    width: 55rpx;  
+    height: 55rpx; 
+    margin-top:5rpx;
+}
+
+
+/* cyc */

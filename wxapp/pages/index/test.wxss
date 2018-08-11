@@ -1,0 +1,71 @@
+/* pages/index/test.wxss */
+
+
+
+
+.mask{
+	width:100%;
+	height: 100%;
+	background: rgba(0,0,0,0.6);
+	position: fixed;
+	top:0;
+	left: 0;
+	z-index: 10;
+}
+.close-btn{
+	width:60rpx;
+	position: absolute;
+	right: 2%;
+	top:2%;
+	z-index: 11;
+  padding: 0;
+  background: transparent;
+  line-height: auto;
+  border-radius: 0;
+}
+.close-btn::after{
+  border: none;
+}
+.redpage .close-btn image{
+	width:60rpx; 
+  height:60rpx;
+}
+.redpage ,.redpage-bg{
+    position: fixed;
+    width: 80%;
+    height: 800rpx;
+    margin: auto;
+    padding: 0;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+}
+.redpage image{
+	width: 100%;
+  height: 800rpx;
+}
+.redpage .red-btn{
+	position: absolute;
+	top: 430rpx;
+	display: block;
+	width: 35%;
+	height: 29vw;
+	left: 33%;
+}
+.redpage-bg image{
+	width: 100%;
+  height: 29vw;
+}
+.redpage-bg{
+	display: none;
+}
+.redpage-bg1{
+	position: absolute;
+	top: 0px;
+}
+.redpage-bg2{
+	position: absolute;
+	top:42%;
+}

@@ -1,0 +1,93 @@
+.wrap {
+  background-color: white;
+  padding: 20rpx;
+}
+
+.wap-img {
+  display: flex;
+  justify-content: center;
+}
+
+.suc-img {
+  width: 256rpx;
+  height: 256rpx;
+  border-radius: 128rpx;
+}
+
+.wap-title {
+  text-align: center;
+  margin-top: 40rpx;
+  margin-bottom: 20rpx;
+  font-size: 50rpx;
+}
+
+.order-info {
+  color: #73b736;
+}
+
+.wap-back {
+  display: flex;
+  justify-content: center;
+  margin: 40rpx 0 40rpx 0;
+}
+
+.bt-back {
+  display: block;
+  font-size: 35rpx;
+  width: 280rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  text-align: center;
+  background-color: #f72a7f;
+  color: white;
+  border-radius: 10rpx;
+}
+
+.wrap-title {
+  display: flex;
+  margin-top: 10rpx;
+  background: #fff;
+  padding: 10px 15px 10px 15px;
+}
+
+.col-pink{
+  color: #f72a7f;
+}
+
+.address_list {
+  padding: 10px 15px 10px 15px;
+  background: #fff;
+  border-bottom: 0;
+  margin-top: 10rpx;
+}
+
+.address_list view {
+  display: flex;
+}
+
+.fx2 {
+  flex: 2;
+}
+
+.fx6 {
+  flex: 6;
+}
+
+.mt {
+  margin-top: 20rpx;
+}
+
+.wd {
+  width: 160rpx;
+}
+
+.checkout_list {
+  display: flex;
+  padding: 10px 15px 2px 15px;
+  background: #fff;
+  margin-top:0.5px;
+}
+
+.flow-list-right {
+  position: relative;
+}

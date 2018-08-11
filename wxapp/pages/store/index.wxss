@@ -1,0 +1,38 @@
+.t_product_screen {width:100%;}
+
+
+.store-ads{
+  overflow: hidden;
+}
+.store-ads2{
+  overflow: hidden;
+}
+.store-adsImg1{
+  float: left;
+  width: calc(50%);
+  height:400rpx;
+}
+.store-adsImg2{
+  float: right;
+  width: calc(50%);
+  height:200rpx;
+}
+.store-adsImg2:last-of-type{
+  margin-bottom: 0;
+  height:200rpx;
+}
+.store-adsImg3{
+  float: left;
+  width:calc(33.3333%);
+  height:200rpx;
+}
+
+
+
+
+
+
+
+
+
+

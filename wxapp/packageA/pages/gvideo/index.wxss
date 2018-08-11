@@ -1,0 +1,131 @@
+.v-goods video {
+  width: 750rpx;
+  height: 750rpx;
+}
+
+.scroll-bar {
+  display: flex;
+  white-space: nowrap;
+}
+
+.comment-wrap {
+  width: 400rpx;
+  display: inline-block;
+  background: #f8f8f8;
+  margin: 20rpx;
+  padding: 20rpx;
+  vertical-align: top;
+}
+
+.comment-wrap .title {
+  display: flex;
+  align-items: center;
+}
+
+.user-logo image {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+}
+
+.user-name {
+  margin-left: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.comment-cont {
+  color: #999;
+  font-size: 26rpx;
+  height: 80rpx;
+}
+
+.comment-cont text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  -webkit-line-clamp: 2;
+  white-space: pre-wrap;
+  height: 80rpx;
+}
+
+.tip-goods-wrap {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.goods-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  flex:15 
+}
+.share-wrap{
+  flex: 1;
+}
+
+.tip-goods {
+  display: flex;
+  align-items: center;
+  margin-right: 15rpx;
+  margin-bottom: 10rpx;
+  margin-top: 10rpx;
+}
+
+.tip-goods image {
+  width: 26rpx;
+  height: 26rpx;
+}
+
+.tip-goods text {
+  font-size: 26rpx;
+  margin-left: 10rpx;
+  color: #666;
+}
+
+.goods-fixed-icon text {
+  color: #fff;
+  font-size: 22rpx;
+  text-align: center;
+  display: block;
+}
+
+.order-number {
+  background: #292929;
+}
+
+.cart_product_price {
+  color: #000;
+}
+
+.cartypeitem.cur {
+  background: #aaa;
+  border: 1rpx solid #aaa;
+}
+
+.bargain-mol .footer {
+  background: #292929;
+  margin: auto;
+  margin-bottom: 20rpx;
+  width: 90%;
+}
+
+.group-property-mol {
+  z-index: 99;
+}
+
+.bargain-mol .max-cont {
+  height: 300rpx;
+}
+
+.btn-back {
+  margin: 20rpx;
+  background: #292929;
+  color: #fff;
+  padding: 10rpx;
+  text-align: center;
+  font-size: 36rpx;
+}
+
+.goods-sharing-icon {
+  font-size: 42rpx;
+  color: #666;
+}

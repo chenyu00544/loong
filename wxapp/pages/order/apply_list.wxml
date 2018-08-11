@@ -1,0 +1,22 @@
+<view class='goods-list'>
+  <view class='goods-wrap flex' wx:for='{{returnOrder.goods_info}}' wx:key='goods'>
+    <view class='goods-img'>
+      <image src='{{item.goods_thumb}}'></image>
+    </view>
+    <view class='goods-info'>
+      <view class='goods-title f-34'>
+        <text>{{item.goods_name}}</text>
+      </view>
+      <view class='goods-attr'>
+        <text class='price f-30'>￥{{item.goods_price}}</text>
+        <text class='num f-30'>×{{item.o_goods_number}}</text>
+      </view>
+      <view class='apple' bindtap='checkReturn' data-rec_id='{{item.rec_id}}' wx:if='{{returnOrder.rorder}}'>
+        <text class='f-30 col-6'>查看详情</text>
+      </view>
+      <view class='apple' bindtap='applyReturn' data-rec_id='{{item.rec_id}}' wx:else>
+        <text class='f-30 col-6'>申请</text>
+      </view>
+    </view>
+  </view>
+</view>

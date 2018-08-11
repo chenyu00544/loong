@@ -1,0 +1,61 @@
+.acc-header {
+  background: #da5c57;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 500rpx;
+  flex-direction: column;
+  text-align: center;
+}
+
+.acc-header .money-title {
+  flex: 2;
+  align-items: flex-end;
+  display: flex;
+  justify-content: center;
+}
+
+.acc-header .money-num {
+  font-size: 110rpx;
+  flex: 1;
+}
+
+.acc-header .money-other {
+  flex: 1.5;
+}
+
+.acc-header .acc-bt {
+  flex: 1.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1rpx solid #da8684;
+}
+
+.acc-bt .iconfont {
+  margin-top: 10rpx;
+  margin-right: 10rpx;
+}
+
+.acc-list-wrap {
+  background: #fff;
+  margin-top: 20rpx;
+}
+
+.acc-list-wrap .acc-list {
+  height: 88rpx;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.acc-list .tit {
+  line-height: 88rpx;
+  margin-left: 20rpx;
+}
+
+.acc-list .iconfont {
+  float: right;
+  line-height: 88rpx;
+  margin-right: 20rpx;
+  color: #999;
+}

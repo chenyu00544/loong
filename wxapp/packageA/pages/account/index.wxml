@@ -1,0 +1,28 @@
+<view class="container">
+  <view class="acc-header">
+    <view class='money-title'>
+      <text class='f-32'>可用余额</text>
+    </view>
+    <view class='money-num'>
+      <text>{{funds.user_money}}</text>
+    </view>
+    <view class='money-other'>
+      <text class='f-32'>冻结余额: {{funds.frozen_money}}</text>
+    </view>
+    <view class='acc-bt' bindtap='extractCash'>
+      <text class="iconfont icon-daifukuan f-34"></text>
+      <text class='f-34'>提现</text>
+    </view>
+  </view>
+  <view class='acc-list-wrap'>
+    <view class='acc-list' bindtap='accountDetail'>
+      <text class='tit f-34'>账户明细</text>
+      <text class='iconfont icon-xiangyoujiantou f-34'></text>
+    </view>
+    <view class='acc-list' bindtap='extractCashDetail'>
+      <text class='tit f-34'>提现记录</text>
+      <text class='iconfont icon-xiangyoujiantou f-34'></text>
+    </view>
+  </view>
+
+</view>

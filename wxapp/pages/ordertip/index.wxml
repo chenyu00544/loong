@@ -1,0 +1,52 @@
+<scroll-view scroll-y>
+  <view class='wrap'>
+    <view class='wap-img'>
+      <image class='suc-img' mode='scaleToFill' src='../../images/success_icon.png'></image>
+    </view>
+
+    <view class='wap-title'>
+      <text class='order-info'>下单成功</text>
+    </view>
+  </view>
+
+  <view class="address_list">
+    <view>
+      <text class='f-30 col-3 twolist-hidden wd fx2'>收件姓名: </text>
+      <text class='f-30 col-3 twolist-hidden fx6'>{{address.consignee}}</text>
+    </view>
+    <view>
+      <text class='f-30 col-3 twolist-hidden mt wd fx2'>手　　机: </text>
+      <text class='f-30 col-3 twolist-hidden mt fx6'>{{address.mobile}}</text>
+    </view>
+    <view>
+      <text class='f-30 col-3 twolist-hidden mt wd fx2'>详细地址:</text>
+      <text class='f-30 col-3 twolist-hidden mt fx6'>{{address.province}}{{address.city}}{{address.district}}{{address.address}}</text>
+    </view>
+  </view>
+  <view class='wrap-title'>
+    <text class='f-30 col-3 twolist-hidden fx2'>订单号: </text>
+    <text class='f-30 col-3 col-pink fx6'>{{order_id}}</text>
+  </view>
+  <block wx:for='{{orders[0].goods}}' wx:for-item="good" wx:key="i">
+    <view class="checkout_list">
+      <view class="dis-flex flow-shopList">
+        <view class="flow-list-left">
+          <image mode='aspectFit' src='{{good.goods_thumb}}'></image>
+        </view>
+
+        <view class="flow-list-right box-flex">
+          <text class='f-30 col-3 twolist-hidden'>{{good.goods_name}}</text>
+          <text class='f-26 col-7'>{{good.goods_attr}}</text>
+          <view class='flow-list-cont'>
+            <text class='flow-cont'>{{good.goods_price_formated}}</text>
+            <text class='small'>×{{good.goods_number}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+  <view class='wap-back'>
+    <button class='get-user' style='width:280rpx;height:80rpx;position:absolute;' open-type='getUserInfo' bindgetuserinfo="getUser"></button>
+    <text class='bt-back'>去用户中心</text>
+  </view>
+</scroll-view>

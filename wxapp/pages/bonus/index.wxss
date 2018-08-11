@@ -1,0 +1,69 @@
+.order, .address {
+  padding: 0 12px;
+}
+
+.top-nav {
+  background: #fff;
+}
+
+.order coupons-ul coupons-li, .address coupons-ul coupons-li {
+  margin-top: 12px;
+  display: block;
+}
+
+.goods-coupon-cont coupons-li .coupons-box.active .left .sup,
+.goods-coupon-cont coupons-li .coupons-box.active .left .price,
+.goods-coupon-cont coupons-li .coupons-box.active .right .s_name,
+.goods-coupon-cont coupons-li .coupons-box.active .right .s_cont {
+  color: #bbb;
+}
+
+.goods-coupon-cont coupons-li .max-left {
+  width: 100%;
+  padding: 0;
+}
+
+.dis-box {
+  border-radius: 10rpx;
+}
+
+.coupons-box {
+  background: #df2e26;
+  padding: 20rpx;
+}
+
+.coupons-box .left {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: #fbe292;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.goods-coupon-cont .active .left {
+  background: #ccc;
+}
+
+.goods-coupon-cont .active{
+  background: #999;
+}
+
+.coupons-box .left image {
+  width: 45rpx;
+  height: 60rpx;
+}
+
+.goods-coupon-cont coupons-li .coupons-box .right .s_name {
+  color: #fff;
+  margin-bottom: 10rpx;
+}
+
+.goods-coupon-cont coupons-li .coupons-box .right{
+  padding: 0 0 0 20rpx;
+}
+
+.m-top4{
+  padding: 20rpx;
+}

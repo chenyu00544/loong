@@ -1,0 +1,177 @@
+.user-list {
+  padding: 30rpx 15rpx;
+}
+
+.user-list .li .common-icon {
+  font-size: 46rpx;
+}
+
+.user-list-service {
+  padding: 30rpx 0 0 0;
+}
+
+.user-list-service .li {
+  padding-bottom: 45rpx;
+}
+
+.index-goods-list .list-box .title {
+  height: 41rpx;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: calc(48vw - 30rpx);
+}
+
+.index-goods-list .list-box .description {
+  font-size: 24rpx;
+  color: #999;
+  margin: 4rpx 15rpx 0 15rpx;
+  display: block;
+}
+
+.index-goods-list .list-box .price {
+  display: block;
+  clear: both;
+  position: relative;
+}
+
+.index-goods-list .list-box .btn {
+  display: block;
+  position: absolute;
+  right: 14rpx;
+  bottom: 14rpx;
+  background-color: #df2e26;
+  color: #fff;
+  font-size: 22rpx;
+  padding: 12rpx 50rpx;
+  border-radius: 0rpx;
+}
+
+.description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: calc(48vw - 30rpx);
+}
+
+.phone-go {
+  position: fixed;
+  right: 15%;
+  left: 15%;
+  top: 15%;
+  background: #fff;
+  z-index: 4999;
+  border-radius: 10rpx;
+  box-shadow: 2px 1px 12px rgba(100, 100, 100, 0.5);
+}
+
+.phone-go .f-jiantou {
+  width: 80rpx;
+  height: 80rpx;
+  position: absolute;
+  top: -25%;
+  right: 0;
+}
+
+.phone-go .cont {
+  padding: 15px;
+  border-bottom: 1rpx solid #eee;
+}
+
+.phone-go .footer {
+  margin: 15px;
+  background: #df2e26;
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 8rpx;
+  color: #fff;
+}
+
+.phone-go .k-pic {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 100%;
+  box-shadow: 0px 0px 10rpx 6rpx #ccc;
+}
+
+.phone-go .img {
+  padding: 60rpx 0 0 0;
+  width: 120rpx;
+  height: 120rpx;
+  margin: 0 auto;
+}
+
+.phone-go .cont {
+  text-align: center;
+}
+
+.share-f::after {
+  border: 0;
+}
+
+.phone-go .share-f {
+  background: none;
+  padding: 0;
+  color: #fff;
+  line-height: inherit;
+  border-radius: 0;
+  border: 0;
+}
+
+.fc-44 {
+  color: #444;
+}
+
+.list-box {
+  background: #f6f6f6;
+}
+
+.sale-info {
+  display: flex;
+  align-items: center;
+}
+
+.sale-info .sale image {
+  width: 30rpx;
+  height: 30rpx;
+  margin: 0;
+}
+
+.sale-info .price {
+  flex: 1;
+}
+
+.sale {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 10rpx;
+}
+
+.fc-4f {
+  color: #5c5c5c;
+}
+
+.user-header .user-bg-box {
+  background: #292929;
+}
+
+.p-r{
+  width:200rpx;
+}
+
+.header-img-box {
+  margin-top: 43rpx;
+  margin-left: 25rpx;
+  background: #fff;
+}
+.user-admin{
+  color: #fff;
+  margin-top:50rpx;
+}
+
+.get-user{
+  display:flex;
+}

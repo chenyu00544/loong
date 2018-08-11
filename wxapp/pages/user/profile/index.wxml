@@ -1,0 +1,27 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="common-header-xian"></view>
+    <!--list-->
+    <view class="section_recharge">
+      <view class="section_input dis-box">
+        <view class="left col-3">
+          <text>账号</text>
+        </view>
+        <view class="right">
+          {{userInfo.nickName}}
+        </view>
+      </view>
+      <!--输入手机号-s-->
+      <navigator url="../profile/edit_mobile" hover-class="navigator-hover">
+        <view class="section_input dis-box">
+          <view class="left col-3">
+            <text>手机号码</text>
+          </view>
+          <view class="right">
+            15618323668
+          </view>
+        </view>
+      </navigator>
+      <!--输入手机号-e-->
+    </view>
+</view>

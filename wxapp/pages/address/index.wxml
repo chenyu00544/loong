@@ -1,0 +1,56 @@
+<view class="container m-b6 p-bottom">
+  <view class="common-header-xian"></view>
+  <!--地址-s-->
+  <custom-ul class="addres-list" wx:if="{{addressList !=''}}">
+    <custom-li wx:for="{{addressList}}" wx:for-index="index" wx:key="addressList">
+      <view class="address-header b-f dis-box m-top18">
+        <view class="flow-header-left pl-12">
+          <view class="flow-checkout-admin">{{item.consignee}}
+            <text>{{item.mobile}}</text>
+          </view>
+          <view class="flow-checkout-address">{{item.address}}</view>
+        </view>
+      </view>
+      <view class="address-list dis-flex b-f">
+        <view class="list address-left">
+          <radio-group class="radio-group" bindchange="setDefault">
+            <label class="radio">
+              <radio checked="{{item.default}}" value="{{item.id}}" />
+              <text class="cont" wx:if="{{item.default}}">默认</text>
+              <text class="cont" wx:else="{{item.default}}">选择</text>
+            </label>
+          </radio-group>
+        </view>
+        <view class="list address-right">
+          <text class="iconfont icon-buoumaotubiao30"></text>
+          <text class="title" data-address="{{index}}" bindtap="editAddress">编辑</text>
+          <text class="iconfont icon-lajixiang"></text>
+          <text class="title" data-address="{{item.id}}" bindtap="removeAddress">删除</text>
+        </view>
+      </view>
+    </custom-li>
+  </custom-ul>
+  <view wx:else>
+    <view class="ectouch-notcont">
+      <text class="iconfont icon-meiyougengduo"></text >
+       <text class="cont">亲，您还没有收货列表</text>
+    </view>
+  </view>
+  <!--地址-e-->
+  <!--btn-->
+  <view class="flow-fixed-footer f-34">
+     <view class="order-bt" style="width:100%" bindtap="createAddress">+添加收货地址</view> 
+    <view class="chackout-box" wx:if="{{addressCount<10}}">
+      <view class="chackout-bottom" bindtap="chooseAddress">
+        <image class='icon-img' src='../../images/location.png'></image>
+        <text class="get-addr-btn">获取微信地址</text>
+      </view>
+    </view>
+    <view class="chackout-box" wx:else="{{addressCount>=10}}">
+      <view class="chackout-bottom">
+        <text class=".get-limit-btn">添加地址已达到上限</text>
+      </view>
+    </view>
+  </view>
+</view>
+<!--<loading hidden="{{hidden}}">加载中…</loading>-->

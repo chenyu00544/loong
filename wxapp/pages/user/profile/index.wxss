@@ -1,0 +1,53 @@
+.section_recharge {
+  padding: 0 15px;
+  background: #fff;
+}
+.section_input {
+  border-bottom: 1px solid #f6f6f9;
+  padding:24rpx 0;
+  align-items:center;
+justify-content:space-between;
+
+}
+.section_input .right input {
+  font-size: 28rpx;
+}
+.section_input .left{
+ width:85px;
+}
+.section_input .left text{
+ font-size:30rpx;
+}
+.section_input .right {
+  flex: 4;
+  font-size:30rpx;
+}
+
+#adduser{  
+    background: #f5f5f5;  
+}  
+.section__title{  
+    float: left;  
+    width:30%;  
+}  
+.form-group{  
+    float: right;  
+    width: 70%;  
+}  
+.section{  
+    clear: both;  
+    width:90%;  
+    margin: 2rem auto;  
+}  
+.input-text{  
+    border: 1px solid #ddd;  
+}  
+.button{  
+    border: 1px solid #1aad19;  
+    border-radius: 2px;  
+}  
+.picker{  
+    padding: 13px;  
+    background-color: #FFFFFF;  
+}  
+.iphone-box{padding:12rpx 26rpx;}

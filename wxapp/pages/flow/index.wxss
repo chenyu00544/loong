@@ -1,0 +1,8 @@
+@import "/wxParse/wxParse.wxss";
+.image{ width: 100%;height: 100%}
+.cart-tab-item-btn{width: 160rpx; display: block; height: 100rpx; line-height: 100rpx; font-size: 32rpx; background: #292929; color: #fff; float: right; text-align: center;}
+.cart-tab-item{width: 375rpx;}
+.cart-item-total-price{color:#444;}
+.dish-item-money {color:#444;}
+.checked{width: 50rpx;margin-left: 10rpx;display: flex;align-items: center;}
+.checked image{width: 36rpx;height: 36rpx;}

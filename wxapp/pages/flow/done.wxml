@@ -1,0 +1,45 @@
+<view class="container">
+  <view class="common-header-xian"></view>
+  <!--header-->
+  <view class="done-header">
+    <view class="money-icon">￥</view>
+    <text class="f-26 t-c col-7">付款金额</text>
+    <text class="f-34 col-m t-c">{{donePrice.order_amount}}</text>
+    <!-- <text class="f-26 t-c col-7">测试版本，实付金额为0.01元，商品不发货</text> -->
+  </view>
+
+  <!--list-->
+  <view class="padding-box b-f">
+    <block wx:if="{{doneList.order_sn}}">
+      <view class="dis-flex done-list">
+        <text class="flex-five done-list-left col-7">订单号</text>
+        <text class="flex-five done-list-right">{{doneList.order_sn}}</text>
+      </view>
+    </block>
+    <!-- <block wx:if="{{doneList.shipping_name}}">
+      <view class="dis-box done-list">
+        <text class="flex-five done-list-left col-7">快递方式</text>
+        <text class="flex-five done-list-right">{{doneList.shipping_name}}</text>
+      </view>
+    </block> -->
+  </view>
+  <view class="padding-box m-top20 ">
+    <form bindsubmit="primary" report-submit="true" style="width:100%;display:block">
+      <button form-type="submit" class="m-top20" type="primary" size="default" data-id='{{order.order_id}}' loading="{{loading}}" plain="{{plain}}"> 微信担保支付 </button>
+    </form>
+  </view>
+
+  <view class="tip">
+    <text>—— 付款保障 ——</text>
+    <view class='content'>
+      <text class='iconfont icon-unif063'></text>微信担保交易
+    </view>
+    <view class='content'>
+    <text class='iconfont icon-unif063'></text>资金安全保障
+    </view>
+    <view class='content'>
+      <text class='iconfont icon-unif063'></text>退货换货无忧
+    </view>
+  </view>
+</view>
+<loading hidden="{{hidden}}">加载中…</loading>
