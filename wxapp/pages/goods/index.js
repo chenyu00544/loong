@@ -927,8 +927,12 @@ Page({
       });
     }
   },
-  goodsVideo: function() {
+  goodsVideo: function(e) {
     var that = this;
+
+    var formID = e.detail.formId;
+    app.addFormId(formID);
+    
     wx.navigateTo({
       url: '../../packageA/pages/gvideo/index?objectId=' + that.data.goods_Id,
     })

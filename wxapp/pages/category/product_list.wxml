@@ -28,7 +28,7 @@
             <view class='sale-info'>
               <text class="price f-32 fc-44">{{item.shop_price_formated}}</text>
               <view class='sale'>
-                <text class='sales_volume f-28 fc-99'>{{item.sales_volume}}</text>
+                <text class='sales_volume f-28 col-9'>{{item.sales_volume}}</text>
                 <image src='../../images/normal.png'></image>
               </view>
             </view>

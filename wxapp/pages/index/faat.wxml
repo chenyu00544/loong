@@ -12,8 +12,12 @@
     </scroll-view>
   </view>
   <!-- 商品列表 -->
+  <view class='faat-line'></view>
+  <view class='faat-img' wx:if="{{faat[curSubNav].activity_thumb != '' && faat[curSubNav].goodses.length>0}}">
+    <image src='{{faat[curSubNav].activity_thumb}}' mode="aspectFit"></image>
+  </view>
   <view class='flex' wx:if="{{faat[curSubNav].goodses.length>0}}">
-    <view class="index-goods-list index-goods-list-box once">
+    <view class="index-goods-list  once">
       <view class="flex-five list-box b-f" wx:for="{{faat[curSubNav].goodses}}" wx:key="list" bindtap="siteDetail" data-goodsname="{{item.goods_name}}" data-goodsId="{{item.goods_id}}" data-index="{{index}}" wx:if="{{index%2==0}}">
         <view class='img-wrap'>
           <image src="{{item.goods_thumb}}" mode="aspectFit" class="goodsImg" />
@@ -29,7 +33,7 @@
         </view>
       </view>
     </view>
-    <view class="index-goods-list index-goods-list-box once">
+    <view class="index-goods-list once">
       <view class="flex-five list-box b-f" wx:for="{{faat[curSubNav].goodses}}" wx:key="list" bindtap="siteDetail" data-goodsname="{{item.goods_name}}" data-goodsId="{{item.goods_id}}" data-index="{{index}}" wx:if="{{index%2!=0}}">
         <view class='img-wrap'>
           <image src="{{item.goods_thumb}}" mode="aspectFit" class="goodsImg" />

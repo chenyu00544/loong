@@ -111,7 +111,7 @@ scroll-view {
 
 .matrix-two {
   width: 375rpx;
-  height: 188rpx;
+  height: 250rpx;
 }
 
 .matrix-three {
@@ -136,13 +136,13 @@ scroll-view {
 .once {
   margin-left: 15rpx;
   margin-right: 7rpx;
-  width: 349rpx;
+  width: 354rpx;
 }
 
 .muce {
   margin-left: 8rpx;
   margin-right: 15rpx;
-  width: 365rpx;
+  width: 354rpx;
 }
 
 .ads-insert image {
@@ -218,6 +218,7 @@ scroll-view {
   height: 80rpx;
   position: fixed;
   background: #eee;
+  z-index: 99;
 }
 
 .faat scroll-view {
@@ -285,4 +286,18 @@ scroll-view {
 
 .faat .index-goods-list {
   margin-top: 0;
+}
+
+.faat-img {
+  width: 750rpx;
+  height: 350rpx;
+}
+
+.faat-img image {
+  width: 750rpx;
+  height: 350rpx;
+}
+
+.faat-line{
+  height: 88rpx;
 }

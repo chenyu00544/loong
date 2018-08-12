@@ -120,7 +120,6 @@
   margin: 20rpx;
   background: #292929;
   color: #fff;
-  padding: 10rpx;
   text-align: center;
   font-size: 36rpx;
 }
@@ -128,4 +127,15 @@
 .goods-sharing-icon {
   font-size: 42rpx;
   color: #666;
+}
+
+.ad-submit-cyc {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+.ad-submit-cyc::after {
+  border: none;
 }

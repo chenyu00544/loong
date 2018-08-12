@@ -30,7 +30,11 @@ Page({
       path: '/pages/goods/index?objectId=' + goodsId
     }
   },
-  back_nav:function(){
+  back_nav:function(e){
+    
+    var formID = e.detail.formId;
+    app.addFormId(formID);
+
     wx.navigateTo({
       url: '/pages/goods/index?objectId=' + goodsId,
     });

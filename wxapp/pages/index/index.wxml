@@ -29,58 +29,60 @@
       <!-- 广告组合 -->
       <view class='ads-flex' wx:if="{{ads[curNav]}}">
         <view wx:for="{{ads[curNav]}}" wx:key="adsList" class='ads-flex' wx:for-index="k">
-          <view wx:for="{{item}}" wx:key="ads" class='ads' wx:for-index="i" wx:if="{{item.position_style != '1*1'}}">
-            <block wx:if="{{item.position_style == '2*2'}}">
-              <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
-                <button formType="submit" class="ad-submit-cyc">
-                  <view class="matrix-two" style="width:{{i%2==0?'374rpx':'376rpx'}};">
-                    <image src="{{item.pic}}" mode="scaleToFill"></image>
-                  </view>
-                </button>
-              </form>
-            </block>
-            <block wx:elif="{{item.position_style == '3*3' || item.position_style == '2*5'}}">
-              <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
-                <button formType="submit" class="ad-submit-cyc">
-                  <view class="{{item.position_style == '3*3'?'matrix-three':'matrix-four'}}">
-                    <image src="{{item.pic}}" mode="scaleToFill"></image>
-                  </view>
-                </button>
-              </form>
-            </block>
-            <block wx:elif="{{item.position_style == '1*4'}}">
-              <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
-                <button formType="submit" class="ad-submit-cyc">
-                  <view class="matrix-auto" style="height:{{imageSize[item.banner_id].height}}rpx;">
-                    <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="width:{{imageSize[item.banner_id].width}}rpx; height:{{imageSize[item.banner_id].height}}rpx"></image>
-                  </view>
-                </button>
-              </form>
-            </block>
-          </view>
+          <block wx:for="{{item}}" wx:key="adsw">
+            <view wx:for="{{item}}" wx:key="ads" class='ads' wx:for-index="i" wx:if="{{item.position_style != '1*1'}}">
+              <block wx:if="{{item.position_style == '2*2'}}">
+                <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                  <button formType="submit" class="ad-submit-cyc">
+                    <view class="matrix-two" style="width:{{i%2==0?'374rpx':'376rpx'}};">
+                      <image src="{{item.pic}}" mode="scaleToFill"></image>
+                    </view>
+                  </button>
+                </form>
+              </block>
+              <block wx:elif="{{item.position_style == '3*3' || item.position_style == '2*5'}}">
+                <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                  <button formType="submit" class="ad-submit-cyc">
+                    <view class="{{item.position_style == '3*3'?'matrix-three':'matrix-four'}}">
+                      <image src="{{item.pic}}" mode="scaleToFill"></image>
+                    </view>
+                  </button>
+                </form>
+              </block>
+              <block wx:elif="{{item.position_style == '1*4'}}">
+                <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                  <button formType="submit" class="ad-submit-cyc">
+                    <view class="matrix-auto" style="height:{{imageSize[item.banner_id].height}}rpx;">
+                      <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="width:{{imageSize[item.banner_id].width}}rpx; height:{{imageSize[item.banner_id].height}}rpx"></image>
+                    </view>
+                  </button>
+                </form>
+              </block>
+            </view>
 
-          <view class='ads'>
-            <block wx:for="{{item}}" wx:key="ads" wx:for-index="i" wx:if="{{item.position_style == '1*1' && i%2==0}}">
-              <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
-                <button formType="submit" class="ad-submit-cyc" style="height:{{imageSize[item.banner_id].height/2}}rpx;">
-                  <view class="matrix-five">
-                    <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="height:{{imageSize[item.banner_id].height/2}}rpx"></image>
-                  </view>
-                </button>
-              </form>
-            </block>
-          </view>
-          <view class='ads'>
-            <block wx:for="{{item}}" wx:key="ads" wx:for-index="i" wx:if="{{item.position_style == '1*1' && i%2!=0}}">
-              <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
-                <button formType="submit" class="ad-submit-cyc" style="height:{{imageSize[item.banner_id].height/2}}rpx;">
-                  <view class="matrix-five">
-                    <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="height:{{imageSize[item.banner_id].height/2}}rpx"></image>
-                  </view>
-                </button>
-              </form>
-            </block>
-          </view>
+            <view class='ads'>
+              <block wx:for="{{item}}" wx:key="ads" wx:for-index="i" wx:if="{{item.position_style == '1*1' && i%2==0}}">
+                <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                  <button formType="submit" class="ad-submit-cyc" style="height:{{imageSize[item.banner_id].height/2}}rpx;">
+                    <view class="matrix-five">
+                      <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="height:{{imageSize[item.banner_id].height/2}}rpx"></image>
+                    </view>
+                  </button>
+                </form>
+              </block>
+            </view>
+            <view class='ads'>
+              <block wx:for="{{item}}" wx:key="ads" wx:for-index="i" wx:if="{{item.position_style == '1*1' && i%2!=0}}">
+                <form bindsubmit="formSubmitAD3" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                  <button formType="submit" class="ad-submit-cyc" style="height:{{imageSize[item.banner_id].height/2}}rpx;">
+                    <view class="matrix-five">
+                      <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="height:{{imageSize[item.banner_id].height/2}}rpx"></image>
+                    </view>
+                  </button>
+                </form>
+              </block>
+            </view>
+          </block>
         </view>
       </view>
 
@@ -141,7 +143,7 @@
 
       <!-- 特惠活动 -->
       <view class="faat {{navIsHide?'navhide':''}} ts-2" wx:if="{{faat[curNav].length>0}}">
-        <scroll-view scroll-x="true" scroll-with-animation="true" scroll-into-view="{{toSubView}}" scroll-left="{{scroll_sub_X}}" bindscroll="scroll_X">
+        <scroll-view scroll-x="true" scroll-with-animation="true" scroll-into-view="{{toSubView}}" scroll-left="{{scroll_sub_X}}" bindscroll="scroll_sub_X">
           <block wx:for="{{faat[curNav]}}" wx:key="nav_list">
             <view class="sub-nav {{index==curSubNav?'active':''}}" id="nav_sub_{{item.act_id}}" data-index="{{index}}" data-navid="{{item.act_id}}" bindtap="selectSubNav">
               <text class="f-26">{{item.act_name}}</text>
@@ -150,10 +152,14 @@
           </block>
         </scroll-view>
       </view>
-
       <!-- 商品列表 -->
+      <view class='faat-line'></view>
+      <view class='faat-img' wx:if="{{faat[curNav][curSubNav].activity_thumb != '' && faat[curNav][curSubNav].goodses.length>0}}">
+        <image src='{{faat[curNav][curSubNav].activity_thumb}}' mode="aspectFit"></image>
+      </view>
+
       <view class='flex' wx:if="{{faat[curNav][curSubNav].goodses.length>0}}">
-        <view class="index-goods-list index-goods-list-box once">
+        <view class="index-goods-list once">
           <form bindsubmit="siteDetail" bindreset="formReset" report-submit="true" wx:for="{{faat[curNav][curSubNav].goodses}}" wx:key="list" ata-goodsname="{{item.goods_name}}" data-goodsId="{{item.goods_id}}" data-index="{{index}}" wx:if="{{index%2==0}}" style='display:block;'>
             <button formType="submit" class="ad-submit-cyc">
               <view class="flex-five list-box b-f">
@@ -173,7 +179,7 @@
             </button>
           </form>
         </view>
-        <view class="index-goods-list index-goods-list-box once">
+        <view class="index-goods-list once">
           <form bindsubmit="siteDetail" bindreset="formReset" report-submit="true" wx:for="{{faat[curNav][curSubNav].goodses}}" wx:key="list" ata-goodsname="{{item.goods_name}}" data-goodsId="{{item.goods_id}}" data-index="{{index}}" wx:if="{{index%2!=0}}" style='display:block;'>
             <button formType="submit" class="ad-submit-cyc">
               <view class="flex-five list-box b-f">

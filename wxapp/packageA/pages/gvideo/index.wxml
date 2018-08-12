@@ -56,7 +56,10 @@
     </scroll-view>
   </view>
 </block>
-
-<view class='btn-back' bindtap='back_nav'>
-  <text>查看详情</text>
-</view>
+<form bindsubmit="back_nav" bindreset="formReset" report-submit="true" style='display:block;'>
+  <button formType="submit" class="ad-submit-cyc">
+    <view class='btn-back'>
+      <text>查看详情</text>
+    </view>
+  </button>
+</form>

@@ -318,11 +318,13 @@ Page({
 
   //提交订单
   submitOrder: function(e) {
-
     wx.showLoading({
       title: '提交订单中',
       mask: true
     });
+
+    var formID = e.detail.formId;
+    app.addFormId(formID);
 
     var that = this
     if (that.data.payfee_error == 1) {
@@ -391,6 +393,7 @@ Page({
       utype: 5,
       type_name: "提交订单"
     }, function(res) {});
+    
     wx.request({
       url: app.apiUrl('flow/down'),
       method: "post",

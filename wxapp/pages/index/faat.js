@@ -3,7 +3,7 @@ var nav = 0;
 var page = 0;
 Page({
   data: {
-    scrollview_h: app.winHeight(),
+    scrollview_h: app.winHeight()+45,
     curSubNav: 0,
     faat: [],
     scrollX: 0,
@@ -35,9 +35,13 @@ Page({
   },
 
   selectNav: function(index) {
+    var page = index;
+    if (page == 0){
+      page = 1
+    }
     this.setData({
       curSubNav: index,
-      toSubView: 'nav_sub_' + this.data.faat[index].act_id,
+      toSubView: 'nav_sub_' + this.data.faat[page-1].act_id,
     });
   },
 
@@ -118,5 +122,22 @@ Page({
         url: '../user/index',
       });
     }
+  },
+  //进去详情页
+  siteDetail: function (e) {
+    var that = this
+    var index = e.currentTarget.dataset.index;
+    var goodsId = e.currentTarget.dataset.goodsid;
+    var formID = e.detail.formId;
+    app.addFormId(formID);
+
+    wx.navigateTo({
+      url: "../goods/index?objectId=" + goodsId,
+    });
+    app.netReq("user/trajectory", {
+      utype: 1,
+      type_name: "普通商品",
+      action_name: e.currentTarget.dataset.goods_name
+    }, function (res) { });
   },
 })

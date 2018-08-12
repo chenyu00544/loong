@@ -8,7 +8,11 @@
         <block wx:for="{{goodsCont.goods_img}}" wx:key="goodsImg">
           <swiper-item>
             <image src="{{item}}" mode="aspectFill" class="slide-image" />
-            <image src="../../images/play_video.png" bindtap='goodsVideo' class='video-goods' wx:if="{{index==0&&goodsCont.goods_info.goods_video}}"></image>
+            <form bindsubmit="goodsVideo" bindreset="formReset" report-submit="true" style='display:block;' wx:if="{{index==0&&goodsCont.goods_info.goods_video}}" class='video-goods'>
+              <button formType="submit" class="ad-submit-cyc">
+                <image src="../../images/play_video.png" class='video-goods'></image>
+              </button>
+            </form>
           </swiper-item>
         </block>
       </swiper>

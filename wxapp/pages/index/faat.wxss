@@ -283,3 +283,17 @@ scroll-view {
 .faat .index-goods-list {
   margin-top: 0;
 }
+
+.faat-img {
+  width: 750rpx;
+  height: 350rpx;
+}
+
+.faat-img image {
+  width: 750rpx;
+  height: 350rpx;
+}
+
+.faat-line{
+  height: 88rpx;
+}

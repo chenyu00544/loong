@@ -530,13 +530,26 @@ page {
 .video-goods {
   width: 128rpx;
   height: 128rpx;
-  position: absolute;
-  left: calc(375rpx - 64rpx);
-  bottom: calc(375rpx - 64rpx);
-  z-index: 9;
 }
 
 .cont-box {
   display: flex;
   flex-wrap: wrap;
+}
+
+.ad-submit-cyc {
+  width: 128rpx;
+  height: 128rpx;
+  position: absolute;
+  left: calc(375rpx - 64rpx);
+  bottom: calc(375rpx - 64rpx);
+  z-index: 9;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border-radius: 0;
+}
+
+.ad-submit-cyc::after {
+  border: none;
 }

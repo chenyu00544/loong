@@ -193,20 +193,19 @@ App({
     return option
   },
 
-  addFormId: function(fromId, mktag) {
+  addFormId: function (fromId) {
     if (fromId == 'the formId is a mock one' || wx.getStorageSync('openid') == '') {
       return;
     }
     var that = this;
     var token = wx.getStorageSync('token')
-
+    console.log(fromId);
+    console.log(wx.getStorageSync('openid'));
     wx.request({
-      url: that.apiUrl('user/addlog'), //app.apiUrlMy('m=site&c=index&a=test'),  //app.apiUrl('user/logina'),//
+      url: that.apiUrl('user/addlog'),
       data: {
-        /*  */
         from_id: fromId,
         user_wxid: wx.getStorageSync('openid'),
-        mktag: mktag
       },
 
       method: 'POST',

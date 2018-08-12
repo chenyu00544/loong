@@ -139,7 +139,7 @@ Page({
         if ('nav_sub_' + this.data.faat[this.data.curNav][i].act_id == e.currentTarget.id) {
           if (i < this.data.faat[this.data.curNav].length - 1) {
             this.setData({
-              scroll_sub_X: this.data.scroll_sub_X + app.winWidth() / 2
+              scroll_sub_X: this.data.scroll_sub_X + e.currentTarget.offsetLeft - app.winWidth() / 2,
             })
           }
         }
@@ -168,6 +168,9 @@ Page({
         }
       }
     }
+  },
+  scroll_sub_X: function(e) {
+    this.data.scroll_sub_X = e.detail.scrollLeft;
   },
   //点击子导航end
 
@@ -227,6 +230,9 @@ Page({
   getIndexData: function(nav, index) {
     var nav_id = nav;
     var that = this;
+    if (that.data.banner[index] || that.data.insert[index] || that.data.ads[index] || that.data.goodses[index] || that.data.faat[index]) {
+      return;
+    }
     app.netReq("index", {
       goods_id: goods_id,
       nav_id: nav,
@@ -321,9 +327,10 @@ Page({
     var that = this
     var index = e.currentTarget.dataset.index;
     var goodsId = e.currentTarget.dataset.goodsid;
+    
     var formID = e.detail.formId;
     app.addFormId(formID);
-    
+
     wx.navigateTo({
       url: "../goods/index?objectId=" + goodsId,
       // url: "../cashgoods/index?objectId=" + goodsId// +"&mktag=12&gzid=GZ47_715-T2&gdt_vid=wx06h5cq2ttv4r4i",
@@ -416,7 +423,7 @@ Page({
     wx.stopPullDownRefresh();
   },
 
-  formSubmitAD3: function (e) {
+  formSubmitAD3: function(e) {
     this.setData({
       adshow: false
     })
@@ -428,21 +435,21 @@ Page({
     var targetUrl = e.currentTarget.dataset.url;
 
     if (targetUrl != '') {
-      if (targetUrl == '../../pages/category/index'){
+      if (targetUrl == '../../pages/category/index') {
         wx.switchTab({
           url: '' + targetUrl,
         })
-      }else{
+      } else {
         wx.navigateTo({
           url: '' + targetUrl
         })
       }
-      
+
       app.netReq("user/trajectory", {
         utype: 1,
         type_name: "广告商品",
         action_name: targetUrl
-      }, function (res) { });
+      }, function(res) {});
     }
   },
 })
