@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\LangConfig;
+use App\Facades\RedisCache;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
@@ -30,7 +31,10 @@ class CommonController extends Controller
         $this->middleware(function ($request, $next) {
             $uid = $request->cookie('user_id');
             $ip = $request->getClientIp();
-            $this->user = Cache::get('adminUser' . md5($ip) . $uid);
+            $this->user = RedisCache::get('adminUser' . md5($ip) . $uid);
+            if(!$this->user){
+//                $this->user = Cache::get('adminUser' . md5($ip) . $uid);
+            }
             $this->privilege();
             return $next($request);
         });

@@ -12,11 +12,11 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Captcha;
 use App\Facades\Common;
 use App\Facades\LangConfig;
+use App\Facades\RedisCache;
 use App\Facades\ShopConfig;
 use App\Facades\Verifiable;
 use App\Repositories\AdminUserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Input;
 
 class LoginController extends CommonController
@@ -63,7 +63,7 @@ class LoginController extends CommonController
                     return back()->with('errors', $lang['login_faild']);
                 }
 //                session(['user'=>$user]);
-                Cache::put('adminUser' . md5($ip) . $user->user_id, $user, 600);
+                RedisCache::setex('adminUser' . md5($ip) . $user->user_id, $user, 600);
                 return redirect('admin/index')->cookie('user_id', $user->user_id, 720);
             } else {
                 return back()->withErrors($validator);
@@ -77,8 +77,8 @@ class LoginController extends CommonController
     {
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
-        Cache::forget('adminUser' . md5($ip) . $uid);
-        if (!Cache::get('adminUser' . md5($ip) . $uid)) {
+        RedisCache::del('adminUser' . md5($ip) . $uid);
+        if (!RedisCache::get('adminUser' . md5($ip) . $uid)) {
             return redirect('admin/login');
         }
         $error = ['code' => 1, 'msg' => '操作失败'];
@@ -91,8 +91,8 @@ class LoginController extends CommonController
         //flush清除所有缓存
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
-        Cache::flush();
-        if (!Cache::get('adminUser' . md5($ip) . $uid)) {
+        RedisCache::flushdb();
+        if (!RedisCache::get('adminUser' . md5($ip) . $uid)) {
             return redirect('admin/login');
         }
         $error = ['code' => 1, 'msg' => '操作失败'];
@@ -113,6 +113,7 @@ class LoginController extends CommonController
 
     public function tool()
     {
-
+//        RedisCache::setex('test', 'tt', 600);
+        echo RedisCache::get('test');
     }
 }

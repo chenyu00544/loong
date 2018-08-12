@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware\Shop;
 
+use App\Facades\RedisCache;
 use Closure;
-use Illuminate\Support\Facades\Cache;
 
 class AdminLogin
 {
@@ -16,10 +16,10 @@ class AdminLogin
      */
     public function handle($request, Closure $next)
     {
-//        !session('user');
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
-        if (!Cache::get('adminUser' . md5($ip) . $uid)) {
+        $user = RedisCache::get('adminUser' . md5($ip) . $uid);
+        if (!$user) {
             return redirect('admin/login');
         }
         return $next($request);
