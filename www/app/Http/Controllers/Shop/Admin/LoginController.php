@@ -15,6 +15,7 @@ use App\Facades\LangConfig;
 use App\Facades\RedisCache;
 use App\Facades\ShopConfig;
 use App\Facades\Verifiable;
+use App\Helper\RedisServer;
 use App\Repositories\AdminUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -113,7 +114,6 @@ class LoginController extends CommonController
 
     public function tool()
     {
-//        RedisCache::setex('test', 'tt', 600);
-        echo RedisCache::get('test');
+        echo empty([]);
     }
 }

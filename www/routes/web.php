@@ -215,6 +215,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('storelist/real', 'StoreListController@real');
     Route::get('storelist/geo/{id}', 'StoreListController@geoModal');
     Route::get('storelist/priv/{id}', 'StoreListController@privilegeEdit');
+    Route::post('storelist/priv/allot', 'StoreListController@privAllot');
     Route::get('storelist/info/{id}', 'StoreListController@info');
     Route::post('storelist/setinfo/{id}', 'StoreListController@setShopInfo');
     Route::post('storelist/change', 'StoreListController@change');

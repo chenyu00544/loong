@@ -14,23 +14,21 @@ class RedisCacheService
 {
     private static $redis;
 
-    private static function redis()
+    public function __construct()
     {
-        if (!self::$redis) {
+        if (!isset(self::$redis)) {
             self::$redis = new \Redis();
             if (!self::$redis->pconnect('127.0.0.1', 6379, 1)) {
-                self::$redis = null;
-                return self::$redis;
+                self::$redis = 'connect_failed';
             }
-            dd(self::$redis);
         }
         return self::$redis;
     }
 
     public static function get($key)
     {
-        if (self::redis()) {
-            $value = self::redis()->get($key);
+        if (self::$redis != 'connect_failed') {
+            $value = self::$redis->get($key);
             $value_serl = @unserialize($value);
             if (is_object($value_serl) || is_array($value_serl)) {
                 return $value_serl;
@@ -43,11 +41,11 @@ class RedisCacheService
 
     public static function set($key, $value)
     {
-        if (self::redis()) {
+        if (self::$redis != 'connect_failed') {
             if (is_object($value) || is_array($value)) {
                 $value = serialize($value);
             }
-            return self::redis()->set($key, $value);
+            return self::$redis->set($key, $value);
         } else {
             Cache::forever($key, $value);
         }
@@ -55,11 +53,11 @@ class RedisCacheService
 
     public static function setex($key, $value, $min = 0)
     {
-        if (self::redis()) {
+        if (self::$redis != 'connect_failed') {
             if (is_object($value) || is_array($value)) {
                 $value = serialize($value);
             }
-            return self::redis()->setex($key, $min * 60, $value);
+            return self::$redis->setex($key, $min * 60, $value);
         } else {
             Cache::put($key, $value, $min);
         }
@@ -67,8 +65,8 @@ class RedisCacheService
 
     public static function del($key)
     {
-        if (self::redis()) {
-            self::redis()->del($key);
+        if (self::$redis != 'connect_failed') {
+            self::$redis->del($key);
         } else {
             Cache::forget($key);
         }
@@ -76,8 +74,8 @@ class RedisCacheService
 
     public static function flushdb()
     {
-        if (self::redis()) {
-            self::redis()->flushDB();
+        if (self::$redis != 'connect_failed') {
+            self::$redis->flushDB();
         } else {
             Cache::flush();
         }

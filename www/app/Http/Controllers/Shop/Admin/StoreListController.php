@@ -86,7 +86,12 @@ class StoreListController extends CommonController
     public function privilegeEdit($id)
     {
         $nav = 'priv';
-        return view('shop.admin.merchants.shopSetup', compact('id', 'nav'));
+        return view('shop.admin.merchants.privilege', compact('id', 'nav'));
+    }
+
+    public function privAllot(Request $request)
+    {
+
     }
 
     public function addCate(Request $request)

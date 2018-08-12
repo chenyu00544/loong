@@ -32,6 +32,12 @@ class MerchantsCategoryTemporarydateModel extends Model
             ->first();
     }
 
+    public function setMerchantsCategoryTemporarydate($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
     public function addMerchantsCategoryTemporarydate($data)
     {
         return $this->create($data);

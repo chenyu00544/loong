@@ -25,6 +25,12 @@ class MerchantsDtFileModel extends Model
             ->get();
     }
 
+    public function setMerchantsDtFile($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
     public function addMerchantsDtFile($data)
     {
         return $this->create($data);

@@ -11,6 +11,8 @@ namespace App\Repositories;
 use App\Contracts\StoreListRepositoryInterface;
 use App\Facades\FileHandle;
 use App\Http\Models\Shop\AdminUserModel;
+use App\Http\Models\Shop\MerchantsCategoryTemporarydateModel;
+use App\Http\Models\Shop\MerchantsDtFileModel;
 use App\Http\Models\Shop\MerchantsGradeModel;
 use App\Http\Models\Shop\MerchantsPrivilegeModel;
 use App\Http\Models\Shop\MerchantsShopBrandModel;
@@ -30,6 +32,8 @@ class StoreListRepository implements StoreListRepositoryInterface
     private $merchantsGradeModel;
     private $merchantsShopBrandModel;
     private $merchantsPrivilegeModel;
+    private $merchantsDtFileModel;
+    private $merchantsCategoryTemporarydateModel;
     private $sellerShopInfoModel;
     private $sellerGradeModel;
     private $adminUserModel;
@@ -42,6 +46,8 @@ class StoreListRepository implements StoreListRepositoryInterface
         MerchantsGradeModel $merchantsGradeModel,
         MerchantsShopBrandModel $merchantsShopBrandModel,
         MerchantsPrivilegeModel $merchantsPrivilegeModel,
+        MerchantsDtFileModel $merchantsDtFileModel,
+        MerchantsCategoryTemporarydateModel $merchantsCategoryTemporarydateModel,
         SellerShopInfoModel $sellerShopInfoModel,
         SellerGradeModel $sellerGradeModel,
         AdminUserModel $adminUserModel,
@@ -54,6 +60,8 @@ class StoreListRepository implements StoreListRepositoryInterface
         $this->merchantsGradeModel = $merchantsGradeModel;
         $this->merchantsShopBrandModel = $merchantsShopBrandModel;
         $this->merchantsPrivilegeModel = $merchantsPrivilegeModel;
+        $this->merchantsDtFileModel = $merchantsDtFileModel;
+        $this->merchantsCategoryTemporarydateModel = $merchantsCategoryTemporarydateModel;
         $this->sellerShopInfoModel = $sellerShopInfoModel;
         $this->sellerGradeModel = $sellerGradeModel;
         $this->adminUserModel = $adminUserModel;
@@ -98,14 +106,12 @@ class StoreListRepository implements StoreListRepositoryInterface
 
     public function addStore($data)
     {
-        dd($data);
         if (!empty($data['user_id'])) {
             $uid = $data['user_id'];
             $fid = $this->merchantsStepsFieldsModel->getMerchantsStepsFields(['user_id' => $uid], ['fid']);
             if ($fid) {
                 return ['code' => 5, 'msg' => '已经申请过'];
             } else {
-                $msfData = [];
 
                 //添加店铺等级
                 if ($data['merchants_audit'] == 1) {
@@ -126,14 +132,9 @@ class StoreListRepository implements StoreListRepositoryInterface
                         $mgData['add_time'] = time();
                         $this->merchantsGradeModel->addMerchantsGrade($mgData);
                     }
-
-                    //更新商家权限
-                    $mpriv = $this->merchantsPrivilegeModel->getMerchantsPrivilege(['grade_id' => $grade_id]);
-                    if ($mpriv) {
-                        $this->adminUserModel->setAdminUser(['ru_id' => $uid], ['action_list' => $mpriv->action_list]);
-                    }
                 }
 
+                $msfData = [];
                 $msp = $this->merchantsStepsProcessModel->getMerchantsStepsProcessesByTitleAndContent();
                 $formKey = [];
                 foreach ($msp as $step) {
@@ -142,10 +143,9 @@ class StoreListRepository implements StoreListRepositoryInterface
                     }
                 }
                 $formKey = array_filter($formKey);
-
                 foreach ($data as $key => $value) {
-                    if (in_array($key, $formKey)) {//处理上传的图片
-                        if (strpos($key, '_fileImg') !== false) {
+                    if (in_array($key, $formKey)) {
+                        if (strpos($key, '_fileImg') !== false) {//处理上传的图片
                             $path = 'merchants_fields' . DIRECTORY_SEPARATOR . strtolower($key);
                             $uri = FileHandle::upLoadImage($value, $path);
                             $msfData[$key] = $uri;
@@ -156,8 +156,6 @@ class StoreListRepository implements StoreListRepositoryInterface
                                 $msfData[$key] = $value;
                             }
                         }
-                    } else {
-
                     }
                 }
                 $msfData['user_id'] = $uid;
@@ -199,7 +197,7 @@ class StoreListRepository implements StoreListRepositoryInterface
                     $authorizeFile = FileHandle::upLoadImage($data['authorizeFile'], $path);
                 } elseif ($data['subShoprz_type'] == 3) {
                     $path = 'merchants_shop_info' . DIRECTORY_SEPARATOR . $uid;
-                    $authorizeFile = FileHandle::upLoadImage($data['shop_hypermarketFile'], $path);
+                    $shop_hypermarketFile = FileHandle::upLoadImage($data['shop_hypermarketFile'], $path);
                 }
                 $msiData = [
                     'shoprz_type' => $data['shoprz_type'],
@@ -213,7 +211,11 @@ class StoreListRepository implements StoreListRepositoryInterface
                     'merchants_audit' => $data['merchants_audit'],
                     'review_goods' => $data['review_goods'],
                     'self_run' => $data['self_run'],
-                    'shop_categoryMain' => $data['shop_categoryMain'],
+                    'shoprz_brandName' => $data['shoprz_brandName'],
+                    'shop_class_keyWords' => $data['shop_class_keyWords'],
+                    'shopNameSuffix' => $data['shopNameSuffix'],
+                    'rz_shopName' => $data['rz_shopName'],
+                    'hopeLoginName' => $data['hopeLoginName'],
                 ];
                 $msi = $this->merchantsShopInformationModel->setMerchantsShopInfo(['user_id' => $uid], $msiData);
                 if (!$msi) {
@@ -225,6 +227,34 @@ class StoreListRepository implements StoreListRepositoryInterface
                 $msbData['user_id'] = $uid;
                 if (!empty($data['bid'])) {
                     $this->merchantsShopBrandModel->setMerchantsShopBrand([], $msbData, $data['bid']);
+                }
+
+                //商家入驻流程分类资质表
+                if (!empty($data['dtf'])) {
+                    foreach ($data['dtf'] as $key => $dtf_id) {
+                        $dtfwhere['dtf_id'] = $dtf_id;
+                        $path = 'merchants_dtf' . DIRECTORY_SEPARATOR . $uid;
+                        $permanent_file = FileHandle::upLoadImage($data['permanent_file'][$key], $path);
+                        $dtfData['permanent_file'] = $permanent_file;
+                        $dtfData['user_id'] = $uid;
+                        if (!empty($data['cate_title_permanent'][$key]) && $data['cate_title_permanent'][$key] == 1) {
+                            $dtfData['cate_title_permanent'] = $data['cate_title_permanent'][$key];
+                        } else {
+                            $dtfData['permanent_date'] = $data['permanent_date'][$key];
+                        }
+                        $this->merchantsDtFileModel->setMerchantsDtFile($dtfwhere, $dtfData);
+                    }
+                }
+
+                //商家入驻流程填写分类临时信息表
+                $cat_id = !empty($data['cat_id']) ? $data['cat_id'] : (!empty($data['subcate']) ? $data['subcate'] : []);
+                if (!empty($cat_id)) {
+                    foreach ($cat_id as $key => $cat_id) {
+                        $mctwhere['cat_id'] = $cat_id;
+                        $mctData['user_id'] = $uid;
+                        $mctData['is_add'] = 1;
+                        $this->merchantsCategoryTemporarydateModel->setMerchantsCategoryTemporarydate($mctwhere, $mctData);
+                    }
                 }
 
                 return ['code' => 1, 'msg' => '操作成功'];
