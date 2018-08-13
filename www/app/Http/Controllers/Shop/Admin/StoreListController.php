@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
+use App\Repositories\AdminUserRepository;
 use App\Repositories\ComCateRepository;
 use App\Repositories\MerchantsRepository;
 use App\Repositories\RegionsRepository;
@@ -26,6 +27,7 @@ class StoreListController extends CommonController
     private $comCateRepository;
     private $merchantsRepository;
     private $sellerGradeRepository;
+    private $adminUserRepository;
 
     public function __construct(
         StoreListRepository $storeListRepository,
@@ -33,7 +35,8 @@ class StoreListController extends CommonController
         RegionsRepository $regionsRepository,
         ComCateRepository $comCateRepository,
         MerchantsRepository $merchantsRepository,
-        SellerGradeRepository $sellerGradeRepository
+        SellerGradeRepository $sellerGradeRepository,
+        AdminUserRepository $adminUserRepository
     )
     {
         parent::__construct();
@@ -44,6 +47,7 @@ class StoreListController extends CommonController
         $this->comCateRepository = $comCateRepository;
         $this->merchantsRepository = $merchantsRepository;
         $this->sellerGradeRepository = $sellerGradeRepository;
+        $this->adminUserRepository = $adminUserRepository;
     }
 
     /**
@@ -86,12 +90,23 @@ class StoreListController extends CommonController
     public function privilegeEdit($id)
     {
         $nav = 'priv';
-        return view('shop.admin.merchants.privilege', compact('id', 'nav'));
+        $sellernavs = $this->sellerPrivilege();
+        $admin = $this->adminUserRepository->getAdminUser(['parent_id' => 0, 'ru_id' => $id]);
+        return view('shop.admin.merchants.privilege', compact('id', 'nav', 'sellernavs', 'admin'));
     }
 
     public function privAllot(Request $request)
     {
-
+        $ver = Verifiable::Validator($request->all(), ["login_name" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->adminUserRepository->modifyAdminUser($request->except('_token'));
+        if($re['code'] == 5){
+            return view('shop.admin.failed');
+        }else{
+            return view('shop.admin.success');
+        }
     }
 
     public function addCate(Request $request)

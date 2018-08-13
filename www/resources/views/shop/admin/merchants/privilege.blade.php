@@ -30,38 +30,34 @@
                           class="form-horizontal">
                         {{csrf_field()}}
 
-                        <input type="hidden" name="user_id" value="{{$id}}">
+                        <input type="hidden" name="ru_id" value="{{$id}}">
+                        @if(!empty($admin))
+                            <input type="hidden" name="auid" value="{{$admin->user_id}}">
+                        @else
+                            <input type="hidden" name="auid" value="0">
+                        @endif
                         <div class="step-privilege clearfix">
                             <div class="title">
                                 <div class="checkbox-item fl mar-right-20">
                                     <label class="ui-label"><em>*</em>商家登录账号</label>
                                 </div>
                             </div>
-                            <div class="privilege-sub clearfix">
-                                <div class="text-center wd-250 mar-lr-auto mar-bt-20 mar-top-20">
-                                    <select name="grade" class="form-control">
-                                        @foreach($gradeprivilege as $grade)
-                                            <option value="{{$grade->id}}">{{$grade->grade_name}}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="pad-all-30">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><font class="red">*</font>登录名称：</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="login_name"
+                                               class="form-control input-sm"
+                                               value="@if(!empty($admin->user_name)){{$admin->user_name}}@endif" placeholder="登录名称"/>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="step-privilege clearfix">
-                            <div class="title">
-                                <div class="checkbox-item fl mar-right-20">
-                                    <label class="ui-label">初始化所有商家管理权限</label>
-                                </div>
-                            </div>
-                            <div class="privilege-sub clearfix">
-                                <div class="checkbox-item fl">
-                                    <input type="checkbox" name="initialize_allot"
-                                           class="ui-checkbox nav-sub-title"
-                                           id="initialize_allot"
-                                           value="1">
-                                    <label class="ui-label mar-left-5"
-                                           for="initialize_allot">执行<em>(谨慎操作)</em></label>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">密 码：</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="password"
+                                               class="form-control input-sm"
+                                               value="" placeholder="密码"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +69,7 @@
                                         <input type="checkbox" name="{{$key}}[code]" class="ui-checkbox nav-title"
                                                id="return_type_{{$key}}"
                                                value="{{$key}}"
-                                               @if(!empty($gradeprivilege[0]) && in_array($key, $gradeprivilege[0]->mpri->action_list)) checked @endif>
+                                               @if(!empty($admin->action_list) && in_array($key, $admin->action_list)) checked @endif>
                                         <input type="hidden" name="{{$key}}[name]" value="{{$value}}">
                                         <label class="ui-label mar-left-5"
                                                for="return_type_{{$key}}">{{$value}}</label>
@@ -86,7 +82,7 @@
                                                    class="ui-checkbox nav-sub-title"
                                                    id="return_type_{{$k}}"
                                                    value="{{$k}}"
-                                                   @if(!empty($gradeprivilege[0]) && in_array($k, $gradeprivilege[0]->mpri->action_list)) checked @endif>
+                                                   @if(!empty($admin->action_list) && in_array($k, $admin->action_list)) checked @endif>
                                             <input type="hidden" name="{{$k}}[name]" value="{{$val['name']}}">
                                             <input type="hidden" name="{{$k}}[url]" value="{{$val['url']}}">
                                             <label class="ui-label mar-left-5"
@@ -159,16 +155,6 @@
 
             $('.btn-sure').click(function () {
                 $('.form-horizontal').submit();
-            });
-
-            $('select[name=grade]').change(function () {
-                var id = $(this).val();
-                $('input[type=checkbox]').prop('checked', false);
-                $.post("{{url('admin/store/searchpriv')}}", {'_token': '{{csrf_token()}}', id: id}, function (data) {
-                    for(var i in data){
-                        $('#return_type_'+data[i]).prop('checked', true);
-                    }
-                });
             });
         });
     </script>

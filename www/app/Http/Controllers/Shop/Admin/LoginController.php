@@ -16,6 +16,7 @@ use App\Facades\RedisCache;
 use App\Facades\ShopConfig;
 use App\Facades\Verifiable;
 use App\Helper\RedisServer;
+use App\Helper\SnowFlake;
 use App\Repositories\AdminUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -114,6 +115,9 @@ class LoginController extends CommonController
 
     public function tool()
     {
-        echo empty([]);
+//        echo 1048575*2 >> 20;
+//        return $this->adminUserRepository->test();
+        $snowId = new SnowFlake(31, 31);
+        echo $snowId->nextId();
     }
 }

@@ -27,7 +27,10 @@ class AdminUserModel extends Model
 
     public function getAdminUser($where)
     {
-        return $this->where($where)->first();
+        $uid = 1048575;
+        $this->table($uid);
+        $rep = $this->where($where)->first();
+        return $rep;
     }
 
     public function setAdminUser($where, $data)
@@ -50,5 +53,20 @@ class AdminUserModel extends Model
     public function countAdminUser($where)
     {
         return $this->where($where)->count();
+    }
+
+    public function test($where)
+    {
+        $this->table($where['uid']);
+        return $this->toSql();
+    }
+
+    //分表
+    public function table($uid, $bit = 5, $seed = 20)
+    {
+        if($uid >> $seed != 0){
+            $tb = $this->table . '_' . sprintf('%0' . $bit . 'd', ($uid >> $seed));
+            $this->setTable($tb);
+        }
     }
 }

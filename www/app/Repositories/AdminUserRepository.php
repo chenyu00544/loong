@@ -46,9 +46,9 @@ class AdminUserRepository implements AdminUserRepositoryInterface
     public function getAdminUser($where)
     {
         $req = $this->adminUserModel->getAdminUser($where);
-        if($req){
+        if ($req) {
             $action_list = explode(',', $req->action_list);
-            foreach ($action_list as $value){
+            foreach ($action_list as $value) {
                 $action_list[$value] = $value;
             }
             $req->action_list = $action_list;
@@ -62,7 +62,7 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         $where['user_id'] = $id;
         $str = '';
         foreach ($data as $key => $value) {
-            if(!empty($value['code'])){
+            if (!empty($value['code'])) {
                 $str .= $value['code'] . ',';
             }
         }
@@ -114,4 +114,47 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         }
     }
 
+    public function modifyAdminUser($data)
+    {
+        $updata['user_name'] = $data['login_name'];
+        unset($data['login_name']);
+        if (empty($data['auid'])) {
+            if ($this->adminUserModel->getAdminUser($updata)) {
+                return ['code' => '5', 'msg' => '用户名已经存在'];
+            }
+        }
+        if (!empty($data['password'])) {
+            $salt = Common::randStr(6);
+            $updata['salt'] = $salt;
+            $updata['password'] = Common::md5Encrypt($data['password'], $salt);
+            unset($data['password']);
+        }
+        $action_list = [];
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                if (!empty($value['code'])) {
+                    $action_list[] = $value['code'];
+                }
+            }
+        }
+        $updata['action_list'] = implode(',', $action_list);
+        if (empty($data['auid'])) {
+            $updata['parent_id'] = 0;
+            $updata['ru_id'] = $data['ru_id'];
+            $updata['add_time'] = time();
+            $re = $this->adminUserModel->addAdminUser($updata);
+        } else {
+            $where['user_id'] = $data['auid'];
+            $re = $this->adminUserModel->setAdminUser($where, $updata);
+        }
+        if($re){
+            return ['code' => '1', 'msg' => '操作成功'];
+        }
+        return ['code' => '5', 'msg' => '操作失败'];
+    }
+
+    public function test()
+    {
+        return $this->adminUserModel->test(['uid' => 1048575]);
+    }
 }

@@ -73,7 +73,11 @@ class CommonController extends Controller
 
     public function sellerPrivilege()
     {
-        $nav = LangConfig::LangSellerNavConf();
+        $nav = RedisCache::get('seller_nav');
+        if(empty($nav)){
+            $nav = LangConfig::LangSellerNavConf();
+            RedisCache::set('seller_nav', $nav);
+        }
         foreach ($nav['index'] as $key => $value) {
             if (empty($nav[$key])) {
                 unset($nav['index'][$key]);
@@ -93,5 +97,11 @@ class CommonController extends Controller
             }
             return $next($request);
         });
+    }
+
+    public function getTable($table, $id, $bit = 5, $seed = 20)
+    {
+        //分表 场景在高并发性
+        return $table . '_' . sprintf('%0' . $bit . 'd', ($id >> $seed));
     }
 }
