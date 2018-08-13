@@ -56,6 +56,24 @@ return [
             ]
         ],
 
+        //分库
+        'shop_1' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST_DB', 'localhost'),
+            'port' => env('DB_PORT_DB', '3306'),
+            'database' => env('DB_DATABASE_DB', 'shop_1'),
+            'username' => env('DB_USERNAME_DB', 'root'),
+            'password' => env('DB_PASSWORD_DB', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_general_ci',
+            'prefix' => env('DB_PREFIX', 'cyc_'),
+            'strict' => false,
+            'engine' => null,
+            'options'=> [
+                \PDO::ATTR_EMULATE_PREPARES => true
+            ]
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

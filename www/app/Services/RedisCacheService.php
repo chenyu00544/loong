@@ -72,6 +72,63 @@ class RedisCacheService
         }
     }
 
+    public function incr($key)
+    {
+        if (self::$redis != 'connect_failed') {
+            if(!self::$redis->get($key)){
+                $gid = Cache::get($key);
+                self::$redis->set($key, $gid + 1);
+                $guid = $gid + 1;
+            }else{
+                $guid = self::$redis->incr($key);
+            }
+            Cache::forever($key, $guid);
+            return $guid;
+        } else {
+            $guid = Cache::get($key) + 1;
+            Cache::forever($key, $guid);
+            return $guid;
+        }
+    }
+
+    //分布式自增ID SEED
+    public function incrby($key)
+    {
+        $seed = 5;
+        if (self::$redis != 'connect_failed') {
+            if(!self::$redis->get($key)){
+                $gid = Cache::get($key);
+                self::$redis->set($key, $gid + $seed);
+                $guid = $gid + $seed;
+            }else{
+                $guid = self::$redis->incrby($key, $seed);
+            }
+            Cache::forever($key, $guid);
+            return $guid;
+        } else {
+            $guid = Cache::get($key) + $seed;
+            Cache::forever($key, $guid);
+            return $guid;
+        }
+    }
+
+    public function getIncr($key)
+    {
+        if (self::$redis != 'connect_failed') {
+            if(!self::$redis->get($key)){
+                $gid = Cache::get($key);
+                self::$redis->set($key, $gid);
+                $guid = $gid;
+            }else{
+                $guid = self::$redis->get($key);
+            }
+            return $guid;
+        } else {
+            $guid = Cache::get($key);
+            return $guid;
+        }
+    }
+
     public static function flushdb()
     {
         if (self::$redis != 'connect_failed') {

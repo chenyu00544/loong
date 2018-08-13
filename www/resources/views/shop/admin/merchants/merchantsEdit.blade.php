@@ -17,28 +17,13 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form enctype="multipart/form-data" name="conf" action="{{url('admin/storelist')}}"
+                    <form enctype="multipart/form-data" name="conf" action="{{url('admin/storelist/'.$id)}}"
                           method="post"
                           class="form-horizontal">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
 
-                        <div class="merchants-section">
-                            <div class="tit"><h4>请选择会员</h4></div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">会员名称：</label>
-                                <div class="col-sm-6">
-                                    <select name="user_id" class="form-control input-sm fl wd-250">
-                                        <option value="0">名称</option>
-                                    </select>
-
-                                    <input type="text"
-                                           class="form-control input-sm fl wd-120 mar-left-20 user_keywords"
-                                           value="" placeholder="会员名称"/>
-                                    <a href="javascript:;"
-                                       class="btn btn-primary search btn-sm mar-left-10 fl">查询</a>
-                                </div>
-                            </div>
-                        </div>
+                        <input type="hidden" value="{{$id}}" name="user_id">
 
                         @foreach($shopSteps as $shopStep)
                             @foreach($shopStep->mst as $mst)
@@ -339,7 +324,7 @@
                                                                 </td>
                                                                 <td class="text-center">
                                                                     <input type="date" class="form-control wd-160 fl"
-                                                                           value="{{date('Y-m-d', empty($dt->mdf->permanent_date)?0:$dt->mdf->permanent_date)}}"
+                                                                           value="{{empty($dt->mdf->permanent_date)?0:$dt->mdf->permanent_date}}"
                                                                            name="permanent_date[]">
                                                                     <label class="checkbox fl mar-left-40"
                                                                            style="padding-top: 3px;">

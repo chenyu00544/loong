@@ -102,9 +102,9 @@ class StoreListController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->adminUserRepository->modifyAdminUser($request->except('_token'));
-        if($re['code'] == 5){
+        if ($re['code'] == 5) {
             return view('shop.admin.failed');
-        }else{
+        } else {
             return view('shop.admin.success');
         }
     }
@@ -173,7 +173,13 @@ class StoreListController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $shopSteps = $this->storeListRepository->getStepsByShopInfo();
+        $regions = $this->regionsRepository->getRegions();
+        $cates = $this->comCateRepository->getComCates();
+        $brands = $this->merchantsRepository->getMerchantsBrands($id);
+        $grades = $this->sellerGradeRepository->getSellerGrades();
+        $mcts = $this->merchantsRepository->getMerchantsCateTemporarydates($id);
+        return view('shop.admin.merchants.merchantsEdit', compact('shopSteps', 'regions', 'cates', 'brands', 'grades', 'mcts', 'id'));
     }
 
     /**

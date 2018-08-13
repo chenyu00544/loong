@@ -11,7 +11,7 @@ php artisan make:controller ****\***\**
 
 php artisan make:model ****\***\**
 
-
+1048575 为一库
 
 添加表字段
 ALTER TABLE cyc_seo add xxxxxxyy VARCHAR(6) NOT NULL DEFAULT ''

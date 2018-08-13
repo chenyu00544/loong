@@ -155,6 +155,6 @@ class AdminUserRepository implements AdminUserRepositoryInterface
 
     public function test()
     {
-        return $this->adminUserModel->test(['uid' => 1048575]);
+        return $this->adminUserModel->test(['uid' => 1048576]);
     }
 }

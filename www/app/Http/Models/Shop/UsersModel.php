@@ -78,4 +78,29 @@ class UsersModel extends Model
         return $this->where($where)
             ->count();
     }
+
+    //分表
+    public function table($uid, $bit = 1, $seed = 20)
+    {
+        if($uid >> $seed != 0){
+            $tb = $this->table . '_' . sprintf('%0' . $bit . 'd', ($uid >> $seed));
+            $this->setTable($tb);
+        }
+    }
+
+    //分库
+    public function connection($uid, $bit = 1, $seed = 20)
+    {
+        if($uid >> $seed != 0){
+            $cc = 'shop_' . sprintf('%0' . $bit . 'd', ($uid >> $seed));
+            $this->setConnection($cc);
+        }
+    }
+
+    public function test($where)
+    {
+        $this->table($where['uid']);
+        $this->connection($where['uid']);
+        return $this->toSql();
+    }
 }

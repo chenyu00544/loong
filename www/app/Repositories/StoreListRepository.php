@@ -216,6 +216,7 @@ class StoreListRepository implements StoreListRepositoryInterface
                     'shopNameSuffix' => $data['shopNameSuffix'],
                     'rz_shopName' => $data['rz_shopName'],
                     'hopeLoginName' => $data['hopeLoginName'],
+                    'steps_audit' => 1,
                 ];
                 $msi = $this->merchantsShopInformationModel->setMerchantsShopInfo(['user_id' => $uid], $msiData);
                 if (!$msi) {
