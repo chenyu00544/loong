@@ -41,6 +41,7 @@
                             <label class="col-sm-2 control-label"><b>*</b>品牌LOGO：</label>
                             <div class="col-sm-4 n-wd400">
                                 <input type="file" name="brand_logo" class="fl">
+                                <input type="hidden" name="brand_logo_bak" value="{{$mBrand->brand_logo}}">
                                 <span>
                                     <a href="{{url($mBrand->brand_logo)}}"
                                        target="_blank" class="nyroModal">
@@ -79,7 +80,7 @@
                             <label class="col-sm-2 control-label"><b>*</b>品牌使用期限：</label>
                             <div class="col-sm-6">
                                 <input type="text" name="brand_end_time" class="form-control wd-250 fl input-sm"
-                                       value="{{$mBrand->brand_end_time}}"
+                                       value="{{$mBrand->brand_end_time?$mBrand->brand_end_time:$now}}"
                                        placeholder="">
                                 <div class="col-sm-3">
                                     <div class="checkbox">
@@ -95,17 +96,21 @@
                             <label class="col-sm-12 text-center">请上传以下品牌资质扫描件电子版须加盖彩色企业公章 <font class="red">（即纸质版盖章，扫描或拍照上传），文字内容清晰可辨,支持jpg、gif和png图片，大小不超过4M。</font></label>
                         </div>
                         <div class="form-group">
+                            <input type="hidden" name="b_fid"
+                                   value="{{!empty($mBrand->msbf->b_fid)?$mBrand->msbf->b_fid:0}}">
                             <label class="col-sm-2 control-label"><b>*</b>资质名称：</label>
                             <div class="col-sm-10">
                                 <input type="text" name="qualification_name_input"
                                        class="form-control input-sm wd-180 fl"
-                                       value="{{$mBrand->msbf->qualification_name_input}}"
+                                       value="{{!empty($mBrand->msbf->qualification_name_input)?$mBrand->msbf->qualification_name_input:''}}"
                                        placeholder="">
                                 <div class="col-sm-6">
                                     <label class="col-sm-4 control-label">资质电子版：</label>
                                     <input type="file" name="qualification_img" class="fl">
+                                    <input type="hidden" name="qualification_img_bak"
+                                           value="{{!empty($mBrand->msbf->qualification_img)?$mBrand->msbf->qualification_img:''}}">
                                     <span>
-                                        <a href="{{url($mBrand->msbf->qualification_img)}}"
+                                        <a href="{{url(!empty($mBrand->msbf->qualification_img)?$mBrand->msbf->qualification_img:'')}}"
                                            target="_blank" class="nyroModal">
                                             <i class="glyphicon glyphicon-picture top5"
                                                data-tooltipimg="" ectype="tooltip"
@@ -121,13 +126,13 @@
                             <label class="col-sm-2 control-label">到期日：</label>
                             <div class="col-sm-10">
                                 <input type="text" name="expired_date" class="form-control input-sm wd-220 fl"
-                                       value="{{$mBrand->msbf->expired_date}}"
+                                       value="{{!empty($mBrand->msbf->expired_date)?$mBrand->msbf->expired_date:$now}}"
                                        placeholder="">
                                 <div class="col-sm-3">
                                     <div class="checkbox">
                                         <label class="mar-right-10">
                                             <input type="checkbox" name="expired_date_permanent" value="1"
-                                                   @if($mBrand->msbf->expired_date_permanent == 1) checked @endif>永久
+                                                   @if(!empty($mBrand->msbf->expired_date_permanent)) checked @endif>永久
                                         </label>
                                     </div>
                                 </div>
@@ -174,10 +179,14 @@
                 if ($('input[name=brand_logo]')[0].files[0] != undefined) {
                     form.append('brand_logo', $('input[name=brand_logo]')[0].files[0]);
                 }
+                form.append('brand_logo_bak', $('input[name=brand_logo_bak]').val());
                 if ($('input[name=qualification_img]')[0].files[0] != undefined) {
                     form.append('qualification_img', $('input[name=qualification_img]')[0].files[0]);
                 }
+                form.append('qualification_img_bak', $('input[name=qualification_img_bak]').val());
                 form.append('user_id', $('input[name=user_id]').val());
+                form.append('bid', $('input[name=bid]').val());
+                form.append('b_fid', $('input[name=b_fid]').val());
                 form.append('_token', '{{csrf_token()}}');
                 $.ajax({
                     url: "{{url('admin/dialog/merchants/brand/modify')}}",
@@ -203,7 +212,7 @@
                                 '<td>' + v.brand_type + '</td>' +
                                 '<td>' + v.brand_operate_type + '</td>' +
                                 '<td class="text-center">' +
-                                '<a type="button" href="javascript:;" class="btn btn-danger brand-edit btn-sm" data-id="' + v.bid + '">修改</a>' +
+                                '<a type="button" href="javascript:;" class="btn btn-danger brand-edit btn-sm mar-right-10" data-id="' + v.bid + '">修改</a>' +
                                 '<a type="button" href="javascript:;" class="btn btn-danger brand-del btn-sm" data-id="' + v.bid + '">删除</a>' +
                                 '</td>' +
                                 '</tr>';
@@ -214,6 +223,9 @@
                         }, 1000);
                     }
                 });
+                setTimeout(function () {
+                    layer.closeAll('loading');
+                }, 5000)
             });
 
             //关闭iframe

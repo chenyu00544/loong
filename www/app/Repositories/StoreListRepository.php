@@ -12,6 +12,7 @@ use App\Contracts\StoreListRepositoryInterface;
 use App\Facades\FileHandle;
 use App\Http\Models\Shop\AdminUserModel;
 use App\Http\Models\Shop\MerchantsCategoryTemporarydateModel;
+use App\Http\Models\Shop\MerchantsDocumentTitleModel;
 use App\Http\Models\Shop\MerchantsDtFileModel;
 use App\Http\Models\Shop\MerchantsGradeModel;
 use App\Http\Models\Shop\MerchantsPrivilegeModel;
@@ -34,6 +35,7 @@ class StoreListRepository implements StoreListRepositoryInterface
     private $merchantsPrivilegeModel;
     private $merchantsDtFileModel;
     private $merchantsCategoryTemporarydateModel;
+    private $merchantsDocumentTitleModel;
     private $sellerShopInfoModel;
     private $sellerGradeModel;
     private $adminUserModel;
@@ -48,6 +50,7 @@ class StoreListRepository implements StoreListRepositoryInterface
         MerchantsPrivilegeModel $merchantsPrivilegeModel,
         MerchantsDtFileModel $merchantsDtFileModel,
         MerchantsCategoryTemporarydateModel $merchantsCategoryTemporarydateModel,
+        MerchantsDocumentTitleModel $merchantsDocumentTitleModel,
         SellerShopInfoModel $sellerShopInfoModel,
         SellerGradeModel $sellerGradeModel,
         AdminUserModel $adminUserModel,
@@ -62,6 +65,7 @@ class StoreListRepository implements StoreListRepositoryInterface
         $this->merchantsPrivilegeModel = $merchantsPrivilegeModel;
         $this->merchantsDtFileModel = $merchantsDtFileModel;
         $this->merchantsCategoryTemporarydateModel = $merchantsCategoryTemporarydateModel;
+        $this->merchantsDocumentTitleModel = $merchantsDocumentTitleModel;
         $this->sellerShopInfoModel = $sellerShopInfoModel;
         $this->sellerGradeModel = $sellerGradeModel;
         $this->adminUserModel = $adminUserModel;
@@ -76,6 +80,43 @@ class StoreListRepository implements StoreListRepositoryInterface
             $search['examine'] = 2;
         }
         return $this->merchantsShopInformationModel->getMerchantsShopsByPage($where, $search);
+    }
+
+    public function getStore($id)
+    {
+        $uid = $id;
+        $rep['msf'] = $this->merchantsStepsFieldsModel->getMerchantsStepsFields(['user_id' => $uid]);
+        $regionsArr = explode(',', $rep['msf']->license_comp_adress);
+        $regions = [];
+        foreach ($regionsArr as $val){
+            $regions[] = $this->regionsModel->getRegion($val);
+        }
+        $rep['msf']->license_comp_adress = $regions;
+        $regionsArr = explode(',', $rep['msf']->company_located);
+        $regions = [];
+        foreach ($regionsArr as $val){
+            $regions[] = $this->regionsModel->getRegion($val);
+        }
+        $rep['msf']->company_located = $regions;
+        $regionsArr = explode(',', $rep['msf']->linked_bank_address);
+        $regions = [];
+        foreach ($regionsArr as $val){
+            $regions[] = $this->regionsModel->getRegion($val);
+        }
+        $rep['msf']->linked_bank_address = $regions;
+
+        $rep['mg'] = $this->merchantsGradeModel->getMerchantsGrade(['ru_id' => $uid]);
+        $rep['ssi'] = $this->sellerShopInfoModel->getSellerShopInfo(['ru_id' => $uid]);
+        $rep['msi'] = $this->merchantsShopInformationModel->getMerchantsShopInfo(['user_id' => $uid]);
+        $rep['msb'] = $this->merchantsShopBrandModel->getMerchantsShopBrands(['user_id' => $uid]);
+        $rep['mdf'] = $this->merchantsDtFileModel->getMerchantsDtFiles(['user_id' => $uid]);
+        $rep['mcts'] = $this->merchantsCategoryTemporarydateModel->getMerchantsCategoryTemporarydates(['user_id' => $uid]);
+        $cat_ids = [];
+        foreach ($rep['mcts'] as $mct) {
+            $cat_ids[] = $mct->cat_id;
+        }
+        $rep['mdt'] = $this->merchantsDocumentTitleModel->getMerchantsDocumentTitles($cat_ids, $id);
+        return $rep;
     }
 
     public function setStore($data)
@@ -250,8 +291,8 @@ class StoreListRepository implements StoreListRepositoryInterface
                 //商家入驻流程填写分类临时信息表
                 $cat_id = !empty($data['cat_id']) ? $data['cat_id'] : (!empty($data['subcate']) ? $data['subcate'] : []);
                 if (!empty($cat_id)) {
-                    foreach ($cat_id as $key => $cat_id) {
-                        $mctwhere['cat_id'] = $cat_id;
+                    foreach ($cat_id as $key => $catid) {
+                        $mctwhere['cat_id'] = $catid;
                         $mctData['user_id'] = $uid;
                         $mctData['is_add'] = 1;
                         $this->merchantsCategoryTemporarydateModel->setMerchantsCategoryTemporarydate($mctwhere, $mctData);

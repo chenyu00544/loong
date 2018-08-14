@@ -4,7 +4,7 @@
  * User: Administrator - chenyu
  * Date: 2018/6/22
  * Time: 16:58
- * Desc: 
+ * Desc:
  */
 
 namespace App\Http\Models\Shop;
@@ -21,6 +21,12 @@ class MerchantsShopBrandFileModel extends Model
     public function getMerchantsShopBrandFile($where)
     {
         return $this->where($where)->first();
+    }
+
+    public function setMerchantsShopBrandFile($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
     }
 
     public function addMerchantsShopBrandFile($data)

@@ -176,10 +176,10 @@ class StoreListController extends CommonController
         $shopSteps = $this->storeListRepository->getStepsByShopInfo();
         $regions = $this->regionsRepository->getRegions();
         $cates = $this->comCateRepository->getComCates();
-        $brands = $this->merchantsRepository->getMerchantsBrands($id);
         $grades = $this->sellerGradeRepository->getSellerGrades();
-        $mcts = $this->merchantsRepository->getMerchantsCateTemporarydates($id);
-        return view('shop.admin.merchants.merchantsEdit', compact('shopSteps', 'regions', 'cates', 'brands', 'grades', 'mcts', 'id'));
+        $store = $this->storeListRepository->getStore($id);
+        $now = date('Y-m-d', time());
+        return view('shop.admin.merchants.merchantsEdit', compact('shopSteps', 'regions', 'cates', 'grades', 'id', 'store', 'now'));
     }
 
     /**

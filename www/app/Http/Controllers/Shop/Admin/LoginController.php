@@ -122,5 +122,8 @@ class LoginController extends CommonController
 //        echo $snowId->nextId();
 //        dd($this->adminUserRepository->getAdminUserByPage(0));
 //        dd(RedisCache::incr('gid'));
+        list($msec, $sec) = explode(' ', microtime());
+        $msectime =  sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000000);
+        echo $msectime;
     }
 }

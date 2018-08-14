@@ -175,7 +175,7 @@
                                 '<td>' + v.brand_type + '</td>' +
                                 '<td>' + v.brand_operate_type + '</td>' +
                                 '<td class="text-center">' +
-                                '<a type="button" href="javascript:;" class="btn btn-danger brand-edit btn-sm" data-id="' + v.bid + '">修改</a>' +
+                                '<a type="button" href="javascript:;" class="btn btn-danger brand-edit btn-sm mar-right-10" data-id="' + v.bid + '">修改</a>' +
                                 '<a type="button" href="javascript:;" class="btn btn-danger brand-del btn-sm" data-id="' + v.bid + '">删除</a>' +
                                 '</td>' +
                                 '</tr>';

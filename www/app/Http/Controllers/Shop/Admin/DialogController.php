@@ -35,8 +35,9 @@ class DialogController extends CommonController
     public function editMerchantsBrand($id)
     {
         $bid = $id;
+        $now = date('Y-m-d', time());
         $mBrand = $this->merchantsRepository->getMerchantsBrand($id);
-        return view('shop.admin.merchants.modal.merchantsBrandEdit', compact('mBrand', 'bid'));
+        return view('shop.admin.merchants.modal.merchantsBrandEdit', compact('mBrand', 'bid', 'now'));
     }
 
     public function modifyMerchantsBrand(Request $request)

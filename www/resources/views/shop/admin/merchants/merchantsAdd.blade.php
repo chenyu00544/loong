@@ -409,7 +409,7 @@
                                                                 <td>{{$brand->brand_operate_type}}</td>
                                                                 <td class="text-center">
                                                                     <a type="button" href="javascript:;"
-                                                                       class="btn btn-danger brand-edit btn-sm"
+                                                                       class="btn btn-danger brand-edit btn-sm mar-right-10"
                                                                        data-id="{{$brand->bid}}">修改</a>
                                                                     <a type="button" href="javascript:;"
                                                                        class="btn btn-danger brand-del btn-sm"

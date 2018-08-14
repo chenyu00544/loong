@@ -57,6 +57,7 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         $this->sellerGradeModel = $sellerGradeModel;
         $this->merchantsPrivilegeModel = $merchantsPrivilegeModel;
         $this->merchantsShopBrandModel = $merchantsShopBrandModel;
+        $this->merchantsShopBrandFileModel = $merchantsShopBrandFileModel;
         $this->merchantsCategoryTemporarydateModel = $merchantsCategoryTemporarydateModel;
         $this->merchantsDocumentTitleModel = $merchantsDocumentTitleModel;
         $this->merchantsDtFileModel = $merchantsDtFileModel;
@@ -440,6 +441,50 @@ class MerchantsRepository implements MerchantsRepositoryInterface
 
     public function setMerchantsBrand($data)
     {
+        $where['bid'] = $data['bid'];
+        $bfwhere['b_fid'] = $data['b_fid'];
+        $updata = [];
+        $bfupdata = [];
+        $brand_file = ['qualification_name_input', 'qualification_img', 'expired_date', 'expired_date_permanent'];
+        foreach ($data as $key => $value) {
+            if ($key == 'brand_logo') {
+                $path = 'merchants_brand_logo';
+                $uri = FileHandle::upLoadImage($value, $path);
+                $updata[$key] = $uri;
+                FileHandle::deleteFile($data['brand_logo_bak']);
+            } elseif (in_array($key, $brand_file)) {
+                if ($key == 'qualification_img') {
+                    $path = 'merchants_qualification_img';
+                    $uri = FileHandle::upLoadImage($value, $path);
+                    $bfupdata[$key] = $uri;
+                    FileHandle::deleteFile($data['qualification_img_bak']);
+                } else {
+                    $bfupdata[$key] = !empty($value) ? $value : 0;
+                }
+            } else {
+                $updata[$key] = !empty($value) ? $value : 0;
+            }
+        }
+        unset($updata['brand_logo_bak']);
+        unset($updata['qualification_img_bak']);
+        unset($updata['b_fid']);
+        $re = $this->merchantsShopBrandModel->setMerchantsShopBrand($where, $updata);
+        if ($re) {
+            $brand_type = ['请选择...', '国内品牌', '国外品牌'];
+            $brand_operate_type = ['请选择...', '自有品牌', '代理品牌'];
+            $bfupdata['bid'] = $data['bid'];
+            $bf = $this->merchantsShopBrandFileModel->setMerchantsShopBrandFile($bfwhere, $bfupdata);
+            if(!$bf){
+                $this->merchantsShopBrandFileModel->addMerchantsShopBrandFile($bfupdata);
+            }
+            $res = $this->merchantsShopBrandModel->getMerchantsShopBrands(['user_id' => $updata['user_id']]);
+            foreach ($res as $val) {
+                $val->brand_type = $brand_type[$val->brand_type];
+                $val->brand_operate_type = $brand_operate_type[$val->brand_operate_type];
+            }
+            return ['code' => 1, 'msg' => '操作成功', 'data' => $res];
+        }
+        return ['code' => 5, 'msg' => '操作失败', 'data' => ''];
     }
 
     public function addMerchantsBrand($data)
@@ -540,8 +585,8 @@ class MerchantsRepository implements MerchantsRepositoryInterface
         if ($res) {
             $res['dt'] = $this->merchantsDocumentTitleModel->getMerchantsDocumentTitles($data['cat_ids'], $updata['user_id']);
             $mdfData['user_id'] = $updata['user_id'];
-            foreach ($res['dt'] as $dt){
-                if(empty($dt->mdf)){
+            foreach ($res['dt'] as $dt) {
+                if (empty($dt->mdf)) {
                     $mdfData['dt_id'] = $dt->dt_id;
                     $mdfData['cat_id'] = $dt->cat_id;
                     $mdfData['cate_title_permanent'] = 0;

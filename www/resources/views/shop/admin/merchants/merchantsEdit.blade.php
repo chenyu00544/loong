@@ -39,7 +39,7 @@
                                                         @foreach($mst->fieldsForm[$key]['value'] as $k => $val)
                                                             <label class="radio-inline fl">
                                                                 <input type="radio" name="{{$field}}" value="{{$val}}"
-                                                                       @if($k == 0) checked @endif> {{$val}}
+                                                                       @if($store['msf']->contactXinbie == $val) checked @endif> {{$val}}
                                                             </label>
                                                         @endforeach
                                                     </div>
@@ -52,7 +52,7 @@
                                                     <div class="col-sm-3">
                                                         <input type="text" name="{{$field}}"
                                                                class="form-control input-sm"
-                                                               value=""
+                                                               value="{{$store['msf']->$field}}"
                                                                placeholder="{{$mst->fieldsFormName[$key]}}"/>
                                                     </div>
                                                     <div class="notic col-sm-6">{!! $mst->fieldsForm[$key]['notic'] !!}</div>
@@ -63,7 +63,7 @@
                                                         ：</label>
                                                     <div class="col-sm-3">
                                                     <textarea name="{{$field}}" class="form-control" row="5"
-                                                              placeholder="{{$mst->fieldsFormName[$key]}}"></textarea>
+                                                              placeholder="{{$mst->fieldsFormName[$key]}}">{{$store['msf']->$field}}</textarea>
                                                     </div>
                                                     <div class="notic col-sm-6">{!! $mst->fieldsForm[$key]['notic'] !!}</div>
                                                 </div>
@@ -75,7 +75,8 @@
                                                         <select name="{{$field}}" class="form-control input-sm">
                                                             <option value="0">请选择</option>
                                                             @foreach($mst->fieldsForm[$key]['value'] as $k => $val)
-                                                                <option value="{{$val}}">{{$val}}</option>
+                                                                <option value="{{$val}}"
+                                                                        @if($store['msf']->$field == $val) selected @endif>{{$val}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -87,43 +88,54 @@
                                                         ：</label>
                                                     <div class="col-sm-6">
                                                         @if($mst->fieldsForm[$key]['value'][0] == 'dateFile')
-                                                            <input type="file" name="{{$field}}"
-                                                                   class=""
-                                                                   value=""/>
+                                                            <input type="hidden" name="{{$field}}_bak"
+                                                                   value="{{$store['msf']->$field}}"/>
+                                                            <input type="file" name="{{$field}}" value=""/>
                                                         @elseif($mst->fieldsForm[$key]['value'][0] == 'textArea')
                                                             <select name="{{$field}}[]"
                                                                     class="form-control input-sm shop_country fl wd-120">
                                                                 <option value="0">国家</option>
                                                                 @foreach($regions as $region)
-                                                                    <option value="{{$region['id']}}">{{$region['name']}}</option>
+                                                                    <option value="{{$region['id']}}"
+                                                                            @if(!empty($store['msf']->$field[0])&&$store['msf']->$field[0]->region_id == $region['id']) selected @endif>{{$region['name']}}</option>
                                                                 @endforeach
                                                             </select>
                                                             <select name="{{$field}}[]"
                                                                     class="form-control input-sm shop_province fl mar-left-10 wd-120">
                                                                 <option value="0">省/直辖市</option>
+                                                                @if(!empty($store['msf']->$field[1]))
+                                                                    <option value="{{$store['msf']->$field[1]->region_id}}"
+                                                                            selected>{{$store['msf']->$field[1]->region_name}}</option> @endif
                                                             </select>
                                                             <select name="{{$field}}[]"
                                                                     class="form-control input-sm shop_city fl mar-left-10 wd-120">
                                                                 <option value="0">市</option>
+                                                                @if(!empty($store['msf']->$field[2]))
+                                                                    <option value="{{$store['msf']->$field[2]->region_id}}"
+                                                                            selected>{{$store['msf']->$field[2]->region_name}}</option> @endif
                                                             </select>
                                                             <select name="{{$field}}[]"
                                                                     class="form-control input-sm shop_district fl mar-left-10 wd-120">
                                                                 <option value="0">区/县</option>
+                                                                @if(!empty($store['msf']->$field[3]))
+                                                                    <option value="{{$store['msf']->$field[3]->region_id}}"
+                                                                            selected>{{$store['msf']->$field[3]->region_name}}</option> @endif
                                                             </select>
                                                         @elseif($mst->fieldsForm[$key]['value'][0] == 'dateTime')
                                                             @if($mst->fieldsForm[$key]['value'][1] == '1--30')
                                                                 <input type="text" name="{{$field}}"
                                                                        class="form-control input-sm wd-180"
-                                                                       value="2000-01-01"/>
+                                                                       value="{{!empty($store['msf']->$field)?$store['msf']->$field:$now}}"/>
                                                             @else
                                                                 <input type="text" name="{{$field}}"
                                                                        class="form-control input-sm fl wd-300"
-                                                                       value="2000-01-01～2099-12-31"/>
+                                                                       value="{{!empty($store['msf']->$field)?$store['msf']->$field:$now.'～2099-12-31'}}"/>
                                                                 <div class="col-sm-3">
                                                                     <div class="checkbox">
                                                                         <label class="mar-right-10">
                                                                             <input type="checkbox" name="shopTime_term"
-                                                                                   value="1">永久
+                                                                                   value="1"
+                                                                                   @if($store['msf']->shopTime_term == 1) checked @endif>永久
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -140,22 +152,37 @@
                                             <div class="col-sm-3">
                                                 <select name="shoprz_type" class="form-control input-sm">
                                                     <option value="0">请选择...</option>
-                                                    <option value="1">旗舰店</option>
-                                                    <option value="2">专卖店</option>
-                                                    <option value="3">专营店</option>
+                                                    <option value="1"
+                                                            @if($store['msi']->shoprz_type == 1) selected @endif>旗舰店
+                                                    </option>
+                                                    <option value="2"
+                                                            @if($store['msi']->shoprz_type == 2) selected @endif>专卖店
+                                                    </option>
+                                                    <option value="3"
+                                                            @if($store['msi']->shoprz_type == 3) selected @endif>专营店
+                                                    </option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm-3 subShoprz_type disn">
+                                            <div class="col-sm-3 subShoprz_type @if($store['msi']->shoprz_type != 1) disn @endif">
                                                 <select name="subShoprz_type" class="form-control input-sm">
                                                     <option value="0">请选择...</option>
-                                                    <option value="1">厂商直营旗舰店</option>
-                                                    <option value="2">厂商授权旗舰店</option>
-                                                    <option value="3">卖场型旗舰店</option>
+                                                    <option value="1"
+                                                            @if($store['msi']->subShoprz_type == 1) selected @endif>
+                                                        厂商直营旗舰店
+                                                    </option>
+                                                    <option value="2"
+                                                            @if($store['msi']->subShoprz_type == 2) selected @endif>
+                                                        厂商授权旗舰店
+                                                    </option>
+                                                    <option value="3"
+                                                            @if($store['msi']->subShoprz_type == 3) selected @endif>
+                                                        卖场型旗舰店
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
 
-                                        <div class="form-group authorizeFile disn">
+                                        <div class="form-group authorizeFile @if($store['msi']->subShoprz_type == 1 || $store['msi']->subShoprz_type == 3) disn @endif">
                                             <label class="col-sm-3 control-label">授权有效期：</label>
                                             <div class="col-sm-6">
                                                 <input type="text" name="shop_expireDate"
@@ -170,14 +197,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group authorizeFile disn">
+                                        <div class="form-group authorizeFile @if($store['msi']->subShoprz_type == 1 || $store['msi']->subShoprz_type == 3) disn @endif">
                                             <label class="col-sm-3 control-label">相关授权书：</label>
                                             <div class="col-sm-3">
                                                 <input type="file" name="authorizeFile" class="fl">
                                             </div>
                                         </div>
 
-                                        <div class="form-group shop_hypermarketFile disn">
+                                        <div class="form-group shop_hypermarketFile @if($store['msi']->subShoprz_type == 1 || $store['msi']->subShoprz_type == 2) disn @endif">
                                             <label class="col-sm-3 control-label">相关授权书：</label>
                                             <div class="col-sm-3">
                                                 <input type="file" name="shop_hypermarketFile" class="fl">
@@ -193,7 +220,8 @@
                                                         class="form-control input-sm">
                                                     <option value="0">请选择...</option>
                                                     @foreach($cates as $cate)
-                                                        <option value="{{$cate->id}}">{{$cate->cat_name}}</option>
+                                                        <option value="{{$cate->id}}"
+                                                                @if($store['msi']->shop_categoryMain == $cate->id) selected @endif>{{$cate->cat_name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -242,7 +270,7 @@
                                                         <th width="20%" class="text-center">操作</th>
                                                     </tr>
                                                     </thead>
-                                                    @if(count($mcts['mcts']) == 0)
+                                                    @if(count($store['mcts']) == 0)
                                                         <tbody>
                                                         <tr class="">
                                                             <td class="no-records" colspan="4" style="height: 80px;">
@@ -252,9 +280,11 @@
                                                         </tbody>
                                                     @else
                                                         <tbody>
-                                                        @foreach($mcts['mcts'] as $mct)
+                                                        @foreach($store['mcts'] as $mct)
                                                             <tr class="">
                                                                 <td class="text-center">
+                                                                    <input type="hidden" name="ct_id[]"
+                                                                           value="{{$mct->ct_id}}">
                                                                     <input type="hidden" name="cat_id[]"
                                                                            value="{{$mct->cat_id}}">
                                                                     {{$loop->index+1}}</td>
@@ -292,7 +322,7 @@
                                                         <th width="30%" class="text-center">到期日</th>
                                                     </tr>
                                                     </thead>
-                                                    @if(count($mcts['dt']) == 0)
+                                                    @if(count($store['mdt']) == 0)
                                                         <tbody>
                                                         <tr class="">
                                                             <td class="no-records" colspan="4">
@@ -302,7 +332,7 @@
                                                         </tbody>
                                                     @else
                                                         <tbody>
-                                                        @foreach($mcts['dt'] as $dt)
+                                                        @foreach($store['mdt'] as $dt)
                                                             <tr class="">
                                                                 <td class="text-center">
                                                                     <input type="hidden" name="dtf[]"
@@ -361,7 +391,7 @@
                                                         <th width="15%" class="text-center">操作</th>
                                                     </tr>
                                                     </thead>
-                                                    @if(count($brands) == 0)
+                                                    @if(count($store['msb']) == 0)
                                                         <tbody>
                                                         <tr class="">
                                                             <td class="no-records" colspan="8">
@@ -371,7 +401,7 @@
                                                         </tbody>
                                                     @else
                                                         <tbody>
-                                                        @foreach($brands as $brand)
+                                                        @foreach($store['msb'] as $brand)
                                                             <tr class="text-center">
                                                                 <input type="hidden" name="bid[]"
                                                                        value="{{$brand->bid}}">
@@ -394,7 +424,7 @@
                                                                 <td>{{$brand->brand_operate_type}}</td>
                                                                 <td class="text-center">
                                                                     <a type="button" href="javascript:;"
-                                                                       class="btn btn-danger brand-edit btn-sm"
+                                                                       class="btn btn-danger brand-edit btn-sm mar-right-10"
                                                                        data-id="{{$brand->bid}}">修改</a>
                                                                     <a type="button" href="javascript:;"
                                                                        class="btn btn-danger brand-del btn-sm"
@@ -412,8 +442,13 @@
                                             <label class="col-sm-3 control-label"><font
                                                         class="red">*</font>期望店铺类型：</label>
                                             <div class="col-sm-6">
-                                                <label class="control-label"><font
-                                                            class="red">期望店铺类型</font></label>
+                                                <label class="control-label">
+                                                    <font class="red">
+                                                        @if($store['msi']->shoprz_type == 1) 旗舰店 @endif
+                                                        @if($store['msi']->shoprz_type == 2) 专卖店 @endif
+                                                        @if($store['msi']->shoprz_type == 3) 专营店 @endif
+                                                    </font>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -438,8 +473,8 @@
                                                     <div class="col-sm-6">
                                                         <select name="shoprz_brandName" class="form-control input-sm">
                                                             <option value="0">请选择品牌名称</option>
-                                                            @foreach($brands as $brand)
-                                                                <option value="{{$brand->bid}}">{{$brand->brand_name}}</option>
+                                                            @foreach($store['msb'] as $brand)
+                                                                <option value="{{$brand->brand_name}}" @if($store['msi']->shoprz_brandName == $brand->brand_name) selected @endif>{{$brand->brand_name}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -449,7 +484,7 @@
                                                     <div class="col-sm-5">
                                                         <input type="text" name="shop_class_keyWords"
                                                                class="form-control input-sm"
-                                                               value="" placeholder="店铺名称"/>
+                                                               value="{{$store['msi']->shop_class_keyWords}}" placeholder="店铺名称"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -457,10 +492,10 @@
                                                     <div class="col-sm-6">
                                                         <select name="shopNameSuffix"
                                                                 class="form-control input-sm">
-                                                            <option value="旗舰店">旗舰店</option>
-                                                            <option value="专卖店">专卖店</option>
-                                                            <option value="专营店">专营店</option>
-                                                            <option value="馆">馆</option>
+                                                            <option value="旗舰店" @if($store['msi']->shopNameSuffix == '旗舰店') selected @endif>旗舰店</option>
+                                                            <option value="专卖店" @if($store['msi']->shopNameSuffix == '专卖店') selected @endif>专卖店</option>
+                                                            <option value="专营店" @if($store['msi']->shopNameSuffix == '专营店') selected @endif>专营店</option>
+                                                            <option value="馆" @if($store['msi']->shopNameSuffix == '馆') selected @endif>馆</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -470,7 +505,7 @@
                                                     <div class="col-sm-5">
                                                         <input type="text" name="rz_shopName"
                                                                class="form-control input-sm"
-                                                               value="" placeholder="自创店铺名称"/>
+                                                               value="{{$store['msi']->rz_shopName}}" placeholder="自创店铺名称"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -479,7 +514,7 @@
                                                     <div class="col-sm-5">
                                                         <input type="text" name="hopeLoginName"
                                                                class="form-control input-sm"
-                                                               value="" placeholder="店铺名称"/>
+                                                               value="{{$store['msi']->hopeLoginName}}" placeholder="店铺名称"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -494,10 +529,10 @@
                                 <label class="col-sm-3 control-label">设置是否审核其商品：</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="review_goods" value="0"> 否
+                                        <input type="radio" name="review_goods" value="0" @if($store['msi']->review_goods == 0) checked @endif> 否
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="review_goods" value="1" checked> 是
+                                        <input type="radio" name="review_goods" value="1" @if($store['msi']->review_goods == 1) checked @endif> 是
                                     </label>
                                 </div>
                             </div>
@@ -505,10 +540,10 @@
                                 <label class="col-sm-3 control-label">是否为自营店铺：</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="self_run" value="0" checked> 否
+                                        <input type="radio" name="self_run" value="0" @if($store['msi']->self_run == 0) checked @endif> 否
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="self_run" value="1"> 是
+                                        <input type="radio" name="self_run" value="1" @if($store['msi']->self_run == 1) checked @endif> 是
                                     </label>
                                 </div>
                             </div>
@@ -516,10 +551,10 @@
                                 <label class="col-sm-3 control-label">是否关闭店铺：</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="shop_close" value="0" checked> 关闭
+                                        <input type="radio" name="shop_close" value="0" @if($store['msi']->shop_close == 0) checked @endif> 关闭
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="shop_close" value="1"> 开启
+                                        <input type="radio" name="shop_close" value="1" @if($store['msi']->shop_close == 1) checked @endif> 开启
                                     </label>
                                 </div>
                             </div>
@@ -527,10 +562,10 @@
                                 <label class="col-sm-3 control-label">审核使用店铺名称：</label>
                                 <div class="col-sm-2">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="shopname_audit" value="0" checked> 未审核
+                                        <input type="radio" name="shopname_audit" value="0" @if($store['ssi']->shopname_audit == 0) checked @endif> 未审核
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="shopname_audit" value="1"> 已审核
+                                        <input type="radio" name="shopname_audit" value="1" @if($store['ssi']->shopname_audit == 1) checked @endif> 已审核
                                     </label>
                                 </div>
                                 <div class="notic col-sm-4" style="line-height: 24px;"><font class="red">（店铺申请使用店铺名称类型：入驻品牌店铺名称）</font>
@@ -540,13 +575,13 @@
                                 <label class="col-sm-3 control-label">店铺信息审核：</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="merchants_audit" value="0" checked> 未审核
+                                        <input type="radio" name="merchants_audit" value="0" @if($store['msi']->merchants_audit == 0) checked @endif> 未审核
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="merchants_audit" value="1"> 通过
+                                        <input type="radio" name="merchants_audit" value="1" @if($store['msi']->merchants_audit == 1) checked @endif> 通过
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="merchants_audit" value="2"> 未通过
+                                        <input type="radio" name="merchants_audit" value="2" @if($store['msi']->merchants_audit == 2) checked @endif> 未通过
                                     </label>
                                 </div>
                             </div>
@@ -555,7 +590,7 @@
                                 <div class="col-sm-3">
                                     <select name="grade_id" class="form-control input-sm">
                                         @foreach($grades as $grade)
-                                            <option value="{{$grade->id}}">{{$grade->grade_name}}</option>
+                                            <option value="{{$grade->id}}" @if($store['mg']->grade_id == 2) checked @endif>{{$grade->grade_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -564,7 +599,7 @@
                                 <label class="col-sm-3 control-label">等级年限：</label>
                                 <div class="col-sm-3">
                                     <input type="text" name="year_num" class="form-control input-sm wd-120"
-                                           value="1" placeholder="店铺名称"/>
+                                           value="{{$store['mg']->year_num}}" placeholder="店铺名称"/>
                                 </div>
                             </div>
                         </div>
