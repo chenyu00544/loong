@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="@drawable/new_good_distance" app:layout_width="match_parent" app:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView app:id="@+id/address_manage_topview" app:layout_width="match_parent" app:layout_height="wrap_content" />
+    <FrameLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaSwipeListView app:id="@+id/address_manage_list" app:visibility="gone" app:layout_width="match_parent" app:layout_height="wrap_content" app:divider="#ffcccccc" app:dividerHeight="0.1dp" app:headerDividersEnabled="false" app:footerDividersEnabled="false" />
+        <com.ecjia.component.view.ECJiaErrorView app:id="@+id/address_list_bg" app:background="@drawable/new_good_distance" app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" />
+    </FrameLayout>
+</LinearLayout>

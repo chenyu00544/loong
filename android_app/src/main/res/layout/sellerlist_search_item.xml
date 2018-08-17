@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:id="@+id/shoplist_item" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <ImageView android:id="@+id/seller_logo" android:layout_width="UNKNOWN_DATA_0x5001" android:layout_height="UNKNOWN_DATA_0x5001" android:layout_margin="10dp" android:src="@drawable/default_image" android:scaleType="centerCrop" />
+        <LinearLayout android:orientation="vertical" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+            <TextView android:textSize="15dp" android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/seller_item_shopname" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:text="" android:lines="1" android:layout_weight="1.0" />
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0">
+                <TextView android:textSize="11dp" android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/seller_collect_num" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="10dp" android:text="" android:lines="2" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="match_parent"
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/shoplist_uncollect" android:background="@drawable/shape_shopuncollect" android:padding="5dp" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x3c01" android:layout_height="wrap_content" android:layout_marginRight="20dp">
+                <ImageView android:background="@drawable/shop_uncollect" android:layout_width="UNKNOWN_DATA_0xf01" android:layout_height="UNKNOWN_DATA_0xf01" android:layout_marginLeft="3dp" />
+                <TextView android:textSize="13dp" android:textColor="@color/public_theme_color_normal" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/shop_uncollected" android:singleLine="true" />
+            </LinearLayout>
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/shoplist_collected" android:background="@drawable/shape_shopcollect" android:padding="5dp" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x4101" android:layout_height="wrap_content" android:layout_marginRight="20dp">
+                <ImageView android:background="@drawable/shop_collected" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0xf01" android:layout_height="UNKNOWN_DATA_0xf01" />
+                <TextView android:textSize="13dp" android:textColor="@color/white" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/shop_collected" android:singleLine="true" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <View android:id="@+id/line_short" android:background="@color/line_long_dark" android:visibility="visible" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" android:layout_marginLeft="10dp" />
+    <View android:id="@+id/line_long" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+</LinearLayout>

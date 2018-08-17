@@ -4,7 +4,7 @@
  * User: Administrator - chenyu
  * Date: 2018/6/22
  * Time: 16:58
- * Desc: 
+ * Desc:
  */
 
 namespace App\Http\Models\Shop;
@@ -23,6 +23,12 @@ class MerchantsStepsFieldsModel extends Model
         return $this->select($column)
             ->where($where)
             ->first();
+    }
+
+    public function setMerchantsStepsFields($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
     }
 
     public function addMerchantsStepsFields($data)

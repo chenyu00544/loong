@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView android:id="@+id/feedback_topview" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+        <TextView android:textSize="15dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/feedback_type" />
+        <TextView android:textSize="15dp" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/feedback_type_left" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <TextView android:textSize="15dp" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/feedback_type_right" android:paddingLeft="10dp" android:paddingRight="10dp" android:visibility="invisible" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_weight="1.0" />
+        <ImageView android:id="@+id/feedback_type_switcher" android:padding="10dp" android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginRight="10dp" android:src="@drawable/search_showchild" />
+    </LinearLayout>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <ScrollView android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
+            <LinearLayout android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+                <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xf01" />
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+                <LinearLayout android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xb401"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginRight="15dp">
+                        <TextView android:textSize="15dp" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x2801" android:text="@string/feedback_content" />
+                        <EditText android:textSize="13dp" android:textColor="#000000" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/feedback_content" android:background="#ffffff" android:paddingTop="5dp" android:paddingBottom="5dp" android:layout_width="match_parent" android:layout_height="match_parent" android:minHeight="150dp" android:hint="@string/feedback_hint_content" android:maxLength="200" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+                <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xf01" />
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:background="#ffffff" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01">
+                    <TextView android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/feedback_contact" />
+                    <EditText android:textSize="13dp" android:textColor="#000000" android:id="@+id/feedback_contact" android:background="#ffffff" android:paddingLeft="10dp" android:paddingRight="0dp" android:layout_width="match_parent" android:layout_height="match_parent" android:hint="@string/feedback_hint_contact" android:maxLines="1" android:digits="1234567890qwertyuiopasdfghjklzxcvbnm-_.@" />
+                </LinearLayout>
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout android:orientation="vertical" android:id="@+id/feedback_type_list" android:background="#66000000" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent">
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <TextView android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/feedback_message" android:background="@drawable/selecter_newitem_press" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201" />
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <TextView android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/feedback_complain" android:background="@drawable/selecter_newitem_press" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201" />
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <TextView android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/feedback_enquire" android:background="@drawable/selecter_newitem_press" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201" />
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <TextView android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/feedback_customer_service" android:background="@drawable/selecter_newitem_press" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201" />
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <TextView android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/feedback_shopping_guide" android:background="@drawable/selecter_newitem_press" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201" />
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

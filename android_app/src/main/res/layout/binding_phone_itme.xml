@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/top_view" />
+    <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x9601">
+        <TextView android:textSize="22dp" android:textColor="#ff666666" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="已绑：" />
+        <TextView android:textSize="22dp" android:textColor="#ff666666" android:id="@+id/phone_haoma" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="15212345678" />
+    </LinearLayout>
+    <TextView android:textSize="16dp" android:textColor="@color/my_white" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@+id/binding_exitLogin" android:background="@drawable/selector_login_button" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01" android:layout_marginLeft="20dp" android:layout_marginTop="20dp" android:layout_marginRight="20dp" android:text="更换手机号" />
+</LinearLayout>

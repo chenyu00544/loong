@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView android:id="@+id/shake_history_topview" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001" />
+    <RelativeLayout android:orientation="vertical" android:background="#eeeeee" android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaErrorView app:id="@+id/no_shake" app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" app:errorText="@string/no_shake" />
+        <ListView app:id="@+id/shake_history_list" app:layout_width="match_parent" app:layout_height="match_parent" app:listSelector="0x106000d" app:divider="@drawable/divider_shake" app:dividerHeight="@dimen/dp_10" app:headerDividersEnabled="true" app:footerDividersEnabled="true" />
+    </RelativeLayout>
+</LinearLayout>

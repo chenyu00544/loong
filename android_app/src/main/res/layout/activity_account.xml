@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001" layout="@layout/top_view" />
+    <FrameLayout android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xc801">
+        <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@drawable/account_pig" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <LinearLayout android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <TextView android:textSize="18dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/use_account" />
+            <TextView android:textSize="18dp" android:id="@+id/account_money" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        </LinearLayout>
+    </FrameLayout>
+    <LinearLayout android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <Button android:textSize="20dp" android:textColor="#ffffff" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/account_rechange" android:background="@drawable/selector_account_rechange" android:layout_width="UNKNOWN_DATA_0x6e01" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="15dp" android:layout_marginRight="15dp" android:text="@string/account_rechange" />
+        <Button android:textSize="20dp" android:textColor="#ffffff" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/account_withdraw" android:background="@drawable/selector_account_tixian" android:layout_width="UNKNOWN_DATA_0x6e01" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="15dp" android:layout_marginRight="15dp" android:text="@string/withdraw" />
+    </LinearLayout>
+</LinearLayout>

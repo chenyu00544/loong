@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201"
+        <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@drawable/footer_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+            <FrameLayout android:id="@+id/tabitemone" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0">
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_tabone" android:background="@drawable/footer_home_icon" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" />
+                    <TextView android:textSize="12dp" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_textone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/homepage" />
+                </LinearLayout>
+            </FrameLayout>
+            <FrameLayout android:id="@+id/tabitemtwo" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0">
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_tabtwo" android:background="@drawable/footer_search_icon" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" />
+                    <TextView android:textSize="12dp" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_texttwo" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/category" />
+                </LinearLayout>
+            </FrameLayout>
+            <FrameLayout android:id="@+id/tabitemfive" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0">
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_tabfive" android:background="@drawable/footer_find_icon" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" />
+                    <TextView android:textSize="12dp" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_textfive" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/find_find" />
+                </LinearLayout>
+            </FrameLayout>
+            <FrameLayout android:id="@+id/tabitemfour" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0">
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_tabfour" android:background="@drawable/footer_shoppingcart_icon" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" />
+                    <TextView android:textSize="12dp" android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_textfour" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/shopcar_shopcar" />
+                </LinearLayout>
+                <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+                    <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@+id/shopping_cart_num_bg_one" android:background="@drawable/shape_main_collectnumbg" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0xf01" android:layout_height="UNKNOWN_DATA_0xf01" android:layout_marginLeft="15dp" android:layout_marginTop="5dp" android:minWidth="10dp">
+                        <TextView android:textSize="10dp" android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/shopping_cart_num" android:layout_width="match_parent" android:layout_height="match_parent" android:text="0" />
+                    </LinearLayout>
+                </FrameLayout>
+            </FrameLayout>
+            <FrameLayout android:id="@+id/tabitemthree" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0">
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                    <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_tabthree" android:background="@drawable/footer_mine_icon" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" />
+                    <TextView android:textSize="12dp" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/toolbar_textthree" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/main_mine" />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

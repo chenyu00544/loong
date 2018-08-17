@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/top_view" />
+    <TextView android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/bin_txt" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201" android:layout_marginLeft="20dp" android:layout_marginRight="20dp" android:text="绑定手机后，你可以使用手机号登录，也可以通过手机号找回密码" />
+    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:background="@color/my_white" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+        <FrameLayout android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+            <EditText android:textSize="@dimen/list_item_title" android:textColor="#000000" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/bin_phone_new" android:background="#ffffff" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="20dp" android:hint="请输入手机号" android:singleLine="true" />
+        </FrameLayout>
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="30dp" />
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+            <EditText android:textSize="@dimen/list_item_title" android:textColor="#000000" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/bin_phone_new2" android:background="#ffffff" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="20dp" android:hint="请输入验证码" android:singleLine="true" android:maxLength="6" android:numeric="integer|signed|decimal" android:layout_weight="0.4" />
+            <TextView android:textSize="13dp" android:textColor="@color/public_theme_color_normal" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/bin_time_phone" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="获取验证码" android:layout_weight="0.6" android:layout_centerInParent="true" />
+        </LinearLayout>
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    </LinearLayout>
+    <TextView android:textSize="16dp" android:textColor="@color/my_white" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@+id/bin_exitLogin" android:background="@drawable/selector_login_button" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01" android:layout_marginLeft="20dp" android:layout_marginTop="40dp" android:layout_marginRight="20dp" android:text="立即绑定" />
+</LinearLayout>

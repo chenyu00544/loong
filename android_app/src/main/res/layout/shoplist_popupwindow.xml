@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#66666666" android:layout_width="match_parent" android:layout_height="match_parent">
+    <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    <com.ecjia.component.view.ECJiaMyGridView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/popup_gridview" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content" android:listSelector="@drawable/selecter_newitem_press" android:numColumns="UNKNOWN_DATA_0x4" />
+    <View android:id="@+id/buttom_view" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0" />
+</LinearLayout>

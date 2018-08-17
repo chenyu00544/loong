@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent"
+    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x6401"
+        <LinearLayout android:orientation="vertical" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_marginLeft="15dp" android:layout_weight="1.0"
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                <TextView android:textSize="22dp" android:textColor="#ff0000" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/bonus_amount_left" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="100" />
+                <TextView android:textSize="15dp" android:textColor="#ff0000" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/bonus_amount_right" android:paddingBottom="2dp" android:layout_width="match_parent" android:layout_height="match_parent" android:text=".00元" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1e01">
+                <TextView android:textSize="15dp" android:textColor="#000000" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/order_over" />
+                <TextView android:textSize="15dp" android:textColor="#000000" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/request_amount" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="100.00" />
+                <TextView android:textSize="15dp" android:textColor="#000000" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/no_free_shippingfee" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1e01">
+                <TextView android:textSize="13dp" android:textColor="#999999" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/used_time" />
+                <TextView android:textSize="13dp" android:textColor="#999999" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/activity_time" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView android:textSize="16dp" android:textColor="#ff0000" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/receiver_sure" android:background="@drawable/selector_public_red_stroke_white_bg_corner" android:layout_width="UNKNOWN_DATA_0x4601" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginRight="15dp" android:text="@string/receive_redpaper" />
+    </LinearLayout>
+    <View android:id="@+id/middle_line" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" android:layout_marginLeft="15dp" />
+    <View android:id="@+id/bottom_line" android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+</LinearLayout>

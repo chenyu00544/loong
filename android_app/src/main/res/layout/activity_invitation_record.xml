@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="@drawable/new_good_distance" app:layout_width="match_parent" app:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView app:id="@+id/invitation_topview" app:layout_width="match_parent" app:layout_height="wrap_content" />
+    <FrameLayout app:layout_width="match_parent" app:layout_height="match_parent">
+        <ScrollView app:layout_width="match_parent" app:layout_height="match_parent" app:layout_marginBottom="45dp">
+            <LinearLayout app:orientation="vertical" app:background="@color/white" app:layout_width="match_parent" app:layout_height="match_parent"
+                <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xa001">
+                    <TextView app:textSize="15dp" app:textColor="@color/filter_text_color" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:layout_width="match_parent" app:layout_height="wrap_content" app:layout_marginTop="15dp" app:text="@string/invitation_reward_points" />
+                    <LinearLayout app:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="horizontal" app:layout_width="wrap_content" app:layout_height="match_parent" app:layout_marginLeft="10dp">
+                        <RelativeLayout app:orientation="vertical" app:layout_width="wrap_content" app:layout_height="wrap_content" app:layout_marginTop="10dp">
+                            <TextView app:textSize="60dp" app:textStyle="bold" app:textColor="#04b72a" app:id="@+id/tv_points_reward" app:paddingLeft="5dp" app:paddingRight="5dp" app:layout_width="wrap_content" app:layout_height="wrap_content" app:text="0" />
+                            <ImageView app:background="@drawable/icon_reward_bottom" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xa01" app:layout_below="@+id/tv_points_reward" app:layout_alignRight="@+id/tv_points_reward" />
+                        </RelativeLayout>
+                        <ImageView app:id="@+id/iv_points_reward" app:layout_width="UNKNOWN_DATA_0x1401" app:layout_height="UNKNOWN_DATA_0x1401" app:layout_marginTop="15dp" app:src="@drawable/icon_reward_tips" app:tint="#04b72a" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View app:background="@color/line_long_dark" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x4ccccd31" app:layout_marginLeft="50dp" app:layout_marginRight="50dp" />
+                <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xa001">
+                    <TextView app:textSize="15dp" app:textColor="@color/filter_text_color" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:layout_width="match_parent" app:layout_height="wrap_content" app:layout_marginTop="15dp" app:text="@string/invitation_reward_redpacket" />
+                    <LinearLayout app:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="horizontal" app:layout_width="wrap_content" app:layout_height="match_parent" app:layout_marginLeft="10dp">
+                        <RelativeLayout app:orientation="vertical" app:layout_width="wrap_content" app:layout_height="wrap_content" app:layout_marginTop="10dp">
+                            <TextView app:textSize="60dp" app:textStyle="bold" app:textColor="#00abf3" app:id="@+id/tv_redpacket_reward" app:paddingLeft="5dp" app:paddingRight="5dp" app:layout_width="wrap_content" app:layout_height="wrap_content" app:text="0" />
+                            <ImageView app:background="@drawable/icon_reward_bottom" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xa01" app:layout_below="@+id/tv_redpacket_reward" app:layout_alignRight="@+id/tv_redpacket_reward" />
+                        </RelativeLayout>
+                        <ImageView app:id="@+id/iv_redpacket_reward" app:layout_width="UNKNOWN_DATA_0x1401" app:layout_height="UNKNOWN_DATA_0x1401" app:layout_marginTop="15dp" app:src="@drawable/icon_reward_tips" app:tint="#00abf3" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View app:background="@color/line_long_dark" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x4ccccd31" app:layout_marginLeft="50dp" app:layout_marginRight="50dp" />
+                <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xa001">
+                    <TextView app:textSize="15dp" app:textColor="@color/filter_text_color" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:layout_width="match_parent" app:layout_height="wrap_content" app:layout_marginTop="15dp" app:text="@string/invitation_reward_cash" />
+                    <LinearLayout app:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="horizontal" app:layout_width="wrap_content" app:layout_height="match_parent" app:layout_marginLeft="10dp">
+                        <RelativeLayout app:orientation="vertical" app:layout_width="wrap_content" app:layout_height="wrap_content" app:layout_marginTop="10dp">
+                            <TextView app:textSize="60dp" app:textStyle="bold" app:textColor="#ff5d20" app:id="@+id/tv_cash_reward" app:paddingLeft="5dp" app:paddingRight="5dp" app:layout_width="wrap_content" app:layout_height="wrap_content" app:text="0" />
+                            <ImageView app:background="@drawable/icon_reward_bottom" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xa01" app:layout_below="@+id/tv_cash_reward" app:layout_alignRight="@+id/tv_cash_reward" />
+                        </RelativeLayout>
+                        <ImageView app:id="@+id/iv_cash_reward" app:layout_width="UNKNOWN_DATA_0x1401" app:layout_height="UNKNOWN_DATA_0x1401" app:layout_marginTop="15dp" app:src="@drawable/icon_reward_tips" app:tint="#ff5d20" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View app:background="@color/line_long_dark" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout app:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:orientation="vertical" app:background="@color/white" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x2d01">
+            <View app:background="@color/line_long_dark" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+            <LinearLayout app:orientation="horizontal" app:background="@color/white" app:layout_width="match_parent" app:layout_height="match_parent">
+                <FrameLayout app:id="@+id/fl_invitation_detail" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_weight="1.0">
+                    <LinearLayout app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="horizontal" app:layout_width="wrap_content" app:layout_height="match_parent">
+                        <ImageView app:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:layout_width="UNKNOWN_DATA_0x1901" app:layout_height="UNKNOWN_DATA_0x1901" app:src="@drawable/icon_invitation_detail" app:tint="@color/public_theme_color_normal" />
+                        <TextView app:textSize="15dp" app:textColor="@color/new_textColor" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_marginLeft="5dp" app:text="@string/invitation_reward_detail" />
+                    </LinearLayout>
+                </FrameLayout>
+                <View app:background="@color/line_long_dark" app:layout_width="UNKNOWN_DATA_0x4ccccd31" app:layout_height="match_parent" />
+                <FrameLayout app:id="@+id/fl_get_reward" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_weight="1.0">
+                    <LinearLayout app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="horizontal" app:layout_width="wrap_content" app:layout_height="match_parent">
+                        <ImageView app:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:layout_width="UNKNOWN_DATA_0x1901" app:layout_height="UNKNOWN_DATA_0x1901" app:src="@drawable/icon_get_reward" app:tint="@color/public_theme_color_normal" />
+                        <TextView app:textSize="15dp" app:textColor="@color/new_textColor" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_marginLeft="5dp" app:text="@string/invitation_get_reward" />
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

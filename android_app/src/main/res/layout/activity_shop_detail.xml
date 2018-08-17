@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:id="@+id/ll_goodlist_top" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
+        <FrameLayout android:background="@drawable/searcher_new_header_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001">
+            <LinearLayout android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginRight="50dp">
+                <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/nav_back_button" android:padding="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/header_back_arrow" />
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001">
+                    <FrameLayout android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/search_frame_edit" android:focusable="true" android:focusableInTouchMode="true" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_weight="1.0">
+                        <EditText android:textSize="@dimen/list_item_small" android:textColorHint="#aaaaaa" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/search_input" android:background="@drawable/shape_shop_search_edit_bg" android:paddingLeft="30dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1e01" android:hint="@string/search_input" android:singleLine="true" android:imeOptions="actionNone|actionGo|actionSearch|actionNext|actionDone|actionPrevious" />
+                        <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/search_search" android:padding="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/searcher_new_search_icon" />
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <ImageView android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/top_category" android:background="@drawable/goodlist_choose1" android:layout_width="UNKNOWN_DATA_0x1e01" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginRight="10dp" />
+        </FrameLayout>
+        <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+                    <com.ecjia.component.view.ECJiaAddHeadListView android:id="@+id/goods_listview" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="0x0" android:dividerHeight="0dp" android:overScrollMode="never" />
+                    <FrameLayout android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" android:layout_marginBottom="30dp">
+                        <ImageView android:id="@+id/good_list_shopping_cart" android:background="@drawable/shape_bg" android:padding="5dp" android:layout_width="UNKNOWN_DATA_0x2d01" android:layout_height="UNKNOWN_DATA_0x2d01" android:src="@drawable/footer_shoppingcart_active_icon" />
+                        <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@+id/shopping_cart_num_bg_one" android:background="@drawable/shape_main_collectnumbg" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="9dp" android:layout_marginTop="4dp" android:minWidth="10dp">
+                            <TextView android:textSize="10dp" android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/shopping_cart_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="4dp" android:layout_marginRight="4dp" android:text="0" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </FrameLayout>
+            </LinearLayout>
+            <include android:id="@+id/null_pager" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="200dp" layout="@layout/null_shop" />
+            <ImageView android:id="@+id/goodslist_bg" android:background="#ffffff" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="40dp" />
+        </FrameLayout>
+    </LinearLayout>
+    <include android:id="@+id/test" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_marginTop="48dp" layout="@layout/shop_filter_toolbar" />
+</FrameLayout>

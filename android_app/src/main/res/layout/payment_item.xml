@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="match_parent"
+    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/payment_item_layout" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3c01">
+        <ImageView android:id="@+id/payment_status" android:background="@drawable/payment_unselected" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" />
+        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff333333" android:id="@+id/payment_item_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_weight="1.0" />
+        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff333333" android:id="@+id/payment_item_fee" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" />
+    </LinearLayout>
+    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+</LinearLayout>

@@ -39,7 +39,7 @@
                                                         @foreach($mst->fieldsForm[$key]['value'] as $k => $val)
                                                             <label class="radio-inline fl">
                                                                 <input type="radio" name="{{$field}}" value="{{$val}}"
-                                                                       @if($store['msf']->contactXinbie == $val) checked @endif> {{$val}}
+                                                                       @if($store['msf']->$field == $val) checked @endif> {{$val}}
                                                             </label>
                                                         @endforeach
                                                     </div>
@@ -88,38 +88,85 @@
                                                         ：</label>
                                                     <div class="col-sm-6">
                                                         @if($mst->fieldsForm[$key]['value'][0] == 'dateFile')
-                                                            <input type="hidden" name="{{$field}}_bak"
+                                                            <input type="hidden" name="{{substr($field, 0, -3)}}_bak"
                                                                    value="{{$store['msf']->$field}}"/>
-                                                            <input type="file" name="{{$field}}" value=""/>
+                                                            <input type="file" name="{{$field}}" value="" class="fl"/>
+                                                            <span class="img-show">
+                                                                <a href="{{url($store['msf']->$field)}}" class="nyroModal">
+                                                                    <i class="glyphicon glyphicon-picture top2"
+                                                                       data-tooltipimg="" ctype="tooltip"
+                                                                       title="tooltip"></i>
+                                                                </a>
+                                                            </span>
                                                         @elseif($mst->fieldsForm[$key]['value'][0] == 'textArea')
                                                             <select name="{{$field}}[]"
                                                                     class="form-control input-sm shop_country fl wd-120">
                                                                 <option value="0">国家</option>
                                                                 @foreach($regions as $region)
                                                                     <option value="{{$region['id']}}"
-                                                                            @if(!empty($store['msf']->$field[0])&&$store['msf']->$field[0]->region_id == $region['id']) selected @endif>{{$region['name']}}</option>
+                                                                            @if($field == 'license_comp_adress')
+                                                                            @if(!empty($store['msf']->license_comp_adress[0])&&$store['msf']->license_comp_adress[0]->region_id == $region['id']) selected
+                                                                            @endif
+                                                                            @elseif($field == 'company_located')
+                                                                            @if(!empty($store['msf']->company_located[0])&&$store['msf']->company_located[0]->region_id == $region['id']) selected
+                                                                            @endif
+                                                                            @elseif($field == 'linked_bank_address')
+                                                                            @if(!empty($store['msf']->linked_bank_address[0])&&$store['msf']->linked_bank_address[0]->region_id == $region['id']) selected @endif
+                                                                            @endif
+                                                                    >{{$region['name']}}</option>
                                                                 @endforeach
                                                             </select>
                                                             <select name="{{$field}}[]"
                                                                     class="form-control input-sm shop_province fl mar-left-10 wd-120">
                                                                 <option value="0">省/直辖市</option>
-                                                                @if(!empty($store['msf']->$field[1]))
-                                                                    <option value="{{$store['msf']->$field[1]->region_id}}"
-                                                                            selected>{{$store['msf']->$field[1]->region_name}}</option> @endif
+                                                                @if($field == 'license_comp_adress')
+                                                                    @if(!empty($store['msf']->license_comp_adress[1]))
+                                                                        <option value="{{$store['msf']->license_comp_adress[1]->region_id}}"
+                                                                                selected>{{$store['msf']->license_comp_adress[1]->region_name}}</option> @endif
+                                                                @elseif($field == 'company_located')
+                                                                    @if(!empty($store['msf']->company_located[1]))
+                                                                        <option value="{{$store['msf']->company_located[1]->region_id}}"
+                                                                                selected>{{$store['msf']->company_located[1]->region_name}}</option> @endif
+                                                                @elseif($field == 'linked_bank_address')
+                                                                    @if(!empty($store['msf']->linked_bank_address[1]))
+                                                                        <option value="{{$store['msf']->linked_bank_address[1]->region_id}}"
+                                                                                selected>{{$store['msf']->linked_bank_address[1]->region_name}}</option> @endif
+                                                                @endif
+
                                                             </select>
                                                             <select name="{{$field}}[]"
                                                                     class="form-control input-sm shop_city fl mar-left-10 wd-120">
                                                                 <option value="0">市</option>
-                                                                @if(!empty($store['msf']->$field[2]))
-                                                                    <option value="{{$store['msf']->$field[2]->region_id}}"
-                                                                            selected>{{$store['msf']->$field[2]->region_name}}</option> @endif
+                                                                @if($field == 'license_comp_adress')
+                                                                    @if(!empty($store['msf']->license_comp_adress[2]))
+                                                                        <option value="{{$store['msf']->license_comp_adress[2]->region_id}}"
+                                                                                selected>{{$store['msf']->license_comp_adress[2]->region_name}}</option> @endif
+                                                                @elseif($field == 'company_located')
+                                                                    @if(!empty($store['msf']->company_located[2]))
+                                                                        <option value="{{$store['msf']->company_located[2]->region_id}}"
+                                                                                selected>{{$store['msf']->company_located[2]->region_name}}</option> @endif
+                                                                @elseif($field == 'linked_bank_address')
+                                                                    @if(!empty($store['msf']->linked_bank_address[2]))
+                                                                        <option value="{{$store['msf']->linked_bank_address[2]->region_id}}"
+                                                                                selected>{{$store['msf']->linked_bank_address[2]->region_name}}</option> @endif
+                                                                @endif
                                                             </select>
                                                             <select name="{{$field}}[]"
                                                                     class="form-control input-sm shop_district fl mar-left-10 wd-120">
                                                                 <option value="0">区/县</option>
-                                                                @if(!empty($store['msf']->$field[3]))
-                                                                    <option value="{{$store['msf']->$field[3]->region_id}}"
-                                                                            selected>{{$store['msf']->$field[3]->region_name}}</option> @endif
+                                                                @if($field == 'license_comp_adress')
+                                                                    @if(!empty($store['msf']->license_comp_adress[3]))
+                                                                        <option value="{{$store['msf']->license_comp_adress[3]->region_id}}"
+                                                                                selected>{{$store['msf']->license_comp_adress[3]->region_name}}</option> @endif
+                                                                @elseif($field == 'company_located')
+                                                                    @if(!empty($store['msf']->company_located[3]))
+                                                                        <option value="{{$store['msf']->company_located[3]->region_id}}"
+                                                                                selected>{{$store['msf']->company_located[3]->region_name}}</option> @endif
+                                                                @elseif($field == 'linked_bank_address')
+                                                                    @if(!empty($store['msf']->linked_bank_address[3]))
+                                                                        <option value="{{$store['msf']->linked_bank_address[3]->region_id}}"
+                                                                                selected>{{$store['msf']->linked_bank_address[3]->region_name}}</option> @endif
+                                                                @endif
                                                             </select>
                                                         @elseif($mst->fieldsForm[$key]['value'][0] == 'dateTime')
                                                             @if($mst->fieldsForm[$key]['value'][1] == '1--30')
@@ -474,7 +521,8 @@
                                                         <select name="shoprz_brandName" class="form-control input-sm">
                                                             <option value="0">请选择品牌名称</option>
                                                             @foreach($store['msb'] as $brand)
-                                                                <option value="{{$brand->brand_name}}" @if($store['msi']->shoprz_brandName == $brand->brand_name) selected @endif>{{$brand->brand_name}}</option>
+                                                                <option value="{{$brand->brand_name}}"
+                                                                        @if($store['msi']->shoprz_brandName == $brand->brand_name) selected @endif>{{$brand->brand_name}}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -484,7 +532,8 @@
                                                     <div class="col-sm-5">
                                                         <input type="text" name="shop_class_keyWords"
                                                                class="form-control input-sm"
-                                                               value="{{$store['msi']->shop_class_keyWords}}" placeholder="店铺名称"/>
+                                                               value="{{$store['msi']->shop_class_keyWords}}"
+                                                               placeholder="店铺名称"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -492,10 +541,22 @@
                                                     <div class="col-sm-6">
                                                         <select name="shopNameSuffix"
                                                                 class="form-control input-sm">
-                                                            <option value="旗舰店" @if($store['msi']->shopNameSuffix == '旗舰店') selected @endif>旗舰店</option>
-                                                            <option value="专卖店" @if($store['msi']->shopNameSuffix == '专卖店') selected @endif>专卖店</option>
-                                                            <option value="专营店" @if($store['msi']->shopNameSuffix == '专营店') selected @endif>专营店</option>
-                                                            <option value="馆" @if($store['msi']->shopNameSuffix == '馆') selected @endif>馆</option>
+                                                            <option value="旗舰店"
+                                                                    @if($store['msi']->shopNameSuffix == '旗舰店') selected @endif>
+                                                                旗舰店
+                                                            </option>
+                                                            <option value="专卖店"
+                                                                    @if($store['msi']->shopNameSuffix == '专卖店') selected @endif>
+                                                                专卖店
+                                                            </option>
+                                                            <option value="专营店"
+                                                                    @if($store['msi']->shopNameSuffix == '专营店') selected @endif>
+                                                                专营店
+                                                            </option>
+                                                            <option value="馆"
+                                                                    @if($store['msi']->shopNameSuffix == '馆') selected @endif>
+                                                                馆
+                                                            </option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -505,7 +566,8 @@
                                                     <div class="col-sm-5">
                                                         <input type="text" name="rz_shopName"
                                                                class="form-control input-sm"
-                                                               value="{{$store['msi']->rz_shopName}}" placeholder="自创店铺名称"/>
+                                                               value="{{$store['msi']->rz_shopName}}"
+                                                               placeholder="自创店铺名称"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -514,7 +576,8 @@
                                                     <div class="col-sm-5">
                                                         <input type="text" name="hopeLoginName"
                                                                class="form-control input-sm"
-                                                               value="{{$store['msi']->hopeLoginName}}" placeholder="店铺名称"/>
+                                                               value="{{$store['msi']->hopeLoginName}}"
+                                                               placeholder="店铺名称"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -529,10 +592,12 @@
                                 <label class="col-sm-3 control-label">设置是否审核其商品：</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="review_goods" value="0" @if($store['msi']->review_goods == 0) checked @endif> 否
+                                        <input type="radio" name="review_goods" value="0"
+                                               @if($store['msi']->review_goods == 0) checked @endif> 否
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="review_goods" value="1" @if($store['msi']->review_goods == 1) checked @endif> 是
+                                        <input type="radio" name="review_goods" value="1"
+                                               @if($store['msi']->review_goods == 1) checked @endif> 是
                                     </label>
                                 </div>
                             </div>
@@ -540,10 +605,12 @@
                                 <label class="col-sm-3 control-label">是否为自营店铺：</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="self_run" value="0" @if($store['msi']->self_run == 0) checked @endif> 否
+                                        <input type="radio" name="self_run" value="0"
+                                               @if($store['msi']->self_run == 0) checked @endif> 否
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="self_run" value="1" @if($store['msi']->self_run == 1) checked @endif> 是
+                                        <input type="radio" name="self_run" value="1"
+                                               @if($store['msi']->self_run == 1) checked @endif> 是
                                     </label>
                                 </div>
                             </div>
@@ -551,10 +618,12 @@
                                 <label class="col-sm-3 control-label">是否关闭店铺：</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="shop_close" value="0" @if($store['msi']->shop_close == 0) checked @endif> 关闭
+                                        <input type="radio" name="shop_close" value="0"
+                                               @if($store['msi']->shop_close == 0) checked @endif> 关闭
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="shop_close" value="1" @if($store['msi']->shop_close == 1) checked @endif> 开启
+                                        <input type="radio" name="shop_close" value="1"
+                                               @if($store['msi']->shop_close == 1) checked @endif> 开启
                                     </label>
                                 </div>
                             </div>
@@ -562,10 +631,12 @@
                                 <label class="col-sm-3 control-label">审核使用店铺名称：</label>
                                 <div class="col-sm-2">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="shopname_audit" value="0" @if($store['ssi']->shopname_audit == 0) checked @endif> 未审核
+                                        <input type="radio" name="shopname_audit" value="0"
+                                               @if($store['ssi']->shopname_audit == 0) checked @endif> 未审核
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="shopname_audit" value="1" @if($store['ssi']->shopname_audit == 1) checked @endif> 已审核
+                                        <input type="radio" name="shopname_audit" value="1"
+                                               @if($store['ssi']->shopname_audit == 1) checked @endif> 已审核
                                     </label>
                                 </div>
                                 <div class="notic col-sm-4" style="line-height: 24px;"><font class="red">（店铺申请使用店铺名称类型：入驻品牌店铺名称）</font>
@@ -575,27 +646,31 @@
                                 <label class="col-sm-3 control-label">店铺信息审核：</label>
                                 <div class="col-sm-3">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="merchants_audit" value="0" @if($store['msi']->merchants_audit == 0) checked @endif> 未审核
+                                        <input type="radio" name="merchants_audit" value="0"
+                                               @if($store['msi']->merchants_audit == 0) checked @endif> 未审核
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="merchants_audit" value="1" @if($store['msi']->merchants_audit == 1) checked @endif> 通过
+                                        <input type="radio" name="merchants_audit" value="1"
+                                               @if($store['msi']->merchants_audit == 1) checked @endif> 通过
                                     </label>
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="merchants_audit" value="2" @if($store['msi']->merchants_audit == 2) checked @endif> 未通过
+                                        <input type="radio" name="merchants_audit" value="2"
+                                               @if($store['msi']->merchants_audit == 2) checked @endif> 未通过
                                     </label>
                                 </div>
                             </div>
-                            <div class="form-group seller-grade disn">
+                            <div class="form-group seller-grade @if($store['msi']->merchants_audit != 1) disn @endif">
                                 <label class="col-sm-3 control-label">店铺等级：</label>
                                 <div class="col-sm-3">
                                     <select name="grade_id" class="form-control input-sm">
                                         @foreach($grades as $grade)
-                                            <option value="{{$grade->id}}" @if($store['mg']->grade_id == 2) checked @endif>{{$grade->grade_name}}</option>
+                                            <option value="{{$grade->id}}"
+                                                    @if($store['mg']->grade_id == $grade->id) selected @endif>{{$grade->grade_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group seller-grade disn">
+                            <div class="form-group seller-grade @if($store['msi']->merchants_audit != 1) disn @endif">
                                 <label class="col-sm-3 control-label">等级年限：</label>
                                 <div class="col-sm-3">
                                     <input type="text" name="year_num" class="form-control input-sm wd-120"

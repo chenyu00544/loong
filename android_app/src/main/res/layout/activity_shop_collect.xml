@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001">
+        <View android:background="#000000" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1401" />
+        <ImageView android:background="@drawable/searcher_new_header_bg" android:layout_width="match_parent" android:layout_height="match_parent" />
+        <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/collect_back" android:padding="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/header_back_arrow" />
+        <TextView android:textSize="@dimen/title_textsize" android:textColor="#ffffff" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/collect_myfavoriteshop" />
+        <TextView android:textSize="@dimen/title_right_textsize" android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/collect_edit" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x2a01" android:layout_marginRight="10dp" android:text="@string/collect_compile" />
+    </FrameLayout>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaXListView android:id="@+id/collect_list" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="#00000000" />
+        <include android:id="@+id/null_pager" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" layout="@layout/null_shop" />
+    </FrameLayout>
+</LinearLayout>

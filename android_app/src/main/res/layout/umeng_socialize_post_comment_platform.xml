@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="UNKNOWN_DATA_0x3201" android:layout_height="UNKNOWN_DATA_0x3201">
+    <ImageButton android:id="@+id/umeng_socialize_post_cws_ic" android:background="0x0" android:padding="12dp" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/umeng_socialize_default_avatar" android:scaleType="fitXY" />
+    <ImageView android:id="@+id/umeng_socialize_post_cws_selected" android:visibility="invisible" android:layout_width="UNKNOWN_DATA_0xd01" android:layout_height="UNKNOWN_DATA_0xd01" android:layout_marginLeft="32dp" android:src="@drawable/umeng_socialize_checked" android:scaleType="fitXY" android:layout_centerVertical="true" />
+</RelativeLayout>

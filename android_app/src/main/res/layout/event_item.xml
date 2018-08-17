@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="wrap_content">
+    <RelativeLayout android:id="@+id/event_title_item" android:background="@color/white" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginTop="3dp" android:layout_marginBottom="3dp">
+        <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_centerInParent="true">
+            <View android:id="@+id/event_title" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x26666731" />
+            <TextView android:textSize="16dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/event_all_title" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_marginLeft="15dp" android:layout_marginRight="15dp" android:layout_weight="1.0" />
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout android:orientation="vertical" android:id="@+id/item_image_all" android:layout_width="match_parent" android:layout_height="match_parent"
+        <LinearLayout android:orientation="vertical" android:id="@+id/item_image" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="3dp"
+            <LinearLayout android:orientation="vertical" android:background="@drawable/selecter_raditem_press_withsto" android:layout_width="match_parent" android:layout_height="match_parent">
+                <com.ecjia.component.view.ECJiaSelectableRoundedImageView app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/iv_event" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_margin="0.6dp" app:scaleType="centerCrop" app:sriv_left_top_corner_radius="8dp" app:sriv_right_top_corner_radius="8dp" app:sriv_left_bottom_corner_radius="8dp" app:sriv_right_bottom_corner_radius="8dp" app:sriv_border_color="#ffffff" />
+            </LinearLayout>
+        </LinearLayout>
+        <View app:id="@+id/first_item" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x301" />
+        <LinearLayout app:orientation="horizontal" app:id="@+id/item_image2" app:paddingLeft="7dp" app:paddingTop="0dp" app:paddingRight="7dp" app:paddingBottom="0dp" app:layout_width="match_parent" app:layout_height="wrap_content"
+            <LinearLayout app:orientation="vertical" app:id="@+id/ll_event2" app:padding="3dp" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="match_parent" app:layout_weight="1.0"
+                <LinearLayout app:orientation="vertical" app:background="@drawable/selecter_raditem_press_withsto" app:layout_width="match_parent" app:layout_height="match_parent">
+                    <com.ecjia.component.view.ECJiaSelectableRoundedImageView app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/iv_event2" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_margin="0.6dp" app:src="@drawable/default_image" app:scaleType="centerCrop" app:sriv_left_top_corner_radius="8dp" app:sriv_right_top_corner_radius="8dp" app:sriv_left_bottom_corner_radius="8dp" app:sriv_right_bottom_corner_radius="8dp" app:sriv_border_color="#ffffff" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout app:orientation="vertical" app:id="@+id/ll_event3" app:padding="3dp" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="match_parent" app:layout_weight="1.0"
+                <LinearLayout app:orientation="vertical" app:background="@drawable/selecter_raditem_press_withsto" app:layout_width="match_parent" app:layout_height="match_parent">
+                    <com.ecjia.component.view.ECJiaSelectableRoundedImageView app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/iv_event3" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_margin="0.6dp" app:src="@drawable/default_image" app:scaleType="centerCrop" app:sriv_left_top_corner_radius="8dp" app:sriv_right_top_corner_radius="8dp" app:sriv_left_bottom_corner_radius="8dp" app:sriv_right_bottom_corner_radius="8dp" app:sriv_border_color="#ffffff" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout app:orientation="vertical" app:id="@+id/ll_event4" app:padding="3dp" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="match_parent" app:layout_weight="1.0"
+                <LinearLayout app:orientation="vertical" app:background="@drawable/selecter_raditem_press_withsto" app:layout_width="match_parent" app:layout_height="match_parent">
+                    <com.ecjia.component.view.ECJiaSelectableRoundedImageView app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/iv_event4" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_margin="0.6dp" app:src="@drawable/default_image" app:scaleType="centerCrop" app:sriv_left_top_corner_radius="8dp" app:sriv_right_top_corner_radius="8dp" app:sriv_left_bottom_corner_radius="8dp" app:sriv_right_bottom_corner_radius="8dp" app:sriv_border_color="#ffffff" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

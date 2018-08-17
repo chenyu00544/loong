@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/trade_goods_item" android:background="#f9f9f9" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x5a01">
+    <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="match_parent">
+        <View android:id="@+id/first_side" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x501" android:layout_height="match_parent" />
+        <ImageView android:id="@+id/iv_trade_goods" android:background="@color/line_long_dark" android:padding="0.6dp" android:layout_width="UNKNOWN_DATA_0x4601" android:layout_height="UNKNOWN_DATA_0x4601" android:layout_marginLeft="5dp" android:layout_marginTop="10dp" android:layout_marginRight="5dp" android:layout_marginBottom="10dp" android:src="@drawable/default_image" android:scaleType="centerCrop" android:cropToPadding="true" />
+        <View android:id="@+id/last_side" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x501" android:layout_height="match_parent" />
+    </LinearLayout>
+    <FrameLayout android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/fl_trade_goods_num" android:background="@drawable/shape_main_collectnumbg" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x1201" android:layout_height="UNKNOWN_DATA_0x1201" android:layout_marginTop="5dp">
+        <View android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="UNKNOWN_DATA_0xf01" android:layout_height="UNKNOWN_DATA_0xf01" />
+        <TextView android:textSize="11dp" android:textColor="@color/TextColorWhite" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/tv_trade_goods_num" android:layout_width="match_parent" android:layout_height="match_parent" android:text="0" />
+    </FrameLayout>
+</FrameLayout>

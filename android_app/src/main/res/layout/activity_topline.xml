@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView android:id="@+id/topline_topview" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaErrorView app:id="@+id/topline_null" app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" app:errorText="没有今日头条" />
+        <com.ecjia.component.view.ECJiaXListView app:id="@+id/topline_list" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="match_parent" app:divider="0x0" />
+    </FrameLayout>
+</LinearLayout>

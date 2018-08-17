@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:id="@+id/root_view" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/login_defaultbg" android:scaleType="centerCrop" />
+    <LinearLayout android:orientation="vertical" android:background="#77000000" android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaTopView android:id="@+id/checkcode_topview" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+            <LinearLayout android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="20dp" android:layout_marginTop="10dp" android:layout_marginRight="20dp">
+                <TextView android:textColor="#ffffff" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/messagecodecheck_attention" android:paddingLeft="5dp" android:paddingRight="5dp" android:layout_width="match_parent" android:layout_height="match_parent" android:text="@string/register_enter_recode" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01" android:layout_marginLeft="20dp" android:layout_marginRight="20dp"
+                <LinearLayout android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                    <EditText android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/messagecodecheck_edit" android:background="@drawable/shape_moblieregister" android:paddingLeft="15dp" android:paddingRight="5dp" android:layout_width="match_parent" android:layout_height="match_parent" android:hint="@string/register_enter_code" android:singleLine="true" android:maxLength="6" android:numeric="integer|signed|decimal" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_marginLeft="15dp" android:layout_weight="0.6">
+                    <TextView android:textSize="13dp" android:textColor="@color/text_color" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/messagecodecheck_time" android:background="@drawable/shape_unable" android:layout_width="match_parent" android:layout_height="match_parent" android:text="@string/register_resend" android:layout_centerInParent="true" />
+                </LinearLayout>
+            </LinearLayout>
+            <Button android:enabled="false" android:textSize="@dimen/title_textsize" android:textColor="#ff999999" android:id="@+id/messagecodecheck_next" android:background="@drawable/shape_unable" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01" android:layout_marginLeft="20dp" android:layout_marginTop="30dp" android:layout_marginRight="20dp" android:minWidth="100dp" android:text="@string/register_next" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

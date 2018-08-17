@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01">
+    <ImageView android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" android:src="@drawable/icon_minefragment_help" />
+    <TextView android:textSize="@dimen/list_item_title" android:textColor="#050505" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/item_text" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:text="" android:layout_weight="1.0" />
+    <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+</LinearLayout>

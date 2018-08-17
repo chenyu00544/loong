@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent">
+    <FrameLayout android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001">
+        <ImageView android:background="@drawable/searcher_new_header_bg" android:layout_width="match_parent" android:layout_height="match_parent" />
+        <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/address_title_back" android:padding="10dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/header_back_arrow" />
+        <TextView android:textSize="@dimen/title_textsize" android:textColor="#ffffff" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/address_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/manage_edit_address" />
+        <TextView android:textSize="@dimen/title_right_textsize" android:textColor="#ffffff" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/address_title_cancle" android:background="#00000000" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:text="@string/button_cancel" />
+    </FrameLayout>
+    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001">
+        <TextView android:textSize="15dp" android:textColor="#000000" android:id="@+id/address_choosed_title" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/addressb_country" />
+        <TextView android:textSize="15dp" android:id="@+id/address_choosed_area" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" />
+        <TextView android:textSize="15dp" android:id="@+id/address_choosed_area1" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" />
+        <TextView android:textSize="15dp" android:id="@+id/address_choosed_area2" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" />
+        <TextView android:textSize="15dp" android:id="@+id/address_choosed_area3" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" />
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0">
+        <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+        <ListView android:id="@+id/address_list" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="0dp" android:overScrollMode="never" />
+        <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+    </LinearLayout>
+</LinearLayout>

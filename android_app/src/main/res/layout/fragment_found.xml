@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaScrollView_Main android:id="@+id/found_scrollview" android:layout_width="match_parent" android:layout_height="match_parent" android:overScrollMode="never">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+            <LinearLayout android:orientation="horizontal" android:background="@color/public_theme_color_normal" android:paddingTop="48dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa801"
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@+id/found_scan" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                    <ImageView android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:src="@drawable/icon_found_scan" />
+                    <TextView android:textSize="14dp" android:textColor="@color/white" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/found_qrcode" />
+                </LinearLayout>
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@+id/found_shop_streets" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                    <ImageView android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:src="@drawable/icon_find_qrcode_share_white" />
+                    <TextView android:textSize="14dp" android:textColor="@color/white" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/my_find_invite" />
+                </LinearLayout>
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@+id/found_topic" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                    <ImageView android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:src="@drawable/icon_found_theme" />
+                    <TextView android:textSize="14dp" android:textColor="@color/white" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:text="@string/found_theme" />
+                </LinearLayout>
+            </LinearLayout>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+                <com.ecjia.component.view.ECJiaErrorView android:id="@+id/found_noresult" android:layout_width="match_parent" android:layout_height="match_parent" />
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                    <com.ecjia.component.view.ECJiaMyGridView android:id="@+id/found_gridview_local" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent" android:listSelector="#00000000" android:horizontalSpacing="0dp" android:verticalSpacing="0dp" android:numColumns="UNKNOWN_DATA_0x3" />
+                    <LinearLayout android:orientation="vertical" android:id="@+id/treasure_layout" android:layout_width="match_parent" android:layout_height="wrap_content">
+                        <ImageView android:id="@+id/found_treasure_title" android:padding="14dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3c01" android:scaleType="centerInside" />
+                        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+                        <com.ecjia.component.view.ECJiaMyGridView android:id="@+id/found_gridview_online" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent" android:listSelector="#00000000" android:horizontalSpacing="0dp" android:verticalSpacing="0dp" android:numColumns="UNKNOWN_DATA_0x3" />
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </com.ecjia.component.view.ECJiaScrollView_Main>
+    <com.ecjia.component.view.ECJiaTopView android:id="@+id/found_topview" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08008d">
+        <LinearLayout android:orientation="horizontal" android:id="@+id/found_top_function_icon_ll" android:visibility="invisible" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="70dp">
+            <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/found_top_scan" android:padding="8dp" android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:src="@drawable/icon_found_scan" />
+            <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/found_top_shop_streets" android:padding="8dp" android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="20dp" android:src="@drawable/icon_find_qrcode_share_white" />
+            <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/found_top_topic" android:padding="8dp" android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="20dp" android:src="@drawable/icon_found_theme" />
+        </LinearLayout>
+    </com.ecjia.component.view.ECJiaTopView>
+</FrameLayout>

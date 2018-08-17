@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView android:id="@+id/recharge_detail_topview" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <com.ecjia.component.imagecircle.ECJiaCircleImage android:id="@+id/recharge_profilephoto" android:layout_width="UNKNOWN_DATA_0x3201" android:layout_height="UNKNOWN_DATA_0x3201" android:layout_margin="15dp" android:src="@drawable/profile_no_avarta_icon_light" android:adjustViewBounds="true" />
+        <TextView android:textSize="19dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/tv_name" android:layout_width="wrap_content" android:layout_height="match_parent" />
+    </LinearLayout>
+    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="15dp" />
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="15dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/tv_type" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_margin="15dp" />
+        <TextView android:textSize="28dp" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/tv_amount" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_margin="15dp" />
+    </LinearLayout>
+    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="15dp" />
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0"
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="15dp" android:textColor="#999999" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="10dp" android:text="@string/balance_pay" android:layout_weight="1.0" />
+            <TextView android:textSize="15dp" android:id="@+id/payment_name" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="10dp" android:layout_weight="3.0" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="15dp" android:textColor="#999999" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="10dp" android:text="@string/rec_type" android:layout_weight="1.0" />
+            <TextView android:textSize="15dp" android:id="@+id/payment_type" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="10dp" android:layout_weight="3.0" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="15dp" android:textColor="#999999" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="10dp" android:text="@string/time" android:layout_weight="1.0" />
+            <TextView android:textSize="15dp" android:id="@+id/add_time" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="10dp" android:layout_weight="3.0" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:textSize="15dp" android:textColor="#999999" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="10dp" android:text="@string/rec_number" android:layout_weight="1.0" />
+            <TextView android:textSize="15dp" android:id="@+id/tv_number" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:layout_marginTop="10dp" android:layout_weight="3.0" />
+        </LinearLayout>
+    </LinearLayout>
+    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x5001"
+        <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:id="@+id/success_item" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent">
+            <ImageView android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@drawable/img_order_create" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            <TextView android:textSize="25dp" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/success_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/rec_success" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:id="@+id/needpay_item" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent"
+            <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                <Button android:textSize="15dp" android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/btn_cancle" android:background="@drawable/selector_cancle" android:layout_width="UNKNOWN_DATA_0x7801" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginRight="15dp" android:text="@string/cancel" />
+            </LinearLayout>
+            <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                <Button android:textSize="15dp" android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/btn_ok" android:background="@drawable/selector_ok" android:layout_width="UNKNOWN_DATA_0x7801" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="15dp" android:text="@string/rec_recharge" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:id="@+id/needcancel_item" android:layout_width="match_parent" android:layout_height="match_parent"
+            <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                <ImageView android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@drawable/img_order_create" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                <TextView android:textSize="25dp" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:text="@string/apply" />
+            </LinearLayout>
+            <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                <Button android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/raply_cancel" android:background="@drawable/selector_cancle" android:layout_width="UNKNOWN_DATA_0x7801" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="15dp" android:text="@string/cancel" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

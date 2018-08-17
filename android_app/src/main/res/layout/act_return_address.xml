@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent"
+    <LinearLayout android:orientation="vertical" android:id="@+id/ll_search" android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaTopView android:id="@+id/return_address_topview" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+            <TextView android:textSize="15dp" android:textColor="@color/my_black" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/return_confirm_info" />
+            <TextView android:textSize="10dp" android:textColor="@color/my_dark" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="(该地址是您购买商品的地址)" />
+        </LinearLayout>
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginLeft="10dp" android:layout_marginTop="10dp" android:layout_marginBottom="10dp" />
+        <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/address_area_ll" android:background="@drawable/selecter_newitem_press" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+            <TextView android:textSize="15dp" android:textColor="@color/my_dark" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/return_address" />
+            <TextView android:textSize="15dp" android:textColor="@color/my_black" android:id="@+id/address_area" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="" android:layout_weight="1.0" />
+            <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/header_right_arrow" />
+        </LinearLayout>
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginLeft="10dp" android:layout_marginTop="10dp" android:layout_marginBottom="10dp" />
+        <LinearLayout android:orientation="horizontal" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="40dp">
+            <TextView android:textSize="15dp" android:textColor="@color/my_dark" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x2801" android:text="@string/return_address_detail" />
+            <EditText android:textSize="15dp" android:textColor="@color/my_black" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/address_detail" android:background="0x106000d" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="40dp" android:text="" />
+        </LinearLayout>
+        <com.ecjia.component.view.ECJiaMyGraygapView android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xe01" />
+        <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+            <TextView android:textSize="15dp" android:textColor="@color/my_dark" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/return_address_name" />
+            <EditText android:textSize="15dp" android:textColor="@color/my_black" android:id="@+id/receiver_name" android:background="0x106000d" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="" android:inputType="text|textCapCharacters|textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine|textImeMultiLine|textNoSuggestions|textUri|textEmailAddress|textEmailSubject|textShortMessage|textLongMessage|textPersonName|textPostalAddress|textPassword|textVisiblePassword|textWebEditText|textFilter|textPhonetic|textWebEmailAddress|textWebPassword|phone" />
+        </LinearLayout>
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginLeft="10dp" />
+        <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+            <TextView android:textSize="15dp" android:textColor="@color/my_dark" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/return_address_phone" />
+            <EditText android:textSize="15dp" android:textColor="@color/my_black" android:id="@+id/receiver_phone" android:background="0x106000d" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="" android:inputType="number|numberSigned|numberDecimal|numberPassword|phone" />
+        </LinearLayout>
+        <LinearLayout android:background="@color/common_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView android:textSize="18dp" android:textColor="@color/white" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/address_submit" android:background="@drawable/shape_public_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="25dp" android:layout_marginTop="20dp" android:layout_marginRight="25dp" android:text="@string/return_commit" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

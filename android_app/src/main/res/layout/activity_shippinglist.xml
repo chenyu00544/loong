@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/top_view" />
+    <ListView android:id="@+id/payment_list" android:layout_width="match_parent" android:layout_height="wrap_content" android:listSelector="0x106000d" android:divider="0x0" android:headerDividersEnabled="false" android:footerDividersEnabled="true" />
+</LinearLayout>

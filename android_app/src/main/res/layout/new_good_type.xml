@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    <LinearLayout android:orientation="horizontal" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201"
+        <LinearLayout android:orientation="horizontal" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+            <TextView android:textSize="18dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/new_type" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="15dp" android:text="@string/goods_new" />
+            <TextView android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="5dp" android:text="@string/goods_earth_min" />
+        </LinearLayout>
+    </LinearLayout>
+    <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
+</LinearLayout>

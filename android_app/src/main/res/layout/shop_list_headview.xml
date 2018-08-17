@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+    <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <ImageView android:id="@+id/headview_bg" android:background="@drawable/shoplist_bg" android:layout_width="match_parent" android:layout_height="wrap_content" android:scaleType="fitXY" />
+    </FrameLayout>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+            <LinearLayout android:orientation="horizontal" android:id="@+id/shop_detail" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x8201">
+                <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/shopdetail_shop_img" android:layout_width="UNKNOWN_DATA_0x5001" android:layout_height="UNKNOWN_DATA_0x5001" android:src="@drawable/default_image" android:scaleType="centerCrop" />
+                <LinearLayout android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="UNKNOWN_DATA_0x5001" android:layout_weight="1.0"
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_marginLeft="10dp" android:layout_weight="1.0">
+                        <TextView android:textSize="17dp" android:textColor="@color/white" android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/shopdetail_shop_name" android:layout_width="wrap_content" android:layout_height="match_parent" android:maxWidth="155dp" android:text="" android:singleLine="true" />
+                        <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/iv_enter" android:layout_width="UNKNOWN_DATA_0x1401" android:layout_height="UNKNOWN_DATA_0x1401" android:layout_marginRight="10dp" android:src="@drawable/shop_enter_arrow" />
+                    </LinearLayout>
+                    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_marginLeft="10dp" android:layout_weight="1.0">
+                        <TextView android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/shopdetail_shop_tag" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginRight="10dp" android:maxWidth="150dp" android:minWidth="50dp" android:singleLine="true" android:layout_alignParentLeft="true" />
+                        <TextView android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/shopdetail_shop_cate" android:paddingLeft="10dp" android:paddingRight="0dp" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:singleLine="true" android:layout_weight="1.0" />
+                        <TextView android:textColor="@color/TextColorGray" android:id="@+id/shopdetail_shop_distance" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_marginTop="5dp" android:layout_marginRight="10dp" android:maxWidth="100dp" android:text="" android:layout_weight="1.0" android:layout_alignParentRight="true" />
+                        <TextView android:textColor="#ffffff" android:id="@+id/shopdetail_shop_colloct" android:paddingLeft="10dp" android:paddingRight="10dp" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginTop="5dp" android:text="" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x5001"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:id="@+id/ll_shop_collect" android:background="@drawable/shape_shopuncollect" android:padding="5dp" android:layout_width="UNKNOWN_DATA_0x3c01" android:layout_height="UNKNOWN_DATA_0x1c01" android:layout_marginRight="20dp">
+                        <ImageView android:id="@+id/iv_collect" android:background="@drawable/shop_uncollect" android:layout_width="UNKNOWN_DATA_0xf01" android:layout_height="UNKNOWN_DATA_0xf01" android:layout_marginLeft="5dp" />
+                        <TextView android:textSize="13dp" android:textColor="@color/public_theme_color_normal" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/tv_collect" android:layout_width="match_parent" android:layout_height="match_parent" android:text="@string/shop_uncollected" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <View android:background="@color/newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xf01" />
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

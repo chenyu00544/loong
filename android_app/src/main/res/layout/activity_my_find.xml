@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001" layout="@layout/top_view" />
+    <ScrollView android:id="@id/scroll" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+            <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
+            <LinearLayout android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_groupbuy_item" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="match_parent">
+                        <ImageView android:background="@drawable/find_group" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginRight="20dp" android:text="@string/groupbuy_act" android:layout_weight="1.0" />
+                        <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="50dp" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201"
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_mobile_item" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="match_parent">
+                        <ImageView android:background="@drawable/find_mobile_buy" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginRight="20dp" android:text="@string/mobile_buy" android:layout_weight="1.0" />
+                        <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="50dp" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201"
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_hot_item" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="match_parent">
+                        <ImageView android:background="@drawable/find_hot" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginRight="20dp" android:text="@string/find_today_hot" android:layout_weight="1.0" />
+                        <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="50dp" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201"
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_message_item" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="match_parent">
+                        <ImageView android:background="@drawable/find_message" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginRight="20dp" android:text="@string/push_title" android:layout_weight="1.0" />
+                        <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="50dp" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201"
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_consult_item" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                        <ImageView android:background="@drawable/find_consult" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/consult_center" android:layout_weight="1.0" />
+                        <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+            <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
+            <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+            <LinearLayout android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201"
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_zxing_item" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="match_parent">
+                        <ImageView android:background="@drawable/find_zxing" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginRight="20dp" android:text="@string/find_run_zxing" android:layout_weight="1.0" />
+                        <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="50dp" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201"
+                <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0"
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_map" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                        <ImageView android:background="@drawable/find_map" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/quick_map" android:layout_weight="1.0" />
+                        <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+            <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
+            <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+            <LinearLayout android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content"
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_lastbrowse" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                    <ImageView android:background="@drawable/find_history" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                    <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/lastbrowse" android:layout_weight="1.0" />
+                    <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                </LinearLayout>
+                <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="50dp" />
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_help" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                    <ImageView android:background="@drawable/find_help" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                    <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/main_help" android:layout_weight="1.0" />
+                    <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/myfind_push" android:background="@drawable/selecter_newitem_press" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                <ImageView android:background="@drawable/find_push" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginLeft="15dp" />
+                <TextView android:textSize="17dp" android:textColor="#ff666666" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/push_news" android:layout_weight="1.0" />
+                <ImageView android:background="@drawable/header_right_arrow" android:visibility="visible" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+            </LinearLayout>
+            <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+            <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
+            <com.ecjia.component.view.ECJiaMyListView android:id="@+id/customer_find_list" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:divider="#00000000" android:dividerHeight="0dp" />
+            <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

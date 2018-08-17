@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+    <View android:id="@+id/help_first_line" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    <View android:id="@+id/help_middle_line_top" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="15dp" />
+    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+        <ImageView android:background="@drawable/profile_new_userhelp" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x1e01" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginLeft="10dp" />
+        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:ellipsize="end" android:id="@+id/help_item_title" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:maxLines="1" android:layout_weight="1.0" />
+        <ImageView android:background="@drawable/header_right_arrow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" />
+    </LinearLayout>
+    <View android:id="@+id/help_middle_line_buttom" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="15dp" />
+    <View android:id="@+id/help_end_line" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+</LinearLayout>

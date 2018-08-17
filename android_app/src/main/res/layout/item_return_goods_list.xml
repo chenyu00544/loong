@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <View android:id="@+id/shopgoods_item_top" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginLeft="10dp" />
+        <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/shopgoods_item" android:background="@drawable/selecter_newitem_press" android:padding="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x6401">
+            <ImageView android:id="@+id/shopgoods_body_image" android:layout_width="UNKNOWN_DATA_0x5001" android:layout_height="UNKNOWN_DATA_0x5001" android:src="@drawable/default_image" android:scaleType="centerCrop" />
+            <RelativeLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="10dp">
+                <TextView android:textSize="@dimen/list_item_mid" android:textColor="@color/my_black" android:ellipsize="end" android:id="@+id/shopgoods_body_text" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginRight="1dp" android:maxLines="2" android:layout_alignParentLeft="true" android:layout_alignParentTop="true" />
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentLeft="true" android:layout_alignParentBottom="true">
+                    <TextView android:textSize="@dimen/list_item_mid" android:textColor="@color/my_black" android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="20dp" android:text="数量：" />
+                    <TextView android:textColor="@color/my_black" android:id="@+id/shopgoods_body_num" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="X1" />
+                </LinearLayout>
+                <TextView android:textSize="@dimen/list_item_mid" android:textColor="@color/my_black" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/shopgoods_body_total" android:background="@drawable/shape_black_stroke_white_bg_corner" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x1e01" android:text="申请售后" android:layout_alignParentRight="true" android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

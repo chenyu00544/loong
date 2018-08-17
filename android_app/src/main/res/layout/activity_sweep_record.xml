@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/top_view" />
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaXListView android:id="@+id/sweep_record_list" android:visibility="gone" android:scrollbars="UNKNOWN_DATA_0x0" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="0x0" />
+        <include android:id="@+id/null_pager" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" layout="@layout/null_shareqr" />
+    </LinearLayout>
+</LinearLayout>

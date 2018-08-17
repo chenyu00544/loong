@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaTopView android:id="@+id/bind_topview" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:orientation="vertical" android:id="@+id/root_view" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <View android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
+            <RelativeLayout android:id="@+id/user_img_item" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="20dp">
+                <com.ecjia.component.imagecircle.ECJiaCircleImage android:id="@+id/user_head_img" android:layout_width="UNKNOWN_DATA_0x5001" android:layout_height="UNKNOWN_DATA_0x5001" android:src="@drawable/profile_no_avarta_icon" android:scaleType="centerCrop" android:layout_centerInParent="true" />
+            </RelativeLayout>
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="14dp" android:textColor="@color/filter_text_color" android:id="@+id/tv_dear" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:text="@string/dear_third_login_user" />
+                <TextView android:textSize="17dp" android:textColor="@color/new_textColor" android:id="@+id/tv_nick_name" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="5dp" />
+            </LinearLayout>
+            <TextView android:textSize="15dp" android:textColor="@color/new_textColor" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="3dp" android:text="@string/third_login_bonus" />
+            <TextView android:textSize="14dp" android:textColor="@color/filter_text_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="30dp" android:text="@string/no_orign_account" />
+            <Button android:textSize="@dimen/title_textsize" android:textColor="#ffffff" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/btn_quick_register" android:background="@drawable/selector_login_button" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01" android:layout_marginLeft="15dp" android:layout_marginTop="10dp" android:layout_marginRight="15dp" android:minWidth="100dp" android:text="@string/quick_register" />
+            <TextView android:textSize="14dp" android:textColor="@color/filter_text_color" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="30dp" android:text="@string/has_orign_account" />
+            <Button android:textSize="@dimen/title_textsize" android:textColor="@color/new_textColor" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/btn_quick_bind" android:background="@drawable/selector_whitebtn_sto_rad" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01" android:layout_marginLeft="15dp" android:layout_marginTop="10dp" android:layout_marginRight="15dp" android:minWidth="100dp" android:text="@string/quick_bind" />
+            <View android:id="@+id/buttom_view" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xf01" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

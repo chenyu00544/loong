@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/umeng_socialize_titile_bar_comment" />
+    <RelativeLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x9601">
+        <include layout="@layout/umeng_socialize_comment_content" />
+    </RelativeLayout>
+    <RelativeLayout android:background="#383d46" android:layout_width="match_parent" android:layout_height="match_parent"
+        <RelativeLayout android:id="@+id/umeng_socialize_map_invisable" android:background="#bebebe" android:paddingTop="50dp" android:layout_width="match_parent" android:layout_height="match_parent">
+            <TextView android:textColor="#b0b4ba" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/umeng_socialize_info" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="" />
+            <ImageView android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_marginTop="10dp" android:src="@drawable/umeng_socialize_location_grey" android:layout_below="@+id/umeng_socialize_info" android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

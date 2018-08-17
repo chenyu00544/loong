@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent"
+    <LinearLayout android:id="@+id/title_item" android:background="@drawable/new_good_distance" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2301">
+        <TextView android:textSize="13dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/title_time" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="10dp" android:layout_marginTop="5dp" android:text="本月" />
+    </LinearLayout>
+    <View android:id="@+id/top_line" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    <View android:id="@+id/top_short_line" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="60dp" />
+    <LinearLayout android:orientation="horizontal" android:id="@+id/re_item" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <com.ecjia.component.imagecircle.ECJiaCircleImage android:id="@+id/head_img" android:layout_width="UNKNOWN_DATA_0x3201" android:layout_height="UNKNOWN_DATA_0x3201" android:layout_margin="10dp" android:src="@drawable/profile_no_avarta_icon_light" android:adjustViewBounds="true" />
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginRight="10dp"
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0">
+                <TextView android:textSize="16dp" android:id="@+id/process_type" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_weight="1.0" />
+                <TextView android:textSize="17dp" android:id="@+id/recharge_amount" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0">
+                <TextView android:textSize="14dp" android:textColor="@color/filter_text_color" android:id="@+id/create_time" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginTop="3dp" android:text="15:30" android:layout_weight="1.0" />
+                <TextView android:textSize="13dp" android:textColor="@color/filter_text_color" android:id="@+id/pay_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="3dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <View android:id="@+id/buttom_line" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+</LinearLayout>

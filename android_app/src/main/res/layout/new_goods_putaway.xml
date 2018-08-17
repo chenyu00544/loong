@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:orientation="vertical" android:id="@+id/new_goods_putaway_in_layout" android:background="#ffffff" android:visibility="gone" android:clickable="false" android:layout_width="match_parent" android:layout_height="wrap_content"
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content"
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginLeft="5dp" android:layout_marginTop="3dp" android:layout_weight="2.0">
+                <ImageView android:padding="5dp" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x1e01" android:layout_height="UNKNOWN_DATA_0x1e01" android:src="@drawable/banner_icon" />
+                <TextView android:textSize="16dp" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="10dp" android:text="@string/newgoods" />
+            </LinearLayout>
+            <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:id="@+id/newgoods_getmore" android:paddingLeft="@dimen/dp_15" android:paddingRight="@dimen/dp_15" android:layout_width="wrap_content" android:layout_height="match_parent">
+                <TextView android:textSize="14dp" android:textColor="#999999" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/more" />
+                <ImageView android:background="@drawable/header_right_arrow" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView android:id="@+id/horizontallistview1" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xc801" />
+    </LinearLayout>
+</LinearLayout>

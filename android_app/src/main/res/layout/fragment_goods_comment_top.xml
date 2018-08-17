@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="horizontal" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="match_parent"
+    <LinearLayout app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="vertical" app:id="@+id/comment_count_ll" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="UNKNOWN_DATA_0x3001" app:layout_weight="1.0">
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_count_name" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="全部" />
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_count" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="(0)" />
+    </LinearLayout>
+    <LinearLayout app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="vertical" app:id="@+id/comment_positive_ll" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="UNKNOWN_DATA_0x3001" app:layout_weight="1.0">
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_positive_name" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="好评" />
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_positive" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="(0)" />
+    </LinearLayout>
+    <LinearLayout app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="vertical" app:id="@+id/comment_moderate_ll" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="UNKNOWN_DATA_0x3001" app:layout_weight="1.0">
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_moderate_name" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="中评" />
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_moderate" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="(0)" />
+    </LinearLayout>
+    <LinearLayout app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="vertical" app:id="@+id/comment_negative_ll" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="UNKNOWN_DATA_0x3001" app:layout_weight="1.0">
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_negative_name" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="差评" />
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_negative" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="(0)" />
+    </LinearLayout>
+    <LinearLayout app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="vertical" app:id="@+id/comment_showorder_ll" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="UNKNOWN_DATA_0x3001" app:layout_weight="1.0">
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_showorder_name" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="晒图" />
+        <TextView app:textSize="14dp" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/comment_showorder" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:text="(0)" />
+    </LinearLayout>
+</LinearLayout>

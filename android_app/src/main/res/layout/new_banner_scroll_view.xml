@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:layout_width="match_parent" app:layout_height="wrap_content">
+    <RelativeLayout app:id="@+id/banner_layout_in" app:layout_width="match_parent" app:layout_height="wrap_content">
+        <com.ecjia.component.view.banner.ECJiaBannerView app:id="@+id/home_banner" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x10401" app:indicator_margin="5dp" app:indicator_radius="7dp" app:indicator_drawable_selected="@drawable/point_normal_bg" app:indicator_drawable_unselected="@drawable/home_point_press_bg" />
+    </RelativeLayout>
+</LinearLayout>

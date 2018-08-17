@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:orientation="vertical" android:visibility="visible" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <com.ecjia.component.view.ECJiaMyGraygapView android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa01" />
+        <TextView android:textSize="14dp" android:textColor="@color/my_red" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:text="@string/goods_history" />
+        <View android:background="@color/line_short_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+        <FrameLayout android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="180dp">
+            <com.ecjia.component.view.ECJiaErrorView app:id="@+id/history_layout_empty" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" app:errorText="这里什么都没有，去看看别的！" />
+            <com.ecjia.component.view.ECJiaFlowLayout app:orientation="vertical" app:id="@+id/history_hlistview" app:visibility="gone" app:layout_width="match_parent" app:layout_height="wrap_content" app:layout_marginBottom="@dimen/dp_10" />
+            <com.ecjia.component.view.ECJiaHorizontalListView app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" />
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ecjia.hamster.activity.goodsdetail.view.ECJiaGoodsCommetView xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="wrap_content">
+    <com.ecjia.component.view.ECJiaMyGraygapView app:id="@+id/comment_div" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xa01" />
+    <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="wrap_content"
+        <LinearLayout app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:orientation="horizontal" app:paddingLeft="10dp" app:paddingRight="10dp" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x3c01">
+            <com.ecjia.component.imagecircle.ECJiaCircleImage app:id="@+id/avatar_img" app:layout_width="UNKNOWN_DATA_0x2801" app:layout_height="UNKNOWN_DATA_0x2801" app:src="@drawable/profile_no_avarta_icon_light" app:scaleType="centerCrop" />
+            <LinearLayout app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:orientation="vertical" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="match_parent" app:layout_marginLeft="10dp" app:layout_weight="1.0">
+                <TextView app:textSize="13dp" app:ellipsize="end" app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:id="@+id/user_name" app:layout_width="UNKNOWN_DATA_0x7801" app:layout_height="UNKNOWN_DATA_0x1401" app:lines="1" />
+                <com.ecjia.component.view.xlratingbar.ECJiaXLHRatingBar apps:id="@+id/comment_rank" apps:layout_width="wrap_content" apps:layout_height="UNKNOWN_DATA_0x1e01" apps:starCount="5" apps:canEdit="false" apps:widthAndHeight="15dp" apps:dividerWidth="4dp" apps:countSelected="3" apps:stateResId="@drawable/comment_ratingbar_selector" apps:differentSize="false" />
+            </LinearLayout>
+            <TextView apps:textSize="13dp" apps:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" apps:id="@+id/comment_time" apps:layout_width="wrap_content" apps:layout_height="wrap_content" apps:minWidth="130dp" apps:text="2016-09-12" />
+        </LinearLayout>
+        <View apps:background="@color/line_long_dark" apps:layout_width="match_parent" apps:layout_height="UNKNOWN_DATA_0x100" apps:layout_marginLeft="10dp" />
+        <LinearLayout apps:orientation="vertical" apps:padding="10dp" apps:layout_width="match_parent" apps:layout_height="wrap_content">
+            <TextView apps:textSize="@dimen/list_item_small" apps:textColor="#333333" apps:id="@+id/comment_content" apps:layout_width="match_parent" apps:layout_height="wrap_content" />
+            <TextView apps:textSize="10dp" apps:textColor="#666666" apps:ellipsize="end" apps:id="@+id/goods_attr" apps:layout_width="match_parent" apps:layout_height="wrap_content" apps:layout_marginTop="10dp" apps:maxLines="1" />
+        </LinearLayout>
+        <LinearLayout apps:id="@+id/showorder_image_ll" apps:padding="5dp" apps:visibility="gone" apps:layout_width="match_parent" apps:layout_height="wrap_content">
+            <ImageView apps:id="@+id/showorder_image1" apps:layout_width="UNKNOWN_DATA_0x1" apps:layout_height="UNKNOWN_DATA_0x3c01" apps:layout_margin="5dp" apps:src="@drawable/default_image" apps:scaleType="centerCrop" apps:layout_weight="1.0" />
+            <ImageView apps:id="@+id/showorder_image2" apps:layout_width="UNKNOWN_DATA_0x1" apps:layout_height="UNKNOWN_DATA_0x3c01" apps:layout_margin="5dp" apps:src="@drawable/default_image" apps:scaleType="centerCrop" apps:layout_weight="1.0" />
+            <ImageView apps:id="@+id/showorder_image3" apps:layout_width="UNKNOWN_DATA_0x1" apps:layout_height="UNKNOWN_DATA_0x3c01" apps:layout_margin="5dp" apps:src="@drawable/default_image" apps:scaleType="centerCrop" apps:layout_weight="1.0" />
+            <ImageView apps:id="@+id/showorder_image4" apps:layout_width="UNKNOWN_DATA_0x1" apps:layout_height="UNKNOWN_DATA_0x3c01" apps:layout_margin="5dp" apps:src="@drawable/default_image" apps:scaleType="centerCrop" apps:layout_weight="1.0" />
+            <ImageView apps:id="@+id/showorder_image5" apps:layout_width="UNKNOWN_DATA_0x1" apps:layout_height="UNKNOWN_DATA_0x3c01" apps:layout_margin="5dp" apps:src="@drawable/default_image" apps:scaleType="centerCrop" apps:layout_weight="1.0" />
+        </LinearLayout>
+    </LinearLayout>
+</com.ecjia.hamster.activity.goodsdetail.view.ECJiaGoodsCommetView>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include layout="@layout/top_view" />
+    <ScrollView android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0" android:overScrollMode="never">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                <TextView android:textSize="@dimen/list_item_title" android:textColor="@color/new_textColor" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginLeft="20dp" android:text="@string/set_language" />
+            </LinearLayout>
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/setting_language" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                <TextView android:textSize="16dp" android:textColor="#000000" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/language" android:layout_weight="1.0" />
+                <TextView android:textSize="16dp" android:textColor="#ff3333" android:id="@+id/used_language" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" />
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" android:src="@drawable/header_right_arrow" />
+            </LinearLayout>
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa01" />
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                <TextView android:textSize="@dimen/list_item_title" android:textColor="@color/new_textColor" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginLeft="20dp" android:text="@string/setting_app_setting" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/setting_type1" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                    <TextView android:textSize="16dp" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/setting_clear_cache" android:layout_weight="1.0" />
+                    <ImageView android:id="@+id/setting_invoice1" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x1401" android:layout_height="UNKNOWN_DATA_0x1401" android:layout_marginRight="10dp" android:src="@drawable/shopping_invoice_right_icon" />
+                    <TextView android:textSize="16dp" android:textColor="#ff3333" android:id="@+id/setting_cachesize" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="20dp" />
+                </LinearLayout>
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            </LinearLayout>
+            <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa01" />
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:background="@drawable/new_good_distance" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                <TextView android:textSize="@dimen/list_item_title" android:textColor="@color/new_textColor" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:visibility="visible" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginLeft="20dp" android:text="@string/setting_official" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/setting_mobile_layout" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                    <TextView android:textSize="16dp" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/setting_service" android:layout_weight="1.0" />
+                    <TextView android:textSize="16dp" android:textColor="#ff3333" android:ellipsize="end" android:id="@+id/setting_mobile" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="20dp" android:maxWidth="150dp" android:maxLines="2" />
+                </LinearLayout>
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" android:layout_marginLeft="20dp" />
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/setting_official_web" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                    <TextView android:textSize="16dp" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/setting_website" android:layout_weight="1.0" />
+                    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" android:src="@drawable/header_right_arrow" />
+                </LinearLayout>
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            </LinearLayout>
+            <View android:background="@drawable/new_good_distance" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa01" />
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                <TextView android:textSize="@dimen/list_item_title" android:textColor="@color/new_textColor" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginLeft="20dp" android:text="@string/setting_about" />
+            </LinearLayout>
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/setting_version_layout" android:background="@color/white" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                <TextView android:textSize="16dp" android:textColor="#000000" android:ellipsize="end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:maxWidth="150dp" android:text="@string/versionno" android:maxLines="2" />
+                <TextView android:textSize="16dp" android:textColor="#000000" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/setting_version" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginRight="20dp" android:maxWidth="150dp" />
+            </LinearLayout>
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" android:layout_marginLeft="20dp" />
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:background="@color/white" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                <TextView android:textSize="16dp" android:textColor="#000000" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/versiondate" />
+                <TextView android:textSize="16dp" android:textColor="#000000" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/setting_version_date" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginRight="20dp" />
+            </LinearLayout>
+            <View android:id="@+id/new_function_line" android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" android:layout_marginLeft="20dp" />
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/setting_new_function" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                <TextView android:textSize="16dp" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/setting_newfunction" android:layout_weight="1.0" />
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" android:src="@drawable/header_right_arrow" />
+            </LinearLayout>
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" android:layout_marginLeft="20dp" />
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/setting_version_update" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
+                <TextView android:textSize="16dp" android:textColor="#000000" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/versionupdata" android:layout_weight="1.0" />
+                <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="15dp" android:src="@drawable/header_right_arrow" />
+            </LinearLayout>
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+            <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1401" android:minHeight="20dp" android:layout_weight="1.0" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

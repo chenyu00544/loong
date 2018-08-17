@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="launch_list_entries">
+        <item>External Business Orders</item>
+        <item>Remote Order</item>
+    </array>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include android:layout_width="wrap_content" android:layout_height="wrap_content" layout="@layout/top_view" />
+    <include android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0" layout="@layout/layout_balance_sc" />
+    <LinearLayout android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:background="#f2f2f4" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001">
+        <RelativeLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+            <TextView android:textSize="@dimen/list_item_title" android:textColor="@color/my_red" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="@string/balance_realpay" android:layout_toLeftOf="@+id/balance_total" />
+            <TextView android:textSize="@dimen/list_item_title" android:textColor="@color/my_red" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/balance_total" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="20dp" android:text="￥0.00元" android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/balance_submit" android:layout_width="wrap_content" android:layout_height="match_parent">
+            <TextView android:textSize="15dp" android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@color/public_theme_color_normal" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/balance_submit" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

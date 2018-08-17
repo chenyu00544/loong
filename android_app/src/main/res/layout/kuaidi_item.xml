@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <RelativeLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:layout_width="UNKNOWN_DATA_0x3c01" android:layout_height="match_parent">
+            <LinearLayout android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:layout_width="UNKNOWN_DATA_0x101" android:layout_height="match_parent" android:layout_marginTop="0.5dp" android:layout_marginBottom="0.5dp" android:layout_centerInParent="true">
+                <com.ecjia.component.view.ECJiaDashedLineView app:id="@+id/dashedlin_top" app:visibility="visible" app:layout_width="UNKNOWN_DATA_0x201" app:layout_height="UNKNOWN_DATA_0x1" app:layout_marginBottom="12dp" app:layout_weight="1.0" app:lineOrientation="1" app:dashGapWidth="3dp" app:dashWidth="1dp" app:dashLineWidth="1dp" app:dashLineColor="#25ad60" />
+                <com.ecjia.component.view.ECJiaDashedLineView app:id="@+id/dashedlin_bottom" app:visibility="visible" app:layout_width="UNKNOWN_DATA_0x201" app:layout_height="UNKNOWN_DATA_0x1" app:layout_weight="1.0" app:lineOrientation="1" app:dashGapWidth="3dp" app:dashWidth="1dp" app:dashLineWidth="1dp" app:dashLineColor="#25ad60" />
+            </LinearLayout>
+            <ImageView app:id="@+id/img_status2" app:background="@drawable/shape_kuaidi_status" app:visibility="visible" app:layout_width="UNKNOWN_DATA_0x1401" app:layout_height="UNKNOWN_DATA_0x1401" app:layout_centerInParent="true" />
+        </RelativeLayout>
+        <LinearLayout app:orientation="vertical" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="wrap_content" app:layout_weight="5.0">
+            <TextView app:textSize="@dimen/list_item_title" app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:id="@+id/log_text" app:layout_width="match_parent" app:layout_height="wrap_content" app:layout_marginTop="15dp" app:layout_marginRight="15dp" />
+            <LinearLayout app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:orientation="horizontal" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x1901" app:layout_marginBottom="10dp" app:layout_weight="2.0">
+                <TextView app:textSize="@dimen/list_item_small" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/log_date" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" />
+                <TextView app:textSize="@dimen/list_item_small" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/log_time" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1401" app:layout_marginLeft="15dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <View app:background="@color/line_long_dark" app:visibility="gone" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+</LinearLayout>

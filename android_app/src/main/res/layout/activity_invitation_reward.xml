@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="@color/white" app:layout_width="match_parent" app:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView app:id="@+id/reward_topview" app:layout_width="match_parent" app:layout_height="wrap_content" />
+    <FrameLayout app:layout_width="match_parent" app:layout_height="wrap_content">
+        <RelativeLayout app:id="@+id/page_container" app:background="@color/white" app:clipChildren="false" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xa001">
+            <com.ecjia.component.view.clipviewpager.ECJiaClipViewPager app:id="@+id/viewpager" app:clipChildren="false" app:layout_width="UNKNOWN_DATA_0x7801" app:layout_height="UNKNOWN_DATA_0x7801" app:layout_centerInParent="true" app:overScrollMode="never" />
+        </RelativeLayout>
+    </FrameLayout>
+    <View app:id="@+id/first_line" app:background="@color/line_long_dark" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    <com.ecjia.component.view.ECJiaXListView app:id="@+id/xlv_invitation" app:background="@color/white" app:scrollbars="UNKNOWN_DATA_0x0" app:layout_width="match_parent" app:layout_height="match_parent" app:divider="#00ffffff" app:dividerHeight="0dp" />
+    <com.ecjia.component.view.ECJiaErrorView app:id="@+id/null_pager" app:background="@drawable/new_good_distance" app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" app:errorText="@string/no_result" />
+</LinearLayout>

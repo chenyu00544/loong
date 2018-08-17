@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <raw name="baidu_beep">res/raw/baidu_beep.ogg</raw>
+    <raw name="beep">res/raw/beep.ogg</raw>
+    <raw name="shake_match">res/raw/shake_match.mp3</raw>
+    <raw name="shake_nomatch">res/raw/shake_nomatch.mp3</raw>
+    <raw name="shake_sound_male">res/raw/shake_sound_male.mp3</raw>
+    <raw name="weixin_beep">res/raw/weixin_beep.ogg</raw>
+</resources>

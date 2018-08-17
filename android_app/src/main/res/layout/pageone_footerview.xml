@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent">
+    <include android:id="@+id/goodsdetail_footitem" layout="@layout/gooddetail_footitem" />
+    <include android:id="@+id/goodsdetail_mylove" layout="@layout/layout_goodsdetail_mylove" />
+    <include android:id="@+id/goodsdetail_history" layout="@layout/layout_goodsdetail_history" />
+    <com.ecjia.component.view.ECJiaMyGraygapView android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa01" />
+    <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/foottext" android:background="#ffffff" android:visibility="visible" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3c01">
+        <ImageView android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/header_right_arrow" />
+        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/load_text" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/detail_refresh_list_push" />
+    </LinearLayout>
+</LinearLayout>

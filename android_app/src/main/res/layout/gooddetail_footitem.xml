@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:orientation="vertical" android:id="@+id/seller_item" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@+id/seller_logo" android:layout_width="UNKNOWN_DATA_0x3c01" android:layout_height="UNKNOWN_DATA_0x3c01" android:layout_marginLeft="20dp" android:layout_marginTop="20dp" android:layout_marginRight="20dp" android:src="@drawable/default_image" android:scaleType="centerCrop" />
+                <LinearLayout android:orientation="vertical" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_marginTop="15dp" android:layout_weight="1.0">
+                    <TextView android:textSize="18dp" android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/seller_name" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:maxLines="2" android:layout_weight="1.8" />
+                    <TextView android:textSize="14dp" android:textColor="#999999" android:id="@+id/collected_num" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:text="(0)" android:layout_weight="1.0" />
+                </LinearLayout>
+                <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:id="@+id/foot_seller_toshop_item" android:background="@drawable/selector_gooddetail_seller" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginTop="15dp" android:layout_marginRight="20dp">
+                    <ImageView android:id="@+id/foot_seller_toshop_icon" android:layout_width="UNKNOWN_DATA_0x1801" android:layout_height="UNKNOWN_DATA_0x1801" android:layout_marginLeft="8dp" android:src="@drawable/icon_shop" android:tint="#ffffff" />
+                    <TextView android:textSize="15dp" android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:paddingLeft="8dp" android:paddingTop="5dp" android:paddingRight="15dp" android:paddingBottom="5dp" android:layout_width="match_parent" android:layout_height="match_parent" android:text="@string/goods_detail_enter_shop" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="20dp"
+                <LinearLayout android:orientation="horizontal" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                    <TextView android:textSize="12dp" android:textColor="#999999" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/goods_score" />
+                    <TextView android:textSize="12dp" android:textColor="@color/my_red" android:id="@+id/seller_comment" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0" />
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                    <TextView android:textSize="12dp" android:textColor="#999999" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/service_score" />
+                    <TextView android:textSize="12dp" android:textColor="@color/my_red" android:id="@+id/seller_service" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0" />
+                </LinearLayout>
+                <LinearLayout android:orientation="horizontal" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0">
+                    <TextView android:textSize="12dp" android:textColor="#999999" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/logistics_score" />
+                    <TextView android:textSize="12dp" android:textColor="@color/my_red" android:id="@+id/seller_time" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ecjia.component.dragLayout.ECJiaDragLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_bg">
+
+    <include layout="@layout/layout_main_activity_below" />
+
+    <com.ecjia.component.dragLayout.ECJiaMyRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#eeeeee">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/tabs_fragment"
+                android:name="com.ecjia.hamster.fragment.ECJiaTabsFragment"
+                android:layout_width="match_parent"
+                android:layout_height="UNKNOWN_DATA_0x3201"
+                android:layout_alignParentBottom="true" />
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/tabs_fragment"
+                android:layout_alignParentTop="true"
+                android:background="#ffffff" />
+        </RelativeLayout>
+    </com.ecjia.component.dragLayout.ECJiaMyRelativeLayout>
+</com.ecjia.component.dragLayout.ECJiaDragLayout>

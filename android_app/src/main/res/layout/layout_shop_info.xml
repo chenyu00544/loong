@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:orientation="vertical" android:id="@+id/ll_head_all" android:background="@color/white" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <ImageView android:id="@+id/headview_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x9601" android:src="@drawable/default_image" android:scaleType="centerCrop" />
+                <TextView android:textSize="17dp" android:textColor="@color/TextColorBlack" android:ellipsize="end" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/shopdetail_shop_name" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:singleLine="true" />
+            </LinearLayout>
+            <LinearLayout android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:background="@drawable/black_to_trans_gradient" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f0800c4" />
+            <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@drawable/shape_white_circle_bg" android:padding="1.5dp" android:layout_width="UNKNOWN_DATA_0x3c01" android:layout_height="UNKNOWN_DATA_0x3c01" android:layout_margin="30dp">
+                <com.ecjia.component.imagecircle.ECJiaCircleImage android:id="@+id/shopdetail_shop_img" android:layout_width="match_parent" android:layout_height="match_parent" android:src="@drawable/default_image" android:scaleType="centerCrop" />
+            </LinearLayout>
+        </FrameLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp">
+            <TextView android:textSize="12dp" android:textColor="@color/new_textColor" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/shopdetail_shop_colloct" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:layout_weight="1.0" />
+            <TextView android:textSize="12dp" android:textColor="@color/new_textColor" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/shopdetail_shop_distance" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:layout_weight="1.0" />
+        </LinearLayout>
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2301" android:layout_marginLeft="25dp" android:layout_marginRight="25dp">
+            <RelativeLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0">
+                <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+                    <TextView android:textSize="10dp" android:textColor="@color/new_textColor" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/goods_score" android:layout_centerInParent="true" />
+                    <TextView android:textSize="10dp" android:textColor="@color/my_red" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/tv_goodsscore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3dp" />
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0">
+                <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+                    <TextView android:textSize="10dp" android:textColor="@color/new_textColor" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/service_score" android:layout_centerInParent="true" />
+                    <TextView android:textSize="10dp" android:textColor="@color/my_red" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/tv_servicescore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3dp" />
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0">
+                <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+                    <TextView android:textSize="10dp" android:textColor="@color/new_textColor" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/logistics_score" android:layout_centerInParent="true" />
+                    <TextView android:textSize="10dp" android:textColor="@color/my_red" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/tv_logisticsscore" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="3dp" />
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:background="@color/white" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+            <RelativeLayout android:id="@+id/rl_shop_collect" android:background="@drawable/shape_shopuncollect" android:layout_width="UNKNOWN_DATA_0x5501" android:layout_height="UNKNOWN_DATA_0x1c01" android:layout_marginRight="10dp">
+                <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x1401" android:layout_centerInParent="true">
+                    <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/iv_collect" android:layout_width="UNKNOWN_DATA_0xd01" android:layout_height="UNKNOWN_DATA_0xd01" android:src="@drawable/shop_uncollect" />
+                    <TextView android:textSize="12dp" android:textColor="@color/normal_dark_gray" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/tv_collect" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginLeft="10dp" android:text="@string/shop_uncollected" />
+                </LinearLayout>
+            </RelativeLayout>
+            <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:id="@+id/ll_company_phone" android:background="@drawable/shape_shopuncollect" android:padding="5dp" android:layout_width="UNKNOWN_DATA_0x5501" android:layout_height="UNKNOWN_DATA_0x1c01" android:layout_marginLeft="10dp">
+                <ImageView android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xd01" android:src="@drawable/company_phone" android:layout_weight="3.0" />
+                <TextView android:textSize="12dp" android:textColor="@color/normal_dark_gray" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="match_parent" android:layout_height="match_parent" android:text="@string/company_phone" android:layout_weight="1.0" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:orientation="vertical" android:id="@+id/ll_favour_item" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content"
+            <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="40dp">
+                <TextView android:textSize="12dp" android:textStyle="bold" android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/tv_first_favour_name" android:background="@drawable/shape_colorf5a415_2rad" android:paddingLeft="4dp" android:paddingRight="4dp" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x1201" android:layout_marginLeft="15dp" android:layout_marginTop="11dp" android:minWidth="18dp" android:text="活动" />
+                <TextView android:textSize="12dp" android:textColor="@color/new_textColor" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/tv_first_favour_content" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_marginLeft="10dp" android:layout_weight="1.0" />
+                <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/iv_favour_more" android:padding="13dp" android:visibility="invisible" android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginRight="15dp" android:src="@drawable/arrow_collect_down" />
+            </LinearLayout>
+            <com.ecjia.component.view.ECJiaMyListView android:id="@+id/mlv_favour" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:divider="0x0" />
+        </LinearLayout>
+        <View android:background="@drawable/dotted_line" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x201" android:layout_marginLeft="15dp" android:layout_marginTop="5dp" android:layout_marginRight="15dp" android:layerType="software" />
+        <TextView android:textSize="12dp" android:textColor="@color/new_textColor" android:id="@+id/tv_company_notice" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="15dp" android:layout_marginTop="10dp" android:layout_marginRight="15dp" />
+        <LinearLayout android:orientation="horizontal" android:id="@+id/guide" android:padding="@dimen/dp_10" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="UNKNOWN_DATA_0xf01" android:layout_height="UNKNOWN_DATA_0xf01" android:src="@drawable/icon_location_gray" android:tint="@color/public_theme_color_normal" />
+            <TextView android:textSize="12dp" android:textColor="@color/text_color" android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/tv_company_area" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5dp" />
+        </LinearLayout>
+        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+        <View android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa01" />
+    </LinearLayout>
+    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
+    <include layout="@layout/shop_filter_toolbar" />
+</LinearLayout>

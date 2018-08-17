@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="match_parent">
+    <com.ecjia.hamster.activity.goodsdetail.view.ECJiaScrollViewWrapper app:id="@+id/gooddetail_sc" app:layout_width="match_parent" app:layout_height="match_parent" app:overScrollMode="never" app:wrapper_padding="96">
+        <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+            <com.ecjia.hamster.activity.goodsdetail.view.ECJiaPageOneView app:scrollbars="UNKNOWN_DATA_0x0" app:layout_width="match_parent" app:layout_height="match_parent" app:overScrollMode="never" app:pageone_padding="96">
+                <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+                    <com.ecjia.hamster.activity.goodsdetail.view.ECJiaBottomElasticScrollView app:id="@+id/page_one_goodsdetail" app:layout_width="match_parent" app:layout_height="match_parent">
+                        <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+                            <include app:id="@+id/pageone_headerview" layout="@layout/pageone_headerview" />
+                            <include app:id="@+id/pageone_footerview" layout="@layout/pageone_footerview" />
+                        </LinearLayout>
+                    </com.ecjia.hamster.activity.goodsdetail.view.ECJiaBottomElasticScrollView>
+                </LinearLayout>
+            </com.ecjia.hamster.activity.goodsdetail.view.ECJiaPageOneView>
+            <com.ecjia.hamster.activity.goodsdetail.view.ECJiaPageTwoView app:id="@+id/buttom_scrollview" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="match_parent" app:pageone_padding="96">
+                <LinearLayout app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+                    <include app:id="@+id/buttom_toolbar" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x7f0800c4" layout="@layout/gooddetail_toolbar" />
+                    <com.ecjia.hamster.activity.goodsdetail.view.ECJiaTopElasticScrollView app:id="@+id/page_two_errorview" app:layout_width="match_parent" app:layout_height="match_parent">
+                        <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+                            <com.ecjia.component.view.ECJiaErrorView app:orientation="vertical" app:id="@+id/not_info" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" app:errorText="@string/no_result" />
+                        </LinearLayout>
+                    </com.ecjia.hamster.activity.goodsdetail.view.ECJiaTopElasticScrollView>
+                    <com.ecjia.hamster.activity.goodsdetail.view.ECJiaTopElasticScrollView app:id="@+id/page_two_webview" app:layout_width="match_parent" app:layout_height="match_parent">
+                        <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+                            <com.ecjia.hamster.activity.goodsdetail.view.ECJiaFixWebView app:id="@+id/my_web" app:layout_width="match_parent" app:layout_height="match_parent" />
+                        </LinearLayout>
+                    </com.ecjia.hamster.activity.goodsdetail.view.ECJiaTopElasticScrollView>
+                    <com.ecjia.hamster.activity.goodsdetail.view.ECJiaTopElasticScrollView app:id="@+id/page_two_listview" app:layout_width="match_parent" app:layout_height="match_parent">
+                        <LinearLayout app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+                            <com.ecjia.component.view.ECJiaMyListView app:id="@+id/property_list" app:layout_width="match_parent" app:layout_height="match_parent" app:divider="0x0" />
+                        </LinearLayout>
+                    </com.ecjia.hamster.activity.goodsdetail.view.ECJiaTopElasticScrollView>
+                </LinearLayout>
+            </com.ecjia.hamster.activity.goodsdetail.view.ECJiaPageTwoView>
+        </LinearLayout>
+    </com.ecjia.hamster.activity.goodsdetail.view.ECJiaScrollViewWrapper>
+</FrameLayout>

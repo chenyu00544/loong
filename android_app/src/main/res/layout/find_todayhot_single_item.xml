@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" cy:orientation="vertical" cy:background="@drawable/new_good_distance" cy:paddingLeft="15dp" cy:paddingRight="15dp" cy:paddingBottom="20dp" cy:layout_width="match_parent" cy:layout_height="wrap_content">
+    <View cy:id="@+id/news_single_top_view" cy:layout_width="match_parent" cy:layout_height="UNKNOWN_DATA_0x1401" />
+    <TextView cy:textSize="14dp" cy:textColor="#ffffff" cy:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" cy:id="@+id/tv_news_single_time" cy:background="@drawable/shape_find_toadyhot_toptext" cy:padding="4dp" cy:layout_width="wrap_content" cy:layout_height="wrap_content" cy:layout_marginBottom="20dp" cy:text="18:00" />
+    <LinearLayout cy:orientation="vertical" cy:id="@+id/single_news_all" cy:background="@drawable/selector_hot_news_all" cy:layout_width="match_parent" cy:layout_height="wrap_content">
+        <com.ecjia.component.view.ECJiaCYTextView cy:textColor="#dd222222" cy:id="@+id/single_news_title" cy:layout_width="match_parent" cy:layout_height="wrap_content" cy:layout_marginLeft="15dp" cy:layout_marginTop="15dp" cy:layout_marginRight="15dp" cy:mytextSize="17dp" cy:lineSpacingExtra="3dp" />
+        <TextView cy:textSize="13dp" cy:textColor="@color/filter_text_color" cy:id="@+id/single_news_date" cy:layout_width="wrap_content" cy:layout_height="wrap_content" cy:layout_marginLeft="15dp" cy:layout_marginTop="5dp" />
+        <FrameLayout cy:layout_width="match_parent" cy:layout_height="UNKNOWN_DATA_0x9601" cy:layout_marginLeft="0.3dp" cy:layout_marginTop="0.3dp" cy:layout_marginRight="0.3dp">
+            <ImageView cy:id="@+id/single_news_first_img" cy:background="@drawable/default_image" cy:layout_width="match_parent" cy:layout_height="match_parent" cy:layout_margin="15dp" cy:scaleType="centerCrop" />
+            <TextView cy:textSize="19dp" cy:textColor="#ffffff" cy:ellipsize="end" cy:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" cy:id="@+id/single_news_first_text" cy:background="#66000000" cy:padding="5dp" cy:layout_width="match_parent" cy:layout_height="wrap_content" cy:layout_marginLeft="15dp" cy:layout_marginRight="15dp" cy:layout_marginBottom="15dp" cy:maxLines="2" />
+        </FrameLayout>
+        <com.ecjia.component.view.ECJiaCYTextView cy:id="@+id/single_news_content" cy:layout_width="match_parent" cy:layout_height="wrap_content" cy:layout_marginLeft="15dp" cy:layout_marginRight="15dp" cy:layout_marginBottom="18dp" cy:mytextSize="13dp" cy:mytextColor="@color/filter_text_color" />
+        <View cy:background="#ffcccccc" cy:layout_width="match_parent" cy:layout_height="UNKNOWN_DATA_0x4ccccd31" cy:layout_marginLeft="15dp" cy:layout_marginRight="15dp" />
+        <LinearLayout cy:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" cy:orientation="horizontal" cy:layout_width="match_parent" cy:layout_height="wrap_content">
+            <TextView cy:textSize="14dp" cy:layout_width="UNKNOWN_DATA_0x1" cy:layout_height="wrap_content" cy:layout_marginLeft="15dp" cy:layout_marginTop="15dp" cy:layout_marginRight="15dp" cy:layout_marginBottom="15dp" cy:text="@string/watch_all" cy:layout_weight="1.0" />
+            <ImageView cy:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" cy:background="@drawable/header_right_arrow" cy:layout_width="wrap_content" cy:layout_height="wrap_content" cy:layout_marginRight="15dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

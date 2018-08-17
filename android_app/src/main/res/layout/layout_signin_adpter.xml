@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent"
+    <LinearLayout android:orientation="horizontal" android:padding="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="10dp">
+        <com.ecjia.component.imagecircle.ECJiaCircleImage android:id="@+id/signin_userimage" android:layout_width="UNKNOWN_DATA_0x3201" android:layout_height="UNKNOWN_DATA_0x3201" android:src="@drawable/profile_no_avarta_icon" android:scaleType="centerCrop" />
+        <LinearLayout android:orientation="vertical" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="UNKNOWN_DATA_0x3201" android:layout_marginLeft="10dp" android:layout_weight="1.0">
+            <TextView android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/signin_username" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:text="小苹果" android:layout_weight="1.0" />
+            <TextView android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/signin_signtime" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:text="2016-04-04 12:12:10" android:layout_weight="1.0" />
+        </LinearLayout>
+        <TextView android:textColor="@color/my_red" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/signin_award" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x3201" android:text="+1" />
+        <TextView android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x3201" android:text="积分" />
+    </LinearLayout>
+    <View android:id="@+id/signin_bottomline" android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" android:layout_marginLeft="20dp" />
+</LinearLayout>

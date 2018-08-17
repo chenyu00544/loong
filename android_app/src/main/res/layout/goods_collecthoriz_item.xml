@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:id="@+id/ll_new_goods" android:background="@color/line_short_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa001">
+    <ImageView android:id="@+id/iv_new_goods" android:visibility="visible" android:layout_width="UNKNOWN_DATA_0x7801" android:layout_height="UNKNOWN_DATA_0x7801" android:layout_margin="10dp" android:src="@drawable/default_image" android:scaleType="centerCrop" />
+    <RelativeLayout android:id="@+id/rl_goods_more" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x7801" android:layout_height="UNKNOWN_DATA_0x7801" android:layout_margin="10dp">
+        <LinearLayout android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerInParent="true">
+            <TextView android:textColor="@color/filter_text_color" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="更多" />
+            <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x1001" android:src="@drawable/collect_more" />
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textColor="#ff4146" android:ellipsize="end" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/new_goods_price" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:singleLine="true" />
+        <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/iv_mb" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x1001" android:layout_height="UNKNOWN_DATA_0x1201" android:layout_marginLeft="10dp" android:src="@drawable/mobile_buy_icon" />
+    </LinearLayout>
+</LinearLayout>

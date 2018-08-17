@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/common_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView android:id="@+id/topview_real_name_verify" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:overScrollMode="never">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            <LinearLayout android:orientation="vertical" android:id="@+id/ll_identify_personal" android:layout_width="match_parent" android:layout_height="wrap_content"
+                <LinearLayout android:orientation="vertical" android:background="@color/my_white" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp">
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                        <TextView android:textSize="14dp" android:textColor="@color/TextColorBlack" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/credential_name" />
+                        <EditText android:textSize="14dp" android:textColorHint="@color/TextColorHint" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/et_credential_name" android:background="0x0" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:hint="@string/credential_name_tips" android:singleLine="true" android:layout_weight="4.0" />
+                    </LinearLayout>
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginLeft="20dp" />
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                        <TextView android:textSize="14dp" android:textColor="@color/TextColorBlack" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/credential_number" />
+                        <EditText android:textSize="14dp" android:textColorHint="@color/TextColorHint" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/et_credential_number" android:background="0x0" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:singleLine="true" android:layout_weight="4.0" />
+                    </LinearLayout>
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+                </LinearLayout>
+                <TextView android:textSize="12dp" android:textColor="@color/new_textColor" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x1e01" android:layout_marginLeft="20dp" android:text="@string/real_name_tips" />
+                <LinearLayout android:orientation="vertical" android:background="@color/my_white" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp">
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                        <TextView android:textSize="14dp" android:textColor="@color/TextColorBlack" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/bank_name" />
+                        <EditText android:textSize="14dp" android:textColorHint="@color/TextColorHint" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/et_bank_name" android:background="0x0" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:hint="@string/bank_name_tips" android:singleLine="true" android:layout_weight="4.0" />
+                    </LinearLayout>
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginLeft="20dp" />
+                    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                        <TextView android:textSize="14dp" android:textColor="@color/TextColorBlack" android:layout_width="UNKNOWN_DATA_0x4601" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/bank_card" />
+                        <EditText android:textSize="14dp" android:textColorHint="@color/TextColorHint" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/et_bank_card" android:background="0x0" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:singleLine="true" android:layout_weight="4.0" />
+                    </LinearLayout>
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:background="@color/my_white" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp">
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+                    <LinearLayout android:orientation="horizontal" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="50dp">
+                        <TextView android:textSize="14dp" android:textColor="@color/TextColorBlack" android:layout_width="UNKNOWN_DATA_0x6401" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/idcard_front" />
+                        <View android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0" />
+                        <FrameLayout android:id="@+id/ll_credential_front" android:background="@drawable/shape_whitebackground_graystoke_nocorner" android:layout_width="UNKNOWN_DATA_0x6e01" android:layout_height="UNKNOWN_DATA_0x4601" android:layout_marginRight="15dp">
+                            <TextView android:textSize="14dp" android:textColor="@color/TextColorHint" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/upload_credential" />
+                        </FrameLayout>
+                        <ImageView android:id="@+id/iv_credential_front" android:background="@drawable/default_image" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x6e01" android:layout_height="UNKNOWN_DATA_0x4601" android:layout_marginRight="15dp" android:scaleType="centerCrop" />
+                    </LinearLayout>
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginLeft="20dp" />
+                    <LinearLayout android:orientation="horizontal" android:paddingTop="10dp" android:paddingBottom="10dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="50dp">
+                        <TextView android:textSize="14dp" android:textColor="@color/TextColorBlack" android:layout_width="UNKNOWN_DATA_0x6401" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/idcard_back" />
+                        <View android:layout_width="match_parent" android:layout_height="match_parent" android:layout_weight="1.0" />
+                        <FrameLayout android:id="@+id/ll_credential_back" android:background="@drawable/shape_whitebackground_graystoke_nocorner" android:layout_width="UNKNOWN_DATA_0x6e01" android:layout_height="UNKNOWN_DATA_0x4601" android:layout_marginRight="15dp">
+                            <TextView android:textSize="14dp" android:textColor="@color/TextColorHint" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:clickable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/upload_credential" />
+                        </FrameLayout>
+                        <ImageView android:id="@+id/iv_credential_back" android:background="@drawable/default_image" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x6e01" android:layout_height="UNKNOWN_DATA_0x4601" android:layout_marginRight="15dp" android:scaleType="centerCrop" />
+                    </LinearLayout>
+                    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+                </LinearLayout>
+                <View android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginTop="10dp" />
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:background="@color/my_white" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
+                    <TextView android:textSize="14dp" android:textColor="@color/TextColorBlack" android:layout_width="UNKNOWN_DATA_0x4601" android:layout_height="wrap_content" android:layout_marginLeft="20dp" android:text="@string/identify_mobile" />
+                    <TextView android:textSize="14dp" android:textColorHint="@color/TextColorHint" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/tv_identify_mobile" android:paddingLeft="15dp" android:paddingRight="15dp" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:singleLine="true" android:layout_weight="4.0" />
+                </LinearLayout>
+                <View android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1401" />
+            <Button android:enabled="false" android:textSize="16dp" android:textColor="@color/actionsheet_gray" android:id="@+id/btn_submit" android:background="@drawable/selector_login_button" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginLeft="20dp" android:layout_marginRight="20dp" android:minWidth="200dp" android:text="@string/identify_submit" android:layout_alignParentBottom="true" />
+            <View android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1401" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

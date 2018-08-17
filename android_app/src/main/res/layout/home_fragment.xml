@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:layout_width="match_parent" app:layout_height="match_parent">
+    <RelativeLayout app:id="@+id/home_topvoew" app:background="@color/public_theme_color_normal" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x3001">
+        <com.ecjia.component.imagecircle.ECJiaCircleImage app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:id="@+id/top_view_list" app:visibility="visible" app:layout_width="UNKNOWN_DATA_0x2401" app:layout_height="UNKNOWN_DATA_0x2401" app:layout_marginLeft="10dp" app:src="@drawable/profile_no_avarta_icon" app:layout_alignParentLeft="true" app:layout_centerVertical="true" />
+        <LinearLayout app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="horizontal" app:id="@+id/city_item" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1e01" app:layout_centerInParent="true" app:layout_centerVertical="true">
+            <ImageView app:padding="4dp" app:layout_width="UNKNOWN_DATA_0x1e01" app:layout_height="UNKNOWN_DATA_0x1e01" app:src="@drawable/home_local_icon" />
+            <TextView app:textSize="16dp" app:textColor="#ffffff" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/city_name" app:layout_width="wrap_content" app:layout_height="wrap_content" app:layout_marginLeft="5dp" app:layout_marginRight="2dp" />
+            <ImageView app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:visibility="visible" app:layout_width="UNKNOWN_DATA_0xf01" app:layout_height="UNKNOWN_DATA_0xf01" app:layout_marginRight="10dp" app:src="@drawable/home_cityshow" app:tint="@color/white" />
+        </LinearLayout>
+        <LinearLayout app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:orientation="horizontal" app:paddingRight="10dp" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1e01" app:layout_alignParentRight="true" app:layout_centerVertical="true">
+            <ImageView app:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:id="@+id/search_input" app:padding="5dp" app:layout_width="UNKNOWN_DATA_0x1e01" app:layout_height="UNKNOWN_DATA_0x1e01" app:src="@drawable/shoplist_search" />
+            <FrameLayout app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/search_frame_edit" app:layout_width="wrap_content" app:layout_height="UNKNOWN_DATA_0x1e01" app:layout_marginLeft="10dp">
+                <ImageView app:textSize="@dimen/list_item_small" app:textColorHint="#aaaaaa" app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:padding="5dp" app:layout_width="UNKNOWN_DATA_0x1e01" app:layout_height="UNKNOWN_DATA_0x1e01" app:src="@drawable/home_messege_icon" />
+                <TextView app:textSize="8dp" app:textColor="#000000" app:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/message_num" app:background="@drawable/shape_public_withe_bg_vol" app:visibility="gone" app:layout_width="UNKNOWN_DATA_0xc01" app:layout_height="UNKNOWN_DATA_0xc01" />
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout app:orientation="horizontal" app:visibility="gone" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x2801">
+        <android.support.design.widget.TabLayout app:id="@+id/home_tablayout" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="match_parent" app:layout_weight="1.0" />
+        <ImageView app:id="@+id/shop_category_more" app:padding="10dp" app:layout_width="UNKNOWN_DATA_0x2801" app:layout_height="UNKNOWN_DATA_0x2801" app:src="@drawable/address_add" app:tint="#000000" />
+    </LinearLayout>
+    <FrameLayout app:layout_width="match_parent" app:layout_height="match_parent">
+        <com.ecjia.component.view.ECJiaGoodsViewPager app:id="@+id/home_viewpager" app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" />
+        <FrameLayout app:id="@+id/home_good_shop" app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" /> />
+</LinearLayout>

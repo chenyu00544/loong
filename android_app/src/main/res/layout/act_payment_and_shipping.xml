@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/common_bg" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.ecjia.component.view.ECJiaTopView android:id="@+id/topview_payment_and_shipping" android:layout_width="match_parent" android:layout_height="wrap_content" />
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content"
+            <LinearLayout android:orientation="horizontal" android:background="@color/my_white" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01">
+                <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="UNKNOWN_DATA_0x1401" android:layout_height="UNKNOWN_DATA_0x1401" android:layout_marginLeft="20dp" android:src="@drawable/icon_payment_way" />
+                <TextView android:textColor="@color/new_textColor" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="@string/payment_way" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@+id/ll_payment_online" android:background="@color/my_white" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+                <com.ecjia.component.view.ECJiaMyGridView android:id="@+id/mgv_payment_online" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginTop="10dp" android:layout_marginRight="10dp" android:layout_marginBottom="10dp" android:listSelector="0x0" android:horizontalSpacing="10dp" android:verticalSpacing="10dp" android:numColumns="UNKNOWN_DATA_0x4" />
+            </LinearLayout>
+            <LinearLayout android:orientation="vertical" android:id="@+id/ll_payment_offline" android:background="@color/my_white" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+                <com.ecjia.component.view.ECJiaMyGridView android:id="@+id/mgv_payment_offline" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginTop="10dp" android:layout_marginRight="10dp" android:layout_marginBottom="10dp" android:listSelector="0x0" android:horizontalSpacing="10dp" android:verticalSpacing="10dp" android:numColumns="UNKNOWN_DATA_0x4" />
+            </LinearLayout>
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" android:layout_marginTop="10dp" />
+            <LinearLayout android:orientation="horizontal" android:background="@color/my_white" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01">
+                <ImageView android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="UNKNOWN_DATA_0x1401" android:layout_height="UNKNOWN_DATA_0x1401" android:layout_marginLeft="20dp" android:src="@drawable/icon_balance_shipping" />
+                <TextView android:textColor="@color/new_textColor" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:text="@string/balance_shipping" />
+            </LinearLayout>
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+            <com.ecjia.component.view.ECJiaMyListView android:id="@+id/mlv_shipping" android:layout_width="match_parent" android:layout_height="wrap_content" android:divider="0x0" android:dividerHeight="0dp" />
+            <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

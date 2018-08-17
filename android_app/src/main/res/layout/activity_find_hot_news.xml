@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="@drawable/new_good_distance" app:layout_width="match_parent" app:layout_height="match_parent">
+    <include layout="@layout/top_view" />
+    <com.ecjia.component.view.ECJiaXListViewNews app:id="@+id/hot_new_listview" app:scrollbars="UNKNOWN_DATA_0x0" app:layout_width="match_parent" app:layout_height="match_parent" app:divider="#00000000" />
+    <com.ecjia.component.view.ECJiaErrorView app:id="@+id/null_pager" app:background="@drawable/new_good_distance" app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" app:errorText="@string/no_result" />
+</LinearLayout>

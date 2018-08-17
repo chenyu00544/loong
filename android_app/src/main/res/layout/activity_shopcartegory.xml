@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="@color/line_short_dark" app:layout_width="match_parent" app:layout_height="match_parent">
+    <RelativeLayout app:orientation="horizontal" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x3001">
+        <ImageView app:id="@+id/shopcategory_close" app:padding="4dp" app:layout_width="UNKNOWN_DATA_0x1e01" app:layout_height="UNKNOWN_DATA_0x1e01" app:layout_marginRight="10dp" app:src="@drawable/choosecity_back" app:tint="@color/my_black" app:layout_alignParentRight="true" app:layout_centerVertical="true" />
+    </RelativeLayout>
+    <TextView app:textSize="15dp" app:textColor="@color/my_black" app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:paddingLeft="20dp" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x2801" app:text="店铺分类" />
+    <com.ecjia.component.view.ECJiaFlowLayout app:orientation="vertical" app:id="@+id/flowlayout" app:layout_width="match_parent" app:layout_height="match_parent" app:layout_marginLeft="10dp" app:layout_marginRight="10dp" />
+</LinearLayout>

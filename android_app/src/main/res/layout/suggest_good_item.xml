@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ededed" android:layout_width="match_parent" android:layout_height="match_parent"
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content"
+        <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="5dp" android:layout_marginBottom="5dp"
+            <LinearLayout android:orientation="vertical" android:id="@+id/ll_suggest_item_left" android:background="@drawable/selecter_raditem_press" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="5dp" android:layout_weight="1.0">
+                <com.ecjia.component.view.ECJiaSelectableRoundedImageView app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/suggest_good_img_left" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xb401" app:src="@drawable/default_image" app:scaleType="centerCrop" app:sriv_left_top_corner_radius="5dp" app:sriv_right_top_corner_radius="5dp" app:sriv_border_color="#ffffff" />
+                <TextView app:textSize="13dp" app:ellipsize="end" app:id="@+id/suggest_good_name_left" app:layout_width="match_parent" app:layout_height="wrap_content" app:layout_marginLeft="5dp" app:layout_marginTop="5dp" app:layout_marginRight="5dp" app:text="" app:lines="2" />
+                <View app:background="@color/line_long_dark" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x4ccccd31" app:layout_marginLeft="5dp" app:layout_marginTop="4dp" app:layout_marginRight="5dp" app:layout_marginBottom="8dp" />
+                <TextView app:textColor="#ffff0000" app:id="@+id/suggest_good_price_left" app:layout_width="wrap_content" app:layout_height="wrap_content" app:layout_marginLeft="5dp" app:layout_marginRight="5dp" app:layout_marginBottom="5dp" app:text="￥100.00" />
+            </LinearLayout>
+            <LinearLayout app:orientation="vertical" app:id="@+id/ll_suggest_item_right" app:background="@drawable/selecter_raditem_press" app:layout_width="UNKNOWN_DATA_0x1" app:layout_height="wrap_content" app:layout_marginLeft="5dp" app:layout_marginRight="10dp" app:layout_weight="1.0">
+                <com.ecjia.component.view.ECJiaSelectableRoundedImageView app:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" app:id="@+id/suggest_good_img_right" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0xb401" app:src="@drawable/default_image" app:scaleType="centerCrop" app:sriv_left_top_corner_radius="5dp" app:sriv_right_top_corner_radius="5dp" app:sriv_border_color="#ffffff" />
+                <TextView app:textSize="13dp" app:ellipsize="end" app:id="@+id/suggest_good_name_right" app:layout_width="match_parent" app:layout_height="wrap_content" app:layout_marginLeft="5dp" app:layout_marginTop="5dp" app:layout_marginRight="5dp" app:text="" app:lines="2" />
+                <View app:background="@color/line_long_dark" app:layout_width="match_parent" app:layout_height="UNKNOWN_DATA_0x4ccccd31" app:layout_marginLeft="5dp" app:layout_marginTop="4dp" app:layout_marginRight="5dp" app:layout_marginBottom="8dp" />
+                <TextView app:textColor="#ffff0000" app:id="@+id/suggest_good_price_right" app:layout_width="wrap_content" app:layout_height="wrap_content" app:layout_marginLeft="5dp" app:layout_marginRight="5dp" app:layout_marginBottom="5dp" app:text="￥100.00" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

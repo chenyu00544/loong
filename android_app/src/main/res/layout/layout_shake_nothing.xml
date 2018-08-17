@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <FrameLayout android:orientation="horizontal" android:background="#ffffff" android:padding="4dp" android:visibility="visible" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x6401" android:layout_marginLeft="10dp" android:layout_marginRight="10dp">
+        <ImageView android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="UNKNOWN_DATA_0x5c01" android:layout_height="UNKNOWN_DATA_0x5c01" android:src="@drawable/shake_item_nothing_left" android:scaleType="centerInside" />
+        <ImageView android:layout_gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="UNKNOWN_DATA_0x5c01" android:layout_height="UNKNOWN_DATA_0x5c01" android:src="@drawable/shake_item_nothing_right" android:scaleType="centerInside" />
+        <View android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="#e3e1e2" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="90dp" android:layout_marginRight="90dp" />
+        <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="match_parent">
+            <RelativeLayout android:layout_width="UNKNOWN_DATA_0x5a01" android:layout_height="UNKNOWN_DATA_0x6401">
+                <ImageView android:layout_width="UNKNOWN_DATA_0x4201" android:layout_height="UNKNOWN_DATA_0x4201" android:src="@drawable/shake_icon_fail" android:layout_centerInParent="true" />
+            </RelativeLayout>
+            <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="vertical" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="match_parent">
+                <TextView android:textSize="20dp" android:textColor="#333333" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:text="没摇中" />
+                <TextView android:textSize="14dp" android:textColor="#333333" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="换个姿势再摇一次!" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

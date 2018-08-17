@@ -65,7 +65,7 @@ class StoreListController extends CommonController
 
     public function change(Request $request)
     {
-        return $this->storeListRepository->setStore($request->except('_token'));
+        return $this->storeListRepository->change($request->except('_token'));
     }
 
     public function info($id)
@@ -191,7 +191,12 @@ class StoreListController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        //
+        $ver = Verifiable::Validator($request->all(), ["user_id" => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->storeListRepository->setStore($request->except('_token', '_method'), $id);
+        return view('shop.admin.success');
     }
 
     /**

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+    <android.support.v4.view.ViewPager android:id="@+id/viewpager" android:layout_width="match_parent" android:layout_height="match_parent" />
+    <RelativeLayout android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/indicator" android:padding="10dp" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <TextView android:textColor="#ffffff" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/numIndicator" android:background="@drawable/black_background" android:visibility="gone" android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_margin="8dp" android:text="1/1" android:layout_alignParentRight="true" />
+        <LinearLayout android:orientation="horizontal" android:id="@+id/titleView" android:background="#44000000" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_below="@+id/indicator">
+            <TextView android:textColor="#ffffff" android:ellipsize="marquee" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/bannerTitle" android:paddingLeft="10dp" android:focusable="true" android:focusableInTouchMode="true" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" android:singleLine="true" android:layout_weight="1000.0" />
+            <FrameLayout android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="wrap_content" android:layout_height="match_parent">
+                <TextView android:textColor="#ffffff" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/numIndicatorInside" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="1/1" />
+                <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/indicatorInside" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="match_parent" />
+            </FrameLayout> />
+    </RelativeLayout>
+</FrameLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="match_parent">
+    <View android:background="#ffcccccc" android:layout_width="UNKNOWN_DATA_0x40000031" android:layout_height="match_parent" />
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
+        <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001">
+            <TextView android:textSize="@dimen/title_textsize" android:gravity="left|right|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="wrap_content" android:text="@string/goodlist_screen" android:layout_weight="1.0" />
+            <TextView android:textSize="17dp" android:id="@+id/filter_finish" android:padding="5dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:text="@string/goodlistmeun_clear" />
+        </LinearLayout>
+        <View android:background="#ffcccccc" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x101" />
+        <FrameLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_weight="1.0">
+            <ExpandableListView android:id="@+id/goodlist_filterlist" android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="wrap_content" android:listSelector="@drawable/selecter_newitem_press" android:groupIndicator="0x0" android:childIndicatorLeft="0dp" android:childDivider="0x0" android:divider="0x0" android:footerDividersEnabled="false" android:overScrollMode="never" />
+            <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="vertical" android:id="@+id/goodlist_null" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent">
+                <ImageView android:background="@drawable/null_normal" android:layout_width="UNKNOWN_DATA_0xc801" android:layout_height="UNKNOWN_DATA_0xc801" />
+                <TextView android:textSize="16dp" android:textColor="#66666666" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="-30dp" android:text="@string/goodlist_no_screen" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>
