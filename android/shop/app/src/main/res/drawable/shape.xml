@@ -5,12 +5,6 @@
     <solid android:color="#FFF000" />
     <!--设置圆角-->
     <corners android:radius="8dp" />
-    <gradient
-        android:startColor="#FF0000"
-        android:centerColor="#00FF00"
-        android:endColor="#0000FF"
-        android:angle="45"
-        />
     <!--<padding-->
     <!--android:bottom="10dp"-->
     <!--android:left="10dp"-->
