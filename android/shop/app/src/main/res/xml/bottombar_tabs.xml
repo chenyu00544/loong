@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_home"
+        icon="@drawable/my_tab_home_icon"
+        title="@string/tab_1" />
+    <tab
+        id="@+id/tab_category"
+        icon="@drawable/ic_content_add"
+        title="@string/tab_2" />
+    <tab
+        id="@+id/tab_find"
+        icon="@drawable/ic_maps_local_restaurant"
+        title="@string/tab_3" />
+    <tab
+        id="@+id/tab_cart"
+        icon="@drawable/ic_maps_local_bar"
+        title="@string/tab_4" />
+    <tab
+        id="@+id/tab_my"
+        icon="@drawable/ic_maps_place"
+        title="@string/tab_5" />
+</tabs>
