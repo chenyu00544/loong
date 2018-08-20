@@ -6,19 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:id="@+id/contentContainer"
+    <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomBar">
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="TextView" />
-    </RelativeLayout>
+        android:id="@+id/view_pager"
+        android:layout_above="@+id/bottomBar"
+        >
 
+    </android.support.v4.view.ViewPager>
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
@@ -27,4 +22,6 @@
         android:layout_alignParentBottom="true"
         app:bb_activeTabColor="@color/colorAccent"
         app:bb_tabXmlResource="@xml/bottombar_tabs" />
+
+
 </RelativeLayout>
