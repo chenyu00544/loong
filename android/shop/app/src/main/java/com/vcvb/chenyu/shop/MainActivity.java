@@ -11,6 +11,11 @@ import android.view.View;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.vcvb.chenyu.shop.home.FragmentCart;
+import com.vcvb.chenyu.shop.home.FragmentCategory;
+import com.vcvb.chenyu.shop.home.FragmentFind;
+import com.vcvb.chenyu.shop.home.FragmentHome;
+import com.vcvb.chenyu.shop.home.FragmentMy;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop;
+package com.vcvb.chenyu.shop.home;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class FragmentHome extends Fragment {
+import com.vcvb.chenyu.shop.R;
+
+public class FragmentMy extends Fragment {
     View view;
     Context context;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_home, container,false);
+        view = inflater.inflate(R.layout.fragment_my, container,false);
         context = getActivity();
         return view;
     }

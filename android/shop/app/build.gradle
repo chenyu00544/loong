@@ -34,4 +34,5 @@ dependencies {
     implementation 'com.j256.ormlite:ormlite-android:5.0'
     implementation 'com.j256.ormlite:ormlite-core:5.0'
     implementation 'com.roughike:bottom-bar:2.3.1'
+    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
 }
