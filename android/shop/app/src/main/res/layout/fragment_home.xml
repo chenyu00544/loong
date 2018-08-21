@@ -6,20 +6,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/banner"
+            layout="@layout/banner_slide"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
 
         <include
             android:id="@+id/nav_header"
-            layout="@layout/navigation_header_view" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:onClick="onClickPushActivity"
-            android:text="跳转页面" />
+            layout="@layout/home_header_view"
+            android:layout_width="match_parent"
+            android:layout_height="70dp" />
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

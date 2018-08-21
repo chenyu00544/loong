@@ -1,11 +1,12 @@
-<resources>
-
-    <style name="AppThemeMain" parent="android:Theme.Holo.Light.DarkActionBar">
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="AppThemeMain" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
         <item name="android:windowIsTranslucent">false</item>
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
 </resources>

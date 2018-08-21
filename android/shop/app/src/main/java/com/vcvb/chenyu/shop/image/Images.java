@@ -31,4 +31,11 @@ public class Images {
             "http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg",
             "http://pic.qiantucdn.com/58pic/14/35/64/56t58PIC2wJ_1024.jpg",
     };
+
+    public final static String[] imgUrls = new String[]{
+            "https://www.missmall.com/data/my_image/banner0.jpg",
+            "https://www.missmall.com/data/my_image/banner1.jpg",
+            "https://www.missmall.com/data/my_image/banner2.jpg",
+
+    };
 }

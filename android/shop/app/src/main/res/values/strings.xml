@@ -13,4 +13,6 @@
     <string name="menu_4">Menu 4</string>
     <string name="menu_5">Menu 5</string>
     <string name="back">返回</string>
+    <string name="todo">TODO</string>
+    <string name="search">搜索</string>
 </resources>
