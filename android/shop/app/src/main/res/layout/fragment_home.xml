@@ -12,7 +12,13 @@
             android:id="@+id/banner"
             layout="@layout/banner_slide"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="230dp" />
+
+        <include
+            android:id="@+id/ads_list"
+            layout="@layout/ads_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
         <include
