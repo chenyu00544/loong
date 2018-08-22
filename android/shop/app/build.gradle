@@ -36,4 +36,11 @@ dependencies {
     implementation 'com.roughike:bottom-bar:2.3.1'
     implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
     implementation 'com.youth.banner:banner:1.4.9'
+    implementation 'com.yalantis:phoenix:1.2.3'
+    implementation 'in.srain.cube:ultra-ptr:1.0.11'
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.5.1'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:design:25.3.1'
+    implementation 'com.android.support:appcompat-v7:25.3.1'
 }

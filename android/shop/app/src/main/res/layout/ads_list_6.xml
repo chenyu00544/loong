@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ads_25"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ads_25_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toEndOf="@+id/ads_25_1"
+        android:layout_toRightOf="@+id/ads_25_1"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toEndOf="@+id/ads_25_2"
+        android:layout_toRightOf="@+id/ads_25_2"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toEndOf="@+id/ads_25_3"
+        android:layout_toRightOf="@+id/ads_25_3"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toEndOf="@+id/ads_25_4"
+        android:layout_toRightOf="@+id/ads_25_4"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_6"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/ads_25_1"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/ads_25_1"
+        android:layout_toEndOf="@+id/ads_25_6"
+        android:layout_toRightOf="@+id/ads_25_6"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_8"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/ads_25_1"
+        android:layout_toEndOf="@+id/ads_25_7"
+        android:layout_toRightOf="@+id/ads_25_7"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_9"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/ads_25_1"
+        android:layout_toEndOf="@+id/ads_25_8"
+        android:layout_toRightOf="@+id/ads_25_8"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+
+    <ImageView
+        android:id="@+id/ads_25_10"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/ads_25_1"
+        android:layout_toEndOf="@+id/ads_25_9"
+        android:layout_toRightOf="@+id/ads_25_9"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_14_1" />
+</RelativeLayout>

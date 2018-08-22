@@ -10,7 +10,7 @@ import com.youth.banner.loader.ImageLoader;
 public class GlideImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
-        Picasso.with(context).load((Uri) path).into(imageView);
+        Picasso.with(context).load((String) path).into(imageView);
     }
 
     @Override

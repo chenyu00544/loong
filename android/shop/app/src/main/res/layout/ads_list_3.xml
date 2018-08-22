@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ads_2_1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ads_2_1_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_12_2" />
+
+    <ImageView
+        android:id="@+id/ads_2_1_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/ads_2_1_1"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_12_3" />
+
+    <ImageView
+        android:id="@+id/ads_2_1_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/ads_2_1_1"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:src="@drawable/ads_12_1"
+        android:layout_toEndOf="@id/ads_2_1_1" />
+
+</RelativeLayout>

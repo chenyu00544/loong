@@ -2,11 +2,16 @@ package com.vcvb.chenyu.shop.home;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -19,26 +24,46 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.image.GlideImageLoader;
+import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
-import com.youth.banner.Banner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class FragmentHome extends Fragment {
     View view;
     Context context;
-
-    private Banner banner;
+    private RecyclerView recyclerView;
+    private HomeRecyclerViewAdapter adapter;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         context = getActivity();
+
+        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+            }
+        });
+
         initSearchView();
-        initBanner();
+        initRecyclerView();
         return view;
     }
 
@@ -65,7 +90,8 @@ public class FragmentHome extends Fragment {
         });
 
         final LinearLayout linearLayout = view.findViewById(R.id.search_wrap);
-        linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver
+                .OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 Rect r = new Rect();
@@ -83,26 +109,79 @@ public class FragmentHome extends Fragment {
         });
     }
 
-    private void initBanner() {
-        ArrayList<Uri> imageUrls = new ArrayList<>();
+    private void initRecyclerView() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        recyclerView = view.findViewById(R.id.recyclerView);
+        //设置RecyclerView管理器
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        //初始化适配器
+        List list = new ArrayList();
+        HashMap bhm = new HashMap();
+        ArrayList<HashMap> imgUrls = new ArrayList<>();
         for (int i = 0; i < Images.imgUrls.length; i++) {
-            imageUrls.add(Uri.decode(Images.imgUrls[i]));
+            HashMap bannerhm = new HashMap();
+            bannerhm.put("url", Images.imgUrls[i]);
+            bannerhm.put("title", "xxxooo" + i);
+            bannerhm.put("path", "pages/xxx/xxx");
+            imgUrls.add(bannerhm);
         }
-        banner = view.findViewById(R.id.banner);
-        banner.setImageLoader(new GlideImageLoader());
-        banner.setImages(imageUrls);
-        banner.start();
-    }
+        bhm.put("banner", imgUrls);
+        list.add(bhm);
+        String[] ads = new String[]{
+                "ads_25", "ads_1_2", "ads_11", "ads_2_1", "ads_11", "ads_14", "ads_11", "ads_22", "ads_11", "ads_33",
+        };
 
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        banner.stopAutoPlay();
-//    }
+        for (int i = 0; i < ads.length; i++) {
+            HashMap ahm = new HashMap();
+            ahm.put(ads[i], new HashMap());
+            list.add(ahm);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            HashMap ghm = new HashMap();
+            ghm.put("name", "sdfadfasdf");
+            list.add(ghm);
+        }
+        adapter = new HomeRecyclerViewAdapter(list, width);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        recyclerView.setAdapter(adapter);
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            recyclerView.setOnScrollChangeListener(new RecyclerView.OnScrollChangeListener(){
+//                @Override
+//                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//                    Log.i("xx", "newState: x:" + i + "y:"+ i1 + "y:"+ i2 + "y:"+ i3);
+//                }
+//            });
+//        }else{
+//            recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+//                @Override
+//                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                    super.onScrollStateChanged(recyclerView, newState);
+//                    Log.i("xx", "newState: " + newState);
+//                }
 //
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        banner.startAutoPlay();
-//    }
+//                @Override
+//                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                    super.onScrolled(recyclerView, dx, dy);
+//                    Log.i("xx", "newState: x:" + dx + "y:"+ dy);
+//                }
+//            });
+//        }
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.i("xx", "newState: x:" + dx + "y:"+ dy);
+            }
+        });
+    }
 }
