@@ -1,7 +1,9 @@
 package com.vcvb.chenyu.shop.home;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -114,7 +116,8 @@ public class FragmentHome extends Fragment {
         int width = dm.widthPixels;
         recyclerView = view.findViewById(R.id.recyclerView);
         //设置RecyclerView管理器
-        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager
+                .VERTICAL, false));
         //初始化适配器
         List list = new ArrayList();
         HashMap bhm = new HashMap();
@@ -129,7 +132,8 @@ public class FragmentHome extends Fragment {
         bhm.put("banner", imgUrls);
         list.add(bhm);
         String[] ads = new String[]{
-                "ads_25", "ads_1_2", "ads_11", "ads_2_1", "ads_11", "ads_14", "ads_11", "ads_22", "ads_11", "ads_33",
+                "ads_25", "ads_1_2", "ads_11", "ads_2_1", "ads_11", "ads_14", "ads_11", "ads_22",
+                "ads_11", "ads_33",
         };
 
         for (int i = 0; i < ads.length; i++) {
@@ -148,40 +152,70 @@ public class FragmentHome extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(adapter);
+        final View v = view;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            recyclerView.setOnScrollChangeListener(new RecyclerView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                    int pos = getDistance();
+                    if (pos >= 255) {
+                        v.findViewById(R.id.nav_header_home).setBackgroundColor(0xFFFF4081);
+                        v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape_light);
+                    } else {
+                        v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape);
+                        String h = Integer.toHexString(pos);
+                        String c = "";
+                        if (pos < 16) {
+                            c = "0" + h;
+                        } else {
+                            c = h;
+                        }
+                        v.findViewById(R.id.nav_header_home).setBackgroundColor(Color.parseColor
+                                ("#" + c + "FF4081"));
+                    }
+                }
+            });
+        } else {
+            recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    Log.i("xx", "newState: " + newState);
+                }
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            recyclerView.setOnScrollChangeListener(new RecyclerView.OnScrollChangeListener(){
-//                @Override
-//                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-//                    Log.i("xx", "newState: x:" + i + "y:"+ i1 + "y:"+ i2 + "y:"+ i3);
-//                }
-//            });
-//        }else{
-//            recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-//                @Override
-//                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                    super.onScrollStateChanged(recyclerView, newState);
-//                    Log.i("xx", "newState: " + newState);
-//                }
-//
-//                @Override
-//                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                    super.onScrolled(recyclerView, dx, dy);
-//                    Log.i("xx", "newState: x:" + dx + "y:"+ dy);
-//                }
-//            });
-//        }
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    int pos = getDistance();
+                    if (pos >= 255) {
+                        v.findViewById(R.id.nav_header_home).setBackgroundColor(0xFFFF4081);
+                        v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape_light);
+                    } else {
+                        v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape);
+                        String h = Integer.toHexString(pos);
+                        String c = "";
+                        if (pos < 16) {
+                            c = "0" + h;
+                        } else {
+                            c = h;
+                        }
+                        v.findViewById(R.id.nav_header_home).setBackgroundColor(Color.parseColor
+                                ("#" + c + "FF4081"));
+                    }
+                }
+            });
+        }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.i("xx", "newState: x:" + dx + "y:"+ dy);
-            }
-        });
+    }
+
+    private int getDistance() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        View firstVisibItem = recyclerView.getChildAt(0);
+        int firstItemPosition = layoutManager.findFirstVisibleItemPosition();
+        int itemCount = layoutManager.getItemCount();
+        int recycleViewHeight = recyclerView.getHeight();
+        int itemHeight = firstVisibItem.getHeight();
+        int firstItemBottom = layoutManager.getDecoratedBottom(firstVisibItem);
+        return (firstItemPosition + 1) * itemHeight - firstItemBottom;
     }
 }
