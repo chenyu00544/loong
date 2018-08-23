@@ -10,10 +10,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +33,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
+import com.vcvb.chenyu.shop.adapter.item.SpacesItemDecoration;
 import com.vcvb.chenyu.shop.image.Images;
 
 import java.util.ArrayList;
@@ -42,6 +45,7 @@ public class FragmentHome extends Fragment {
     Context context;
     private RecyclerView recyclerView;
     private HomeRecyclerViewAdapter adapter;
+    int pos = 0;
 
     @Nullable
     @Override
@@ -50,7 +54,7 @@ public class FragmentHome extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         context = getActivity();
 
-        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        RefreshLayout refreshLayout = view.findViewById(R.id.content_recycler_view);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
@@ -116,9 +120,8 @@ public class FragmentHome extends Fragment {
         int width = dm.widthPixels;
         recyclerView = view.findViewById(R.id.recyclerView);
         //设置RecyclerView管理器
-        recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager
-                .VERTICAL, false));
-        //初始化适配器
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 6));
+//        recyclerView.addItemDecoration(new SpacesItemDecoration(3));
         List list = new ArrayList();
         HashMap bhm = new HashMap();
         ArrayList<HashMap> imgUrls = new ArrayList<>();
@@ -126,86 +129,66 @@ public class FragmentHome extends Fragment {
             HashMap bannerhm = new HashMap();
             bannerhm.put("url", Images.imgUrls[i]);
             bannerhm.put("title", "xxxooo" + i);
-            bannerhm.put("path", "pages/xxx/xxx");
+            bannerhm.put("path", "vcvbuy:://pages/goods/index?id="+i);
             imgUrls.add(bannerhm);
         }
         bhm.put("banner", imgUrls);
         list.add(bhm);
         String[] ads = new String[]{
-                "ads_25", "ads_1_2", "ads_11", "ads_2_1", "ads_11", "ads_14", "ads_11", "ads_22",
+                "ads_25", "ads_1_2", "ads_11", "ads_2_1", "ads_12", "ads_11", "ads_11_title", "ads_14", "ads_11", "ads_22",
                 "ads_11", "ads_33",
         };
 
         for (int i = 0; i < ads.length; i++) {
             HashMap ahm = new HashMap();
-            ahm.put(ads[i], new HashMap());
+            HashMap adshm = new HashMap();
+            ahm.put(ads[i], adshm);
             list.add(ahm);
         }
 
         for (int i = 0; i < 10; i++) {
             HashMap ghm = new HashMap();
-            ghm.put("name", "sdfadfasdf");
+            ghm.put("goods", new HashMap());
             list.add(ghm);
         }
-        adapter = new HomeRecyclerViewAdapter(list, width);
+
+        //初始化适配器
+        adapter = new HomeRecyclerViewAdapter(list, width, context);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(adapter);
         final View v = view;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            recyclerView.setOnScrollChangeListener(new RecyclerView.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                    int pos = getDistance();
-                    if (pos >= 255) {
-                        v.findViewById(R.id.nav_header_home).setBackgroundColor(0xFFFF4081);
-                        v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape_light);
-                    } else {
-                        v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape);
-                        String h = Integer.toHexString(pos);
-                        String c = "";
-                        if (pos < 16) {
-                            c = "0" + h;
-                        } else {
-                            c = h;
-                        }
-                        v.findViewById(R.id.nav_header_home).setBackgroundColor(Color.parseColor
-                                ("#" + c + "FF4081"));
-                    }
-                }
-            });
-        } else {
-            recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    Log.i("xx", "newState: " + newState);
-                }
 
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-                    int pos = getDistance();
-                    if (pos >= 255) {
-                        v.findViewById(R.id.nav_header_home).setBackgroundColor(0xFFFF4081);
-                        v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape_light);
-                    } else {
-                        v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape);
-                        String h = Integer.toHexString(pos);
-                        String c = "";
-                        if (pos < 16) {
-                            c = "0" + h;
-                        } else {
-                            c = h;
-                        }
-                        v.findViewById(R.id.nav_header_home).setBackgroundColor(Color.parseColor
-                                ("#" + c + "FF4081"));
-                    }
-                }
-            });
-        }
+        //滑动监听
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                pos = getDistance();
+                if (pos >= 255) {
+                    v.findViewById(R.id.nav_header_home).setBackgroundColor(0xFFFF4081);
+                    v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape_light);
+                } else {
+                    pos = pos > 0 ? pos : 0;
+                    v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape);
+                    String h = Integer.toHexString(pos);
+                    String c = "";
+                    if (pos < 16) {
+                        c = "0" + h;
+                    } else {
+                        c = h;
+                    }
+                    v.findViewById(R.id.nav_header_home).setBackgroundColor(Color.parseColor
+                            ("#" + c + "FF4081"));
+                }
+            }
+        });
     }
 
     private int getDistance() {

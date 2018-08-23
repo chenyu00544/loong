@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/ads_12_1"
+        android:id="@+id/ads_1_2_1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@string/todo"
@@ -14,22 +14,22 @@
         android:src="@drawable/ads_12_1" />
 
     <ImageView
-        android:id="@+id/ads_12_2"
+        android:id="@+id/ads_1_2_2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_toEndOf="@id/ads_12_1"
-        android:layout_toRightOf="@id/ads_12_1"
+        android:layout_toEndOf="@id/ads_1_2_1"
+        android:layout_toRightOf="@id/ads_1_2_1"
         android:contentDescription="@string/todo"
         android:scaleType="fitXY"
         android:src="@drawable/ads_12_2" />
 
     <ImageView
-        android:id="@+id/ads_12_3"
+        android:id="@+id/ads_1_2_3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_below="@id/ads_12_2"
-        android:layout_toEndOf="@id/ads_12_1"
-        android:layout_toRightOf="@id/ads_12_1"
+        android:layout_below="@id/ads_1_2_2"
+        android:layout_toEndOf="@id/ads_1_2_1"
+        android:layout_toRightOf="@id/ads_1_2_1"
         android:contentDescription="@string/todo"
         android:scaleType="fitXY"
         android:src="@drawable/ads_12_3" />

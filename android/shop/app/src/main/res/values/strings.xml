@@ -13,6 +13,9 @@
     <string name="menu_4">Menu 4</string>
     <string name="menu_5">Menu 5</string>
     <string name="back">返回</string>
-    <string name="todo">TODO</string>
     <string name="search">搜索</string>
+    <string name="money">￥298</string>
+    <string name="pay_info">252人付款</string>
+    <string name="todo">TODO</string>
+    <string name="name">首先试一下默认的的效,布局文件如下activity_main_2.xml</string>
 </resources>

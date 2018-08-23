@@ -61,7 +61,7 @@
                 android:layout_marginStart="10dp"
                 android:singleLine="true"
                 android:text="@string/app_name"
-                android:textColor="@color/colorActiveSmall"
+                android:textColor="@color/gray"
                 android:textSize="18sp" />
         </LinearLayout>
 
