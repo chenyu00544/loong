@@ -9,4 +9,10 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
     </style>
+    <style name="StartTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/icon_startpage</item>
+    </style>
 </resources>

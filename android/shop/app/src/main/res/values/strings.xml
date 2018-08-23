@@ -7,15 +7,16 @@
     <string name="tab_4">购物车</string>
     <string name="tab_5">我的</string>
 
-    <string name="menu_1">Menu 1</string>
-    <string name="menu_2">Menu 2</string>
-    <string name="menu_3">Menu 3</string>
-    <string name="menu_4">Menu 4</string>
-    <string name="menu_5">Menu 5</string>
+    <string name="goods_detail">商品详情</string>
+    <string name="goods">商品</string>
+    <string name="evaluate">评价</string>
+    <string name="goods_info">详情</string>
     <string name="back">返回</string>
     <string name="search">搜索</string>
     <string name="money">￥298</string>
     <string name="pay_info">252人付款</string>
     <string name="todo">TODO</string>
     <string name="name">首先试一下默认的的效,布局文件如下activity_main_2.xml</string>
+    <string name="skip">3 跳过</string>
+
 </resources>

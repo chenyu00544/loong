@@ -7,11 +7,4 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         layout="@layout/navigation_header_view" />
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:onClick="onClickBackActivity"
-        android:text="@string/back" />
 </RelativeLayout>

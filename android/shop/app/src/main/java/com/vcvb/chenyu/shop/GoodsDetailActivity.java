@@ -20,8 +20,4 @@ public class GoodsDetailActivity extends BaseActivity {
             }
         });
     }
-
-    public void onClickBackActivity(View view){
-        finish();
-    }
 }

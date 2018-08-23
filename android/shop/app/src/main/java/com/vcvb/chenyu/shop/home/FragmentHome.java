@@ -89,6 +89,7 @@ public class FragmentHome extends Fragment {
                 switch (i) {
                     case EditorInfo.IME_ACTION_SEARCH:
                         editText.setCursorVisible(false);
+                        editText.clearFocus();
                         break;
                 }
                 return false;
@@ -110,6 +111,7 @@ public class FragmentHome extends Fragment {
                 } else {
                     //软键盘隐藏
                     editText.setCursorVisible(false);
+                    editText.clearFocus();
                 }
             }
         });
