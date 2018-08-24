@@ -2,7 +2,7 @@ package com.vcvb.chenyu.shop.tools;
 
 import android.net.Uri;
 
-import com.vcvb.chenyu.shop.GoodsDetailActivity;
+import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 
 import java.net.URL;
 import java.net.URLDecoder;

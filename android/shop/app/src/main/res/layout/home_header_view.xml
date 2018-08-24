@@ -34,9 +34,8 @@
             android:focusableInTouchMode="true"
             >
 
-            <!-- 返回按钮 -->
+            <!-- 占位控件 -->
             <RelativeLayout
-                android:id="@+id/nav_back"
                 android:layout_width="35dp"
                 android:layout_height="45dp">
             </RelativeLayout>

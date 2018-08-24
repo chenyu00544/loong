@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.vcvb.chenyu.shop.R;
 
-public class FragmentCategory extends Fragment {
+public class FragmentCategory extends BaseFragment {
     View view;
     Context context;
 

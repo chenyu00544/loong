@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.vcvb.chenyu.shop.R;
 
-public class FragmentFind extends Fragment {
+public class FragmentFind extends BaseFragment {
     View view;
     Context context;
 

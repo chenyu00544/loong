@@ -1,21 +1,15 @@
 package com.vcvb.chenyu.shop.home;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,16 +27,14 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
-import com.vcvb.chenyu.shop.adapter.item.SpacesItemDecoration;
 import com.vcvb.chenyu.shop.image.Images;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class FragmentHome extends Fragment {
-    View view;
-    Context context;
+public class FragmentHome extends BaseFragment {
+
     private RecyclerView recyclerView;
     private HomeRecyclerViewAdapter adapter;
     int pos = 0;
@@ -71,6 +63,20 @@ public class FragmentHome extends Fragment {
         initSearchView();
         initRecyclerView();
         return view;
+    }
+
+    @Override
+    protected void onFragmentVisibleChange(boolean isVisible) {
+        super.onFragmentVisibleChange(isVisible);
+        if (isVisible) {
+            //   do things when fragment is visible
+            //    if (ListUtils.isEmpty(mDataList) && !isRefreshing()) {
+            //        setRefresh(true);
+            //        loadServiceData(false);
+            //      }
+        } else {
+            //        setRefresh(false);
+        }
     }
 
     private void initSearchView() {
@@ -131,7 +137,7 @@ public class FragmentHome extends Fragment {
             HashMap bannerhm = new HashMap();
             bannerhm.put("url", Images.imgUrls[i]);
             bannerhm.put("title", "xxxooo" + i);
-            bannerhm.put("path", "vcvbuy:://pages/goods/index?id="+i);
+            bannerhm.put("path", "vcvbuy:://pages/goods/index?id=" + i);
             imgUrls.add(bannerhm);
         }
         bhm.put("banner", imgUrls);

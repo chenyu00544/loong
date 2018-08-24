@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_bar"
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:layout_alignParentTop="true"
@@ -22,95 +24,79 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:baselineAligned="true"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
+        <!-- 返回按钮 -->
+        <LinearLayout
+            android:id="@+id/nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:background="@drawable/icon_shape"
+                android:contentDescription="@string/todo"
+                android:padding="10dp"
+                android:src="@drawable/icon_back_gray" />
+        </LinearLayout>
+
+        <!-- 该页面标题 -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="4">
+            android:layout_weight="6"
+            android:gravity="center">
 
-            <!-- 返回按钮 -->
-            <RelativeLayout
-                android:id="@+id/nav_back"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginStart="12dp">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/icon_shape"
-                    android:contentDescription="@string/todo"
-                    android:padding="10dp"
-                    android:src="@drawable/icon_back" />
-            </RelativeLayout>
-
-            <!-- 该页面标题 -->
             <LinearLayout
-                android:id="@+id/goods_wrap"
+                android:id="@+id/title_wrap"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_height="0dp"
                 android:alpha="0"
-                android:orientation="horizontal">
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="Suspicious0dp">
 
-                <TextView
-                    android:id="@+id/goods"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:singleLine="true"
-                    android:text="@string/goods"
-                    android:textColor="@color/white"
-                    android:textSize="22sp" />
-
-                <TextView
-                    android:id="@+id/goods_evaluate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:singleLine="true"
-                    android:text="@string/evaluate"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/goods_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
-                    android:singleLine="true"
-                    android:text="@string/goods_info"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
 
         <!-- 右侧需要添加的内容区域 -->
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/nav_other"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:gravity="center"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerInParent="true"
+                android:id="@+id/collection"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
                 android:background="@drawable/icon_shape"
                 android:contentDescription="@string/todo"
                 android:padding="8dp"
-                android:src="@drawable/icon_love" />
-        </RelativeLayout>
+                android:src="@drawable/icon_love_gray" />
+
+            <ImageView
+                android:id="@+id/more"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/icon_shape"
+                android:contentDescription="@string/todo"
+                android:padding="8dp"
+                android:src="@drawable/icon_three_points_gray" />
+
+        </LinearLayout>
     </LinearLayout>
 
 

@@ -40,8 +40,9 @@ public class LaunchActivity extends Activity {
         }
     };
 
-    private void startMain(){
+    private void startMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

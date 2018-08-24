@@ -99,10 +99,10 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         } else if (viewType == PROGRESS_VIEW) {
             return null;
         } else if (viewType == GOODS_VIEW_LELT) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.goods_list_left, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_goods_list_left, parent, false);
             return new HomeRecyclerViewAdapter.GoodsLeftViewHolder(view);
         } else if (viewType == GOODS_VIEW_RIGHT) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.goods_list_right, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_goods_list_right, parent, false);
             return new HomeRecyclerViewAdapter.GoodsRightViewHolder(view);
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.goods_list, parent, false);
