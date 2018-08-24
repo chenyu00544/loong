@@ -1,11 +1,13 @@
 package com.vcvb.chenyu.shop.goods;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.image.GlideImageLoader;
@@ -21,6 +23,9 @@ import java.util.HashMap;
 public class GoodsDetailActivity extends GoodsActivity {
     private Banner banner;
     private NestedScrollView nestedScrollView;
+    private TextView goods_price;
+    private TextView market_price;
+    private
     int eY;
     int eI;
 
@@ -34,6 +39,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         setNavBack();
         initNSV();
         initBanner();
+        initData();
     }
 
     //在这个方法内才能获取正确的距离宽高参数
@@ -51,8 +57,11 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onClick(View view) {
                 goodsView.setTextSize(ts_22);
+                goodsView.setTextColor(Color.parseColor("#000000"));
                 goodsEvaluate.setTextSize(ts_18);
+                goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsInfo.setTextSize(ts_18);
+                goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                 nestedScrollView.scrollTo(0,0);
             }
         });
@@ -60,8 +69,11 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onClick(View view) {
                 goodsView.setTextSize(ts_18);
+                goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsInfo.setTextSize(ts_18);
+                goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_22);
+                goodsEvaluate.setTextColor(Color.parseColor("#000000"));
                 nestedScrollView.scrollTo(0,eY);
             }
         });
@@ -69,8 +81,11 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onClick(View view) {
                 goodsInfo.setTextSize(ts_22);
+                goodsInfo.setTextColor(Color.parseColor("#000000"));
                 goodsView.setTextSize(ts_18);
+                goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_18);
+                goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 nestedScrollView.scrollTo(0,eI);
             }
         });
@@ -129,15 +144,21 @@ public class GoodsDetailActivity extends GoodsActivity {
                             title_wrap.setLayoutParams(layoutParams);
                         }
                     }
-                    nav_wrap.setBackgroundColor(Color.argb(alpha, 255, 255, 255));
+                    nav_wrap.setBackgroundColor(Color.argb(alpha, 238, 238, 238));
                 } else {
                     if (alpha < 255) {
                         alpha = 255;
                         title_wrap.setAlpha(1);
-                        nav_wrap.setBackgroundColor(Color.argb(alpha, 255, 255, 255));
+                        nav_wrap.setBackgroundColor(Color.argb(alpha, 238, 238, 238));
                     }
                 }
             }
         });
+    }
+
+    public void initData(){
+        goods_price = (TextView) findViewById(R.id.goods_price);
+        market_price = (TextView) findViewById(R.id.goods_market_price);
+        market_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
     }
 }

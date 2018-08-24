@@ -17,8 +17,8 @@ public class GoodsActivity extends BaseActivity {
     public TextView goodsEvaluate;
     public TextView goodsInfo;
     public LinearLayout title_wrap;
-    int ts_18 = 18;
-    int ts_22 = 22;
+    int ts_18 = 16;
+    int ts_22 = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +28,21 @@ public class GoodsActivity extends BaseActivity {
     @Override
     public void setNavBack() {
         super.setNavBack();
-        int color = Color.parseColor("#000000");
+        int color = Color.parseColor("#AAAAAA");
         int gravity = Gravity.CENTER;
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(90, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(80, LinearLayout
+                .LayoutParams.WRAP_CONTENT);
         goodsView = new TextView(this);
         goodsView.setLayoutParams(layoutParams);
         goodsView.setGravity(gravity);
         goodsView.setText("商品");
-        goodsView.setTextColor(color);
+        goodsView.setTextColor(Color.parseColor("#000000"));
         goodsView.setTextSize(ts_22);
         goodsView.setSingleLine();
 
-        LinearLayout.LayoutParams layoutParams_t = new LinearLayout.LayoutParams(90, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams_t.setMargins(10,0,0,0);
+        LinearLayout.LayoutParams layoutParams_t = new LinearLayout.LayoutParams(80, LinearLayout
+                .LayoutParams.WRAP_CONTENT);
+        layoutParams_t.setMargins(10, 0, 0, 0);
         goodsEvaluate = new TextView(this);
         goodsEvaluate.setLayoutParams(layoutParams_t);
         goodsEvaluate.setGravity(gravity);
@@ -58,7 +60,7 @@ public class GoodsActivity extends BaseActivity {
         goodsInfo.setSingleLine();
 
         title_wrap = (LinearLayout) findViewById(R.id.title_wrap);
-        if(title_wrap != null){
+        if (title_wrap != null) {
             title_wrap.addView(goodsView);
             title_wrap.addView(goodsEvaluate);
             title_wrap.addView(goodsInfo);

@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/evaluate_shape">
 
-    <ImageView
+    <com.vcvb.chenyu.shop.image.RoundImageView
         android:id="@+id/imageView"
         android:layout_width="32dp"
-        android:layout_height="33dp"
+        android:layout_height="32dp"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.098"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+        app:radius="16dp"
+        app:srcCompat="@drawable/empty" />
 
     <TextView
         android:id="@+id/textView4"
@@ -28,18 +29,20 @@
         app:layout_constraintHorizontal_bias="0.06"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.17000002" />
 
-    <ImageView
+    <com.vcvb.chenyu.shop.image.RoundImageView
         android:id="@+id/imageView3"
         android:layout_width="120dp"
         android:layout_height="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.466"
+        app:right_top_radius="4dp"
+        app:right_bottom_radius="4dp"
         app:srcCompat="@drawable/empty" />
 
     <TextView
