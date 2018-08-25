@@ -65,47 +65,60 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         if (viewType == BANNER_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.banner_slide, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.banner_slide,
+                    parent, false);
             return new HomeRecyclerViewAdapter.BannerViewHolder(view);
         } else if (viewType == ADS11_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_2, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_2, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_11(view);
         } else if (viewType == ADS11_TITLE_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_8, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_8, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_11_title(view);
         } else if (viewType == ADS12_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_7, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_7, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_12(view);
         } else if (viewType == ADS_1_2_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_1_2(view);
         } else if (viewType == ADS_2_1_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_3, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_3, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_2_1(view);
         } else if (viewType == ADS22_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_4, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_4, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_22(view);
         } else if (viewType == ADS33_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_5, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_5, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_33(view);
         } else if (viewType == ADS14_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_1, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_1, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_14(view);
         } else if (viewType == ADS25_VIEW) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_6, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.ads_list_6, parent,
+                    false);
             return new HomeRecyclerViewAdapter.AdsViewHolder_25(view);
         } else if (viewType == EMPTY_VIEW) {
             return null;
         } else if (viewType == PROGRESS_VIEW) {
             return null;
         } else if (viewType == GOODS_VIEW_LELT) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_goods_list_left, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout
+                    .home_goods_list_left, parent, false);
             return new HomeRecyclerViewAdapter.GoodsLeftViewHolder(view);
         } else if (viewType == GOODS_VIEW_RIGHT) {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_goods_list_right, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout
+                    .home_goods_list_right, parent, false);
             return new HomeRecyclerViewAdapter.GoodsRightViewHolder(view);
         } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_goods_list, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_goods_list,
+                    parent, false);
             return new HomeRecyclerViewAdapter.GoodsViewHolder(view);
         }
     }
@@ -352,7 +365,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         AdsViewHolder_11(View itemView) {
             super(itemView);
             ads_lsit = itemView.findViewById(R.id.ads_11_1);
-            RelativeLayout.LayoutParams ads_11_1_p = (RelativeLayout.LayoutParams) ads_lsit.getLayoutParams();
+            RelativeLayout.LayoutParams ads_11_1_p = (RelativeLayout.LayoutParams) ads_lsit
+                    .getLayoutParams();
             ads_11_1_p.width = width;
             ads_11_1_p.height = width / 4;
             ads_lsit.setLayoutParams(ads_11_1_p);
@@ -373,7 +387,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         AdsViewHolder_11_title(View itemView) {
             super(itemView);
             ads_lsit = itemView.findViewById(R.id.ads_11_1_title);
-            RelativeLayout.LayoutParams ads_11_1_p = (RelativeLayout.LayoutParams) ads_lsit.getLayoutParams();
+            RelativeLayout.LayoutParams ads_11_1_p = (RelativeLayout.LayoutParams) ads_lsit
+                    .getLayoutParams();
             ads_11_1_p.width = width;
             ads_11_1_p.height = width / 12;
             ads_lsit.setLayoutParams(ads_11_1_p);
@@ -395,7 +410,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         AdsViewHolder_12(View itemView) {
             super(itemView);
             ads_lsit_1 = itemView.findViewById(R.id.ads_12_1);
-            RelativeLayout.LayoutParams ads_12_1_p = (RelativeLayout.LayoutParams) ads_lsit_1.getLayoutParams();
+            RelativeLayout.LayoutParams ads_12_1_p = (RelativeLayout.LayoutParams)
+                    ads_lsit_1.getLayoutParams();
             ads_12_1_p.width = width / 2;
             ads_12_1_p.height = width * 5 / 18;
             ads_lsit_1.setLayoutParams(ads_12_1_p);
@@ -407,7 +423,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             });
 
             ads_lsit_2 = itemView.findViewById(R.id.ads_12_2);
-            RelativeLayout.LayoutParams ads_12_2_p = (RelativeLayout.LayoutParams) ads_lsit_2.getLayoutParams();
+            RelativeLayout.LayoutParams ads_12_2_p = (RelativeLayout.LayoutParams)
+                    ads_lsit_2.getLayoutParams();
             ads_12_2_p.width = width / 2;
             ads_12_2_p.height = width * 5 / 18;
             ads_lsit_2.setLayoutParams(ads_12_2_p);
@@ -429,7 +446,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         AdsViewHolder_1_2(View itemView) {
             super(itemView);
             ads_12_1 = itemView.findViewById(R.id.ads_1_2_1);
-            RelativeLayout.LayoutParams ads_12_1_p = (RelativeLayout.LayoutParams) ads_12_1.getLayoutParams();
+            RelativeLayout.LayoutParams ads_12_1_p = (RelativeLayout.LayoutParams)
+                    ads_12_1.getLayoutParams();
             ads_12_1_p.width = width * 150 / 375;
             ads_12_1_p.height = width * 150 / 375 * 10 / 9;
             ads_12_1.setLayoutParams(ads_12_1_p);
@@ -440,7 +458,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_12_2 = itemView.findViewById(R.id.ads_1_2_2);
-            RelativeLayout.LayoutParams ads_12_2_p = (RelativeLayout.LayoutParams) ads_12_2.getLayoutParams();
+            RelativeLayout.LayoutParams ads_12_2_p = (RelativeLayout.LayoutParams)
+                    ads_12_2.getLayoutParams();
             ads_12_2_p.width = width * 225 / 375;
             ads_12_2_p.height = width * 150 / 375 * 5 / 9;
             ads_12_2.setLayoutParams(ads_12_2_p);
@@ -451,7 +470,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_12_3 = itemView.findViewById(R.id.ads_1_2_3);
-            RelativeLayout.LayoutParams ads_12_3_p = (RelativeLayout.LayoutParams) ads_12_3.getLayoutParams();
+            RelativeLayout.LayoutParams ads_12_3_p = (RelativeLayout.LayoutParams)
+                    ads_12_3.getLayoutParams();
             ads_12_3_p.width = width * 225 / 375;
             ads_12_3_p.height = width * 150 / 375 * 5 / 9;
             ads_12_3.setLayoutParams(ads_12_3_p);
@@ -473,7 +493,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         AdsViewHolder_2_1(View itemView) {
             super(itemView);
             ads_2_1_1 = itemView.findViewById(R.id.ads_2_1_1);
-            RelativeLayout.LayoutParams ads_2_1_1_p = (RelativeLayout.LayoutParams) ads_2_1_1.getLayoutParams();
+            RelativeLayout.LayoutParams ads_2_1_1_p = (RelativeLayout.LayoutParams)
+                    ads_2_1_1.getLayoutParams();
             ads_2_1_1_p.width = width * 225 / 375;
             ads_2_1_1_p.height = width * 150 / 375 * 5 / 9;
             ads_2_1_1.setLayoutParams(ads_2_1_1_p);
@@ -484,7 +505,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_2_1_2 = itemView.findViewById(R.id.ads_2_1_2);
-            RelativeLayout.LayoutParams ads_2_1_2_p = (RelativeLayout.LayoutParams) ads_2_1_2.getLayoutParams();
+            RelativeLayout.LayoutParams ads_2_1_2_p = (RelativeLayout.LayoutParams)
+                    ads_2_1_2.getLayoutParams();
             ads_2_1_2_p.width = width * 225 / 375;
             ads_2_1_2_p.height = width * 150 / 375 * 5 / 9;
             ads_2_1_2.setLayoutParams(ads_2_1_2_p);
@@ -495,7 +517,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_2_1_3 = itemView.findViewById(R.id.ads_2_1_3);
-            RelativeLayout.LayoutParams ads_2_1_3_p = (RelativeLayout.LayoutParams) ads_2_1_3.getLayoutParams();
+            RelativeLayout.LayoutParams ads_2_1_3_p = (RelativeLayout.LayoutParams)
+                    ads_2_1_3.getLayoutParams();
             ads_2_1_3_p.width = width * 150 / 375;
             ads_2_1_3_p.height = width * 150 / 375 * 10 / 9;
             ads_2_1_3.setLayoutParams(ads_2_1_3_p);
@@ -518,7 +541,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         AdsViewHolder_14(View itemView) {
             super(itemView);
             ads_14_1 = itemView.findViewById(R.id.ads_14_1);
-            RelativeLayout.LayoutParams ads_14_1_p = (RelativeLayout.LayoutParams) ads_14_1.getLayoutParams();
+            RelativeLayout.LayoutParams ads_14_1_p = (RelativeLayout.LayoutParams)
+                    ads_14_1.getLayoutParams();
             ads_14_1_p.width = width / 4;
             ads_14_1_p.height = width / 4 * 8 / 5;
             ads_14_1.setLayoutParams(ads_14_1_p);
@@ -529,7 +553,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_14_2 = itemView.findViewById(R.id.ads_14_2);
-            RelativeLayout.LayoutParams ads_14_2_p = (RelativeLayout.LayoutParams) ads_14_2.getLayoutParams();
+            RelativeLayout.LayoutParams ads_14_2_p = (RelativeLayout.LayoutParams)
+                    ads_14_2.getLayoutParams();
             ads_14_2_p.width = width / 4;
             ads_14_2_p.height = width / 4 * 8 / 5;
             ads_14_2.setLayoutParams(ads_14_2_p);
@@ -540,7 +565,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_14_3 = itemView.findViewById(R.id.ads_14_3);
-            RelativeLayout.LayoutParams ads_12_4_p = (RelativeLayout.LayoutParams) ads_14_3.getLayoutParams();
+            RelativeLayout.LayoutParams ads_12_4_p = (RelativeLayout.LayoutParams)
+                    ads_14_3.getLayoutParams();
             ads_12_4_p.width = width / 4;
             ads_12_4_p.height = width / 4 * 8 / 5;
             ads_14_3.setLayoutParams(ads_12_4_p);
@@ -551,7 +577,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_14_4 = itemView.findViewById(R.id.ads_14_4);
-            RelativeLayout.LayoutParams ads_14_4_p = (RelativeLayout.LayoutParams) ads_14_4.getLayoutParams();
+            RelativeLayout.LayoutParams ads_14_4_p = (RelativeLayout.LayoutParams)
+                    ads_14_4.getLayoutParams();
             ads_14_4_p.width = width / 4;
             ads_14_4_p.height = width / 4 * 8 / 5;
             ads_14_4.setLayoutParams(ads_14_4_p);
@@ -574,7 +601,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
         AdsViewHolder_22(View itemView) {
             super(itemView);
             ads_22_1 = itemView.findViewById(R.id.ads_22_1);
-            RelativeLayout.LayoutParams ads_22_1_p = (RelativeLayout.LayoutParams) ads_22_1.getLayoutParams();
+            RelativeLayout.LayoutParams ads_22_1_p = (RelativeLayout.LayoutParams)
+                    ads_22_1.getLayoutParams();
             ads_22_1_p.width = width / 2;
             ads_22_1_p.height = width * 5 / 16;
             ads_22_1.setLayoutParams(ads_22_1_p);
@@ -585,7 +613,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_22_2 = itemView.findViewById(R.id.ads_22_2);
-            RelativeLayout.LayoutParams ads_22_2_p = (RelativeLayout.LayoutParams) ads_22_2.getLayoutParams();
+            RelativeLayout.LayoutParams ads_22_2_p = (RelativeLayout.LayoutParams)
+                    ads_22_2.getLayoutParams();
             ads_22_2_p.width = width / 2;
             ads_22_2_p.height = width * 5 / 16;
             ads_22_2.setLayoutParams(ads_22_2_p);
@@ -596,7 +625,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_22_3 = itemView.findViewById(R.id.ads_22_3);
-            RelativeLayout.LayoutParams ads_22_3_p = (RelativeLayout.LayoutParams) ads_22_3.getLayoutParams();
+            RelativeLayout.LayoutParams ads_22_3_p = (RelativeLayout.LayoutParams)
+                    ads_22_3.getLayoutParams();
             ads_22_3_p.width = width / 2;
             ads_22_3_p.height = width * 5 / 16;
             ads_22_3.setLayoutParams(ads_22_3_p);
@@ -607,7 +637,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }
             });
             ads_22_4 = itemView.findViewById(R.id.ads_22_4);
-            RelativeLayout.LayoutParams ads_22_4_p = (RelativeLayout.LayoutParams) ads_22_4.getLayoutParams();
+            RelativeLayout.LayoutParams ads_22_4_p = (RelativeLayout.LayoutParams)
+                    ads_22_4.getLayoutParams();
             ads_22_4_p.width = width / 2;
             ads_22_4_p.height = width * 5 / 16;
             ads_22_4.setLayoutParams(ads_22_4_p);

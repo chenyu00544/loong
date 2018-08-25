@@ -42,5 +42,4 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.5.1'
     implementation 'com.android.support:appcompat-v7:25.3.1'
     implementation 'com.android.support:design:25.3.1'
-    implementation 'org.lucasr.twowayview:twowayview:0.1.4'
 }

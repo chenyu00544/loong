@@ -4,24 +4,23 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.horizontallistview.BrandGoodsListViewAdapter;
-import com.vcvb.chenyu.shop.adapter.horizontallistview.HorizontalListView;
-import com.vcvb.chenyu.shop.adapter.horizontallistview.HorizontalListViewCommentAdapter;
+import com.vcvb.chenyu.shop.adapter.BrandGoodsListViewAdapter;
+import com.vcvb.chenyu.shop.adapter.EvaluateListViewAdapter;
 import com.vcvb.chenyu.shop.image.GlideImageLoader;
 import com.vcvb.chenyu.shop.image.Images;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
-
-import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,11 +33,12 @@ public class GoodsDetailActivity extends GoodsActivity {
     private
     int eY;
     int eI;
-    private HorizontalListViewCommentAdapter hlvca;
-    private HorizontalListView hlv;
 
-    private TwoWayView bgs;
+    private RecyclerView bgs;
     private BrandGoodsListViewAdapter bglva;
+
+    private RecyclerView eva;
+    private EvaluateListViewAdapter evaa;
 
     public GoodsDetailActivity() {
     }
@@ -51,22 +51,15 @@ public class GoodsDetailActivity extends GoodsActivity {
         initNSV();
         initBanner();
         initData();
-        hlv = (HorizontalListView) findViewById(R.id.evaluate_scroll);
-        hlvca = new HorizontalListViewCommentAdapter(this);
-        hlvca.notifyDataSetChanged();
-        hlv.setAdapter(hlvca);
-
-        bgs = (TwoWayView) findViewById(R.id.brand_goods_scroll);
-        bglva = new BrandGoodsListViewAdapter(this, bgs);
-        bgs.setAdapter((ListAdapter) bglva);
-
+//        initScroll();
+        initView();
     }
 
     //在这个方法内才能获取正确的距离宽高参数
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        eY = findViewById(R.id.goods_evaluate).getTop();
+//        eY = findViewById(R.id.goods_evaluate).getTop();
 //        eI = findViewById(R.id.goods_image_text_info).getTop();
     }
 
@@ -145,14 +138,17 @@ public class GoodsDetailActivity extends GoodsActivity {
     public void initNSV() {
         final LinearLayout nav_wrap = nav_bar;
         final LinearLayout title_wrap = nav_bar.findViewById(R.id.title_wrap);
-        final LinearLayout.LayoutParams layoutParams_d = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0);
-        final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        final LinearLayout.LayoutParams layoutParams_d = new LinearLayout.LayoutParams
+                (LinearLayout.LayoutParams.MATCH_PARENT, 0);
+        final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout
+                .LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         nestedScrollView = (NestedScrollView) findViewById(R.id.goods_scroll);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             int alpha = 0;
 
             @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int
+                    oldScrollX, int oldScrollY) {
                 if (scrollY < 255) {
                     alpha = scrollY;
                     title_wrap.setAlpha(alpha);
@@ -181,5 +177,47 @@ public class GoodsDetailActivity extends GoodsActivity {
         goods_price = (TextView) findViewById(R.id.goods_price);
         market_price = (TextView) findViewById(R.id.goods_market_price);
         market_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+    }
+
+    public void initScroll() {
+//        bgs = (RecyclerView) findViewById(R.id.brand_goods_scroll);
+//        LinearLayoutManager ms = new LinearLayoutManager(this);
+//        ms.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        bgs.setLayoutManager(ms);
+//        ArrayList<Integer> list = new ArrayList<Integer>();
+//        list.add(1);
+//        list.add(2);
+//        list.add(2);
+//        list.add(2);
+//        list.add(2);
+//        bglva = new BrandGoodsListViewAdapter(this, list);
+//        bgs.setAdapter(bglva);
+//
+//        eva = (RecyclerView) findViewById(R.id.evaluate_scroll);
+//        LinearLayoutManager mse = new LinearLayoutManager(this);
+//        eva.addItemDecoration(new SpacesItemDecoration(10));
+//        mse.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        eva.setLayoutManager(mse);
+//        list.add(2);
+//        list.add(2);
+//        list.add(2);
+//        list.add(2);
+//        evaa = new EvaluateListViewAdapter(this, list);
+//        eva.setAdapter(evaa);
+    }
+
+    public void initView() {
+        LinearLayout goods_all_wrap = (LinearLayout) findViewById(R.id.goods_all_wrap);
+        LinearLayout goods_attr_ship = new LinearLayout(this);
+        LinearLayout.LayoutParams gasp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams
+                .MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        gasp.setMargins(0, 10, 0, 0);
+        goods_attr_ship.setOrientation(LinearLayout.VERTICAL);
+        goods_attr_ship.setLayoutParams(gasp);
+        ConstraintLayout faat_select = (ConstraintLayout)
+                LayoutInflater.from(this).inflate(R.layout.goods_attr_ship_item_2, null);
+        goods_attr_ship.addView(faat_select);
+
+        goods_all_wrap.addView(goods_attr_ship);
     }
 }
