@@ -7,15 +7,21 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.adapter.horizontallistview.BrandGoodsListViewAdapter;
+import com.vcvb.chenyu.shop.adapter.horizontallistview.HorizontalListView;
+import com.vcvb.chenyu.shop.adapter.horizontallistview.HorizontalListViewCommentAdapter;
 import com.vcvb.chenyu.shop.image.GlideImageLoader;
 import com.vcvb.chenyu.shop.image.Images;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.lucasr.twowayview.TwoWayView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +34,11 @@ public class GoodsDetailActivity extends GoodsActivity {
     private
     int eY;
     int eI;
+    private HorizontalListViewCommentAdapter hlvca;
+    private HorizontalListView hlv;
+
+    private TwoWayView bgs;
+    private BrandGoodsListViewAdapter bglva;
 
     public GoodsDetailActivity() {
     }
@@ -40,6 +51,15 @@ public class GoodsDetailActivity extends GoodsActivity {
         initNSV();
         initBanner();
         initData();
+        hlv = (HorizontalListView) findViewById(R.id.evaluate_scroll);
+        hlvca = new HorizontalListViewCommentAdapter(this);
+        hlvca.notifyDataSetChanged();
+        hlv.setAdapter(hlvca);
+
+        bgs = (TwoWayView) findViewById(R.id.brand_goods_scroll);
+        bglva = new BrandGoodsListViewAdapter(this, bgs);
+        bgs.setAdapter((ListAdapter) bglva);
+
     }
 
     //在这个方法内才能获取正确的距离宽高参数
@@ -47,7 +67,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         eY = findViewById(R.id.goods_evaluate).getTop();
-        eI = findViewById(R.id.goods_image_text_info).getTop();
+//        eI = findViewById(R.id.goods_image_text_info).getTop();
     }
 
     @Override
@@ -62,7 +82,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsInfo.setTextSize(ts_18);
                 goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
-                nestedScrollView.scrollTo(0,0);
+                nestedScrollView.scrollTo(0, 0);
             }
         });
         goodsEvaluate.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +94,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_22);
                 goodsEvaluate.setTextColor(Color.parseColor("#000000"));
-                nestedScrollView.scrollTo(0,eY);
+                nestedScrollView.scrollTo(0, eY);
             }
         });
         goodsInfo.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +106,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_18);
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
-                nestedScrollView.scrollTo(0,eI);
+                nestedScrollView.scrollTo(0, eI);
             }
         });
     }
@@ -130,17 +150,18 @@ public class GoodsDetailActivity extends GoodsActivity {
         nestedScrollView = (NestedScrollView) findViewById(R.id.goods_scroll);
         nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             int alpha = 0;
+
             @Override
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY < 255) {
                     alpha = scrollY;
                     title_wrap.setAlpha(alpha);
-                    if(scrollY < 10){
-                        if(title_wrap.getHeight() > 0){
+                    if (scrollY < 10) {
+                        if (title_wrap.getHeight() > 0) {
                             title_wrap.setLayoutParams(layoutParams_d);
                         }
-                    }else{
-                        if(title_wrap.getHeight() <= 0){
+                    } else {
+                        if (title_wrap.getHeight() <= 0) {
                             title_wrap.setLayoutParams(layoutParams);
                         }
                     }
@@ -156,7 +177,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         });
     }
 
-    public void initData(){
+    public void initData() {
         goods_price = (TextView) findViewById(R.id.goods_price);
         market_price = (TextView) findViewById(R.id.goods_market_price);
         market_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);

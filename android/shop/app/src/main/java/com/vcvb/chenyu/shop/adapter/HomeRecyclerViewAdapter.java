@@ -105,7 +105,7 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.V
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_goods_list_right, parent, false);
             return new HomeRecyclerViewAdapter.GoodsRightViewHolder(view);
         } else {
-            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.goods_list, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_goods_list, parent, false);
             return new HomeRecyclerViewAdapter.GoodsViewHolder(view);
         }
     }
