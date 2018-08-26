@@ -1,0 +1,304 @@
+LinearLayout
+            androidid=@+idgoods_all_wrap
+            androidlayout_width=match_parent
+            androidlayout_height=match_parent
+            androidorientation=vertical
+
+            !--配送及说明--
+            LinearLayout
+                androidid=@+idgoods_attr_ship
+                androidlayout_width=match_parent
+                androidlayout_height=wrap_content
+                androidlayout_marginTop=10dp
+                androidorientation=vertical
+
+                ViewStub
+                    androidid=@+idfaat_select
+                    androidlayout_width=match_parent
+                    androidlayout_height=wrap_content
+                    androidinflatedId=@+idfaat_select_inflateid
+                    androidlayout=@layoutgoods_attr_ship_item_2 
+
+                ViewStub
+                    androidid=@+idattr_select
+                    androidlayout_width=match_parent
+                    androidlayout_height=wrap_content
+                    androidinflatedId=@+idattr_select_inflateid
+                    androidlayout=@layoutgoods_attr_ship_item_default 
+
+                ViewStub
+                    androidid=@+idship_select
+                    androidlayout_width=match_parent
+                    androidlayout_height=wrap_content
+                    androidinflatedId=@+idship_select_inflateid
+                    androidlayout=@layoutgoods_attr_ship_item_1 
+
+                ViewStub
+                    androidid=@+idship_free_select
+                    androidlayout_width=match_parent
+                    androidlayout_height=wrap_content
+                    androidinflatedId=@+idship_free_select_inflateid
+                    androidlayout=@layoutgoods_attr_ship_item_default 
+
+                ViewStub
+                    androidid=@+idexplain_select
+                    androidlayout_width=match_parent
+                    androidlayout_height=wrap_content
+                    androidinflatedId=@+idexplain_select_inflateid
+                    androidlayout=@layoutgoods_attr_ship_item_default 
+
+            LinearLayout
+
+            !--评论--
+            !--LinearLayout--
+            !--androidid=@+idgoods_evaluate--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_marginTop=10dp--
+            !--androidorientation=vertical--
+
+
+            !--LinearLayout--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidbackground=@drawabletop_border--
+            !--androidorientation=horizontal--
+            !--androidpadding=12dp--
+
+            !--include--
+            !--androidid=@+idevaluate_title--
+            !--layout=@layoutgoods_title_item_default--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content --
+            !--LinearLayout--
+
+            !--LinearLayout--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=match_parent--
+            !--androidbackground=@colorwhite--
+            !--androidorientation=horizontal--
+            !--androidpadding=12dp--
+
+            !--TextView--
+            !--androidlayout_width=wrap_content--
+            !--androidlayout_height=wrap_content--
+            !--androidbackground=@drawabletip_shape--
+            !--androidpaddingBottom=2dp--
+            !--androidpaddingLeft=5dp--
+            !--androidpaddingRight=5dp--
+            !--androidpaddingTop=2dp--
+            !--androidtext=是正品(725)--
+            !--androidtextColor=@colorblack--
+            !--androidtextSize=12sp --
+
+            !--TextView--
+            !--androidlayout_width=wrap_content--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_marginLeft=10dp--
+            !--androidlayout_marginStart=10dp--
+            !--androidbackground=@drawabletip_shape--
+            !--androidpaddingBottom=2dp--
+            !--androidpaddingLeft=5dp--
+            !--androidpaddingRight=5dp--
+            !--androidpaddingTop=2dp--
+            !--androidtext=价格实惠(725)--
+            !--androidtextColor=@colorblack--
+            !--androidtextSize=12sp --
+
+            !--TextView--
+            !--androidlayout_width=wrap_content--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_marginLeft=10dp--
+            !--androidlayout_marginStart=10dp--
+            !--androidbackground=@drawabletip_shape--
+            !--androidpaddingBottom=2dp--
+            !--androidpaddingLeft=5dp--
+            !--androidpaddingRight=5dp--
+            !--androidpaddingTop=2dp--
+            !--androidtext=物流快(725)--
+            !--androidtextColor=@colorblack--
+            !--androidtextSize=12sp --
+
+            !--LinearLayout--
+
+            !--LinearLayout--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidbackground=@drawablebottom_border--
+            !--androidorientation=horizontal--
+            !--androidpaddingLeft=12dp--
+            !--androidpaddingStart=12dp--
+            !--androidpaddingTop=12dp--
+            !--toolsignore=RtlSymmetry--
+
+            !--android.support.v7.widget.RecyclerView--
+            !--androidid=@+idevaluate_scroll--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=120dp--
+            !--androidlayout_marginBottom=10dp --
+            !--LinearLayout--
+
+            !--LinearLayout--
+
+            !--问问题--
+            !--LinearLayout--
+            !--androidid=@+idgoods_problem--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidbackground=@drawabletop_border--
+            !--androidorientation=vertical--
+            !--androidpadding=12dp--
+
+
+            !--include--
+            !--androidid=@+idproblem_title--
+            !--layout=@layoutgoods_title_item_default--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content --
+
+            !--LinearLayout--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidorientation=horizontal--
+
+            !--ImageView--
+            !--androidlayout_width=35dp--
+            !--androidlayout_height=35dp--
+            !--androidpadding=8dp--
+            !--androidsrc=@drawableicon_problem --
+
+            !--TextView--
+            !--androidlayout_width=0dp--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_gravity=startcenter_vertical--
+            !--androidlayout_weight=3--
+            !--androidtext=需回答的题目--
+            !--androidtextAlignment=textStart--
+            !--androidtextColor=@colorgray--
+            !--androidtextSize=14sp --
+
+            !--TextView--
+            !--androidlayout_width=0dp--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_gravity=startcenter_vertical--
+            !--androidlayout_weight=1--
+            !--androidtext=9个回答--
+            !--androidtextAlignment=textEnd--
+            !--androidtextColor=@colorgray--
+            !--androidtextSize=14sp--
+            !--toolsignore=RtlCompat --
+            !--LinearLayout--
+
+            !--LinearLayout--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidorientation=horizontal--
+
+            !--ImageView--
+            !--androidlayout_width=35dp--
+            !--androidlayout_height=35dp--
+            !--androidpadding=8dp--
+            !--androidsrc=@drawableicon_problem --
+
+            !--TextView--
+            !--androidlayout_width=0dp--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_gravity=startcenter_vertical--
+            !--androidlayout_weight=3--
+            !--androidtext=需研究解决的矛盾等）--
+            !--androidtextAlignment=textStart--
+            !--androidtextColor=@colorgray--
+            !--androidtextSize=14sp --
+
+            !--TextView--
+            !--androidlayout_width=0dp--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_gravity=startcenter_vertical--
+            !--androidlayout_weight=1--
+            !--androidtext=9个回答--
+            !--androidtextAlignment=textEnd--
+            !--androidtextColor=@colorgray--
+            !--androidtextSize=14sp--
+            !--toolsignore=RtlCompat --
+            !--LinearLayout--
+            !--LinearLayout--
+
+            !--品牌在售--
+            !--LinearLayout--
+            !--androidid=@+idgoods_brand--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_marginTop=10dp--
+            !--androidbackground=@drawablebottom_border--
+            !--androidorientation=vertical--
+
+
+            !--LinearLayout--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_marginLeft=12dp--
+            !--androidlayout_marginRight=12dp--
+            !--androidbackground=@drawablebottom_border--
+            !--androidorientation=horizontal--
+
+            !--include--
+            !--androidid=@+idgoods_brand_title--
+            !--layout=@layoutgoods_title_item_brand--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content --
+            !--LinearLayout--
+
+            !--LinearLayout--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidorientation=horizontal--
+            !--androidpaddingLeft=12dp--
+            !--androidpaddingStart=12dp--
+            !--androidpaddingTop=12dp--
+            !--toolsignore=RtlSymmetry--
+
+            !--android.support.v7.widget.RecyclerView--
+            !--androidid=@+idbrand_goods_scroll--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=180dp--
+            !--androidlayout_marginBottom=5dp --
+            !--LinearLayout--
+            !--LinearLayout--
+
+            !--LinearLayout--
+            !--androidid=@+idgoods_recommend--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidorientation=vertical--
+            !--androidpadding=12dp--
+
+
+            !--LinearLayout--
+            !--androidlayout_width=match_parent--
+            !--androidlayout_height=wrap_content--
+            !--androidorientation=horizontal--
+            !--androidpadding=12dp--
+
+            !--TextView--
+            !--androidlayout_width=0dp--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_gravity=startcenter_vertical--
+            !--androidlayout_weight=2--
+            !--androidtext=商品评价(65656)--
+            !--androidtextAlignment=textStart--
+            !--androidtextColor=@colorblack--
+            !--androidtextSize=20sp --
+
+            !--TextView--
+            !--androidlayout_width=0dp--
+            !--androidlayout_height=wrap_content--
+            !--androidlayout_gravity=endcenter_vertical--
+            !--androidlayout_weight=1--
+            !--androidtext=好评 98.5%--
+            !--androidtextAlignment=textEnd--
+            !--androidtextColor=@colorred--
+            !--androidtextSize=16sp --
+            !--LinearLayout--
+            !--LinearLayout--
+
+        LinearLayout
