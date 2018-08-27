@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import com.vcvb.chenyu.shop.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BrandGoodsListViewAdapter extends RecyclerView.Adapter<RecyclerView
         .ViewHolder> {
     private Context context;
-    private ArrayList<Integer> list;
+    private ArrayList<HashMap> list;
 
-    public BrandGoodsListViewAdapter(Context context, ArrayList<Integer> list) {
+    public BrandGoodsListViewAdapter(Context context, ArrayList<HashMap> list) {
         this.context = context;
         this.list = list;
     }
@@ -24,7 +25,7 @@ public class BrandGoodsListViewAdapter extends RecyclerView.Adapter<RecyclerView
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.goods_brand_item,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.goods_brand_sub_item,
                 parent, false);
         return new BrandGoodsListViewAdapter.SimpleViewHolder(view);
     }

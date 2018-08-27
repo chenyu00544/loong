@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/faat_select"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bottom_border"
     android:padding="12dp">
 
@@ -79,7 +79,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
-        android:text=""
+        android:text="查看更多"
         android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/imageView4"
