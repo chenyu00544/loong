@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -14,12 +13,14 @@ import android.widget.LinearLayout;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.GoodsDetailViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
+import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
+import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GoodsDetailActivity extends GoodsActivity {
-    private RecyclerView goodsDatail;
+    private ShopRecyclerView goodsDatail;
     private GoodsDetailViewAdapter goodsDatailAdapter;
     int pos = 0;
 
@@ -141,9 +142,11 @@ public class GoodsDetailActivity extends GoodsActivity {
     public void initView() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;
-        goodsDatail = (RecyclerView) findViewById(R.id.goods_datail);
+        goodsDatail = (ShopRecyclerView) findViewById(R.id.goods_datail);
+        goodsDatail.setFlingScale(0.1);
         goodsDatail.setNestedScrollingEnabled(false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
+        ShopGridLayoutManager gridLayoutManager = new ShopGridLayoutManager(this, 1);
+        gridLayoutManager.setSpeedRatio(0.1);
         goodsDatail.setLayoutManager(gridLayoutManager);
         gridLayoutManager.setRecycleChildrenOnDetach(true);
 

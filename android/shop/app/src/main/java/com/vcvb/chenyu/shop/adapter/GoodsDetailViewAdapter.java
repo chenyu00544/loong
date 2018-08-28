@@ -16,8 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -55,7 +53,8 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
     final private int INFO_VIEW = 11;
     final private int IMG_INFO_VIEW = 12;
 
-    public GoodsDetailViewAdapter(HashMap hm, int width, RecyclerView.RecycledViewPool pool, Context context) {
+    public GoodsDetailViewAdapter(HashMap hm, int width, RecyclerView.RecycledViewPool pool,
+                                  Context context) {
         this.context = context;
         this.width = width;
         this.hm = hm;
@@ -488,7 +487,8 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
                 v.addView(ptv2);
                 ptv2.setText((CharSequence) problem.get(i).get("num"));
                 ConstraintLayout.LayoutParams tcl2 = new ConstraintLayout.LayoutParams
-                        (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                        (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout
+                                .LayoutParams.WRAP_CONTENT);
                 ptv2.setLayoutParams(tcl2);
                 ConstraintSet constraintSetTv3 = new ConstraintSet();
                 constraintSetTv3.clone(v);
@@ -506,7 +506,8 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
                 v.addView(ptv1);
                 ptv1.setText((CharSequence) problem.get(i).get("prob"));
                 ConstraintLayout.LayoutParams tcl1 = new ConstraintLayout.LayoutParams
-                        (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                        (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout
+                                .LayoutParams.WRAP_CONTENT);
                 ptv1.setLayoutParams(tcl1);
                 ConstraintSet constraintSetTv2 = new ConstraintSet();
                 constraintSetTv2.clone(v);
@@ -634,32 +635,17 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     class GoodsDescHolder extends RecyclerView.ViewHolder {
 
-        private ItemWebView desc_web;
-
         GoodsDescHolder(final View itemView, String desc) {
             super(itemView);
-            desc_web = itemView.findViewById(R.id.desc_web);
-            WebSettings wb = desc_web.getSettings();
+            ItemWebView web_view = (ItemWebView) itemView;
+            WebSettings wb = web_view.getSettings();
             wb.setJavaScriptEnabled(true);
             wb.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL.SINGLE_COLUMN);
             wb.setDefaultTextEncodingName("UTF-8");
             wb.setAppCacheEnabled(true);
             wb.setCacheMode(WebSettings.LOAD_DEFAULT);
             String webdesc = desc.replace("<img", "<img width='100%'");
-            desc_web.loadDataWithBaseURL(null, webdesc, "text/html", "utf-8", null);
-            desc_web.setWebViewClient(new WebViewClient() {
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
-                    view.measure(0, 0);
-                    int measuredHeight = view.getMeasuredHeight();
-                    Log.i("zzz", "measuredHeight=" + measuredHeight);
-                    ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                    lp.height = measuredHeight;
-                    view.setLayoutParams(lp);
-                    itemView.setLayoutParams(lp);
-                }
-            });
+            web_view.loadDataWithBaseURL(null, webdesc, "text/html", "utf-8", null);
         }
     }
 
