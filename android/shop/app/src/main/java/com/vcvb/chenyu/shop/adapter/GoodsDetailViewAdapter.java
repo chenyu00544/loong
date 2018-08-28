@@ -11,15 +11,20 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.spacesitem.SpacesItemDecoration;
 import com.vcvb.chenyu.shop.image.GlideImageLoader;
+import com.vcvb.chenyu.shop.overrideView.ItemWebView;
 import com.vcvb.chenyu.shop.tools.ReflexUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -33,6 +38,7 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
         .ViewHolder> {
     private Context context;
     private HashMap hm;
+    private RecyclerView.RecycledViewPool pool;
     private int width;
     final private int EMPTY_VIEW = 0;
     final private int PROGRESS_VIEW = 99;
@@ -49,10 +55,11 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
     final private int INFO_VIEW = 11;
     final private int IMG_INFO_VIEW = 12;
 
-    public GoodsDetailViewAdapter(HashMap hm, int width, Context context) {
+    public GoodsDetailViewAdapter(HashMap hm, int width, RecyclerView.RecycledViewPool pool, Context context) {
         this.context = context;
         this.width = width;
         this.hm = hm;
+        this.pool = pool;
     }
 
     @Override
@@ -65,90 +72,66 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
         if (hm.size() == 0) {
             return EMPTY_VIEW;
         } else {
-            int type;
+            int type = EMPTY_VIEW;
             switch (position) {
                 case 0:
                     if (hm.get("banner") != null) {
                         type = BANNER_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 1:
                     if (hm.get("price") != null) {
                         type = PRICE_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 2:
                     if (hm.get("goods_name") != null) {
                         type = NAME_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 3:
                     if (hm.get("goods_faat") != null) {
                         type = FAAT_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 4:
                     if (hm.get("goods_attr") != null) {
                         type = ATTR_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 5:
                     if (hm.get("goods_ship") != null) {
                         type = SHIP_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 6:
                     if (hm.get("goods_shipfree") != null) {
                         type = SHIPFREE_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 7:
                     if (hm.get("goods_explain") != null) {
                         type = EXPLAIN_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 8:
                     if (hm.get("goods_evaluate") != null) {
                         type = EVALUATE_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 9:
                     if (hm.get("goods_brand") != null) {
                         type = BRAND_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 10:
                     if (hm.get("goods_info") != null) {
                         type = INFO_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 case 11:
                     if (hm.get("goods_desc") != null) {
                         type = IMG_INFO_VIEW;
-                    } else {
-                        type = EMPTY_VIEW;
                     }
                     break;
                 default:
@@ -215,9 +198,10 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
                     ("goods_info"));
         } else if (viewType == IMG_INFO_VIEW) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout
-                            .goods_img_item,
+                            .goods_desc_item,
                     parent, false);
-            return new GoodsDetailViewAdapter.GoodsDescHolder(view);
+            return new GoodsDetailViewAdapter.GoodsDescHolder(view, (String) hm.get
+                    ("goods_desc"));
         } else {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_null,
                     parent, false);
@@ -291,6 +275,8 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             GoodsBrandHolder goodsBrandHolder = (GoodsBrandHolder) holder;
         } else if (holder instanceof GoodsInfoHolder) {
             GoodsInfoHolder goodsInfoHolder = (GoodsInfoHolder) holder;
+        } else if (holder instanceof GoodsDescHolder) {
+            GoodsDescHolder goodsDescHolder = (GoodsDescHolder) holder;
         }
     }
 
@@ -445,13 +431,13 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
         private TextView tv4;
         private TextView tv5;
         private TextView tv6;
-        private TextView tv7;
-        private TextView tv8;
+        private ImageView iv1;
         private RecyclerView rcv;
         private HashMap mp;
 
         GoodsEvaluateHolder(View itemView, HashMap hmp) {
             super(itemView);
+            ConstraintLayout v = (ConstraintLayout) itemView;
             mp = hmp;
             tv1 = itemView.findViewById(R.id.textView23);
             tv2 = itemView.findViewById(R.id.textView22);
@@ -459,8 +445,7 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             tv4 = itemView.findViewById(R.id.textView16);
             tv5 = itemView.findViewById(R.id.textView17);
             tv6 = itemView.findViewById(R.id.textView24);
-            tv7 = itemView.findViewById(R.id.textView26);
-            tv8 = itemView.findViewById(R.id.textView27);
+            iv1 = itemView.findViewById(R.id.imageView10);
             rcv = itemView.findViewById(R.id.evaluate_list);
             tv1.setText((CharSequence) mp.get("pj"));
             tv2.setText((CharSequence) mp.get("hp"));
@@ -469,11 +454,76 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             tv5.setText((CharSequence) mp.get("wl"));
             tv6.setText((CharSequence) mp.get("wdj"));
             ArrayList<HashMap> problem = (ArrayList<HashMap>) mp.get("problem");
-            tv7.setText((CharSequence) problem.get(0).get("prob"));
-            tv8.setText((CharSequence) problem.get(0).get("num"));
+            for (int i = 0; i < problem.size(); i++) {
+                ImageView imgIcon = new ImageView(context);
+                imgIcon.setId(ReflexUtils.getResByRid("id", "prob_icon_" + (i), context));
+                v.addView(imgIcon);
+                ConstraintLayout.LayoutParams icl1 = new ConstraintLayout.LayoutParams
+                        (0, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                icl1.width = 40;
+                icl1.height = 35;
 
+                imgIcon.setLayoutParams(icl1);
+                imgIcon.setBackgroundResource(R.drawable.icon_problem);
+                imgIcon.setPadding(8, 8, 8, 8);
+
+                ConstraintSet constraintSetTv1 = new ConstraintSet();
+                constraintSetTv1.clone(v);
+                if (i == 0) {
+                    constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.TOP, tv6.getId(),
+                            ConstraintSet.BOTTOM, 16);
+                    constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.LEFT, tv6.getId(),
+                            ConstraintSet.LEFT, 12);
+                } else {
+                    int pid = ReflexUtils.getResByRid("id", "prob_icon_" + (i - 1), context);
+                    constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.TOP, pid,
+                            ConstraintSet.BOTTOM, 8);
+                    constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.LEFT, pid,
+                            ConstraintSet.LEFT, 0);
+                }
+                constraintSetTv1.applyTo(v);
+
+                TextView ptv2 = new TextView(context);
+                ptv2.setId(ReflexUtils.getResByRid("id", "answer_num_" + (i), context));
+                v.addView(ptv2);
+                ptv2.setText((CharSequence) problem.get(i).get("num"));
+                ConstraintLayout.LayoutParams tcl2 = new ConstraintLayout.LayoutParams
+                        (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                ptv2.setLayoutParams(tcl2);
+                ConstraintSet constraintSetTv3 = new ConstraintSet();
+                constraintSetTv3.clone(v);
+                constraintSetTv3.connect(ptv2.getId(), ConstraintSet.TOP, imgIcon.getId(),
+                        ConstraintSet.TOP, 0);
+                constraintSetTv3.connect(ptv2.getId(), ConstraintSet.BOTTOM, imgIcon.getId(),
+                        ConstraintSet.BOTTOM, 0);
+                constraintSetTv3.connect(ptv2.getId(), ConstraintSet.RIGHT, iv1.getId(),
+                        ConstraintSet.RIGHT, 0);
+                constraintSetTv3.applyTo(v);
+
+                TextView ptv1 = new TextView(context);
+                ptv1.setId(ReflexUtils.getResByRid("id", "prob_" + (i), context));
+                ptv1.setTextColor(Color.parseColor("#000000"));
+                v.addView(ptv1);
+                ptv1.setText((CharSequence) problem.get(i).get("prob"));
+                ConstraintLayout.LayoutParams tcl1 = new ConstraintLayout.LayoutParams
+                        (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                ptv1.setLayoutParams(tcl1);
+                ConstraintSet constraintSetTv2 = new ConstraintSet();
+                constraintSetTv2.clone(v);
+                constraintSetTv2.connect(ptv1.getId(), ConstraintSet.TOP, imgIcon.getId(),
+                        ConstraintSet.TOP, 0);
+                constraintSetTv2.connect(ptv1.getId(), ConstraintSet.LEFT, imgIcon.getId(),
+                        ConstraintSet.RIGHT, 12);
+                constraintSetTv2.connect(ptv1.getId(), ConstraintSet.BOTTOM, imgIcon.getId(),
+                        ConstraintSet.BOTTOM, 0);
+                constraintSetTv2.connect(ptv1.getId(), ConstraintSet.RIGHT, ptv2.getId(),
+                        ConstraintSet.LEFT, 12);
+                constraintSetTv2.applyTo(v);
+            }
+            rcv.setRecycledViewPool(pool);
             rcv.setBackgroundColor(Color.parseColor("#FFFFFF"));
             LinearLayoutManager mse = new LinearLayoutManager(context);
+            mse.setInitialPrefetchItemCount(3);
             rcv.setLayoutManager(mse);
             rcv.addItemDecoration(new SpacesItemDecoration(24));
             mse.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -504,8 +554,10 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             tv2.setText((CharSequence) mp.get("zz"));
             tv3.setText((CharSequence) mp.get("jj"));
 
+            rcv.setRecycledViewPool(pool);
             rcv.setBackgroundColor(Color.parseColor("#FFFFFF"));
             LinearLayoutManager mse = new LinearLayoutManager(context);
+            mse.setInitialPrefetchItemCount(5);
             rcv.setLayoutManager(mse);
             rcv.addItemDecoration(new SpacesItemDecoration(20));
             mse.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -527,8 +579,10 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             tv = itemView.findViewById(R.id.textView29);
             for (int i = 0; i < ahmp.size(); i++) {
                 TextView tv1 = new TextView(context);
+                TextView tv2 = new TextView(context);
                 tv1.setId(ReflexUtils.getResByRid("id", "attr_title_" + (i), context));
                 tv1.setPadding(10, 10, 10, 10);
+                tv1.setGravity(Gravity.CENTER_VERTICAL);
                 v.addView(tv1);
                 ConstraintLayout.LayoutParams tvp1 = new ConstraintLayout.LayoutParams
                         (180, ConstraintLayout.LayoutParams
@@ -542,22 +596,25 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
                             ConstraintSet.BOTTOM, 24);
                     constraintSetTv1.connect(tv1.getId(), ConstraintSet.LEFT, tv.getId(),
                             ConstraintSet.LEFT, 0);
-                    constraintSetTv1.applyTo(v);
+                    tv1.setBackgroundResource(R.drawable.title_all_border);
+                    tv2.setBackgroundResource(R.drawable.content_trb_border);
                 } else {
                     int pid = ReflexUtils.getResByRid("id", "attr_title_" + (i - 1), context);
                     constraintSetTv1.connect(tv1.getId(), ConstraintSet.TOP, pid,
                             ConstraintSet.BOTTOM, 0);
                     constraintSetTv1.connect(tv1.getId(), ConstraintSet.LEFT, pid,
                             ConstraintSet.LEFT, 0);
-                    constraintSetTv1.applyTo(v);
+                    tv1.setBackgroundResource(R.drawable.title_lbr_border);
+                    tv2.setBackgroundResource(R.drawable.content_br_border);
                 }
+                constraintSetTv1.applyTo(v);
 
-                TextView tv2 = new TextView(context);
                 tv2.setId(ReflexUtils.getResByRid("id", "attr_content_" + (i), context));
                 tv2.setPadding(10, 10, 10, 10);
+                tv2.setGravity(Gravity.CENTER_VERTICAL);
                 v.addView(tv2);
                 ConstraintLayout.LayoutParams tvp2 = new ConstraintLayout.LayoutParams
-                        (0, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                        (0, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT);
                 tv2.setLayoutParams(tvp2);
                 tv2.setText((CharSequence) ahmp.get(i).get("content"));
                 ConstraintSet constraintSetTv2 = new ConstraintSet();
@@ -569,7 +626,7 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
                 constraintSetTv2.connect(tv2.getId(), ConstraintSet.BOTTOM, tv1.getId(),
                         ConstraintSet.BOTTOM, 0);
                 constraintSetTv2.connect(tv2.getId(), ConstraintSet.RIGHT, tv.getId(),
-                        ConstraintSet.RIGHT, 12);
+                        ConstraintSet.RIGHT, 24);
                 constraintSetTv2.applyTo(v);
             }
         }
@@ -577,9 +634,32 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
 
     class GoodsDescHolder extends RecyclerView.ViewHolder {
 
+        private ItemWebView desc_web;
 
-        GoodsDescHolder(View itemView) {
+        GoodsDescHolder(final View itemView, String desc) {
             super(itemView);
+            desc_web = itemView.findViewById(R.id.desc_web);
+            WebSettings wb = desc_web.getSettings();
+            wb.setJavaScriptEnabled(true);
+            wb.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL.SINGLE_COLUMN);
+            wb.setDefaultTextEncodingName("UTF-8");
+            wb.setAppCacheEnabled(true);
+            wb.setCacheMode(WebSettings.LOAD_DEFAULT);
+            String webdesc = desc.replace("<img", "<img width='100%'");
+            desc_web.loadDataWithBaseURL(null, webdesc, "text/html", "utf-8", null);
+            desc_web.setWebViewClient(new WebViewClient() {
+                @Override
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+                    view.measure(0, 0);
+                    int measuredHeight = view.getMeasuredHeight();
+                    Log.i("zzz", "measuredHeight=" + measuredHeight);
+                    ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    lp.height = measuredHeight;
+                    view.setLayoutParams(lp);
+                    itemView.setLayoutParams(lp);
+                }
+            });
         }
     }
 

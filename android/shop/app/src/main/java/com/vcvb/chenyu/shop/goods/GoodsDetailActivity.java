@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.BrandGoodsListViewAdapter;
-import com.vcvb.chenyu.shop.adapter.EvaluateListViewAdapter;
 import com.vcvb.chenyu.shop.adapter.GoodsDetailViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
 
@@ -24,14 +22,6 @@ public class GoodsDetailActivity extends GoodsActivity {
     private RecyclerView goodsDatail;
     private GoodsDetailViewAdapter goodsDatailAdapter;
     int pos = 0;
-    int eY;
-    int eI;
-
-    private RecyclerView bgs;
-    private BrandGoodsListViewAdapter bglva;
-
-    private RecyclerView eva;
-    private EvaluateListViewAdapter evaa;
 
     public GoodsDetailActivity() {
     }
@@ -109,6 +99,15 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                switch (newState) {
+                    case 0: //不滚动
+                        break;
+                    case 1: // 按着手指滚动
+                        break;
+                    case 2: // 不按着手指滚动
+                        break;
+                }
+
             }
 
             @Override
@@ -143,7 +142,11 @@ public class GoodsDetailActivity extends GoodsActivity {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;
         goodsDatail = (RecyclerView) findViewById(R.id.goods_datail);
-        goodsDatail.setLayoutManager(new GridLayoutManager(this, 1));
+        goodsDatail.setNestedScrollingEnabled(false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
+        goodsDatail.setLayoutManager(gridLayoutManager);
+        gridLayoutManager.setRecycleChildrenOnDetach(true);
+
         HashMap hm = new HashMap();
         ArrayList<HashMap> imgUrls = new ArrayList<>();
         for (int i = 0; i < Images.imgUrls.length; i++) {
@@ -209,8 +212,8 @@ public class GoodsDetailActivity extends GoodsActivity {
         ArrayList<HashMap> probs = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             HashMap probhm = new HashMap();
-            probhm.put("prob","sdaffadfasdfadsfaffddaffadf");
-            probhm.put("num","9aff");
+            probhm.put("prob", "xcccc");
+            probhm.put("num", "9aff");
             probs.add(probhm);
         }
         evaluatehm.put("evaluates", evaluates);
@@ -248,11 +251,17 @@ public class GoodsDetailActivity extends GoodsActivity {
             attrs.add(attrhm);
         }
         hm.put("goods_info", attrs);
+        hm.put("goods_desc", "<div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/785/554/9114455587_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/093/074/9114470390_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/833/374/9114473338_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/070/225/9116522070_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/615/164/9114461516_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/649/179/9095971946_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/548/779/9095977845_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/156/944/9114449651_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/286/100/9096001682_1171374532.jpg\"></div></div>\n");
 
         //初始化适配器
-        goodsDatailAdapter = new GoodsDetailViewAdapter(hm, width, this);
+        RecyclerView.RecycledViewPool pool = goodsDatail.getRecycledViewPool();
+        goodsDatailAdapter = new GoodsDetailViewAdapter(hm, width, pool, this);
         goodsDatail.setItemAnimator(new DefaultItemAnimator());
         goodsDatail.setAdapter(goodsDatailAdapter);
+        pool.setMaxRecycledViews(9, 1);
+        pool.putRecycledView(goodsDatail.getAdapter().createViewHolder(goodsDatail, 9));
+        pool.setMaxRecycledViews(10, 1);
+        pool.putRecycledView(goodsDatail.getAdapter().createViewHolder(goodsDatail, 10));
     }
 
     @Override
@@ -269,9 +278,9 @@ public class GoodsDetailActivity extends GoodsActivity {
 //        int recycleViewHeight = goodsDatail.getHeight();
         int itemHeight = firstVisibItem.getHeight();
         int firstItemBottom = layoutManager.getDecoratedBottom(firstVisibItem);
-        System.out.println(firstItemPosition);
-        System.out.println(itemHeight);
-        System.out.println(firstItemBottom);
+//        System.out.println(firstItemPosition);
+//        System.out.println(itemHeight);
+//        System.out.println(firstItemBottom);
         return (firstItemPosition + 1) * itemHeight - firstItemBottom;
     }
 }

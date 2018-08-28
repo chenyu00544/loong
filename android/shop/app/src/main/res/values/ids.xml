@@ -52,4 +52,11 @@
     <item name="attr_content_24" type="id" />
     <item name="attr_title_25" type="id" />
     <item name="attr_content_25" type="id" />
+
+    <item name="prob_0" type="id" />
+    <item name="answer_num_0" type="id" />
+    <item name="prob_icon_0" type="id" />
+    <item name="prob_1" type="id" />
+    <item name="answer_num_1" type="id" />
+    <item name="prob_icon_1" type="id" />
 </resources>
