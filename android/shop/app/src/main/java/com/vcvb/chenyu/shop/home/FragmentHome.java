@@ -30,6 +30,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
+import com.vcvb.chenyu.shop.javaBean.home.HomeData;
 import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
@@ -275,5 +276,6 @@ public class FragmentHome extends BaseFragment {
 
     public void bindData() {
         System.out.println(data);
+        HomeData homeData;
     }
 }
