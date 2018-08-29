@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
+
 public class BaseFragment extends Fragment {
     View view;
     Context context;
@@ -67,5 +69,9 @@ public class BaseFragment extends Fragment {
 
     protected void onFragmentVisibleChange(boolean isVisible) {
 
+    }
+
+    public void getData(Context context){
+        LoadingDialog.getInstance(context).show();
     }
 }

@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.home;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -28,16 +30,27 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
+import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.Routes;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
 
 public class FragmentHome extends BaseFragment {
 
     private RecyclerView recyclerView;
     private HomeRecyclerViewAdapter adapter;
     int pos = 0;
+    private JSONObject data;
+
+    private RefreshLayout refreshLayout;
 
     @Nullable
     @Override
@@ -45,21 +58,8 @@ public class FragmentHome extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         context = getActivity();
-
-        RefreshLayout refreshLayout = view.findViewById(R.id.content_recycler_view);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshLayout) {
-                refreshLayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
-            }
-        });
-
+        initRefresh();
+        getData(context);
         initSearchView();
         initRecyclerView();
         return view;
@@ -208,5 +208,72 @@ public class FragmentHome extends BaseFragment {
         int itemHeight = firstVisibItem.getHeight();
         int firstItemBottom = layoutManager.getDecoratedBottom(firstVisibItem);
         return (firstItemPosition + 1) * itemHeight - firstItemBottom;
+    }
+
+    private void initRefresh() {
+        refreshLayout = view.findViewById(R.id.content_recycler_view);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                getDataByTip(false, refreshLayout);
+                refreshLayout.finishRefresh(10000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
+            }
+        });
+    }
+
+    @Override
+    public void getData(final Context context) {
+        super.getData(context);
+        getDataByTip(true, null);
+    }
+
+    public void getDataByTip(final boolean is_first, final RefreshLayout refreshLayout) {
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("goods_id", "");
+        mp.put("nav_id", "0");
+        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                if (json != null) {
+                    data = json;
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (is_first) {
+                                LoadingDialog.getInstance(context).dismiss();
+                            } else if (refreshLayout != null) {
+                                refreshLayout.finishRefresh();
+                            }
+                            bindData();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (is_first) {
+                            LoadingDialog.getInstance(context).dismiss();
+                        } else if (refreshLayout != null) {
+                            refreshLayout.finishRefresh(false);
+                        }
+                        Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    public void bindData() {
+        System.out.println(data);
     }
 }

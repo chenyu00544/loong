@@ -1,10 +1,13 @@
 package com.vcvb.chenyu.shop.goods;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -15,6 +18,7 @@ import com.vcvb.chenyu.shop.adapter.GoodsDetailViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
+import com.vcvb.chenyu.shop.receiver.Receiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +26,10 @@ import java.util.HashMap;
 public class GoodsDetailActivity extends GoodsActivity {
     private ShopRecyclerView goodsDatail;
     private GoodsDetailViewAdapter goodsDatailAdapter;
+    private ShopGridLayoutManager gridLayoutManager;
     int pos = 0;
+    private View child1;
+    private Receiver receiver;
 
     public GoodsDetailActivity() {
     }
@@ -114,11 +121,34 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                pos = getDistance();
-                if (pos < 255) {
-                    alpha = pos;
+                child1 = gridLayoutManager.getChildAt(0);
+                if (goodsDatail.getChildAdapterPosition(child1) == 0) {
+                    goodsView.setTextSize(ts_22);
+                    goodsView.setTextColor(Color.parseColor("#000000"));
+                    goodsEvaluate.setTextSize(ts_18);
+                    goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
+                    goodsInfo.setTextSize(ts_18);
+                    goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
+                } else if (goodsDatail.getChildAdapterPosition(child1) == 8) {
+                    goodsView.setTextSize(ts_18);
+                    goodsView.setTextColor(Color.parseColor("#AAAAAA"));
+                    goodsInfo.setTextSize(ts_18);
+                    goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
+                    goodsEvaluate.setTextSize(ts_22);
+                    goodsEvaluate.setTextColor(Color.parseColor("#000000"));
+                } else if (goodsDatail.getChildAdapterPosition(child1) == 10) {
+                    goodsInfo.setTextSize(ts_22);
+                    goodsInfo.setTextColor(Color.parseColor("#000000"));
+                    goodsView.setTextSize(ts_18);
+                    goodsView.setTextColor(Color.parseColor("#AAAAAA"));
+                    goodsEvaluate.setTextSize(ts_18);
+                    goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
+                }
+                pos -= dy;
+                if (-pos < 255) {
+                    alpha = -pos;
                     title_wrap.setAlpha(alpha);
-                    if (pos < 10) {
+                    if (-pos < 10) {
                         if (title_wrap.getHeight() > 0) {
                             title_wrap.setLayoutParams(layoutParams_d);
                         }
@@ -143,10 +173,10 @@ public class GoodsDetailActivity extends GoodsActivity {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;
         goodsDatail = (ShopRecyclerView) findViewById(R.id.goods_datail);
-        goodsDatail.setFlingScale(0.1);
+        goodsDatail.setFlingScale(0.3);
         goodsDatail.setNestedScrollingEnabled(false);
-        ShopGridLayoutManager gridLayoutManager = new ShopGridLayoutManager(this, 1);
-        gridLayoutManager.setSpeedRatio(0.1);
+        gridLayoutManager = new ShopGridLayoutManager(this, 1);
+        gridLayoutManager.setSpeedRatio(1);
         goodsDatail.setLayoutManager(gridLayoutManager);
         gridLayoutManager.setRecycleChildrenOnDetach(true);
 
@@ -231,7 +261,7 @@ public class GoodsDetailActivity extends GoodsActivity {
 
         HashMap brandshm = new HashMap();
         ArrayList<HashMap> brands = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 5; i++) {
             HashMap brandhm = new HashMap();
             brandhm.put("logo", "http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
             brandhm.put("name", "ssssssss");
@@ -265,25 +295,84 @@ public class GoodsDetailActivity extends GoodsActivity {
         pool.putRecycledView(goodsDatail.getAdapter().createViewHolder(goodsDatail, 9));
         pool.setMaxRecycledViews(10, 1);
         pool.putRecycledView(goodsDatail.getAdapter().createViewHolder(goodsDatail, 10));
+        pool.setMaxRecycledViews(12, 1);
+        pool.putRecycledView(goodsDatail.getAdapter().createViewHolder(goodsDatail, 12));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("BannerClick");
+        intentFilter.addAction("FaatClick");
+        intentFilter.addAction("AttrClick");
+        intentFilter.addAction("ShipClick");
+        intentFilter.addAction("ShipFreeClick");
+        intentFilter.addAction("ExplainClick");
+        intentFilter.addAction("EvaluateClick");
+        intentFilter.addAction("EvaluateTag1Click");
+        intentFilter.addAction("EvaluateTag2Click");
+        intentFilter.addAction("EvaluateTag3Click");
+        intentFilter.addAction("EvaluateUserClick");
+        intentFilter.addAction("ProblemClick");
+        intentFilter.addAction("AnswerClick");
+        intentFilter.addAction("BrandClick");
+        intentFilter.addAction("BrandGoodsClick");
+        receiver = new Receiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (intent.getAction()) {
+                    case "BannerClick":
+                        int pos = intent.getIntExtra("pos", 0);
+                        break;
+                    case "FaatClick":
+                        break;
+                    case "AttrClick":
+                        break;
+                    case "ShipClick":
+                        break;
+                    case "ShipFreeClick":
+                        break;
+                    case "ExplainClick":
+                        break;
+                    case "EvaluateClick":
+                        break;
+                    case "EvaluateTag1Click":
+                        break;
+                    case "EvaluateTag2Click":
+                        break;
+                    case "EvaluateTag3Click":
+                        break;
+                    case "EvaluateUserClick":
+                        break;
+                    case "ProblemClick":
+                        break;
+                    case "AnswerClick":
+                        break;
+                    case "BrandClick":
+                        break;
+                    case "BrandGoodsClick":
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+
+        broadcastManager.registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastManager.unregisterReceiver(receiver);
     }
 
     @Override
     protected void onDestroy() {
         setContentView(R.layout.view_null);
         super.onDestroy();
-    }
-
-    private int getDistance() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) goodsDatail.getLayoutManager();
-        View firstVisibItem = goodsDatail.getChildAt(0);
-        int firstItemPosition = layoutManager.findFirstVisibleItemPosition();
-//        int itemCount = layoutManager.getItemCount();
-//        int recycleViewHeight = goodsDatail.getHeight();
-        int itemHeight = firstVisibItem.getHeight();
-        int firstItemBottom = layoutManager.getDecoratedBottom(firstVisibItem);
-//        System.out.println(firstItemPosition);
-//        System.out.println(itemHeight);
-//        System.out.println(firstItemBottom);
-        return (firstItemPosition + 1) * itemHeight - firstItemBottom;
     }
 }

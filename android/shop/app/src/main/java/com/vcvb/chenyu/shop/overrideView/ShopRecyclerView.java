@@ -24,8 +24,13 @@ public class ShopRecyclerView extends RecyclerView {
     }
 
     @Override
+    public void scrollBy(int x, int y) {
+        super.scrollBy(x, y);
+    }
+
+    @Override
     public boolean fling(int velocityX, int velocityY) {
-        velocityX *= scale;
+        velocityY *= scale;
         return super.fling(velocityX, velocityY);
     }
 }

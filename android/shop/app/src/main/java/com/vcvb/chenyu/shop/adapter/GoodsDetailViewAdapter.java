@@ -2,25 +2,26 @@ package com.vcvb.chenyu.shop.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.spacesitem.SpacesItemDecoration;
 import com.vcvb.chenyu.shop.image.GlideImageLoader;
 import com.vcvb.chenyu.shop.overrideView.ItemWebView;
 import com.vcvb.chenyu.shop.tools.ReflexUtils;
@@ -320,7 +321,10 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             banner.setOnBannerListener(new OnBannerListener() {
                 @Override
                 public void OnBannerClick(int position) {
-                    Log.i("tag", "" + position);
+                    Intent intent = new Intent();
+                    intent.setAction("BannerClick");
+                    intent.putExtra("pos", position);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
                 }
             });
         }
@@ -365,6 +369,14 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             tv2 = itemView.findViewById(R.id.textView1);
             tv3 = itemView.findViewById(R.id.textView4);
             tv4 = itemView.findViewById(R.id.textView5);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    intent.setAction("FaatClick");
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                }
+            });
         }
     }
 
@@ -375,6 +387,14 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
         GoodsAttrHolder(View itemView) {
             super(itemView);
             tv1 = itemView.findViewById(R.id.textView1);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    intent.setAction("AttrClick");
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                }
+            });
         }
     }
 
@@ -431,7 +451,7 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
         private TextView tv5;
         private TextView tv6;
         private ImageView iv1;
-        private RecyclerView rcv;
+        private HorizontalScrollView hsv;
         private HashMap mp;
 
         GoodsEvaluateHolder(View itemView, HashMap hmp) {
@@ -445,7 +465,7 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             tv5 = itemView.findViewById(R.id.textView17);
             tv6 = itemView.findViewById(R.id.textView24);
             iv1 = itemView.findViewById(R.id.imageView10);
-            rcv = itemView.findViewById(R.id.evaluate_list);
+            hsv = itemView.findViewById(R.id.evaluate_list);
             tv1.setText((CharSequence) mp.get("pj"));
             tv2.setText((CharSequence) mp.get("hp"));
             tv3.setText((CharSequence) mp.get("zp"));
@@ -521,16 +541,13 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
                         ConstraintSet.LEFT, 12);
                 constraintSetTv2.applyTo(v);
             }
-            rcv.setRecycledViewPool(pool);
-            rcv.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            LinearLayoutManager mse = new LinearLayoutManager(context);
-            mse.setInitialPrefetchItemCount(3);
-            rcv.setLayoutManager(mse);
-            rcv.addItemDecoration(new SpacesItemDecoration(24));
-            mse.setOrientation(LinearLayoutManager.HORIZONTAL);
+
             ArrayList<HashMap> evaluates = (ArrayList<HashMap>) mp.get("evaluates");
-            EvaluateListViewAdapter evaa = new EvaluateListViewAdapter(context, evaluates);
-            rcv.setAdapter(evaa);
+            LinearLayout ly = hsv.findViewById(R.id.evaluate_list_wrap);
+            for (int i = 0; i < evaluates.size(); i++) {
+                View view = LayoutInflater.from(context).inflate(R.layout.goods_evaluate_sub_item, null, false);
+                ly.addView(view);
+            }
         }
     }
 
@@ -539,7 +556,7 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
         private TextView tv2;
         private TextView tv3;
         private ImageView imgv;
-        private RecyclerView rcv;
+        private HorizontalScrollView hsv;
         private HashMap mp;
 
         GoodsBrandHolder(View itemView, HashMap hmp) {
@@ -549,22 +566,17 @@ public class GoodsDetailViewAdapter extends RecyclerView.Adapter<RecyclerView
             tv2 = itemView.findViewById(R.id.textView10);
             tv3 = itemView.findViewById(R.id.textView11);
             imgv = itemView.findViewById(R.id.imageView7);
-            rcv = itemView.findViewById(R.id.brand_list);
+            hsv = itemView.findViewById(R.id.brand_list);
 
             tv1.setText((CharSequence) mp.get("shop"));
             tv2.setText((CharSequence) mp.get("zz"));
             tv3.setText((CharSequence) mp.get("jj"));
-
-            rcv.setRecycledViewPool(pool);
-            rcv.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            LinearLayoutManager mse = new LinearLayoutManager(context);
-            mse.setInitialPrefetchItemCount(5);
-            rcv.setLayoutManager(mse);
-            rcv.addItemDecoration(new SpacesItemDecoration(20));
-            mse.setOrientation(LinearLayoutManager.HORIZONTAL);
             ArrayList<HashMap> goods = (ArrayList<HashMap>) mp.get("brand_goods");
-            BrandGoodsListViewAdapter bva = new BrandGoodsListViewAdapter(context, goods);
-            rcv.setAdapter(bva);
+            LinearLayout ly = hsv.findViewById(R.id.brand_list_wrap);
+            for (int i = 0; i < goods.size(); i++) {
+                View view = LayoutInflater.from(context).inflate(R.layout.goods_brand_sub_item, null, false);
+                ly.addView(view);
+            }
         }
     }
 

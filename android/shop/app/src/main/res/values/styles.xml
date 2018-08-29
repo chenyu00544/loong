@@ -15,4 +15,7 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@drawable/icon_startpage</item>
     </style>
+    <style name="TransparentDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>
