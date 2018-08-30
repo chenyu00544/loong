@@ -33,8 +33,10 @@ import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.home.HomeData;
 import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -52,6 +54,7 @@ public class FragmentHome extends BaseFragment {
     private JSONObject data;
 
     private RefreshLayout refreshLayout;
+
 
     @Nullable
     @Override
@@ -275,7 +278,20 @@ public class FragmentHome extends BaseFragment {
     }
 
     public void bindData() {
-        System.out.println(data);
+//        System.out.println(data);
         HomeData homeData;
+
+        try {
+            if (data != null) {
+                homeData = JsonUtils.fromJsonObject(data.getJSONObject("data"), HomeData.class);
+//                System.out.println(homeData);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 }

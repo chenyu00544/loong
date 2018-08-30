@@ -92,21 +92,32 @@ public class JsonUtils {
         return json.toString();
     }
 
-    public static <T> T fromJson(String JsonStr,Class<T> type)throws JSONException,NullPointerException,IllegalAccessException, InstantiationException{
-        if(JsonStr ==null||JsonStr.equals("")) {
+    public static <T> T fromJson(String JsonStr, Class<T> type) throws JSONException, NullPointerException, IllegalAccessException, InstantiationException {
+        if (JsonStr == null || JsonStr.equals("")) {
             throw new NullPointerException("JsonString can't be null");
         }
-        T data = type.newInstance();;
-        Field[] fields= type.getDeclaredFields();
-        JSONObject jsonObject=(JSONObject)new JSONTokener(JsonStr).nextValue();
+        T data = type.newInstance();
+        Field[] fields = type.getDeclaredFields();
+        JSONObject jsonObject = (JSONObject) new JSONTokener(JsonStr).nextValue();
         for (Field field : fields) {
             field.setAccessible(true);
-            field.set(data,JsonObjectToObject(jsonObject, field));
+            field.set(data, JsonObjectToObject(jsonObject, field));
         }
         return data;
     }
 
-    public static Object JsonObjectToObject(JSONObject obj,Field field) throws JSONException{
+    public static <T> T fromJsonObject(JSONObject Json, Class<T> type) throws JSONException, NullPointerException, IllegalAccessException, InstantiationException {
+        T data = type.newInstance();
+        Field[] fields = type.getDeclaredFields();
+        JSONObject jsonObject = Json;
+        for (Field field : fields) {
+            field.setAccessible(true);
+            field.set(data, JsonObjectToObject(jsonObject, field));
+        }
+        return data;
+    }
+
+    public static Object JsonObjectToObject(JSONObject obj, Field field) throws JSONException {
         switch (getType(field.getType()))//field.getType:获取属性声明时类型对象（返回class对象）
         {
             case 0:
@@ -135,16 +146,16 @@ public class JsonUtils {
 
     public static List<Object> JsonArrayToList(JSONArray jsonArray) throws JSONException {
         List<Object> list = new ArrayList<Object>();
-        if(jsonArray!=null){
+        if (jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {
                 Object val = jsonArray.get(i);
-                if(val!=null){
+                if (val != null) {
                     if (val instanceof JSONObject) {
                         Map<String, Object> map = JsonObjectToMap((JSONObject) val);
                         list.add(map);
-                    }else if(val instanceof JSONArray){
+                    } else if (val instanceof JSONArray) {
                         list.add(JsonArrayToList((JSONArray) val));
-                    }else {
+                    } else {
                         list.add(val);
                     }
                 }
@@ -155,22 +166,22 @@ public class JsonUtils {
 
     public static Map<String, Object> JsonObjectToMap(JSONObject jsonResult) throws JSONException {
         Map<String, Object> result = new HashMap<String, Object>();
-        if(jsonResult!=null) {
+        if (jsonResult != null) {
             Iterator<String> keyIt = jsonResult.keys();
             while (keyIt.hasNext()) {
                 String key = keyIt.next();
                 Object val = jsonResult.get(key);
-                if(val!=null){
+                if (val != null) {
                     if (val instanceof JSONObject) {
                         Map<String, Object> valMap = JsonObjectToMap((JSONObject) val);
                         result.put(key, valMap);
-                    }else if (val instanceof JSONArray) {
+                    } else if (val instanceof JSONArray) {
                         JSONArray ja = (JSONArray) val;
                         result.put(key, JsonArrayToList(ja));
-                    }else {
+                    } else {
                         result.put(key, val);
                     }
-                }else {
+                } else {
                     result.put(key, null);
                 }
             }

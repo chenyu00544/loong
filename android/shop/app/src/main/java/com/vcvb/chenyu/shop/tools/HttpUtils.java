@@ -164,8 +164,7 @@ public class HttpUtils {
     private static JSONObject parseJsonData(String string) {
         try {
             //解析的过程就是在逐层剥开代码的过程
-            JSONObject jsonObject = new JSONObject(string);
-            return jsonObject.getJSONObject("data");
+            return new JSONObject(string);
         } catch (JSONException e) {
             e.printStackTrace();
         }

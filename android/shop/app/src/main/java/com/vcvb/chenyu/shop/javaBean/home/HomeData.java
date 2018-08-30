@@ -6,21 +6,7 @@ import java.util.List;
 
 public class HomeData {
 
-    private List<Banner> banner;
-    private List<AdsList> adslist;
-    private List<Goods> goods;
-
-    /**
-     * @return the array
-     */
-    public List<Banner> getBanner() {
-        return banner;
-    }
-    /**
-     * @param array the array to set
-     */
-    public void setBanner(List<Banner> array) {
-        this.banner = array;
-    }
-
+    private List<Nav> nav_list;
+    private List<AdsList> ads;
+    private List<Goods> goods_list;
 }

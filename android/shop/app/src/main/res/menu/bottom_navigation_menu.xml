@@ -6,10 +6,10 @@
 
     <item
         android:title="@string/tab_2"
-        android:icon="@drawable/ic_maps_local_bar" />
+        android:icon="@drawable/icon_cate" />
 
     <item
         android:title="@string/tab_3"
-        android:icon="@drawable/ic_maps_local_restaurant" />
+        android:icon="@drawable/icon_find" />
 
 </menu>

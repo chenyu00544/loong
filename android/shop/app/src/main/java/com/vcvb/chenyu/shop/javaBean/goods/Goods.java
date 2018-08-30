@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
 public class Goods {
-    private String string;
+    private String goods_id;
+
 }

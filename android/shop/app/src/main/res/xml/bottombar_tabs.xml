@@ -6,18 +6,18 @@
         title="@string/tab_1" />
     <tab
         id="@+id/tab_category"
-        icon="@drawable/ic_content_add"
+        icon="@drawable/icon_cate"
         title="@string/tab_2" />
     <tab
         id="@+id/tab_find"
-        icon="@drawable/ic_maps_local_restaurant"
+        icon="@drawable/icon_find"
         title="@string/tab_3" />
     <tab
         id="@+id/tab_cart"
-        icon="@drawable/ic_maps_local_bar"
+        icon="@drawable/icon_cart"
         title="@string/tab_4" />
     <tab
         id="@+id/tab_my"
-        icon="@drawable/ic_maps_place"
+        icon="@drawable/icon_my"
         title="@string/tab_5" />
 </tabs>
