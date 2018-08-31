@@ -1,9 +1,13 @@
 package com.vcvb.chenyu.shop;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -12,6 +16,9 @@ import com.vcvb.chenyu.shop.home.FragmentCategory;
 import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.home.FragmentHome;
 import com.vcvb.chenyu.shop.home.FragmentMy;
+import com.vcvb.chenyu.shop.login.RegisterActivity;
+import com.vcvb.chenyu.shop.overrideView.LoginDialog;
+import com.vcvb.chenyu.shop.receiver.Receiver;
 
 public class MainActivity extends FragmentActivity {
 
@@ -24,11 +31,14 @@ public class MainActivity extends FragmentActivity {
     private FragmentFind fragmentFind;
     private FragmentCart fragmentCart;
     private FragmentMy fragmentMy;
+    private Receiver receiver;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this;
         fragmentManager = getSupportFragmentManager();
         bottomInit();
     }
@@ -167,5 +177,60 @@ public class MainActivity extends FragmentActivity {
         if (fragmentMy != null) {
             fragmentTransaction.hide(fragmentMy);
         }
+    }
+
+    public void showLoginDialog() {
+        LoginDialog.getInstance(this).setOnDialogClickListener(new LoginDialog.OnDialogClickListener() {
+            @Override
+            public void onPhoneClickListener() {
+                System.out.println("onPhoneClickListener");
+                LoginDialog.getInstance(context).phoneLogin();
+            }
+
+            @Override
+            public void onEmailClickListener() {
+                System.out.println("onEmailClickListener");
+                LoginDialog.getInstance(context).emailLogin();
+            }
+
+            @Override
+            public void onRegisterClickListener() {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onProblemClickListener() {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+        LoginDialog.getInstance(this).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("LoginClick");
+        receiver = new Receiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (intent.getAction()) {
+                    case "LoginClick":
+                        showLoginDialog();
+                        break;
+                }
+            }
+        };
+        broadcastManager.registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastManager.unregisterReceiver(receiver);
     }
 }

@@ -9,11 +9,11 @@ import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import java.util.HashMap;
 
-public class LoginActivity extends Activity {
+public class RegisterActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.register);
     }
 
     public void onClickLogin(View view){

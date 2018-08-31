@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/view16"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView65"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="25dp"
+        android:gravity="center_vertical"
+        android:text="其他方式登录"
+        app:layout_constraintBottom_toBottomOf="@+id/view16"
+        app:layout_constraintEnd_toEndOf="@+id/view16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view16" />
+
+    <ImageView
+        android:id="@+id/imageView37"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/icon_back_gray"
+        app:layout_constraintBottom_toBottomOf="@+id/view16"
+        app:layout_constraintStart_toStartOf="@+id/view16"
+        app:layout_constraintTop_toTopOf="@+id/view16"
+        app:srcCompat="@drawable/icon_back_gray" />
+
+    <TextView
+        android:id="@+id/textView66"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:text="邮箱登录"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view16" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/edit_gray_shape"
+        android:ems="10"
+        android:hint="邮箱"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="12dp"
+        android:paddingStart="12dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView66"
+        tools:ignore="RtlSymmetry" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/edit_gray_shape"
+        android:ems="10"
+        android:hint="密码"
+        android:inputType="textPassword"
+        android:paddingLeft="12dp"
+        android:paddingStart="12dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText3"
+        tools:ignore="RtlSymmetry" />
+
+    <TextView
+        android:id="@+id/textView67"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/button_none_shape"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="登录"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+</android.support.constraint.ConstraintLayout>
