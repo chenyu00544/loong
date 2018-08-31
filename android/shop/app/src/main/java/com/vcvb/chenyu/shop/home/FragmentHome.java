@@ -55,7 +55,6 @@ public class FragmentHome extends BaseFragment {
 
     private RefreshLayout refreshLayout;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

@@ -17,8 +17,13 @@ import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.home.FragmentHome;
 import com.vcvb.chenyu.shop.home.FragmentMy;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
+import com.vcvb.chenyu.shop.overrideView.LoadingDialog2;
 import com.vcvb.chenyu.shop.overrideView.LoginDialog;
 import com.vcvb.chenyu.shop.receiver.Receiver;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends FragmentActivity {
 
@@ -203,6 +208,26 @@ public class MainActivity extends FragmentActivity {
             public void onProblemClickListener() {
                 Intent intent = new Intent(context, RegisterActivity.class);
                 startActivity(intent);
+            }
+
+            @Override
+            public void onLoginClickListener(Map<String, String> user) {
+                LoadingDialog2.getInstance(context).show();
+                HashMap<String, String> u = new HashMap<>();
+
+                //获取服务器数据
+                //..
+                u.put("username", "cb");
+                u.put("token", "csdfafafkoimlvj09809mljalfadf.adfjlajfoi098087.kjfaldjfladfl8979823423");
+                u.put("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg");
+                u.put("nickname", "chongchong");
+
+                UserInfoUtils.getInstance(context).setUserInfo(u);
+                LoadingDialog2.getInstance(context).dismiss();
+                Intent intent = new Intent();
+                intent.setAction("UserInfoCall");
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                LoginDialog.getInstance(context).hide();
             }
         });
         LoginDialog.getInstance(this).show();

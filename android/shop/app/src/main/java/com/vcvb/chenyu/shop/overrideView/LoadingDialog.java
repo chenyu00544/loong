@@ -31,6 +31,11 @@ public class LoadingDialog extends AlertDialog {
         avi = (AVLoadingIndicatorView)this.findViewById(R.id.avi);
     }
 
+    public LoadingDialog setType(String indicator){
+        avi.setIndicator(indicator);
+        return loadingDialog;
+    }
+
     @Override
     public void show() {
         super.show();

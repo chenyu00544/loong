@@ -29,7 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/my_head_backgroud" />
 
-            <ImageView
+            <com.vcvb.chenyu.shop.overrideView.RoundImageView
                 android:id="@+id/imageView15"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -38,6 +38,7 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="50dp"
+                app:radius="30dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_boy_head"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -705,7 +706,20 @@
                 app:layout_constraintTop_toTopOf="@+id/textView56"
                 app:srcCompat="@drawable/icon_forward" />
 
-
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/textView37"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@color/sky"
+        android:gravity="center_vertical"
+        android:paddingTop="20dp"
+        android:text="个人中心"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -23,17 +23,17 @@ public class RoundImageView extends AppCompatImageView {
     private int leftBottomRadius;
 
     public RoundImageView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public RoundImageView(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public RoundImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
-        paint  = new Paint();
+        paint = new Paint();
     }
 
     private void init(Context context, AttributeSet attrs) {
@@ -41,12 +41,18 @@ public class RoundImageView extends AppCompatImageView {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         // 读取配置
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.Custom_Round_Image_View);
-        radius = array.getDimensionPixelOffset(R.styleable.Custom_Round_Image_View_radius, defaultRadius);
-        leftTopRadius = array.getDimensionPixelOffset(R.styleable.Custom_Round_Image_View_left_top_radius, defaultRadius);
-        rightTopRadius = array.getDimensionPixelOffset(R.styleable.Custom_Round_Image_View_right_top_radius, defaultRadius);
-        rightBottomRadius = array.getDimensionPixelOffset(R.styleable.Custom_Round_Image_View_right_bottom_radius, defaultRadius);
-        leftBottomRadius = array.getDimensionPixelOffset(R.styleable.Custom_Round_Image_View_left_bottom_radius, defaultRadius);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable
+                .Custom_Round_Image_View);
+        radius = array.getDimensionPixelOffset(R.styleable.Custom_Round_Image_View_radius,
+                defaultRadius);
+        leftTopRadius = array.getDimensionPixelOffset(R.styleable
+                .Custom_Round_Image_View_left_top_radius, defaultRadius);
+        rightTopRadius = array.getDimensionPixelOffset(R.styleable
+                .Custom_Round_Image_View_right_top_radius, defaultRadius);
+        rightBottomRadius = array.getDimensionPixelOffset(R.styleable
+                .Custom_Round_Image_View_right_bottom_radius, defaultRadius);
+        leftBottomRadius = array.getDimensionPixelOffset(R.styleable
+                .Custom_Round_Image_View_left_bottom_radius, defaultRadius);
 
         //如果四个角的值没有设置，那么就使用通用的radius的值。
         if (defaultRadius == leftTopRadius) {
@@ -73,6 +79,7 @@ public class RoundImageView extends AppCompatImageView {
 
     /**
      * 绘制圆角矩形图片
+     *
      * @author se7en
      */
     @Override

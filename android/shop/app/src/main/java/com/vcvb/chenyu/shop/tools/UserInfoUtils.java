@@ -29,10 +29,6 @@ public class UserInfoUtils {
     }
 
     public void setUserInfo(Map<String, String> userInfo) {
-//        for (Map.Entry<String, String> entry : userInfo.entrySet()) {
-//            editor.putString(entry.getKey(), entry.getValue());
-//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-//        }
         editor.putString("username", userInfo.get("username"));
         editor.putString("token", userInfo.get("token"));
         editor.putString("logo", userInfo.get("logo"));
