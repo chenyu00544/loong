@@ -165,15 +165,15 @@ public class LoginDialog extends Dialog {
                     loginType= false;
                     phoneQRCode.setAlpha(0);
                     phoneQRCode.setEnabled(false);
-                    phonePassEdit.setHint("密码");
-                    phoneLoginType.setText("验证码登录");
+                    phonePassEdit.setHint(R.string.password);
+                    phoneLoginType.setText(R.string.qrcode_login);
                 }else{
                     //改为验证码登录
                     loginType= true;
                     phoneQRCode.setAlpha(1);
                     phoneQRCode.setEnabled(true);
-                    phonePassEdit.setHint("验证码");
-                    phoneLoginType.setText("密码登录");
+                    phonePassEdit.setHint(R.string.qrcode);
+                    phoneLoginType.setText(R.string.pass_login);
                 }
             }
         });

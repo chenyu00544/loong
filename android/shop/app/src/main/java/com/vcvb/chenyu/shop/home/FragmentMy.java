@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.login.RegisterActivity;
+import com.vcvb.chenyu.shop.mycenter.OrderActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -46,6 +46,77 @@ public class FragmentMy extends BaseFragment {
             @Override
             public void onClick(View view) {
                 onClickSignOut();
+            }
+        });
+
+        ImageView order1 = view.findViewById(R.id.imageView16);
+        order1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOrderActivity(1);
+            }
+        });
+        TextView orderTv1 = view.findViewById(R.id.textView40);
+        orderTv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOrderActivity(1);
+            }
+        });
+        ImageView order2 = view.findViewById(R.id.imageView17);
+        order2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOrderActivity(2);
+            }
+        });
+        TextView orderTv2 = view.findViewById(R.id.textView41);
+        orderTv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOrderActivity(2);
+            }
+        });
+        ImageView order3 = view.findViewById(R.id.imageView18);
+        order3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOrderActivity(3);
+            }
+        });
+        TextView orderTv3 = view.findViewById(R.id.textView42);
+        orderTv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOrderActivity(3);
+            }
+        });
+        ImageView order4 = view.findViewById(R.id.imageView19);
+        order4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOrderActivity(4);
+            }
+        });
+        TextView orderTv4 = view.findViewById(R.id.textView43);
+        orderTv4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToOrderActivity(4);
+            }
+        });
+        ImageView order5 = view.findViewById(R.id.imageView20);
+        order5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToReturnOrderActivity();
+            }
+        });
+        TextView orderTv5 = view.findViewById(R.id.textView44);
+        orderTv5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToReturnOrderActivity();
             }
         });
 
@@ -87,17 +158,15 @@ public class FragmentMy extends BaseFragment {
                     showLoginDialog();
                 }
             });
+            iv.setBackgroundResource(R.drawable.icon_boy_head);
+            tv.setText(R.string.login_reg);
         }
     }
 
+    //退出登录
     public void onClickSignOut() {
         UserInfoUtils.getInstance(context).clear();
-        goToRegister();
-    }
-
-    public void goToRegister() {
-        Intent intent = new Intent(context, RegisterActivity.class);
-        startActivity(intent);
+        checkLogin();
     }
 
     public void showLoginDialog() {
@@ -106,9 +175,21 @@ public class FragmentMy extends BaseFragment {
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
+    public void goToOrderActivity(int type){
+        Intent intent = new Intent(context, OrderActivity.class);
+        intent.putExtra("type", type);
+        startActivity(intent);
+    }
+
+    public void goToReturnOrderActivity(){
+        Intent intent = new Intent(context, OrderActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+        checkLogin();
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("UserInfoCall");

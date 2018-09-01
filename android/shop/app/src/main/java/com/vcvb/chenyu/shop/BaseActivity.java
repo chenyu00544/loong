@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
+
 import me.imid.swipebacklayout.lib.SwipeBackLayout;
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -11,6 +13,7 @@ public class BaseActivity extends SwipeBackActivity {
     private SwipeBackLayout swipeBackLayout;
     public LinearLayout nav_bar;
     public LinearLayout nav_back;
+    public LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,4 +36,6 @@ public class BaseActivity extends SwipeBackActivity {
             });
         }
     }
+
+
 }

@@ -11,6 +11,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.home.FragmentCart;
 import com.vcvb.chenyu.shop.home.FragmentCategory;
 import com.vcvb.chenyu.shop.home.FragmentFind;
@@ -201,7 +202,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onRegisterClickListener() {
                 Intent intent = new Intent(context, RegisterActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, ConstantManager.REGISTER_FOR_MY);
             }
 
             @Override
@@ -257,5 +258,26 @@ public class MainActivity extends FragmentActivity {
         super.onPause();
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         broadcastManager.unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if(requestCode == ConstantManager.REGISTER_FOR_MY){
+
+                HashMap<String, String> u = new HashMap<>();
+                u.put("username", data.getStringExtra("username"));
+                u.put("token", data.getStringExtra("token"));
+                u.put("logo", data.getStringExtra("logo"));
+                u.put("nickname", data.getStringExtra("nickname"));
+
+                UserInfoUtils.getInstance(context).setUserInfo(u);
+                Intent intent = new Intent();
+                intent.setAction("UserInfoCall");
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                LoginDialog.getInstance(context).hide();
+            }
+        }
     }
 }

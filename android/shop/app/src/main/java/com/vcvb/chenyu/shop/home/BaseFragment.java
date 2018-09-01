@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
 
 public class BaseFragment extends Fragment {
@@ -23,9 +24,15 @@ public class BaseFragment extends Fragment {
      * 当前Fragment是否处于可见状态标志，防止因ViewPager的缓存机制而导致回调函数的触发
      */
     private boolean isFragmentVisible;
+
+    public LoadingDialog loadingDialog;
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        context = getActivity();
+        loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -71,7 +78,7 @@ public class BaseFragment extends Fragment {
 
     }
 
-    public void getData(Context context){
-        LoadingDialog.getInstance(context).show();
+    public void getData() {
+        loadingDialog.show();
     }
 }

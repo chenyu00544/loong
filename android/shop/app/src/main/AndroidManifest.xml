@@ -35,11 +35,19 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
         </activity>
-        <!--<receiver android:name=".receiver.Receiver"></receiver>-->
         <activity android:name=".login.RegisterActivity"
             android:label="login"
             android:theme="@style/AppTheme">
         </activity>
+        <activity android:name=".mycenter.OrderActivity"
+            android:label="order"
+            android:theme="@style/AppTheme">
+        </activity>
+        <!--<receiver android:name=".receiver.Receiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="LoginClick" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
     </application>
 
 </manifest>

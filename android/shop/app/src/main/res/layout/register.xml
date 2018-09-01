@@ -1,34 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView33"
+    <View
+        android:id="@+id/view17"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edit_gray_shape"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nav_header" />
+
+    <View
+        android:id="@+id/view18"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edit_gray_shape"
+        app:layout_constraintEnd_toEndOf="@+id/view17"
+        app:layout_constraintStart_toStartOf="@+id/view17"
+        app:layout_constraintTop_toBottomOf="@+id/view17" />
+
+    <View
+        android:id="@+id/view19"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edit_gray_shape"
+        app:layout_constraintEnd_toEndOf="@+id/view18"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/view18"
+        app:layout_constraintTop_toBottomOf="@+id/view18" />
+
+    <EditText
+        android:id="@+id/editText5"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/login_backgroud"
+        android:layout_marginEnd="100dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="@string/phone"
+        android:inputType="phone"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view17"
+        app:layout_constraintEnd_toEndOf="@+id/view17"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/view17"
+        app:layout_constraintTop_toTopOf="@+id/view17"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="SpUsage" />
+
+    <EditText
+        android:id="@+id/editText6"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="@string/get_qrcode"
+        android:inputType="number"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view18"
+        app:layout_constraintEnd_toEndOf="@+id/view18"
+        app:layout_constraintStart_toStartOf="@+id/view18"
+        app:layout_constraintTop_toTopOf="@+id/view18"
+        tools:ignore="SpUsage" />
+
+    <EditText
+        android:id="@+id/editText7"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="@string/pass_tip"
+        android:inputType="textPassword"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view19"
+        app:layout_constraintEnd_toEndOf="@+id/view19"
+        app:layout_constraintStart_toStartOf="@+id/view19"
+        app:layout_constraintTop_toTopOf="@+id/view19"
+        tools:ignore="SpUsage" />
+
+    <TextView
+        android:id="@+id/textView68"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_none_shape"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/register"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/view19"
+        app:layout_constraintStart_toStartOf="@+id/view19"
+        app:layout_constraintTop_toBottomOf="@+id/view19" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        android:button="@drawable/checkbox_style"
+        android:checked="true"
+        app:layout_constraintStart_toStartOf="@+id/textView68"
+        app:layout_constraintTop_toBottomOf="@+id/textView68" />
+
+    <TextView
+        android:id="@+id/textView69"
+        android:layout_width="70dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/qrcode_shape"
+        android:gravity="center_vertical"
+        android:text="@string/get_qrcode"
+        android:textAlignment="center"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view17"
+        app:layout_constraintEnd_toEndOf="@+id/view17"
+        app:layout_constraintStart_toEndOf="@+id/editText5"
+        app:layout_constraintTop_toTopOf="@+id/view17"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/textView70"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/agree"
+        app:layout_constraintBottom_toBottomOf="@+id/checkBox"
+        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintTop_toTopOf="@+id/checkBox" />
+
+    <TextView
+        android:id="@+id/textView71"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text='@string/service'
+        app:layout_constraintBottom_toBottomOf="@+id/textView70"
+        app:layout_constraintStart_toEndOf="@+id/textView70"
+        app:layout_constraintTop_toTopOf="@+id/textView70" />
+
+    <TextView
+        android:id="@+id/textView72"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/and"
+        app:layout_constraintBottom_toBottomOf="@+id/textView71"
+        app:layout_constraintStart_toEndOf="@+id/textView71"
+        app:layout_constraintTop_toTopOf="@+id/textView71" />
+
+    <TextView
+        android:id="@+id/textView73"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/policies"
+        app:layout_constraintBottom_toBottomOf="@+id/textView72"
+        app:layout_constraintStart_toEndOf="@+id/textView72"
+        app:layout_constraintTop_toTopOf="@+id/textView72" />
+
+    <include
+        android:id="@+id/nav_header"
+        layout="@layout/navigation_header_view"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/login_backgroud" />
+        app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/common_google_signin_btn_icon_light_normal_background"
-        android:onClick="onClickLogin"
-        android:text="登录"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView33"
+    <View
+        android:id="@+id/view20"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/color_e"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.61" />
+        app:layout_constraintTop_toBottomOf="@+id/nav_header" />
 
 </android.support.constraint.ConstraintLayout>

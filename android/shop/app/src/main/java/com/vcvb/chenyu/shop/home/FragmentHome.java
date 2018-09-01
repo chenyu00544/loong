@@ -1,6 +1,5 @@
 package com.vcvb.chenyu.shop.home;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -31,7 +30,6 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.home.HomeData;
-import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
@@ -59,10 +57,10 @@ public class FragmentHome extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_home, container, false);
-        context = getActivity();
         initRefresh();
-        getData(context);
+        getData();
         initSearchView();
         initRecyclerView();
         return view;
@@ -231,8 +229,8 @@ public class FragmentHome extends BaseFragment {
     }
 
     @Override
-    public void getData(final Context context) {
-        super.getData(context);
+    public void getData() {
+        super.getData();
         getDataByTip(true, null);
     }
 
@@ -249,7 +247,7 @@ public class FragmentHome extends BaseFragment {
                         @Override
                         public void run() {
                             if (is_first) {
-                                LoadingDialog.getInstance(context).dismiss();
+                                loadingDialog.dismiss();
                             } else if (refreshLayout != null) {
                                 refreshLayout.finishRefresh();
                             }
@@ -265,7 +263,7 @@ public class FragmentHome extends BaseFragment {
                     @Override
                     public void run() {
                         if (is_first) {
-                            LoadingDialog.getInstance(context).dismiss();
+                            loadingDialog.dismiss();
                         } else if (refreshLayout != null) {
                             refreshLayout.finishRefresh(false);
                         }
