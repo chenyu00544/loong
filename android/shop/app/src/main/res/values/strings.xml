@@ -7,6 +7,7 @@
     <string name="tab_4">购物车</string>
     <string name="tab_5">我的</string>
 
+    <string name="store_name">柠檬自营</string>
     <string name="goods_detail">商品详情</string>
     <string name="goods">商品</string>
     <string name="evaluate">评价</string>
@@ -68,4 +69,18 @@
     <string name="no_ship_order">待发货(0)</string>
     <string name="no_sign_order">待收货(0)</string>
     <string name="no_evaluate_order">带评价(0)</string>
+
+    <string name="app_user">手机用户专享</string>
+    <string name="goods_name">柠檬</string>
+    <string name="goods_price">￥99.9</string>
+    <string name="goods_market">￥199.9</string>
+    <string name="goods_num">×1</string>
+    <string name="total">合计:</string>
+    <string name="to_pay">去结算</string>
+    <string name="now_pay">立即付款</string>
+    <string name="cancel_order">取消订单</string>
+    <string name="buy_again">再次购买</string>
+    <string name="look_express">查看物流</string>
+    <string name="user_evaluate">我要评价</string>
+    <string name="sale_after">售后</string>
 </resources>

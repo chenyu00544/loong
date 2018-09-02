@@ -116,7 +116,8 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="16dp"
-        android:button="@drawable/checkbox_style"
+        android:background="@drawable/checkbox_style"
+        android:button="@null"
         android:checked="true"
         app:layout_constraintStart_toStartOf="@+id/textView68"
         app:layout_constraintTop_toBottomOf="@+id/textView68" />

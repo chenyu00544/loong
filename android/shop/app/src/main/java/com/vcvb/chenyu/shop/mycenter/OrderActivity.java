@@ -8,13 +8,19 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.transition.TransitionManager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.adapter.OrderRecyclerViewAdapter;
+import com.vcvb.chenyu.shop.adapter.spacesitem.SpacesItemDecoration;
+import com.vcvb.chenyu.shop.javaBean.order.OrderListBean;
 import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
@@ -22,7 +28,9 @@ import com.vcvb.chenyu.shop.tools.Routes;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Call;
 
@@ -36,9 +44,16 @@ public class OrderActivity extends BaseActivity {
     private TextView tv5;
     private ConstraintSet set = new ConstraintSet();
     private ConstraintLayout cly;
-    private HashMap<String, Object> order_list = new HashMap<>();
 
+    private RecyclerView mRecyclerView;
+    private OrderRecyclerViewAdapter mAdapter;
+    private List<OrderListBean> orders;
+    private GridLayoutManager mLayoutManager;
 
+    private View noDataView;
+    private View haveDataView;
+
+    private int type = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +61,7 @@ public class OrderActivity extends BaseActivity {
         setContentView(R.layout.order_list);
         context = this;
         cly = (ConstraintLayout) findViewById(R.id.order_list);
+        set.clone(cly);
         setNavBack();
         initView();
         initListener();
@@ -82,6 +98,7 @@ public class OrderActivity extends BaseActivity {
     }
 
     public void initView() {
+        orders = new ArrayList<>();
         line = findViewById(R.id.view26);
         tv1 = (TextView) findViewById(R.id.textView74);
         tv2 = (TextView) findViewById(R.id.textView75);
@@ -90,7 +107,7 @@ public class OrderActivity extends BaseActivity {
         tv5 = (TextView) findViewById(R.id.textView78);
 
         Intent intent = getIntent();
-        int type = intent.getIntExtra("type", 1);
+        type = intent.getIntExtra("type", 1);
         getOrderByList(type);
         setTypeStyle(type);
     }
@@ -134,6 +151,7 @@ public class OrderActivity extends BaseActivity {
     }
 
     public void getOrderByList(int type) {
+        this.type = type;
         loadingDialog = new LoadingDialog(this, R.style.TransparentDialog);
         loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
@@ -147,9 +165,10 @@ public class OrderActivity extends BaseActivity {
                     @Override
                     public void run() {
                         loadingDialog.dismiss();
-                        if(order_list.size() > 0){
+                        if (orders.size() == 0) {
                             setHaveDataByView();
-                        }else{
+                        } else {
+                            orders.clear();
                             setNoDateByView();
                         }
                     }
@@ -158,19 +177,24 @@ public class OrderActivity extends BaseActivity {
 
             @Override
             public void failed(Call call, IOException e) {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        setNoDateByView();
+                    }
+                });
             }
         });
     }
 
     public void setTypeStyle(int type) {
-        set.clone(cly);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(cly);
         }
         set.clear(line.getId());
-        set.constrainWidth(line.getId(),100);
-        set.constrainHeight(line.getId(),4);
+        set.constrainWidth(line.getId(), 100);
+        set.constrainHeight(line.getId(), 4);
         switch (type) {
             case 1:
                 set.connect(line.getId(), ConstraintSet.LEFT, tv1.getId(), ConstraintSet.LEFT, 0);
@@ -201,11 +225,68 @@ public class OrderActivity extends BaseActivity {
         set.applyTo(cly);
     }
 
-    public void setNoDateByView(){
+    public void setNoDateByView() {
+        cly.removeView(haveDataView);
+        noDataView = LayoutInflater.from(this).inflate(R.layout.order_content_no_data,
+                null);
+        if (findViewById(R.id.no_data) == null) {
+            cly.addView(noDataView);
+        }
+        set.connect(noDataView.getId(), ConstraintSet.TOP, tv1.getId(), ConstraintSet.BOTTOM,
+                0);
+        set.connect(noDataView.getId(), ConstraintSet.LEFT, cly.getId(), ConstraintSet.LEFT, 0);
+        set.connect(noDataView.getId(), ConstraintSet.RIGHT, cly.getId(), ConstraintSet
+                .RIGHT, 0);
+        set.connect(noDataView.getId(), ConstraintSet.BOTTOM, cly.getId(), ConstraintSet
+                .BOTTOM, 0);
+        set.applyTo(cly);
     }
 
-    public void setHaveDataByView(){
+    public void setHaveDataByView() {
+        cly.removeView(noDataView);
+        haveDataView = LayoutInflater.from(this).inflate(R.layout
+                .order_content_have_data, null);
+        if (findViewById(R.id.have_data) == null) {
+            cly.addView(haveDataView);
+        }
+        set.connect(haveDataView.getId(), ConstraintSet.TOP, tv1.getId(), ConstraintSet
+                .BOTTOM, 4);
+        set.connect(haveDataView.getId(), ConstraintSet.LEFT, cly.getId(), ConstraintSet
+                .LEFT, 0);
+        set.connect(haveDataView.getId(), ConstraintSet.RIGHT, cly.getId(), ConstraintSet
+                .RIGHT, 0);
+        set.connect(haveDataView.getId(), ConstraintSet.BOTTOM, cly.getId(), ConstraintSet
+                .BOTTOM, 0);
+        set.applyTo(cly);
 
+        for (int i = 0; i < 5; i++) {
+            OrderListBean order = new OrderListBean();
+            order.setIsType(2);
+            order.setStoreName("store_name" + i);
+            orders.add(order);
+            for (int j = 0; j < 3; j++) {
+                order = new OrderListBean();
+                order.setIsType(1);
+                order.setGoodsName("goods_name" + j);
+                orders.add(order);
+            }
+            order = new OrderListBean();
+            if(type == 1 || type == 2){
+                order.setIsType(3);
+                order.setPriceTotal("$19" + i + ".00");
+            }else if(type == 3 || type == 4){
+                order.setIsType(4);
+            }else if(type == 5){
+                order.setIsType(5);
+            }
+            orders.add(order);
+        }
+        mRecyclerView = haveDataView.findViewById(R.id.order_content);
+        mAdapter = new OrderRecyclerViewAdapter(context, orders);
+        mLayoutManager = new GridLayoutManager(context, 1);
+        SpacesItemDecoration spaces = new SpacesItemDecoration(context, orders);
+        mRecyclerView.addItemDecoration(spaces);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
-
 }
