@@ -16,10 +16,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.OrderRecyclerViewAdapter;
-import com.vcvb.chenyu.shop.adapter.spacesitem.SpacesItemDecoration;
+import com.vcvb.chenyu.shop.adapter.spacesitem.OrderItemDecoration;
 import com.vcvb.chenyu.shop.javaBean.order.OrderListBean;
 import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
@@ -31,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import okhttp3.Call;
 
@@ -54,6 +58,8 @@ public class OrderActivity extends BaseActivity {
     private View haveDataView;
 
     private int type = 0;
+
+    private RefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,10 +171,9 @@ public class OrderActivity extends BaseActivity {
                     @Override
                     public void run() {
                         loadingDialog.dismiss();
-                        if (orders.size() == 0) {
+                        if (orders.size() != 0) {
                             setHaveDataByView();
                         } else {
-                            orders.clear();
                             setNoDateByView();
                         }
                     }
@@ -186,6 +191,41 @@ public class OrderActivity extends BaseActivity {
                 });
             }
         });
+
+        orders.clear();
+        for (int i = 0; i < 5; i++) {
+            OrderListBean order = new OrderListBean();
+            order.setIsType(2);
+            order.setStoreName("store_name" + i);
+            orders.add(order);
+            for (int j = 0; j < 3; j++) {
+                order = new OrderListBean();
+                order.setIsType(1);
+                order.setGoodsName("goods_name" + j);
+                orders.add(order);
+            }
+            order = new OrderListBean();
+            if (type == 1) {
+                Random random = new Random();
+                int k = random.nextInt(6);
+                if (k == 2) {
+                    order.setIsType(3);
+                    order.setPriceTotal("$19" + i + ".00");
+                } else if (k == 0 || k == 1) {
+                    order.setIsType(4);
+                } else {
+                    order.setIsType(k);
+                }
+            } else if (type == 2) {
+                order.setIsType(3);
+                order.setPriceTotal("$19" + i + ".00");
+            } else if (type == 3 || type == 4) {
+                order.setIsType(4);
+            } else if (type == 5) {
+                order.setIsType(5);
+            }
+            orders.add(order);
+        }
     }
 
     public void setTypeStyle(int type) {
@@ -246,47 +286,41 @@ public class OrderActivity extends BaseActivity {
         cly.removeView(noDataView);
         haveDataView = LayoutInflater.from(this).inflate(R.layout
                 .order_content_have_data, null);
+
         if (findViewById(R.id.have_data) == null) {
             cly.addView(haveDataView);
-        }
-        set.connect(haveDataView.getId(), ConstraintSet.TOP, tv1.getId(), ConstraintSet
-                .BOTTOM, 4);
-        set.connect(haveDataView.getId(), ConstraintSet.LEFT, cly.getId(), ConstraintSet
-                .LEFT, 0);
-        set.connect(haveDataView.getId(), ConstraintSet.RIGHT, cly.getId(), ConstraintSet
-                .RIGHT, 0);
-        set.connect(haveDataView.getId(), ConstraintSet.BOTTOM, cly.getId(), ConstraintSet
-                .BOTTOM, 0);
-        set.applyTo(cly);
+            set.connect(haveDataView.getId(), ConstraintSet.TOP, tv1.getId(), ConstraintSet
+                    .BOTTOM, 4);
+            set.connect(haveDataView.getId(), ConstraintSet.LEFT, cly.getId(), ConstraintSet
+                    .LEFT, 0);
+            set.connect(haveDataView.getId(), ConstraintSet.RIGHT, cly.getId(), ConstraintSet
+                    .RIGHT, 0);
+            set.connect(haveDataView.getId(), ConstraintSet.BOTTOM, cly.getId(), ConstraintSet
+                    .BOTTOM, 0);
+            set.applyTo(cly);
+            mRecyclerView = haveDataView.findViewById(R.id.order_content);
+            mAdapter = new OrderRecyclerViewAdapter(context, orders);
+            mLayoutManager = new GridLayoutManager(context, 1);
+            OrderItemDecoration spaces = new OrderItemDecoration(context, orders);
+            mRecyclerView.addItemDecoration(spaces);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setAdapter(mAdapter);
 
-        for (int i = 0; i < 5; i++) {
-            OrderListBean order = new OrderListBean();
-            order.setIsType(2);
-            order.setStoreName("store_name" + i);
-            orders.add(order);
-            for (int j = 0; j < 3; j++) {
-                order = new OrderListBean();
-                order.setIsType(1);
-                order.setGoodsName("goods_name" + j);
-                orders.add(order);
-            }
-            order = new OrderListBean();
-            if(type == 1 || type == 2){
-                order.setIsType(3);
-                order.setPriceTotal("$19" + i + ".00");
-            }else if(type == 3 || type == 4){
-                order.setIsType(4);
-            }else if(type == 5){
-                order.setIsType(5);
-            }
-            orders.add(order);
+            refreshLayout = (RefreshLayout) haveDataView;
+            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(RefreshLayout refreshLayout) {
+                    refreshLayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+                }
+            });
+            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(RefreshLayout refreshLayout) {
+                    refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
+                }
+            });
+        } else {
+            mAdapter.notifyDataSetChanged();
         }
-        mRecyclerView = haveDataView.findViewById(R.id.order_content);
-        mAdapter = new OrderRecyclerViewAdapter(context, orders);
-        mLayoutManager = new GridLayoutManager(context, 1);
-        SpacesItemDecoration spaces = new SpacesItemDecoration(context, orders);
-        mRecyclerView.addItemDecoration(spaces);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
     }
 }

@@ -20,7 +20,7 @@ public class OrderRecyclerViewAdapter extends BaseRecyclerAdapter<OrderListBean>
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
-
+        holder.bindViewHolder(mList.get(position), position);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class OrderRecyclerViewAdapter extends BaseRecyclerAdapter<OrderListBean>
     @Override
     public BaseViewHolder getHolder(View itemView, int viewType, AdapterView.OnItemClickListener
             listener) {
-        return new DetailViewHolder(itemView, viewType, listener);
+        return new OrderViewHolder(itemView, viewType, listener);
     }
 
     @Override
@@ -71,18 +71,32 @@ public class OrderRecyclerViewAdapter extends BaseRecyclerAdapter<OrderListBean>
         }
     }
 
-    public class DetailViewHolder extends BaseViewHolder<OrderListBean> {
+    public class OrderViewHolder extends BaseViewHolder<OrderListBean> {
 
-        private TextView tv1;
-
-        public DetailViewHolder(View itemView, int viewType, AdapterView.OnItemClickListener
+        public OrderViewHolder(View itemView, int viewType, AdapterView.OnItemClickListener
                 listener) {
             super(itemView, viewType, listener);
         }
 
         @Override
-        public void bindViewHolder(OrderListBean detailBean) {
-
+        public void bindViewHolder(OrderListBean bean, int position) {
+            System.out.println(bean);
+            switch (OrderRecyclerViewAdapter.this.getItemViewType(position)){
+                case ITEM_VIEW_TYPE_TITLE:
+                    TextView storeName = itemView.findViewById(R.id.textView95);
+                    storeName.setText(bean.getStoreName());
+                    break;
+                case ITEM_VIEW_TYPE_BUTTOM:
+                    break;
+                case ITEM_VIEW_TYPE_BUTTOM1:
+                    break;
+                case ITEM_VIEW_TYPE_BUTTOM2:
+                    break;
+                default:
+                    TextView goodsName = itemView.findViewById(R.id.textView85);
+                    goodsName.setText(bean.getGoodsName());
+                    break;
+            }
         }
     }
 }

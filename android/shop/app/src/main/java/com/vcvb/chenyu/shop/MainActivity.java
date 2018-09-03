@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
+import android.view.KeyEvent;
+import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -25,8 +26,10 @@ import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseFragmentActivity {
 
     private BottomBar bottomBar;
 
@@ -279,5 +282,24 @@ public class MainActivity extends FragmentActivity {
                 LoginDialog.getInstance(context).hide();
             }
         }
+    }
+    public boolean isExit = false;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK) {
+            if(!isExit) {
+                isExit = true;
+                Toast.makeText(this, "在按一次退出程序", Toast.LENGTH_SHORT).show();
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        isExit = false;
+                    }
+                }, 2000);
+            } else {
+                moveTaskToBack(true);
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -64,6 +64,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsInfo.setTextSize(ts_18);
                 goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
+                pos = 0;
                 goodsDatail.scrollToPosition(0);
             }
         });
@@ -144,6 +145,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     goodsEvaluate.setTextSize(ts_18);
                     goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 }
+//                System.out.println(dy);
                 pos -= dy;
                 if (-pos < 255) {
                     alpha = -pos;

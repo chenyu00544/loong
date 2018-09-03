@@ -26,6 +26,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
     protected LayoutInflater mInflater;
 
 
+    //暴露给外面的Item
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         this.mListener = listener;
     }
@@ -50,7 +51,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseVi
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        holder.bindViewHolder(mList.get(position));
+        holder.bindViewHolder(mList.get(position), position);
     }
 
     @Override

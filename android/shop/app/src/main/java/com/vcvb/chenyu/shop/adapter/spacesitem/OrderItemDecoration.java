@@ -11,11 +11,11 @@ import com.vcvb.chenyu.shop.javaBean.order.OrderListBean;
 
 import java.util.List;
 
-public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+public class OrderItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
     private List<OrderListBean> mList;
 
-    public SpacesItemDecoration(Context context, List<OrderListBean> list) {
+    public OrderItemDecoration(Context context, List<OrderListBean> list) {
         super();
         mContext = context;
         mList = list;
@@ -28,10 +28,12 @@ public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
             int position = parent.getChildAdapterPosition(view);
             OrderListBean bean = mList.get(position);
             if(bean != null){
-                if (bean.getIsType() == 1) {
+                if (bean.getIsType() == 2) {
                     outRect.set(16, 16, 16, 0);
-                }else{
+                }else if (bean.getIsType() == 1){
                     outRect.set(16, 0, 16, 0);
+                }else{
+                    outRect.set(16, 0, 16, 16);
                 }
             }else {
                 outRect.set(16, 0, 16, 0);

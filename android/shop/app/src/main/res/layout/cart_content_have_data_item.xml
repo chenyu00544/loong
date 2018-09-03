@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <CheckBox
-        android:id="@+id/imageView40"
+        android:id="@+id/checkBox3"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginBottom="8dp"
@@ -15,6 +16,11 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/order_checkbox_style"
         android:button="@null"
+        android:drawableBottom="@color/white"
+        android:drawableLeft="@color/white"
+        android:drawableStart="@color/white"
+        android:drawableTop="@color/white"
+        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,11 +29,12 @@
         android:id="@+id/imageView41"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/imageView40"
+        android:src="@drawable/icon_no_pic"
+        app:layout_constraintStart_toEndOf="@+id/checkBox3"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon_no_pic" />
 
@@ -53,8 +60,9 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:ellipsize="end"
+        android:maxLines="2"
         android:text="@string/goods_name"
         android:textColor="@color/black"
         android:textSize="14sp"
@@ -68,20 +76,21 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:text="@string/goods_name"
         android:textColor="@color/gray"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView85"
-        app:layout_constraintTop_toBottomOf="@+id/textView85" />
+        app:layout_constraintTop_toBottomOf="@+id/textView85"
+        tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/textView87"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:text="@string/goods_price"
         android:textColor="@color/orange"
         android:textSize="14sp"
@@ -122,15 +131,56 @@
 
     <TextView
         android:id="@+id/textView90"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/goods_num"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/tb_border"
+        android:gravity="center_vertical"
+        android:text="@string/goods_nums"
         android:textAlignment="center"
         android:textColor="@color/gray"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView89"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView44"
+        app:layout_constraintEnd_toStartOf="@+id/imageView44"
+        app:layout_constraintTop_toTopOf="@+id/imageView44" />
+
+    <ImageView
+        android:id="@+id/imageView43"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/ltb_corners_all_border"
+        android:padding="6dp"
+        android:src="@drawable/icon_sub"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView44"
+        app:layout_constraintEnd_toStartOf="@+id/textView90"
+        app:layout_constraintTop_toTopOf="@+id/imageView44"
+        app:srcCompat="@drawable/icon_sub" />
+
+    <ImageView
+        android:id="@+id/imageView44"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rtb_corners_all_border"
+        android:padding="6dp"
+        android:src="@drawable/icon_add_back"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView89" />
+        app:layout_constraintTop_toBottomOf="@+id/textView89"
+        app:srcCompat="@drawable/icon_add_back" />
+
+    <include
+        android:id="@+id/long_show"
+        layout="@layout/cart_content_have_data_long_item"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

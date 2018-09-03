@@ -3,7 +3,7 @@
     <string name="app_name">test</string>
     <string name="tab_1">首页</string>
     <string name="tab_2">分类</string>
-    <string name="tab_3">VC柠檬</string>
+    <string name="tab_3">柠檬VC</string>
     <string name="tab_4">购物车</string>
     <string name="tab_5">我的</string>
 
@@ -60,6 +60,7 @@
     <string name="and">和</string>
     <string name="policies">"隐私权相关政策"</string>
     <string name="no_order">您还没有相关的订单</string>
+    <string name="no_goods">您还没有相关的商品</string>
     <string name="want_to_buy">可以去看看哪些想买的</string>
     <string name="buy_immediately">立即去购买</string>
 
@@ -75,6 +76,7 @@
     <string name="goods_price">￥99.9</string>
     <string name="goods_market">￥199.9</string>
     <string name="goods_num">×1</string>
+    <string name="goods_nums">1</string>
     <string name="total">合计:</string>
     <string name="to_pay">去结算</string>
     <string name="now_pay">立即付款</string>
@@ -83,4 +85,15 @@
     <string name="look_express">查看物流</string>
     <string name="user_evaluate">我要评价</string>
     <string name="sale_after">售后</string>
+
+    <string name="edit">编辑</string>
+    <string name="over">完成</string>
+    <string name="cart">购物车</string>
+
+    <string name="add">+</string>
+    <string name="sub">-</string>
+
+    <string name="find_similarity">找相似</string>
+    <string name="i_want_collection">我要收藏</string>
+    <string name="delete">删除</string>
 </resources>
