@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class LaunchActivity extends Activity {
-    private static int TOTAL_TIME = 4000;
+    private static int TOTAL_TIME = 2000;
     private static int ONECE_TIME = 1000;
     Button btn;
 

@@ -1,22 +1,17 @@
-package com.vcvb.chenyu.shop.adapter.viewholder;
+package com.vcvb.chenyu.shop.adapter.base;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
-
-    //子布局中的控件
+public class CYCBaseViewHolder extends RecyclerView.ViewHolder {
     private SparseArray<View> views;
-    //子布局
     private View mItemView;
 
-    public BaseViewHolder(View itemView, int viewType, AdapterView.OnItemClickListener
-            listener) {
+    public CYCBaseViewHolder(View itemView) {
         super(itemView);
         mItemView = itemView;
         views = new SparseArray<>();
@@ -63,9 +58,5 @@ public class BaseViewHolder<T> extends RecyclerView.ViewHolder {
 
     public void setText(int resId, int strId) {
         getTextView(resId).setText(strId);
-    }
-
-    public void bindViewHolder(T t, int pos) {
-
     }
 }

@@ -96,4 +96,6 @@
     <string name="find_similarity">找相似</string>
     <string name="i_want_collection">我要收藏</string>
     <string name="delete">删除</string>
+
+    <string name="category">分类</string>
 </resources>

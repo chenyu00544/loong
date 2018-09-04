@@ -33,10 +33,10 @@ public class CartItemDecoration extends RecyclerView.ItemDecoration {
                 }else if (bean.getIsType() == 1){
                     outRect.set(0, 0, 0, 0);
                 }else{
-                    outRect.set(0, 0, 0, 16);
+                    outRect.set(0, 0, 0, 0);
                 }
             }else {
-                outRect.set(16, 0, 16, 0);
+                outRect.set(0, 0, 0, 16);
             }
         } else if (parent.getLayoutManager() instanceof LinearLayoutManager) {
             outRect.set(0, 0, 0, 0);

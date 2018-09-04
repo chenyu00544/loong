@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,12 +61,17 @@ public class FragmentCart extends Fragment {
 
     public LoadingDialog loadingDialog;
 
+    private ConstraintLayout cly;
+    private ConstraintSet set = new ConstraintSet();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cart, container, false);
         context = getActivity();
+        cly = (ConstraintLayout) view;
+        set.clone(cly);
         getCartData(true);
         initView();
         initListener();
@@ -75,7 +82,14 @@ public class FragmentCart extends Fragment {
         editView = view.findViewById(R.id.textView96);
         msgView = view.findViewById(R.id.imageView42);
         msgNum = view.findViewById(R.id.textView99);
-        toPay = view.findViewById(R.id.textView102);
+        toPay = view.findViewById(R.id.textView107);
+
+        toPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "toPay", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mRecyclerView = view.findViewById(R.id.cart_content);
         mAdapter = new CartRecyclerViewAdapter(context, carts);
@@ -161,13 +175,16 @@ public class FragmentCart extends Fragment {
                         }
                         break;
                     case FIND:
-                        Toast.makeText(context, "FIND", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "FIND", Toast.LENGTH_SHORT).show();
                         break;
                     case COLLECTION:
-                        Toast.makeText(context, "COLLECTION", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "COLLECTION", Toast.LENGTH_SHORT).show();
                         break;
                     case DELETE:
-                        Toast.makeText(context, "DELETE", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "DELETE", Toast.LENGTH_SHORT).show();
+                        break;
+                    case TOBUY:
+                        Toast.makeText(context, "TOBUY", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 mAdapter.notifyDataSetChanged();
@@ -206,7 +223,9 @@ public class FragmentCart extends Fragment {
         });
         if (carts.size() > 0) {
             if (carts.get(0).getIsType() == 3) {
-
+                ConstraintLayout payFoot = view.findViewById(R.id.pay_foot);
+                set.constrainHeight(payFoot.getId(), 0);
+                set.applyTo(cly);
             }
         }
     }
@@ -217,6 +236,7 @@ public class FragmentCart extends Fragment {
     }
 
 
+    //数据获取操作
     public void getCartData(final boolean bool) {
         if (bool) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);

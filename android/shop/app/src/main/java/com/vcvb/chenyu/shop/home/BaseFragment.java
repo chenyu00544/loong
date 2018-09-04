@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
 
-public class BaseFragment extends Fragment {
+public class BaseFragment<T> extends Fragment {
     View view;
     Context context;
     /**

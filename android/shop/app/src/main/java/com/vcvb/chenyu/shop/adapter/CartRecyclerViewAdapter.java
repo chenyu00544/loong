@@ -59,7 +59,9 @@ public class CartRecyclerViewAdapter extends BaseRecyclerAdapter<CartListBean> i
             listener) {
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
-        itemView.setOnTouchListener(this);
+        if(viewType == ITEM_VIEW_TYPE_NORMAL){
+            itemView.setOnTouchListener(this);
+        }
         return new OrderViewHolder(itemView, viewType, listener);
     }
 
@@ -103,7 +105,8 @@ public class CartRecyclerViewAdapter extends BaseRecyclerAdapter<CartListBean> i
         CHECKBOX,
         FIND,
         COLLECTION,
-        DELETE
+        DELETE,
+        TOBUY
     }
 
     @Override
@@ -132,8 +135,10 @@ public class CartRecyclerViewAdapter extends BaseRecyclerAdapter<CartListBean> i
                 case R.id.textView104:
                     mOnItemClickListener.onClick(view, ViewName.DELETE, position);
                     break;
+                case R.id.textView82:
+                    mOnItemClickListener.onClick(view, ViewName.TOBUY, position);
+                    break;
                 default:
-                    System.out.println(1);
                     mOnItemClickListener.onClick(view, ViewName.ITEM, position);
                     break;
             }
@@ -181,6 +186,8 @@ public class CartRecyclerViewAdapter extends BaseRecyclerAdapter<CartListBean> i
                     checkbox2.setOnClickListener(CartRecyclerViewAdapter.this);
                     break;
                 case ITEM_VIEW_TYPE_BUTTOM:
+                    TextView pay = itemView.findViewById(R.id.textView82);
+                    pay.setOnClickListener(CartRecyclerViewAdapter.this);
                     break;
                 case ITEM_VIEW_TYPE_BUTTOM1:
                     break;
@@ -218,6 +225,8 @@ public class CartRecyclerViewAdapter extends BaseRecyclerAdapter<CartListBean> i
                     storeName.setText(bean.getStoreName());
                     break;
                 case ITEM_VIEW_TYPE_BUTTOM:
+                    TextView pay = itemView.findViewById(R.id.textView82);
+                    pay.setTag(position);
                     break;
                 case ITEM_VIEW_TYPE_BUTTOM1:
                     break;
