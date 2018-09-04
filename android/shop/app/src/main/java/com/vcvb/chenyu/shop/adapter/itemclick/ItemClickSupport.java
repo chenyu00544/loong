@@ -9,6 +9,7 @@ public class ItemClickSupport {
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
     private OnChildItemClickListener mOnChildItemClickListener;
+    private static int clildId = -1;
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
@@ -37,7 +38,7 @@ public class ItemClickSupport {
         public void onClick(View v) {
             if (mOnChildItemClickListener != null) {
                 RecyclerView.ViewHolder holder = mRecyclerView.findContainingViewHolder(v);
-                mOnChildItemClickListener.onChildItemClick(mRecyclerView, v, holder
+                mOnChildItemClickListener.onChildItemClicked(mRecyclerView, v, holder
                         .getAdapterPosition());
             }
         }
@@ -52,7 +53,10 @@ public class ItemClickSupport {
                 view.setOnClickListener(mOnClickListener);
             }
             if (mOnChildItemClickListener != null) {
-                view.setOnClickListener(mOnChildClickListener);
+                View v = view.findViewById(clildId);
+                if (v != null) {
+                    v.setOnClickListener(mOnChildClickListener);
+                }
             }
 
             if (mOnItemLongClickListener != null) {
@@ -82,6 +86,15 @@ public class ItemClickSupport {
         ItemClickSupport support = (ItemClickSupport) view.getTag(KEY);
         if (support == null) {
             support = new ItemClickSupport(view);
+        }
+        return support;
+    }
+
+    public static ItemClickSupport BuildTo(RecyclerView view, int id) {
+        clildId = id;
+        ItemClickSupport support = (ItemClickSupport) view.getTag(KEY);
+        if (support == null) {
+            support = new ItemClickSupport(null);
         }
         return support;
     }
@@ -148,7 +161,6 @@ public class ItemClickSupport {
      * RecyclerView的长按事件监听接口
      */
     public interface OnChildItemClickListener {
-        void onChildItemClick(RecyclerView recyclerView, View itemView, int position);
+        void onChildItemClicked(RecyclerView recyclerView, View itemView, int position);
     }
-
 }

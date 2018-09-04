@@ -4,6 +4,7 @@ public class CategroyBean {
     private int isType = 1;
     private String cateName;
     private String pic;
+    private boolean isCurrent = false;
 
     public int getIsType() {
         return isType;
@@ -27,5 +28,13 @@ public class CategroyBean {
 
     public void setPic(String pic) {
         this.pic = pic;
+    }
+
+    public boolean getIsCurrent() {
+        return isCurrent;
+    }
+
+    public void setIsCurrent(boolean isCurrent) {
+        this.isCurrent = isCurrent;
     }
 }

@@ -53,26 +53,34 @@ public class FragmentCategory extends BaseFragment {
         recyclerView.setLayoutManager(grid);
         simpleAdapter = new CYCSimpleAdapter();
         recyclerView.setAdapter(simpleAdapter);
+
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport
                 .OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(itemView);
-                System.out.println(position);
+                for (int i = 0; i < list.size(); i++) {
+                    list.get(i).setIsCurrent(false);
+                }
+                list.get(position).setIsCurrent(true);
+                simpleAdapter.notifyDataSetChanged();
+                subSimpleAdapter.clear();
+                sublist.clear();
+                for (int j = 0; j < 5; j++) {
+                    CategroyBean bean = new CategroyBean();
+                    bean.setIsType(3);
+                    bean.setCateName("title" + position + j);
+                    sublist.add(bean);
+                    for (int k = 0; k < 5; k++) {
+                        bean = new CategroyBean();
+                        bean.setIsType(1);
+                        bean.setCateName("title" + position + k);
+                        bean.setPic(Images.imageUrls[k]);
+                        sublist.add(bean);
+                    }
+                }
+                subSimpleAdapter.addAll(getItems(sublist));
             }
         });
-
-        ItemClickSupport.addTo(recyclerView).setOnItemLongClickListener(new ItemClickSupport
-                .OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClicked(RecyclerView recyclerView, View itemView, int
-                    position) {
-                System.out.println(itemView);
-                System.out.println(position);
-                return true;
-            }
-        });
-
 
         subRecyclerView = view.findViewById(R.id.sub_categroy);
         GridLayoutManager subGrid = new GridLayoutManager(context, 3);
@@ -84,8 +92,7 @@ public class FragmentCategory extends BaseFragment {
                 .OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(itemView);
-                System.out.println(position);
+
             }
         });
         loadData();
@@ -105,6 +112,9 @@ public class FragmentCategory extends BaseFragment {
             CategroyBean bean = new CategroyBean();
             bean.setIsType(2);
             bean.setCateName("Cate" + i);
+            if (i == 0) {
+                bean.setIsCurrent(true);
+            }
             list.add(bean);
         }
         for (int j = 0; j < 5; j++) {
