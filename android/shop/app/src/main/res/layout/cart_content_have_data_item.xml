@@ -2,35 +2,30 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_cart"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
 
     <CheckBox
         android:id="@+id/checkBox3"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:background="@drawable/order_checkbox_style"
         android:button="@null"
-        android:drawableBottom="@color/white"
-        android:drawableLeft="@color/white"
-        android:drawableStart="@color/white"
-        android:drawableTop="@color/white"
-        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlHardcoded" />
 
     <ImageView
         android:id="@+id/imageView41"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitXY"
         android:src="@drawable/icon_no_pic"
@@ -43,14 +38,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/get_qrcode"
+        android:text="@string/discount"
         android:textAlignment="center"
         android:textColor="@color/orange"
-        android:textSize="12sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView41"
         app:layout_constraintStart_toStartOf="@+id/imageView41"
-        app:layout_constraintTop_toBottomOf="@+id/imageView41" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView41"
+        tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/textView85"
@@ -108,6 +104,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView87"
         app:layout_constraintStart_toEndOf="@+id/textView87"
         app:layout_constraintTop_toTopOf="@+id/textView87"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="SmallSp" />
 
     <TextView
@@ -124,15 +121,15 @@
         android:text="@string/app_user"
         android:textColor="@color/white"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView88"
+        app:layout_constraintBottom_toBottomOf="@+id/textView87"
         app:layout_constraintStart_toEndOf="@+id/textView88"
-        app:layout_constraintTop_toTopOf="@+id/textView88"
+        app:layout_constraintTop_toTopOf="@+id/textView87"
         tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/textView90"
         android:layout_width="40dp"
-        android:layout_height="20dp"
+        android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/tb_border"
@@ -147,8 +144,8 @@
 
     <ImageView
         android:id="@+id/imageView43"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:background="@drawable/ltb_corners_all_border"
         android:padding="6dp"
         android:src="@drawable/icon_sub"
@@ -159,8 +156,8 @@
 
     <ImageView
         android:id="@+id/imageView44"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
@@ -173,14 +170,64 @@
         app:layout_constraintTop_toBottomOf="@+id/textView89"
         app:srcCompat="@drawable/icon_add_back" />
 
-    <include
-        android:id="@+id/long_show"
-        layout="@layout/cart_content_have_data_long_item"
+    <View
+        android:id="@+id/view30"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/black_translucent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <TextView
+        android:id="@+id/textView109"
+        android:layout_width="57dp"
+        android:layout_height="60dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/shape_60_gray"
+        android:gravity="center_vertical"
+        android:text="@string/find_similarity"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view30"
+        app:layout_constraintEnd_toStartOf="@+id/textView110"
+        app:layout_constraintStart_toStartOf="@+id/view30"
+        app:layout_constraintTop_toTopOf="@+id/view30"
+        app:layout_constraintVertical_bias="0.507" />
+
+    <TextView
+        android:id="@+id/textView110"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/shape_60_black"
+        android:gravity="center_vertical"
+        android:text="@string/i_want_collection"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view30"
+        app:layout_constraintEnd_toEndOf="@+id/view30"
+        app:layout_constraintStart_toStartOf="@+id/view30"
+        app:layout_constraintTop_toTopOf="@+id/view30"
+        app:layout_constraintVertical_bias="0.505" />
+
+    <TextView
+        android:id="@+id/textView111"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="@drawable/shape_60_red"
+        android:gravity="center_vertical"
+        android:text="@string/delete"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view30"
+        app:layout_constraintEnd_toEndOf="@+id/view30"
+        app:layout_constraintStart_toEndOf="@+id/textView110"
+        app:layout_constraintTop_toTopOf="@+id/view30"
+        app:layout_constraintVertical_bias="0.505" />
 
 </android.support.constraint.ConstraintLayout>

@@ -126,13 +126,13 @@ public class CartRecyclerViewAdapter extends BaseRecyclerAdapter<CartListBean> i
                 case R.id.checkBox3:
                     mOnItemClickListener.onClick(view, ViewName.CHECKBOX, position);
                     break;
-                case R.id.textView98:
+                case R.id.textView109:
                     mOnItemClickListener.onClick(view, ViewName.FIND, position);
                     break;
-                case R.id.textView103:
+                case R.id.textView110:
                     mOnItemClickListener.onClick(view, ViewName.COLLECTION, position);
                     break;
-                case R.id.textView104:
+                case R.id.textView111:
                     mOnItemClickListener.onClick(view, ViewName.DELETE, position);
                     break;
                 case R.id.textView82:
@@ -200,14 +200,6 @@ public class CartRecyclerViewAdapter extends BaseRecyclerAdapter<CartListBean> i
                     sub.setOnClickListener(CartRecyclerViewAdapter.this);
                     CheckBox checkbox3 = itemView.findViewById(R.id.checkBox3);
                     checkbox3.setOnClickListener(CartRecyclerViewAdapter.this);
-
-                    TextView find_similarity = itemView.findViewById(R.id.textView98);
-                    find_similarity.setOnClickListener(CartRecyclerViewAdapter.this);
-                    TextView i_want_collection = itemView.findViewById(R.id.textView103);
-                    i_want_collection.setOnClickListener(CartRecyclerViewAdapter.this);
-                    TextView delete = itemView.findViewById(R.id.textView104);
-                    delete.setOnClickListener(CartRecyclerViewAdapter.this);
-
                     break;
             }
         }
@@ -233,36 +225,6 @@ public class CartRecyclerViewAdapter extends BaseRecyclerAdapter<CartListBean> i
                 case ITEM_VIEW_TYPE_BUTTOM2:
                     break;
                 default:
-                    ConstraintLayout cly = itemView.findViewById(R.id.long_show);
-                    ConstraintSet set1 = new ConstraintSet();
-                    set1.clone(cly);
-                    itemView.findViewById(R.id.imageView44).setTag(position);
-                    itemView.findViewById(R.id.imageView43).setTag(position);
-                    itemView.findViewById(R.id.checkBox3).setTag(position);
-                    itemView.findViewById(R.id.textView98).setTag(position);
-                    itemView.findViewById(R.id.textView103).setTag(position);
-                    itemView.findViewById(R.id.textView104).setTag(position);
-
-                    if (bean.getIsLong() == true) {
-                        cly.setAlpha(1);
-                        set1.constrainWidth(R.id.textView98, 120);
-                        set1.constrainHeight(R.id.textView98, 120);
-                        set1.constrainHeight(R.id.textView103, 120);
-                        set1.constrainHeight(R.id.textView103, 120);
-                        set1.constrainHeight(R.id.textView104, 120);
-                        set1.constrainHeight(R.id.textView104, 120);
-                        set1.applyTo(cly);
-                    }else{
-                        cly.setAlpha(0);
-                        set1.constrainWidth(R.id.textView98, 1);
-                        set1.constrainHeight(R.id.textView98, 1);
-                        set1.constrainHeight(R.id.textView103, 1);
-                        set1.constrainHeight(R.id.textView103, 1);
-                        set1.constrainHeight(R.id.textView104, 1);
-                        set1.constrainHeight(R.id.textView104, 1);
-                        set1.applyTo(cly);
-                    }
-
                     TextView goodsName = itemView.findViewById(R.id.textView85);
                     goodsName.setText(bean.getGoodsName());
                     TextView goodsNum = itemView.findViewById(R.id.textView90);

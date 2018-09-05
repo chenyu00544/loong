@@ -16,7 +16,7 @@ import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.categray.CategroyItem;
 import com.vcvb.chenyu.shop.adapter.item.categray.CategroySubTitleItem;
 import com.vcvb.chenyu.shop.adapter.item.categray.CategroyTitleItem;
-import com.vcvb.chenyu.shop.adapter.itemclick.ItemClickSupport;
+import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.cate.CategroyBean;
 
@@ -54,7 +54,7 @@ public class FragmentCategory extends BaseFragment {
         simpleAdapter = new CYCSimpleAdapter();
         recyclerView.setAdapter(simpleAdapter);
 
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport
+        CYCItemClickSupport.addTo(recyclerView).setOnItemClickListener(new CYCItemClickSupport
                 .OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
@@ -88,7 +88,7 @@ public class FragmentCategory extends BaseFragment {
         subSimpleAdapter = new CYCSimpleAdapter();
         subRecyclerView.setAdapter(subSimpleAdapter);
 
-        ItemClickSupport.addTo(subRecyclerView).setOnItemClickListener(new ItemClickSupport
+        CYCItemClickSupport.addTo(subRecyclerView).setOnItemClickListener(new CYCItemClickSupport
                 .OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {

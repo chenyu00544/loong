@@ -134,7 +134,9 @@ public abstract class CYCBaseAdapter<C extends BaseItem> extends RecyclerView
     }
 
     public void clear() {
-        mData.clear();
+        if(mData.size() > 0){
+            mData.clear();
+        }
         notifyDataSetChanged();
     }
 

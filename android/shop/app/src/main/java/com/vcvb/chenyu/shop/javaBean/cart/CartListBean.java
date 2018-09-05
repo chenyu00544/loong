@@ -10,8 +10,8 @@ public class CartListBean {
     private String storeName;
     private String cartId;
     private String goodsPic;
-    private String goodsPrice;
-    private String goodsMarket;
+    private double goodsPrice;
+    private double goodsMarket;
     private String goodsTag;
     private String goodsFaat;
     private String priceTotal;
@@ -91,19 +91,19 @@ public class CartListBean {
         this.goodsPic = goodsPic;
     }
 
-    public String getGoodsPrice() {
+    public double getGoodsPrice() {
         return goodsPrice;
     }
 
-    public void setGoodsPrice(String goodsPrice) {
+    public void setGoodsPrice(double goodsPrice) {
         this.goodsPrice = goodsPrice;
     }
 
-    public String getGoodsMarket() {
+    public double getGoodsMarket() {
         return goodsMarket;
     }
 
-    public void setGoodsMarket(String goodsMarket) {
+    public void setGoodsMarket(double goodsMarket) {
         this.goodsMarket = goodsMarket;
     }
 
