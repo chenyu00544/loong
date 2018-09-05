@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" iview:orientation="vertical" iview:layout_width="match_parent" iview:layout_height="match_parent">
-    <View iview:id="@+id/find_hot_small_topline" iview:background="#ffcccccc" iview:visibility="gone" iview:layout_width="match_parent" iview:layout_height="UNKNOWN_DATA_0x4ccccd31" />
-    <LinearLayout iview:orientation="horizontal" iview:id="@+id/hot_small_item" iview:layout_width="match_parent" iview:layout_height="wrap_content">
-        <com.ecjia.component.view.ECJiaAutoReturnView iview:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" iview:id="@+id/find_small_hot_text" iview:layout_width="UNKNOWN_DATA_0x1" iview:layout_height="UNKNOWN_DATA_0x2f01" iview:layout_marginLeft="15dp" iview:layout_weight="1.0" iview:ar_color="#dd222222" iview:ar_size="17" iview:ar_maxLines="2" />
-        <ImageView iview:id="@+id/find_hot_news_img" iview:background="@drawable/default_image" iview:layout_width="UNKNOWN_DATA_0x3501" iview:layout_height="UNKNOWN_DATA_0x3501" iview:layout_margin="10dp" iview:scaleType="centerCrop" />
-    </LinearLayout>
-    <View iview:id="@+id/find_hot_small_buttomline" iview:background="#ffcccccc" iview:visibility="gone" iview:layout_width="match_parent" iview:layout_height="UNKNOWN_DATA_0x4ccccd31" />
-</LinearLayout>

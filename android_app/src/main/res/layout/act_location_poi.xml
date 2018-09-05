@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent">
-    <com.ecjia.component.view.ECJiaTopView android:id="@+id/topview_poi" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001" />
-    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
-    <ListView android:id="@+id/mlv_poi" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="0x0" android:overScrollMode="never" />
-    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
-</LinearLayout>

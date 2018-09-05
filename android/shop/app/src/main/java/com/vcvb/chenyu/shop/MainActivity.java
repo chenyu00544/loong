@@ -132,6 +132,7 @@ public class MainActivity extends BaseFragmentActivity {
                     //如果不为空就显示出来
                     fragmentTransaction.show(fragmentHome);
                 }
+                changeStatusBarTextColor(false);
                 break;
             case 1:
                 if (fragmentCategory == null) {
@@ -140,6 +141,7 @@ public class MainActivity extends BaseFragmentActivity {
                 } else {
                     fragmentTransaction.show(fragmentCategory);
                 }
+                changeStatusBarTextColor(false);
                 break;
             case 2:
                 if (fragmentFind == null) {
@@ -148,6 +150,7 @@ public class MainActivity extends BaseFragmentActivity {
                 } else {
                     fragmentTransaction.show(fragmentFind);
                 }
+                changeStatusBarTextColor(false);
                 break;
             case 3:
                 if (fragmentCart == null) {
@@ -156,6 +159,7 @@ public class MainActivity extends BaseFragmentActivity {
                 } else {
                     fragmentTransaction.show(fragmentCart);
                 }
+                changeStatusBarTextColor(false);
                 break;
             case 4:
                 if (fragmentMy == null) {
@@ -164,6 +168,7 @@ public class MainActivity extends BaseFragmentActivity {
                 } else {
                     fragmentTransaction.show(fragmentMy);
                 }
+                changeStatusBarTextColor(false);
                 break;
         }
         //提交事务

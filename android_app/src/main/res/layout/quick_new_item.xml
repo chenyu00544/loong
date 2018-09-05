@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
-    <LinearLayout android:id="@+id/quick_showview" android:background="#ffffff" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
-        <com.ecjia.component.view.ECJiaMyGridView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/quick_gradview" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:listSelector="0x0" android:numColumns="UNKNOWN_DATA_0x5" />
-    </LinearLayout>
-</LinearLayout>

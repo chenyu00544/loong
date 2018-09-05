@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
-    <com.ecjia.component.view.ECJiaTopView android:id="@+id/map_topview" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001" />
-    <com.baidu.mapapi.map.MapView android:id="@+id/bmapView" android:clickable="true" android:layout_width="match_parent" android:layout_height="match_parent" />
-</LinearLayout>

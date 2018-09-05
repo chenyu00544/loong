@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
-    <com.ecjia.component.view.ECJiaTopView android:id="@+id/helplist_topview" android:layout_width="match_parent" android:layout_height="wrap_content" />
-    <View android:background="@drawable/new_good_distance" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x7f08005d" />
-    <se.emilsjolander.stickylistheaders.StickyListHeadersListView app:id="@+id/help_listview" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="wrap_content" app:divider="0x0" app:headerDividersEnabled="false" app:footerDividersEnabled="false" />
-</LinearLayout>

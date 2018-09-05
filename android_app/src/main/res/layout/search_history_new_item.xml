@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent"
-    <LinearLayout android:orientation="vertical" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001">
-        <TextView android:textSize="14dp" android:textColor="@color/new_textColor" android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/history_name" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1" android:layout_marginLeft="24dp" android:layout_marginRight="20dp" android:text="111" android:singleLine="true" android:layout_weight="1.0" />
-        <View android:id="@+id/longline" android:background="@color/line_long_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" />
-        <View android:id="@+id/shortline" android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x4ccccd31" android:layout_marginLeft="20dp" />
-    </LinearLayout>
-</LinearLayout>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content">
-    <RelativeLayout android:orientation="horizontal" android:id="@+id/goods_image_ll" android:background="#eeeeee" android:padding="0.5dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xaa01">
-        <ImageView android:textColor="#666666" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/goods_image" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" />
-    </RelativeLayout>
-    <TextView android:textSize="12dp" android:textColor="#555555" android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/goods_name" android:paddingLeft="5dp" android:paddingRight="5dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2001" android:maxLines="2" />
-    <TextView android:textSize="12dp" android:textColor="@color/my_red" android:ellipsize="end" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/goods_price" android:paddingLeft="5dp" android:paddingRight="5dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x1201" android:text="￥0.00" android:singleLine="true" />
-</LinearLayout>

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#00000000" android:padding="@dimen/dp_10" android:layout_width="match_parent" android:layout_height="match_parent">
-    <TextView android:textColor="#333333" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@drawable/shape_order_cancel_title" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:text="@string/balance_cancel" />
-    <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
-    <TextView android:textColor="@color/my_red" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/sure" android:background="@drawable/selector_order_cancel_sure" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:text="@string/dialog_ensure" />
-    <TextView android:textColor="@color/actionsheet_blue" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/cancel" android:background="@drawable/selector_order_cancel_bottom" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:layout_marginTop="10dp" android:text="@string/cancel" />
-</LinearLayout>

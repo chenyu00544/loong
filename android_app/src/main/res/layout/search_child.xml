@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
-    <include android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3001" layout="@layout/search_topview" />
-    <FrameLayout android:background="@drawable/new_nothing_bg" android:layout_width="match_parent" android:layout_height="wrap_content">
-        <ListView android:id="@+id/child_list" android:scrollbars="UNKNOWN_DATA_0x0" android:layout_width="match_parent" android:layout_height="wrap_content" android:listSelector="@drawable/selecter_newitem_press" android:divider="0x0" android:footerDividersEnabled="false" android:overScrollMode="never" />
-    </FrameLayout>
-</LinearLayout>

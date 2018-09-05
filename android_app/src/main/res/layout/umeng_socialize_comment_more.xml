@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/umeng_socialize_comment_more_root" android:background="@color/umeng_socialize_comments_bg" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3701">
-    <LinearLayout android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:orientation="horizontal" android:id="@+id/umeng_socialize_content" android:visibility="visible" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3701">
-        <TextView android:textSize="20sp" android:textStyle="bold" android:textColor="#646464" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/umeng_socialize_text" android:layout_width="wrap_content" android:layout_height="UNKNOWN_DATA_0x3701" android:text="@string/umeng_common_download_more" android:shadowColor="#ffeeeeee" android:shadowDx="1.0" android:shadowDy="1.0" android:shadowRadius="2.0" />
-        <ProgressBar android:layout_gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/umeng_socialize_pb" android:visibility="visible" android:layout_width="UNKNOWN_DATA_0x1901" android:layout_height="UNKNOWN_DATA_0x1901" android:layout_margin="10dp" android:scaleType="fitXY" android:layout_centerVertical="true" />
-    </LinearLayout>
-</RelativeLayout>

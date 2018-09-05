@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:background="#c4c4c4" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801">
-    <ImageView android:id="@+id/web_back" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/browser_baritem_back" android:layout_weight="1.0" />
-    <ImageView android:id="@+id/goForward" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/browser_baritem_forward" android:layout_weight="1.0" />
-    <ImageView android:id="@+id/reload" android:layout_width="wrap_content" android:layout_height="wrap_content" android:src="@drawable/browser_baritem_refresh" android:layout_weight="1.0" />
-</LinearLayout>

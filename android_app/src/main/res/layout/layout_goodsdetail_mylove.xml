@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content"
-    <LinearLayout android:orientation="vertical" android:id="@+id/goodsdetail_mylove_in" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
-        <com.ecjia.component.view.ECJiaMyGraygapView android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0xa01" />
-        <TextView android:textSize="14dp" android:textColor="@color/my_red" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:paddingLeft="10dp" android:paddingRight="10dp" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2801" android:text="@string/goods_recommended" />
-        <View android:background="@color/line_short_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" />
-        <com.ecjia.component.view.ECJiaFlowLayout android:orientation="vertical" android:id="@+id/goodsdetail_mylove_goods_layout" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/dp_10" />
-    </LinearLayout>
-</LinearLayout>

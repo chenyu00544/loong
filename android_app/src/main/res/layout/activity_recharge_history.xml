@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="@drawable/new_good_distance" app:layout_width="match_parent" app:layout_height="match_parent">
-    <com.ecjia.component.view.ECJiaTopView app:id="@+id/recharge_history_topview" app:layout_width="match_parent" app:layout_height="wrap_content" />
-    <include layout="@layout/recharge_history_head" />
-    <FrameLayout app:layout_width="match_parent" app:layout_height="match_parent">
-        <com.ecjia.component.view.ECJiaXListView app:id="@+id/recharge_list" app:layout_width="match_parent" app:layout_height="wrap_content" app:divider="0x0" app:overScrollMode="never" />
-        <com.ecjia.component.view.ECJiaErrorView app:id="@+id/null_pager" app:visibility="gone" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" />
-    </FrameLayout>
-</LinearLayout>

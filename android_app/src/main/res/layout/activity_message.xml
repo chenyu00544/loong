@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="match_parent">
-    <include layout="@layout/top_view" />
-    <com.ecjia.component.view.ECJiaXListView android:id="@+id/message_listview" android:background="@color/common_bg" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="0x0" />
-    <include android:id="@+id/push_null_pager" android:visibility="visible" android:layout_width="match_parent" android:layout_height="match_parent" layout="@layout/null_msg" />
-</LinearLayout>

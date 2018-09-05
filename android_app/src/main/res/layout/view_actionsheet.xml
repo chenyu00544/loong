@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:padding="8dp" android:layout_width="match_parent" android:layout_height="wrap_content">
-    <TextView android:textSize="17sp" android:textColor="@color/actionsheet_gray" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/txt_title" android:background="@drawable/actionsheet_top_normal" android:paddingLeft="15dp" android:paddingTop="10dp" android:paddingRight="15dp" android:paddingBottom="10dp" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="45dp" />
-    <ScrollView android:id="@+id/sLayout_content" android:fadingEdge="UNKNOWN_DATA_0x0" android:layout_width="match_parent" android:layout_height="wrap_content">
-        <LinearLayout android:orientation="vertical" android:id="@+id/lLayout_content" android:layout_width="match_parent" android:layout_height="wrap_content" />
-    </ScrollView>
-    <TextView android:textSize="15sp" android:textColor="@color/actionsheet_blue" android:gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:id="@+id/txt_cancel" android:background="@drawable/actionsheet_single_selector" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x2d01" android:layout_marginTop="8dp" android:text="@string/cancel" />
-</LinearLayout>

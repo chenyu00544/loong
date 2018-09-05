@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="UNKNOWN_DATA_0x5a01" android:layout_height="UNKNOWN_DATA_0x5a01"
-    <RelativeLayout android:id="@+id/goods_image_ll" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_margin="5dp" android:layout_centerInParent="true">
-        <com.ecjia.component.view.ECJiaSelectableRoundedImageView app:textColor="#666666" app:gravity="top|bottom|center_vertical|fill_vertical|center|fill" app:id="@id/image" app:background="#ffffff" app:layout_width="match_parent" app:layout_height="match_parent" app:scaleType="centerCrop" app:sriv_left_top_corner_radius="3dp" app:sriv_right_top_corner_radius="3dp" app:sriv_left_bottom_corner_radius="3dp" app:sriv_right_bottom_corner_radius="3dp" app:sriv_border_width="1px" app:sriv_border_color="@color/line_long_dark" app:sriv_oval="false" />
-    </RelativeLayout>
-    <ImageView app:id="@+id/delete" app:layout_width="UNKNOWN_DATA_0x1001" app:layout_height="UNKNOWN_DATA_0x1001" app:src="@drawable/del_pic" app:layout_alignParentTop="true" app:layout_alignParentRight="true" />
-</RelativeLayout>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res-auto" app:orientation="vertical" app:background="@drawable/new_good_distance" app:layout_width="match_parent" app:layout_height="match_parent">
-    <com.ecjia.component.view.ECJiaTopView app:id="@+id/last_browse_topview" app:layout_width="match_parent" app:layout_height="wrap_content" />
-    <FrameLayout app:layout_width="match_parent" app:layout_height="match_parent">
-        <com.ecjia.component.view.ECJiaXListView app:id="@+id/trade_list" app:background="#00000000" app:layout_width="match_parent" app:layout_height="match_parent" app:divider="0x0" app:headerDividersEnabled="false" app:footerDividersEnabled="false" />
-        <com.ecjia.component.view.ECJiaErrorView app:id="@+id/null_pager" app:visibility="visible" app:layout_width="match_parent" app:layout_height="match_parent" app:errorImage="@drawable/null_normal" />
-    </FrameLayout>
-</LinearLayout>

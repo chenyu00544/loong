@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="@drawable/new_good_distance" android:layout_width="match_parent" android:layout_height="match_parent">
-    <com.ecjia.component.view.ECJiaTopView android:id="@+id/comment_topview" android:layout_width="match_parent" android:layout_height="wrap_content" />
-    <com.ecjia.component.view.ECJiaXListView android:id="@+id/comment_list" android:background="@drawable/new_nothing_bg" android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content" android:divider="0x0" android:headerDividersEnabled="false" android:footerDividersEnabled="false" />
-    <FrameLayout android:orientation="vertical" android:id="@+id/no_comment" android:background="#ffffff" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent">
-        <ImageView android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:background="@drawable/null_normal" android:layout_width="UNKNOWN_DATA_0xc801" android:layout_height="UNKNOWN_DATA_0xc801" android:layout_marginBottom="30dp" />
-        <TextView android:textSize="14dp" android:textColor="#999999" android:layout_gravity="top|bottom|left|right|center_vertical|fill_vertical|center_horizontal|fill_horizontal|center|fill|start|end" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="40dp" android:text="@string/comment_no_comment" />
-    </FrameLayout>
-</LinearLayout>

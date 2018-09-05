@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <array name="launch_list_entries">
-        <item>外部商户订单</item>
-        <item>远程订单</item>
-    </array>
-</resources>

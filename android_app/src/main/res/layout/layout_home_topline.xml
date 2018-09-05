@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"
-    <LinearLayout android:orientation="vertical" android:id="@+id/home_topline_in" android:paddingTop="@dimen/dp_10" android:layout_width="match_parent" android:layout_height="wrap_content">
-        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
-        <com.ecjia.component.view.ECJiaUpMarqueeView android:id="@+id/upmarqueeview" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3c01" />
-        <View android:background="@color/line_long_dark" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x100" />
-    </LinearLayout>
-</LinearLayout>

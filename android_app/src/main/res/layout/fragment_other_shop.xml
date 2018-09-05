@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:id="@+id/shoplist_content" android:background="@color/line_short_dark" android:layout_width="match_parent" android:layout_height="match_parent">
-    <FrameLayout android:background="@color/line_short_dark" android:layout_width="match_parent" android:layout_height="match_parent">
-        <com.ecjia.component.view.ECJiaXListView android:id="@+id/shoplist_xlist" android:scrollbars="UNKNOWN_DATA_0x0" android:layout_width="match_parent" android:layout_height="match_parent" android:divider="0x0" />
-        <include android:id="@+id/null_pager" android:visibility="gone" android:layout_width="match_parent" android:layout_height="match_parent" layout="@layout/null_shop" />
-    </FrameLayout>
-</LinearLayout>

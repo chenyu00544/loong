@@ -65,6 +65,7 @@ public class OrderActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_list);
+        changeStatusBarTextColor(true);
         context = this;
         cly = (ConstraintLayout) findViewById(R.id.order_list);
         set.clone(cly);

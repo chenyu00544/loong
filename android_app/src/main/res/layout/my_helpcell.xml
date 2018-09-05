@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" android:background="#ffffff" android:layout_width="match_parent" android:layout_height="wrap_content">
-    <View android:id="@+id/help_middle_line_top" android:background="@color/line_short_dark" android:visibility="gone" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x40000031" android:layout_marginLeft="15dp" />
-    <LinearLayout android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:orientation="horizontal" android:id="@+id/shophelp_item" android:background="@drawable/selecter_newitem_press" android:layout_width="match_parent" android:layout_height="UNKNOWN_DATA_0x3201">
-        <TextView android:textSize="@dimen/list_item_title" android:textColor="#ff666666" android:gravity="top|bottom|center_vertical|fill_vertical|center|fill" android:id="@+id/shophelp_content" android:paddingLeft="15dp" android:layout_width="UNKNOWN_DATA_0x1" android:layout_height="match_parent" android:layout_weight="1.0" />
-        <ImageView android:padding="10dp" android:layout_width="UNKNOWN_DATA_0x2801" android:layout_height="UNKNOWN_DATA_0x2801" android:src="@drawable/header_right_arrow" />
-    </LinearLayout>
-</LinearLayout>

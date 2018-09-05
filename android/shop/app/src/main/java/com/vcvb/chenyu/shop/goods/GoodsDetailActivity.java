@@ -38,6 +38,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.goods_detail);
+        changeStatusBarTextColor(true);
         setNavBack();
 //        bindData();
         initView();
