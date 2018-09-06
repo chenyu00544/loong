@@ -34,7 +34,7 @@
             android:layout_gravity="center_horizontal"
             android:ellipsize="end"
             android:gravity="start"
-            android:lines="2"
+            android:maxLines="2"
             android:padding="10dp"
             android:text="@string/name"
             android:textSize="14sp" />

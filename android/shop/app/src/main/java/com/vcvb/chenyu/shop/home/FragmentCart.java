@@ -56,6 +56,7 @@ public class FragmentCart extends BaseFragment {
     private TextView totalView;
     private TextView toPay;
     private View layer;
+    private TextView del;
 
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
@@ -136,13 +137,14 @@ public class FragmentCart extends BaseFragment {
             public void onClick(View view) {
                 ConstraintLayout payFoot = view.findViewById(R.id.pay_foot);
                 Toast.makeText(context, "editView", Toast.LENGTH_SHORT).show();
+                ConstraintLayout.LayoutParams lp;
+
                 if (editView.getText() == context.getString(R.string.edit)) {
                     editView.setText(R.string.over);
-                    set.setVerticalBias(layer.getId(), 1);
+                    set.setVerticalBias(layer.getId(), 0);
                 } else {
                     editView.setText(R.string.edit);
-
-                    set.setVerticalBias(layer.getId(), 0);
+                    set.setVerticalBias(layer.getId(), 1);
                 }
                 set.applyTo(cly);
             }

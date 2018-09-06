@@ -1,0 +1,234 @@
+package com.vcvb.chenyu.shop.mycenter;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
+import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.address.AddressAddItem;
+import com.vcvb.chenyu.shop.adapter.item.address.AddressErrorItem;
+import com.vcvb.chenyu.shop.adapter.item.address.AddressItem;
+import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
+import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.Routes;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import okhttp3.Call;
+
+public class AddressActivity extends BaseActivity {
+    Context context;
+    private RecyclerView mRecyclerView;
+    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
+    private List<AddressBean> addresses = new ArrayList<>();
+    private GridLayoutManager mLayoutManager;
+
+    private RefreshLayout refreshLayout;
+
+    public LoadingDialog loadingDialog;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.address_list);
+        context = this;
+        changeStatusBarTextColor(true);
+        setNavBack();
+        initView();
+        initRefresh();
+        getData(true);
+        initListener();
+    }
+
+    @Override
+    public void setNavBack() {
+        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        if (nav_back != null) {
+            nav_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+        }
+
+        TextView title = (TextView) findViewById(R.id.textView123);
+        title.setText(R.string.address);
+        TextView add = (TextView) findViewById(R.id.textView122);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void initView() {
+        super.initView();
+        mRecyclerView = (RecyclerView) findViewById(R.id.content);
+        mLayoutManager = new GridLayoutManager(context, 1);
+        DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(context, ToolUtils
+                .dip2px(context, 4));
+        mRecyclerView.addItemDecoration(defaultItemDecoration);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void initRefresh() {
+        super.initRefresh();
+        refreshLayout = (RefreshLayout) findViewById(R.id.collection_list);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+            }
+        });
+//        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+//            @Override
+//            public void onLoadMore(RefreshLayout refreshLayout) {
+//                refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
+//            }
+//        });
+    }
+
+    @Override
+    public void getData(final boolean b) {
+        super.getData(b);
+        if (b) {
+            loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
+            loadingDialog.show();
+        }
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("goods_id", "");
+        mp.put("nav_id", "0");
+//        mp.put("order_type", ""+type);
+        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (b) {
+                            loadingDialog.dismiss();
+                        }
+
+                        if (addresses.size() != 0) {
+//                            setHaveDataByView();
+                        } else {
+//                            setNoDateByView();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (b) {
+                            loadingDialog.dismiss();
+                        }
+//                        setNoDateByView();
+                    }
+                });
+            }
+        });
+
+        addresses.clear();
+//        AddressBean bean = new AddressBean();
+//        bean.setIsType(-1);
+//        bean.setUserName("user_name");
+//        addresses.add(bean);
+        for (int i = 0; i < 5; i++) {
+            AddressBean bean = new AddressBean();
+            if (i == 0) {
+                bean.setDef(true);
+            }
+            bean.setIsType(1);
+            bean.setUserName("setUserName" + i);
+            bean.setPhoneMun("setPhoneMun" + i);
+            bean.setAddressId(i);
+            bean.setAddressInfo("setAddressInfo" + i);
+            addresses.add(bean);
+        }
+        AddressBean bean = new AddressBean();
+        bean.setIsType(2);
+        addresses.add(bean);
+        mAdapter.addAll(getItems(addresses));
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                if (position == addresses.size() - 1) {
+                    System.out.println(2312312);
+                } else {
+                    System.out.println(1);
+                }
+            }
+        });
+
+        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.checkBox5).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                for (int i = 0; i < addresses.size(); i++) {
+                    addresses.get(i).setDef(false);
+                }
+                addresses.get(position).setDef(true);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.view37).setOnChildClickListener2(new CYCItemClickSupport.OnChildItemClickListener2() {
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+
+            }
+        });
+    }
+
+    protected List<Item> getItems(List<AddressBean> list) {
+        List<Item> cells = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            switch (list.get(i).getIsType()) {
+                case -1:
+                    cells.add(new AddressErrorItem(list.get(i), context));
+                    break;
+                case 1:
+                    cells.add(new AddressItem(list.get(i), context));
+                    break;
+                case 2:
+                    cells.add(new AddressAddItem(list.get(i), context));
+                    break;
+            }
+        }
+        return cells;
+    }
+}

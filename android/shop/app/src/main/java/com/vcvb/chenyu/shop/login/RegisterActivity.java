@@ -83,7 +83,7 @@ public class RegisterActivity extends BaseActivity {
         serverTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         interestsTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        checkBox = (CheckBox) findViewById(R.id.checkBox);
+        checkBox = (CheckBox) findViewById(R.id.checkBox5);
 
         phoneEdit = (EditText) findViewById(R.id.editText5);
         phoneEdit.setFocusable(true);

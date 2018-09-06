@@ -11,14 +11,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.GoodsDetailViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
+import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.receiver.Receiver;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,6 +95,37 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsEvaluate.setTextSize(ts_18);
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsDatail.scrollToPosition(10);
+            }
+        });
+
+        final PopWin popWindow = new PopWin(GoodsDetailActivity.this, ToolUtils.dip2px(this, 156)
+                , ToolUtils.dip2px(this, 148));
+        final ImageView iv2 = (ImageView) findViewById(R.id.more);
+        iv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popWindow.showAsDropDown(iv2);
+            }
+        });
+        popWindow.setClickListener(new PopWin.OnItemClickListener() {
+            @Override
+            public void onClicked(View v) {
+                System.out.println(v);
+                popWindow.dismiss();
+                Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        popWindow.setClickListener1(new PopWin.OnItemClickListener1() {
+            @Override
+            public void onClicked(View v) {
+                System.out.println(v);
+            }
+        });
+        popWindow.setClickListener2(new PopWin.OnItemClickListener2() {
+            @Override
+            public void onClicked(View v) {
+                System.out.println(v);
             }
         });
     }
@@ -287,7 +322,25 @@ public class GoodsDetailActivity extends GoodsActivity {
             attrs.add(attrhm);
         }
         hm.put("goods_info", attrs);
-        hm.put("goods_desc", "<div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/785/554/9114455587_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/093/074/9114470390_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/833/374/9114473338_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/070/225/9116522070_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/615/164/9114461516_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/649/179/9095971946_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/548/779/9095977845_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/156/944/9114449651_1171374532.jpg\"></div></div><div class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn.com/img/ibank/2018/286/100/9096001682_1171374532.jpg\"></div></div>\n");
+        hm.put("goods_desc", "<div class=\"section s-img\"><div class=\"img\"><img " +
+                "src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/785/554/9114455587_1171374532.jpg\"></div></div><div " +
+                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/093/074/9114470390_1171374532.jpg\"></div></div><div " +
+                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/833/374/9114473338_1171374532.jpg\"></div></div><div " +
+                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/070/225/9116522070_1171374532.jpg\"></div></div><div " +
+                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/615/164/9114461516_1171374532.jpg\"></div></div><div " +
+                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/649/179/9095971946_1171374532.jpg\"></div></div><div " +
+                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/548/779/9095977845_1171374532.jpg\"></div></div><div " +
+                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/156/944/9114449651_1171374532.jpg\"></div></div><div " +
+                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
+                ".com/img/ibank/2018/286/100/9096001682_1171374532.jpg\"></div></div>\n");
 
         //初始化适配器
         RecyclerView.RecycledViewPool pool = goodsDatail.getRecycledViewPool();

@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.mycenter.AddressActivity;
+import com.vcvb.chenyu.shop.mycenter.MyCollectionActivity;
 import com.vcvb.chenyu.shop.mycenter.OrderActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
@@ -120,6 +122,22 @@ public class FragmentMy extends BaseFragment {
             }
         });
 
+        View view4 = view.findViewById(R.id.view4);
+        view4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToCollectionActivity();
+            }
+        });
+
+        View view5 = view.findViewById(R.id.view6);
+        view5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToAddressActivity();
+            }
+        });
+
         final TextView header = view.findViewById(R.id.textView37);
         header.setAlpha(0);
         NestedScrollView scrollView = view.findViewById(R.id.my_scroll_view);
@@ -145,7 +163,7 @@ public class FragmentMy extends BaseFragment {
             tv.setText((CharSequence) mp.get("nickname"));
             iv.setOnClickListener(null);
             tv.setOnClickListener(null);
-        }else{
+        } else {
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -175,14 +193,24 @@ public class FragmentMy extends BaseFragment {
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
-    public void goToOrderActivity(int type){
+    public void goToOrderActivity(int type) {
         Intent intent = new Intent(context, OrderActivity.class);
         intent.putExtra("type", type);
         startActivity(intent);
     }
 
-    public void goToReturnOrderActivity(){
+    public void goToReturnOrderActivity() {
         Intent intent = new Intent(context, OrderActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToCollectionActivity() {
+        Intent intent = new Intent(context, MyCollectionActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToAddressActivity() {
+        Intent intent = new Intent(context, AddressActivity.class);
         startActivity(intent);
     }
 

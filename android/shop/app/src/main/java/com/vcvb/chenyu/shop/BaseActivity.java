@@ -49,4 +49,18 @@ public class BaseActivity extends SwipeBackActivity {
             }
         }
     }
+
+    public void initView(){
+
+    }
+
+    public void initRefresh(){
+
+    }
+    public void getData(final boolean b){
+
+    }
+    public void initListener(){
+
+    }
 }

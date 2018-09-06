@@ -89,6 +89,7 @@
 
     <string name="edit">编辑</string>
     <string name="over">完成</string>
+    <string name="add_item">添加</string>
     <string name="cart">购物车</string>
     <string name="server">客服</string>
     <string name="add_cart">加入购物车</string>
@@ -96,6 +97,7 @@
     <string name="select_all">全选</string>
     <string name="taxation">包含税费￥0.00</string>
     <string name="collection_goods">收藏商品</string>
+    <string name="cancel_collection">取消收藏</string>
     <string name="delete_goods">删除商品</string>
 
     <string name="add">+</string>
@@ -103,8 +105,18 @@
 
     <string name="find_similarity">找相似</string>
     <string name="i_want_collection">我要收藏</string>
+    <string name="no_collection">亲，您难道不喜欢我吗?</string>
     <string name="delete">删除</string>
 
     <string name="category">分类</string>
     <string name="hot_sale">热销榜</string>
+
+    <string name="Include_tax">包税</string>
+    <string name="Include_ship">包邮</string>
+    <string name="Include_discount">优惠</string>
+
+    <string name="home">首页</string>
+    <string name="msg">消息</string>
+    <string name="defualt">默认</string>
+    <string name="add_address">添加新地址</string>
 </resources>

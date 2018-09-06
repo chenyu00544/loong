@@ -241,9 +241,10 @@
     <TextView
         android:id="@+id/textView112"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
         android:background="@drawable/shape_60_red"
         android:gravity="center_vertical"
         android:paddingBottom="4dp"
@@ -254,7 +255,6 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/pay_foot"
         app:layout_constraintEnd_toEndOf="@+id/pay_foot"
         app:layout_constraintTop_toBottomOf="@+id/view34" />
 

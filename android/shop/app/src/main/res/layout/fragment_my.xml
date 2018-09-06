@@ -81,18 +81,13 @@
                 android:id="@+id/textView33"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
                 android:text="@string/zero_money"
                 android:textColor="@color/white"
                 android:textSize="22sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.25"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/view" />
+                app:layout_constraintBottom_toBottomOf="@+id/textView34"
+                app:layout_constraintEnd_toStartOf="@+id/textView34"
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/textView34" />
 
             <TextView
                 android:id="@+id/textView34"
@@ -107,7 +102,6 @@
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.75"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/view" />
 
@@ -133,6 +127,29 @@
                 app:layout_constraintStart_toStartOf="@+id/textView34"
                 app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
+            <TextView
+                android:id="@+id/textView52"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/zero"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView34"
+                app:layout_constraintEnd_toEndOf="@+id/view"
+                app:layout_constraintStart_toEndOf="@+id/textView34"
+                app:layout_constraintTop_toTopOf="@+id/textView34" />
+
+            <TextView
+                android:id="@+id/textView121"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/integral"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@+id/textView52"
+                app:layout_constraintStart_toStartOf="@+id/textView52"
+                app:layout_constraintTop_toBottomOf="@+id/textView52" />
+
             <View
                 android:id="@+id/view2"
                 android:layout_width="0dp"
@@ -152,7 +169,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/all_order"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/view2" />
 
@@ -409,22 +426,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
 
             <View
-                android:id="@+id/view5"
-                android:layout_width="wrap_content"
-                android:layout_height="45dp"
-                android:background="@drawable/bottom_border"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view4" />
-
-            <View
                 android:id="@+id/view6"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:background="@drawable/bottom_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view5" />
+                app:layout_constraintTop_toBottomOf="@+id/view4" />
 
             <View
                 android:id="@+id/view7"
@@ -500,46 +508,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/textView51"
                 app:layout_constraintEnd_toEndOf="@+id/view4"
                 app:layout_constraintTop_toTopOf="@+id/textView51"
-                app:srcCompat="@drawable/icon_forward" />
-
-            <ImageView
-                android:id="@+id/imageView23"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="12dp"
-                android:layout_marginStart="12dp"
-                android:padding="6dp"
-                android:src="@drawable/icon_integral"
-                app:layout_constraintBottom_toTopOf="@+id/view6"
-                app:layout_constraintStart_toStartOf="@+id/view5"
-                app:layout_constraintTop_toTopOf="@+id/view5"
-                app:srcCompat="@drawable/icon_integral" />
-
-            <TextView
-                android:id="@+id/textView52"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                android:text="@string/integral"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView23"
-                app:layout_constraintEnd_toStartOf="@+id/imageView24"
-                app:layout_constraintStart_toEndOf="@+id/imageView21"
-                app:layout_constraintTop_toTopOf="@+id/imageView23" />
-
-            <ImageView
-                android:id="@+id/imageView24"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
-                android:padding="8dp"
-                android:src="@drawable/icon_forward"
-                app:layout_constraintBottom_toBottomOf="@+id/textView52"
-                app:layout_constraintEnd_toEndOf="@+id/view5"
-                app:layout_constraintTop_toTopOf="@+id/textView52"
                 app:srcCompat="@drawable/icon_forward" />
 
             <ImageView

@@ -25,8 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/AppThemeMain">
         </activity>
 
@@ -35,18 +37,35 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".login.RegisterActivity"
-            android:label="login"
+
+        <activity
+            android:name=".login.RegisterActivity"
+            android:label="@string/login"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".mycenter.OrderActivity"
-            android:label="order"
+
+        <activity
+            android:name=".mycenter.OrderActivity"
+            android:label="@string/order_list"
             android:theme="@style/AppTheme">
         </activity>
+
+        <activity
+            android:name=".mycenter.MyCollectionActivity"
+            android:label="@string/collection"
+            android:theme="@style/AppTheme">
+        </activity>
+
+        <activity
+            android:name=".mycenter.AddressActivity"
+            android:label="@string/address"
+            android:theme="@style/AppTheme">
+        </activity>
+
         <!--<receiver android:name=".receiver.Receiver">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="LoginClick" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="LoginClick" />-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
     </application>
 

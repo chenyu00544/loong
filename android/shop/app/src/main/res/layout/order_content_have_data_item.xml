@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/order_lr_border"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/order_lr_border">
 
     <ImageView
         android:id="@+id/imageView41"
@@ -42,6 +42,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ellipsize="end"
+        android:maxLines="2"
         android:text="@string/goods_name"
         android:textColor="@color/black"
         android:textSize="14sp"
