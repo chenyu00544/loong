@@ -24,7 +24,7 @@ import com.vcvb.chenyu.shop.adapter.item.collection.CollectionItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.collection.CollectionBean;
-import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
@@ -273,6 +273,8 @@ public class MyCollectionActivity extends BaseActivity {
                             position) {
                         clearLong();
                         System.out.println(3);
+                        collections.remove(position);
+                        mAdapter.remove(position);
                         mAdapter.notifyDataSetChanged();
                     }
                 });

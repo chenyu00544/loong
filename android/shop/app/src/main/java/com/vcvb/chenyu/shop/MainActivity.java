@@ -19,8 +19,8 @@ import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.home.FragmentHome;
 import com.vcvb.chenyu.shop.home.FragmentMy;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
-import com.vcvb.chenyu.shop.overrideView.LoadingDialog2;
-import com.vcvb.chenyu.shop.overrideView.LoginDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
+import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 

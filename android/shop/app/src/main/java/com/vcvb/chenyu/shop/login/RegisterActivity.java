@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.overrideView.LoadingDialog2;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
 
 public class RegisterActivity extends BaseActivity {
     private Context context;

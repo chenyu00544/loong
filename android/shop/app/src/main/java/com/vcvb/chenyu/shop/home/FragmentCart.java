@@ -31,7 +31,7 @@ import com.vcvb.chenyu.shop.adapter.spacesitem.CartItemDecoration;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
-import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 import com.vcvb.chenyu.shop.tools.ToolUtils;

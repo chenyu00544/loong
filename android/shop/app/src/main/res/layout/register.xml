@@ -113,10 +113,10 @@
 
     <CheckBox
         android:id="@+id/checkBox5"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/checkbox_style"
+        android:background="@drawable/order_checkbox_style"
         android:button="@null"
         android:checked="true"
         app:layout_constraintStart_toStartOf="@+id/textView68"

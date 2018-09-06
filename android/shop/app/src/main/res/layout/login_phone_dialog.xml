@@ -141,7 +141,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="12dp"
         android:background="@null"
-        android:ems="10"
+        android:ems="11"
         android:hint="@string/phone"
         android:inputType="phone"
         android:singleLine="true"

@@ -24,7 +24,7 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.OrderRecyclerViewAdapter;
 import com.vcvb.chenyu.shop.adapter.spacesitem.OrderItemDecoration;
 import com.vcvb.chenyu.shop.javaBean.order.OrderListBean;
-import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 

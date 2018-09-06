@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.overrideView;
+package com.vcvb.chenyu.shop.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -61,7 +61,6 @@ public class LoginDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initloginView();
-
     }
 
     @Override

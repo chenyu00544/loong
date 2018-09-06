@@ -25,7 +25,7 @@ public class AddressAddItem extends BaseItem<AddressBean> {
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout
-                        .address_add, null));
+                        .address_add_item, null));
         return base;
     }
 

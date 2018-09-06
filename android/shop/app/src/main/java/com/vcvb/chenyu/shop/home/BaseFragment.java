@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 
 public class BaseFragment<T> extends Fragment {
     View view;

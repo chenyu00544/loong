@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.overrideView;
+package com.vcvb.chenyu.shop.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;

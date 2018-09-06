@@ -1,9 +1,11 @@
 package com.vcvb.chenyu.shop.mycenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,8 +21,9 @@ import com.vcvb.chenyu.shop.adapter.item.address.AddressErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.address.AddressItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
-import com.vcvb.chenyu.shop.overrideView.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
@@ -44,6 +47,10 @@ public class AddressActivity extends BaseActivity {
     private RefreshLayout refreshLayout;
 
     public LoadingDialog loadingDialog;
+
+    private ConfirmDialog confirmDialog;
+
+    private int pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +99,9 @@ public class AddressActivity extends BaseActivity {
         mRecyclerView.addItemDecoration(defaultItemDecoration);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        confirmDialog = new ConfirmDialog(context);
+        confirmDialog.setTitle(R.string.no_collection);
     }
 
     @Override
@@ -101,6 +111,8 @@ public class AddressActivity extends BaseActivity {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
+                mAdapter.clear();
+                getData(false);
                 refreshLayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
             }
         });
@@ -188,9 +200,9 @@ public class AddressActivity extends BaseActivity {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 if (position == addresses.size() - 1) {
-                    System.out.println(2312312);
+                    goToAddressActivity(0, -1);
                 } else {
-                    System.out.println(1);
+                    goToAddressActivity(1, position);
                 }
             }
         });
@@ -206,10 +218,24 @@ public class AddressActivity extends BaseActivity {
             }
         });
 
-        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.view37).setOnChildClickListener2(new CYCItemClickSupport.OnChildItemClickListener2() {
+        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.view37).setOnChildClickListener1(new CYCItemClickSupport.OnChildItemClickListener1() {
             @Override
             public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                pos = position;
+                confirmDialog.show();
+            }
+        });
 
+        confirmDialog.setOnDialogClickListener(new ConfirmDialog.OnDialogClickListener() {
+            @Override
+            public void onConfirmClickListener() {
+                removeAddresses();
+                confirmDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelClickListener() {
+                confirmDialog.dismiss();
             }
         });
     }
@@ -230,5 +256,33 @@ public class AddressActivity extends BaseActivity {
             }
         }
         return cells;
+    }
+
+    public void removeAddresses() {
+        addresses.remove(pos);
+        mAdapter.remove(pos);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public void goToAddressActivity(int type, int pos) {
+        Intent intent = new Intent(AddressActivity.this, ModifyAddressActivity.class);
+        AddressBean bean;
+        if (type == 1 && pos != -1) {
+            bean = addresses.get(pos);
+            intent.putExtra("id", bean.getAddressId());
+            intent.putExtra("username", bean.getUserName());
+            intent.putExtra("phone", bean.getPhoneMun());
+            intent.putExtra("info", bean.getAddressInfo());
+        }
+        intent.putExtra("type", type);
+        startActivityForResult(intent, 1002);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String result = data.getExtras().getString("result");
+        Log.i("TAG", String.valueOf(requestCode));
+        Log.i("TAG", String.valueOf(resultCode));
+        Log.i("TAG", result);
     }
 }
