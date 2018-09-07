@@ -68,6 +68,18 @@
             android:theme="@style/AppTheme">
         </activity>
 
+        <activity
+            android:name=".mycenter.BrowseActivity"
+            android:label="@string/browse"
+            android:theme="@style/AppTheme">
+        </activity>
+
+        <activity
+            android:name=".mycenter.UserInfoActivity"
+            android:label="@string/personal_center"
+            android:theme="@style/AppTheme">
+        </activity>
+
         <!--<receiver android:name=".receiver.Receiver">-->
         <!--<intent-filter>-->
         <!--<action android:name="LoginClick" />-->

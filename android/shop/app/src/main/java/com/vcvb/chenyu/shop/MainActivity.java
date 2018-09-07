@@ -42,6 +42,9 @@ public class MainActivity extends BaseFragmentActivity {
     private FragmentMy fragmentMy;
     private Receiver receiver;
     private Context context;
+    private int index = 0;
+    private String SAVED_INDEX = "SAVED_INDEX";
+    private String[] fragmentTag = new String[]{"home", "categroy", "find", "cart", "my"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,15 @@ public class MainActivity extends BaseFragmentActivity {
         context = this;
         fragmentManager = getSupportFragmentManager();
         bottomInit();
+        if (savedInstanceState != null) {
+            index = savedInstanceState.getInt(SAVED_INDEX, index);
+            fragmentHome = (FragmentHome) fragmentManager.findFragmentByTag(fragmentTag[0]);
+            fragmentCategory = (FragmentCategory) fragmentManager.findFragmentByTag(fragmentTag[1]);
+            fragmentFind = (FragmentFind) fragmentManager.findFragmentByTag(fragmentTag[2]);
+            fragmentCart = (FragmentCart) fragmentManager.findFragmentByTag(fragmentTag[3]);
+            fragmentMy = (FragmentMy) fragmentManager.findFragmentByTag(fragmentTag[4]);
+        }
+        setClick(index);
     }
 
     public void initViewPager() {
@@ -74,7 +86,8 @@ public class MainActivity extends BaseFragmentActivity {
 //
 //        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            public void onPageScrolled(int position, float positionOffset, int
+// positionOffsetPixels) {
 //
 //            }
 //
@@ -96,7 +109,6 @@ public class MainActivity extends BaseFragmentActivity {
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(int tabId) {
-                int page = 0;
                 switch (tabId) {
                     case R.id.tab_home:
                         setClick(0);
@@ -121,13 +133,12 @@ public class MainActivity extends BaseFragmentActivity {
     private void setClick(int type) {
         fragmentTransaction = fragmentManager.beginTransaction();
         hideFragment(fragmentTransaction);
-
         switch (type) {
             case 0:
                 if (fragmentHome == null) {
                     fragmentHome = new FragmentHome();
                     //加入事务
-                    fragmentTransaction.add(R.id.fragment_content, fragmentHome);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentHome, fragmentTag[0]);
                 } else {
                     //如果不为空就显示出来
                     fragmentTransaction.show(fragmentHome);
@@ -137,7 +148,8 @@ public class MainActivity extends BaseFragmentActivity {
             case 1:
                 if (fragmentCategory == null) {
                     fragmentCategory = new FragmentCategory();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentCategory);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentCategory,
+                            fragmentTag[1]);
                 } else {
                     fragmentTransaction.show(fragmentCategory);
                 }
@@ -146,7 +158,7 @@ public class MainActivity extends BaseFragmentActivity {
             case 2:
                 if (fragmentFind == null) {
                     fragmentFind = new FragmentFind();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentFind);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentFind, fragmentTag[2]);
                 } else {
                     fragmentTransaction.show(fragmentFind);
                 }
@@ -155,7 +167,7 @@ public class MainActivity extends BaseFragmentActivity {
             case 3:
                 if (fragmentCart == null) {
                     fragmentCart = new FragmentCart();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentCart);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentCart, fragmentTag[3]);
                 } else {
                     fragmentTransaction.show(fragmentCart);
                 }
@@ -164,7 +176,7 @@ public class MainActivity extends BaseFragmentActivity {
             case 4:
                 if (fragmentMy == null) {
                     fragmentMy = new FragmentMy();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentMy);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentMy, fragmentTag[4]);
                 } else {
                     fragmentTransaction.show(fragmentMy);
                 }
@@ -194,7 +206,8 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     public void showLoginDialog() {
-        LoginDialog.getInstance(this).setOnDialogClickListener(new LoginDialog.OnDialogClickListener() {
+        LoginDialog.getInstance(this).setOnDialogClickListener(new LoginDialog
+                .OnDialogClickListener() {
             @Override
             public void onPhoneClickListener() {
                 System.out.println("onPhoneClickListener");
@@ -227,7 +240,8 @@ public class MainActivity extends BaseFragmentActivity {
                 //获取服务器数据
                 //..
                 u.put("username", "cb");
-                u.put("token", "csdfafafkoimlvj09809mljalfadf.adfjlajfoi098087.kjfaldjfladfl8979823423");
+                u.put("token", "csdfafafkoimlvj09809mljalfadf" + "" + "" + "" + "" +
+                        ".adfjlajfoi098087.kjfaldjfladfl8979823423");
                 u.put("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg");
                 u.put("nickname", "chongchong");
 
@@ -271,8 +285,8 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == ConstantManager.REGISTER_FOR_MY){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ConstantManager.REGISTER_FOR_MY) {
 
                 HashMap<String, String> u = new HashMap<>();
                 u.put("username", data.getStringExtra("username"));
@@ -288,11 +302,13 @@ public class MainActivity extends BaseFragmentActivity {
             }
         }
     }
+
     public boolean isExit = false;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK) {
-            if(!isExit) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (!isExit) {
                 isExit = true;
                 Toast.makeText(this, "在按一次退出程序", Toast.LENGTH_SHORT).show();
                 new Timer().schedule(new TimerTask() {
@@ -306,5 +322,11 @@ public class MainActivity extends BaseFragmentActivity {
             }
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(SAVED_INDEX, index);
+        super.onSaveInstanceState(outState);
     }
 }

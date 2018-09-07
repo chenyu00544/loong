@@ -13,6 +13,16 @@ public interface ConstantManager {
         public String ACCESS_TOKEN = "XXXXXXX";
 
         public String ACCESS_ID = "XXXXXXX";
+    }
 
+    interface User {
+
+        public String LOGO = "LOGO";
+
+        public String NICKNAME = "NICKNAME";
+
+        public String SEX = "XXXXXXX";
+
+        public String ACCESS_ID = "XXXXXXX";
     }
 }

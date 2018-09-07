@@ -41,8 +41,7 @@ public class RoundImageView extends AppCompatImageView {
             setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
         // 读取配置
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable
-                .Custom_Round_Image_View);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.Custom_Round_Image_View);
         radius = array.getDimensionPixelOffset(R.styleable.Custom_Round_Image_View_radius,
                 defaultRadius);
         leftTopRadius = array.getDimensionPixelOffset(R.styleable

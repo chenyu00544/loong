@@ -204,7 +204,6 @@ public class FragmentCart extends BaseFragment {
             @Override
             public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 clearLong();
-                System.out.println(3);
                 if (carts.get(position).getIsType() == 1) {
                     int ppos = position;
                     int npos = position;

@@ -34,8 +34,9 @@
     <string name="collection">我的收藏</string>
     <string name="integral">我的积分</string>
     <string name="address">我的地址</string>
-    <string name="browse">浏览记录</string>
-    <string name="personal_info">个人资料</string>
+    <string name="browse">我的足迹</string>
+    <string name="browse_error">不踏出第一步，怎知东西好不好？</string>
+    <string name="personal_info">个人信息</string>
     <string name="problem">遇到问题？</string>
     <string name="pass_login">密码登录</string>
     <string name="qrcode_login">验证码登录</string>
@@ -128,4 +129,26 @@
     <string name="tip">提示</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+
+    <string name="logo_title">头像</string>
+    <string name="logo_subtitle">修改头像</string>
+
+    <string name="nick_title">昵称</string>
+    <string name="nick_subtitle">未设置昵称</string>
+
+    <string name="sex_title">性别</string>
+    <string name="sex_subtitle">未设置性别</string>
+
+    <string name="account_title">账号管理</string>
+    <string name="account_subtitle">其他登录方式</string>
+
+    <string name="phone_title">我的手机号</string>
+    <string name="phone_subtitle">修改手机号</string>
+
+    <string name="real_title">我的实名认证</string>
+    <string name="real_subtitle">未认证</string>
+    <string name="real_subtitle_o">已认证</string>
+
+    <string name="interested_title">感兴趣的类别</string>
+    <string name="interested_subtitle">未设置类别</string>
 </resources>
