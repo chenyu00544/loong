@@ -8,13 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class UserLogoItem extends BaseItem<UserInfoBean> {
     public static final int TYPE = 2;
@@ -44,14 +45,16 @@ public class UserLogoItem extends BaseItem<UserInfoBean> {
 
         RoundedCornersTransformation corners = new RoundedCornersTransformation(30, 0,
                 RoundedCornersTransformation.CornerType.TOP);
-//        RequestOptions requestOptions = RequestOptions.bitmapTransform(corners).override(120, 120);
+        RequestOptions requestOptions = RequestOptions.bitmapTransform(corners).override(120,
+ 120);
 //        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
 //                (DiskCacheStrategy.RESOURCE).skipMemoryCache(false).override(120, 120);
-//        Glide.with(context).load("http://pic26.nipic.com/20121219/7447430_180414008000_2.jpg").apply
-//                (requestOptions).into(iv);
+        Glide.with(context).load("http://pic26.nipic.com/20121219/7447430_180414008000_2.jpg").apply
+                (requestOptions).into(iv);
 
-        Picasso.with(context).load("http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg")
-                .config(Bitmap.Config.RGB_565).transform(corners).placeholder(R.drawable.icon_no_pic).into(iv);
+//        Picasso.with(context).load("http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg")
+//                .config(Bitmap.Config.RGB_565).transform(corners).placeholder(R.drawable
+// .icon_no_pic).into(iv);
     }
 
     private Bitmap id2Bitmap(int id) {
