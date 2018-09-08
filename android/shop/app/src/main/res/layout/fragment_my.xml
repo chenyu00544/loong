@@ -29,7 +29,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/my_head_backgroud" />
 
-            <com.vcvb.chenyu.shop.overrideView.RoundImageView
+            <ImageView
                 android:id="@+id/imageView15"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -38,7 +38,6 @@
                 android:layout_marginRight="12dp"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="50dp"
-                app:radius="30dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon_boy_head"
                 app:layout_constraintEnd_toEndOf="parent"

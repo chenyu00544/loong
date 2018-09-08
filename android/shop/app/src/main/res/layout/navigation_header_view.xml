@@ -97,7 +97,7 @@
                 android:src="@drawable/icon_three_points_gray" />
 
         </LinearLayout>
-    </LinearLayout>
 
+    </LinearLayout>
 
 </LinearLayout>

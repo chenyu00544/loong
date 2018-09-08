@@ -151,4 +151,7 @@
 
     <string name="interested_title">感兴趣的类别</string>
     <string name="interested_subtitle">未设置类别</string>
+
+    <string name="all_photo">所有照片</string>
+    <string name="camera_photo">拍摄照片</string>
 </resources>

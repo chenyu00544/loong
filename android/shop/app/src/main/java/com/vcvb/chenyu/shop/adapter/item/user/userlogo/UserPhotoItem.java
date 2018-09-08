@@ -1,21 +1,21 @@
-package com.vcvb.chenyu.shop.adapter.item.categray;
+package com.vcvb.chenyu.shop.adapter.item.user.userlogo;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.cate.CategroyBean;
+import com.vcvb.chenyu.shop.javaBean.material.Material;
 
-public class CategroyItem extends BaseItem<CategroyBean> {
+public class UserPhotoItem extends BaseItem<Material> {
     public static final int TYPE = 1;
 
-    public CategroyItem(CategroyBean bean, Context c) {
+    public UserPhotoItem(Material bean, Context c) {
         super(bean, c);
     }
 
@@ -27,17 +27,20 @@ public class CategroyItem extends BaseItem<CategroyBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.categroy_default_item, null));
+                .inflate(R.layout
+                        .user_photo_item, null));
         return base;
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView tv = holder.getTextView(R.id.textView100);
-        tv.setText(mData.getCateName());
-        ImageView iv = holder.getImageView(R.id.imageView40);
-        Glide.with(context).load(mData.getPic())
-                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(iv);
+
+        ImageView iv = holder.getImageView(R.id.imageView62);
+        if(mData.getIsType() == 1){
+            RequestOptions requestOptions = RequestOptions.centerCropTransform().override(256, 256);
+            Glide.with(context).load(mData.getFilePath()).apply(requestOptions).into(iv);
+        }else{
+            Glide.with(context).load(R.drawable.icon_camera).into(iv);
+        }
     }
 }

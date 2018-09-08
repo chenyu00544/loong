@@ -1,11 +1,16 @@
-package com.vcvb.chenyu.shop.mycenter;
+package com.vcvb.chenyu.shop.mycenter.userinfo;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +22,8 @@ import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.user.UserItem;
 import com.vcvb.chenyu.shop.adapter.item.user.UserLogoItem;
+import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
@@ -33,7 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class UserInfoActivity extends BaseActivity {
 
     Context context;
@@ -66,8 +76,7 @@ public class UserInfoActivity extends BaseActivity {
         super.setNavBack();
         int gravity = Gravity.CENTER;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout
-                .LayoutParams.WRAP_CONTENT, LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                .LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TextView titleView = new TextView(this);
         titleView.setLayoutParams(layoutParams);
         titleView.setGravity(gravity);
@@ -77,8 +86,7 @@ public class UserInfoActivity extends BaseActivity {
         titleView.setSingleLine();
 
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(ToolUtils.dip2px
-                (context, 60), LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                (context, 60), LinearLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout nav_other = (LinearLayout) findViewById(R.id.nav_other);
         nav_other.setLayoutParams(layoutParams2);
         nav_other.setAlpha(0);
@@ -86,8 +94,7 @@ public class UserInfoActivity extends BaseActivity {
         nav_other.removeView(iv1);
 
         LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout
-                .LayoutParams.WRAP_CONTENT, LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                .LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout title_wrap = (LinearLayout) findViewById(R.id.title_wrap);
         title_wrap.setAlpha(1);
         title_wrap.setLayoutParams(layoutParams3);
@@ -161,6 +168,14 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     public void initListener() {
         super.initListener();
+
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                goToSetUserActivity(position);
+            }
+        });
     }
 
     protected List<Item> getItems(List<UserInfoBean> list) {
@@ -176,5 +191,57 @@ public class UserInfoActivity extends BaseActivity {
             }
         }
         return cells;
+    }
+
+    //相册权限
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showPhotoAlbum() {
+        Intent intent = new Intent(UserInfoActivity.this, UserLogoActivity.class);
+        startActivityForResult(intent, ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST);
+    }
+
+    public void goToSetUserActivity(int pos) {
+        switch (pos) {
+            case 0:
+                UserInfoActivityPermissionsDispatcher.showPhotoAlbumWithCheck(this);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+        }
+    }
+
+    //上传头像
+    public void uploadHeaderLogo(){
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            switch (requestCode) {
+                case ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST:
+                    Uri imageUri = data.getParcelableExtra("uri");
+                    users.get(0).setImgPath(imageUri.toString());
+                    uploadHeaderLogo();
+                    break;
+            }
+        }
     }
 }

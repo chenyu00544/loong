@@ -1,7 +1,6 @@
 package com.vcvb.chenyu.shop.adapter.item.cart;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -12,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -34,8 +33,7 @@ public class CartItem extends BaseItem<CartListBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout
-                        .cart_content_have_data_item, null));
+                .inflate(R.layout.cart_content_have_data_item, null));
         return base;
     }
 
@@ -57,10 +55,9 @@ public class CartItem extends BaseItem<CartListBean> {
         goodsPrice.setText(String.format("￥%.2f", mData.getGoodsPrice()));
         goodsMarket.setText(String.format("￥%.2f", mData.getGoodsMarket()));
         goodsMarket.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        Picasso.with(context).load(mData.getGoodsPic())
+        Glide.with(context).load(mData.getGoodsPic())
 //                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .config(Bitmap.Config.RGB_565)
-                .placeholder(R.drawable.icon_no_pic).into(iv);
+                .into(iv);
 
         cb.setChecked(mData.getIsChecOnce());
 

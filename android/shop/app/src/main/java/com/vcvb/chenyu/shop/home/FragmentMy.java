@@ -14,13 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.mycenter.AddressActivity;
 import com.vcvb.chenyu.shop.mycenter.BrowseActivity;
 import com.vcvb.chenyu.shop.mycenter.MyCollectionActivity;
 import com.vcvb.chenyu.shop.mycenter.OrderActivity;
-import com.vcvb.chenyu.shop.mycenter.UserInfoActivity;
+import com.vcvb.chenyu.shop.mycenter.userinfo.UserInfoActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -210,8 +212,15 @@ public class FragmentMy extends BaseFragment {
         Map<String, ?> mp = UserInfoUtils.getInstance(context).getUserInfo();
         ImageView iv = view.findViewById(R.id.imageView15);
         TextView tv = view.findViewById(R.id.textView30);
+
+//        RoundedCornersTransformation corners = new RoundedCornersTransformation(30, 0,
+//                RoundedCornersTransformation.CornerType.TOP);
+//        RequestOptions requestOptions = RequestOptions.bitmapTransform(corners).override(120,
+// 120);
+        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
+                (DiskCacheStrategy.RESOURCE).skipMemoryCache(false).override(120, 120);
         if (mp.size() > 0) {
-            Picasso.with(context).load((String) mp.get("logo")).into(iv);
+            Glide.with(context).load((String) mp.get("logo")).apply(requestOptions).into(iv);
             tv.setText((CharSequence) mp.get("nickname"));
             iv.setOnClickListener(null);
             tv.setOnClickListener(null);
@@ -266,12 +275,12 @@ public class FragmentMy extends BaseFragment {
         startActivity(intent);
     }
 
-    public void goToBrowseActivity(){
+    public void goToBrowseActivity() {
         Intent intent = new Intent(context, BrowseActivity.class);
         startActivity(intent);
     }
 
-    public void goToUserCenterActivity(){
+    public void goToUserCenterActivity() {
         Intent intent = new Intent(context, UserInfoActivity.class);
         startActivity(intent);
     }

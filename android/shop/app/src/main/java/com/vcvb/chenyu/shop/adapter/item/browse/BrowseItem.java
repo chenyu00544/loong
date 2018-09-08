@@ -1,7 +1,6 @@
 package com.vcvb.chenyu.shop.adapter.item.browse;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.view.LayoutInflater;
@@ -10,7 +9,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -45,10 +44,9 @@ public class BrowseItem extends BaseItem<CollectionBean> {
         ImageView iv = holder.getImageView(R.id.imageView58);
 
         goodsName.setText(mData.getGoodsName());
-        Picasso.with(context).load(mData.getPic())
+        Glide.with(context).load(mData.getPic())
 //                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .config(Bitmap.Config.RGB_565)
-                .placeholder(R.drawable.icon_no_pic).into(iv);
+                .into(iv);
 
         ConstraintSet set = new ConstraintSet();
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
