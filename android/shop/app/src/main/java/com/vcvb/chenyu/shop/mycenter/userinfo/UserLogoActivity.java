@@ -130,7 +130,6 @@ public class UserLogoActivity extends BaseActivity {
                 File file = new File(uri);
                 if (file.exists()) {
                 } else {
-
 //                    if (file.delete()) {
 //                        //已经删除文件
 //                        Toast.makeText(context, file.getPath() + "删除成功", Toast.LENGTH_SHORT).show();
