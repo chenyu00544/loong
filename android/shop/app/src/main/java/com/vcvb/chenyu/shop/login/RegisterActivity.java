@@ -40,6 +40,7 @@ public class RegisterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register);
         context = this;
+        changeStatusBarTextColor(true);
         initView();
         setNavBack();
         initListener();

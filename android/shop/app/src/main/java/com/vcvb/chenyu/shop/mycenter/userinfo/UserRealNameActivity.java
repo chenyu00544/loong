@@ -1,11 +1,13 @@
 package com.vcvb.chenyu.shop.mycenter.userinfo;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,13 +18,15 @@ import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.user.UserItem;
-import com.vcvb.chenyu.shop.adapter.item.user.UserLogoItem;
+import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealCardItem;
+import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealItem;
+import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealTitleItem;
+import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealWhyItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.dialog.SexDialog;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
+import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.staticdata.Users;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
@@ -39,30 +43,26 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class UserInfoActivity extends BaseActivity {
+public class UserRealNameActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<UserInfoBean> users = new ArrayList<>();
     private GridLayoutManager mLayoutManager;
-
-    public LoadingDialog loadingDialog;
-
-    private SexDialog sexDialog;
-
+    private Receiver receiver;
+    private TextView save;
     private int pos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_list);
-        context = this;
         changeStatusBarTextColor(true);
+        context = this;
         setNavBack();
         initView();
-        initRefresh();
-        getData(true);
         initListener();
+        getData(true);
     }
 
     @Override
@@ -78,23 +78,13 @@ public class UserInfoActivity extends BaseActivity {
         }
 
         TextView titleView = (TextView) findViewById(R.id.textView123);
-        titleView.setText(R.string.personal_center);
+        titleView.setText(R.string.real_title);
         titleView.setTextColor(Color.parseColor("#000000"));
         titleView.setTextSize(18);
         titleView.setSingleLine();
 
-        TextView add = (TextView) findViewById(R.id.textView122);
-        add.setAlpha(0);
-    }
-
-    @Override
-    public void initView() {
-        super.initView();
-        sexDialog = new SexDialog(context);
-        mRecyclerView = (RecyclerView) findViewById(R.id.user_list);
-        mLayoutManager = new GridLayoutManager(context, 1);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        save = (TextView) findViewById(R.id.textView122);
+        save.setText(R.string.save);
     }
 
     @Override
@@ -142,49 +132,84 @@ public class UserInfoActivity extends BaseActivity {
         });
 
         users.clear();
-        for (int i = 0; i < Users.users.size(); i++) {
+        for (int i = 0; i < Users.realname.size(); i++) {
             UserInfoBean bean = new UserInfoBean();
-            bean.setIsType(Users.users.get(i).get("type"));
-            bean.setTitle(Users.users.get(i).get("title"));
-            bean.setSubTitle(Users.users.get(i).get("subtitle"));
+            bean.setIsType(Users.realname.get(i).get("type"));
+            bean.setTitle(Users.realname.get(i).get("title"));
             users.add(bean);
         }
         mAdapter.addAll(getItems(users));
     }
 
     @Override
+    public void initView() {
+        super.initView();
+        mRecyclerView = (RecyclerView) findViewById(R.id.user_list);
+        mLayoutManager = new GridLayoutManager(context, 1);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    //相册权限
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showPhotoAlbum() {
+        Intent intent = new Intent(UserRealNameActivity.this, UserLogoActivity.class);
+        if(pos == 1){
+            intent.putExtra("card_uri", "CARD_IMG_FRONT.jpg");
+        }else{
+            intent.putExtra("card_uri", "CARD_IMG_BACK.jpg");
+        }
+        startActivityForResult(intent, ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST);
+    }
+
+    public void goToAlbum(int type) {
+        pos = type;
+        UserRealNameActivityPermissionsDispatcher.showPhotoAlbumWithCheck(this);
+    }
+
+    @Override
     public void initListener() {
         super.initListener();
-
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
+        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.imageView68).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
             @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                goToSetUserActivity(position);
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                goToAlbum(1);
             }
         });
-        sexDialog.setOnDialogClickListener(new SexDialog.OnDialogClickListener() {
-            @Override
-            public void onManClickListener() {
-                sexDialog.setTick(true);
-                users.get(pos).setSubTitle(R.string.man);
-                mAdapter.notifyDataSetChanged();
-                sexDialog.dismiss();
-            }
 
+        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView69).setOnChildClickListener1
+                (new CYCItemClickSupport.OnChildItemClickListener1() {
             @Override
-            public void onWomanClickListener() {
-                sexDialog.setTick(false);
-                users.get(pos).setSubTitle(R.string.woman);
-                mAdapter.notifyDataSetChanged();
-                sexDialog.dismiss();
-            }
-
-            @Override
-            public void onCancelClickListener() {
-                sexDialog.dismiss();
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                goToAlbum(2);
             }
         });
+
+        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView73).setOnChildClickListener2
+                (new CYCItemClickSupport.OnChildItemClickListener2() {
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                users.get(4).setImgUriFront(null);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView72).setOnChildClickListener3
+                (new CYCItemClickSupport.OnChildItemClickListener3() {
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                users.get(4).setImgUriBack(null);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //保存实名认证
+            }
+        });
+
     }
 
     protected List<Item> getItems(List<UserInfoBean> list) {
@@ -192,78 +217,64 @@ public class UserInfoActivity extends BaseActivity {
         for (int i = 0; i < list.size(); i++) {
             switch (list.get(i).getIsType()) {
                 case 1:
-                    cells.add(new UserItem(list.get(i), context));
+                    cells.add(new UserRealItem(list.get(i), context));
                     break;
                 case 2:
-                    cells.add(new UserLogoItem(list.get(i), context));
+                    cells.add(new UserRealTitleItem(list.get(i), context));
+                    break;
+                case 3:
+                    cells.add(new UserRealCardItem(list.get(i), context));
+                    break;
+                case 4:
+                    cells.add(new UserRealWhyItem(list.get(i), context));
                     break;
             }
         }
         return cells;
     }
 
-    //相册权限
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showPhotoAlbum() {
-        Intent intent = new Intent(UserInfoActivity.this, UserLogoActivity.class);
-        startActivityForResult(intent, ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST);
-    }
-
-    public void goToSetUserActivity(int pos) {
-        this.pos = pos;
-        switch (pos) {
-            case 0:
-                UserInfoActivityPermissionsDispatcher.showPhotoAlbumWithCheck(this);
-                break;
-            case 1:
-                Intent intent = new Intent(UserInfoActivity.this, UserNickActivity.class);
-                startActivityForResult(intent, ConstantManager.User.NICKNAME);
-                break;
-            case 2:
-                if(users.get(pos).getSubTitle() == R.string.man){
-                    sexDialog.setTick(true);
-                }else if(users.get(pos).getSubTitle() == R.string.woman){
-                    sexDialog.setTick(false);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("cardNameChange");
+        intentFilter.addAction("cardNumChange");
+        receiver = new Receiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (intent.getAction()) {
+                    case "cardNameChange":
+                        System.out.println(intent.getStringExtra("data"));
+                        break;
+                    case "cardNumChange":
+                        System.out.println(intent.getStringExtra("data"));
+                        break;
                 }
-                sexDialog.show();
-                break;
-            case 3:
-                Intent intent2 = new Intent(UserInfoActivity.this, UserAccountActivity.class);
-                startActivity(intent2);
-                break;
-            case 4:
-                Intent intent3 = new Intent(UserInfoActivity.this, UserRealNameActivity.class);
-                startActivity(intent3);
-                break;
-            case 5:
-                break;
-        }
-    }
+            }
+        };
+        broadcastManager.registerReceiver(receiver, intentFilter);
 
-    //上传头像
-    public void uploadHeaderLogo(){
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastManager.unregisterReceiver(receiver);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST:
-                    Uri imageUri = data.getParcelableExtra("uri");
-                    users.get(pos).setImgPath(imageUri.toString());
-                    uploadHeaderLogo();
-                    break;
-                case ConstantManager.User.NICKNAME:
-                    String nickname = data.getStringExtra("nickname");
-                    users.get(pos).setName(nickname);
+                    if (pos == 1) {
+                        users.get(4).setImgUriFront((Uri) data.getParcelableExtra("uri"));
+                    } else if (pos == 2) {
+                        users.get(4).setImgUriBack((Uri) data.getParcelableExtra("uri"));
+                    }
                     mAdapter.notifyDataSetChanged();
                     break;
             }

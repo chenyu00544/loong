@@ -154,4 +154,24 @@
 
     <string name="all_photo">所有照片</string>
     <string name="camera_photo">拍摄照片</string>
+
+    <string name="man">男</string>
+    <string name="woman">女</string>
+
+    <string name="phone_account">手机账号</string>
+    <string name="email_account">邮箱账号</string>
+    <string name="wechat">微信</string>
+    <string name="qq">QQ</string>
+    <string name="bind">已绑定</string>
+    <string name="no_bind">未绑定</string>
+    <string name="change_phone">更换手机号</string>
+    <string name="main_account">我的主账号</string>
+
+    <string name="card_info">身份信息(必填)</string>
+    <string name="card_name">您的真实姓名</string>
+    <string name="card_num">您的身份证号码(加密处理)</string>
+    <string name="card">身份证正反面(必填)</string>
+    <string name="why">为什么需要实名认证</string>
+    <string name="reminder">温馨提示:请上传原始比例的身份证正反面，请勿涂改裁剪，保证身份证信息清晰显示，否则无法通过审核</string>
+    <string name="examples">示例</string>
 </resources>

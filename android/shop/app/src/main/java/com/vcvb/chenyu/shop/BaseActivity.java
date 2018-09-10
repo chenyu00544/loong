@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ public class BaseActivity extends SwipeBackActivity {
     public LinearLayout nav_bar;
     public LinearLayout nav_back;
     public LoadingDialog loadingDialog;
+    public Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

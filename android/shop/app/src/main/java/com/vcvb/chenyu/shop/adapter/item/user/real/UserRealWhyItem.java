@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.adapter.item.user;
+package com.vcvb.chenyu.shop.adapter.item.user.real;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,10 +10,10 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 
-public class UserItem extends BaseItem<UserInfoBean> {
-    public static final int TYPE = 1;
+public class UserRealWhyItem extends BaseItem<UserInfoBean> {
+    public static final int TYPE = 4;
 
-    public UserItem(UserInfoBean bean, Context c) {
+    public UserRealWhyItem(UserInfoBean bean, Context c) {
         super(bean, c);
     }
 
@@ -25,19 +25,11 @@ public class UserItem extends BaseItem<UserInfoBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_item, null));
+                .inflate(R.layout.user_real_why_item, null));
         return base;
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView tv = holder.getTextView(R.id.textView137);
-        TextView tv2 = holder.getTextView(R.id.textView138);
-        tv.setText(mData.getTitle());
-        if (mData.getName() != null) {
-            tv2.setText(mData.getName());
-        }else{
-            tv2.setText(mData.getSubTitle());
-        }
     }
 }

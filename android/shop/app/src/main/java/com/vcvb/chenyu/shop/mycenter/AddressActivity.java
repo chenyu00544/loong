@@ -83,7 +83,7 @@ public class AddressActivity extends BaseActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                goToAddressActivity(0, -1);
             }
         });
 
@@ -200,8 +200,10 @@ public class AddressActivity extends BaseActivity {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 if (position == addresses.size() - 1) {
+                    //添加
                     goToAddressActivity(0, -1);
                 } else {
+                    //修改
                     goToAddressActivity(1, position);
                 }
             }

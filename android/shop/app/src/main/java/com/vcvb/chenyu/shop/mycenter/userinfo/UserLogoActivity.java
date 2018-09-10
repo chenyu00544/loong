@@ -44,15 +44,13 @@ public class UserLogoActivity extends BaseActivity {
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<Material> photos = new ArrayList<>();
     private GridLayoutManager mLayoutManager;
-    private Uri imageUri;
-    private File photoFile;
 
     String path = Environment.getExternalStorageDirectory() + "/Android/data/com.vcvb.chenyu" +
             ".shop/files/";
     File mCameraFile = new File(path, "IMAGE_FILE_NAME.jpg");//照相机的File对象
+    File mCropFile = new File(path, "IMAGE_CROP_NAME.jpg");//裁剪后输出图片
 
-    private static final int IMAGE_REQUEST_CODE = 100;
-    private static final int SELECT_PIC_NOUGAT = 101;
+    private String uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +58,17 @@ public class UserLogoActivity extends BaseActivity {
         setContentView(R.layout.user_photo);
         context = this;
         changeStatusBarTextColor(true);
+
+        //创建文件路径
+        File file = new File(path);
+        file.mkdirs();
+
+        //获取传古来的文件名
+        Intent intent = getIntent();
+        uri = intent.getStringExtra("card_uri");
+        if(uri != null){
+            mCropFile = new File(path, uri);
+        }
         setNavBack();
         initView();
         initListener();
@@ -149,6 +158,7 @@ public class UserLogoActivity extends BaseActivity {
         return cells;
     }
 
+    //打开照相机
     @NeedsPermission({Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     public void goToCamera() {
         mCameraFile = new File(path, "IMAGE_FILE_NAME.jpg");//照相机的File对象
@@ -156,6 +166,8 @@ public class UserLogoActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0及以上
             Uri uriForFile = FileProvider.getUriForFile(this, "com.vcvb.chenyu.shop" +
                     ".provider", mCameraFile);
+            intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, uriForFile);
         } else {
             intentFromCapture.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mCameraFile));
@@ -165,8 +177,10 @@ public class UserLogoActivity extends BaseActivity {
 
     public void goToCropImage(int pos) {
         if (pos == 0) {
+            //打开照相机
             UserLogoActivityPermissionsDispatcher.goToCameraWithCheck(this);
         } else {
+            //直接裁剪
             String path = photos.get(pos).getFilePath();
             mCameraFile = new File(path);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -195,24 +209,9 @@ public class UserLogoActivity extends BaseActivity {
                         startPhotoZoom(inputUri);
                     }
                     break;
-                case IMAGE_REQUEST_CODE: //版本<7.0  图库后返回
-                    if (data != null) {
-                        // 得到图片的全路径
-                        Uri uri = data.getData();
-                        //crop(uri);
-                        startPhotoZoom(uri);
-                    }
-                    break;
-                case SELECT_PIC_NOUGAT://版本>= 7.0
-                    File imgUri = new File(ToolUtils.getPath(this, data.getData()));
-                    Uri dataUri = FileProvider.getUriForFile
-                            (this, "com.vcvb.chenyu.shop.provider", imgUri);
-                    // Uri dataUri = getImageContentUri(data.getData());
-                    startPhotoZoom(dataUri);
-                    break;
                 case ConstantManager.PhotoAlbum.CROP_PHOTO:
                     Uri inputUri = FileProvider.getUriForFile(this, "com.vcvb.chenyu.shop" +
-                            ".provider", mCameraFile);//通过FileProvider创建一个content类型的Uri
+                            ".provider", mCropFile);//通过FileProvider创建一个content类型的Uri
                     Intent intent = new Intent();
                     intent.putExtra("uri", inputUri);
                     setResult(RESULT_OK, intent);
@@ -232,17 +231,16 @@ public class UserLogoActivity extends BaseActivity {
             Log.e("error", "The uri is not exist.");
             return;
         }
-
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         //sdk>=24
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri outPutUri = Uri.fromFile(mCameraFile);
+            Uri outPutUri = Uri.fromFile(mCropFile);
             intent.setDataAndType(inputUri, "image/*");
             intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutUri);
         } else {
-            Uri outPutUri = Uri.fromFile(mCameraFile);
+            Uri outPutUri = Uri.fromFile(mCropFile);
             if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                 String url = ToolUtils.getPath(this, inputUri);//这个方法是处理4.4以上图片返回的Uri对象不同的处理方法
                 intent.setDataAndType(Uri.fromFile(new File(url)), "image/*");
@@ -256,8 +254,8 @@ public class UserLogoActivity extends BaseActivity {
         // 设置裁剪
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
+//        intent.putExtra("aspectX", 1);
+//        intent.putExtra("aspectY", 1);
         // outputX outputY 是裁剪图片宽高
         intent.putExtra("outputX", 250);
         intent.putExtra("outputY", 250);
@@ -265,8 +263,6 @@ public class UserLogoActivity extends BaseActivity {
         //去除默认的人脸识别，否则和剪裁匡重叠
         intent.putExtra("noFaceDetection", false);
         intent.putExtra("outputFormat", "JPEG");
-        //intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());// 图片格式
-        //这里就将裁剪后的图片的Uri返回了
         startActivityForResult(intent, ConstantManager.PhotoAlbum.CROP_PHOTO);
     }
 

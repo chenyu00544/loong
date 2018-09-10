@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +24,9 @@ public class ModifyAddressActivity extends BaseActivity {
     Context context;
     public LoadingDialog loadingDialog;
     private TextView area;
+    private EditText userName;
+    private EditText phone;
+    private EditText address_info;
     private OptionsPickerView optionsPickerView;
 
     @Override
@@ -69,6 +75,16 @@ public class ModifyAddressActivity extends BaseActivity {
         super.initView();
         loadingDialog = new LoadingDialog(context, R.style.TranslucentDialog);
         area = (TextView) findViewById(R.id.textView117);
+        userName = (EditText) findViewById(R.id.editText9);
+        phone = (EditText) findViewById(R.id.editText10);
+        address_info = (EditText) findViewById(R.id.editText11);
+        userName.setFocusable(true);
+        userName.setFocusableInTouchMode(true);
+        userName.requestFocus();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        //三级联动回调
         optionsPickerView = new OptionsPickerBuilder(ModifyAddressActivity.this, new
                 OnOptionsSelectListener() {
                     @Override
@@ -115,8 +131,38 @@ public class ModifyAddressActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 optionsPickerView.show();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(area.getWindowToken(), 0);
             }
         });
+        ImageView iv1 = (ImageView) findViewById(R.id.imageView24);
+        ImageView iv2 = (ImageView) findViewById(R.id.imageView52);
+        ImageView iv3 = (ImageView) findViewById(R.id.imageView53);
+        ImageView iv4 = (ImageView) findViewById(R.id.imageView57);
 
+        iv1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userName.getText().clear();
+            }
+        });
+        iv2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                phone.getText().clear();
+            }
+        });
+        iv3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                area.setText("");
+            }
+        });
+        iv4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                address_info.getText().clear();
+            }
+        });
     }
 }

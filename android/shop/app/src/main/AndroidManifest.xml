@@ -91,6 +91,21 @@
             android:label="@string/all_photo"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".mycenter.userinfo.UserNickActivity"
+            android:label="@string/nick_title"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".mycenter.userinfo.UserAccountActivity"
+            android:label="@string/account_title"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".mycenter.userinfo.UserRealNameActivity"
+            android:label="@string/real_title"
+            android:theme="@style/AppTheme" />
+
         <!--<receiver android:name=".receiver.Receiver">-->
         <!--<intent-filter>-->
         <!--<action android:name="LoginClick" />-->

@@ -19,7 +19,7 @@ public interface ConstantManager {
 
         public String LOGO = "LOGO";
 
-        public String NICKNAME = "NICKNAME";
+        public int NICKNAME = 3001;
 
         public String SEX = "XXXXXXX";
 

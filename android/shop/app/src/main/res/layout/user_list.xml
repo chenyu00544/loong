@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/nav_header"
-        layout="@layout/navigation_header_view"
+        layout="@layout/navigation_header_view_1"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
