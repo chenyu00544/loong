@@ -282,9 +282,11 @@ public class AddressActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String result = data.getExtras().getString("result");
-        Log.i("TAG", String.valueOf(requestCode));
-        Log.i("TAG", String.valueOf(resultCode));
-        Log.i("TAG", result);
+        if(data != null){
+            String result = data.getExtras().getString("result");
+            Log.i("TAG", String.valueOf(requestCode));
+            Log.i("TAG", String.valueOf(resultCode));
+            Log.i("TAG", result);
+        }
     }
 }

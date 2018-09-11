@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.j256.ormlite:ormlite-android:5.0'
     implementation 'com.j256.ormlite:ormlite-core:5.0'
     implementation 'com.roughike:bottom-bar:2.3.1'
-    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
+    implementation 'com.jude:swipebackhelper:3.1.2'
     implementation 'com.youth.banner:banner:1.4.9'
     implementation 'com.yalantis:phoenix:1.2.3'
     implementation 'in.srain.cube:ultra-ptr:1.0.11'

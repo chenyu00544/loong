@@ -10,17 +10,18 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.jude.swipbackhelper.SwipeBackHelper;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
+import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.home.FragmentCart;
 import com.vcvb.chenyu.shop.home.FragmentCategory;
 import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.home.FragmentHome;
 import com.vcvb.chenyu.shop.home.FragmentMy;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
-import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
-import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -29,7 +30,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity extends BaseActivity {
 
     private BottomBar bottomBar;
 
@@ -49,6 +50,7 @@ public class MainActivity extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);//设置是否可滑动
         setContentView(R.layout.activity_main);
         context = this;
         fragmentManager = getSupportFragmentManager();
