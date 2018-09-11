@@ -23,8 +23,11 @@
         <item name="android:windowContentOverlay">@null</item>
 
     </style>
-    <style name="TranslucentDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
-        <item name="android:windowNoTitle">true</item>
+    <style name="TranslucentDialog" parent="@style/Theme.AppCompat.Dialog">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowBackground">@android:drawable/screen_background_dark_transparent</item>
     </style>
     <style name="BottomShow" parent="Animation.AppCompat.Dialog">
@@ -34,6 +37,10 @@
     <style name="CenterShow" parent="Animation.AppCompat.Dialog">
         <item name="android:windowEnterAnimation">@anim/dialog_c_enter</item>
         <item name="android:windowExitAnimation">@anim/dialog_c_exit</item>
+    </style>
+    <style name="RightShow" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowEnterAnimation">@anim/dialog_r_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_r_exit</item>
     </style>
     <style name="PopupAnimation" parent="android:Animation" mce_bogus="1">
         <item name="android:windowEnterAnimation">@anim/fade_in</item>

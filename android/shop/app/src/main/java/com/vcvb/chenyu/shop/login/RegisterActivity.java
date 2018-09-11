@@ -162,7 +162,7 @@ public class RegisterActivity extends BaseActivity {
                         .getText()) && !TextUtils.isEmpty(passEdit.getText()) && checkBox
                         .isChecked()) {
                     is_register = true;
-                    registerTv.setBackgroundResource(R.drawable.button_active_shape);
+                    registerTv.setBackgroundResource(R.drawable.shape_button_active);
                 }
             }
         });
@@ -184,7 +184,7 @@ public class RegisterActivity extends BaseActivity {
                         .getText()) && !TextUtils.isEmpty(passEdit.getText()) && checkBox
                         .isChecked()) {
                     is_register = true;
-                    registerTv.setBackgroundResource(R.drawable.button_active_shape);
+                    registerTv.setBackgroundResource(R.drawable.shape_button_active);
                 }
             }
         });
@@ -206,7 +206,7 @@ public class RegisterActivity extends BaseActivity {
                         .getText()) && !TextUtils.isEmpty(passEdit.getText()) && checkBox
                         .isChecked()) {
                     is_register = true;
-                    registerTv.setBackgroundResource(R.drawable.button_active_shape);
+                    registerTv.setBackgroundResource(R.drawable.shape_button_active);
                 }
             }
         });

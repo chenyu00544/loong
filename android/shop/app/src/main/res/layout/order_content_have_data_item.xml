@@ -95,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
-        android:background="@drawable/brand_shape"
+        android:background="@drawable/shape_brand"
         android:paddingBottom="2dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"

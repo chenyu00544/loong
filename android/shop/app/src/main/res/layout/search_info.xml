@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/nav_header"
+        layout="@layout/navigation_header_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/view44"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bottom_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nav_header" />
+
+    <TextView
+        android:id="@+id/textView154"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:text="@string/price"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view44"
+        app:layout_constraintEnd_toEndOf="@+id/view44"
+        app:layout_constraintStart_toStartOf="@+id/view44"
+        app:layout_constraintTop_toTopOf="@+id/view44" />
+
+    <TextView
+        android:id="@+id/textView155"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:text="@string/comprehensive"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView154"
+        app:layout_constraintStart_toStartOf="@+id/view44"
+        app:layout_constraintTop_toTopOf="@+id/textView154" />
+
+    <TextView
+        android:id="@+id/textView156"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:text="@string/sales_volume"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView154"
+        app:layout_constraintEnd_toStartOf="@+id/textView154"
+        app:layout_constraintStart_toEndOf="@+id/textView155"
+        app:layout_constraintTop_toTopOf="@+id/textView154" />
+
+    <TextView
+        android:id="@+id/textView157"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        android:text="@string/filter"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView154"
+        app:layout_constraintEnd_toStartOf="@+id/imageView76"
+        app:layout_constraintTop_toTopOf="@+id/textView154" />
+
+    <ImageView
+        android:id="@+id/imageView76"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView157"
+        app:layout_constraintEnd_toEndOf="@+id/view44"
+        app:layout_constraintTop_toTopOf="@+id/textView157"
+        app:srcCompat="@drawable/icon_filter" />
+
+    <TextView
+        android:id="@+id/textView158"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
+        android:text="@string/new_product"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:padding="6dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView157"
+        app:layout_constraintEnd_toStartOf="@+id/textView157"
+        app:layout_constraintStart_toEndOf="@+id/textView154"
+        app:layout_constraintTop_toTopOf="@+id/textView157" />
+
+    <ImageView
+        android:id="@+id/imageView77"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView154"
+        app:layout_constraintStart_toEndOf="@+id/textView154"
+        app:layout_constraintTop_toTopOf="@+id/textView154"
+        app:srcCompat="@drawable/icon_up_down_gray" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/search_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView154">
+
+    </android.support.v7.widget.RecyclerView>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.vcvb.chenyu.shop.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.vcvb.chenyu.shop.adapter.item.categray.CategroyTitleItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.cate.CategroyBean;
+import com.vcvb.chenyu.shop.search.SearchInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +94,7 @@ public class FragmentCategory extends BaseFragment {
                 .OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-
+                goToSearchInfoActivity();
             }
         });
         loadData();
@@ -150,5 +152,10 @@ public class FragmentCategory extends BaseFragment {
             }
         }
         return cells;
+    }
+
+    public void goToSearchInfoActivity(){
+        Intent intent = new Intent(context, SearchInfoActivity.class);
+        startActivity(intent);
     }
 }

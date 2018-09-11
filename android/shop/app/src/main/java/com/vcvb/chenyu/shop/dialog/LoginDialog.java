@@ -273,7 +273,7 @@ public class LoginDialog extends Dialog {
 
     public void setPhoneLogin(){
         if(phoneLogin != null){
-            phoneLogin.setBackgroundResource(R.drawable.button_active_shape);
+            phoneLogin.setBackgroundResource(R.drawable.shape_button_active);
             phoneLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -295,7 +295,7 @@ public class LoginDialog extends Dialog {
 
     public void setEmailLogin(){
         if(emailLogin != null){
-            emailLogin.setBackgroundResource(R.drawable.button_active_shape);
+            emailLogin.setBackgroundResource(R.drawable.shape_button_active);
             emailLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

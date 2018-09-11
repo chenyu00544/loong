@@ -258,6 +258,7 @@ public class UserInfoActivity extends BaseActivity {
             switch (requestCode) {
                 case ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST:
                     Uri imageUri = data.getParcelableExtra("uri");
+                    System.out.println(imageUri);
                     users.get(pos).setImgPath(imageUri.toString());
                     uploadHeaderLogo();
                     break;

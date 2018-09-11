@@ -182,10 +182,10 @@ public class FragmentHome extends BaseFragment {
                 pos = getDistance();
                 if (pos >= 255) {
                     v.findViewById(R.id.nav_header_home).setBackgroundColor(0xFFFF4081);
-                    v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape_light);
+                    v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.shape_search_light);
                 } else {
                     pos = pos > 0 ? pos : 0;
-                    v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.search_shape);
+                    v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.shape_search);
                     String h = Integer.toHexString(pos);
                     String c = "";
                     if (pos < 16) {

@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
@@ -41,7 +40,7 @@ public class UserLogoItem extends BaseItem<UserInfoBean> {
 
         tv.setText(mData.getSubTitle());
         RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.RESOURCE).skipMemoryCache(false).override(120, 120);
+                (DiskCacheStrategy.NONE).skipMemoryCache(true).override(120, 120);
 
         if(mData.getImgPath() == null){
             Glide.with(context).load(mData.getImageId()).apply
