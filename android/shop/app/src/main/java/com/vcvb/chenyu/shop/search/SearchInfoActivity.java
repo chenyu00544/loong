@@ -13,13 +13,25 @@ import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
+import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsHItem;
+import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsVItem;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.SearchFilterDialog;
 import com.vcvb.chenyu.shop.javaBean.home.Goods;
 import com.vcvb.chenyu.shop.javaBean.search.FilterBean;
 import com.vcvb.chenyu.shop.javaBean.search.FilterList;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.Routes;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
 
 public class SearchInfoActivity extends BaseActivity {
 
@@ -54,9 +66,9 @@ public class SearchInfoActivity extends BaseActivity {
         context = this;
         Intent intent = getIntent();
         keywords = intent.getStringExtra("keywords");
-        getData(true);
         setNavBack();
         initView();
+        getData(true);
     }
 
     @Override
@@ -72,19 +84,147 @@ public class SearchInfoActivity extends BaseActivity {
         }
         search = findViewById(R.id.view43);
 
-        showType = (ImageView) findViewById(R.id.imageView74);
+        showType = findViewById(R.id.imageView74);
         showType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (isShow) {
                     isShow = false;
-                    Glide.with(context).load(R.drawable.icon_list).into(showType);
+                    Glide.with(context).load(R.drawable.icon_collection_list).into(showType);
                 } else {
                     isShow = true;
-                    Glide.with(context).load(R.drawable.icon_collection_list).into(showType);
+                    Glide.with(context).load(R.drawable.icon_list).into(showType);
                 }
+                setData();
             }
         });
+    }
+
+    @Override
+    public void initView() {
+        super.initView();
+        comprehensive = (TextView) findViewById(R.id.textView155);
+        salesVolume = (TextView) findViewById(R.id.textView156);
+        price = (TextView) findViewById(R.id.textView154);
+        newProduct = (TextView) findViewById(R.id.textView158);
+        filter = (TextView) findViewById(R.id.textView157);
+        upDown = (ImageView) findViewById(R.id.imageView77);
+
+        comprehensive.setOnClickListener(searchType);
+        salesVolume.setOnClickListener(searchType);
+        price.setOnClickListener(searchType);
+        newProduct.setOnClickListener(searchType);
+        filter.setOnClickListener(searchType);
+
+        mRecyclerView = findViewById(R.id.search_list);
+        mLayoutManager = new GridLayoutManager(context, 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new CYCSimpleAdapter();
+        mRecyclerView.setAdapter(mAdapter);
+        initListener();
+    }
+
+    @Override
+    public void getData(final boolean b) {
+        super.getData(b);
+        if (b) {
+            loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
+            loadingDialog.show();
+        }
+
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("goods_id", "");
+        mp.put("nav_id", "0");
+//        mp.put("order_type", ""+type);
+        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (b) {
+                            loadingDialog.dismiss();
+                        }
+
+                        if (goodses.size() != 0) {
+                        } else {
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (b) {
+                            loadingDialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+
+        filterDialog = new SearchFilterDialog();
+        for (int i = 0; i < 5; i++) {
+            FilterBean bean = new FilterBean();
+            bean.setIsType(2);
+            bean.setTitle("每行" + i);
+            List<FilterList> list = new ArrayList<>();
+            for (int j = 0; j < 5; j++) {
+                FilterList bean2 = new FilterList();
+                bean2.setTitle("同学的实" + j);
+                list.add(bean2);
+            }
+            bean.setList(list);
+            filterList.add(bean);
+        }
+        filterDialog.setDate(filterList);
+
+        goodses.clear();
+        for (int i = 0; i < 10; i++) {
+            Goods bean = new Goods();
+            bean.setGoodsName("央视网" + i);
+            goodses.add(bean);
+        }
+        setData();
+    }
+
+    public void setData(){
+        mAdapter.clear();
+        if (isShow) {
+            mLayoutManager = new GridLayoutManager(context, 2);
+        } else {
+            mLayoutManager = new GridLayoutManager(context, 1);
+        }
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter.addAll(getItems(goodses));
+    }
+
+    protected List<Item> getItems(List<Goods> list) {
+        List<Item> cells = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if(isShow){
+                cells.add(new SearchGoodsVItem(list.get(i), context));
+            }else{
+                cells.add(new SearchGoodsHItem(list.get(i), context));
+            }
+        }
+        return cells;
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+    }
+
+    public void getSearchData() {
+
+    }
+
+    public void showFilterDialog() {
+        filterDialog.show(getSupportFragmentManager(), "Dialog");
     }
 
     View.OnClickListener searchType = new View.OnClickListener() {
@@ -141,56 +281,4 @@ public class SearchInfoActivity extends BaseActivity {
             }
         }
     };
-
-    @Override
-    public void initView() {
-        super.initView();
-        comprehensive = (TextView) findViewById(R.id.textView155);
-        salesVolume = (TextView) findViewById(R.id.textView156);
-        price = (TextView) findViewById(R.id.textView154);
-        newProduct = (TextView) findViewById(R.id.textView158);
-        filter = (TextView) findViewById(R.id.textView157);
-        upDown = (ImageView) findViewById(R.id.imageView77);
-
-        comprehensive.setOnClickListener(searchType);
-        salesVolume.setOnClickListener(searchType);
-        price.setOnClickListener(searchType);
-        newProduct.setOnClickListener(searchType);
-        filter.setOnClickListener(searchType);
-
-        filterDialog = new SearchFilterDialog();
-        for (int i = 0; i < 5; i++) {
-            FilterBean bean = new FilterBean();
-            bean.setIsType(2);
-            bean.setTitle("每行" + i);
-            List<FilterList> list = new ArrayList<>();
-            for (int j = 0; j < 5; j++) {
-                FilterList bean2 = new FilterList();
-                bean2.setTitle("同学的实" + j);
-                list.add(bean2);
-            }
-            bean.setList(list);
-            filterList.add(bean);
-        }
-        filterDialog.setDate(filterList);
-        initListener();
-    }
-
-    @Override
-    public void getData(boolean b) {
-        super.getData(b);
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-    }
-
-    public void getSearchData() {
-
-    }
-
-    public void showFilterDialog() {
-        filterDialog.show(getSupportFragmentManager(), "Dialog");
-    }
 }
