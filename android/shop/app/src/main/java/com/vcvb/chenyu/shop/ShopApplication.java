@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.squareup.leakcanary.LeakCanary;
 import com.vcvb.chenyu.shop.tools.PackageUtil;
+import com.zxy.recovery.core.Recovery;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,6 +28,14 @@ public class ShopApplication extends Application {
     public void onCreate() {
         super.onCreate();
         LeakCanary.install(this);
+        Recovery.getInstance()
+                .debug(true)
+                .recoverInBackground(false)
+                .recoverStack(true)
+                .mainPage(MainActivity.class)
+                .recoverEnabled(true)
+                .silent(false, Recovery.SilentMode.RECOVER_ACTIVITY_STACK)
+                .init(this);
         if (quickStart()) {
             return;
         }

@@ -51,6 +51,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);//设置是否可滑动
+
         setContentView(R.layout.activity_main);
         context = this;
         fragmentManager = getSupportFragmentManager();

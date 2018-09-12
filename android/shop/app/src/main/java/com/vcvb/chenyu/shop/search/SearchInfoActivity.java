@@ -9,11 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.dialog.SearchFilterDialog;
 import com.vcvb.chenyu.shop.javaBean.home.Goods;
+import com.vcvb.chenyu.shop.javaBean.search.FilterBean;
+import com.vcvb.chenyu.shop.javaBean.search.FilterList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +42,7 @@ public class SearchInfoActivity extends BaseActivity {
 
     private int type = 0;
     private String keywords;
+    private List<FilterBean> filterList = new ArrayList<>();
 
     private SearchFilterDialog filterDialog;
 
@@ -62,7 +66,7 @@ public class SearchInfoActivity extends BaseActivity {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    finish();
+                    SwipeBackHelper.finish(SearchInfoActivity.this);
                 }
             });
         }
@@ -86,11 +90,12 @@ public class SearchInfoActivity extends BaseActivity {
     View.OnClickListener searchType = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            comprehensive.setTextColor(context.getResources().getColor(R.color.black));
-            salesVolume.setTextColor(context.getResources().getColor(R.color.black));
-            price.setTextColor(context.getResources().getColor(R.color.black));
-            newProduct.setTextColor(context.getResources().getColor(R.color.black));
-            filter.setTextColor(context.getResources().getColor(R.color.black));
+            if (view.getId() != R.id.textView157) {
+                comprehensive.setTextColor(context.getResources().getColor(R.color.black));
+                salesVolume.setTextColor(context.getResources().getColor(R.color.black));
+                price.setTextColor(context.getResources().getColor(R.color.black));
+                newProduct.setTextColor(context.getResources().getColor(R.color.black));
+            }
             switch (view.getId()) {
                 case R.id.textView155:
                     type = 1;
@@ -121,7 +126,6 @@ public class SearchInfoActivity extends BaseActivity {
                 case R.id.textView157:
                     type = 5;
                     isUpDown = 0;
-                    filter.setTextColor(context.getResources().getColor(R.color.red));
                     showFilterDialog();
                     break;
             }
@@ -155,7 +159,20 @@ public class SearchInfoActivity extends BaseActivity {
         filter.setOnClickListener(searchType);
 
         filterDialog = new SearchFilterDialog();
-
+        for (int i = 0; i < 5; i++) {
+            FilterBean bean = new FilterBean();
+            bean.setIsType(2);
+            bean.setTitle("每行" + i);
+            List<FilterList> list = new ArrayList<>();
+            for (int j = 0; j < 5; j++) {
+                FilterList bean2 = new FilterList();
+                bean2.setTitle("同学的实" + j);
+                list.add(bean2);
+            }
+            bean.setList(list);
+            filterList.add(bean);
+        }
+        filterDialog.setDate(filterList);
         initListener();
     }
 

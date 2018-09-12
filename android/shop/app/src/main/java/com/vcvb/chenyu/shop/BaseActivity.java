@@ -29,8 +29,8 @@ public class BaseActivity extends AppCompatActivity {
                 .setSwipeRelateEnable(true)//是否与下一级activity联动(微信效果)。默认关
                 .setSwipeRelateOffset(500)//activity联动时的偏移量。默认500px。
                 .setDisallowInterceptTouchEvent(false)//不抢占事件，默认关（事件将先由子View处理再由滑动关闭处理）
-                .setSwipeEdge(200)//可滑动的范围。px。200表示为左边200px的屏幕
-                .setSwipeEdgePercent(0.2f)//可滑动的范围。百分比。0.2表示为左边20%的屏幕
+//                .setSwipeEdge(200)//可滑动的范围。px。200表示为左边200px的屏幕
+                .setSwipeEdgePercent(0.1f)//可滑动的范围。百分比。0.2表示为左边20%的屏幕
                 .setSwipeSensitivity(0.5f)//对横向滑动手势的敏感程度。0为迟钝 1为敏感
                 .setScrimColor(Color.BLACK)//底层阴影颜色
                 .setClosePercent(0.8f)//触发关闭Activity百分比
@@ -69,7 +69,7 @@ public class BaseActivity extends AppCompatActivity {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    finish();
+                    SwipeBackHelper.finish(BaseActivity.this);
                 }
             });
         }

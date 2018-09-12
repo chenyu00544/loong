@@ -8,6 +8,7 @@
     <string name="tab_5">我的</string>
 
     <string name="store_name">柠檬自营</string>
+    <string name="store_server">柠檬服务</string>
     <string name="goods_detail">商品详情</string>
     <string name="goods">商品</string>
     <string name="evaluate">评价</string>
@@ -180,4 +181,7 @@
     <string name="price">价格</string>
     <string name="new_product">新品</string>
     <string name="filter">筛选</string>
+
+    <string name="max_price">最高价格</string>
+    <string name="min_price">最低价格</string>
 </resources>
