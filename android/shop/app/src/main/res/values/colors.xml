@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorBack_morandi">#eacfd4</color>
-    <color name="colorFront_morandi">#965456</color>
+    <color name="colorBack_morandi">#965456</color>
+    <color name="colorFront_morandi">#eacfd4</color>
     <color name="colorFont_morandi">#6b5055</color>
     <color name="colorFontWeak_morandi">#FFFBFC</color>
 

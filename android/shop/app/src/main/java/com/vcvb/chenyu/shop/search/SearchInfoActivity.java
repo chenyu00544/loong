@@ -16,8 +16,11 @@ import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsHItem;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsVItem;
+import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.SearchFilterDialog;
+import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.home.Goods;
 import com.vcvb.chenyu.shop.javaBean.search.FilterBean;
 import com.vcvb.chenyu.shop.javaBean.search.FilterList;
@@ -40,6 +43,7 @@ public class SearchInfoActivity extends BaseActivity {
     private List<Goods> goodses = new ArrayList<>();
     private GridLayoutManager mLayoutManager;
 
+    private TextView searchKey;
     private TextView comprehensive;
     private TextView salesVolume;
     private TextView price;
@@ -54,6 +58,9 @@ public class SearchInfoActivity extends BaseActivity {
 
     private int type = 0;
     private String keywords;
+    private int cateId;
+    private int categroyId;
+
     private List<FilterBean> filterList = new ArrayList<>();
 
     private SearchFilterDialog filterDialog;
@@ -64,10 +71,9 @@ public class SearchInfoActivity extends BaseActivity {
         setContentView(R.layout.search_info);
         changeStatusBarTextColor(true);
         context = this;
-        Intent intent = getIntent();
-        keywords = intent.getStringExtra("keywords");
         setNavBack();
         initView();
+        getKeyWords();
         getData(true);
     }
 
@@ -78,7 +84,13 @@ public class SearchInfoActivity extends BaseActivity {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    SwipeBackHelper.finish(SearchInfoActivity.this);
+                    if (keywords != null || cateId != 0) {
+                        finish();
+                        overridePendingTransition(0, 0);
+                    } else {
+                        SwipeBackHelper.finish(SearchInfoActivity.this);
+                    }
+
                 }
             });
         }
@@ -103,6 +115,7 @@ public class SearchInfoActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        searchKey = (TextView) findViewById(R.id.textView152);
         comprehensive = (TextView) findViewById(R.id.textView155);
         salesVolume = (TextView) findViewById(R.id.textView156);
         price = (TextView) findViewById(R.id.textView154);
@@ -119,6 +132,7 @@ public class SearchInfoActivity extends BaseActivity {
         mRecyclerView = findViewById(R.id.search_list);
         mLayoutManager = new GridLayoutManager(context, 2);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new DefaultItemDecoration(context, 5));
         mAdapter = new CYCSimpleAdapter();
         mRecyclerView.setAdapter(mAdapter);
         initListener();
@@ -191,7 +205,7 @@ public class SearchInfoActivity extends BaseActivity {
         setData();
     }
 
-    public void setData(){
+    public void setData() {
         mAdapter.clear();
         if (isShow) {
             mLayoutManager = new GridLayoutManager(context, 2);
@@ -205,9 +219,9 @@ public class SearchInfoActivity extends BaseActivity {
     protected List<Item> getItems(List<Goods> list) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            if(isShow){
+            if (isShow) {
                 cells.add(new SearchGoodsVItem(list.get(i), context));
-            }else{
+            } else {
                 cells.add(new SearchGoodsHItem(list.get(i), context));
             }
         }
@@ -217,6 +231,15 @@ public class SearchInfoActivity extends BaseActivity {
     @Override
     public void initListener() {
         super.initListener();
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                Intent intent = new Intent(SearchInfoActivity.this, GoodsDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+        searchKey.setOnClickListener(searchType);
     }
 
     public void getSearchData() {
@@ -225,6 +248,18 @@ public class SearchInfoActivity extends BaseActivity {
 
     public void showFilterDialog() {
         filterDialog.show(getSupportFragmentManager(), "Dialog");
+    }
+
+    public void getKeyWords() {
+        Intent intent = getIntent();
+        keywords = intent.getStringExtra("keywords");
+        cateId = intent.getIntExtra("cate", 0);
+        categroyId = intent.getIntExtra("categroy", 0);
+        if (cateId == 0) {
+            searchKey.setText(keywords);
+        } else {
+            searchKey.setText(R.string.search);
+        }
     }
 
     View.OnClickListener searchType = new View.OnClickListener() {
@@ -237,6 +272,12 @@ public class SearchInfoActivity extends BaseActivity {
                 newProduct.setTextColor(context.getResources().getColor(R.color.black));
             }
             switch (view.getId()) {
+                case R.id.textView152:
+                    finish();
+                    Intent intent = new Intent(SearchInfoActivity.this, SearchActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                    break;
                 case R.id.textView155:
                     type = 1;
                     isUpDown = 0;

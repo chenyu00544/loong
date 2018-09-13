@@ -38,7 +38,7 @@ public class SearchServiceItem extends BaseItem<FilterBean> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView159);
         tv.setText(mData.getTitle());
-        FlowLayout fly = (FlowLayout) holder.getView(R.id.wrap_filter);
+        FlowLayout fly = (FlowLayout) holder.getView(R.id.wrap_hot);
         fly.setChildSpacing(8);
         fly.setRowSpacing(8);
         fly.setChildSpacingForLastRow(8);

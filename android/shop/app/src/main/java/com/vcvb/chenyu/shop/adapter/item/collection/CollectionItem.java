@@ -42,10 +42,6 @@ public class CollectionItem extends BaseItem<CollectionBean> {
 
         tv.setText(mData.getGoodsName());
 //        ImageView iv = holder.getImageView(R.id.imageView47);
-//        Picasso.with(context).load(mData.getPic())
-                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-//                .config(Bitmap.Config.RGB_565)
-//                .placeholder(R.drawable.icon_no_pic).into(iv);
 
         ConstraintSet set = new ConstraintSet();
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();

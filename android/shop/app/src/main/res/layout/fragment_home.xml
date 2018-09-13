@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/content_recycler_view"
-        layout="@layout/fragment_home_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-    <include
         android:id="@+id/nav_header_home"
         layout="@layout/home_header_view"
-        android:layout_width="match_parent"
-        android:layout_height="70dp" />
-</RelativeLayout>
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/content_recycler_view"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/content_recycler_view"
+        layout="@layout/fragment_home_recycler_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nav_header_home" />
+
+
+</android.support.constraint.ConstraintLayout>

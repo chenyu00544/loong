@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_4_grad_b_white">
 
     <ImageView
         android:id="@+id/imageView78"
@@ -36,20 +37,18 @@
         app:layout_constraintStart_toStartOf="@+id/imageView78"
         app:layout_constraintTop_toBottomOf="@+id/imageView78" />
 
-    <TextView
-        android:id="@+id/textView165"
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/tip_wrap"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/red_all_border"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:paddingBottom="1dp"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:paddingTop="1dp"
-        android:text=""
-        android:textAlignment="center"
-        android:textColor="@color/red"
-        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView164"
         app:layout_constraintTop_toBottomOf="@+id/textView164"
         tools:ignore="SmallSp" />
@@ -59,13 +58,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:text="@string/goods_price"
         android:textColor="@color/red"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView164"
-        app:layout_constraintTop_toBottomOf="@+id/textView165" />
+        app:layout_constraintTop_toBottomOf="@+id/tip_wrap" />
 
     <TextView
         android:id="@+id/textView167"
@@ -75,7 +74,7 @@
         android:layout_marginStart="4dp"
         android:gravity="bottom"
         android:text="@string/goods_market"
-        android:textColor="@color/gray_d"
+        android:textColor="@color/gray"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView166"
         app:layout_constraintStart_toEndOf="@+id/textView166"

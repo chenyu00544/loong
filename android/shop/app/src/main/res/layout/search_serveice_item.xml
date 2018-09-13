@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.nex3z.flowlayout.FlowLayout
-        android:id="@+id/wrap_filter"
+        android:id="@+id/wrap_hot"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

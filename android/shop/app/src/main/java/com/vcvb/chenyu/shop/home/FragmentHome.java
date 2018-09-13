@@ -1,7 +1,6 @@
 package com.vcvb.chenyu.shop.home;
 
-import android.graphics.Color;
-import android.graphics.Rect;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,15 +9,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +23,7 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.home.HomeData;
+import com.vcvb.chenyu.shop.search.SearchActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
@@ -82,44 +76,12 @@ public class FragmentHome extends BaseFragment {
 
     private void initSearchView() {
         RelativeLayout nav_back = view.findViewById(R.id.nav_back);
-        final EditText editText = view.findViewById(R.id.search_text);
-        editText.setOnTouchListener(new View.OnTouchListener() {
+        final TextView editTv = view.findViewById(R.id.search_text);
+        editTv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                editText.setCursorVisible(true);
-                return false;
-            }
-        });
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                switch (i) {
-                    case EditorInfo.IME_ACTION_SEARCH:
-                        editText.setCursorVisible(false);
-                        editText.clearFocus();
-                        break;
-                }
-                return false;
-            }
-        });
-
-        final LinearLayout linearLayout = view.findViewById(R.id.search_wrap);
-        linearLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver
-                .OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect r = new Rect();
-                linearLayout.getWindowVisibleDisplayFrame(r);
-                int screenHeight = linearLayout.getRootView()
-                        .getHeight();
-                int heightDifference = screenHeight - (r.bottom);
-                if (heightDifference > 200) {
-                    //软键盘显示
-                } else {
-                    //软键盘隐藏
-                    editText.setCursorVisible(false);
-                    editText.clearFocus();
-                }
+            public void onClick(View view) {
+                Intent intent = new Intent(context, SearchActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -179,23 +141,6 @@ public class FragmentHome extends BaseFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                pos = getDistance();
-                if (pos >= 255) {
-                    v.findViewById(R.id.nav_header_home).setBackgroundColor(0xFFFF4081);
-                    v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.shape_search_light);
-                } else {
-                    pos = pos > 0 ? pos : 0;
-                    v.findViewById(R.id.search_wrap).setBackgroundResource(R.drawable.shape_search);
-                    String h = Integer.toHexString(pos);
-                    String c = "";
-                    if (pos < 16) {
-                        c = "0" + h;
-                    } else {
-                        c = h;
-                    }
-                    v.findViewById(R.id.nav_header_home).setBackgroundColor(Color.parseColor
-                            ("#" + c + "FF4081"));
-                }
             }
         });
     }
