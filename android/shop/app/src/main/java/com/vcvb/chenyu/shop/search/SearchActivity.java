@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.nex3z.flowlayout.FlowLayout;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.search.KeyWords;
 import com.vcvb.chenyu.shop.tools.IdsUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
@@ -33,6 +34,7 @@ public class SearchActivity extends BaseActivity {
     private FlowLayout flowLayout2;
     private FlowLayout flowLayout3;
     private ImageView trashV;
+    private int isFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class SearchActivity extends BaseActivity {
         initView();
         getData(true);
         initListener();
+        isFrom = getIntent().getIntExtra("isfrom", 0);
     }
 
     @Override
@@ -164,16 +167,36 @@ public class SearchActivity extends BaseActivity {
         trashV.setOnClickListener(listener);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case ConstantManager.IsFrom.FROM_HOME:
+                    break;
+            }
+        }
+    }
+
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.textView153:
-                    if(!TextUtils.isEmpty(search.getText())){
-                        Intent intent = new Intent(SearchActivity.this, SearchInfoActivity
-                                .class);
-                        intent.putExtra("keywords", String.valueOf(search.getText()));
-                        startActivity(intent);
+                    //输入搜索
+                    if (!TextUtils.isEmpty(search.getText())) {
+                        Intent intent;
+                        if (isFrom == ConstantManager.IsFrom.FROM_HOME) {
+                            intent = new Intent(SearchActivity.this, SearchInfoActivity.class);
+                            intent.putExtra("keywords", String.valueOf(search.getText()));
+                            startActivity(intent);
+                            finish();
+                        } else if (isFrom == ConstantManager.IsFrom.FROM_SEARCHINFO) {
+                            intent = new Intent();
+                            intent.putExtra("keywords", String.valueOf(search.getText()));
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
                         overridePendingTransition(0, 0);
                     }
                     break;
@@ -193,17 +216,31 @@ public class SearchActivity extends BaseActivity {
                     flowLayout1.addView(textView);
                     break;
                 default:
+                    //常用设置
                     if (findViewById(view.getId()) instanceof TextView) {
                         if (findViewById(view.getId()).getTag() != null) {
-                            Object obj = findViewById(view.getId()).getTag();
-                            Intent intent = new Intent(SearchActivity.this, SearchInfoActivity
-                                    .class);
-                            if (obj instanceof Integer) {
-                                intent.putExtra("cate", (Integer) obj);
-                            } else {
-                                intent.putExtra("keywords", (String) obj);
+                            Intent intent;
+                            if (isFrom == ConstantManager.IsFrom.FROM_HOME) {
+                                Object obj = findViewById(view.getId()).getTag();
+                                intent = new Intent(SearchActivity.this, SearchInfoActivity.class);
+                                if (obj instanceof Integer) {
+                                    intent.putExtra("cate", (Integer) obj);
+                                } else {
+                                    intent.putExtra("keywords", (String) obj);
+                                }
+                                startActivity(intent);
+                                finish();
+                            } else if (isFrom == ConstantManager.IsFrom.FROM_SEARCHINFO) {
+                                intent = new Intent();
+                                Object obj = findViewById(view.getId()).getTag();
+                                if (obj instanceof Integer) {
+                                    intent.putExtra("cate", (Integer) obj);
+                                } else {
+                                    intent.putExtra("keywords", (String) obj);
+                                }
+                                setResult(RESULT_OK, intent);
+                                finish();
                             }
-                            startActivity(intent);
                             overridePendingTransition(0, 0);
                         }
                     }

@@ -18,6 +18,7 @@ import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsHItem;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsVItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.SearchFilterDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
@@ -84,13 +85,7 @@ public class SearchInfoActivity extends BaseActivity {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (keywords != null || cateId != 0) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                    } else {
-                        SwipeBackHelper.finish(SearchInfoActivity.this);
-                    }
-
+                    SwipeBackHelper.finish(SearchInfoActivity.this);
                 }
             });
         }
@@ -242,6 +237,24 @@ public class SearchInfoActivity extends BaseActivity {
         searchKey.setOnClickListener(searchType);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case ConstantManager.IsFrom.FROM_SEARCHINFO:
+                    keywords = data.getStringExtra("keywords");
+                    cateId = data.getIntExtra("cate", 0);
+                    if (cateId == 0 && keywords != null && keywords != "") {
+                        searchKey.setText(keywords);
+                    } else {
+                        searchKey.setText(R.string.search);
+                    }
+                    break;
+            }
+        }
+    }
+
     public void getSearchData() {
 
     }
@@ -255,7 +268,7 @@ public class SearchInfoActivity extends BaseActivity {
         keywords = intent.getStringExtra("keywords");
         cateId = intent.getIntExtra("cate", 0);
         categroyId = intent.getIntExtra("categroy", 0);
-        if (cateId == 0) {
+        if (cateId == 0 && keywords != null && keywords != "") {
             searchKey.setText(keywords);
         } else {
             searchKey.setText(R.string.search);
@@ -273,9 +286,9 @@ public class SearchInfoActivity extends BaseActivity {
             }
             switch (view.getId()) {
                 case R.id.textView152:
-                    finish();
                     Intent intent = new Intent(SearchInfoActivity.this, SearchActivity.class);
-                    startActivity(intent);
+                    intent.putExtra("isfrom", ConstantManager.IsFrom.FROM_SEARCHINFO);
+                    startActivityForResult(intent, ConstantManager.IsFrom.FROM_SEARCHINFO);
                     overridePendingTransition(0, 0);
                     break;
                 case R.id.textView155:

@@ -13,16 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.nex3z.flowlayout.FlowLayout;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.home.Goods;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
-
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class SearchGoodsHItem extends BaseItem<Goods> {
     public static final int TYPE = 2;
@@ -69,20 +65,15 @@ public class SearchGoodsHItem extends BaseItem<Goods> {
             fl.addView(textView);
         }
 
-        ImageView iv = holder.getImageView(R.id.imageView78);
-        RoundedCornersTransformation roundedCorners = new RoundedCornersTransformation(6, 0,
-                RoundedCornersTransformation.CornerType.TOP);
-        RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override
-                        (120, 120);
-        Glide.with(context).load(R.drawable.icon_no_pic).apply(requestOptions).into(iv);
+        ImageView iv = holder.getImageView(R.id.imageView79);
+        Glide.with(context).load(R.drawable.icon_no_pic).into(iv);
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         int width = dm.widthPixels;
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
-        set.constrainWidth(iv.getId(), width / 2);
-        set.constrainHeight(iv.getId(), width / 2);
+        set.constrainWidth(iv.getId(), width / 3);
+        set.constrainHeight(iv.getId(), width / 3);
         set.applyTo(cly);
     }
 }

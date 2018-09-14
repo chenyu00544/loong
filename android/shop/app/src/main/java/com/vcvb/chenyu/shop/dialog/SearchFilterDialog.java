@@ -139,8 +139,10 @@ public class SearchFilterDialog extends DialogFragment implements View.OnTouchLi
 
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        if (motionEvent1.getX() - motionEvent.getX() > 120 && (motionEvent1.getX() - motionEvent.getX() > motionEvent1.getY() - motionEvent.getY())) {
-            dismiss();
+        if(motionEvent != null && motionEvent1 != null){
+            if (motionEvent1.getX() - motionEvent.getX() > 120 && (motionEvent1.getX() - motionEvent.getX() > motionEvent1.getY() - motionEvent.getY())) {
+                dismiss();
+            }
         }
         return true;
     }

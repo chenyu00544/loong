@@ -15,6 +15,12 @@ public interface ConstantManager {
         public String ACCESS_ID = "XXXXXXX";
     }
 
+    interface PhotoAlbum {
+        public int PHOTOALBUM_REQUEST = 2001;
+        public int REQUEST_IMAGE_CAPTURE = 2002;
+        public int CROP_PHOTO = 2003;
+    }
+
     interface User {
 
         public String LOGO = "LOGO";
@@ -26,9 +32,9 @@ public interface ConstantManager {
         public String ACCESS_ID = "XXXXXXX";
     }
 
-    interface PhotoAlbum {
-        public int PHOTOALBUM_REQUEST = 2001;
-        public int REQUEST_IMAGE_CAPTURE = 2002;
-        public int CROP_PHOTO = 2003;
+    interface IsFrom {
+        public int FROM_HOME = 4001;
+        public int FROM_CATEGORY = 4002;
+        public int FROM_SEARCHINFO = 4003;
     }
 }

@@ -21,6 +21,7 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.home.HomeData;
 import com.vcvb.chenyu.shop.search.SearchActivity;
@@ -76,11 +77,12 @@ public class FragmentHome extends BaseFragment {
 
     private void initSearchView() {
         RelativeLayout nav_back = view.findViewById(R.id.nav_back);
-        final TextView editTv = view.findViewById(R.id.search_text);
-        editTv.setOnClickListener(new View.OnClickListener() {
+        final TextView search = view.findViewById(R.id.search_text);
+        search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, SearchActivity.class);
+                intent.putExtra("isfrom", ConstantManager.IsFrom.FROM_HOME);
                 startActivity(intent);
             }
         });
@@ -105,10 +107,8 @@ public class FragmentHome extends BaseFragment {
         }
         bhm.put("banner", imgUrls);
         list.add(bhm);
-        String[] ads = new String[]{
-                "ads_25", "ads_1_2", "ads_11", "ads_2_1", "ads_12", "ads_11", "ads_11_title", "ads_14", "ads_11", "ads_22",
-                "ads_11", "ads_33",
-        };
+        String[] ads = new String[]{"ads_25", "ads_1_2", "ads_11", "ads_2_1", "ads_12", "ads_11",
+                "ads_11_title", "ads_14", "ads_11", "ads_22", "ads_11", "ads_33",};
 
         for (int i = 0; i < ads.length; i++) {
             HashMap ahm = new HashMap();

@@ -39,7 +39,6 @@ public class SearchPriceItem extends BaseItem<FilterBean> {
         final EditText editText2 = (EditText) holder.getView(R.id.editText15);
         final TextView tv1 = holder.getTextView(R.id.textView162);
         final TextView tv2 = holder.getTextView(R.id.textView163);
-        System.out.println(1312);
         editText1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
