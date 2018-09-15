@@ -55,7 +55,7 @@ public class SearchFilterDialog extends DialogFragment implements View.OnTouchLi
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.search_filter_dialog, container);
+        view = inflater.inflate(R.layout.dialog_search_filter, container);
         mGestureDetector = new GestureDetector(this);
         window = getDialog().getWindow();
 

@@ -127,7 +127,6 @@ public class FragmentHome extends BaseFragment {
         adapter = new HomeRecyclerViewAdapter(list, width, context);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
         recyclerView.setAdapter(adapter);
         final View v = view;
 

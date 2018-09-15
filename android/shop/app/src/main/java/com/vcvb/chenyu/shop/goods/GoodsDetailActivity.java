@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
@@ -30,6 +31,7 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsPriceItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSpecificationsItem;
+import com.vcvb.chenyu.shop.dialog.GoodsAttrDialog;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
@@ -64,6 +66,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private GoodsDetail goodsDetails = new GoodsDetail();
     private ShopGridLayoutManager gridLayoutManager;
+    private GoodsAttrDialog goodsAttrDialog;
 
     public GoodsDetailActivity() {
     }
@@ -238,6 +241,9 @@ public class GoodsDetailActivity extends GoodsActivity {
     }
 
     public void initView() {
+        TextView buy = findViewById(R.id.textView32);
+        buy.setOnClickListener(listener);
+        goodsAttrDialog = new GoodsAttrDialog();
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;
         goodsDatail = findViewById(R.id.goods_datail);
@@ -369,7 +375,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
         GoodsSpecifications goodsSpecifications = new GoodsSpecifications();
         goodsSpecifications.setGoodsSpecifications(specifications);
-        goodsSpecifications.setHeaderLogo("http://pic8.nipic" +
+        goodsSpecifications.setHeaderLogo("http://pic8.nipic" + "" +
                 ".com/20100705/2457331_121923653886_2.jpg");
         goodsDetails.setSpecifications(goodsSpecifications);
         ArrayList<GoodsDesc> descs = new ArrayList<>();
@@ -504,4 +510,15 @@ public class GoodsDetailActivity extends GoodsActivity {
         setContentView(R.layout.view_null);
         super.onDestroy();
     }
+
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.textView32:
+                    goodsAttrDialog.show(getSupportFragmentManager(), "Dialog");
+                    break;
+            }
+        }
+    };
 }
