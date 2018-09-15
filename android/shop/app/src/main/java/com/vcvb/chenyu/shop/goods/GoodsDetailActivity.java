@@ -16,8 +16,36 @@ import android.widget.LinearLayout;
 
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.GoodsDetailViewAdapter;
+import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
+import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsAttrItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsBannerItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsBrandItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsDescItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsEvaluateItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsExplainItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsFaatItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsNameItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsPriceItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSpecificationsItem;
 import com.vcvb.chenyu.shop.image.Images;
+import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsBanner;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsBrand;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDesc;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsEvaluate;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsExplain;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsFaat;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsPrice;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsShip;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsShipFree;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsSpecification;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsSpecifications;
+import com.vcvb.chenyu.shop.javaBean.goods.Probs;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 import com.vcvb.chenyu.shop.popwin.PopWin;
@@ -25,15 +53,17 @@ import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 public class GoodsDetailActivity extends GoodsActivity {
-    private ShopRecyclerView goodsDatail;
-    private GoodsDetailViewAdapter goodsDatailAdapter;
-    private ShopGridLayoutManager gridLayoutManager;
     int pos = 0;
     private View child1;
     private Receiver receiver;
+
+    private ShopRecyclerView goodsDatail;
+    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
+    private GoodsDetail goodsDetails = new GoodsDetail();
+    private ShopGridLayoutManager gridLayoutManager;
 
     public GoodsDetailActivity() {
     }
@@ -42,9 +72,9 @@ public class GoodsDetailActivity extends GoodsActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.goods_detail);
+        context = this;
         changeStatusBarTextColor(true);
         setNavBack();
-//        bindData();
         initView();
         initListener();
     }
@@ -210,149 +240,192 @@ public class GoodsDetailActivity extends GoodsActivity {
     public void initView() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;
-        goodsDatail = (ShopRecyclerView) findViewById(R.id.goods_datail);
+        goodsDatail = findViewById(R.id.goods_datail);
         goodsDatail.setFlingScale(0.3);
         goodsDatail.setNestedScrollingEnabled(false);
         gridLayoutManager = new ShopGridLayoutManager(this, 1);
         gridLayoutManager.setSpeedRatio(1);
         goodsDatail.setLayoutManager(gridLayoutManager);
-        gridLayoutManager.setRecycleChildrenOnDetach(true);
+//        gridLayoutManager.setRecycleChildrenOnDetach(true);
 
-        HashMap hm = new HashMap();
-        ArrayList<HashMap> imgUrls = new ArrayList<>();
+        ArrayList<GoodsBanner> banners = new ArrayList<>();
         for (int i = 0; i < Images.imgUrls.length; i++) {
-            HashMap bannerhm = new HashMap();
-            bannerhm.put("url", Images.imgUrls[i]);
-            imgUrls.add(bannerhm);
+            GoodsBanner banner = new GoodsBanner();
+            banner.setImagePath(Images.imgUrls[i]);
+            banner.setPath(Images.imgUrls[i]);
+            banners.add(banner);
         }
-        hm.put("banner", imgUrls);
+        goodsDetails.setBanners(banners);
 
-        HashMap pricehm = new HashMap();
-        pricehm.put("price", "$454");
-        pricehm.put("market", "$999");
-        pricehm.put("goods_tip", "1");
-        hm.put("price", pricehm);
-
-        HashMap namehm = new HashMap();
-        namehm.put("name", "五超人物|美女国际级裁判:不忘初心 坚持自己所爱");
-        namehm.put("desc",
-                "国际级裁判员——纪双稿件来源：五人制足球2018" +
-                        "世界大学生五人制足球锦标赛正在哈萨克斯坦阿拉木图火热进行中，欣赏精彩绝伦的小哥哥小姐姐比赛的同时，让我们把目光也转向场边辛勤执法比赛的裁判员");
-        hm.put("goods_name", namehm);
-
-        ArrayList<HashMap> faatList = new ArrayList<>();
+        GoodsPrice goodsPrice = new GoodsPrice();
+        goodsPrice.setPrice("$454");
+        goodsPrice.setMarket("$999");
+        ArrayList<String> goodsTips = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            HashMap faathm = new HashMap();
-            faathm.put("type", "dfaf");
-            faathm.put("info", "dfafdfafdafdf");
-            faatList.add(faathm);
+            goodsTips.add("tip" + i);
         }
-        hm.put("goods_faat", faatList);
+        goodsPrice.setGoodsTips(goodsTips);
+        goodsDetails.setGoodsPrice(goodsPrice);
 
-        hm.put("goods_attr", new HashMap());
-        HashMap shiphm = new HashMap();
-        shiphm.put("address", "daffadfasdfadsfaffd");
-        shiphm.put("from", "1231");
-        shiphm.put("to", "435");
-        shiphm.put("end", "657");
-        hm.put("goods_ship", shiphm);
+        goodsDetails.setGoodsName("五超人物|美女国际级裁判:不忘初心 坚持自己所爱");
+        goodsDetails.setGoodsDesc("国际级裁判员——纪双稿件来源：五人制足球2018" +
+                "世界大学生五人制足球锦标赛正在哈萨克斯坦阿拉木图火热进行中，欣赏精彩绝伦的小哥哥小姐姐比赛的同时，让我们把目光也转向场边辛勤执法比赛的裁判员");
 
-        HashMap shipfreehm = new HashMap();
-        shipfreehm.put("name", "运费");
-        shipfreehm.put("free", "$123");
-        hm.put("goods_shipfree", shipfreehm);
-
-        HashMap explainhm = new HashMap();
-        explainhm.put("name", "说明");
-        explainhm.put("explain", "daffadfasdfadsfaffd|fafafa|dfafa|fafa|daf");
-        hm.put("goods_explain", explainhm);
-
-        HashMap evaluatehm = new HashMap();
-        ArrayList<HashMap> evaluates = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            HashMap evalhm = new HashMap();
-            evalhm.put("logo", "http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
-            evalhm.put("nickname", "ssssssss");
-            evalhm.put("evaluate",
-                    "ssssssssdaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffd");
-            evalhm.put("img_num", "4");
-            evalhm.put("eva_img_url", "http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
-            evaluates.add(evalhm);
-        }
-
-        ArrayList<HashMap> probs = new ArrayList<>();
+        ArrayList<GoodsFaat> faats = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            HashMap probhm = new HashMap();
-            probhm.put("prob", "xcccc");
-            probhm.put("num", "9aff");
-            probs.add(probhm);
+            GoodsFaat faat = new GoodsFaat();
+            faat.setType("dfaf");
+            faat.setInfo("dfafdfafdafdf");
+            faats.add(faat);
         }
-        evaluatehm.put("evaluates", evaluates);
-        evaluatehm.put("problem", probs);
-        evaluatehm.put("pj", "商品评价（1213）");
-        evaluatehm.put("hp", "好评率 99.9%");
-        evaluatehm.put("zp", "正品(725)");
-        evaluatehm.put("jg", "实惠(725)");
-        evaluatehm.put("wl", "物流快(725)");
-        evaluatehm.put("wdj", "问大家（1213）");
-        hm.put("goods_evaluate", evaluatehm);
+        goodsDetails.setFaats(faats);
 
-        HashMap brandshm = new HashMap();
-        ArrayList<HashMap> brands = new ArrayList<>();
+        ArrayList<GoodsAttr> attrs = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            GoodsAttr attr = new GoodsAttr();
+            attr.setAttrId(i);
+            attr.setAttrName("xx" + i);
+            attrs.add(attr);
+        }
+        goodsDetails.setAttrs(attrs);
+
+        GoodsShip goodsShip = new GoodsShip();
+        goodsShip.setAddress("daffadfasdfadsfaffd");
+        goodsShip.setFrom("1231");
+        goodsShip.setTo("13");
+        goodsShip.setEnd("fds");
+        goodsDetails.setGoodsShip(goodsShip);
+
+        GoodsShipFree goodsShipFree = new GoodsShipFree();
+        goodsShipFree.setShipName("运费");
+        goodsShipFree.setShipFree("$123");
+        goodsDetails.setShipFree(goodsShipFree);
+
+        GoodsExplain goodsExplain = new GoodsExplain();
+        goodsExplain.setName("说明");
+        goodsExplain.setInfo("daffadfasdfadsfaffd|fafafa|dfafa|fafa|da");
+        goodsDetails.setGoodsExplain(goodsExplain);
+
+        GoodsEvaluate goodsEvaluate = new GoodsEvaluate();
+        ArrayList<Evaluates> evaluates = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            HashMap brandhm = new HashMap();
-            brandhm.put("logo", "http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
-            brandhm.put("name", "ssssssss");
-            brandhm.put("tag", "ssss");
-            brandhm.put("price", "$224");
-            brands.add(brandhm);
+            Evaluates eval = new Evaluates();
+            eval.setLogo("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
+            eval.setNickname("ssssssss");
+            eval.setEvaluate
+                    ("ssssssssdaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffddaffadfasdfadsfaffd");
+            eval.setImg_num(i);
+            eval.setEva_img_url("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
+            evaluates.add(eval);
         }
+        goodsEvaluate.setEvaluates(evaluates);
 
-        brandshm.put("brand_goods", brands);
-        brandshm.put("shop", "商品评价");
-        brandshm.put("zz", "好评率");
-        brandshm.put("jj", "正品(725)sds");
-        hm.put("goods_brand", brandshm);
+        ArrayList<Probs> probs = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            Probs prob = new Probs();
+            prob.setProblem("xcccc");
+            prob.setAnswer_num("9aff");
+            probs.add(prob);
+        }
+        goodsEvaluate.setProbs(probs);
 
-        ArrayList<HashMap> attrs = new ArrayList<>();
+        goodsEvaluate.setPj("商品评价（1213）");
+        goodsEvaluate.setHp("好评率 99.9%");
+        goodsEvaluate.setZp("正品(725)");
+        goodsEvaluate.setJg("实惠(725)");
+        goodsEvaluate.setWl("物流快(725)");
+        goodsEvaluate.setWdj("问大家（1213）");
+
+        goodsDetails.setGoodsEvaluate(goodsEvaluate);
+
+        ArrayList<GoodsBrand> brands = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            GoodsBrand brand = new GoodsBrand();
+            brand.setLogo("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
+            brand.setName("ssssssss");
+            ArrayList<String> list = new ArrayList<>();
+            for (int j = 0; j < 2; j++) {
+                list.add("abc");
+            }
+            brand.setGoodsTips(list);
+            brand.setPrice("$224");
+            brands.add(brand);
+        }
+        goodsDetails.setGoodsBrands(brands);
+
+//        brandshm.put("brand_goods", brands);
+//        brandshm.put("shop", "商品评价");
+//        brandshm.put("zz", "好评率");
+//        brandshm.put("jj", "正品(725)sds");
+//        hm.put("goods_brand", brandshm);
+//
+
+        ArrayList<GoodsSpecification> specifications = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-            HashMap attrhm = new HashMap();
-            attrhm.put("title", "大发发达的说法");
-            attrhm.put("content", "ssssssss");
-            attrs.add(attrhm);
+            GoodsSpecification specification = new GoodsSpecification();
+            specification.setTitle("大发发达的说法");
+            specification.setContent("ssssssss");
+            specifications.add(specification);
         }
-        hm.put("goods_info", attrs);
-        hm.put("goods_desc", "<div class=\"section s-img\"><div class=\"img\"><img " +
-                "src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/785/554/9114455587_1171374532.jpg\"></div></div><div " +
-                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/093/074/9114470390_1171374532.jpg\"></div></div><div " +
-                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/833/374/9114473338_1171374532.jpg\"></div></div><div " +
-                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/070/225/9116522070_1171374532.jpg\"></div></div><div " +
-                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/615/164/9114461516_1171374532.jpg\"></div></div><div " +
-                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/649/179/9095971946_1171374532.jpg\"></div></div><div " +
-                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/548/779/9095977845_1171374532.jpg\"></div></div><div " +
-                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/156/944/9114449651_1171374532.jpg\"></div></div><div " +
-                "class=\"section s-img\"><div class=\"img\"><img src=\"https://cbu01.alicdn" +
-                ".com/img/ibank/2018/286/100/9096001682_1171374532.jpg\"></div></div>\n");
+        GoodsSpecifications goodsSpecifications = new GoodsSpecifications();
+        goodsSpecifications.setGoodsSpecifications(specifications);
+        goodsSpecifications.setHeaderLogo("http://pic8.nipic" +
+                ".com/20100705/2457331_121923653886_2.jpg");
+        goodsDetails.setSpecifications(goodsSpecifications);
+        ArrayList<GoodsDesc> descs = new ArrayList<>();
+        for (int i = 0; i < Images.imageUrls.length; i++) {
+            GoodsDesc desc = new GoodsDesc();
+            desc.setGoodsDescImg(Images.imageUrls[i]);
+            descs.add(desc);
+        }
+        goodsDetails.setDescs(descs);
 
-        //初始化适配器
-        RecyclerView.RecycledViewPool pool = goodsDatail.getRecycledViewPool();
-        goodsDatailAdapter = new GoodsDetailViewAdapter(hm, width, pool, this);
         goodsDatail.setItemAnimator(new DefaultItemAnimator());
-        goodsDatail.setAdapter(goodsDatailAdapter);
-        pool.setMaxRecycledViews(9, 1);
-        pool.putRecycledView(goodsDatail.getAdapter().createViewHolder(goodsDatail, 9));
-        pool.setMaxRecycledViews(10, 1);
-        pool.putRecycledView(goodsDatail.getAdapter().createViewHolder(goodsDatail, 10));
-        pool.setMaxRecycledViews(12, 1);
-        pool.putRecycledView(goodsDatail.getAdapter().createViewHolder(goodsDatail, 12));
+        goodsDatail.setAdapter(mAdapter);
+        mAdapter.addAll(getItems(goodsDetails));
+    }
+
+    protected List<Item> getItems(GoodsDetail goodsDetails) {
+        List<Item> cells = new ArrayList<>();
+        if (goodsDetails.getBanners() != null && goodsDetails.getBanners().size() > 0) {
+            cells.add(new GoodsBannerItem(goodsDetails.getBanners(), context));
+        }
+        if (goodsDetails.getGoodsPrice() != null) {
+            cells.add(new GoodsPriceItem(goodsDetails.getGoodsPrice(), context));
+        }
+        if (goodsDetails.getGoodsName() != null && goodsDetails.getGoodsName() != "") {
+            cells.add(new GoodsNameItem(goodsDetails, context));
+        }
+        if (goodsDetails.getFaats() != null && goodsDetails.getFaats().size() > 0) {
+            cells.add(new GoodsFaatItem(goodsDetails.getFaats(), context));
+        }
+        if (goodsDetails.getAttrs() != null && goodsDetails.getAttrs().size() > 0) {
+            cells.add(new GoodsAttrItem(goodsDetails.getAttrs(), context));
+        }
+        if (goodsDetails.getGoodsShip() != null) {
+            cells.add(new GoodsShipItem(goodsDetails.getGoodsShip(), context));
+        }
+        if (goodsDetails.getShipFree() != null) {
+            cells.add(new GoodsShipFreeItem(goodsDetails.getShipFree(), context));
+        }
+        if (goodsDetails.getGoodsExplain() != null) {
+            cells.add(new GoodsExplainItem(goodsDetails.getGoodsExplain(), context));
+        }
+        if (goodsDetails.getGoodsEvaluate() != null) {
+            cells.add(new GoodsEvaluateItem(goodsDetails.getGoodsEvaluate(), context));
+        }
+        if (goodsDetails.getGoodsBrands() != null && goodsDetails.getGoodsBrands().size() > 0) {
+            cells.add(new GoodsBrandItem(goodsDetails.getGoodsBrands(), context));
+        }
+        if (goodsDetails.getSpecifications() != null) {
+            cells.add(new GoodsSpecificationsItem(goodsDetails.getSpecifications(), context));
+        }
+        if (goodsDetails.getDescs() != null && goodsDetails.getDescs().size() > 0) {
+            for (int i = 0; i < goodsDetails.getDescs().size(); i++) {
+                cells.add(new GoodsDescItem(goodsDetails.getDescs().get(i), context));
+            }
+        }
+        return cells;
     }
 
     @Override

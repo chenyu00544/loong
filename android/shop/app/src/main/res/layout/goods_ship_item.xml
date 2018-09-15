@@ -43,6 +43,7 @@
         android:layout_height="35dp"
         android:layout_marginTop="12dp"
         android:padding="5dp"
+        android:src="@drawable/icon_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView1"
@@ -96,6 +97,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:padding="5dp"
+        android:src="@drawable/icon_location"
         app:layout_constraintStart_toStartOf="@+id/textView1"
         app:layout_constraintTop_toBottomOf="@+id/textView1"
         app:srcCompat="@drawable/icon_location" />
@@ -108,6 +110,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="12dp"
         android:padding="5dp"
+        android:src="@drawable/icon_location"
         app:layout_constraintEnd_toEndOf="@+id/textView1"
         app:layout_constraintTop_toBottomOf="@+id/textView1"
         app:srcCompat="@drawable/icon_location" />
