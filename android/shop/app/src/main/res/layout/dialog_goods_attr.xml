@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
     <View
         android:id="@+id/view46"
         android:layout_width="0dp"
@@ -23,7 +22,7 @@
         android:layout_height="80dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="@+id/view46"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon_no_pic" />
@@ -36,9 +35,211 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:text="TextView"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/goods"
+        android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView83"
         app:layout_constraintEnd_toEndOf="@+id/view46"
         app:layout_constraintStart_toEndOf="@+id/imageView83"
-        app:layout_constraintTop_toTopOf="@+id/view46" />
+        app:layout_constraintTop_toTopOf="@+id/view46"
+        app:layout_constraintVertical_bias="0.19999999" />
+
+    <TextView
+        android:id="@+id/textView170"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/goods_price"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/textView165"
+        app:layout_constraintTop_toBottomOf="@+id/textView165" />
+
+    <View
+        android:id="@+id/view47"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/gray_d"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView83" />
+
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/flowLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/view47"
+        app:layout_constraintStart_toEndOf="@+id/textView179"
+        app:layout_constraintTop_toBottomOf="@+id/view47">
+
+    </com.nex3z.flowlayout.FlowLayout>
+
+    <TextView
+        android:id="@+id/textView179"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/flowLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/flowLayout" />
+
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/flowLayout1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/view47"
+        app:layout_constraintStart_toEndOf="@+id/textView182"
+        app:layout_constraintTop_toBottomOf="@+id/flowLayout">
+
+    </com.nex3z.flowlayout.FlowLayout>
+
+    <TextView
+        android:id="@+id/textView182"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/flowLayout1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/flowLayout1" />
+
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/flowLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/view47"
+        app:layout_constraintStart_toEndOf="@+id/textView183"
+        app:layout_constraintTop_toBottomOf="@+id/flowLayout1">
+
+    </com.nex3z.flowlayout.FlowLayout>
+
+    <TextView
+        android:id="@+id/textView183"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/flowLayout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/flowLayout2" />
+
+    <com.nex3z.flowlayout.FlowLayout
+        android:id="@+id/flowLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/view47"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView184"
+        app:layout_constraintTop_toBottomOf="@+id/flowLayout2">
+
+    </com.nex3z.flowlayout.FlowLayout>
+
+    <TextView
+        android:id="@+id/textView184"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/flowLayout3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/flowLayout3" />
+
+    <TextView
+        android:id="@+id/textView180"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/num"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/flowLayout3" />
+
+    <ImageView
+        android:id="@+id/imageView84"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/ltb_corners_all_border"
+        android:padding="6dp"
+        android:src="@drawable/icon_sub"
+        app:layout_constraintBottom_toBottomOf="@+id/textView180"
+        app:layout_constraintStart_toEndOf="@+id/textView180"
+        app:layout_constraintTop_toTopOf="@+id/textView180"
+        app:srcCompat="@drawable/icon_sub" />
+
+    <TextView
+        android:id="@+id/textView181"
+        android:layout_width="40dp"
+        android:layout_height="25dp"
+        android:background="@drawable/tb_border"
+        android:gravity="center_vertical"
+        android:text="@string/goods_nums"
+        android:textAlignment="center"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView84"
+        app:layout_constraintStart_toEndOf="@+id/imageView84"
+        app:layout_constraintTop_toTopOf="@+id/imageView84" />
+
+    <ImageView
+        android:id="@+id/imageView85"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/rtb_corners_all_border"
+        android:padding="6dp"
+        android:src="@drawable/icon_add_back"
+        app:layout_constraintBottom_toBottomOf="@+id/textView181"
+        app:layout_constraintStart_toEndOf="@+id/textView181"
+        app:layout_constraintTop_toTopOf="@+id/textView181"
+        app:srcCompat="@drawable/icon_add_back" />
+
+    <TextView
+        android:id="@+id/textView178"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@color/colorAccent"
+        android:gravity="center_vertical"
+        android:padding="14dp"
+        android:text="@string/add_cart"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView177" />
+
+    <TextView
+        android:id="@+id/textView177"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/red"
+        android:gravity="center_vertical"
+        android:padding="14dp"
+        android:text="@string/buy"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/view46"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/view46"
+        app:layout_constraintTop_toBottomOf="@+id/textView180" />
+
 </android.support.constraint.ConstraintLayout>

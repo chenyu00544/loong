@@ -35,6 +35,7 @@ import com.vcvb.chenyu.shop.dialog.GoodsAttrDialog;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttrs;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsBanner;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsBrand;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDesc;
@@ -55,6 +56,7 @@ import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GoodsDetailActivity extends GoodsActivity {
@@ -242,8 +244,24 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     public void initView() {
         TextView buy = findViewById(R.id.textView32);
+        TextView addCart = findViewById(R.id.textView31);
         buy.setOnClickListener(listener);
-        goodsAttrDialog = new GoodsAttrDialog();
+        addCart.setOnClickListener(listener);
+        ArrayList<GoodsAttrs> gattrs = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            GoodsAttrs goodsAttrs = new GoodsAttrs();
+            goodsAttrs.setAttrName("123" + i);
+            ArrayList<GoodsAttr> attr = new ArrayList<>();
+            for (int j = 0; j < 8; j++) {
+                GoodsAttr goodsAttr = new GoodsAttr();
+                goodsAttr.setAttrName("asdf" + i + j);
+                goodsAttr.setAttrId(i * j + j);
+                attr.add(goodsAttr);
+            }
+            goodsAttrs.setAttrs(attr);
+            gattrs.add(goodsAttrs);
+        }
+        goodsAttrDialog = new GoodsAttrDialog(gattrs);
         DisplayMetrics dm = getResources().getDisplayMetrics();
         int width = dm.widthPixels;
         goodsDatail = findViewById(R.id.goods_datail);
@@ -375,8 +393,8 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
         GoodsSpecifications goodsSpecifications = new GoodsSpecifications();
         goodsSpecifications.setGoodsSpecifications(specifications);
-        goodsSpecifications.setHeaderLogo("http://pic8.nipic" + "" +
-                ".com/20100705/2457331_121923653886_2.jpg");
+        goodsSpecifications.setHeaderLogo("http://pic8.nipic" + "" + "" + "" + "" + "" + "" + ""
+                + ".com/20100705/2457331_121923653886_2.jpg");
         goodsDetails.setSpecifications(goodsSpecifications);
         ArrayList<GoodsDesc> descs = new ArrayList<>();
         for (int i = 0; i < Images.imageUrls.length; i++) {
@@ -516,7 +534,22 @@ public class GoodsDetailActivity extends GoodsActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.textView32:
-                    goodsAttrDialog.show(getSupportFragmentManager(), "Dialog");
+                    goodsAttrDialog.show(getSupportFragmentManager(), "Buy");
+                    goodsAttrDialog.setOnItemClickListener(new GoodsAttrDialog.OnClickListener() {
+                        @Override
+                        public void onClicked(View view, HashMap<String, Object> attr) {
+                            System.out.println(attr);
+                        }
+                    });
+                    break;
+                case R.id.textView31:
+                    goodsAttrDialog.show(getSupportFragmentManager(), "AddCart");
+                    goodsAttrDialog.setOnItemClickListener(new GoodsAttrDialog.OnClickListener() {
+                        @Override
+                        public void onClicked(View view, HashMap<String, Object> attr) {
+                            goodsAttrDialog.dismiss();
+                        }
+                    });
                     break;
             }
         }
