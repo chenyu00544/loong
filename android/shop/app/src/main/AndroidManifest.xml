@@ -118,6 +118,17 @@
             android:theme="@style/noAnimationTheme" >
         </activity>
 
+        <activity
+            android:name=".mycenter.CartActivity"
+            android:label="@string/cart"
+            android:theme="@style/AppTheme" >
+        </activity>
+
+        <activity
+            android:name=".order.OrderDetailsActivity"
+            android:label="@string/order_detail"
+            android:theme="@style/AppTheme" >
+        </activity>
         <!--<receiver android:name=".receiver.Receiver">-->
         <!--<intent-filter>-->
         <!--<action android:name="LoginClick" />-->

@@ -49,6 +49,8 @@ import com.vcvb.chenyu.shop.javaBean.goods.GoodsShipFree;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsSpecification;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsSpecifications;
 import com.vcvb.chenyu.shop.javaBean.goods.Probs;
+import com.vcvb.chenyu.shop.mycenter.CartActivity;
+import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 import com.vcvb.chenyu.shop.popwin.PopWin;
@@ -245,8 +247,11 @@ public class GoodsDetailActivity extends GoodsActivity {
     public void initView() {
         TextView buy = findViewById(R.id.textView32);
         TextView addCart = findViewById(R.id.textView31);
+        ImageView iv1 = findViewById(R.id.imageView11);
+        ImageView iv2 = findViewById(R.id.imageView13);
         buy.setOnClickListener(listener);
         addCart.setOnClickListener(listener);
+        iv2.setOnClickListener(listener);
         ArrayList<GoodsAttrs> gattrs = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             GoodsAttrs goodsAttrs = new GoodsAttrs();
@@ -539,6 +544,9 @@ public class GoodsDetailActivity extends GoodsActivity {
                         @Override
                         public void onClicked(View view, HashMap<String, Object> attr) {
                             System.out.println(attr);
+                            Intent intent = new Intent(context, OrderDetailsActivity.class);
+                            intent.putExtra("order",1);
+                            startActivity(intent);
                         }
                     });
                     break;
@@ -550,6 +558,10 @@ public class GoodsDetailActivity extends GoodsActivity {
                             goodsAttrDialog.dismiss();
                         }
                     });
+                    break;
+                case R.id.imageView13:
+                    Intent intent = new Intent(context, CartActivity.class);
+                    startActivity(intent);
                     break;
             }
         }

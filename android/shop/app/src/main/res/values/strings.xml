@@ -67,6 +67,7 @@
     <string name="buy_immediately">立即去购买</string>
 
     <string name="order_list">订单列表</string>
+    <string name="order_detail">订单详情</string>
     <string name="all_order_list">全部(0)</string>
     <string name="no_pay_order">待付款(0)</string>
     <string name="no_ship_order">待发货(0)</string>
@@ -192,4 +193,12 @@
     <string name="commonly_used_cate">常用分类</string>
 
     <string name="num">数量:</string>
+    
+    <string name="consignee">收货信息</string>
+    <string name="order_id">订单号：</string>
+    <string name="pay_type">付款方式</string>
+    <string name="alipay">支付宝支付</string>
+    <string name="wechatpay">微信支付</string>
+    <string name="goods_total">商品总金额</string>
+    <string name="pay_total">应付金额</string>
 </resources>

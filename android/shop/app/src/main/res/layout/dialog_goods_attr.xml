@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
 
     <ImageView
         android:id="@+id/imageView83"
@@ -67,96 +68,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView83" />
 
-    <com.nex3z.flowlayout.FlowLayout
-        android:id="@+id/flowLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/view47"
-        app:layout_constraintStart_toEndOf="@+id/textView179"
-        app:layout_constraintTop_toBottomOf="@+id/view47">
-
-    </com.nex3z.flowlayout.FlowLayout>
-
-    <TextView
-        android:id="@+id/textView179"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/flowLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/flowLayout" />
-
-    <com.nex3z.flowlayout.FlowLayout
-        android:id="@+id/flowLayout1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/view47"
-        app:layout_constraintStart_toEndOf="@+id/textView182"
-        app:layout_constraintTop_toBottomOf="@+id/flowLayout">
-
-    </com.nex3z.flowlayout.FlowLayout>
-
-    <TextView
-        android:id="@+id/textView182"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/flowLayout1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/flowLayout1" />
-
-    <com.nex3z.flowlayout.FlowLayout
-        android:id="@+id/flowLayout2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/view47"
-        app:layout_constraintStart_toEndOf="@+id/textView183"
-        app:layout_constraintTop_toBottomOf="@+id/flowLayout1">
-
-    </com.nex3z.flowlayout.FlowLayout>
-
-    <TextView
-        android:id="@+id/textView183"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/flowLayout2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/flowLayout2" />
-
-    <com.nex3z.flowlayout.FlowLayout
-        android:id="@+id/flowLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/view47"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/textView184"
-        app:layout_constraintTop_toBottomOf="@+id/flowLayout2">
-
-    </com.nex3z.flowlayout.FlowLayout>
-
-    <TextView
-        android:id="@+id/textView184"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/flowLayout3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/flowLayout3" />
-
     <TextView
         android:id="@+id/textView180"
         android:layout_width="wrap_content"
@@ -168,7 +79,7 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/flowLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/attr_wrap" />
 
     <ImageView
         android:id="@+id/imageView84"
@@ -242,4 +153,16 @@
         app:layout_constraintStart_toStartOf="@+id/view46"
         app:layout_constraintTop_toBottomOf="@+id/textView180" />
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/attr_wrap"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:overScrollMode="never"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view47" />
+    
 </android.support.constraint.ConstraintLayout>

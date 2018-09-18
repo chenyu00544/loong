@@ -1,25 +1,23 @@
-package com.vcvb.chenyu.shop.home;
+package com.vcvb.chenyu.shop.mycenter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jude.swipbackhelper.SwipeBackHelper;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -28,10 +26,10 @@ import com.vcvb.chenyu.shop.adapter.item.cart.CartHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.spacesitem.CartItemDecoration;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
-import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
@@ -45,10 +43,8 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class FragmentCart extends BaseFragment {
-    View view;
+public class CartActivity extends BaseActivity {
     Context context;
-
     private TextView editView;
     private ImageView msgView;
     private TextView msgNum;
@@ -70,36 +66,33 @@ public class FragmentCart extends BaseFragment {
     private ConstraintLayout cly;
     private ConstraintSet set = new ConstraintSet();
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_cart, container, false);
-        context = getActivity();
-        cly = (ConstraintLayout) view;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.cart);
+        context = this;
+        changeStatusBarTextColor(false);
+        set = new ConstraintSet();
+        cly = findViewById(R.id.cart);
         set.clone(cly);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getCartData(true);
+        setNavBack();
         initView();
+        initRefresh();
+        getCartData(true);
         initListener();
     }
 
     public void initView() {
-        editView = view.findViewById(R.id.textView96);
-        msgView = view.findViewById(R.id.imageView42);
-        msgNum = view.findViewById(R.id.textView99);
-        totalView = view.findViewById(R.id.textView106);
-        toPay = view.findViewById(R.id.textView107);
-        layer = view.findViewById(R.id.view34);
-        selectAllCB = view.findViewById(R.id.checkBox4);
-        del = view.findViewById(R.id.textView112);
+        editView = findViewById(R.id.textView96);
+        msgView = findViewById(R.id.imageView42);
+        msgNum = findViewById(R.id.textView99);
+        totalView = findViewById(R.id.textView106);
+        toPay = findViewById(R.id.textView107);
+        layer = findViewById(R.id.view34);
+        selectAllCB = findViewById(R.id.checkBox4);
+        del = findViewById(R.id.textView112);
 
-        mRecyclerView = view.findViewById(R.id.cart_content);
+        mRecyclerView = findViewById(R.id.cart_content);
         mLayoutManager = new GridLayoutManager(context, 1);
         CartItemDecoration spaces = new CartItemDecoration(context, carts);
         mRecyclerView.addItemDecoration(spaces);
@@ -107,9 +100,22 @@ public class FragmentCart extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    @Override
+    public void setNavBack() {
+        ImageView back = findViewById(R.id.imageView86);
+        if (back != null) {
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SwipeBackHelper.finish(CartActivity.this);
+                }
+            });
+        }
+
+    }
 
     public void initListener() {
-        refreshLayout = view.findViewById(R.id.cart_list);
+        refreshLayout = findViewById(R.id.cart_list);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
@@ -151,6 +157,15 @@ public class FragmentCart extends BaseFragment {
             }
         });
 
+        del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAdapter.clear();
+                carts.remove(carts);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
         selectAllCB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,15 +184,6 @@ public class FragmentCart extends BaseFragment {
                     }
                 }
                 setTotal();
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        del.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAdapter.clear();
-                carts.remove(carts);
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -348,7 +354,7 @@ public class FragmentCart extends BaseFragment {
         HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
-                getActivity().runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (bool) {
@@ -366,7 +372,7 @@ public class FragmentCart extends BaseFragment {
 
             @Override
             public void failed(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (bool) {
@@ -399,8 +405,8 @@ public class FragmentCart extends BaseFragment {
                 carts.add(bean);
             }
         }
-        View payFoot = view.findViewById(R.id.pay_foot);
-        CheckBox cb = view.findViewById(R.id.checkBox4);
+        View payFoot = findViewById(R.id.pay_foot);
+        CheckBox cb = findViewById(R.id.checkBox4);
         if (carts.size() > 0) {
             mAdapter.clear();
             if (carts.get(0).getIsType() == -1) {

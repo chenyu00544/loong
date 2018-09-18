@@ -71,7 +71,7 @@ public class BrowseActivity extends BaseActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override

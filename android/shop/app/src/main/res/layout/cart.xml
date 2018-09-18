@@ -16,6 +16,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:id="@+id/imageView86"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@string/todo"
+        android:padding="8dp"
+        android:src="@drawable/icon_back"
+        app:layout_constraintBottom_toBottomOf="@+id/textView97"
+        app:layout_constraintStart_toStartOf="@+id/view27"
+        app:layout_constraintTop_toTopOf="@+id/textView97" />
+
+    <ImageView
         android:id="@+id/imageView42"
         android:layout_width="25dp"
         android:layout_height="25dp"
