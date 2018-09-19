@@ -132,6 +132,16 @@
             android:name=".pay.PaySuccessActivity"
             android:label="@string/pay"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".msg.MessageActivity"
+            android:label="@string/message_center"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".msg.MessageInfoActivity"
+            android:label="@string/message_center"
+            android:theme="@style/AppTheme" />
         <!--<receiver android:name=".receiver.Receiver">-->
         <!--<intent-filter>-->
         <!--<action android:name="LoginClick" />-->

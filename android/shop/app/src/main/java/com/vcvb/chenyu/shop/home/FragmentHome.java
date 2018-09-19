@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.home.HomeData;
+import com.vcvb.chenyu.shop.msg.MessageActivity;
 import com.vcvb.chenyu.shop.search.SearchActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
@@ -76,13 +76,21 @@ public class FragmentHome extends BaseFragment {
     }
 
     private void initSearchView() {
-        RelativeLayout nav_back = view.findViewById(R.id.nav_back);
         final TextView search = view.findViewById(R.id.search_text);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, SearchActivity.class);
                 intent.putExtra("isfrom", ConstantManager.IsFrom.FROM_HOME);
+                startActivity(intent);
+            }
+        });
+
+        RelativeLayout other = view.findViewById(R.id.nav_other);
+        other.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MessageActivity.class);
                 startActivity(intent);
             }
         });
@@ -142,17 +150,6 @@ public class FragmentHome extends BaseFragment {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-    }
-
-    private int getDistance() {
-        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-        View firstVisibItem = recyclerView.getChildAt(0);
-        int firstItemPosition = layoutManager.findFirstVisibleItemPosition();
-        int itemCount = layoutManager.getItemCount();
-        int recycleViewHeight = recyclerView.getHeight();
-        int itemHeight = firstVisibItem.getHeight();
-        int firstItemBottom = layoutManager.getDecoratedBottom(firstVisibItem);
-        return (firstItemPosition + 1) * itemHeight - firstItemBottom;
     }
 
     private void initRefresh() {

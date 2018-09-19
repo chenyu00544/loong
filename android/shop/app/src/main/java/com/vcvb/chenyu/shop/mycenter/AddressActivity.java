@@ -1,6 +1,5 @@
 package com.vcvb.chenyu.shop.mycenter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -38,7 +37,6 @@ import java.util.List;
 import okhttp3.Call;
 
 public class AddressActivity extends BaseActivity {
-    Context context;
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<AddressBean> addresses = new ArrayList<>();
