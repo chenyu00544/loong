@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.order;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +18,10 @@ import com.vcvb.chenyu.shop.adapter.item.order.OrderGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderIdItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderPayTypeItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderTotalItem;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
+import com.vcvb.chenyu.shop.pay.PaySuccessActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 
@@ -64,6 +67,8 @@ public class OrderDetailsActivity extends BaseActivity {
     @Override
     public void initView() {
         super.initView();
+        TextView pay = findViewById(R.id.textView179);
+        pay.setOnClickListener(listener);
         mRecyclerView = findViewById(R.id.order_detail);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -127,20 +132,24 @@ public class OrderDetailsActivity extends BaseActivity {
                 orderDetail.setTotalOncePay(18.40);
                 orderDetail.setTotalOncePayFormat("$18.40");
             } else if (i > 2 && i < 7) {
-                orderDetail.setGoodsName("asdfafasf"+i);
-                orderDetail.setGoodsAttr("dfas12123fasf"+i);
+                orderDetail.setGoodsName("asdfafasf" + i);
+                orderDetail.setGoodsAttr("dfas12123fasf" + i);
                 orderDetail.setGoodsPrice(15.5);
                 orderDetail.setGoodsPriceFormat("$15.5");
                 orderDetail.setGoodsMarket(25.5);
                 orderDetail.setGoodsMarketFormat("$25.5");
                 orderDetail.setGoodsNum(i);
-            }else if (i == 7){
+            } else if (i == 7) {
                 orderDetail.setPayType(0);
-            }else if (i == 8){
+            } else if (i == 8) {
                 orderDetail.setTotalPay(188.40);
                 orderDetail.setTotalPayFormat("$188.40");
                 orderDetail.setTotalPayAble(180.40);
                 orderDetail.setTotalPayAbleFormat("$180.40");
+                orderDetail.setShipFree(5.00);
+                orderDetail.setShipFreeFormat("$5.00");
+                orderDetail.setDiscount(22.00);
+                orderDetail.setDiscountFormat("$22.00");
             }
             orderDetails.add(orderDetail);
         }
@@ -179,12 +188,24 @@ public class OrderDetailsActivity extends BaseActivity {
         return cells;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        OrderDetailsActivity.this.finish();
+        overridePendingTransition(0, 0);
+    }
+
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.imageView23:
                     SwipeBackHelper.finish(OrderDetailsActivity.this);
+                    break;
+                case R.id.textView179:
+                    Intent intent = new Intent(OrderDetailsActivity.this, PaySuccessActivity.class);
+                    startActivityForResult(intent, ConstantManager.Pay.PAY_SUCCESS);
+                    OrderDetailsActivity.this.finish();
                     break;
             }
         }

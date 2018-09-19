@@ -47,6 +47,7 @@
         android:textColor="@color/gray"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/textView189"
+        app:layout_constraintEnd_toEndOf="@+id/textView187"
         app:layout_constraintStart_toStartOf="@+id/textView187"
         app:layout_constraintTop_toBottomOf="@+id/textView187" />
 

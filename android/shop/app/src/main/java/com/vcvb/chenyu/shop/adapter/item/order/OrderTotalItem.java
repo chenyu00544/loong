@@ -36,8 +36,8 @@ public class OrderTotalItem extends BaseItem<OrderDetail> {
         TextView tv3 = holder.getTextView(R.id.textView203);
         TextView tv4 = holder.getTextView(R.id.textView204);
         tv1.setText(mData.getTotalPayFormat());
-        tv2.setText(mData.getShipFreeFormat());
-        tv3.setText(mData.getDiscountFormat());
+        tv2.setText("+" + mData.getShipFreeFormat());
+        tv3.setText("-" + mData.getDiscountFormat());
         tv4.setText(mData.getTotalPayAbleFormat());
     }
 }

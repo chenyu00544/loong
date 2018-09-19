@@ -37,4 +37,8 @@ public interface ConstantManager {
         public int FROM_CATEGORY = 4002;
         public int FROM_SEARCHINFO = 4003;
     }
+
+    interface Pay {
+        public int PAY_SUCCESS = 5001;
+    }
 }

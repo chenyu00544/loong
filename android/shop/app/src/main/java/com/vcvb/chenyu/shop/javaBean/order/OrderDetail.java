@@ -1,5 +1,9 @@
 package com.vcvb.chenyu.shop.javaBean.order;
 
+import com.vcvb.chenyu.shop.javaBean.home.Goods;
+
+import java.util.List;
+
 public class OrderDetail {
     private int isType;
     private String orderId;
@@ -35,6 +39,8 @@ public class OrderDetail {
     private String totalOncePayFormat;
 
     private int payType;
+
+    private List<Goods> list;
 
     public int getIsType() {
         return isType;
@@ -258,5 +264,13 @@ public class OrderDetail {
 
     public void setPayType(int payType) {
         this.payType = payType;
+    }
+
+    public List<Goods> getList() {
+        return list;
+    }
+
+    public void setList(List<Goods> list) {
+        this.list = list;
     }
 }

@@ -309,22 +309,25 @@ public class MainActivity extends BaseActivity {
     public boolean isExit = false;
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (!isExit) {
-                isExit = true;
-                Toast.makeText(this, "在按一次退出程序", Toast.LENGTH_SHORT).show();
-                new Timer().schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        isExit = false;
-                    }
-                }, 2000);
-            } else {
-                moveTaskToBack(true);
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (!isExit) {
+                    isExit = true;
+                    Toast.makeText(this, "在按一次退出程序", Toast.LENGTH_SHORT).show();
+                    new Timer().schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            isExit = false;
+                        }
+                    }, 2000);
+                } else {
+                    moveTaskToBack(true);
+                }
             }
+            return true;
         }
-        return super.onKeyDown(keyCode, event);
+        return super.dispatchKeyEvent(event);
     }
 
     @Override

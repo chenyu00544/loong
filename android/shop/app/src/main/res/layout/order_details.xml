@@ -37,14 +37,59 @@
         android:id="@+id/textView179"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="@string/buy"
-        android:textSize="18sp"
-        android:textColor="@color/white"
         android:background="@color/red"
         android:gravity="center_vertical"
+        android:minWidth="180dp"
+        android:text="@string/now_pay"
         android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/view48"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view48"
+        app:layout_constraintStart_toEndOf="@+id/view54"
+        app:layout_constraintTop_toTopOf="@+id/view48"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView205"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/total"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view48"
+        app:layout_constraintStart_toStartOf="@+id/view48"
+        app:layout_constraintTop_toTopOf="@+id/view48" />
+
+    <TextView
+        android:id="@+id/textView206"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
+        android:text="@string/zero"
+        android:textColor="@color/red"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView205"
+        app:layout_constraintStart_toEndOf="@+id/textView205"
+        app:layout_constraintTop_toTopOf="@+id/textView205" />
+
+    <View
+        android:id="@+id/view54"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view48"
+        app:layout_constraintEnd_toEndOf="@+id/view48"
         app:layout_constraintStart_toStartOf="@+id/view48"
         app:layout_constraintTop_toTopOf="@+id/view48" />
 
