@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -30,12 +31,9 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class UserAccountActivity extends BaseActivity {
+public class UserAccountActivity extends BaseRecyclerViewActivity {
 
-    private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<UserInfoBean> users = new ArrayList<>();
-    private GridLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

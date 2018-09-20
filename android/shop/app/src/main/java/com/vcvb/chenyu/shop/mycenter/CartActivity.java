@@ -18,6 +18,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -43,7 +44,7 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class CartActivity extends BaseActivity {
+public class CartActivity extends BaseRecyclerViewActivity {
     Context context;
     private TextView editView;
     private ImageView msgView;
@@ -54,10 +55,7 @@ public class CartActivity extends BaseActivity {
     private View layer;
     private TextView del;
 
-    private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<CartListBean> carts = new ArrayList<>();
-    private GridLayoutManager mLayoutManager;
 
     private RefreshLayout refreshLayout;
 

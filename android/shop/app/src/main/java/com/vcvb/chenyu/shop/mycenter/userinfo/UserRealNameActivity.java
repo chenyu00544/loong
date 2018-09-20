@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -43,12 +44,9 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class UserRealNameActivity extends BaseActivity {
+public class UserRealNameActivity extends BaseRecyclerViewActivity {
 
-    private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<UserInfoBean> users = new ArrayList<>();
-    private GridLayoutManager mLayoutManager;
     private Receiver receiver;
     private TextView save;
     private int pos = 0;

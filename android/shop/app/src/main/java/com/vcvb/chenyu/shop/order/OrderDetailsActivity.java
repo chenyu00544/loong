@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
-import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -34,12 +34,9 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class OrderDetailsActivity extends BaseActivity {
+public class OrderDetailsActivity extends BaseRecyclerViewActivity {
 
-    private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<OrderDetail> orderDetails = new ArrayList<>();
-    private GridLayoutManager mLayoutManager;
 
     private String orderId;
 

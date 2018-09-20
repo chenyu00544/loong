@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +19,35 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.HomeRecyclerViewAdapter;
+import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
+import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds1Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds2Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds3Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds4Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds5Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds6Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds7Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds8Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeGoods_V_Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeNavsItem;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeSlideItem;
+import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.adapter.spacesitem.HomeItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.image.Images;
-import com.vcvb.chenyu.shop.javaBean.home.HomeData;
+import com.vcvb.chenyu.shop.javaBean.home.Ads;
+import com.vcvb.chenyu.shop.javaBean.home.Adses;
+import com.vcvb.chenyu.shop.javaBean.home.Goods;
+import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
+import com.vcvb.chenyu.shop.javaBean.home.Slide;
 import com.vcvb.chenyu.shop.msg.MessageActivity;
 import com.vcvb.chenyu.shop.search.SearchActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
+import com.vcvb.chenyu.shop.tools.UrlParse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,15 +56,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 
 public class FragmentHome extends BaseFragment {
 
-    private RecyclerView recyclerView;
-    private HomeRecyclerViewAdapter adapter;
-    int pos = 0;
     private JSONObject data;
+
+    private RecyclerView mRecyclerView;
+    private CYCGridAdapter mAdapter = new CYCGridAdapter();
+    private HomeBean homeBean = new HomeBean();
+    private GridLayoutManager mLayoutManager;
 
     private RefreshLayout refreshLayout;
 
@@ -55,9 +78,9 @@ public class FragmentHome extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_home, container, false);
         initRefresh();
-        getData();
+        initView();
+        getData(true);
         initSearchView();
-        initRecyclerView();
         return view;
     }
 
@@ -96,50 +119,13 @@ public class FragmentHome extends BaseFragment {
         });
     }
 
-    private void initRecyclerView() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        int width = dm.widthPixels;
-        recyclerView = view.findViewById(R.id.recyclerView);
-        //设置RecyclerView管理器
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 6));
-//        recyclerView.addItemDecoration(new SpacesItemDecoration(3));
-        List list = new ArrayList();
-        HashMap bhm = new HashMap();
-        ArrayList<HashMap> imgUrls = new ArrayList<>();
-        for (int i = 0; i < Images.imgUrls.length; i++) {
-            HashMap bannerhm = new HashMap();
-            bannerhm.put("url", Images.imgUrls[i]);
-            bannerhm.put("title", "xxxooo" + i);
-            bannerhm.put("path", "vcvbuy:://pages/goods/index?id=" + i);
-            imgUrls.add(bannerhm);
-        }
-        bhm.put("banner", imgUrls);
-        list.add(bhm);
-        String[] ads = new String[]{"ads_25", "ads_1_2", "ads_11", "ads_2_1", "ads_12", "ads_11",
-                "ads_11_title", "ads_14", "ads_11", "ads_22", "ads_11", "ads_33",};
-
-        for (int i = 0; i < ads.length; i++) {
-            HashMap ahm = new HashMap();
-            HashMap adshm = new HashMap();
-            ahm.put(ads[i], adshm);
-            list.add(ahm);
-        }
-
-        for (int i = 0; i < 10; i++) {
-            HashMap ghm = new HashMap();
-            ghm.put("goods", new HashMap());
-            list.add(ghm);
-        }
-
-        //初始化适配器
-        adapter = new HomeRecyclerViewAdapter(list, width, context);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        final View v = view;
-
-        //滑动监听
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    private void initView() {
+        mRecyclerView = view.findViewById(R.id.recyclerView);
+        mLayoutManager = new GridLayoutManager(context, 6);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -157,7 +143,7 @@ public class FragmentHome extends BaseFragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
-                getDataByTip(false, refreshLayout);
+                getData(false);
                 refreshLayout.finishRefresh(10000/*,false*/);//传入false表示刷新失败
             }
         });
@@ -169,13 +155,10 @@ public class FragmentHome extends BaseFragment {
         });
     }
 
-    @Override
-    public void getData() {
-        super.getData();
-        getDataByTip(true, null);
-    }
-
-    public void getDataByTip(final boolean is_first, final RefreshLayout refreshLayout) {
+    public void getData(final boolean bool) {
+        if (bool) {
+            loadingDialog.show();
+        }
         HashMap<String, String> mp = new HashMap<>();
         mp.put("goods_id", "");
         mp.put("nav_id", "0");
@@ -187,12 +170,12 @@ public class FragmentHome extends BaseFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (is_first) {
+                            if (bool) {
                                 loadingDialog.dismiss();
                             } else if (refreshLayout != null) {
                                 refreshLayout.finishRefresh();
                             }
-                            bindData();
+//                            bindData();
                         }
                     });
                 }
@@ -203,7 +186,7 @@ public class FragmentHome extends BaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (is_first) {
+                        if (bool) {
                             loadingDialog.dismiss();
                         } else if (refreshLayout != null) {
                             refreshLayout.finishRefresh(false);
@@ -213,15 +196,141 @@ public class FragmentHome extends BaseFragment {
                 });
             }
         });
+        mAdapter.clear();
+
+        ArrayList<Slide> slides = new ArrayList<>();
+        for (int i = 0; i < Images.imgUrls.length; i++) {
+            Slide banner = new Slide();
+            banner.setPic(Images.imgUrls[i]);
+            banner.setTitle("xxxooo" + i);
+            banner.setAppUri("vcvbuy:://pages/goods/index?id=" + i);
+            slides.add(banner);
+        }
+        homeBean.setSlides(slides);
+        ArrayList<Adses> adses_arr = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            Adses adsess = new Adses();
+            adsess.setIsType(i);
+            ArrayList<Ads> adses = new ArrayList<>();
+            for (int j = 0; j < 10; j++) {
+                Ads ads = new Ads();
+                ads.setPic(Images.imageUrls[j]);
+                ads.setAppUri("vcvbuy:://pages/goods/index?id=" + j);
+                adses.add(ads);
+            }
+            adsess.setAds(adses);
+            adses_arr.add(adsess);
+        }
+        homeBean.setAdses(adses_arr);
+        ArrayList<Goods> goodses = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Goods goods = new Goods();
+            goods.setGoodsId("" + i);
+            goods.setPic(Images.imageUrls[i]);
+            goods.setGoodsName("腾讯宣布推出QQ浏览器微信版，由" + i);
+            goods.setGoodsPriceFormat("$188.00");
+            goodses.add(goods);
+        }
+        homeBean.setGoodsList(goodses);
+        mRecyclerView.addItemDecoration(new HomeItemDecoration(context, homeBean));
+        mAdapter.addAll(getItems(homeBean));
+        final int pos = homeBean.getAdses().size();
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                if (position > pos) {
+                    int p = position - pos;
+                    Goods goods = homeBean.getGoodsList().get(p);
+                    Intent intent = new Intent(context, GoodsDetailActivity.class);
+                    intent.putExtra("id", goods.getGoodsId());
+                    context.startActivity(intent);
+                }
+            }
+        });
+    }
+
+    protected List<Item> getItems(HomeBean bean) {
+        List<Item> cells = new ArrayList<>();
+        if (bean.getSlides() != null && bean.getSlides().size() > 0) {
+            HomeSlideItem homeSlideItem = new HomeSlideItem(bean.getSlides(), context);
+            homeSlideItem.setOnItemClickListener(homeSlideItemListener);
+            cells.add(homeSlideItem);
+        }
+        if (bean.getAdses() != null && bean.getAdses().size() > 0) {
+            for (int i = 0; i < bean.getAdses().size(); i++) {
+                switch (bean.getAdses().get(i).getIsType()) {
+                    case 0:
+                        HomeNavsItem homeNavsItem = new HomeNavsItem(bean.getAdses().get(i),
+                                context);
+                        homeNavsItem.setOnItemClickListener(homeNavsItemListener);
+                        cells.add(homeNavsItem);
+                        break;
+                    case 1:
+                        HomeAds1Item homeAds1Item = new HomeAds1Item(bean.getAdses().get(i),
+                                context);
+                        homeAds1Item.setOnItemClickListener(homeAds1ItemListener);
+                        cells.add(homeAds1Item);
+                        break;
+                    case 2:
+                        HomeAds2Item homeAds2Item = new HomeAds2Item(bean.getAdses().get(i),
+                                context);
+                        homeAds2Item.setOnItemClickListener(homeAds2ItemListener);
+                        cells.add(homeAds2Item);
+                        break;
+                    case 3:
+                        HomeAds3Item homeAds3Item = new HomeAds3Item(bean.getAdses().get(i),
+                                context);
+                        homeAds3Item.setOnItemClickListener(homeAds3ItemListener);
+                        cells.add(homeAds3Item);
+                        break;
+                    case 4:
+                        HomeAds4Item homeAds4Item = new HomeAds4Item(bean.getAdses().get(i),
+                                context);
+                        homeAds4Item.setOnItemClickListener(homeAds4ItemListener);
+                        cells.add(homeAds4Item);
+                        break;
+                    case 5:
+                        HomeAds5Item homeAds5Item = new HomeAds5Item(bean.getAdses().get(i),
+                                context);
+                        homeAds5Item.setOnItemClickListener(homeAds5ItemListener);
+                        cells.add(homeAds5Item);
+                        break;
+                    case 6:
+                        HomeAds6Item homeAds6Item = new HomeAds6Item(bean.getAdses().get(i),
+                                context);
+                        homeAds6Item.setOnItemClickListener(homeAds6ItemListener);
+                        cells.add(homeAds6Item);
+                        break;
+                    case 7:
+                        HomeAds7Item homeAds7Item = new HomeAds7Item(bean.getAdses().get(i),
+                                context);
+                        homeAds7Item.setOnItemClickListener(homeAds7ItemListener);
+                        cells.add(homeAds7Item);
+                        break;
+                    case 8:
+                        HomeAds8Item homeAds8Item = new HomeAds8Item(bean.getAdses().get(i),
+                                context);
+                        homeAds8Item.setOnItemClickListener(homeAds8ItemListener);
+                        cells.add(homeAds8Item);
+                        break;
+                }
+            }
+
+        }
+        if (bean.getGoodsList() != null && bean.getGoodsList().size() > 0) {
+            for (int i = 0; i < bean.getGoodsList().size(); i++) {
+                cells.add(new HomeGoods_V_Item(bean.getGoodsList().get(i), context));
+            }
+        }
+        return cells;
     }
 
     public void bindData() {
 //        System.out.println(data);
-        HomeData homeData;
-
         try {
             if (data != null) {
-                homeData = JsonUtils.fromJsonObject(data.getJSONObject("data"), HomeData.class);
+                homeBean = JsonUtils.fromJsonObject(data.getJSONObject("data"), HomeBean.class);
 //                System.out.println(homeData);
             }
         } catch (JSONException e) {
@@ -232,4 +341,135 @@ public class FragmentHome extends BaseFragment {
             e.printStackTrace();
         }
     }
+
+    HomeSlideItem.OnClickListener homeSlideItemListener = new HomeSlideItem.OnClickListener() {
+        @Override
+        public void onClicked(int pos) {
+            String uri = homeBean.getSlides().get(pos).getAppUri();
+            Log.i("tag", uri);
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+    HomeNavsItem.OnClickListener homeNavsItemListener = new HomeNavsItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+
+    HomeAds1Item.OnClickListener homeAds1ItemListener = new HomeAds1Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+    HomeAds2Item.OnClickListener homeAds2ItemListener = new HomeAds2Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+    HomeAds3Item.OnClickListener homeAds3ItemListener = new HomeAds3Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+    HomeAds4Item.OnClickListener homeAds4ItemListener = new HomeAds4Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+    HomeAds5Item.OnClickListener homeAds5ItemListener = new HomeAds5Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+    HomeAds6Item.OnClickListener homeAds6ItemListener = new HomeAds6Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+    HomeAds7Item.OnClickListener homeAds7ItemListener = new HomeAds7Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
+    HomeAds8Item.OnClickListener homeAds8ItemListener = new HomeAds8Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(pos);
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            Class c = UrlParse.getUrlToClass(uri);
+            Map<String, String> id = UrlParse.getUrlParams(uri);
+            Intent intent = new Intent(context, c);
+            intent.putExtra("id", id.get("id"));
+            context.startActivity(intent);
+        }
+    };
 }

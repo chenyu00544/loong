@@ -3,24 +3,75 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView89"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="12dp"
+        android:id="@+id/imageView91"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
+        app:srcCompat="@drawable/icon_time" />
 
     <TextView
-        android:id="@+id/textView218"
+        android:id="@+id/textView221"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="4dp"
+        android:text="@string/today"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView91"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView91"
+        app:layout_constraintTop_toTopOf="@+id/imageView91" />
+
+    <View
+        android:id="@+id/view61"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/gray_d"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView91"
+        app:layout_constraintStart_toStartOf="@+id/imageView91"
+        app:layout_constraintTop_toBottomOf="@+id/imageView91" />
+
+    <View
+        android:id="@+id/view62"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/gray_d"
+        app:layout_constraintEnd_toEndOf="@+id/imageView92"
+        app:layout_constraintStart_toStartOf="@+id/imageView92"
+        app:layout_constraintTop_toBottomOf="@+id/textView223" />
+
+    <View
+        android:id="@+id/view63"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/view61"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view61"
+        app:layout_constraintTop_toBottomOf="@+id/textView221" />
+
+    <TextView
+        android:id="@+id/textView222"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -28,54 +79,60 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/message_center"
+        android:text="天外出散步"
+        android:textSize="12sp"
         android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView89"
-        app:layout_constraintTop_toTopOf="@+id/imageView89" />
+        app:layout_constraintEnd_toEndOf="@+id/view63"
+        app:layout_constraintStart_toStartOf="@+id/view63"
+        app:layout_constraintTop_toTopOf="@+id/view63" />
+
+    <ImageView
+        android:id="@+id/imageView92"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="12dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="@+id/textView222"
+        app:layout_constraintStart_toStartOf="@+id/textView222"
+        app:layout_constraintTop_toBottomOf="@+id/textView222"
+        app:srcCompat="@drawable/ads1_12_2" />
 
     <TextView
-        android:id="@+id/textView219"
+        android:id="@+id/textView223"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="我昨天外出散步时碰巧遇见了他。我昨天外出散步时碰巧遇见了他。"
+        android:maxLines="2"
         android:ellipsize="end"
-        android:lines="1"
-        android:text="@string/reminder"
-        android:textColor="@color/gray"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView89"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView89"
-        app:layout_constraintTop_toBottomOf="@+id/textView218" />
+        android:textColor="@color/gray"
+        app:layout_constraintEnd_toEndOf="@+id/imageView92"
+        app:layout_constraintStart_toStartOf="@+id/imageView92"
+        app:layout_constraintTop_toBottomOf="@+id/imageView92" />
 
     <TextView
-        android:id="@+id/textView220"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:background="@drawable/shape_notice"
-        android:gravity="center"
-        android:text="@string/zero"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="8sp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView89"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView89"
-        app:layout_constraintTop_toTopOf="@+id/imageView89"
-        tools:ignore="SmallSp" />
-
-    <View
-        android:id="@+id/view59"
+        android:id="@+id/textView224"
         android:layout_width="0dp"
-        android:layout_height="0.5dp"
-        android:background="@color/gray_d"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView89" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/check_info"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/view63"
+        app:layout_constraintEnd_toStartOf="@+id/imageView93"
+        app:layout_constraintStart_toStartOf="@+id/view62"
+        app:layout_constraintTop_toBottomOf="@+id/view62" />
+
+    <ImageView
+        android:id="@+id/imageView93"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView224"
+        app:layout_constraintEnd_toEndOf="@+id/view62"
+        app:layout_constraintTop_toTopOf="@+id/textView224"
+        app:srcCompat="@drawable/icon_forward" />
 </android.support.constraint.ConstraintLayout>

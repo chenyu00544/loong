@@ -17,7 +17,6 @@ import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 
 public class UserNickActivity extends BaseActivity {
-    Context context;
     private TextView save;
     private String nickname;
     private EditText nickEdit;

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -37,13 +38,9 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class UserLogoActivity extends BaseActivity {
+public class UserLogoActivity extends BaseRecyclerViewActivity {
 
-    Context context;
-    private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<Material> photos = new ArrayList<>();
-    private GridLayoutManager mLayoutManager;
 
     String path = Environment.getExternalStorageDirectory() + "/Android/data/com.vcvb.chenyu" +
             ".shop/files/";

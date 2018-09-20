@@ -1,6 +1,5 @@
 package com.vcvb.chenyu.shop.mycenter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -12,9 +11,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseItem;
@@ -38,12 +36,8 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class BrowseActivity extends BaseActivity {
-    Context context;
-    private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
+public class BrowseActivity extends BaseRecyclerViewActivity {
     private List<CollectionBean> collections = new ArrayList<>();
-    private GridLayoutManager mLayoutManager;
     public LoadingDialog loadingDialog;
     private TextView edit;
     private View bottom;

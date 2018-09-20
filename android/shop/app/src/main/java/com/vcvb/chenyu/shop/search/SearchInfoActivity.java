@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jude.swipbackhelper.SwipeBackHelper;
-import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -37,12 +37,9 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class SearchInfoActivity extends BaseActivity {
+public class SearchInfoActivity extends BaseRecyclerViewActivity {
 
-    private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private List<Goods> goodses = new ArrayList<>();
-    private GridLayoutManager mLayoutManager;
 
     private TextView searchKey;
     private TextView comprehensive;

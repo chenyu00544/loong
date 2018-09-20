@@ -22,7 +22,7 @@
     <TextView
         android:id="@+id/textView218"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -31,9 +31,11 @@
         android:text="@string/message_center"
         android:textColor="@color/black"
         android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/view60"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView89"
-        app:layout_constraintTop_toTopOf="@+id/imageView89" />
+        app:layout_constraintTop_toTopOf="@+id/imageView89"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView219"
@@ -52,7 +54,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView89"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView89"
-        app:layout_constraintTop_toBottomOf="@+id/textView218" />
+        app:layout_constraintTop_toBottomOf="@+id/view60"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView220"
@@ -78,4 +81,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/imageView89" />
+
+    <View
+        android:id="@+id/view60"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 </android.support.constraint.ConstraintLayout>

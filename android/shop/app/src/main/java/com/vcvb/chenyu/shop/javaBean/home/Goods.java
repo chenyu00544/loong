@@ -1,12 +1,21 @@
 package com.vcvb.chenyu.shop.javaBean.home;
 
 public class Goods {
+    private String goodsId;
     private String pic;
     private String goodsName;
     private String goodsPriceFormat;
     private Double goodsPrice;
     private String goodsMarketFormat;
     private Double goodsMarket;
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
     public String getGoodsName() {
         return goodsName;
