@@ -22,7 +22,7 @@
         android:id="@+id/bottomBar"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        app:bb_activeTabColor="@color/colorAccent"
+        app:bb_activeTabColor="@color/colorBack_morandi"
         app:bb_tabXmlResource="@xml/bottombar_tabs"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -11,10 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -29,6 +32,7 @@ import com.vcvb.chenyu.shop.adapter.item.home.HomeAds5Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds6Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds7Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds8Item;
+import com.vcvb.chenyu.shop.adapter.item.home.HomeAds9Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeGoods_V_Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeNavsItem;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeSlideItem;
@@ -70,6 +74,8 @@ public class FragmentHome extends BaseFragment {
     private GridLayoutManager mLayoutManager;
 
     private RefreshLayout refreshLayout;
+    private ImageView upwardView;
+    private int pos;
 
     @Nullable
     @Override
@@ -120,6 +126,10 @@ public class FragmentHome extends BaseFragment {
     }
 
     private void initView() {
+        upwardView = view.findViewById(R.id.imageView116);
+        RequestOptions requestOptions = RequestOptions.circleCropTransform();
+        Glide.with(context).load(R.drawable.icon_upward).apply(requestOptions).into(upwardView);
+        upwardView.setAlpha(0);
         mRecyclerView = view.findViewById(R.id.recyclerView);
         mLayoutManager = new GridLayoutManager(context, 6);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -134,6 +144,14 @@ public class FragmentHome extends BaseFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                pos += dy;
+                if(pos > 1500){
+                    upwardView.setAlpha(255);
+                    upwardView.setOnClickListener(listener);
+                }else{
+                    upwardView.setAlpha(0);
+                    upwardView.setOnClickListener(null);
+                }
             }
         });
     }
@@ -208,9 +226,13 @@ public class FragmentHome extends BaseFragment {
         }
         homeBean.setSlides(slides);
         ArrayList<Adses> adses_arr = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 11; i++) {
             Adses adsess = new Adses();
-            adsess.setIsType(i);
+            if(i == 10){
+                adsess.setIsType(8);
+            }else {
+                adsess.setIsType(i);
+            }
             ArrayList<Ads> adses = new ArrayList<>();
             for (int j = 0; j < 10; j++) {
                 Ads ads = new Ads();
@@ -261,42 +283,50 @@ public class FragmentHome extends BaseFragment {
             for (int i = 0; i < bean.getAdses().size(); i++) {
                 switch (bean.getAdses().get(i).getIsType()) {
                     case 0:
+                        //nav
                         HomeNavsItem homeNavsItem = new HomeNavsItem(bean.getAdses().get(i),
                                 context);
                         homeNavsItem.setOnItemClickListener(homeNavsItemListener);
                         cells.add(homeNavsItem);
                         break;
                     case 1:
+                        //1-2广告
                         HomeAds1Item homeAds1Item = new HomeAds1Item(bean.getAdses().get(i),
                                 context);
                         homeAds1Item.setOnItemClickListener(homeAds1ItemListener);
                         cells.add(homeAds1Item);
                         break;
                     case 2:
+                        //2*2广告
                         HomeAds2Item homeAds2Item = new HomeAds2Item(bean.getAdses().get(i),
                                 context);
                         homeAds2Item.setOnItemClickListener(homeAds2ItemListener);
                         cells.add(homeAds2Item);
                         break;
                     case 3:
+                        //2-1广告
+
                         HomeAds3Item homeAds3Item = new HomeAds3Item(bean.getAdses().get(i),
                                 context);
                         homeAds3Item.setOnItemClickListener(homeAds3ItemListener);
                         cells.add(homeAds3Item);
                         break;
                     case 4:
+                        //3*3广告
                         HomeAds4Item homeAds4Item = new HomeAds4Item(bean.getAdses().get(i),
                                 context);
                         homeAds4Item.setOnItemClickListener(homeAds4ItemListener);
                         cells.add(homeAds4Item);
                         break;
                     case 5:
+                        //1*4广告
                         HomeAds5Item homeAds5Item = new HomeAds5Item(bean.getAdses().get(i),
                                 context);
                         homeAds5Item.setOnItemClickListener(homeAds5ItemListener);
                         cells.add(homeAds5Item);
                         break;
                     case 6:
+                        //1*1广告
                         HomeAds6Item homeAds6Item = new HomeAds6Item(bean.getAdses().get(i),
                                 context);
                         homeAds6Item.setOnItemClickListener(homeAds6ItemListener);
@@ -309,10 +339,16 @@ public class FragmentHome extends BaseFragment {
                         cells.add(homeAds7Item);
                         break;
                     case 8:
+                        //标题头
                         HomeAds8Item homeAds8Item = new HomeAds8Item(bean.getAdses().get(i),
                                 context);
                         homeAds8Item.setOnItemClickListener(homeAds8ItemListener);
                         cells.add(homeAds8Item);
+                        break;
+                    case 9:
+                        HomeAds9Item homeAds9Item = new HomeAds9Item(bean.getAdses().get(i),
+                                context);
+                        cells.add(homeAds9Item);
                         break;
                 }
             }
@@ -470,6 +506,17 @@ public class FragmentHome extends BaseFragment {
             Intent intent = new Intent(context, c);
             intent.putExtra("id", id.get("id"));
             context.startActivity(intent);
+        }
+    };
+
+    View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.imageView116:
+                    mRecyclerView.smoothScrollToPosition(0);
+                    break;
+            }
         }
     };
 }

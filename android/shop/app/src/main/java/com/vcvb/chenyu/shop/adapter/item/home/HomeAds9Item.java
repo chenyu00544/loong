@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.adapter.item.goods;
+package com.vcvb.chenyu.shop.adapter.item.home;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,18 +12,17 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsBrand;
+import com.vcvb.chenyu.shop.javaBean.home.Adses;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodsBrandItem extends BaseItem<List<GoodsBrand>> {
+public class HomeAds9Item extends BaseItem<Adses> {
     public static final int TYPE = 10;
     private DefaultItemDecoration defaultItemDecoration;
     private RecyclerView recyclerView;
-
-    public GoodsBrandItem(List<GoodsBrand> beans, Context c) {
-        super(beans, c);
+    public HomeAds9Item(Adses bean, Context c) {
+        super(bean, c);
     }
 
     @Override
@@ -33,15 +32,15 @@ public class GoodsBrandItem extends BaseItem<List<GoodsBrand>> {
 
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goods_brand_item, null));
-        return base;
+        return new CYCBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
+                .home_ads_9_item, null));
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        int width = context.getResources().getDisplayMetrics().widthPixels;
         if(recyclerView == null){
-            recyclerView = (RecyclerView) holder.getView(R.id.brand_list);
+            recyclerView = (RecyclerView) holder.getView(R.id.goods_wrap);
             CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
             mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -54,11 +53,12 @@ public class GoodsBrandItem extends BaseItem<List<GoodsBrand>> {
             mAdapter.addAll(getItems(mData));
         }
     }
-
-    public List<Item> getItems(List<GoodsBrand> bean) {
+    public List<Item> getItems(Adses bean) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < bean.size(); i++) {
-            cells.add(new GoodsBrandSubItem(bean.get(i), context));
+        if (bean.getAds() != null && bean.getAds().size() > 0) {
+            for (int i = 0; i < bean.getAds().size(); i++) {
+                cells.add(new HomeAds9SubItem(bean.getAds().get(i), context));
+            }
         }
         return cells;
     }

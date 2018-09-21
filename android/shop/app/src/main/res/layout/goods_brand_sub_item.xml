@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:radius="4dp"
-        app:srcCompat="@drawable/empty" />
+        app:srcCompat="@drawable/icon_no_pic" />
 
     <TextView
         android:id="@+id/textView5"

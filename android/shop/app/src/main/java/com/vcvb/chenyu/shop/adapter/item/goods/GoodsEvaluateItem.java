@@ -4,28 +4,30 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
+import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsEvaluate;
 import com.vcvb.chenyu.shop.tools.ReflexUtils;
-import com.vcvb.chenyu.shop.tools.ToolUtils;
 
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GoodsEvaluateItem extends BaseItem<GoodsEvaluate> {
     public static final int TYPE = 9;
+    private DefaultItemDecoration defaultItemDecoration;
+    private RecyclerView recyclerView;
 
     public GoodsEvaluateItem(GoodsEvaluate beans, Context c) {
         super(beans, c);
@@ -46,29 +48,20 @@ public class GoodsEvaluateItem extends BaseItem<GoodsEvaluate> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         ConstraintLayout v = (ConstraintLayout) holder.getItemView();
-        HorizontalScrollView hsv = (HorizontalScrollView) holder.getView(R.id.evaluate_list);
         TextView tv6 = holder.getTextView(R.id.textView24);
         ImageView iv1 = holder.getImageView(R.id.imageView10);
-
-        LinearLayout ly = hsv.findViewById(R.id.evaluate_list_wrap);
-        ly.removeAllViews();
-        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override(120, 120);
-        RoundedCornersTransformation roundedCorners = new RoundedCornersTransformation(6, 0,
-                RoundedCornersTransformation.CornerType.RIGHT);
-        RequestOptions requestOptions2 = RequestOptions.bitmapTransform(roundedCorners)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override
-                        (ToolUtils.dip2px(context,120), ToolUtils.dip2px(context,120));
-        for (int i = 0; i < mData.getEvaluates().size(); i++) {
-            View view = LayoutInflater.from(context).inflate(R.layout.goods_evaluate_sub_item,
-                    null, false);
-            ImageView iv = view.findViewById(R.id.imageView);
-            Glide.with(context).load(mData.getEvaluates().get(i).getLogo()).apply(requestOptions)
-                    .into(iv);
-            ImageView iv2 = view.findViewById(R.id.imageView3);
-            Glide.with(context).load(mData.getEvaluates().get(i).getEva_img_url()).apply
-                    (requestOptions2).into(iv2);
-            ly.addView(view);
+        if(recyclerView == null){
+            recyclerView = (RecyclerView) holder.getView(R.id.evaluate_list);
+            CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
+            mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            if (defaultItemDecoration == null) {
+                defaultItemDecoration = new DefaultItemDecoration(context, 5);
+                recyclerView.addItemDecoration(defaultItemDecoration);
+            }
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setAdapter(mAdapter);
+            mAdapter.addAll(getItems(mData.getEvaluates()));
         }
 
         for (int i = 0; i < mData.getProbs().size(); i++) {
@@ -139,5 +132,13 @@ public class GoodsEvaluateItem extends BaseItem<GoodsEvaluate> {
                     ConstraintSet.LEFT, 12);
             constraintSetTv2.applyTo(v);
         }
+    }
+
+    public List<Item> getItems(List<Evaluates> bean) {
+        List<Item> cells = new ArrayList<>();
+        for (int i = 0; i < bean.size(); i++) {
+            cells.add(new GoodsEvaluateSubItem(bean.get(i), context));
+        }
+        return cells;
     }
 }

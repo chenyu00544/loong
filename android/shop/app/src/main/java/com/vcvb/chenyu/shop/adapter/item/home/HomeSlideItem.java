@@ -61,7 +61,7 @@ public class HomeSlideItem extends BaseItem<List<Slide>> {
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
-        set.constrainHeight(R.id.goods_slide, width);
+        set.constrainHeight(R.id.goods_slide, width * 2 / 3);
         set.applyTo(cly);
         banner.setOnBannerListener(listener);
     }
@@ -77,7 +77,7 @@ public class HomeSlideItem extends BaseItem<List<Slide>> {
     OnBannerListener listener = new OnBannerListener() {
         @Override
         public void OnBannerClick(int position) {
-            if(onClickListener != null){
+            if (onClickListener != null) {
                 onClickListener.onClicked(position);
             }
         }

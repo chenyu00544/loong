@@ -61,6 +61,7 @@ dependencies {
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:2.3.1"
     implementation 'com.github.iwgang:countdownview:2.1.6'
     implementation 'com.nex3z:flow-layout:1.2.2'
+    implementation 'com.github.wangjiegulu:ShadowViewHelper:1.0.2'
     //测试库
     implementation 'com.zxy.android:recovery:0.1.6'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.3'

@@ -1,10 +1,8 @@
 package com.vcvb.chenyu.shop.goods;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,7 +28,7 @@ public class GoodsActivity extends BaseActivity {
         super.setNavBack();
         int color = Color.parseColor("#AAAAAA");
         int gravity = Gravity.CENTER;
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(80, LinearLayout
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, LinearLayout
                 .LayoutParams.WRAP_CONTENT);
         goodsView = new TextView(this);
         goodsView.setLayoutParams(layoutParams);

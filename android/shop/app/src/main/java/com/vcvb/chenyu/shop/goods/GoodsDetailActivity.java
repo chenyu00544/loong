@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -119,6 +120,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_22);
                 goodsEvaluate.setTextColor(Color.parseColor("#000000"));
+                pos = 1180;
                 goodsDatail.scrollToPosition(8);
             }
         });
@@ -131,6 +133,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_18);
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
+                pos = 2485;
                 goodsDatail.scrollToPosition(10);
             }
         });
@@ -219,18 +222,18 @@ public class GoodsDetailActivity extends GoodsActivity {
                     goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 }
 //                System.out.println(dy);
-                pos -= dy;
-                if (-pos < 255) {
-                    alpha = -pos;
+                pos += dy;
+                System.out.println(pos);
+                if(pos <= 0){
+                    pos = 0;
+                }
+                if (pos < 255) {
+                    alpha = pos;
                     title_wrap.setAlpha(alpha);
-                    if (-pos < 10) {
-                        if (title_wrap.getHeight() > 0) {
-                            title_wrap.setLayoutParams(layoutParams_d);
-                        }
+                    if (pos < 10) {
+                        title_wrap.setLayoutParams(layoutParams_d);
                     } else {
-                        if (title_wrap.getHeight() <= 0) {
-                            title_wrap.setLayoutParams(layoutParams);
-                        }
+                        title_wrap.setLayoutParams(layoutParams);
                     }
                     nav_wrap.setBackgroundColor(Color.argb(alpha, 238, 238, 238));
                 } else {
@@ -411,6 +414,7 @@ public class GoodsDetailActivity extends GoodsActivity {
 
         goodsDatail.setItemAnimator(new DefaultItemAnimator());
         goodsDatail.setAdapter(mAdapter);
+        goodsDatail.setNestedScrollingEnabled(false);
         mAdapter.addAll(getItems(goodsDetails));
     }
 
@@ -532,6 +536,17 @@ public class GoodsDetailActivity extends GoodsActivity {
     protected void onDestroy() {
         setContentView(R.layout.view_null);
         super.onDestroy();
+    }
+
+    private int getDistance(){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) goodsDatail.getLayoutManager();
+        View firstVisibItem = goodsDatail.getChildAt(0);
+        int firstItemPosition = layoutManager.findFirstVisibleItemPosition();
+        int itemCount = layoutManager.getItemCount();
+        int recycleViewHeight = goodsDatail.getHeight();
+        int itemHeight = firstVisibItem.getHeight();
+        int firstItemBottom = layoutManager.getDecoratedBottom(firstVisibItem);
+        return (firstItemPosition + 1)*itemHeight - firstItemBottom;
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {
