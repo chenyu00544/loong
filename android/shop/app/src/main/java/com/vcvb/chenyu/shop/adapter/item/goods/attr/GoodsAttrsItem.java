@@ -63,7 +63,7 @@ public class GoodsAttrsItem extends BaseItem<GoodsAttrs> {
             tv1.setPadding(ToolUtils.dip2px(context, 8), ToolUtils.dip2px(context, 8), ToolUtils
                     .dip2px(context, 8), ToolUtils.dip2px(context, 8));
             fl1.addView(tv1);
-            if (i == 0) {
+            if (mData.getAttrs().get(i).getIsSelect() == true) {
                 tv1.setBackgroundResource(R.drawable.shape_6_red);
                 tv1.setTextColor(context.getResources().getColor(R.color.white));
             } else {
