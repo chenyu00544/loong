@@ -45,11 +45,12 @@ public class GoodsAttrDialog extends DialogFragment {
 
     public TextView buy;
     public TextView add;
+    public TextView confirm;
 
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
-    List<GoodsAttrs> attrs;
     private GridLayoutManager mLayoutManager;
+    List<GoodsAttrs> attrs;
 
     @SuppressLint("ValidFragment")
     public GoodsAttrDialog(ArrayList<GoodsAttrs> gattrs) {
@@ -71,8 +72,11 @@ public class GoodsAttrDialog extends DialogFragment {
         v = inflater.inflate(R.layout.dialog_goods_attr, container);
         window = getDialog().getWindow();
         for (int i = 0; i < attrs.size(); i++) {
-            outAttr.put(i + "", attrs.get(i).getAttrs().get(0).getAttrId());
-            attrs.get(i).getAttrs().get(0).setIsSelect(true);
+            for (int j = 0; j < 8; j++) {
+                if(attrs.get(i).getAttrs().get(j).getIsSelect() == true){
+                    outAttr.put(i + "", attrs.get(i).getAttrs().get(j).getAttrId());
+                }
+            }
         }
         ConstraintLayout cly = (ConstraintLayout) v;
         ConstraintSet set = new ConstraintSet();
@@ -81,12 +85,21 @@ public class GoodsAttrDialog extends DialogFragment {
         buy.setOnClickListener(listener);
         add = v.findViewById(R.id.textView178);
         add.setOnClickListener(listener);
+        confirm = v.findViewById(R.id.textView235);
+        confirm.setOnClickListener(listener);
+        outAttr.put("tag", tag);
         if (tag == "Buy") {
             set.constrainHeight(buy.getId(), ToolUtils.dip2px(context, 50));
             set.constrainHeight(add.getId(), 0);
+            set.constrainHeight(confirm.getId(), 0);
         } else if (tag == "AddCart") {
             set.constrainHeight(buy.getId(), 0);
             set.constrainHeight(add.getId(), ToolUtils.dip2px(context, 50));
+            set.constrainHeight(confirm.getId(), 0);
+        } else {
+            set.constrainHeight(buy.getId(), 0);
+            set.constrainHeight(add.getId(), 0);
+            set.constrainHeight(confirm.getId(), ToolUtils.dip2px(context, 50));
         }
 
 

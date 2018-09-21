@@ -8,9 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +31,7 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSpecificationsItem;
 import com.vcvb.chenyu.shop.dialog.GoodsAttrDialog;
+import com.vcvb.chenyu.shop.dialog.GoodsFaatDialog;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
@@ -72,6 +71,11 @@ public class GoodsDetailActivity extends GoodsActivity {
     private GoodsDetail goodsDetails = new GoodsDetail();
     private ShopGridLayoutManager gridLayoutManager;
     private GoodsAttrDialog goodsAttrDialog;
+
+    private GoodsFaatDialog goodsFaatDialog;
+
+    private ArrayList<GoodsAttrs> gattrs = new ArrayList<>();
+    private ArrayList<GoodsAttr> selectAttrs = new ArrayList<>();
 
     public GoodsDetailActivity() {
     }
@@ -192,7 +196,6 @@ public class GoodsDetailActivity extends GoodsActivity {
                     case 2: // 不按着手指滚动
                         break;
                 }
-
             }
 
             @Override
@@ -224,7 +227,7 @@ public class GoodsDetailActivity extends GoodsActivity {
 //                System.out.println(dy);
                 pos += dy;
                 System.out.println(pos);
-                if(pos <= 0){
+                if (pos <= 0) {
                     pos = 0;
                 }
                 if (pos < 255) {
@@ -255,23 +258,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         buy.setOnClickListener(listener);
         addCart.setOnClickListener(listener);
         iv2.setOnClickListener(listener);
-        ArrayList<GoodsAttrs> gattrs = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            GoodsAttrs goodsAttrs = new GoodsAttrs();
-            goodsAttrs.setAttrName("123" + i);
-            ArrayList<GoodsAttr> attr = new ArrayList<>();
-            for (int j = 0; j < 8; j++) {
-                GoodsAttr goodsAttr = new GoodsAttr();
-                goodsAttr.setAttrName("asdf" + i + j);
-                goodsAttr.setAttrId(i * j + j);
-                attr.add(goodsAttr);
-            }
-            goodsAttrs.setAttrs(attr);
-            gattrs.add(goodsAttrs);
-        }
-        goodsAttrDialog = new GoodsAttrDialog(gattrs);
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        int width = dm.widthPixels;
+
         goodsDatail = findViewById(R.id.goods_datail);
         goodsDatail.setFlingScale(0.3);
         goodsDatail.setNestedScrollingEnabled(false);
@@ -306,20 +293,37 @@ public class GoodsDetailActivity extends GoodsActivity {
         ArrayList<GoodsFaat> faats = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             GoodsFaat faat = new GoodsFaat();
-            faat.setType("dfaf");
+            faat.setType("[dfaf]");
             faat.setInfo("dfafdfafdafdf");
             faats.add(faat);
         }
         goodsDetails.setFaats(faats);
+        goodsFaatDialog = new GoodsFaatDialog(faats);
 
-        ArrayList<GoodsAttr> attrs = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            GoodsAttr attr = new GoodsAttr();
-            attr.setAttrId(i);
-            attr.setAttrName("xx" + i);
-            attrs.add(attr);
+        ArrayList<GoodsAttr> attrs_o = new ArrayList<>();
+        //
+        for (int i = 0; i < 3; i++) {
+            GoodsAttrs goodsAttrs = new GoodsAttrs();
+            goodsAttrs.setAttrName("123" + i);
+            ArrayList<GoodsAttr> attrs = new ArrayList<>();
+            for (int j = 0; j < 8; j++) {
+                GoodsAttr goodsAttr = new GoodsAttr();
+                goodsAttr.setAttrName("asdf" + i + j);
+                goodsAttr.setAttrId(i * j + j);
+                attrs.add(goodsAttr);
+                if (j == 0) {
+                    goodsAttr.setIsSelect(true);
+                    attrs_o.add(goodsAttr);
+                }
+            }
+            goodsAttrs.setAttrs(attrs);
+            gattrs.add(goodsAttrs);
         }
-        goodsDetails.setAttrs(attrs);
+        goodsAttrDialog = new GoodsAttrDialog(gattrs);
+        goodsAttrDialog.setOnItemClickListener(attrDialogListener);
+        //
+
+        goodsDetails.setGoodsAttrs(gattrs);
 
         GoodsShip goodsShip = new GoodsShip();
         goodsShip.setAddress("daffadfasdfadsfaffd");
@@ -430,10 +434,14 @@ public class GoodsDetailActivity extends GoodsActivity {
             cells.add(new GoodsNameItem(goodsDetails, context));
         }
         if (goodsDetails.getFaats() != null && goodsDetails.getFaats().size() > 0) {
-            cells.add(new GoodsFaatItem(goodsDetails.getFaats(), context));
+            GoodsFaatItem goodsFaatItem = new GoodsFaatItem(goodsDetails.getFaats(), context);
+            goodsFaatItem.setOnItemClickListener(faatListener);
+            cells.add(goodsFaatItem);
         }
-        if (goodsDetails.getAttrs() != null && goodsDetails.getAttrs().size() > 0) {
-            cells.add(new GoodsAttrItem(goodsDetails.getAttrs(), context));
+        if (goodsDetails.getGoodsAttrs() != null && goodsDetails.getGoodsAttrs().size() > 0) {
+            GoodsAttrItem goodsAttrItem = new GoodsAttrItem(goodsDetails.getGoodsAttrs(), context);
+            goodsAttrItem.setOnItemClickListener(attrListener);
+            cells.add(goodsAttrItem);
         }
         if (goodsDetails.getGoodsShip() != null) {
             cells.add(new GoodsShipItem(goodsDetails.getGoodsShip(), context));
@@ -538,45 +546,65 @@ public class GoodsDetailActivity extends GoodsActivity {
         super.onDestroy();
     }
 
-    private int getDistance(){
-        LinearLayoutManager layoutManager = (LinearLayoutManager) goodsDatail.getLayoutManager();
-        View firstVisibItem = goodsDatail.getChildAt(0);
-        int firstItemPosition = layoutManager.findFirstVisibleItemPosition();
-        int itemCount = layoutManager.getItemCount();
-        int recycleViewHeight = goodsDatail.getHeight();
-        int itemHeight = firstVisibItem.getHeight();
-        int firstItemBottom = layoutManager.getDecoratedBottom(firstVisibItem);
-        return (firstItemPosition + 1)*itemHeight - firstItemBottom;
-    }
-
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.textView32:
                     goodsAttrDialog.show(getSupportFragmentManager(), "Buy");
-                    goodsAttrDialog.setOnItemClickListener(new GoodsAttrDialog.OnClickListener() {
-                        @Override
-                        public void onClicked(View view, HashMap<String, Object> attr) {
-                            System.out.println(attr);
-                            Intent intent = new Intent(context, OrderDetailsActivity.class);
-                            intent.putExtra("order",1);
-                            startActivity(intent);
-                        }
-                    });
                     break;
                 case R.id.textView31:
                     goodsAttrDialog.show(getSupportFragmentManager(), "AddCart");
-                    goodsAttrDialog.setOnItemClickListener(new GoodsAttrDialog.OnClickListener() {
-                        @Override
-                        public void onClicked(View view, HashMap<String, Object> attr) {
-                            goodsAttrDialog.dismiss();
-                        }
-                    });
                     break;
                 case R.id.imageView13:
                     Intent intent = new Intent(context, CartActivity.class);
                     startActivity(intent);
+                    break;
+            }
+        }
+    };
+
+    GoodsFaatItem.OnClickListener faatListener = new GoodsFaatItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            goodsFaatDialog.show(getSupportFragmentManager(), "Faat");
+        }
+    };
+    GoodsAttrItem.OnClickListener attrListener = new GoodsAttrItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            goodsAttrDialog.show(getSupportFragmentManager(), "Sure");
+        }
+    };
+    GoodsAttrDialog.OnClickListener attrDialogListener = new GoodsAttrDialog.OnClickListener() {
+        @Override
+        public void onClicked(View view, HashMap<String, Object> attr) {
+            String tag = (String) attr.get("tag");
+            switch (tag) {
+                case "Buy":
+                    System.out.println(attr);
+                    Intent intent = new Intent(context, OrderDetailsActivity.class);
+                    intent.putExtra("order", 1);
+                    startActivity(intent);
+                    break;
+                case "AddCart":
+                    goodsAttrDialog.dismiss();
+                    break;
+                case "Sure":
+                    selectAttrs.clear();
+                    for (int i = 0; i < goodsDetails.getGoodsAttrs().size(); i++) {
+                        int id = (int) attr.get(i + "");
+                        for (int j = 0; j < goodsDetails.getGoodsAttrs().get(i).getAttrs().size()
+                                ; j++) {
+                            if (id == goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j)
+                                    .getAttrId()) {
+                                selectAttrs.add(goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j));
+                                goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j).setIsSelect(true);
+                            }
+                        }
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    goodsAttrDialog.dismiss();
                     break;
             }
         }

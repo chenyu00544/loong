@@ -9,7 +9,6 @@ public class GoodsDetail {
     private String goodsName;
     private String goodsDesc;
     private List<GoodsFaat> faats;
-    private List<GoodsAttr> attrs;
     private GoodsShip goodsShip;
     private GoodsShipFree shipFree;
     private GoodsExplain goodsExplain;
@@ -17,6 +16,7 @@ public class GoodsDetail {
     private List<GoodsBrand> goodsBrands;
     private GoodsSpecifications specifications;
     private List<GoodsDesc> descs;
+    private List<GoodsAttrs> goodsAttrs;
 
     public int getIsType() {
         return isType;
@@ -64,14 +64,6 @@ public class GoodsDetail {
 
     public void setFaats(List<GoodsFaat> faats) {
         this.faats = faats;
-    }
-
-    public List<GoodsAttr> getAttrs() {
-        return attrs;
-    }
-
-    public void setAttrs(List<GoodsAttr> attrs) {
-        this.attrs = attrs;
     }
 
     public GoodsShip getGoodsShip() {
@@ -128,5 +120,13 @@ public class GoodsDetail {
 
     public void setDescs(List<GoodsDesc> descs) {
         this.descs = descs;
+    }
+
+    public List<GoodsAttrs> getGoodsAttrs() {
+        return goodsAttrs;
+    }
+
+    public void setGoodsAttrs(List<GoodsAttrs> goodsAttrs) {
+        this.goodsAttrs = goodsAttrs;
     }
 }

@@ -153,6 +153,23 @@
         app:layout_constraintStart_toStartOf="@+id/view46"
         app:layout_constraintTop_toBottomOf="@+id/textView180" />
 
+    <TextView
+        android:id="@+id/textView235"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorBack_morandi"
+        android:gravity="center_vertical"
+        android:padding="14dp"
+        android:text="@string/confirm"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/view46"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/view46"
+        app:layout_constraintTop_toBottomOf="@+id/textView180" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/attr_wrap"
         android:layout_width="0dp"

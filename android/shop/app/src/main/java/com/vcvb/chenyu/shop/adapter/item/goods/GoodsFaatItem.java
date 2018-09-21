@@ -2,6 +2,7 @@ package com.vcvb.chenyu.shop.adapter.item.goods;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -50,5 +51,8 @@ public class GoodsFaatItem extends BaseItem<List<GoodsFaat>> {
                     break;
             }
         }
+        View v = holder.getItemView();
+        posMap.put(v.getId(), 0);
+        v.setOnClickListener(listener);
     }
 }
