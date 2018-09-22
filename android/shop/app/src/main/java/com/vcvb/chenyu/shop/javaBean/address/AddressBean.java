@@ -7,6 +7,12 @@ public class AddressBean {
     private String addressInfo;
     private boolean def = false;
     private int addressId;
+    private String province;
+    private int provinceId;
+    private String city;
+    private int cityId;
+    private String county;
+    private int countyId;
 
     public int getIsType() {
         return isType;
@@ -56,4 +62,51 @@ public class AddressBean {
         this.addressId = addressId;
     }
 
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public int getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(int provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public int getCountyId() {
+        return countyId;
+    }
+
+    public void setCountyId(int countyId) {
+        this.countyId = countyId;
+    }
 }

@@ -19,7 +19,7 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.home.Goods;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;

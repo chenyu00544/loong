@@ -3,6 +3,7 @@ package com.vcvb.chenyu.shop.goods;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ public class GoodsActivity extends BaseActivity {
     public TextView goodsView;
     public TextView goodsEvaluate;
     public TextView goodsInfo;
+    public ImageView collectionView;
     public LinearLayout title_wrap;
     int ts_18 = 16;
     int ts_22 = 20;

@@ -1,6 +1,6 @@
 package com.vcvb.chenyu.shop.javaBean.order;
 
-import com.vcvb.chenyu.shop.javaBean.home.Goods;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 
 import java.util.List;
 

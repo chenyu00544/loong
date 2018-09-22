@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.adapter.item.goods.attr;
+package com.vcvb.chenyu.shop.adapter.item.dialog;
 
 import android.content.Context;
 import android.text.TextUtils;

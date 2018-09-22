@@ -26,7 +26,7 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.goods.attr.GoodsAttrsItem;
+import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsAttrsItem;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttrs;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 

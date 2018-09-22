@@ -43,7 +43,7 @@ import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.home.Ads;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
-import com.vcvb.chenyu.shop.javaBean.home.Goods;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
 import com.vcvb.chenyu.shop.javaBean.home.Slide;
 import com.vcvb.chenyu.shop.msg.MessageActivity;

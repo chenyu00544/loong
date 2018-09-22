@@ -2,6 +2,7 @@ package com.vcvb.chenyu.shop.adapter.item.goods;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -33,5 +34,9 @@ public class GoodsShipFreeItem extends BaseItem<GoodsShipFree> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView1);
         tv.setText(mData.getShipFree());
+
+        View v = holder.getItemView();
+        posMap.put(v.getId(), 0);
+        v.setOnClickListener(listener);
     }
 }

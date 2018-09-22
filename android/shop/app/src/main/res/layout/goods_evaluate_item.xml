@@ -9,11 +9,10 @@
 
     <ImageView
         android:id="@+id/imageView10"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
-        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView24"
@@ -27,13 +26,13 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:text="问大家（1213）"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/imageView10"
         app:layout_constraintStart_toStartOf="@+id/evaluate_list"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+        app:layout_constraintTop_toBottomOf="@+id/View25" />
 
     <TextView
         android:id="@+id/textView23"
@@ -59,7 +58,7 @@
         android:layout_marginStart="4dp"
         android:text="好评率 99.9%"
         android:textAlignment="textEnd"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorFont_morandi"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView23"
         app:layout_constraintEnd_toStartOf="@+id/imageView9"
@@ -68,11 +67,10 @@
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
-        android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView22"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView22"
@@ -133,8 +131,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/evaluate_list"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:overScrollMode="never"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
@@ -143,14 +141,24 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <TextView
-        android:id="@+id/textView25"
+    <View
+        android:id="@+id/View25"
         android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/bottom_border"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/gray_d"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/evaluate_list" />
+
+    <View
+        android:id="@+id/view75"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/View25" />
 
 </android.support.constraint.ConstraintLayout>

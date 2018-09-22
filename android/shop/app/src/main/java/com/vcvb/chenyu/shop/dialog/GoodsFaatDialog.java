@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.goods.attr.GoodsFaatItem;
+import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsFaatItem;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsFaat;
 
 import java.util.ArrayList;

@@ -7,12 +7,12 @@ import android.view.ViewGroup;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsBrand;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 
-public class GoodsBrandSubItem extends BaseItem<GoodsBrand> {
+public class GoodsBrandSubItem extends BaseItem<Goods> {
     public static final int TYPE = 1;
 
-    public GoodsBrandSubItem(GoodsBrand beans, Context c) {
+    public GoodsBrandSubItem(Goods beans, Context c) {
         super(beans, c);
     }
 

@@ -1,5 +1,7 @@
 package com.vcvb.chenyu.shop.javaBean.home;
 
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+
 import java.util.List;
 
 public class HomeBean {

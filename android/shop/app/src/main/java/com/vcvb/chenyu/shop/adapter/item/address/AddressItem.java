@@ -26,8 +26,7 @@ public class AddressItem extends BaseItem<AddressBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout
-                        .address_item, null));
+                .inflate(R.layout.address_item, null));
         return base;
     }
 
@@ -40,9 +39,9 @@ public class AddressItem extends BaseItem<AddressBean> {
         tv.setText(mData.getUserName());
         tv1.setText(mData.getPhoneMun());
         tv2.setText(mData.getAddressInfo());
-        if(mData.getDef() == true){
+        if (mData.getDef() == true) {
             cb.setChecked(true);
-        }else{
+        } else {
             cb.setChecked(false);
         }
     }

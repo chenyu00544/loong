@@ -7,6 +7,8 @@ public class GoodsBrand {
     private String name;
     private String price;
     private List<String> goodsTips;
+    private List<Goods> goodses;
+    private int isScroll = 0;
 
     public String getLogo() {
         return logo;
@@ -38,5 +40,21 @@ public class GoodsBrand {
 
     public void setGoodsTips(List<String> goodsTips) {
         this.goodsTips = goodsTips;
+    }
+
+    public List<Goods> getGoodses() {
+        return goodses;
+    }
+
+    public void setGoodses(List<Goods> goodses) {
+        this.goodses = goodses;
+    }
+
+    public int getIsScroll() {
+        return isScroll;
+    }
+
+    public void setIsScroll(int isScroll) {
+        this.isScroll = isScroll;
     }
 }

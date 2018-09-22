@@ -11,6 +11,7 @@ public class GoodsEvaluate {
     private String jg;
     private String wl;
     private String wdj;
+    private int isScroll = 0;
 
     public List<Evaluates> getEvaluates() {
         return evaluates;
@@ -74,5 +75,13 @@ public class GoodsEvaluate {
 
     public void setWdj(String wdj) {
         this.wdj = wdj;
+    }
+
+    public int getIsScroll() {
+        return isScroll;
+    }
+
+    public void setIsScroll(int isScroll) {
+        this.isScroll = isScroll;
     }
 }

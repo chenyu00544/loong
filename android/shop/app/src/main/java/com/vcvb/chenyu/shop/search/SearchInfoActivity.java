@@ -22,7 +22,7 @@ import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.SearchFilterDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
-import com.vcvb.chenyu.shop.javaBean.home.Goods;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.search.FilterBean;
 import com.vcvb.chenyu.shop.javaBean.search.FilterList;
 import com.vcvb.chenyu.shop.tools.HttpUtils;

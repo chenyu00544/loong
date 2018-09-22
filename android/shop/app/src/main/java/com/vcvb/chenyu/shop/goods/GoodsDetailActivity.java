@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
@@ -30,8 +31,13 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsPriceItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSpecificationsItem;
+import com.vcvb.chenyu.shop.brand.BrandListActivity;
+import com.vcvb.chenyu.shop.dialog.GoodsAddressDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsAttrDialog;
+import com.vcvb.chenyu.shop.dialog.GoodsExplainDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsFaatDialog;
+import com.vcvb.chenyu.shop.evaluate.EvaluateListActivity;
+import com.vcvb.chenyu.shop.evaluate.QuestionsListActivity;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
@@ -49,6 +55,7 @@ import com.vcvb.chenyu.shop.javaBean.goods.GoodsShipFree;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsSpecification;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsSpecifications;
 import com.vcvb.chenyu.shop.javaBean.goods.Probs;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.mycenter.CartActivity;
 import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
@@ -64,18 +71,25 @@ import java.util.List;
 public class GoodsDetailActivity extends GoodsActivity {
     int pos = 0;
     private View child1;
+    private View line;
     private Receiver receiver;
 
     private ShopRecyclerView goodsDatail;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private GoodsDetail goodsDetails = new GoodsDetail();
     private ShopGridLayoutManager gridLayoutManager;
-    private GoodsAttrDialog goodsAttrDialog;
 
+    private GoodsAttrDialog goodsAttrDialog;
     private GoodsFaatDialog goodsFaatDialog;
+    private GoodsAddressDialog goodsAddressDialog;
+    private GoodsExplainDialog goodsExplainDialog;
 
     private ArrayList<GoodsAttrs> gattrs = new ArrayList<>();
     private ArrayList<GoodsAttr> selectAttrs = new ArrayList<>();
+    private ArrayList<GoodsShip> ships = new ArrayList<>();
+
+    private boolean isImgText = true;
+    private boolean isCollection = false;
 
     public GoodsDetailActivity() {
     }
@@ -142,6 +156,10 @@ public class GoodsDetailActivity extends GoodsActivity {
             }
         });
 
+
+        collectionView = findViewById(R.id.collection);
+        collectionView.setOnClickListener(listener);
+
         final PopWin popWindow = new PopWin(GoodsDetailActivity.this, ToolUtils.dip2px(this, 156)
                 , ToolUtils.dip2px(this, 148));
         final ImageView iv2 = (ImageView) findViewById(R.id.more);
@@ -188,12 +206,20 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                System.out.println(newState);
                 switch (newState) {
                     case 0: //不滚动
+                        goodsDetails.getGoodsEvaluate().setIsScroll(1);
+                        goodsDetails.getGoodsBrand().setIsScroll(1);
+                        mAdapter.notifyDataSetChanged();
                         break;
                     case 1: // 按着手指滚动
+                        goodsDetails.getGoodsEvaluate().setIsScroll(0);
+                        goodsDetails.getGoodsBrand().setIsScroll(0);
                         break;
                     case 2: // 不按着手指滚动
+                        goodsDetails.getGoodsEvaluate().setIsScroll(0);
+                        goodsDetails.getGoodsBrand().setIsScroll(0);
                         break;
                 }
             }
@@ -226,7 +252,6 @@ public class GoodsDetailActivity extends GoodsActivity {
                 }
 //                System.out.println(dy);
                 pos += dy;
-                System.out.println(pos);
                 if (pos <= 0) {
                     pos = 0;
                 }
@@ -238,12 +263,14 @@ public class GoodsDetailActivity extends GoodsActivity {
                     } else {
                         title_wrap.setLayoutParams(layoutParams);
                     }
-                    nav_wrap.setBackgroundColor(Color.argb(alpha, 238, 238, 238));
+                    line.setAlpha(alpha);
+                    nav_wrap.setBackgroundColor(Color.argb(alpha, 255, 255, 255));
                 } else {
                     if (alpha < 255) {
                         alpha = 255;
-                        title_wrap.setAlpha(1);
-                        nav_wrap.setBackgroundColor(Color.argb(alpha, 238, 238, 238));
+                        title_wrap.setAlpha(alpha);
+                        line.setAlpha(alpha);
+                        nav_wrap.setBackgroundColor(Color.argb(alpha, 255, 255, 255));
                     }
                 }
             }
@@ -251,6 +278,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     }
 
     public void initView() {
+        line = findViewById(R.id.view68);
         TextView buy = findViewById(R.id.textView32);
         TextView addCart = findViewById(R.id.textView31);
         ImageView iv1 = findViewById(R.id.imageView11);
@@ -330,18 +358,34 @@ public class GoodsDetailActivity extends GoodsActivity {
         goodsShip.setFrom("1231");
         goodsShip.setTo("13");
         goodsShip.setEnd("fds");
+        goodsShip.setFromPic("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
+        ships.add(goodsShip);
         goodsDetails.setGoodsShip(goodsShip);
+
+        GoodsShip goodsShip1 = new GoodsShip();
+        goodsShip1.setAddress("daffadfasdfadsfaffd");
+        goodsShip1.setFrom("1231");
+        goodsShip1.setTo("13");
+        goodsShip1.setEnd("fds");
+        goodsShip1.setFromPic("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
+        ships.add(goodsShip1);
+        goodsAddressDialog = new GoodsAddressDialog(ships);
+        goodsAddressDialog.setOnItemClickListener(addressDialogListener);
 
         GoodsShipFree goodsShipFree = new GoodsShipFree();
         goodsShipFree.setShipName("运费");
         goodsShipFree.setShipFree("$123");
         goodsDetails.setShipFree(goodsShipFree);
 
-        GoodsExplain goodsExplain = new GoodsExplain();
-        goodsExplain.setName("说明");
-        goodsExplain.setInfo("daffadfasdfadsfaffd|fafafa|dfafa|fafa|da");
-        goodsDetails.setGoodsExplain(goodsExplain);
-
+        ArrayList<GoodsExplain> explains = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            GoodsExplain goodsExplain = new GoodsExplain();
+            goodsExplain.setName("说明");
+            goodsExplain.setInfo("daffadfasdfadsfaffd|fafafa|dfafa|fafa|da");
+            explains.add(goodsExplain);
+        }
+        goodsDetails.setGoodsExplains(explains);
+        goodsExplainDialog = new GoodsExplainDialog(explains);
         GoodsEvaluate goodsEvaluate = new GoodsEvaluate();
         ArrayList<Evaluates> evaluates = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -365,36 +409,35 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
         goodsEvaluate.setProbs(probs);
 
-        goodsEvaluate.setPj("商品评价（1213）");
+        goodsEvaluate.setPj("商品评价（443）");
         goodsEvaluate.setHp("好评率 99.9%");
-        goodsEvaluate.setZp("正品(725)");
-        goodsEvaluate.setJg("实惠(725)");
-        goodsEvaluate.setWl("物流快(725)");
-        goodsEvaluate.setWdj("问大家（1213）");
+        goodsEvaluate.setZp("正品(23)");
+        goodsEvaluate.setJg("实惠(44)");
+        goodsEvaluate.setWl("物流快(34)");
+        goodsEvaluate.setWdj("问大家（667）");
 
         goodsDetails.setGoodsEvaluate(goodsEvaluate);
 
-        ArrayList<GoodsBrand> brands = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            GoodsBrand brand = new GoodsBrand();
-            brand.setLogo("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
-            brand.setName("ssssssss");
-            ArrayList<String> list = new ArrayList<>();
-            for (int j = 0; j < 2; j++) {
-                list.add("abc");
-            }
-            brand.setGoodsTips(list);
-            brand.setPrice("$224");
-            brands.add(brand);
+        GoodsBrand brand = new GoodsBrand();
+        brand.setLogo("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
+        brand.setName("ssssssss");
+        ArrayList<String> list = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            list.add("abc");
         }
-        goodsDetails.setGoodsBrands(brands);
-
-//        brandshm.put("brand_goods", brands);
-//        brandshm.put("shop", "商品评价");
-//        brandshm.put("zz", "好评率");
-//        brandshm.put("jj", "正品(725)sds");
-//        hm.put("goods_brand", brandshm);
-//
+        ArrayList<Goods> goodses = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Goods goods = new Goods();
+            goods.setGoodsId(i + "");
+            goods.setGoodsPriceFormat("$188.00");
+            goods.setPic("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
+            goods.setGoodsName("fasf" + i);
+            goodses.add(goods);
+        }
+        brand.setGoodsTips(list);
+        brand.setGoodses(goodses);
+        brand.setPrice("$224");
+        goodsDetails.setGoodsBrand(brand);
 
         ArrayList<GoodsSpecification> specifications = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -405,8 +448,8 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
         GoodsSpecifications goodsSpecifications = new GoodsSpecifications();
         goodsSpecifications.setGoodsSpecifications(specifications);
-        goodsSpecifications.setHeaderLogo("http://pic8.nipic" + "" + "" + "" + "" + "" + "" + ""
-                + ".com/20100705/2457331_121923653886_2.jpg");
+        goodsSpecifications.setHeaderLogo("http://pic8.nipic" + "" + "" + "" + "" + "" + "" +
+                ".com/20100705/2457331_121923653886_2.jpg");
         goodsDetails.setSpecifications(goodsSpecifications);
         ArrayList<GoodsDesc> descs = new ArrayList<>();
         for (int i = 0; i < Images.imageUrls.length; i++) {
@@ -444,19 +487,32 @@ public class GoodsDetailActivity extends GoodsActivity {
             cells.add(goodsAttrItem);
         }
         if (goodsDetails.getGoodsShip() != null) {
-            cells.add(new GoodsShipItem(goodsDetails.getGoodsShip(), context));
+            GoodsShipItem goodsShipItem = new GoodsShipItem(goodsDetails.getGoodsShip(), context);
+            goodsShipItem.setOnItemClickListener(shipListener);
+            cells.add(goodsShipItem);
         }
         if (goodsDetails.getShipFree() != null) {
-            cells.add(new GoodsShipFreeItem(goodsDetails.getShipFree(), context));
+            GoodsShipFreeItem goodsShipFreeItem = new GoodsShipFreeItem(goodsDetails.getShipFree
+                    (), context);
+            cells.add(goodsShipFreeItem);
         }
-        if (goodsDetails.getGoodsExplain() != null) {
-            cells.add(new GoodsExplainItem(goodsDetails.getGoodsExplain(), context));
+        if (goodsDetails.getGoodsExplains() != null) {
+            GoodsExplainItem goodsExplainItem = new GoodsExplainItem(goodsDetails
+                    .getGoodsExplains(), context);
+            goodsExplainItem.setOnItemClickListener(explainListener);
+            cells.add(goodsExplainItem);
         }
         if (goodsDetails.getGoodsEvaluate() != null) {
-            cells.add(new GoodsEvaluateItem(goodsDetails.getGoodsEvaluate(), context));
+            GoodsEvaluateItem goodsEvaluateItem = new GoodsEvaluateItem(goodsDetails
+                    .getGoodsEvaluate(), context);
+            goodsEvaluateItem.setOnItemClickListener(evaluateListener);
+            cells.add(goodsEvaluateItem);
         }
-        if (goodsDetails.getGoodsBrands() != null && goodsDetails.getGoodsBrands().size() > 0) {
-            cells.add(new GoodsBrandItem(goodsDetails.getGoodsBrands(), context));
+        if (goodsDetails.getGoodsBrand() != null) {
+            GoodsBrandItem goodsBrandItem = new GoodsBrandItem(goodsDetails.getGoodsBrand(),
+                    context);
+            goodsBrandItem.setOnItemClickListener(brandListener);
+            cells.add(goodsBrandItem);
         }
         if (goodsDetails.getSpecifications() != null) {
             cells.add(new GoodsSpecificationsItem(goodsDetails.getSpecifications(), context));
@@ -560,6 +616,15 @@ public class GoodsDetailActivity extends GoodsActivity {
                     Intent intent = new Intent(context, CartActivity.class);
                     startActivity(intent);
                     break;
+                case R.id.collection:
+                    if(isCollection == true){
+                        Glide.with(context).load(R.drawable.icon_love_gray).into(collectionView);
+                        isCollection = false;
+                    }else{
+                        Glide.with(context).load(R.drawable.icon_love_red).into(collectionView);
+                        isCollection = true;
+                    }
+                    break;
             }
         }
     };
@@ -574,6 +639,56 @@ public class GoodsDetailActivity extends GoodsActivity {
         @Override
         public void onClicked(View view, int pos) {
             goodsAttrDialog.show(getSupportFragmentManager(), "Sure");
+        }
+    };
+    GoodsShipItem.OnClickListener shipListener = new GoodsShipItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            goodsAddressDialog.show(getSupportFragmentManager(), "Address");
+        }
+    };
+    GoodsExplainItem.OnClickListener explainListener = new GoodsExplainItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            goodsExplainDialog.show(getSupportFragmentManager(), "Explain");
+        }
+    };
+    GoodsEvaluateItem.OnClickListener evaluateListener = new GoodsEvaluateItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            Intent intent = new Intent(GoodsDetailActivity.this, EvaluateListActivity.class);
+            switch (pos) {
+                case Integer.MAX_VALUE - 1:
+                    intent.putExtra("evaluateType", 0);
+                    break;
+                case Integer.MAX_VALUE - 2:
+                    intent.putExtra("evaluateType", 1);
+                    break;
+                case Integer.MAX_VALUE - 3:
+                    intent.putExtra("evaluateType", 2);
+                    break;
+                case Integer.MAX_VALUE - 4:
+                    intent.putExtra("evaluateType", 3);
+                case Integer.MAX_VALUE - 5:
+                    intent = new Intent(GoodsDetailActivity.this, QuestionsListActivity.class);
+                    break;
+                default:
+                    intent.putExtra("evaluateType", 0);
+                    break;
+            }
+            startActivity(intent);
+        }
+    };
+    GoodsBrandItem.OnClickListener brandListener = new GoodsBrandItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            Intent intent;
+            if (pos == -1) {
+                intent = new Intent(GoodsDetailActivity.this, BrandListActivity.class);
+            } else {
+                intent = new Intent(GoodsDetailActivity.this, GoodsDetailActivity.class);
+            }
+            startActivity(intent);
         }
     };
     GoodsAttrDialog.OnClickListener attrDialogListener = new GoodsAttrDialog.OnClickListener() {
@@ -598,8 +713,10 @@ public class GoodsDetailActivity extends GoodsActivity {
                                 ; j++) {
                             if (id == goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j)
                                     .getAttrId()) {
-                                selectAttrs.add(goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j));
-                                goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j).setIsSelect(true);
+                                selectAttrs.add(goodsDetails.getGoodsAttrs().get(i).getAttrs()
+                                        .get(j));
+                                goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j).setIsSelect
+                                        (true);
                             }
                         }
                     }
@@ -607,6 +724,16 @@ public class GoodsDetailActivity extends GoodsActivity {
                     goodsAttrDialog.dismiss();
                     break;
             }
+        }
+    };
+
+    GoodsAddressDialog.OnClickListener addressDialogListener = new GoodsAddressDialog
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            goodsDetails.setGoodsShip(ships.get(pos));
+            mAdapter.notifyDataSetChanged();
+            goodsAddressDialog.dismiss();
         }
     };
 }

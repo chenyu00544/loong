@@ -11,9 +11,9 @@ public class GoodsDetail {
     private List<GoodsFaat> faats;
     private GoodsShip goodsShip;
     private GoodsShipFree shipFree;
-    private GoodsExplain goodsExplain;
+    private List<GoodsExplain> goodsExplains;
     private GoodsEvaluate goodsEvaluate;
-    private List<GoodsBrand> goodsBrands;
+    private GoodsBrand goodsBrand;
     private GoodsSpecifications specifications;
     private List<GoodsDesc> descs;
     private List<GoodsAttrs> goodsAttrs;
@@ -82,12 +82,12 @@ public class GoodsDetail {
         this.shipFree = shipFree;
     }
 
-    public GoodsExplain getGoodsExplain() {
-        return goodsExplain;
+    public List<GoodsExplain> getGoodsExplains() {
+        return goodsExplains;
     }
 
-    public void setGoodsExplain(GoodsExplain goodsExplain) {
-        this.goodsExplain = goodsExplain;
+    public void setGoodsExplains(List<GoodsExplain> goodsExplains) {
+        this.goodsExplains = goodsExplains;
     }
 
     public GoodsEvaluate getGoodsEvaluate() {
@@ -98,12 +98,12 @@ public class GoodsDetail {
         this.goodsEvaluate = goodsEvaluate;
     }
 
-    public List<GoodsBrand> getGoodsBrands() {
-        return goodsBrands;
+    public GoodsBrand getGoodsBrand() {
+        return goodsBrand;
     }
 
-    public void setGoodsBrands(List<GoodsBrand> goodsBrands) {
-        this.goodsBrands = goodsBrands;
+    public void setGoodsBrand(GoodsBrand goodsBrand) {
+        this.goodsBrand = goodsBrand;
     }
 
     public GoodsSpecifications getSpecifications() {

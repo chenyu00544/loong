@@ -33,9 +33,9 @@ public class ToolUtils {
         return true;
     }
 
-//    public static int getWindowsWidth(){
-//
-//    }
+    public static int getWindowsWidth(Context context){
+        return context.getResources().getDisplayMetrics().widthPixels;
+    }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static String getPath(final Context context, final Uri uri) {

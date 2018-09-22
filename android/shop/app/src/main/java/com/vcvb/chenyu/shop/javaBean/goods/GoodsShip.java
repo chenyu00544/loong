@@ -11,6 +11,7 @@ public class GoodsShip {
     private String from;
     private String to;
     private String end;
+    private String fromPic;
 
     public String getProvince() {
         return province;
@@ -90,5 +91,13 @@ public class GoodsShip {
 
     public void setEnd(String end) {
         this.end = end;
+    }
+
+    public String getFromPic() {
+        return fromPic;
+    }
+
+    public void setFromPic(String fromPic) {
+        this.fromPic = fromPic;
     }
 }

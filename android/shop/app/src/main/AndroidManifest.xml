@@ -142,6 +142,27 @@
             android:name=".msg.MessageInfoActivity"
             android:label="@string/message_center"
             android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".evaluate.QuestionsListActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".evaluate.EvaluateListActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".evaluate.AskListActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".brand.BrandListActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".faat.FaatListActivity"
+            android:theme="@style/AppTheme" />
+
         <!--<receiver android:name=".receiver.Receiver">-->
         <!--<intent-filter>-->
         <!--<action android:name="LoginClick" />-->
