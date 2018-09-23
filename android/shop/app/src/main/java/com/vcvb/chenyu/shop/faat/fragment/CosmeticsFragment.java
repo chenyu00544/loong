@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +13,13 @@ import android.widget.Toast;
 
 import com.vcvb.chenyu.shop.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatBannerItem;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatNavItem;
+import com.vcvb.chenyu.shop.adapter.item.faat.FaatSubNavItem;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.FaatItemDecoration;
 import com.vcvb.chenyu.shop.javaBean.faat.Faat;
 import com.vcvb.chenyu.shop.javaBean.faat.FaatNav;
@@ -37,6 +40,8 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
 
     FaatItemDecoration faatItemDecoration;
 
+    RecyclerView navView;
+    public CYCSimpleAdapter adapter = new CYCSimpleAdapter();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -48,6 +53,12 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
     }
 
     public void initView() {
+        navView = view.findViewById(R.id.nav_bak);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        navView.setLayoutManager(layoutManager);
+        navView.setAdapter(adapter);
+
         mRecyclerView = view.findViewById(R.id.faat_list);
         mLayoutManager = new GridLayoutManager(context, 6);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -105,6 +116,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
                     faatNavs.add(faatNav);
                 }
                 faat.setFaatNavs(faatNavs);
+                adapter.addAll(getNavItems(faatNavs));
             } else if (i == 34) {
                 faat.setIsType(3);
                 faat.setBackGroundPic("http://58pic.ooopic.com/58pic/19/50/38/56e00c6189f99.jpg");
@@ -147,6 +159,14 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         return cells;
     }
 
+    protected List<Item> getNavItems(List<FaatNav> bean) {
+        List<Item> cells = new ArrayList<>();
+        for (int i = 0; i < bean.size(); i++) {
+            cells.add(new FaatSubNavItem(bean.get(i), context));
+        }
+        return cells;
+    }
+
     RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener(){
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -156,8 +176,15 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            View v = recyclerView.getChildAt(1);
+            int position = mLayoutManager.findFirstVisibleItemPosition();
+            if (position > 0) {
+                //做显示布局操作
+                navView.setVisibility(View.VISIBLE);
+            } else {
+                //做隐藏布局操作
+                navView.setVisibility(View.GONE);
 
+            }
         }
     };
 
