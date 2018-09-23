@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.home;
+package com.vcvb.chenyu.shop;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,12 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 
 public class BaseFragment<T> extends Fragment {
-    View view;
-    Context context;
+    public View view;
+    public Context context;
     /**
      * view是否初始化标志，防止回调函数在view为空的时候触发
      */

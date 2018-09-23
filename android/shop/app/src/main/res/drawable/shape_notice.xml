@@ -3,5 +3,5 @@
     android:shape="rectangle">
     <!--设置背景色-->
     <solid android:color="#FFFF0000" />
-    <corners android:radius="6dp"/>
+    <corners android:radius="7dp"/>
 </shape>

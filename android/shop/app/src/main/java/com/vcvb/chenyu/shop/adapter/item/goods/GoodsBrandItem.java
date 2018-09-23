@@ -15,7 +15,7 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
-import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsBrand;
 
 import java.util.ArrayList;

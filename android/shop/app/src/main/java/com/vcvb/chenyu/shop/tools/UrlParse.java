@@ -2,6 +2,8 @@ package com.vcvb.chenyu.shop.tools;
 
 import android.net.Uri;
 
+import com.vcvb.chenyu.shop.brand.BrandListActivity;
+import com.vcvb.chenyu.shop.faat.FaatListActivity;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 
 import java.net.URL;
@@ -67,6 +69,12 @@ public class UrlParse {
         switch (uri){
             case "vcvbuy:://pages/goods/index":
                 a = GoodsDetailActivity.class;
+                break;
+            case "vcvbuy:://pages/faat/index":
+                a = FaatListActivity.class;
+                break;
+            case "vcvbuy:://pages/brand/index":
+                a = BrandListActivity.class;
                 break;
         }
         return a;

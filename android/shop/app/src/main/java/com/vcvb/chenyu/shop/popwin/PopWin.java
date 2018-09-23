@@ -14,8 +14,6 @@ public class PopWin extends PopupWindow {
     private View view;
 
     private OnItemClickListener mOnItemClickListener;
-    private OnItemClickListener1 mOnItemClickListener1;
-    private OnItemClickListener2 mOnItemClickListener2;
 
     public PopWin(Context context) {
         this(context, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -51,6 +49,8 @@ public class PopWin extends PopupWindow {
     public PopWin setClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
         view.findViewById(R.id.view33).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.view35).setOnClickListener(mOnClickListener);
+        view.findViewById(R.id.view36).setOnClickListener(mOnClickListener);
         return this;
     }
 
@@ -59,44 +59,6 @@ public class PopWin extends PopupWindow {
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
                 mOnItemClickListener.onClicked(v);
-            }
-        }
-    };
-
-    public interface OnItemClickListener1 {
-        void onClicked(View v);
-    }
-
-    public PopWin setClickListener1(OnItemClickListener1 listener) {
-        mOnItemClickListener1 = listener;
-        view.findViewById(R.id.view35).setOnClickListener(mOnClickListener1);
-        return this;
-    }
-
-    private View.OnClickListener mOnClickListener1 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mOnItemClickListener1 != null) {
-                mOnItemClickListener1.onClicked(v);
-            }
-        }
-    };
-
-    public interface OnItemClickListener2 {
-        void onClicked(View v);
-    }
-
-    public PopWin setClickListener2(OnItemClickListener2 listener) {
-        mOnItemClickListener2 = listener;
-        view.findViewById(R.id.view36).setOnClickListener(mOnClickListener2);
-        return this;
-    }
-
-    private View.OnClickListener mOnClickListener2 = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (mOnItemClickListener2 != null) {
-                mOnItemClickListener2.onClicked(v);
             }
         }
     };

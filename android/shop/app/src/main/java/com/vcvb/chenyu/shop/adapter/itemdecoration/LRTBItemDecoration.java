@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.adapter.spacesitem;
+package com.vcvb.chenyu.shop.adapter.itemdecoration;
 
 import android.content.Context;
 import android.graphics.Rect;

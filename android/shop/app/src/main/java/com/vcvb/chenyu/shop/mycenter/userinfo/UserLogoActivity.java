@@ -1,7 +1,6 @@
 package com.vcvb.chenyu.shop.mycenter.userinfo;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -18,14 +17,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.user.userlogo.UserPhotoItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
-import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.material.Material;
 import com.vcvb.chenyu.shop.tools.ToolUtils;

@@ -37,7 +37,7 @@ public class BaseActivity extends AppCompatActivity {
                 .addListener(new SwipeListener() {//滑动监听
                     @Override
                     public void onScroll(float percent, int px) {//滑动的百分比与距离
-                        System.out.println(px);
+
                     }
 
                     @Override

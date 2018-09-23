@@ -13,6 +13,7 @@ public class CYCGridAdapter extends CYCBaseAdapter {
     public static final int ERROR_TYPE = Integer.MAX_VALUE - 1;
     public static final int EMPTY_TYPE = Integer.MAX_VALUE - 2;
     public static final int GOODS_V_ITEM = Integer.MAX_VALUE - 3;
+    public static final int GOODS_V3_ITEM = Integer.MAX_VALUE - 4;
 
     private NoDataItem noDataItem;
 
@@ -40,6 +41,9 @@ public class CYCGridAdapter extends CYCBaseAdapter {
                     }
                     if(viewType == GOODS_V_ITEM){
                         return gridLayoutManager.getSpanCount()/2;
+                    }
+                    if(viewType == GOODS_V3_ITEM){
+                        return gridLayoutManager.getSpanCount()/3;
                     }
                     return 6;
                 }

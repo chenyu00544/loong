@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageView124"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_no_pic" />
+
+    <TextView
+        android:id="@+id/textView239"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text=""
+        android:textColor="@color/black_29"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView124"
+        app:layout_constraintStart_toStartOf="@+id/imageView124"
+        app:layout_constraintTop_toBottomOf="@+id/imageView124" />
+
+    <TextView
+        android:id="@+id/textView240"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/colorFont_morandi"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/view76"
+        app:layout_constraintStart_toStartOf="@+id/textView239"
+        app:layout_constraintTop_toBottomOf="@+id/textView239" />
+
+    <View
+        android:id="@+id/view76"
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/shape_60_red"
+        app:layout_constraintBottom_toBottomOf="@+id/textView240"
+        app:layout_constraintEnd_toEndOf="@+id/textView239"
+        app:layout_constraintTop_toTopOf="@+id/textView240" />
+
+    <ImageView
+        android:id="@+id/imageView125"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view76"
+        app:layout_constraintEnd_toEndOf="@+id/view76"
+        app:layout_constraintStart_toStartOf="@+id/view76"
+        app:layout_constraintTop_toTopOf="@+id/view76"
+        app:srcCompat="@drawable/icon_add_cart" />
+</android.support.constraint.ConstraintLayout>

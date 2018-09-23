@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jude.swipbackhelper.SwipeBackHelper;
+import com.vcvb.chenyu.shop.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;

@@ -17,7 +17,7 @@ import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.pay.PayGoodsHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.pay.PaySuccessItem;
-import com.vcvb.chenyu.shop.adapter.spacesitem.PayItemDecoration;
+import com.vcvb.chenyu.shop.adapter.itemdecoration.PayItemDecoration;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;

@@ -99,18 +99,6 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
                 System.out.println(v);
             }
         });
-        popWindow.setClickListener1(new PopWin.OnItemClickListener1() {
-            @Override
-            public void onClicked(View v) {
-                System.out.println(v);
-            }
-        });
-        popWindow.setClickListener2(new PopWin.OnItemClickListener2() {
-            @Override
-            public void onClicked(View v) {
-                System.out.println(v);
-            }
-        });
 
         LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout
                 .LayoutParams.WRAP_CONTENT, LinearLayout

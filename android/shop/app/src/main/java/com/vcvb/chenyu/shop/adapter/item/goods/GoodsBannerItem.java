@@ -1,10 +1,8 @@
 package com.vcvb.chenyu.shop.adapter.item.goods;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import com.vcvb.chenyu.shop.javaBean.goods.GoodsBanner;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +38,7 @@ public class GoodsBannerItem extends BaseItem<List<GoodsBanner>> {
                 .inflate(R.layout.goods_slide_item, null));
         banner = (Banner) base.getView(R.id.goods_slide);
         //设置内置样式，内含六种特效
-        banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
+        banner.setBannerStyle(BannerConfig.NUM_INDICATOR);
         //设置轮播的动画效果，内含多种特效
         banner.setBannerAnimation(Transformer.Default);
         //设置轮播间隔时间
@@ -67,14 +64,5 @@ public class GoodsBannerItem extends BaseItem<List<GoodsBanner>> {
         set.clone(cly);
         set.constrainHeight(R.id.goods_slide, width);
         set.applyTo(cly);
-        banner.setOnBannerListener(new OnBannerListener() {
-            @Override
-            public void OnBannerClick(int position) {
-                Intent intent = new Intent();
-                intent.setAction("BannerClick");
-                intent.putExtra("pos", position);
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-            }
-        });
     }
 }

@@ -18,7 +18,7 @@ import com.vcvb.chenyu.shop.adapter.item.browse.BrowseErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseTitleItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
-import com.vcvb.chenyu.shop.adapter.spacesitem.BrowseItemDecoration;
+import com.vcvb.chenyu.shop.adapter.itemdecoration.BrowseItemDecoration;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.image.Images;

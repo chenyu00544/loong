@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.adapter.item.home;
+package com.vcvb.chenyu.shop.adapter.item.faat;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,17 +11,17 @@ import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
-import com.vcvb.chenyu.shop.javaBean.home.Adses;
+import com.vcvb.chenyu.shop.javaBean.faat.Faat;
+import com.vcvb.chenyu.shop.javaBean.faat.FaatNav;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeAds9Item extends BaseItem<Adses> {
-    public static final int TYPE = 10;
-    private DefaultItemDecoration defaultItemDecoration;
+public class FaatNavItem extends BaseItem<Faat> {
+    public static final int TYPE = 4;
     private RecyclerView recyclerView;
-    public HomeAds9Item(Adses bean, Context c) {
+
+    public FaatNavItem(Faat bean, Context c) {
         super(bean, c);
     }
 
@@ -33,32 +33,26 @@ public class HomeAds9Item extends BaseItem<Adses> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new CYCBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
-                .home_ads_9_item, null));
+                .faat_nav_item, null));
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        int width = context.getResources().getDisplayMetrics().widthPixels;
-        if(recyclerView == null){
-            recyclerView = (RecyclerView) holder.getView(R.id.goods_wrap);
+        if (recyclerView == null) {
+            recyclerView = (RecyclerView) holder.getView(R.id.navs_wrap);
             CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
             mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            if (defaultItemDecoration == null) {
-                defaultItemDecoration = new DefaultItemDecoration(context, 5);
-                recyclerView.addItemDecoration(defaultItemDecoration);
-            }
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
-            mAdapter.addAll(getItems(mData));
+            mAdapter.addAll(getItems(mData.getFaatNavs()));
         }
     }
-    public List<Item> getItems(Adses bean) {
+
+    public List<Item> getItems(List<FaatNav> bean) {
         List<Item> cells = new ArrayList<>();
-        if (bean.getAds() != null && bean.getAds().size() > 0) {
-            for (int i = 0; i < bean.getAds().size(); i++) {
-                cells.add(new HomeAds9SubItem(bean.getAds().get(i), context));
-            }
+        for (int i = 0; i < bean.size(); i++) {
+            cells.add(new FaatSubNavItem(bean.get(i), context));
         }
         return cells;
     }

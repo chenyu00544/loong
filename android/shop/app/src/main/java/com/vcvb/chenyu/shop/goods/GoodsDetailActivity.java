@@ -32,6 +32,7 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSpecificationsItem;
 import com.vcvb.chenyu.shop.brand.BrandListActivity;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.GoodsAddressDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsAttrDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsExplainDialog;
@@ -40,6 +41,7 @@ import com.vcvb.chenyu.shop.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.evaluate.QuestionsListActivity;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttrs;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsBanner;
@@ -55,7 +57,6 @@ import com.vcvb.chenyu.shop.javaBean.goods.GoodsShipFree;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsSpecification;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsSpecifications;
 import com.vcvb.chenyu.shop.javaBean.goods.Probs;
-import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.mycenter.CartActivity;
 import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
@@ -173,21 +174,17 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onClicked(View v) {
                 System.out.println(v);
-                popWindow.dismiss();
-                Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        popWindow.setClickListener1(new PopWin.OnItemClickListener1() {
-            @Override
-            public void onClicked(View v) {
-                System.out.println(v);
-            }
-        });
-        popWindow.setClickListener2(new PopWin.OnItemClickListener2() {
-            @Override
-            public void onClicked(View v) {
-                System.out.println(v);
+                switch (v.getId()){
+                    case ConstantManager.Menu.MESSAGE:
+                        break;
+                    case ConstantManager.Menu.HOME:
+                        popWindow.dismiss();
+                        Intent intent = new Intent(GoodsDetailActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        break;
+                    case ConstantManager.Menu.CART:
+                        break;
+                }
             }
         });
     }
@@ -621,7 +618,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                         Glide.with(context).load(R.drawable.icon_love_gray).into(collectionView);
                         isCollection = false;
                     }else{
-                        Glide.with(context).load(R.drawable.icon_love_red).into(collectionView);
+                        Glide.with(context).load(R.drawable.icon_love_active).into(collectionView);
                         isCollection = true;
                     }
                     break;

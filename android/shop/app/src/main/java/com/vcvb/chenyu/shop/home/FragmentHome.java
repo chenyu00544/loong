@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.vcvb.chenyu.shop.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -37,7 +38,7 @@ import com.vcvb.chenyu.shop.adapter.item.home.HomeGoods_V_Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeNavsItem;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeSlideItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
-import com.vcvb.chenyu.shop.adapter.spacesitem.HomeItemDecoration;
+import com.vcvb.chenyu.shop.adapter.itemdecoration.HomeItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.image.Images;
@@ -145,10 +146,10 @@ public class FragmentHome extends BaseFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 pos += dy;
-                if(pos > 1500){
+                if (pos > 1500) {
                     upwardView.setAlpha(255);
                     upwardView.setOnClickListener(listener);
-                }else{
+                } else {
                     upwardView.setAlpha(0);
                     upwardView.setOnClickListener(null);
                 }
@@ -216,21 +217,22 @@ public class FragmentHome extends BaseFragment {
         });
         mAdapter.clear();
 
+        String[] appUri = new String[]{"vcvbuy:://pages/goods/index?id=1", "vcvbuy:://pages/faat/index?id=1", "vcvbuy:://pages/brand/index?id=1"};
         ArrayList<Slide> slides = new ArrayList<>();
         for (int i = 0; i < Images.imgUrls.length; i++) {
             Slide banner = new Slide();
             banner.setPic(Images.imgUrls[i]);
             banner.setTitle("xxxooo" + i);
-            banner.setAppUri("vcvbuy:://pages/goods/index?id=" + i);
+            banner.setAppUri(appUri[i]);
             slides.add(banner);
         }
         homeBean.setSlides(slides);
         ArrayList<Adses> adses_arr = new ArrayList<>();
         for (int i = 0; i < 11; i++) {
             Adses adsess = new Adses();
-            if(i == 10){
+            if (i == 10) {
                 adsess.setIsType(8);
-            }else {
+            } else {
                 adsess.setIsType(i);
             }
             ArrayList<Ads> adses = new ArrayList<>();
@@ -262,7 +264,7 @@ public class FragmentHome extends BaseFragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 if (position > pos) {
-                    int p = position - pos;
+                    int p = position - pos - 1;
                     Goods goods = homeBean.getGoodsList().get(p);
                     Intent intent = new Intent(context, GoodsDetailActivity.class);
                     intent.putExtra("id", goods.getGoodsId());
@@ -305,7 +307,6 @@ public class FragmentHome extends BaseFragment {
                         break;
                     case 3:
                         //2-1广告
-
                         HomeAds3Item homeAds3Item = new HomeAds3Item(bean.getAdses().get(i),
                                 context);
                         homeAds3Item.setOnItemClickListener(homeAds3ItemListener);
@@ -512,7 +513,7 @@ public class FragmentHome extends BaseFragment {
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
+            switch (view.getId()) {
                 case R.id.imageView116:
                     mRecyclerView.smoothScrollToPosition(0);
                     break;

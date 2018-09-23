@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.vcvb.chenyu.shop.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.mycenter.AddressActivity;
 import com.vcvb.chenyu.shop.mycenter.BrowseActivity;

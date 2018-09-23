@@ -28,7 +28,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -84,7 +84,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/view36"
         app:layout_constraintStart_toStartOf="@+id/view36"
         app:layout_constraintTop_toTopOf="@+id/view36"
-        app:srcCompat="@drawable/cart" />
+        app:srcCompat="@drawable/icon_cart_black" />
 
     <TextView
         android:id="@+id/textView117"

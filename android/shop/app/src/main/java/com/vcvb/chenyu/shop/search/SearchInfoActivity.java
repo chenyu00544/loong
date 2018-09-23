@@ -17,7 +17,7 @@ import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsHItem;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsVItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
-import com.vcvb.chenyu.shop.adapter.spacesitem.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.SearchFilterDialog;
