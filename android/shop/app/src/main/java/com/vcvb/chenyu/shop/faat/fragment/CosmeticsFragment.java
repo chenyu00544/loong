@@ -42,6 +42,10 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
 
     RecyclerView navView;
     public CYCSimpleAdapter adapter = new CYCSimpleAdapter();
+    public FaatNavItem faatNavItem;
+    ArrayList<Faat> faats;
+    int pos_dx = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -58,11 +62,14 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         navView.setLayoutManager(layoutManager);
         navView.setAdapter(adapter);
+//        navView.setVisibility(View.GONE);
+        navView.addOnScrollListener(listener2);
 
         mRecyclerView = view.findViewById(R.id.faat_list);
         mLayoutManager = new GridLayoutManager(context, 6);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(listener);
         getData();
     }
 
@@ -100,7 +107,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
     }
 
     public void bindData() {
-        final ArrayList<Faat> faats = new ArrayList<>();
+        faats = new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             Faat faat = new Faat();
             faat.setTitle("asdfa" + i);
@@ -133,7 +140,6 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         }
         faatItemDecoration = new FaatItemDecoration(faats, context);
         mRecyclerView.addItemDecoration(faatItemDecoration);
-        mRecyclerView.addOnScrollListener(listener);
         mAdapter.addAll(getItems(faats));
     }
 
@@ -151,7 +157,9 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
                     cells.add(new FaatHeaderItem(bean.get(i), context));
                     break;
                 case 4:
-                    cells.add(new FaatNavItem(bean.get(i), context));
+                    faatNavItem = new FaatNavItem(bean.get(i), context);
+                    faatNavItem.setItemScrollListener(scrollListener);
+                    cells.add(faatNavItem);
                     break;
 
             }
@@ -167,7 +175,38 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         return cells;
     }
 
-    RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener(){
+    FaatNavItem.ScrollListener scrollListener = new FaatNavItem.ScrollListener() {
+        @Override
+        public void Scrolled(RecyclerView recyclerView, int dx, int dy) {
+            navView.scrollBy(dx, dy);
+        }
+    };
+
+    RecyclerView.OnScrollListener listener2 = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == 0) {
+                mAdapter.notifyDataSetChanged();
+                pos_dx = 0;
+            }
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            pos_dx += dx;
+            for (int i = 0; i < faats.size(); i++) {
+                if (faats.get(i).getIsType() == 4) {
+                    faats.get(i).setDx(pos_dx);
+                    faats.get(i).setDy(dy);
+                    break;
+                }
+            }
+        }
+    };
+
+    RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
@@ -182,8 +221,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
                 navView.setVisibility(View.VISIBLE);
             } else {
                 //做隐藏布局操作
-                navView.setVisibility(View.GONE);
-
+//                navView.setVisibility(View.GONE);
             }
         }
     };

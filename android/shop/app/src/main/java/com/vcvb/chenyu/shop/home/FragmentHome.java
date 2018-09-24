@@ -130,7 +130,6 @@ public class FragmentHome extends BaseFragment {
         upwardView = view.findViewById(R.id.imageView116);
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(context).load(R.drawable.icon_upward).apply(requestOptions).into(upwardView);
-        upwardView.setAlpha(0);
         mRecyclerView = view.findViewById(R.id.recyclerView);
         mLayoutManager = new GridLayoutManager(context, 6);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -147,10 +146,10 @@ public class FragmentHome extends BaseFragment {
                 super.onScrolled(recyclerView, dx, dy);
                 pos += dy;
                 if (pos > 1500) {
-                    upwardView.setAlpha(255);
+                    upwardView.setVisibility(View.VISIBLE);
                     upwardView.setOnClickListener(listener);
                 } else {
-                    upwardView.setAlpha(0);
+                    upwardView.setVisibility(View.GONE);
                     upwardView.setOnClickListener(null);
                 }
             }

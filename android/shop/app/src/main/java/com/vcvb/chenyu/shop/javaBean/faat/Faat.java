@@ -10,6 +10,8 @@ public class Faat {
     private String title;
     private Goods goods;
     private List<FaatNav> faatNavs;
+    private int dx = 0;
+    private int dy = 0;
 
     public int getIsType() {
         return isType;
@@ -49,5 +51,21 @@ public class Faat {
 
     public void setFaatNavs(List<FaatNav> faatNavs) {
         this.faatNavs = faatNavs;
+    }
+
+    public int getDx() {
+        return dx;
+    }
+
+    public void setDx(int dx) {
+        this.dx = dx;
+    }
+
+    public int getDy() {
+        return dy;
+    }
+
+    public void setDy(int dy) {
+        this.dy = dy;
     }
 }
