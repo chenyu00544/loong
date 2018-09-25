@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.vcvb.chenyu.shop.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatBannerItem;
@@ -42,7 +41,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
 
     FaatItemDecoration faatItemDecoration;
 
-    public CYCSimpleAdapter adapter = new CYCSimpleAdapter();
+    public GroupedListAdapter adapter;
     ArrayList<Faat> faats;
 //    int pos_dx = 0;
 
@@ -116,7 +115,8 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
                 faat.setIsType(ConstantManager.Item.BANNER);
                 ArrayList<Object> banners = new ArrayList<>();
                 Banner banner = new Banner();
-                banner.setBackGroundPic("http://scimg.jb51.net/allimg/161202/102-161202094551Z8.jpg");
+                banner.setBackGroundPic("http://scimg" +
+                        ".jb51.net/allimg/161202/102-161202094551Z8.jpg");
                 banners.add(banner);
                 faat.setObjs(banners);
             } else {
@@ -124,7 +124,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
                 if (bool) {
                     bool = false;
                     ArrayList<Object> faatNavs = new ArrayList<>();
-                    for (int j = 0; j < 15; j++) {
+                    for (int j = 0; j < 8; j++) {
                         FaatNav faatNav = new FaatNav();
                         faatNav.setTitle("sdfa" + j);
                         faatNavs.add(faatNav);
@@ -136,7 +136,8 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
                     Goods goods = new Goods();
                     goods.setGoodsName("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + i);
                     goods.setGoodsPriceFormat("$100.00");
-                    goods.setPic("http://dimage.yissimg.com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
+                    goods.setPic("http://dimage.yissimg" +
+                            ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
                     goodses.add(goods);
                 }
                 Header header = new Header();
@@ -154,7 +155,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
             }
             faats.add(faat);
         }
-        GroupedListAdapter adapter = new GroupedListAdapter(context, getItems(faats));
+        adapter = new GroupedListAdapter(context, getItems(faats));
         mRecyclerView.setAdapter(adapter);
 //        mAdapter.addAll(getItems(faats));
     }
@@ -165,16 +166,16 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
                 case ConstantManager.Item.ITEMS:
                     List<Item> cs = new ArrayList<>();
                     for (int j = 0; j < bean.get(i).getObjs().size(); j++) {
-                        if(bean.get(i).getObjs().get(j).getClass() == Goods.class){
+                        if (bean.get(i).getObjs().get(j).getClass() == Goods.class) {
                             cs.add(new FaatGoodsItem(bean.get(i), context));
-                        }else{
+                        } else {
                             cs.add(new FaatHeaderItem(bean.get(i), context));
                         }
                     }
                     bean.get(i).setmObjs(cs);
                     if (bean.get(i).getHeader() != null) {
                         FaatNavItem faatNavItem = new FaatNavItem(bean.get(i), context);
-                        faatNavItem.setItemScrollListener(scrollListener);
+                        faatNavItem.setOnItemListener(faatNavListener);
                         bean.get(i).setmHeader(faatNavItem);
                     }
                     break;
@@ -188,6 +189,16 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         return bean;
     }
 
+    FaatNavItem.OnItemListener faatNavListener = new FaatNavItem.OnItemListener() {
+        @Override
+        public void srcolled(int pos_dx) {System.out.println(pos_dx);
+            for (int i = 0; i < faats.size(); i++) {
+                faats.get(i).setScrollX(pos_dx);
+            }
+            adapter.notifyDataChanged();
+        }
+    };
+
 //    protected List<Item> getNavItems(List<FaatNav> bean) {
 //        List<Item> cells = new ArrayList<>();
 //        for (int i = 0; i < bean.size(); i++) {
@@ -195,12 +206,6 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
 //        }
 //        return cells;
 //    }
-
-    FaatNavItem.ScrollListener scrollListener = new FaatNavItem.ScrollListener() {
-        @Override
-        public void Scrolled(RecyclerView recyclerView, int dx, int dy) {
-        }
-    };
 
     RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener() {
         @Override
