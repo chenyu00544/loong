@@ -1,6 +1,6 @@
-package com.vcvb.chenyu.shop.adapter.base;
+package com.vcvb.chenyu.shop.adapter.b;
 
-import android.view.ViewGroup;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 
 public interface Item {
     /**
@@ -16,13 +16,19 @@ public interface Item {
     public int getItemType();
 
     /**
+     * 获取位置信息
+     *
+     * @return
+     */
+    public int getPosType();
+
+    /**
      * 创建ViewHolder
      *
-     * @param parent
      * @param viewType
      * @return
      */
-    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType);
+    public BaseViewHolder onCreateViewHolder(int viewType);
 
     /**
      * 数据绑定
@@ -30,5 +36,5 @@ public interface Item {
      * @param holder
      * @param position
      */
-    public void onBindViewHolder(CYCBaseViewHolder holder, int position);
+    public void onBindViewHolder(BaseViewHolder holder, int position);
 }

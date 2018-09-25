@@ -3,19 +3,18 @@ package com.vcvb.chenyu.shop.adapter.item.faat;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.base.BaseItem;
-import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
+import com.vcvb.chenyu.shop.adapter.b.BaseItem;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.faat.Faat;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 public class FaatGoodsItem extends BaseItem<Faat> {
-    public static final int TYPE = Integer.MAX_VALUE - 4;
+    public static final int TYPE = R.layout.faat_goods_item;
+    public static final int POSTYPE = ConstantManager.Item.ITEMS;
 
     public FaatGoodsItem(Faat bean, Context c) {
         super(bean, c);
@@ -27,23 +26,21 @@ public class FaatGoodsItem extends BaseItem<Faat> {
     }
 
     @Override
-    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CYCBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
-                .faat_goods_item, null));
+    public int getPosType() {
+        return POSTYPE;
     }
 
     @Override
-    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+    public BaseViewHolder onCreateViewHolder(int viewType) {
+        return new BaseViewHolder(LayoutInflater.from(context).inflate(TYPE, null));
+    }
+
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
         int width = ToolUtils.getWindowsWidth(context);
-        ImageView iv = holder.getImageView(R.id.imageView124);
+        ImageView iv = holder.get(R.id.imageView124);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width / 3, width
                 / 3);
         iv.setLayoutParams(params);
-        Glide.with(context).load(mData.getGoods().getPic()).into(iv);
-        TextView name = holder.getTextView(R.id.textView239);
-        name.setText(mData.getGoods().getGoodsName());
-        TextView price = holder.getTextView(R.id.textView240);
-        price.setText(mData.getGoods().getGoodsPriceFormat());
-
     }
 }

@@ -63,4 +63,19 @@ public interface ConstantManager {
         public int SETUP = R.id.imageView94;
         public int SHARE = R.id.imageView120;
     }
+
+    interface Item {
+        public int HEADER = 6001;
+        public int FOOTER = 6002;
+        public int ITEMS = 6003;
+        public int ITEMS_1 = 6004;
+        public int ITEMS_2 = 6005;
+        public int ITEMS_3 = 6006;
+        public int ITEMS_4 = 6007;
+        public int ITEMS_5 = 6008;
+        public int ITEMS_6 = 6009;
+        public int ITEMS_7 = 6010;
+        public int BANNER = 6011;
+        public int ITEMHEADER = 6012;
+    }
 }
