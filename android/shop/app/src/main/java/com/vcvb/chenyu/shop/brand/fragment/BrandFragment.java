@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.faat.fragment;
+package com.vcvb.chenyu.shop.brand.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,7 +39,7 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class CosmeticsFragment extends BaseRecyclerViewFragment {
+public class BrandFragment extends BaseRecyclerViewFragment {
 
     FaatItemDecoration faatItemDecoration;
 
@@ -68,6 +68,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         navView.setLayoutManager(layoutManager);
         navView.setAdapter(adapter);
+        navView.setVisibility(View.GONE);
         navView.addOnScrollListener(navbakListener);
         CYCItemClickSupport.addTo(navView).setOnItemClickListener(new CYCItemClickSupport
                 .OnItemClickListener() {
@@ -146,7 +147,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
 
         ArrayList<Object> goodses = new ArrayList<>();
         ArrayList<FaatNav> faatNavs = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 5; i++) {
             FaatNav faatNav = new FaatNav();
             faatNav.setTitle("火爆一行" + i);
             faatNavs.add(faatNav);
@@ -182,14 +183,14 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
 
     protected List<Item> getItems(Faat bean) {
         List<Item> cells = new ArrayList<>();
+        if (bean.getBanner() != null) {
+            cells.add(new FaatBannerItem(bean, context));
+        }
         if (bean.getFaatNavs() != null) {
             FaatNavItem faatNavItem = new FaatNavItem(bean, context);
             faatNavItem.setOnScrollListener(navListener);
             faatNavItem.setOnItemClickListener(navClickListener);
             cells.add(faatNavItem);
-        }
-        if (bean.getBanner() != null) {
-            cells.add(new FaatBannerItem(bean, context));
         }
         if (bean.getGoodses() != null) {
             for (int i = 0; i < bean.getGoodses().size(); i++) {
@@ -283,10 +284,10 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
             int position = mLayoutManager.findFirstVisibleItemPosition();
             if (position > 0) {
                 //做显示布局操作
-//                navView.setVisibility(View.VISIBLE);
+                navView.setVisibility(View.VISIBLE);
             } else {
                 //做隐藏布局操作
-//                navView.setVisibility(View.GONE);
+                navView.setVisibility(View.GONE);
             }
         }
     };

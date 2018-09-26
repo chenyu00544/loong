@@ -11,7 +11,6 @@ public abstract class BaseItem<T> implements Item {
     public OnClickListener onClickListener;
     public HashMap<Integer, Integer> posMap = new HashMap<>();
 
-
     public BaseItem(T t, Context c) {
         mData = t;
         context = c;

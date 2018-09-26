@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
-import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.javaBean.BaseBean;
 
 import java.util.List;
@@ -30,20 +29,12 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     @Override
     public boolean hasHeader(int groupPosition) {
-        if (mGroups.get(groupPosition).getmHeader() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override
     public boolean hasFooter(int groupPosition) {
-        if (mGroups.get(groupPosition).getmFooter() != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 
     @Override
@@ -63,11 +54,7 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     @Override
     public int getHeaderViewType(int groupPosition) {
-        if (mGroups.get(groupPosition).getmHeader() != null) {
-            return mGroups.get(groupPosition).getmHeader().getItemType();
-        } else {
-            return R.layout.view_null;
-        }
+        return 0;
     }
 
     @Override
@@ -77,14 +64,12 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     @Override
     public int getChildViewType(int groupPosition, int childPosition) {
-        return mGroups.get(groupPosition).getmObjs().get(childPosition).getItemType();
+        return 0;
     }
 
     @Override
     public void onBindHeaderViewHolder(BaseViewHolder holder, int groupPosition) {
-        if (mGroups.get(groupPosition).getmHeader() != null) {
-            mGroups.get(groupPosition).getmHeader().onBindViewHolder(holder, groupPosition);
-        }
+
     }
 
     @Override
@@ -94,9 +79,6 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     @Override
     public void onBindChildViewHolder(BaseViewHolder holder, int groupPosition, int childPosition) {
-        if (mGroups.get(groupPosition).getmObjs() != null) {
-            mGroups.get(groupPosition).getmObjs().get(childPosition).onBindViewHolder(holder,
-                    groupPosition);
-        }
+
     }
 }

@@ -1,29 +1,29 @@
 package com.vcvb.chenyu.shop.adapter.item.faat;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.HorizontalScrollView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.ViewGroup;
 
-import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.b.BaseItem;
-import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
+import com.vcvb.chenyu.shop.adapter.base.BaseItem;
+import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
+import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.javaBean.faat.Faat;
-import com.vcvb.chenyu.shop.javaBean.faat.FaatNav;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FaatNavItem extends BaseItem<Faat> {
     public static final int TYPE = R.layout.faat_nav_item;
-    public static final int POSTYPE = ConstantManager.Item.HEADER;
 
-    private static HorizontalScrollView scrollView;
-    private static LinearLayout linearLayout;
-
-    private OnItemListener onItemListener;
+    public RecyclerView navView;
+    public CYCGridAdapter adapter = new CYCGridAdapter();
+    OnScrollListener onScrollListener;
 
     public FaatNavItem(Faat bean, Context c) {
         super(bean, c);
@@ -35,52 +35,67 @@ public class FaatNavItem extends BaseItem<Faat> {
     }
 
     @Override
-    public int getPosType() {
-        return POSTYPE;
+    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new CYCBaseViewHolder(LayoutInflater.from(context).inflate(TYPE, null));
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(int viewType) {
-        return new BaseViewHolder(LayoutInflater.from(context).inflate(TYPE, null));
+    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        if (navView == null) {
+            navView = holder.get(R.id.navs_wrap);
+            navView.removeOnScrollListener(listener);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            navView.setLayoutManager(layoutManager);
+            navView.setAdapter(adapter);
+            adapter.clear();
+            adapter.addAll(getNavItems(mData));
+            navView.addOnScrollListener(listener);
+            CYCItemClickSupport.addTo(navView).setOnItemClickListener(new CYCItemClickSupport.OnItemClickListener() {
+                @Override
+                public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                    if (onClickListener != null) {
+                        onClickListener.onClicked(itemView, position);
+                    }
+                }
+            });
+        }
+        navView.scrollBy(mData.getScrollX(), 0);
     }
 
-    @SuppressLint("NewApi")
-    @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
-        scrollView = holder.get(R.id.navs_wrap);
-        linearLayout = holder.get(R.id.navs_list);
-        if (linearLayout.getChildCount() < mData.getHeader().size()) {
-            for (int i = linearLayout.getChildCount(); i < mData.getHeader().size(); i++) {
-                FaatNav faatNav = (FaatNav) mData.getHeader().get(i);
-                View v = LayoutInflater.from(context).inflate(R.layout.faat_nav_sub_item, null);
-                TextView tv = v.findViewById(R.id.textView25);
-                tv.setText(faatNav.getTitle());
-                linearLayout.addView(v);
+    public List<Item> getNavItems(Faat bean) {
+        List<Item> cells = new ArrayList<>();
+        for (int i = 0; i < bean.getFaatNavs().size(); i++) {
+            cells.add(new FaatSubNavItem(bean.getFaatNavs().get(i), context, bean.getFaatNavs().size()));
+        }
+        return cells;
+    }
+
+    public void setOnScrollListener(OnScrollListener listener) {
+        onScrollListener = listener;
+    }
+
+    public interface OnScrollListener {
+        void scrolled(int dx);
+
+        void scrollStateChanged(int newState);
+    }
+
+    RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (onScrollListener != null) {
+                onScrollListener.scrollStateChanged(newState);
             }
         }
-        scrollView.setOnTouchListener(listener);
-        scrollView.scrollTo(mData.getScrollX(), 0);
-    }
 
-    public interface OnItemListener{
-        void srcolled(int pos_dx);
-    }
-
-    public void setOnItemListener(OnItemListener listener) {
-        onItemListener = listener;
-    }
-
-    HorizontalScrollView.OnTouchListener listener = new View.OnTouchListener() {
         @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            if(event.getAction() == MotionEvent.ACTION_UP) {
-                if(onItemListener != null){
-                    onItemListener.srcolled(scrollView.getScrollX());
-                }
-            }else if(event.getAction() == MotionEvent.ACTION_MOVE){
-                System.out.println(scrollView.getScrollX());
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (onScrollListener != null) {
+                onScrollListener.scrolled(dx);
             }
-            return false;
         }
     };
 }

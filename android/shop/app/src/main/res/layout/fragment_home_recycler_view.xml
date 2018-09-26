@@ -5,9 +5,11 @@
     android:layout_height="match_parent">
 
 
-    <com.scwang.smartrefresh.header.PhoenixHeader
+    <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="150dp"
+        android:src="@drawable/loading"
+        android:background="@color/colorBack_morandi"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

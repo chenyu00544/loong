@@ -30,6 +30,15 @@ public class CYCBaseViewHolder extends RecyclerView.ViewHolder {
         return retrieveView(resId);
     }
 
+    public <T extends View> T get(int resId) {
+        View view = views.get(resId);
+        if (view == null) {
+            view = this.itemView.findViewById(resId);
+            views.put(resId, view);
+        }
+        return (T) view;
+    }
+
     public TextView getTextView(int resId) {
         return retrieveView(resId);
     }
