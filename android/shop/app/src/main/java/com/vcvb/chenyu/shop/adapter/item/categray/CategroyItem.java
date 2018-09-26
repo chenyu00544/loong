@@ -2,20 +2,20 @@ package com.vcvb.chenyu.shop.adapter.item.categray;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.base.BaseItem;
-import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
+import com.vcvb.chenyu.shop.adapter.b.BaseItem;
 import com.vcvb.chenyu.shop.javaBean.cate.CategroyBean;
+import com.vcvb.chenyu.shop.javaBean.cate.CategroyGroup;
 
-public class CategroyItem extends BaseItem<CategroyBean> {
-    public static final int TYPE = 1;
+public class CategroyItem extends BaseItem<CategroyGroup> {
+    public static final int TYPE = R.layout.categroy_default_item;
 
-    public CategroyItem(CategroyBean bean, Context c) {
+    public CategroyItem(CategroyGroup bean, Context c) {
         super(bean, c);
     }
 
@@ -25,19 +25,18 @@ public class CategroyItem extends BaseItem<CategroyBean> {
     }
 
     @Override
-    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.categroy_default_item, null));
+    public BaseViewHolder onCreateViewHolder(int viewType) {
+        BaseViewHolder base = new BaseViewHolder(LayoutInflater.from(context)
+                .inflate(TYPE, null));
         return base;
     }
 
     @Override
-    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView tv = holder.getTextView(R.id.textView100);
-        tv.setText(mData.getCateName());
-        ImageView iv = holder.getImageView(R.id.imageView40);
-        Glide.with(context).load(mData.getPic())
-                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(iv);
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        TextView tv = holder.get(R.id.textView100);
+        CategroyBean bean = (CategroyBean) mData.getObjs().get(position);
+        tv.setText(bean.getCateName());
+        ImageView iv = holder.get(R.id.imageView40);
+        Glide.with(context).load(bean.getPic()).into(iv);
     }
 }

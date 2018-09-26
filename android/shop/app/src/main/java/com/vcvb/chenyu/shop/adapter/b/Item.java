@@ -14,14 +14,6 @@ public interface Item {
      * @return
      */
     public int getItemType();
-
-    /**
-     * 获取位置信息
-     *
-     * @return
-     */
-    public int getPosType();
-
     /**
      * 创建ViewHolder
      *

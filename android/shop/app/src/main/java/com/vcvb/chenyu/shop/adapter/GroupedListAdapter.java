@@ -29,12 +29,20 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     @Override
     public boolean hasHeader(int groupPosition) {
-        return false;
+        if (mGroups.get(groupPosition).getHeader() != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean hasFooter(int groupPosition) {
-        return false;
+        if (mGroups.get(groupPosition).getFooter() != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -54,22 +62,22 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     @Override
     public int getHeaderViewType(int groupPosition) {
-        return 0;
+        return mGroups.get(groupPosition).getMheader().getItemType();
     }
 
     @Override
     public int getFooterViewType(int groupPosition) {
-        return super.getFooterViewType(groupPosition);
+        return mGroups.get(groupPosition).getMfooter().getItemType();
     }
 
     @Override
     public int getChildViewType(int groupPosition, int childPosition) {
-        return 0;
+        return mGroups.get(groupPosition).getItemList().get(childPosition).getItemType();
     }
 
     @Override
     public void onBindHeaderViewHolder(BaseViewHolder holder, int groupPosition) {
-
+        mGroups.get(groupPosition).getMheader().onBindViewHolder(holder, groupPosition);
     }
 
     @Override
@@ -79,6 +87,6 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     @Override
     public void onBindChildViewHolder(BaseViewHolder holder, int groupPosition, int childPosition) {
-
+        mGroups.get(groupPosition).getItemList().get(childPosition).onBindViewHolder(holder, childPosition);
     }
 }

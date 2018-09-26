@@ -1,6 +1,5 @@
 package com.vcvb.chenyu.shop.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
 import com.vcvb.chenyu.shop.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
+import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.categray.CategroyItem;
 import com.vcvb.chenyu.shop.adapter.item.categray.CategroySubTitleItem;
@@ -21,30 +22,30 @@ import com.vcvb.chenyu.shop.adapter.item.categray.CategroyTitleItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.cate.CategroyBean;
+import com.vcvb.chenyu.shop.javaBean.cate.CategroyGroup;
 import com.vcvb.chenyu.shop.search.SearchInfoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentCategory extends BaseFragment {
-    View view;
-    Context context;
 
     private RecyclerView recyclerView;
     private CYCSimpleAdapter simpleAdapter;
 
     private RecyclerView subRecyclerView;
-    private CYCSimpleAdapter subSimpleAdapter;
+    private GroupedListAdapter groupedListAdapter;
+    private GroupedGridLayoutManager groupedGridLayoutManager;
 
     private ArrayList<CategroyBean> list;
-    private ArrayList<CategroyBean> sublist;
+    private List<CategroyGroup> categroyGroups;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_categroy, container, false);
-        context = getActivity();
         return view;
     }
 
@@ -61,56 +62,15 @@ public class FragmentCategory extends BaseFragment {
                 .OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                for (int i = 0; i < list.size(); i++) {
-                    list.get(i).setIsCurrent(false);
-                }
-                list.get(position).setIsCurrent(true);
-                simpleAdapter.notifyDataSetChanged();
-                subSimpleAdapter.clear();
-                sublist.clear();
-                for (int j = 0; j < 5; j++) {
-                    CategroyBean bean = new CategroyBean();
-                    bean.setIsType(3);
-                    bean.setCateName("title" + position + j);
-                    sublist.add(bean);
-                    for (int k = 0; k < 5; k++) {
-                        bean = new CategroyBean();
-                        bean.setIsType(1);
-                        bean.setCateName("title" + position + k);
-                        bean.setPic(Images.imageUrls[k]);
-                        sublist.add(bean);
-                    }
-                }
-                subSimpleAdapter.addAll(getItems(sublist));
             }
         });
 
         subRecyclerView = view.findViewById(R.id.sub_categroy);
-        GridLayoutManager subGrid = new GridLayoutManager(context, 3);
-        subRecyclerView.setLayoutManager(subGrid);
-        subSimpleAdapter = new CYCSimpleAdapter();
-        subRecyclerView.setAdapter(subSimpleAdapter);
-
-        CYCItemClickSupport.addTo(subRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                goToSearchInfoActivity();
-            }
-        });
-        loadData();
+        getData();
     }
 
-    public void loadData() {
-        recyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        }, 2000);
-
+    public void getData() {
         list = new ArrayList<>();
-        sublist = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             CategroyBean bean = new CategroyBean();
             bean.setIsType(2);
@@ -120,42 +80,80 @@ public class FragmentCategory extends BaseFragment {
             }
             list.add(bean);
         }
+        categroyGroups = new ArrayList<>();
         for (int j = 0; j < 5; j++) {
-            CategroyBean bean = new CategroyBean();
-            bean.setIsType(3);
-            bean.setCateName("Cate" + j);
-            sublist.add(bean);
-            for (int k = 0; k < 5; k++) {
-                bean = new CategroyBean();
-                bean.setIsType(1);
-                bean.setCateName("Cate" + k);
-                bean.setPic(Images.imageUrls[k]);
-                sublist.add(bean);
+            CategroyGroup categroyGroup = new CategroyGroup();
+            if(j == 0){
+                List<Object> categroyBeans = new ArrayList<>();
+                CategroyBean subBean = new CategroyBean();
+                subBean.setPic(Images.imageUrls[0]);
+                categroyBeans.add(subBean);
+                categroyGroup.setObjs(categroyBeans);
+            }else{
+                CategroyBean bean = new CategroyBean();
+                bean.setIsType(3);
+                bean.setCateName("Cate" + j);
+                categroyGroup.setHeader(bean);
+                List<Object> categroyBeans = new ArrayList<>();
+                for (int k = 0; k < 5; k++) {
+                    CategroyBean subBean = new CategroyBean();
+                    subBean.setIsType(1);
+                    subBean.setCateName("Cate" + k);
+                    subBean.setPic(Images.imageUrls[k]);
+                    categroyBeans.add(subBean);
+                }
+                categroyGroup.setObjs(categroyBeans);
             }
+            categroyGroups.add(categroyGroup);
         }
+
+
+        groupedListAdapter = new GroupedListAdapter(context, getGroupItems());
+        subRecyclerView.setAdapter(groupedListAdapter);
+        groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, groupedListAdapter) {
+            @Override
+            public int getChildSpanSize(int groupPosition, int childPosition) {
+                if (categroyGroups.get(groupPosition).getItemList().get(childPosition)
+                        .getItemType() == R.layout.categroy_ads_item) {
+                    return 1;
+                }
+                return super.getChildSpanSize(groupPosition, childPosition);
+            }
+        };
+        subRecyclerView.setLayoutManager(groupedGridLayoutManager);
         simpleAdapter.addAll(getItems(list));
-        subSimpleAdapter.addAll(getItems(sublist));
     }
 
     protected List<Item> getItems(List<CategroyBean> list) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             switch (list.get(i).getIsType()) {
-                case 1:
-                    cells.add(new CategroyItem(list.get(i), context));
-                    break;
                 case 2:
                     cells.add(new CategroyTitleItem(list.get(i), context));
-                    break;
-                case 3:
-                    cells.add(new CategroySubTitleItem(list.get(i), context));
                     break;
             }
         }
         return cells;
     }
 
-    public void goToSearchInfoActivity(){
+    protected List<CategroyGroup> getGroupItems() {
+        for (int i = 0; i < categroyGroups.size(); i++) {
+            if(categroyGroups.get(i).getHeader() != null){
+                CategroySubTitleItem subTitleItem = new CategroySubTitleItem(categroyGroups.get(i),
+                        context);
+                categroyGroups.get(i).setMheader(subTitleItem);
+            }
+            List<com.vcvb.chenyu.shop.adapter.b.Item> items = new ArrayList<>();
+            for (int j = 0; j < categroyGroups.get(i).getObjs().size(); j++) {
+                CategroyItem categroyItem = new CategroyItem(categroyGroups.get(i), context);
+                items.add(categroyItem);
+            }
+            categroyGroups.get(i).setItemList(items);
+        }
+        return categroyGroups;
+    }
+
+    public void goToSearchInfoActivity() {
         Intent intent = new Intent(context, SearchInfoActivity.class);
         startActivity(intent);
     }
