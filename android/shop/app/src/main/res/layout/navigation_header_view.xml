@@ -43,7 +43,7 @@
                 android:background="@drawable/shape_icon"
                 android:contentDescription="@string/todo"
                 android:padding="8dp"
-                android:src="@drawable/icon_back_gray" />
+                android:src="@drawable/icon_back_back" />
         </LinearLayout>
 
         <!-- 该页面标题 -->
@@ -82,7 +82,7 @@
                 android:background="@drawable/shape_icon"
                 android:contentDescription="@string/todo"
                 android:padding="8dp"
-                android:src="@drawable/icon_love_gray" />
+                android:src="@drawable/icon_love_black" />
 
             <ImageView
                 android:id="@+id/more"

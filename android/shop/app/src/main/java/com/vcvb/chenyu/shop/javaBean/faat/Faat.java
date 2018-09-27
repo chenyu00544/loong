@@ -2,7 +2,7 @@ package com.vcvb.chenyu.shop.javaBean.faat;
 
 import java.util.List;
 
-public class Faat {
+public class Faat{
     private int scrollX = 0;
     private List<FaatNav> faatNavs;
     private List<Object> goodses;

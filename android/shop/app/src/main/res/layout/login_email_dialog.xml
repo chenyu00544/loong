@@ -38,11 +38,11 @@
         android:layout_height="15dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:src="@drawable/icon_back_gray"
+        android:src="@drawable/icon_back_back"
         app:layout_constraintBottom_toBottomOf="@+id/view16"
         app:layout_constraintStart_toStartOf="@+id/view16"
         app:layout_constraintTop_toTopOf="@+id/view16"
-        app:srcCompat="@drawable/icon_back_gray" />
+        app:srcCompat="@drawable/icon_back_back" />
 
     <TextView
         android:id="@+id/textView66"

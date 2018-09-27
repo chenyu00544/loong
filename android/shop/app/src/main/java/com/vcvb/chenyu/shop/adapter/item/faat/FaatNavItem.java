@@ -23,7 +23,6 @@ public class FaatNavItem extends BaseItem<Faat> {
 
     public RecyclerView navView;
     public CYCGridAdapter adapter = new CYCGridAdapter();
-    OnScrollListener onScrollListener;
 
     public FaatNavItem(Faat bean, Context c) {
         super(bean, c);
@@ -43,15 +42,15 @@ public class FaatNavItem extends BaseItem<Faat> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         if (navView == null) {
             navView = holder.get(R.id.navs_wrap);
-            navView.removeOnScrollListener(listener);
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             navView.setLayoutManager(layoutManager);
             navView.setAdapter(adapter);
             adapter.clear();
+            mData.getFaatNavs().get(0).setIsSelect(true);
             adapter.addAll(getNavItems(mData));
-            navView.addOnScrollListener(listener);
-            CYCItemClickSupport.addTo(navView).setOnItemClickListener(new CYCItemClickSupport.OnItemClickListener() {
+            CYCItemClickSupport.addTo(navView).setOnItemClickListener(new CYCItemClickSupport
+                    .OnItemClickListener() {
                 @Override
                 public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
                     if (onClickListener != null) {
@@ -60,42 +59,15 @@ public class FaatNavItem extends BaseItem<Faat> {
                 }
             });
         }
-        navView.scrollBy(mData.getScrollX(), 0);
+        navView.scrollToPosition(0);
     }
 
     public List<Item> getNavItems(Faat bean) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < bean.getFaatNavs().size(); i++) {
-            cells.add(new FaatSubNavItem(bean.getFaatNavs().get(i), context, bean.getFaatNavs().size()));
+            cells.add(new FaatSubNavItem(bean.getFaatNavs().get(i), context, bean.getFaatNavs()
+                    .size()));
         }
         return cells;
     }
-
-    public void setOnScrollListener(OnScrollListener listener) {
-        onScrollListener = listener;
-    }
-
-    public interface OnScrollListener {
-        void scrolled(int dx);
-
-        void scrollStateChanged(int newState);
-    }
-
-    RecyclerView.OnScrollListener listener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            if (onScrollListener != null) {
-                onScrollListener.scrollStateChanged(newState);
-            }
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            if (onScrollListener != null) {
-                onScrollListener.scrolled(dx);
-            }
-        }
-    };
 }

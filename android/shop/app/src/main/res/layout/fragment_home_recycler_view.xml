@@ -2,22 +2,24 @@
 <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffe439">
 
 
     <pl.droidsonroids.gif.GifImageView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/loading"
-        android:scaleType="centerCrop"
-        android:background="@color/colorBack_morandi"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:src="@drawable/loading" />
 
     <android.support.v7.widget.RecyclerView
+        android:background="@color/white"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <com.scwang.smartrefresh.layout.footer.ClassicsFooter
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/gray_f5"/>
 </com.scwang.smartrefresh.layout.SmartRefreshLayout>

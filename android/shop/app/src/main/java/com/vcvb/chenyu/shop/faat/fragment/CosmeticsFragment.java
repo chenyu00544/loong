@@ -46,10 +46,6 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
     public RecyclerView navView;
     public CYCGridAdapter adapter = new CYCGridAdapter();
     public Faat faat;
-    public int pos_dx = 0;
-
-    public boolean inNavBool = true;
-    public boolean outNavBool = true;
 
     @Nullable
     @Override
@@ -68,7 +64,6 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         navView.setLayoutManager(layoutManager);
         navView.setAdapter(adapter);
-        navView.addOnScrollListener(navbakListener);
         CYCItemClickSupport.addTo(navView).setOnItemClickListener(new CYCItemClickSupport
                 .OnItemClickListener() {
             @Override
@@ -85,24 +80,22 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
 
     }
 
-    public void scrollToPos(int position){
-        int j = 2;
-        int pos = 0;
+    public void scrollToPos(int position) {
+        for (int i = 0; i < faat.getFaatNavs().size(); i++) {
+            faat.getFaatNavs().get(i).setIsSelect(false);
+        }
+        faat.getFaatNavs().get(position).setIsSelect(true);
+        adapter.notifyDataSetChanged();
+
         int p = 0;
         for (int i = 0; i < faat.getGoodses().size(); i++) {
-            if (faat.getGoodses().get(i) instanceof Goods) {
-                j += 1;
-            } else {
-                pos += 1;
-                if (position == pos) {
-                    p = j+pos;
+            if (faat.getGoodses().get(i) instanceof Header) {
+                p = ((Header) faat.getGoodses().get(i)).getPos();
+                if(position == p){
+                    mRecyclerView.smoothScrollToPosition(i+2);
                 }
             }
         }
-        if(position == 0){
-            p = 0;
-        }
-        mRecyclerView.smoothScrollToPosition(p);
     }
 
     @Override
@@ -141,7 +134,7 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
     public void bindData() {
         faat = new Faat();
         Banner banner = new Banner();
-        banner.setBackGroundPic("http://scimg" + ".jb51.net/allimg/161202/102-161202094551Z8.jpg");
+        banner.setBackGroundPic("http://scimg.jb51.net/allimg/161202/102-161202094551Z8.jpg");
         faat.setBanner(banner);
 
         ArrayList<Object> goodses = new ArrayList<>();
@@ -149,25 +142,21 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         for (int i = 0; i < 2; i++) {
             FaatNav faatNav = new FaatNav();
             faatNav.setTitle("火爆一行" + i);
+            if(i==0){
+                faatNav.setIsSelect(true);
+            }
             faatNavs.add(faatNav);
 
-            for (int j = 0; j < 20; j++) {
-                Goods goods = new Goods();
-                goods.setGoodsName("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
-                goods.setGoodsPriceFormat("$100.00");
-                goods.setPic("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                        "" + ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
-                goodses.add(goods);
-            }
             Header header = new Header();
             header.setBackGroundPic("http://58pic.ooopic.com/58pic/19/50/38/56e00c6189f99.jpg");
+            header.setPos(i);
             goodses.add(header);
             for (int j = 0; j < 20; j++) {
                 Goods goods = new Goods();
                 goods.setGoodsName("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
                 goods.setGoodsPriceFormat("$100.00");
-                goods.setPic("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + "" + "" + "" +
-                        "" + ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
+                goods.setPic("http://dimage.yissimg" +
+                        ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
                 goodses.add(goods);
             }
         }
@@ -184,7 +173,6 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         List<Item> cells = new ArrayList<>();
         if (bean.getFaatNavs() != null) {
             FaatNavItem faatNavItem = new FaatNavItem(bean, context);
-            faatNavItem.setOnScrollListener(navListener);
             faatNavItem.setOnItemClickListener(navClickListener);
             cells.add(faatNavItem);
         }
@@ -210,60 +198,17 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
     protected List<Item> getNavItems(Faat bean) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < bean.getFaatNavs().size(); i++) {
-            cells.add(new FaatSubNavItem(bean.getFaatNavs().get(i), context, faat.getFaatNavs().size()));
+            cells.add(new FaatSubNavItem(bean.getFaatNavs().get(i), context, faat.getFaatNavs()
+                    .size()));
         }
         return cells;
     }
 
 
-    FaatNavItem.OnScrollListener navListener = new FaatNavItem.OnScrollListener() {
-        @Override
-        public void scrollStateChanged(int newState) {
-            System.out.println(newState);
-            if (newState == 0) {
-                navView.scrollBy(faat.getScrollX(), 0);
-                pos_dx = 0;
-                inNavBool = true;
-            } else {
-                outNavBool = false;
-            }
-        }
-
-        @Override
-        public void scrolled(int dx) {
-            if (inNavBool) {
-                pos_dx += dx;
-                faat.setScrollX(pos_dx);
-            }
-        }
-    };
-    FaatNavItem.OnClickListener navClickListener = new FaatNavItem.OnClickListener(){
+    FaatNavItem.OnClickListener navClickListener = new FaatNavItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             scrollToPos(pos);
-        }
-    };
-
-    RecyclerView.OnScrollListener navbakListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            if (newState == 0) {
-                mAdapter.notifyDataSetChanged();
-                pos_dx = 0;
-                outNavBool = true;
-            } else {
-                inNavBool = false;
-            }
-        }
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            if (outNavBool) {
-                pos_dx += dx;
-                faat.setScrollX(pos_dx);
-            }
         }
     };
 
@@ -272,8 +217,6 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == 0) {
-                outNavBool = true;
-                inNavBool = true;
             }
         }
 
@@ -281,6 +224,15 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
             int position = mLayoutManager.findFirstVisibleItemPosition();
+            if(faat.getGoodses().get(position) instanceof Header){
+                for (int i = 0; i < faat.getFaatNavs().size(); i++) {
+                    faat.getFaatNavs().get(i).setIsSelect(false);
+                }
+                int npos= ((Header) faat.getGoodses().get(position)).getPos();
+                faat.getFaatNavs().get(npos).setIsSelect(true);
+                adapter.notifyDataSetChanged();
+                navView.smoothScrollToPosition(npos);
+            }
             if (position > 0) {
                 //做显示布局操作
 //                navView.setVisibility(View.VISIBLE);

@@ -615,7 +615,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     break;
                 case R.id.collection:
                     if(isCollection == true){
-                        Glide.with(context).load(R.drawable.icon_love_gray).into(collectionView);
+                        Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
                         isCollection = false;
                     }else{
                         Glide.with(context).load(R.drawable.icon_love_active).into(collectionView);

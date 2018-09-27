@@ -38,6 +38,11 @@ public class FaatSubNavItem extends BaseItem<FaatNav> {
         int width = ToolUtils.getWindowsWidth(context);
         ConstraintLayout.LayoutParams params;
         View v = holder.getItemView();
+        if(mData.getIsSelect() == true){
+            v.setBackgroundResource(R.color.colorFont_morandi);
+        }else {
+            v.setBackgroundResource(R.color.color_transparent);
+        }
         if (num < 5) {
             params = new ConstraintLayout.LayoutParams(width / num,
                     ConstraintLayout.LayoutParams.WRAP_CONTENT);
