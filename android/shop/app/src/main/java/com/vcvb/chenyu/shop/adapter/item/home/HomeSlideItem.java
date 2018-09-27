@@ -11,6 +11,7 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.image.GlideImageLoader;
 import com.vcvb.chenyu.shop.javaBean.home.Slide;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -41,7 +42,7 @@ public class HomeSlideItem extends BaseItem<List<Slide>> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        int width = context.getResources().getDisplayMetrics().widthPixels;
+        int width = ToolUtils.getWindowsWidth(context);
         Banner banner = (Banner) holder.getView(R.id.goods_slide);
         //设置内置样式，内含六种特效
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);

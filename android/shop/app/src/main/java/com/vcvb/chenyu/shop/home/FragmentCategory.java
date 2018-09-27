@@ -16,6 +16,7 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.categray.CategroyAdsItem;
 import com.vcvb.chenyu.shop.adapter.item.categray.CategroyItem;
 import com.vcvb.chenyu.shop.adapter.item.categray.CategroySubTitleItem;
 import com.vcvb.chenyu.shop.adapter.item.categray.CategroyTitleItem;
@@ -87,6 +88,7 @@ public class FragmentCategory extends BaseFragment {
                 List<Object> categroyBeans = new ArrayList<>();
                 CategroyBean subBean = new CategroyBean();
                 subBean.setPic(Images.imageUrls[0]);
+                subBean.setIsType(2);
                 categroyBeans.add(subBean);
                 categroyGroup.setObjs(categroyBeans);
             }else{
@@ -111,13 +113,15 @@ public class FragmentCategory extends BaseFragment {
         groupedListAdapter = new GroupedListAdapter(context, getGroupItems());
         subRecyclerView.setAdapter(groupedListAdapter);
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, groupedListAdapter) {
+
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
                 if (categroyGroups.get(groupPosition).getItemList().get(childPosition)
                         .getItemType() == R.layout.categroy_ads_item) {
-                    return 1;
+                    return 3;
+                }else{
+                    return super.getChildSpanSize(groupPosition, childPosition);
                 }
-                return super.getChildSpanSize(groupPosition, childPosition);
             }
         };
         subRecyclerView.setLayoutManager(groupedGridLayoutManager);
@@ -145,8 +149,13 @@ public class FragmentCategory extends BaseFragment {
             }
             List<com.vcvb.chenyu.shop.adapter.b.Item> items = new ArrayList<>();
             for (int j = 0; j < categroyGroups.get(i).getObjs().size(); j++) {
-                CategroyItem categroyItem = new CategroyItem(categroyGroups.get(i), context);
-                items.add(categroyItem);
+                if(((CategroyBean)categroyGroups.get(i).getObjs().get(j)).getIsType() == 1 ){
+                    CategroyItem categroyItem = new CategroyItem(categroyGroups.get(i), context);
+                    items.add(categroyItem);
+                }else{
+                    CategroyAdsItem categroyAdsItem = new CategroyAdsItem(categroyGroups.get(i), context);
+                    items.add(categroyAdsItem);
+                }
             }
             categroyGroups.get(i).setItemList(items);
         }

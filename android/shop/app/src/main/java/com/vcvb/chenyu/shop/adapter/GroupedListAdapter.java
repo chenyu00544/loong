@@ -10,6 +10,8 @@ import java.util.List;
 
 public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewAdapter {
 
+
+
     private List<T> mGroups;
 
     public GroupedListAdapter(Context context, List<T> groups) {

@@ -40,7 +40,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.brand_fragment, container, false);
         initView();
@@ -90,7 +91,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         Banner banner = new Banner();
         banner.setWidth(750);
         banner.setHeight(450);
-        banner.setBackGroundPic("http://scimg" + ".jb51.net/allimg/161202/102-161202094551Z8.jpg");
+        banner.setBackGroundPic("http://scimg.jb51.net/allimg/161202/102-161202094551Z8.jpg");
         List<Object> bs = new ArrayList<>();
         bs.add(banner);
         brand.setObjs(bs);
@@ -114,7 +115,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                 Goods goods = new Goods();
                 goods.setGoodsName("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
                 goods.setGoodsPriceFormat("$1000.00");
-                goods.setPic("http://dimage.yissimg.com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
+                goods.setPic("http://dimage.yissimg" +
+                        ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
                 goodses.add(goods);
             }
         }
@@ -126,8 +128,10 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, adapter) {
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (brands.get(groupPosition).getObjs().get(childPosition) instanceof Banner) {
-                    return 1;
+                if (brands.get(groupPosition).getItemList().get(childPosition).getItemType() == R
+                        .layout.faat_banner_item) {
+                    System.out.println(brands.get(groupPosition).getObjs().get(childPosition));
+                    return 3;
                 }
                 return super.getChildSpanSize(groupPosition, childPosition);
             }
@@ -147,10 +151,12 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             if (brands.get(i).getObjs() != null) {
                 for (int j = 0; j < brands.get(i).getObjs().size(); j++) {
                     if (brands.get(i).getObjs().get(j) instanceof Goods) {
-                        BrandGoodsItem brandGoodsItem = new BrandGoodsItem((Goods) brands.get(i).getObjs().get(j), context);
+                        BrandGoodsItem brandGoodsItem = new BrandGoodsItem((Goods) brands.get(i)
+                                .getObjs().get(j), context);
                         items.add(brandGoodsItem);
                     } else {
-                        BrandBannerItem brandBannerItem = new BrandBannerItem((Banner) brands.get(i).getObjs().get(j), context);
+                        BrandBannerItem brandBannerItem = new BrandBannerItem((Banner) brands.get
+                                (i).getObjs().get(j), context);
                         items.add(brandBannerItem);
                     }
                 }

@@ -3,9 +3,7 @@ package com.vcvb.chenyu.shop.adapter.item.categray;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.b.BaseItem;
@@ -33,10 +31,8 @@ public class CategroyAdsItem extends BaseItem<CategroyGroup> {
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int position) {
-        TextView tv = holder.get(R.id.textView100);
         CategroyBean bean = (CategroyBean) mData.getObjs().get(position);
-        tv.setText(bean.getCateName());
-        ImageView iv = holder.get(R.id.imageView40);
-        Glide.with(context).load(bean.getPic()).into(iv);
+        ImageView iv = holder.get(R.id.imageView126);
+//        Glide.with(context).load(bean.getPic()).into(iv);
     }
 }
