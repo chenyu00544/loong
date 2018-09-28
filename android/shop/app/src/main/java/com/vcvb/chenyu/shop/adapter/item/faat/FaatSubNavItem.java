@@ -54,5 +54,7 @@ public class FaatSubNavItem extends BaseItem<FaatNav> {
         v.setLayoutParams(params);
         TextView tv = holder.getTextView(R.id.textView25);
         tv.setText(mData.getTitle());
+        posMap.put(v.getId(),position);
+        v.setOnClickListener(listener);
     }
 }

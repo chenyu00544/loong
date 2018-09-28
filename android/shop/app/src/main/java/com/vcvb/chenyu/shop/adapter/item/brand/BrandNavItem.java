@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
@@ -45,16 +46,50 @@ public class BrandNavItem extends BaseItem<Brand> {
         navView.setLayoutManager(layoutManager);
         navView.setAdapter(adapter);
         adapter.clear();
-        ((List<FaatNav>) mData.getHeader()).get(0).setIsSelect(true);
         adapter.addAll(getNavItems(mData));
+        List<FaatNav> navs = (List<FaatNav>) mData.getHeader();
+        boolean bool = true;
+        for (int i = 0; i < navs.size(); i++) {
+            if (navs.get(i).getIsSelect() == true) {
+                if (i > 0 && i <= navs.size() / 2) {
+                    navView.scrollToPosition(i - 1);
+                } else if (i < navs.size() - 1 && i >= navs.size() / 2) {
+                    navView.scrollToPosition(i + 1);
+                } else {
+                    navView.scrollToPosition(i);
+                }
+                bool = false;
+            }
+        }
+        if (bool) {
+            navs.get(0).setIsSelect(true);
+            navView.scrollToPosition(0);
+        }
     }
 
     public List<Item> getNavItems(Brand bean) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < ((List<FaatNav>) bean.getHeader()).size(); i++) {
-            cells.add(new FaatSubNavItem(((List<FaatNav>) bean.getHeader()).get(i), context, (
-                    (List<FaatNav>) bean.getHeader()).size()));
+            FaatSubNavItem faatSubNavItem = new FaatSubNavItem(((List<FaatNav>) bean.getHeader()).get(i), context, (
+                    (List<FaatNav>) bean.getHeader()).size());
+            faatSubNavItem.setOnItemClickListener(listener);
+            cells.add(faatSubNavItem);
         }
         return cells;
     }
+    FaatSubNavItem.OnClickListener listener = new FaatSubNavItem.OnClickListener(){
+        @Override
+        public void onClicked(View view, int pos) {
+            if (onItemClickListener != null) {
+                if (mData.getHeader() != null) {
+                    for (int i = 0; i < ((List<FaatNav>) mData.getHeader()).size(); i++) {
+                        ((List<FaatNav>) mData.getHeader()).get(i).setIsSelect(false);
+                    }
+                    ((List<FaatNav>) mData.getHeader()).get(pos).setIsSelect(true);
+                }
+                adapter.notifyDataSetChanged();
+                onItemClickListener.clicked(mData.getGroup(), pos);
+            }
+        }
+    };
 }

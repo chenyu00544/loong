@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.b.BaseItem;
@@ -35,9 +37,12 @@ public class BrandBannerItem extends BaseItem<Banner> {
         int width = ToolUtils.getWindowsWidth(context);
         View v = holder.get(R.id.banner);
         ImageView iv = holder.get(R.id.imageView122);
-        Glide.with(context).load(mData.getBackGroundPic()).into(iv);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width, width * mData
                 .getHeight() / mData.getWidth());
-        iv.setLayoutParams(params);
+        v.setLayoutParams(params);
+        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy(DiskCacheStrategy
+                .AUTOMATIC).skipMemoryCache(true).override
+                (width, width * mData.getHeight() / mData.getWidth());
+        Glide.with(context).load(mData.getBackGroundPic()).apply(requestOptions).into(iv);
     }
 }

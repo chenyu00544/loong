@@ -3,6 +3,7 @@ package com.vcvb.chenyu.shop.brand.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     public GroupedListAdapter adapter;
     private GroupedGridLayoutManager groupedGridLayoutManager;
     public List<Brand> brands = new ArrayList<>();
+    public int position = 0;
 
     @Nullable
     @Override
@@ -51,6 +53,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     public void initView() {
         getData();
         mRecyclerView = view.findViewById(R.id.rv_list);
+        mRecyclerView.addOnScrollListener(rvScrollListener);
     }
 
     @Override
@@ -90,11 +93,12 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         Brand brand = new Brand();
         Banner banner = new Banner();
         banner.setWidth(750);
-        banner.setHeight(450);
+        banner.setHeight(440);
         banner.setBackGroundPic("http://scimg.jb51.net/allimg/161202/102-161202094551Z8.jpg");
         List<Object> bs = new ArrayList<>();
         bs.add(banner);
         brand.setObjs(bs);
+        brand.setGroup(0);
         brands.add(brand);
 
         Brand brand1 = new Brand();
@@ -102,6 +106,9 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         ArrayList<FaatNav> faatNavs = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             FaatNav faatNav = new FaatNav();
+            if (i == 0) {
+                faatNav.setIsSelect(true);
+            }
             faatNav.setTitle("火爆一行" + i);
             faatNavs.add(faatNav);
 
@@ -122,6 +129,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         }
         brand1.setHeader(faatNavs);
         brand1.setObjs(goodses);
+        brand1.setGroup(1);
         brands.add(brand1);
 
         adapter = new GroupedListAdapter(context, getItems(brands));
@@ -130,7 +138,6 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             public int getChildSpanSize(int groupPosition, int childPosition) {
                 if (brands.get(groupPosition).getItemList().get(childPosition).getItemType() == R
                         .layout.faat_banner_item) {
-                    System.out.println(brands.get(groupPosition).getObjs().get(childPosition));
                     return 3;
                 }
                 return super.getChildSpanSize(groupPosition, childPosition);
@@ -145,6 +152,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         for (int i = 0; i < beans.size(); i++) {
             if (brands.get(i).getHeader() != null) {
                 BrandNavItem brandNavItem = new BrandNavItem(beans.get(i), context);
+                brandNavItem.setOnItemClickListener(navListener);
                 brands.get(i).setMheader(brandNavItem);
             }
             List<Item> items = new ArrayList<>();
@@ -165,4 +173,94 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         }
         return brands;
     }
+
+    public void selectNavs(int pos) {
+        int p = 0;
+        Banner banner = null;
+        for (int i = 1; i < brands.size(); i++) {
+            Brand brand = brands.get(i);
+            if (brand.getHeader() != null) {
+                for (int j = 0; j < ((List<FaatNav>) brands.get(i).getHeader()).size(); j++) {
+                    ((List<FaatNav>) brands.get(i).getHeader()).get(j).setIsSelect(false);
+                }
+                p += 1;
+            }
+            if (brand.getObjs() != null) {
+                if (pos <= p + brand.getObjs().size()) {
+                    for (int j = 0; j < brand.getObjs().size(); j++) {
+                        if (brand.getObjs().get(j) instanceof Banner) {
+                            if (pos >= p) {
+                                banner = (Banner) brand.getObjs().get(j);
+                            }
+                        }
+                        p += 1;
+                    }
+                } else {
+                    p += brand.getObjs().size();
+                }
+            }
+            if (brand.getFooter() != null) {
+                p += 1;
+            }
+            if (banner != null) {
+                ((List<FaatNav>) brands.get(i).getHeader()).get(banner.getNavPos()).setIsSelect
+                        (true);
+                break;
+            }
+        }
+        adapter.notifyHeaderChanged(1);
+    }
+
+    public void clickSelectNavs(int group, int pos) {
+        int p = 0;
+        for (int i = 1; i < brands.size(); i++) {
+            int n = 0;
+            Brand brand = brands.get(i);
+            if (brand.getHeader() != null) {
+                p +=1;
+                for (int j = 0; j < ((List<FaatNav>) brands.get(i).getHeader()).size(); j++) {
+                    ((List<FaatNav>) brands.get(i).getHeader()).get(j).setIsSelect(false);
+                }
+            }
+            if (brand.getObjs() != null) {
+                if (pos <= p + brand.getObjs().size()) {
+                    for (int j = 0; j < brand.getObjs().size(); j++) {
+                        p += 1;
+                        if (brand.getObjs().get(j) instanceof Banner) {
+                            if(n == pos){
+                                mRecyclerView.smoothScrollToPosition(p);
+                            }
+                            n += 1;
+                        }
+                    }
+                } else {
+                    p += brand.getObjs().size();
+                }
+            }
+        }
+        ((List<FaatNav>) brands.get(group).getHeader()).get(pos).setIsSelect(true);
+    }
+
+    BrandNavItem.OnItemClickListener navListener = new BrandNavItem.OnItemClickListener(){
+        @Override
+        public void clicked(int group, int pos) {
+            clickSelectNavs(group,pos);
+        }
+    };
+
+    RecyclerView.OnScrollListener rvScrollListener = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if (newState == 0) {
+                selectNavs(position);
+            }
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            position = groupedGridLayoutManager.findFirstVisibleItemPosition();
+        }
+    };
 }
