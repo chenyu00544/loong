@@ -3,6 +3,7 @@ package com.vcvb.chenyu.shop.brand.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,11 +40,15 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     private GroupedGridLayoutManager groupedGridLayoutManager;
     public List<Brand> brands = new ArrayList<>();
     public int position = 0;
+    //目标项是否在最后一个可见项之后
+    private boolean mShouldScroll;
+    //记录目标项位置
+    private int mToPosition;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.brand_fragment, container, false);
         initView();
@@ -53,6 +58,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     public void initView() {
         getData();
         mRecyclerView = view.findViewById(R.id.rv_list);
+        ((DefaultItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         mRecyclerView.addOnScrollListener(rvScrollListener);
     }
 
@@ -122,7 +128,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                 Goods goods = new Goods();
                 goods.setGoodsName("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
                 goods.setGoodsPriceFormat("$1000.00");
-                goods.setPic("http://dimage.yissimg" +
+                goods.setPic("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + "" +
                         ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
                 goodses.add(goods);
             }
@@ -136,13 +142,14 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, adapter) {
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (brands.get(groupPosition).getItemList().get(childPosition).getItemType() == R
-                        .layout.faat_banner_item) {
+                if (brands.get(groupPosition).getItemList().get(childPosition).getItemType() == R.layout
+                        .faat_banner_item) {
                     return 3;
                 }
                 return super.getChildSpanSize(groupPosition, childPosition);
             }
         };
+
         mRecyclerView.setLayoutManager(groupedGridLayoutManager);
         mRecyclerView.setAdapter(adapter);
     }
@@ -159,12 +166,12 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             if (brands.get(i).getObjs() != null) {
                 for (int j = 0; j < brands.get(i).getObjs().size(); j++) {
                     if (brands.get(i).getObjs().get(j) instanceof Goods) {
-                        BrandGoodsItem brandGoodsItem = new BrandGoodsItem((Goods) brands.get(i)
-                                .getObjs().get(j), context);
+                        BrandGoodsItem brandGoodsItem = new BrandGoodsItem((Goods) brands.get(i).getObjs().get(j),
+                                context);
                         items.add(brandGoodsItem);
                     } else {
-                        BrandBannerItem brandBannerItem = new BrandBannerItem((Banner) brands.get
-                                (i).getObjs().get(j), context);
+                        BrandBannerItem brandBannerItem = new BrandBannerItem((Banner) brands.get(i).getObjs().get(j)
+                                , context);
                         items.add(brandBannerItem);
                     }
                 }
@@ -203,8 +210,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                 p += 1;
             }
             if (banner != null) {
-                ((List<FaatNav>) brands.get(i).getHeader()).get(banner.getNavPos()).setIsSelect
-                        (true);
+                ((List<FaatNav>) brands.get(i).getHeader()).get(banner.getNavPos()).setIsSelect(true);
                 break;
             }
         }
@@ -217,7 +223,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             int n = 0;
             Brand brand = brands.get(i);
             if (brand.getHeader() != null) {
-                p +=1;
+                p += 1;
                 for (int j = 0; j < ((List<FaatNav>) brands.get(i).getHeader()).size(); j++) {
                     ((List<FaatNav>) brands.get(i).getHeader()).get(j).setIsSelect(false);
                 }
@@ -227,8 +233,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                     for (int j = 0; j < brand.getObjs().size(); j++) {
                         p += 1;
                         if (brand.getObjs().get(j) instanceof Banner) {
-                            if(n == pos){
-                                mRecyclerView.smoothScrollToPosition(p);
+                            if (n == pos) {
+                                smoothMoveToPosition(p);
                             }
                             n += 1;
                         }
@@ -241,10 +247,37 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         ((List<FaatNav>) brands.get(group).getHeader()).get(pos).setIsSelect(true);
     }
 
-    BrandNavItem.OnItemClickListener navListener = new BrandNavItem.OnItemClickListener(){
+    public void smoothMoveToPosition(int position) {
+        // 第一个可见位置
+        int firstItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(0));
+        // 最后一个可见位置
+        int lastItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(mRecyclerView.getChildCount() -
+                1));
+
+        if (position < firstItem) {
+            //跳转位置在第一个可见位置之前
+            mRecyclerView.smoothScrollToPosition(position);
+        } else if (position <= lastItem) {
+            //跳转位置在第一个可见位置之后
+            int movePosition = position - firstItem;
+            if (movePosition >= 0 && movePosition < mRecyclerView.getChildCount()) {
+                int top = mRecyclerView.getChildAt(movePosition).getTop();
+                mRecyclerView.scrollBy(0, top);
+                //不平滑移动不走onScrollStateChanged
+                selectNavs(position);
+            }
+        } else {
+            //跳转位置在最后可见项之后
+            mRecyclerView.smoothScrollToPosition(position);
+            mToPosition = position;
+            mShouldScroll = true;
+        }
+    }
+
+    BrandNavItem.OnItemClickListener navListener = new BrandNavItem.OnItemClickListener() {
         @Override
         public void clicked(int group, int pos) {
-            clickSelectNavs(group,pos);
+            clickSelectNavs(group, pos);
         }
     };
 
@@ -252,7 +285,10 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if (newState == 0) {
+            if (mShouldScroll && RecyclerView.SCROLL_STATE_IDLE == newState) {
+                mShouldScroll = false;
+                smoothMoveToPosition(mToPosition);
+            } else if (RecyclerView.SCROLL_STATE_IDLE == newState) {
                 selectNavs(position);
             }
         }

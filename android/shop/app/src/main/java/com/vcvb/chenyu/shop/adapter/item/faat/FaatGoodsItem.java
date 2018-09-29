@@ -4,19 +4,18 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.base.BaseItem;
-import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
+import com.vcvb.chenyu.shop.adapter.b.BaseItem;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 public class FaatGoodsItem extends BaseItem<Goods> {
-    public static final int TYPE = Integer.MAX_VALUE - 4;
+    public static final int TYPE = R.layout.faat_goods_item;
 
     public FaatGoodsItem(Goods bean, Context c) {
         super(bean, c);
@@ -28,17 +27,14 @@ public class FaatGoodsItem extends BaseItem<Goods> {
     }
 
     @Override
-    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CYCBaseViewHolder(LayoutInflater.from(context).inflate(R.layout
-                .faat_goods_item, null));
+    public BaseViewHolder onCreateViewHolder(int viewType) {
+        return new BaseViewHolder(LayoutInflater.from(context).inflate(TYPE, null));
     }
 
     @Override
-    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
         int width = ToolUtils.getWindowsWidth(context);
-        View item = holder.getItemView();
-        posMap.put(item.getId(), position);
-        item.setOnClickListener(listener);
+        View item = holder.get(R.id.goods_item);
         ImageView iv = holder.get(R.id.imageView124);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width / 3, width
                 / 3);
@@ -50,7 +46,5 @@ public class FaatGoodsItem extends BaseItem<Goods> {
         tv2.setText(mData.getGoodsPriceFormat());
 
         View addCart = holder.get(R.id.view76);
-        posMap.put(addCart.getId(), position);
-        addCart.setOnClickListener(listener);
     }
 }

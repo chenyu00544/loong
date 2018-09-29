@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.brand;
+package com.vcvb.chenyu.shop.faat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.brand.fragment.BrandFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.faat.fragment.CosmeticsFragment;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
@@ -21,7 +21,7 @@ public class BrandListActivity extends BaseActivity {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private BrandFragment brandFragment;
+    private CosmeticsFragment brandFragment;
     private PopWin popWindow;
     private TextView title;
 
@@ -38,7 +38,7 @@ public class BrandListActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SAVED_INDEX, index);
-            brandFragment = (BrandFragment) fragmentManager.findFragmentByTag
+            brandFragment = (CosmeticsFragment) fragmentManager.findFragmentByTag
                     (fragmentTag[0]);
         }
         changeStatusBarTextColor(true);
@@ -82,7 +82,7 @@ public class BrandListActivity extends BaseActivity {
         switch (type) {
             case 0:
                 if (brandFragment == null) {
-                    brandFragment = new BrandFragment();
+                    brandFragment = new CosmeticsFragment();
                     //加入事务
                     fragmentTransaction.add(R.id.faat_main, brandFragment, fragmentTag[0]);
                 } else {

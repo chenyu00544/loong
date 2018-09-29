@@ -51,13 +51,7 @@ public class BrandNavItem extends BaseItem<Brand> {
         boolean bool = true;
         for (int i = 0; i < navs.size(); i++) {
             if (navs.get(i).getIsSelect() == true) {
-                if (i > 0 && i <= navs.size() / 2) {
-                    navView.scrollToPosition(i - 1);
-                } else if (i < navs.size() - 1 && i >= navs.size() / 2) {
-                    navView.scrollToPosition(i + 1);
-                } else {
-                    navView.scrollToPosition(i);
-                }
+                selectNavs(i);
                 bool = false;
             }
         }
@@ -77,7 +71,19 @@ public class BrandNavItem extends BaseItem<Brand> {
         }
         return cells;
     }
-    FaatSubNavItem.OnClickListener listener = new FaatSubNavItem.OnClickListener(){
+
+    public void selectNavs(int pos) {
+        List<FaatNav> navs = (List<FaatNav>) mData.getHeader();
+        if (pos > 0 && pos <= 2) {
+            navView.scrollToPosition(0);
+        } else if (pos > navs.size() - 3 && pos < navs.size() - 1) {
+            navView.scrollToPosition(navs.size() - 1);
+        } else {
+            navView.scrollToPosition(pos-2);
+        }
+    }
+
+    FaatSubNavItem.OnClickListener listener = new FaatSubNavItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             if (onItemClickListener != null) {

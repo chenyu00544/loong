@@ -2,7 +2,7 @@ package com.vcvb.chenyu.shop.tools;
 
 import android.net.Uri;
 
-import com.vcvb.chenyu.shop.brand.BrandListActivity;
+import com.vcvb.chenyu.shop.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.faat.FaatListActivity;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 
