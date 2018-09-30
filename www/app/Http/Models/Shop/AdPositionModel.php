@@ -53,4 +53,10 @@ class AdPositionModel extends Model
     {
         return $this->create($data);
     }
+
+    public function delAdPos($where)
+    {
+        return $this->where($where)
+            ->delete();
+    }
 }

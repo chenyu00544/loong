@@ -34,7 +34,7 @@
                 <div class="clearfix mar-bt-20">
                     <div class="fl">
                         <a href="{{url('admin/adspos/create')}}"
-                           class="btn btn-success btn-add btn-sm">添加广告</a>
+                           class="btn btn-success btn-add btn-sm">添加广告位置</a>
                     </div>
                     <div class="fr wd250 pad-top-7">
                         <form action="{{url('admin/adspos/'.$type)}}" method="get">
@@ -77,13 +77,14 @@
                                     <td>{{$adPos->position_desc}}</td>
                                     <td class="text-center">
                                         <a type="button"
-                                           href="{{url('admin/ad/'.$adPos->position_id)}}"
+                                           href="{{url('admin/ad/adshow/'.$type.'/'.$adPos->position_id)}}"
                                            class="btn btn-info btn-edit btn-sm">查看</a>
                                         <a type="button"
                                            href="{{url('admin/adspos/'.$adPos->position_id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>
                                         <a type="button" href="javascript:;"
-                                           class="btn btn-danger btn-del btn-sm">删除</a>
+                                           class="btn btn-danger btn-del btn-sm"
+                                           data-id="{{$adPos->position_id}}">删除</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -181,12 +182,14 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/order/delivery/del/')}}/" + Id,
+                        "{{url('admin/adspos/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
                             setTimeout(function () {
-                                $(that).parent().parent().remove();
+                                if (data.code == 1) {
+                                    $(that).parent().parent().remove();
+                                }
                             }, 1000);
                         });
                 }, function () {

@@ -232,10 +232,12 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::get('ad/add/{id}', 'AdvertiseController@adAdd');
     Route::get('ad/edit/{id}/{type}', 'AdvertiseController@adEdit');
+    Route::get('ad/adshow/{type}/{id}', 'AdvertiseController@adShow');
     Route::post('ad/change', 'AdvertiseController@change');
     Route::resource('ad', 'AdvertiseController');
 
     Route::resource('adspos', 'AdvertisePositionController');
+    Route::resource('adstype', 'AdvertiseTypeController');
 
     Route::post('favourable/change', 'FavourableController@change');
     Route::resource('favourable', 'FavourableController');

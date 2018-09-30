@@ -30,7 +30,7 @@
                             <label class="col-sm-4 control-label"><font class="red">*</font>广告位终端类型：</label>
                             <div class="col-sm-2">
                                 <select name="ad_terminal" id="" class="form-control">
-                                    <option value="pc" selected >PC端</option>
+                                    <option value="pc" selected>PC端</option>
                                     <option value="web">WEB端</option>
                                     <option value="app">APP端</option>
                                     <option value="wxapp">小程序端</option>
@@ -91,10 +91,10 @@
                             <label class="col-sm-4 control-label">广告类型：</label>
                             <div class="col-sm-3">
                                 <select name="ad_type" id="" class="form-control">
-                                    <option value="ads" selected >排版广告</option>
-                                    <option value="slide">轮播广告</option>
-                                    <option value="insert">商品插入广告</option>
-                                    <option value="wxapp">小程序端</option>
+                                    <option value="">请选择</option>
+                                    @foreach($daTypes as $daType)
+                                        <option value="{{$daType->type}}">{{$daType->alias}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>

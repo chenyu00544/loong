@@ -13,8 +13,9 @@ use App\Facades\Verifiable;
 use App\Repositories\AdRepository;
 use Illuminate\Http\Request;
 
-class AdvertisePositionController extends CommonController
+class AdvertiseTypeController extends CommonController
 {
+
     private $adRepository;
 
     public function __construct(
@@ -22,7 +23,7 @@ class AdvertisePositionController extends CommonController
     )
     {
         parent::__construct();
-        $this->checkPrivilege('ad_position');
+        $this->checkPrivilege('ad_type');
         $this->adRepository = $adRepository;
     }
 
@@ -33,10 +34,8 @@ class AdvertisePositionController extends CommonController
      */
     public function index(Request $request)
     {
-        $type = 'pc';
-        $search['keywords'] = $request->get('keywords');
-        $adPoses = $this->adRepository->getAdPosByPage($type, $search);
-        return view('shop.admin.ads.position', compact('type', 'search', 'adPoses'));
+        $adTypes = $this->adRepository->getAdTypeByPage();
+        return view('shop.admin.ads.adsType', compact('adTypes'));
     }
 
     /**
@@ -46,8 +45,7 @@ class AdvertisePositionController extends CommonController
      */
     public function create()
     {
-        $daTypes = $this->adRepository->getAdTypes();
-        return view('shop.admin.ads.positionAdd', compact('daTypes'));
+        return view('shop.admin.ads.adsTypeAdd');
     }
 
     /**
@@ -58,11 +56,11 @@ class AdvertisePositionController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["position_name" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["type" => 'required',"alias" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->adRepository->addAdPos($request->except('_token'));
+        $re = $this->adRepository->addAdType($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -74,10 +72,7 @@ class AdvertisePositionController extends CommonController
      */
     public function show(Request $request, $id)
     {
-        $type = $id ? $id : 'pc';
-        $search['keywords'] = $request->get('keywords');
-        $adPoses = $this->adRepository->getAdPosByPage($type, $search);
-        return view('shop.admin.ads.position', compact('type', 'search', 'adPoses'));
+        //
     }
 
     /**
@@ -88,8 +83,8 @@ class AdvertisePositionController extends CommonController
      */
     public function edit($id)
     {
-        $adspos = $this->adRepository->getAdPos($id);
-        return view('shop.admin.ads.positionEdit', compact('adspos'));
+        $adType = $this->adRepository->getAdType($id);
+        return view('shop.admin.ads.adsTypeEdit', compact('adType'));
     }
 
     /**
@@ -101,11 +96,11 @@ class AdvertisePositionController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["position_name" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["type" => 'required',"alias" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->adRepository->setAdPos($request->except('_token', '_method'), $id);
+        $re = $this->adRepository->setAdType($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -117,6 +112,6 @@ class AdvertisePositionController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->adRepository->delAdPos($id);
+        return $this->adRepository->delAdType($id);
     }
 }

@@ -222,6 +222,10 @@ return array(
         'ad_position' => array(
             'name' => '广告位置',
             'url' => 'admin/adspos',
+        ),
+        'ad_type' => array(
+            'name' => '广告类型',
+            'url' => 'admin/adstype',
         )
     ),
     'users' => array(

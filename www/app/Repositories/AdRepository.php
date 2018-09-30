@@ -12,26 +12,37 @@ use App\Contracts\AdRepositoryInterface;
 use App\Facades\FileHandle;
 use App\Http\Models\Shop\AdModel;
 use App\Http\Models\Shop\AdPositionModel;
+use App\Http\Models\Shop\AdTypeModel;
 
 class AdRepository implements AdRepositoryInterface
 {
 
     private $adModel;
     private $adPositionModel;
+    private $adTypeModel;
 
     public function __construct(
         AdModel $adModel,
-        AdPositionModel $adPositionModel
+        AdPositionModel $adPositionModel,
+        AdTypeModel $adTypeModel
     )
     {
         $this->adModel = $adModel;
         $this->adPositionModel = $adPositionModel;
+        $this->adTypeModel = $adTypeModel;
     }
 
     public function getAdByPage($type, $search)
     {
         $where['ad_position.ad_terminal'] = $type;
         return $this->adModel->getAdByPage($where, $search);
+    }
+
+    public function getAds($type, $pid)
+    {
+        $where['ad_position.ad_terminal'] = $type;
+        $where['ad_position.position_id'] = $pid;
+        return $this->adModel->getAdByPage($where, []);
     }
 
     public function getAd($id)
@@ -142,5 +153,65 @@ class AdRepository implements AdRepositoryInterface
             $data[$key] = trim($value);
         }
         return $this->adPositionModel->addAdPos($data);
+    }
+
+    public function delAdPos($id)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $where['position_id'] = $id;
+        $ads = $this->adModel->getAds($where);
+        $bool = true;
+        foreach ($ads as $value) {
+            $re = $this->adModel->delAd(['ad_id' => $value->ad_id]);
+            FileHandle::deleteFile($value->ad_code);
+            if (!$re) {
+                $bool = false;
+            }
+        }
+        if ($bool) {
+            $this->adPositionModel->delAdPos($where);
+            $req['code'] = 1;
+            $req['msg'] = '操作成功';
+        }
+        return $req;
+    }
+
+    public function getAdTypeByPage()
+    {
+        return $this->adTypeModel->getAdTypeByPage();
+    }
+
+    public function getAdTypes()
+    {
+        return $this->adTypeModel->getAdTypes();
+    }
+
+    public function getAdType($id)
+    {
+        $where['id'] = $id;
+        return $this->adTypeModel->getAdType($where);
+    }
+
+    public function setAdType($data, $id)
+    {
+        $where['id'] = $id;
+        return $this->adTypeModel->setAdType($where, $data);
+    }
+
+    public function addAdType($data)
+    {
+        return $this->adTypeModel->addAdType($data);
+    }
+
+    public function delAdType($id)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $where['id'] = $id;
+        $re = $this->adTypeModel->delAdType($where);
+        if ($re) {
+            $req['code'] = 1;
+            $req['msg'] = '操作成功';
+        }
+        return $req;
     }
 }

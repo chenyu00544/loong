@@ -11,7 +11,6 @@ import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
 
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ import java.util.List;
 
 public class HomeAds9Item extends BaseItem<Adses> {
     public static final int TYPE = 10;
-    private DefaultItemDecoration defaultItemDecoration;
     private RecyclerView recyclerView;
     public HomeAds9Item(Adses bean, Context c) {
         super(bean, c);
@@ -44,10 +42,6 @@ public class HomeAds9Item extends BaseItem<Adses> {
             CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
             mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-            if (defaultItemDecoration == null) {
-                defaultItemDecoration = new DefaultItemDecoration(context, 5);
-                recyclerView.addItemDecoration(defaultItemDecoration);
-            }
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
             mAdapter.addAll(getItems(mData));

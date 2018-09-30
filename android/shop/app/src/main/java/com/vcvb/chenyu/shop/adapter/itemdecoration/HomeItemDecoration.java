@@ -11,14 +11,16 @@ import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
 
 public class HomeItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
-    private HomeBean mBean;
-    private int pos;
+    private int pos = 0;
 
-    public HomeItemDecoration(Context context, HomeBean bean) {
+    public HomeItemDecoration(Context context) {
         super();
         mContext = context;
-        mBean = bean;
-        pos = mBean.getAdses().size();
+
+    }
+
+    public void setData(HomeBean bean){
+        pos = bean.getAdses().size();
     }
 
     @Override

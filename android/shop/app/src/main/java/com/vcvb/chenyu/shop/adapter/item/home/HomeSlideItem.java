@@ -62,7 +62,7 @@ public class HomeSlideItem extends BaseItem<List<Slide>> {
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
-        set.constrainHeight(R.id.goods_slide, width * 2 / 3);
+        set.constrainHeight(R.id.goods_slide, width * 1 / 2);
         set.applyTo(cly);
         banner.setOnBannerListener(listener);
     }

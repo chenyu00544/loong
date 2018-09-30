@@ -45,6 +45,14 @@ class AdvertiseController extends CommonController
         return $this->adRepository->adChange($request->except('_token'));
     }
 
+    public function adShow($type, $id)
+    {
+        $type = $type ? $type : 'pc';
+        $search['keywords'] = '';
+        $ads = $this->adRepository->getAds($type, $id);
+        return view('shop.admin.ads.ads', compact('type', 'search', 'ads'));
+    }
+
     public function adAdd($id)
     {
         $type = $id;

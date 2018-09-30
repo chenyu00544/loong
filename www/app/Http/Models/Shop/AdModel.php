@@ -36,6 +36,13 @@ class AdModel extends Model
             ->paginate($size);
     }
 
+    public function getAds($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->get();
+    }
+
     public function getAd($where, $column = ['*'])
     {
         return $this->select($column)

@@ -39,7 +39,7 @@ public class HomeAds8Item extends BaseItem<Adses> {
         ImageView iv = holder.getImageView(R.id.imageView114);
         iv.setOnClickListener(listener);
         set.constrainWidth(iv.getId(), width);
-        set.constrainHeight(iv.getId(), width / 12);
+        set.constrainHeight(iv.getId(), width / 8);
         posMap.put(iv.getId(), 0);
         set.applyTo(cly);
     }

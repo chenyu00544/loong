@@ -73,6 +73,7 @@ public class FragmentHome extends BaseFragment {
     private CYCGridAdapter mAdapter = new CYCGridAdapter();
     private HomeBean homeBean = new HomeBean();
     private GridLayoutManager mLayoutManager;
+    private HomeItemDecoration homeItemDecoration;
 
     private RefreshLayout refreshLayout;
     private ImageView upwardView;
@@ -135,6 +136,8 @@ public class FragmentHome extends BaseFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
+        homeItemDecoration = new HomeItemDecoration(context);
+        mRecyclerView.addItemDecoration(homeItemDecoration);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -216,7 +219,8 @@ public class FragmentHome extends BaseFragment {
         });
         mAdapter.clear();
 
-        String[] appUri = new String[]{"vcvbuy:://pages/goods/index?id=1", "vcvbuy:://pages/faat/index?id=1", "vcvbuy:://pages/brand/index?id=1"};
+        String[] appUri = new String[]{"vcvbuy:://pages/goods/index?id=1",
+                "vcvbuy:://pages/faat/index?id=1", "vcvbuy:://pages/brand/index?id=1"};
         ArrayList<Slide> slides = new ArrayList<>();
         for (int i = 0; i < Images.imgUrls.length; i++) {
             Slide banner = new Slide();
@@ -226,6 +230,7 @@ public class FragmentHome extends BaseFragment {
             slides.add(banner);
         }
         homeBean.setSlides(slides);
+
         ArrayList<Adses> adses_arr = new ArrayList<>();
         for (int i = 0; i < 11; i++) {
             Adses adsess = new Adses();
@@ -238,13 +243,18 @@ public class FragmentHome extends BaseFragment {
             for (int j = 0; j < 10; j++) {
                 Ads ads = new Ads();
                 ads.setPic(Images.imageUrls[j]);
-                ads.setAppUri("vcvbuy:://pages/goods/index?id=" + j);
+                if(i==0){
+                    ads.setAppUri("vcvbuy:://pages/categroy/index?id=" + j);
+                }else{
+                    ads.setAppUri("vcvbuy:://pages/goods/index?id=" + j);
+                }
                 adses.add(ads);
             }
             adsess.setAds(adses);
             adses_arr.add(adsess);
         }
         homeBean.setAdses(adses_arr);
+
         ArrayList<Goods> goodses = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Goods goods = new Goods();
@@ -255,7 +265,8 @@ public class FragmentHome extends BaseFragment {
             goodses.add(goods);
         }
         homeBean.setGoodsList(goodses);
-        mRecyclerView.addItemDecoration(new HomeItemDecoration(context, homeBean));
+
+        homeItemDecoration.setData(homeBean);
         mAdapter.addAll(getItems(homeBean));
         final int pos = homeBean.getAdses().size();
         CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
@@ -333,6 +344,7 @@ public class FragmentHome extends BaseFragment {
                         cells.add(homeAds6Item);
                         break;
                     case 7:
+                        //条幅广告
                         HomeAds7Item homeAds7Item = new HomeAds7Item(bean.getAdses().get(i),
                                 context);
                         homeAds7Item.setOnItemClickListener(homeAds7ItemListener);
@@ -346,6 +358,7 @@ public class FragmentHome extends BaseFragment {
                         cells.add(homeAds8Item);
                         break;
                     case 9:
+                        //品牌广告
                         HomeAds9Item homeAds9Item = new HomeAds9Item(bean.getAdses().get(i),
                                 context);
                         cells.add(homeAds9Item);
@@ -382,7 +395,6 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(int pos) {
             String uri = homeBean.getSlides().get(pos).getAppUri();
-            Log.i("tag", uri);
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -395,7 +407,6 @@ public class FragmentHome extends BaseFragment {
         public void onClicked(View view, int pos) {
             System.out.println(pos);
             String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -409,7 +420,6 @@ public class FragmentHome extends BaseFragment {
         public void onClicked(View view, int pos) {
             System.out.println(pos);
             String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -422,7 +432,6 @@ public class FragmentHome extends BaseFragment {
         public void onClicked(View view, int pos) {
             System.out.println(pos);
             String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -435,7 +444,6 @@ public class FragmentHome extends BaseFragment {
         public void onClicked(View view, int pos) {
             System.out.println(pos);
             String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -448,7 +456,6 @@ public class FragmentHome extends BaseFragment {
         public void onClicked(View view, int pos) {
             System.out.println(pos);
             String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -461,7 +468,6 @@ public class FragmentHome extends BaseFragment {
         public void onClicked(View view, int pos) {
             System.out.println(pos);
             String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -474,7 +480,6 @@ public class FragmentHome extends BaseFragment {
         public void onClicked(View view, int pos) {
             System.out.println(pos);
             String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -500,7 +505,6 @@ public class FragmentHome extends BaseFragment {
         public void onClicked(View view, int pos) {
             System.out.println(pos);
             String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
