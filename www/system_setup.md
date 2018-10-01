@@ -5,11 +5,126 @@
     nginx操作 
     systemctl start nginx.serive打开nginx 
     systemctl status nginx.service 查看状态 
-
+    service nginx start开启nginx
+    
+    设置开机启动nginx服务
+    创建nginx启动命令脚本 
+    vi /etc/init.d/nginx 
+    插入以下内容, 注意修改PATH和NAME字段, 匹配自己的安装路径 (这段是从网上copy的)
+    
+    
+    #! /bin/bash 
+    # chkconfig: - 85 15 
+    PATH=/usr/local/nginx 
+    DESC="nginx daemon" 
+    NAME=nginx 
+    DAEMON=$PATH/sbin/$NAME 
+    CONFIGFILE=$PATH/conf/$NAME.conf 
+    PIDFILE=$PATH/logs/$NAME.pid 
+    SCRIPTNAME=/etc/init.d/$NAME 
+    set -e 
+    [ -x "$DAEMON" ] || exit 0 
+    do_start() { 
+    $DAEMON -c $CONFIGFILE || echo -n "nginx already running" 
+    } 
+    do_stop() { 
+    $DAEMON -s stop || echo -n "nginx not running" 
+    } 
+    do_reload() { 
+    $DAEMON -s reload || echo -n "nginx can't reload" 
+    } 
+    case "$1" in 
+    start) 
+    echo -n "Starting $DESC: $NAME" 
+    do_start 
+    echo "." 
+    ;; 
+    stop) 
+    echo -n "Stopping $DESC: $NAME" 
+    do_stop 
+    echo "." 
+    ;; 
+    reload|graceful) 
+    echo -n "Reloading $DESC configuration..." 
+    do_reload 
+    echo "." 
+    ;; 
+    restart) 
+    echo -n "Restarting $DESC: $NAME" 
+    do_stop 
+    do_start 
+    echo "." 
+    ;; 
+    *) 
+    echo "Usage: $SCRIPTNAME {start|stop|reload|restart}" >&;2 
+    exit 3 
+    ;; 
+    esac 
+    exit 0 
+    设置执行权限 
+    chmod a+x /etc/init.d/nginx 
+    注册成服务 
+    chkconfig --add nginx 
+    设置开机启动 
+    chkconfig nginx on 
+    
+    #重新读取nginx配置(这个最常用, 不用停止nginx服务就能使修改的配置生效) 
+    systemctl reload nginx.service
+    
 阿里云centos7.4安装mysql5.7
-
 使用root登录
+Long19860212
 
+安装PHP
+
+    yum -y  install autoconf
+    1、安装gcc及libxml2yum install gcc -yyum install libxml2* -y
+    2、下载最新PHP官方安装包3、解压安装包tar zxvf php-5.6.28.tar.gz
+    4、安装php#cd php-5.6.28  
+    #./configure --prefix=/usr/local/php --enable-fpm  
+    #make  
+    #make install  
+    
+    配置php-fpm
+    
+    # cp php.ini-production /etc/php.ini
+    # cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
+    
+    # cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf
+    # cp sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
+    # chmod +x /etc/init.d/php-fpm
+    
+    service php-fpm restart   启动fpm服务
+    netstat -nlpt|grep php-fpm      查看php-fpm监听的端口(一般为9000)
+    
+    vi   /etc/hosts     编辑hosts文件
+    在其中增加一行      127.0.0.1    test.com
+    chkconfig --add /etc/init.d/php-fpm
+    chkconfig php-fpm on 
+    
+安装redis
+
+    $ wget http://download.redis.io/releases/redis-4.0.11.tar.gz 
+    cd /usr/local
+    mkdir redis
+    cd ~
+    tar -xzvf redis-4.0.11.tar.gz -C /usr/local/redis
+    cd /usr/local/redis/redis-4.0.9
+    make
+    cd /usr/local/redis/redis-4.0.9/src
+    cp {redis-server,redis-cli,redis-benchmark,redis-check-aof,redis-check-rdb,redis-sentinel} /usr/local/bin
+    make install
+    执行基本配置
+    ./utils/install_server.sh
+    chkconfig --list
+    
+    设置redis开机自启
+    $ cd /etc/init.d
+    $ vi redis_6379 //在第二行添加# chkconfig: 2345 90 10
+    $ chmod a+x redis_6379
+    $ chkconfig --add redis_6379
+    $ chkconfig redis_6379 on
+    
 1.确保服务器系统处于最新状态
 [root@localhost ~]# yum -y update
 如果显示以下内容说明已经更新完成
