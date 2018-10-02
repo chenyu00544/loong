@@ -6,7 +6,7 @@
  * Time: 16:58
  * Desc:
  */
-namespace App\Http\Models\shop;
+namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 

@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\SatisticsRepositoryInterface;
-use App\Http\Models\shop\CategoryModel;
+use App\Http\Models\Shop\CategoryModel;
 use App\Http\Models\Shop\OrderGoodsModel;
 use App\Http\Models\Shop\OrderInfoModel;
 use App\Http\Models\Shop\RegionsModel;

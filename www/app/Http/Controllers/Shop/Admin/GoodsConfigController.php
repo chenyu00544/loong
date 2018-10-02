@@ -17,7 +17,6 @@ use Illuminate\Http\Request;
 
 class GoodsConfigController extends CommonController
 {
-
     protected $goodsRepository;
 
     public function __construct(GoodsRepository $goodsRepository)
@@ -29,7 +28,7 @@ class GoodsConfigController extends CommonController
 
     /**
      * Display a listing of the resource.f
-     *
+     *f
      * @return \Illuminate\Http\Response
      */
     public function index()

@@ -17,7 +17,6 @@ use App\Facades\ShopConfig;
 use App\Facades\Url;
 use App\Http\Models\Shop\AttributeModel;
 use App\Http\Models\Shop\BrandModel;
-use App\Http\Models\shop\CategoryModel;
 use App\Http\Models\Shop\GoodsAttrModel;
 use App\Http\Models\Shop\GoodsCateModel;
 use App\Http\Models\Shop\GoodsChangeLogModel;
@@ -50,7 +49,6 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $transportModel;
     private $attributeModel;
     private $intelligentWeightModel;
-    private $categoryModel;
     private $productsModel;
     private $productsChangeLogModel;
     private $userRankModel;
@@ -70,7 +68,6 @@ class GoodsRepository implements GoodsRepositoryInterface
         TransportModel $transportModel,
         AttributeModel $attributeModel,
         IntelligentWeightModel $intelligentWeightModel,
-        CategoryModel $categoryModel,
         ProductsModel $productsModel,
         ProductsChangeLogModel $productsChangeLogModel,
         UserRankModel $userRankModel,
@@ -90,7 +87,6 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->transportModel = $transportModel;
         $this->attributeModel = $attributeModel;
         $this->intelligentWeightModel = $intelligentWeightModel;
-        $this->categoryModel = $categoryModel;
         $this->productsModel = $productsModel;
         $this->productsChangeLogModel = $productsChangeLogModel;
         $this->userRankModel = $userRankModel;

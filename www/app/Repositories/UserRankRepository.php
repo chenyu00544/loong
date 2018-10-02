@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\UserRankRepositoryInterface;
-use App\Http\Models\shop\UserRankModel;
+use App\Http\Models\Shop\UserRankModel;
 
 class UserRankRepository implements UserRankRepositoryInterface
 {

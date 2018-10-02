@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\SeoRepositoryInterface;
-use App\Http\Models\shop\SeoModel;
+use App\Http\Models\Shop\SeoModel;
 
 class SeoRepository implements SeoRepositoryInterface
 {

@@ -9,14 +9,10 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Facades\LangConfig;
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 
 class IndexController extends CommonController
 {
-
     public function __construct()
     {
         parent::__construct();
