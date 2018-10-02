@@ -77,30 +77,64 @@ Long19860212
 
 安装PHP
 
-    yum -y  install autoconf
-    1、安装gcc及libxml2yum install gcc -yyum install libxml2* -y
-    2、下载最新PHP官方安装包3、解压安装包tar zxvf php-5.6.28.tar.gz
-    4、安装php#cd php-5.6.28  
-    #./configure --prefix=/usr/local/php --enable-fpm  
-    #make  
-    #make install  
+    #tar zxvf php-5.6.30.tar.gz
+    #cd php-5.6.30配置安装进入到目录，我们需要在安装的时候将安装目录配置到/usr/local/php/里
+    #./configure --prefix=/usr/local/php --with-curl --with-freetype-dir --with-gd 
+    --with-gettext --with-iconv-dir --with-kerberos --with-libdir=lib64 --with-libxml-dir 
+    --with-MySQL --with-mysqli --with-openssl --with-pcre-regex --with-pdo-mysql 
+    --with-pdo-sqlite --with-pear --with-png-dir --with-xmlrpc --with-xsl --with-zlib 
+    --enable-fpm --enable-bcmath --enable-libxml --enable-inline-optimization 
+    --enable-gd-native-ttf --enable-mbregex --enable-mbstring --enable-opcache 
+    --enable-pcntl --enable-shmop --enable-soap --enable-sockets --enable-sysvsem 
+    --enable-xml --enable-zip
+    配置的过程中可能会报如下错误
+    错误1：xml2-config not found. Please check your libxml2 installation.
+    解决办法安装libxml2相关组件#yum install libxml2
+    #yum install libxml2-devel -y
+    错误2：
+    Please reinstall the libcurl distribution -
+        easy.h should be in <curl-dir>/include/curl/安装curl相关组件#yum install curl curl-devel
+        错误3：configure: error: png.h not found.安装libpng相关组件#yum install libpng
+    #yum install libpng-devel
+    错误4：freetype-config not found.安装freetype相关组件#yum install freetype-devel
+    错误5：xslt-config not found. Please reinstall the libxslt >= 1.1.0 distribution安装libxslt相关组件#yum install libxslt-devel
     
-    配置php-fpm
+    #make && make install
     
-    # cp php.ini-production /etc/php.ini
-    # cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
+    配置相关php.ini
+    配置首先我们需要配置的是php.ini这个文件
+    安装目录有2个文件：php.ini-development和php.ini-productionphp.ini-production 线上版本使用
+    php.ini-development 开发版本使用我们选择production进行配置
+    # cp -a php.ini-production /usr/local/php/etc/php.ini      //拷贝安装包里的php配置文件到安装目录下
+    # rm -rf /etc/php.ini      //删除默认的php配置文件
+    # ln -s /usr/local/php/etc/php.ini /etc/php.ini       //建立软链接
+
+    php-fpm配置
+    拷贝php-fpm启动配置文件
+    # cp -a ./sapi/fpm/php-fpm.conf /usr/local/php/etc/php-fpm.conf     //拷贝安装包里的php-fpm配置文件到安装目录下
+    # cp -a ./sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm      //拷贝启动文件
+    启动service php-fpm start 
     
-    # cp /usr/local/php/etc/php-fpm.d/www.conf.default /usr/local/php/etc/php-fpm.d/www.conf
-    # cp sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
-    # chmod +x /etc/init.d/php-fpm
+    查看php是否启动成功
+    #ps aux | grep php
+    重启及关闭
+    service php-fpm restart      service php-fpm stop
     
-    service php-fpm restart   启动fpm服务
-    netstat -nlpt|grep php-fpm      查看php-fpm监听的端口(一般为9000)
-    
-    vi   /etc/hosts     编辑hosts文件
-    在其中增加一行      127.0.0.1    test.com
-    chkconfig --add /etc/init.d/php-fpm
-    chkconfig php-fpm on 
+    配置Nginx支持PHP
+    #vim nginx.conf
+    location ~ \.php$ {            
+    root           /mnt/project;     //项目根目录            
+    fastcgi_pass   127.0.0.1:9000;            
+    fastcgi_index  index.php;            
+    fastcgi_param  SCRIPT_FILENAME  /mnt/project$fastcgi_script_name;       在$符前面加上项目根目录           
+     include        fastcgi_params;        
+     }
+    我们重启Nginx服务。
+
+    #/etc/init.d/nginx restart
+    如果你没有按照我们在Nginx的方法配置，可以按照以下的方式重启Nginx服务
+
+    # /usr/local/nginx/sbin/nginx -s reload
     
 安装redis
 
