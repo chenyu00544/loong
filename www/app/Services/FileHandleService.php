@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Facades\RedisCache;
 use App\Helper\FileHelper;
 use Intervention\Image\Facades\Image;
 
@@ -28,12 +29,28 @@ class FileHandleService
     {
         $bool = self::checkFile($file);
         if ($bool) {
-
-            $filename =  self::mictime() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension();
+            $filename = self::mictime() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension();
             $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
+            $shopConf = RedisCache::get('shop_config');
+            if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
+                //对象存储
+                $oss = RedisCache::get('oss');
+                if ($oss) {
+                    $accessKeyId = $oss['keyid'];
+                    $accessKeySecret = $oss['keysecret'];
+                    $endpoint = $oss['endpoint'];
+                    $bucket = $oss['bucket'];
+                    // 文件名称
+                    $object = $filename;
+                    //由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt
+                    $filePath = $file->getRealPath();
+                }
+            } else {
 
-            if ($path = $file->move($dir, $filename)) {
-                return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+
+                if ($path = $file->move($dir, $filename)) {
+                    return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+                }
             }
         }
         return 0;
@@ -175,7 +192,7 @@ class FileHandleService
     public static function mictime()
     {
         list($msec, $sec) = explode(' ', microtime());
-        $msectime =  sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000000);
+        $msectime = sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000000);
         return $msectime;
     }
 

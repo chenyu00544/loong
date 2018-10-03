@@ -50,7 +50,7 @@ public interface ConstantManager {
         public int CART = R.id.view36;
     }
 
-    interface Nav{
+    interface Nav {
         public int BACK = R.id.nav_back;
         public int BACK_1 = R.id.imageView23;
         public int MORE = R.id.more;
@@ -77,5 +77,10 @@ public interface ConstantManager {
         public int ITEMS_7 = 6010;
         public int BANNER = 6011;
         public int ITEMHEADER = 6012;
+    }
+
+    interface Url {
+        public String URIHOST = "http://www.vcvbuy.com/api/app/";
+        public String HOME = URIHOST + "index";
     }
 }

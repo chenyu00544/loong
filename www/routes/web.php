@@ -173,6 +173,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('uaccount', 'UserAccountController');
 
     Route::post('privilege/distribution/{id}', 'PrivilegeController@distribution');
+    Route::post('privilege/checkname', 'PrivilegeController@checkUserName');
     Route::resource('privilege', 'PrivilegeController');
 
     Route::get('database/optimize', 'DataBaseController@optimize');
@@ -237,6 +238,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('ad', 'AdvertiseController');
 
     Route::resource('adspos', 'AdvertisePositionController');
+    Route::post('adspos/change', 'AdvertisePositionController@change');
     Route::resource('adstype', 'AdvertiseTypeController');
 
     Route::post('favourable/change', 'FavourableController@change');

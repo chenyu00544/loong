@@ -32,3 +32,7 @@ Route::group(['prefix' => 'region', 'namespace' => 'Shop\Api'], function () {
 Route::group(['prefix' => 'web', 'namespace' => 'Shop\Api'], function () {
     Route::any('captcha/{id}', 'CaptchaController@index');
 });
+
+Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
+    Route::any('index', 'IndexController@index');
+});

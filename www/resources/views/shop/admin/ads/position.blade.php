@@ -56,6 +56,7 @@
                             <th width="12%">位置高度</th>
                             <th width="12%">广告位结构</th>
                             <th width="12%">广告位描述</th>
+                            <th width="12%">排序</th>
                             <th width="10%" class="text-center">操作</th>
                         </tr>
                         </thead>
@@ -75,6 +76,7 @@
                                     <td>{{$adPos->ad_height}}</td>
                                     <td>{{$adPos->position_model}}</td>
                                     <td>{{$adPos->position_desc}}</td>
+                                    <td><input type="text" name="sort" autocomplete="off" class="form-control input-sm chang-order wd-80" value="{{$adPos->sort}}" data-id="{{$adPos->position_id}}"></td>
                                     <td class="text-center">
                                         <a type="button"
                                            href="{{url('admin/ad/adshow/'.$type.'/'.$adPos->position_id)}}"
@@ -104,74 +106,19 @@
 @section('script')
     <script>
         $(function () {
-            //批量修改
-            $('.bt-batch').on('click', 'a', function () {
-                var order_ids = [];
-                $(".check-all-list").each(function () {
-                    if ($(this).is(':checked')) {
-                        order_ids.push($(this).val());
+            $('body').on('change', 'input[name=sort]', function () {
+                var id = $(this).data('id');
+                var sort = $(this).val();
+                $.post(
+                    '{{url("admin/adspos/change")}}',
+                    {
+                        id: id,
+                        sort: sort,
+                        _token: '{{csrf_token()}}'
+                    },
+                    function (data) {
                     }
-                });
-
-                if (order_ids.length == 0) {
-                    return;
-                }
-
-                var select_type = $(this).data('type');
-                if (order_ids.length > 0) {
-                    $.post(
-                        '{{url("admin/order/changes")}}',
-                        {
-                            ids: order_ids,
-                            type: select_type,
-                            _token: '{{csrf_token()}}'
-                        },
-                        function (data) {
-                            layer.msg(data.msg, {icon: data.code});
-                            setTimeout(function () {
-                                location.href = location.href;
-                            }, 1000);
-                        }
-                    );
-                }
-            });
-
-            //全选
-            $('input[name=all_list]').click(function () {
-                var flage = $(this).is(':checked');
-                $(".check-all-list").each(function () {
-                    $(this).prop("checked", flage);
-                    if (flage) {
-                        $('.bt-batch').find('a').removeAttr('disabled');
-                        $(this).parent().parent().parent().parent().addClass('current');
-                        $(this).parent().parent().parent().parent().parent().addClass('current');
-                    } else {
-                        $('.bt-batch').find('a').attr('disabled', true);
-                        $(this).parent().parent().parent().parent().removeClass('current');
-                        $(this).parent().parent().parent().parent().parent().removeClass('current');
-                    }
-                });
-
-            });
-
-            $(".check-all-list").on('click', function () {
-                if ($(this).is(':checked')) {
-                    $('.bt-batch').find('a').removeAttr('disabled');
-                    $(this).parent().parent().parent().parent().addClass('current');
-                    $(this).parent().parent().parent().parent().parent().addClass('current');
-                } else {
-                    var bool = true;
-                    $(".check-all-list").each(function () {
-                        if ($(this).is(':checked')) {
-                            bool = false;
-                        }
-                    });
-                    if (bool) {
-                        $('.bt-batch').find('a').attr('disabled', true);
-                    }
-                    $(this).parent().parent().parent().parent().removeClass('current');
-                    $(this).parent().parent().parent().parent().parent().removeClass('current');
-                }
+                );
             });
 
             //删除

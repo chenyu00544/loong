@@ -48,6 +48,11 @@ class PrivilegeController extends CommonController
         }
     }
 
+    public function checkUserName(Request $request)
+    {
+        return $this->adminUserRepository->checkAdminUserName($request->except('_token'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

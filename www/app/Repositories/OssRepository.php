@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\OssRepositoryInterface;
+use App\Facades\RedisCache;
 use App\Http\Models\Shop\AliossConfigureModel;
 
 class OssRepository implements OssRepositoryInterface
@@ -75,6 +76,11 @@ class OssRepository implements OssRepositoryInterface
         if ($re) {
             $req['code'] = 1;
             $req['msg'] = '操作成功';
+        }
+        $oss = $this->getAlioss($id);
+        if($oss){
+            $oss = $oss->toArray();
+            RedisCache::set('oss', $oss);
         }
         return $req;
     }

@@ -61,13 +61,33 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         $req = ['code' => 1, 'msg' => '操作失败'];
         $where['user_id'] = $id;
         $str = '';
+        $updata = [];
+
         foreach ($data as $key => $value) {
             if (!empty($value['code'])) {
                 $str .= $value['code'] . ',';
             }
         }
+        if (!empty($data['new_password']) && !empty($data['confirm_password'])) {
+            if ($data['new_password'] == $data['confirm_password']) {
+                $updata['salt'] = Common::randStr(6);
+                $password = Common::md5Encrypt($data['confirm_password'], $updata['salt']);
+                $updata['password'] = $password;
+            }
+        }
+        if (!empty($data['email'])) {
+            $updata['email'] = $data['email'];
+        }
+        if (!empty($data['user_name'])) {
+            $user = $this->getAdminUser(['user_name' => $data['user_name']]);
+            if (!$user) {
+                $updata['user_name'] = $data['user_name'];
+            }
+        }
         $str = substr($str, 0, -1);
-        $updata['action_list'] = $str;
+        if ($str != '') {
+            $updata['action_list'] = $str;
+        }
         $re = $this->adminUserModel->setAdminUser($where, $updata);
         if ($re) {
             $req = ['code' => 0, 'msg' => '操作成功'];
@@ -116,6 +136,7 @@ class AdminUserRepository implements AdminUserRepositoryInterface
 
     public function modifyAdminUser($data)
     {
+        $req = ['code' => '5', 'msg' => '操作失败'];
         $updata['user_name'] = $data['login_name'];
         unset($data['login_name']);
         if (empty($data['auid'])) {
@@ -137,7 +158,9 @@ class AdminUserRepository implements AdminUserRepositoryInterface
                 }
             }
         }
-        $updata['action_list'] = implode(',', $action_list);
+        if (count($action_list) > 0) {
+            $updata['action_list'] = implode(',', $action_list);
+        }
         if (empty($data['auid'])) {
             $updata['parent_id'] = 0;
             $updata['ru_id'] = $data['ru_id'];
@@ -147,10 +170,20 @@ class AdminUserRepository implements AdminUserRepositoryInterface
             $where['user_id'] = $data['auid'];
             $re = $this->adminUserModel->setAdminUser($where, $updata);
         }
-        if($re){
+        if ($re) {
             return ['code' => '1', 'msg' => '操作成功'];
         }
-        return ['code' => '5', 'msg' => '操作失败'];
+        return $req;
+    }
+
+    public function checkAdminUserName($data)
+    {
+        $req = ['code' => '5', 'msg' => '操作失败'];
+        $user = $this->getAdminUser($data);
+        if (!$user) {
+            return ['code' => '1', 'msg' => '操作成功'];
+        }
+        return $req;
     }
 
     public function test()

@@ -17,7 +17,8 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/privilege')}}" method="post" class="form-horizontal">
+                    <form name="conf" action="{{url('admin/privilege/'.$user->user_id)}}" method="post"
+                          class="form-horizontal">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
 
@@ -25,7 +26,7 @@
                             <label class="col-sm-4 control-label"><font class="red">*</font>用户名：</label>
                             <div class="col-sm-3">
                                 <input type="text" name="user_name" class="form-control" value="{{$user->user_name}}"
-                                       placeholder="用户名">
+                                       placeholder="用户名" data-user_name="{{$user->user_name}}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -68,31 +69,23 @@
 @section('script')
     <script>
         $(function () {
-            var optionSet = {
-                singleDatePicker: true,
-                showDropdowns: true,
-                timePicker: false,
-                format: 'YYYY-MM-DD',
-                timePicker24Hour: false,
-                timePickerSeconds: false,
-                locale: {
-                    "separator": " -222 ",
-                    "applyLabel": "确定",
-                    "cancelLabel": "取消",
-                    "fromLabel": "起始",
-                    "toLabel": "结束",
-                    "customRangeLabel": "自定义",
-                    "weekLabel": "W",
-                    "daysOfWeek": ["日", "一", "二", "三", "四", "五", "六"],
-                    "monthNames": ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                    "firstDay": 1
+            $('input[name=user_name]').on('blur', function () {
+                var that = this;
+                $user_name = $(this).val();
+                if($user_name == $(this).data('user_name')){
+                    return;
                 }
-            };
-            $('#birthday').daterangepicker(optionSet, function (start, end) {
-                var s = start.format('YYYY-MM-DD');
-                var t = s;
-                $('#birthday').val(t);
-            });
+                $.post("{{url('admin/privilege/checkname')}}", {
+                    '_token': '{{csrf_token()}}',
+                    'user_name': $user_name
+                }, function (data) {
+                    if(data.code == 5){
+                        $(that).parent().parent().addClass('has-error');
+                    }else{
+                        $(that).parent().parent().removeClass('has-error');
+                    }
+                });
+            })
         });
     </script>
 @endsection

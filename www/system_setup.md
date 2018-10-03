@@ -71,14 +71,16 @@
     #重新读取nginx配置(这个最常用, 不用停止nginx服务就能使修改的配置生效) 
     systemctl reload nginx.service
     
+    重启
+    systemctl restart nginx
 阿里云centos7.4安装mysql5.7
 使用root登录
 Long19860212
 
 安装PHP
 
-    #tar zxvf php-5.6.30.tar.gz
-    #cd php-5.6.30配置安装进入到目录，我们需要在安装的时候将安装目录配置到/usr/local/php/里
+    #tar zxvf php-5.6.38.tar.gz
+    #cd php-5.6.38配置安装进入到目录，我们需要在安装的时候将安装目录配置到/usr/local/php/里
     #./configure --prefix=/usr/local/php --with-curl --with-freetype-dir --with-gd 
     --with-gettext --with-iconv-dir --with-kerberos --with-libdir=lib64 --with-libxml-dir 
     --with-MySQL --with-mysqli --with-openssl --with-pcre-regex --with-pdo-mysql 
@@ -159,123 +161,144 @@ Long19860212
     $ chkconfig --add redis_6379
     $ chkconfig redis_6379 on
     
-1.确保服务器系统处于最新状态
-[root@localhost ~]# yum -y update
-如果显示以下内容说明已经更新完成
-Replaced:
-  grub2.x86_64 1:2.02-0.64.el7.centos   grub2-tools.x86_64 1:2.02-0.64.el7.centos
-Complete!
-
-2.重启服务器
-[root@localhost ~]# reboot
-
-3.首先检查是否已经安装，如果已经安装先删除以前版本，以免安装不成功
-[root@localhost ~]# php -v
-或
-[root@localhost ~]# rpm -qa | gerp mysql
-或
-[root@localhost ~]# yum list installed | grep mysql
-
-如果显示以下内容说明没有安装服务
--bash: gerp: command not found
-
-4.下载MySql安装包
-[root@localhost ~]# rpm -ivh http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm
-或
-[root@localhost ~]# rpm -ivh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
-
-
-5.安装MySql
-[root@localhost ~]# yum install -y mysql-server
-或
-[root@localhost ~]# yum install mysql-community-server
-如果显示以下内容说明安装成功
-Complete!
-
-6.设置开机启动Mysql
-[root@localhost ~]# systemctl enable mysqld.service
-
-7.检查是否已经安装了开机自动启动
-[root@localhost ~]# systemctl list-unit-files | grep mysqld
-如果显示以下内容说明已经完成自动启动安装
-mysqld.service                                enabled
-
-8.设置开启服务
-[root@localhost ~]# systemctl start mysqld.service
-
-9.查看MySql默认密码
-[root@localhost ~]# grep 'temporary password' /var/log/mysqld.log
-
-10.登陆MySql，输入用户名和密码
-[root@localhost ~]# mysql -uroot -p
-
-11.修改当前用户密码
-mysql>SET PASSWORD = PASSWORD('Abc123!_');
-
-12.开启远程登录，授权root远程登录
-mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'a123456!' WITH GRANT OPTION;
-
-13.命令立即执行生效
-mysql>flush privileges;
+mysql数据库安装
+    
+    1.确保服务器系统处于最新状态
+    [root@localhost ~]# yum -y update
+    如果显示以下内容说明已经更新完成
+    Replaced:
+      grub2.x86_64 1:2.02-0.64.el7.centos   grub2-tools.x86_64 1:2.02-0.64.el7.centos
+    Complete!
+    
+    2.重启服务器
+    [root@localhost ~]# reboot
+    
+    3.首先检查是否已经安装，如果已经安装先删除以前版本，以免安装不成功
+    [root@localhost ~]# php -v
+    或
+    [root@localhost ~]# rpm -qa | gerp mysql
+    或
+    [root@localhost ~]# yum list installed | grep mysql
+    
+    如果显示以下内容说明没有安装服务
+    -bash: gerp: command not found
+    
+    4.下载MySql安装包
+    [root@localhost ~]# rpm -ivh http://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm
+    或
+    [root@localhost ~]# rpm -ivh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+    
+    
+    5.安装MySql
+    [root@localhost ~]# yum install -y mysql-server
+    或
+    [root@localhost ~]# yum install mysql-community-server
+    如果显示以下内容说明安装成功
+    Complete!
+    
+    6.设置开机启动Mysql
+    [root@localhost ~]# systemctl enable mysqld.service
+    
+    7.检查是否已经安装了开机自动启动
+    [root@localhost ~]# systemctl list-unit-files | grep mysqld
+    如果显示以下内容说明已经完成自动启动安装
+    mysqld.service                                enabled
+    
+    8.设置开启服务
+    [root@localhost ~]# systemctl start mysqld.service
+    
+    9.查看MySql默认密码
+    [root@localhost ~]# grep 'temporary password' /var/log/mysqld.log
+    
+    10.登陆MySql，输入用户名和密码
+    [root@localhost ~]# mysql -uroot -p
+    
+    11.修改当前用户密码
+    mysql>SET PASSWORD = PASSWORD('Abc123!_');
+    
+    12.开启远程登录，授权root远程登录
+    mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'a123456!' WITH GRANT OPTION;
+    
+    13.命令立即执行生效
+    mysql>flush privileges;
 
 ---------------------------------------------------------------------
 
 其他功能:
 
-# 检查并且显示Apache相关安装包
-[root@localhost ~]# rpm -qa | grep mysql
-
-# 删除MySql
-[root@localhost ~]# yum remove -y mysql mysql mysql-server mysql-libs compat-mysql51
-或
-[root@localhost ~]# rpm -e mysql-community-libs-5.7.20-1.el7.x86_64 --nodeps
-或
-[root@localhost ~]# yum -y remove mysql-community-libs-5.7.20-1.el7.x86_64
-
-# 查看MySql相关文件
-[root@localhost ~]# find / -name mysql
-
-# 重启MySql服务
-[root@localhost ~]# service mysqld restart
-
-# 查看MySql版本
-[root@localhost ~]# yum repolist all | grep mysql
-
-# 查看当前的启动的 MySQL 版本
-[root@localhost ~]# yum repolist enabled | grep mysql
-
-# 通过Yum来安装MySQL,会自动处理MySQL与其他组件的依赖关系
-[root@localhost ~]# yum install mysql-community-server 
-
-# 查看MySQL安装目录
-[root@localhost ~]# whereis mysql
-
-# 启动MySQL服务
-[root@localhost ~]# systemctl start mysqld
-
-# 查看MySQL服务状态
-[root@localhost ~]# systemctl status mysqld
-
-# 关闭MySQL服务
-[root@localhost ~]# systemctl stop mysqld
-
-# 测试MySQL是否安装成功
-[root@localhost ~]# mysql
-
-# 查看MySql默认密码
-[root@localhost ~]# grep 'temporary password' /var/log/mysqld.log
-
-# 查看所有数据库
-mysql>show databases;
-
-# 退出登录数据库
-mysql>exit;
-
-# 查看所有数据库用户
-mysql>SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
+    # 检查并且显示Apache相关安装包
+    [root@localhost ~]# rpm -qa | grep mysql
+    
+    # 删除MySql
+    [root@localhost ~]# yum remove -y mysql mysql mysql-server mysql-libs compat-mysql51
+    或
+    [root@localhost ~]# rpm -e mysql-community-libs-5.7.20-1.el7.x86_64 --nodeps
+    或
+    [root@localhost ~]# yum -y remove mysql-community-libs-5.7.20-1.el7.x86_64
+    
+    # 查看MySql相关文件
+    [root@localhost ~]# find / -name mysql
+    
+    # 重启MySql服务
+    [root@localhost ~]# service mysqld restart
+    
+    # 查看MySql版本
+    [root@localhost ~]# yum repolist all | grep mysql
+    
+    # 查看当前的启动的 MySQL 版本
+    [root@localhost ~]# yum repolist enabled | grep mysql
+    
+    # 通过Yum来安装MySQL,会自动处理MySQL与其他组件的依赖关系
+    [root@localhost ~]# yum install mysql-community-server 
+    
+    # 查看MySQL安装目录
+    [root@localhost ~]# whereis mysql
+    
+    # 启动MySQL服务
+    [root@localhost ~]# systemctl start mysqld
+    
+    # 查看MySQL服务状态
+    [root@localhost ~]# systemctl status mysqld
+    
+    # 关闭MySQL服务
+    [root@localhost ~]# systemctl stop mysqld
+    
+    # 测试MySQL是否安装成功
+    [root@localhost ~]# mysql
+    
+    # 查看MySql默认密码
+    [root@localhost ~]# grep 'temporary password' /var/log/mysqld.log
+    
+    # 查看所有数据库
+    mysql>show databases;
+    
+    # 退出登录数据库
+    mysql>exit;
+    
+    # 查看所有数据库用户
+    mysql>SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
 
 
 
 mysql密码：Loong00544!#%&
 
 mysql 远程登录密码 Vcvbuy00544!#%@$^
+
+定时任务
+
+    yum install crontabs 
+    systemctl enable crond （设为开机启动） 
+    systemctl start crond（启动crond服务） 
+    systemctl status crond （查看状态） 
+    
+    vi /etc/crontab 
+    
+    * * * * * user-name command to be executed
+    分钟(0-59) 小时(0-23) 日(1-31) 月(11-12) 星期(0-6,0表示周日) 用户名 要执行的命令
+    
+    加载任务,使之生效：crontab /etc/crontab
+    
+    查看任务：crontab -l 
+    
+    laravel
+    * * * * * /usr/local/bin/php /usr/local/var/www/projectName/artisan schedule:run >> /dev/null 2>&1

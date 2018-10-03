@@ -42,6 +42,17 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">广告类型：</label>
+                            <div class="col-sm-3">
+                                <select name="ad_type" id="" class="form-control">
+                                    <option value="">请选择</option>
+                                    @foreach($daTypes as $daType)
+                                        <option value="{{$daType->type}}" @if($adspos->ad_type == $daType->type) selected @endif>{{$daType->alias}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>广告位宽度：</label>
                             <div class="col-sm-4">
                                 <input type="text" name="ad_width" class="form-control" value="{{$adspos->ad_width}}"
@@ -95,19 +106,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">广告类型：</label>
-                            <div class="col-sm-3">
-                                <select name="ad_type" id="" class="form-control">
-                                    <option value="ads" @if($adspos->ad_type == 'ads') selected @endif>排版广告</option>
-                                    <option value="slide" @if($adspos->ad_type == 'slide') selected @endif>轮播广告</option>
-                                    <option value="insert" @if($adspos->ad_type == 'insert') selected @endif>商品插入广告</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-4 control-label">排序：</label>
                             <div class="col-sm-2">
-                                <input type="text" name="sort_order" class="form-control" value="{{$adspos->sort_order}}"
+                                <input type="text" name="sort" class="form-control" value="{{$adspos->sort}}"
                                        placeholder="排序" autocomplete="off">
                             </div>
                         </div>

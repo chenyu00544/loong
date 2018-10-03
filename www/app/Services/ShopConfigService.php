@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use App\Facades\LangConfig;
+use App\Facades\RedisCache;
 use App\Helper\FileHelper;
 use App\Http\Models\Shop\ShopConfigModel;
 use Illuminate\Support\Facades\Cache;
@@ -140,6 +141,12 @@ class ShopConfigService
                 }
             }
         }
+        $shopConf = $m->getConf();
+        $shop_conf = [];
+        foreach ($shopConf as $value) {
+            $shop_conf[$value->code] = $value->value;
+        }
+        RedisCache::set('shop_config', $shop_conf);
         return true;
     }
 
@@ -195,7 +202,7 @@ class ShopConfigService
     {
         $req = [];
         $smsConfig = (new ShopConfigModel)->getGroupsConfig(['shop_group' => 'sms']);
-        foreach ($smsConfig as $val){
+        foreach ($smsConfig as $val) {
             $req[$val->code] = $val;
         }
         return $req;
@@ -205,7 +212,7 @@ class ShopConfigService
     {
         $req = [];
         $tpConfig = (new ShopConfigModel)->getGroupsConfig(['shop_group' => 'tp_api']);
-        foreach ($tpConfig as $val){
+        foreach ($tpConfig as $val) {
             $req[$val->code] = $val;
         }
         return $req;
@@ -217,8 +224,8 @@ class ShopConfigService
         if (!$list) {
             $conf_list = (new ShopConfigModel)->getAll();
             $list = [];
-            if(!$conf_list->isEmpty()){
-                foreach ($conf_list as $val){
+            if (!$conf_list->isEmpty()) {
+                foreach ($conf_list as $val) {
                     $list[$val->code] = $val->value;
                 }
                 Cache::forever('shopConfig', $list);

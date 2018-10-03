@@ -25,7 +25,7 @@ class AdPositionModel extends Model
         if (!empty($search['keywords'])) {
             $m->where('position_name', 'like', '%' . $search['keywords'] . '%');
         }
-        return $m->orderBy('position_id', 'desc')
+        return $m->orderBy('sort', 'desc')
             ->paginate($size);
     }
 

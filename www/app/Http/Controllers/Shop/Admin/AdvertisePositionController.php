@@ -39,6 +39,11 @@ class AdvertisePositionController extends CommonController
         return view('shop.admin.ads.position', compact('type', 'search', 'adPoses'));
     }
 
+    public function change(Request $request)
+    {
+        return $this->adRepository->setAdPos(['sort' => $request->get('sort')], $request->get('id'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -89,7 +94,8 @@ class AdvertisePositionController extends CommonController
     public function edit($id)
     {
         $adspos = $this->adRepository->getAdPos($id);
-        return view('shop.admin.ads.positionEdit', compact('adspos'));
+        $daTypes = $this->adRepository->getAdTypes();
+        return view('shop.admin.ads.positionEdit', compact('adspos', 'daTypes'));
     }
 
     /**

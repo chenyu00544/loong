@@ -323,21 +323,21 @@ public class FragmentHome extends BaseFragment {
                         cells.add(homeAds3Item);
                         break;
                     case 4:
-                        //3*3广告
+                        //1*2广告
                         HomeAds4Item homeAds4Item = new HomeAds4Item(bean.getAdses().get(i),
                                 context);
                         homeAds4Item.setOnItemClickListener(homeAds4ItemListener);
                         cells.add(homeAds4Item);
                         break;
                     case 5:
-                        //1*4广告
+                        //3*3广告
                         HomeAds5Item homeAds5Item = new HomeAds5Item(bean.getAdses().get(i),
                                 context);
                         homeAds5Item.setOnItemClickListener(homeAds5ItemListener);
                         cells.add(homeAds5Item);
                         break;
                     case 6:
-                        //1*1广告
+                        //1*4广告
                         HomeAds6Item homeAds6Item = new HomeAds6Item(bean.getAdses().get(i),
                                 context);
                         homeAds6Item.setOnItemClickListener(homeAds6ItemListener);
