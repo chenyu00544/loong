@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Facades\RedisCache;
 use App\Helper\FileHelper;
-use Intervention\Image\Facades\Image;
+use App\Helper\Oss;
 
 class FileHandleService
 {
@@ -16,9 +16,19 @@ class FileHandleService
         if ($bool) {
             $filename = self::mictime() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension();
             $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
-
-            if ($path = $file->move($dir, $filename)) {
-                return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+            $shopConf = RedisCache::get('shop_config');
+            if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
+                //对象存储
+                //文件名称
+                $object = 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+                //由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt
+                $filePath = $file->getRealPath();
+                $oss = new Oss();
+                return $oss->uploadObject($object, $filePath);
+            }else{
+                if ($path = $file->move($dir, $filename)) {
+                    return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+                }
             }
         }
         return 0;
@@ -34,20 +44,13 @@ class FileHandleService
             $shopConf = RedisCache::get('shop_config');
             if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
                 //对象存储
-                $oss = RedisCache::get('oss');
-                if ($oss) {
-                    $accessKeyId = $oss['keyid'];
-                    $accessKeySecret = $oss['keysecret'];
-                    $endpoint = $oss['endpoint'];
-                    $bucket = $oss['bucket'];
-                    // 文件名称
-                    $object = $filename;
-                    //由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt
-                    $filePath = $file->getRealPath();
-                }
+                //文件名称
+                $object = 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+                //由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt
+                $filePath = $file->getRealPath();
+                $oss = new Oss();
+                return $oss->uploadObject($object, $filePath);
             } else {
-
-
                 if ($path = $file->move($dir, $filename)) {
                     return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
                 }
@@ -71,8 +74,14 @@ class FileHandleService
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }
+            $object = 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
             if ($path = imagejpeg($img, $dir . $filename)) {
-                return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+                $shopConf = RedisCache::get('shop_config');
+                if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
+                    $oss = new Oss();
+                    return $oss->uploadObject($object, $sourceDir);
+                }
+                return $object;
             }
         }
         return 0;
@@ -93,11 +102,31 @@ class FileHandleService
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
             }
+            $object = 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
             if ($path = imagejpeg($img, $dir . $filename)) {
-                return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+                $shopConf = RedisCache::get('shop_config');
+                if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
+                    $oss = new Oss();
+                    return $oss->uploadObject($object, $sourceDir);
+                }
+                return $object;
             }
         }
         return 0;
+    }
+
+    public function getImgByOssUrl($uri)
+    {
+        $shopConf = RedisCache::get('shop_config');
+        if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
+            $oss = new Oss();
+            if($exist = $oss->existObject($uri)){
+                return ;
+            }
+        }else{
+            return url($uri);
+        }
+
     }
 
     public static function deleteFile($file_path)
@@ -105,6 +134,11 @@ class FileHandleService
         $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $file_path;
         if (file_exists($dir)) {
             @unlink($dir);
+        }
+        $shopConf = RedisCache::get('shop_config');
+        if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
+            $oss = new Oss();
+            $oss->deleteObject($file_path);
         }
     }
 
