@@ -19,6 +19,7 @@ class CaptchaService
     //composer update
     public static function entry()
     {
+        ob_clean();
         $phrase = new PhraseBuilder();
         // 设置验证码位数
         $code = $phrase->build(4);
@@ -35,9 +36,8 @@ class CaptchaService
         $phrase = $builder->getPhrase();
         Cache::put('captcha', $phrase, 30);
 
-        // 生成图片
+        //生成图片
         //清除缓存
-        ob_clean();
         header("Cache-Control: no-cache, must-revalidate");
         header('Content-type: image/jpeg');
         $builder->output();

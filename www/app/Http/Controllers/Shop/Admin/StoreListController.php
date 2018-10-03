@@ -63,6 +63,11 @@ class StoreListController extends CommonController
         return view('shop.admin.merchants.merchants', compact('snav', 'search', 'stores'));
     }
 
+    public function real(Request $request)
+    {
+        return '开发中。。。。';
+    }
+
     public function change(Request $request)
     {
         return $this->storeListRepository->change($request->except('_token'));

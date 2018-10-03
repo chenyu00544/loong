@@ -84,7 +84,7 @@ Long19860212
     #./configure --prefix=/usr/local/php --with-curl --with-freetype-dir --with-gd 
     --with-gettext --with-iconv-dir --with-kerberos --with-libdir=lib64 --with-libxml-dir 
     --with-MySQL --with-mysqli --with-openssl --with-pcre-regex --with-pdo-mysql 
-    --with-pdo-sqlite --with-pear --with-png-dir --with-xmlrpc --with-xsl --with-zlib 
+    --with-pdo-sqlite --with-pear --with-png-dir --with-jpeg-dir --with-xmlrpc --with-xsl --with-zlib 
     --enable-fpm --enable-bcmath --enable-libxml --enable-inline-optimization 
     --enable-gd-native-ttf --enable-mbregex --enable-mbstring --enable-opcache 
     --enable-pcntl --enable-shmop --enable-soap --enable-sockets --enable-sysvsem 

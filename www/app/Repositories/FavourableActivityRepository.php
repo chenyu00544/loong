@@ -11,7 +11,7 @@ namespace App\Repositories;
 use App\Contracts\FavourableActivityRepositoryInterface;
 use App\Facades\FileHandle;
 use App\Http\Models\Shop\BrandModel;
-use App\Http\Models\shop\CategoryModel;
+use App\Http\Models\Shop\CategoryModel;
 use App\Http\Models\Shop\FavourableActivityModel;
 use App\Http\Models\Shop\GoodsModel;
 

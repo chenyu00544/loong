@@ -10,7 +10,7 @@ namespace App\Repositories;
 
 use App\Contracts\FriendRepositoryInterface;
 use App\Facades\FileHandle;
-use App\Http\Models\shop\FriendModel;
+use App\Http\Models\Shop\FriendModel;
 
 class FriendRepository implements FriendRepositoryInterface
 {

@@ -10,8 +10,7 @@ namespace App\Repositories;
 
 use App\Contracts\MerchantsRepositoryInterface;
 use App\Facades\FileHandle;
-use App\Http\Models\shop\CategoryModel;
-use App\Http\Models\Shop\MerchantsCategoryModel;
+use App\Http\Models\Shop\CategoryModel;
 use App\Http\Models\Shop\MerchantsCategoryTemporarydateModel;
 use App\Http\Models\Shop\MerchantsDocumentTitleModel;
 use App\Http\Models\Shop\MerchantsDtFileModel;

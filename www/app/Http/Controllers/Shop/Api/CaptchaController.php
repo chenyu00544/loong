@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Shop\Api;
 
 use App\Facades\Captcha;
 
-
 class CaptchaController extends CommonController
 {
 
@@ -16,6 +15,5 @@ class CaptchaController extends CommonController
     public function index($id)
     {
         Captcha::entry();
-
     }
 }

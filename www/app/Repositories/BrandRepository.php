@@ -10,7 +10,7 @@ namespace App\Repositories;
 
 use App\Contracts\BrandRepositoryInterface;
 use App\Facades\FileHandle;
-use App\Http\Models\shop\BrandModel;
+use App\Http\Models\Shop\BrandModel;
 
 class BrandRepository implements BrandRepositoryInterface
 {

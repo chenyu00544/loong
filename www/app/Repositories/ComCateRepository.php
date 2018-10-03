@@ -9,7 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\ComCateRepositoryInterface;
-use App\Http\Models\shop\CategoryModel;
+use App\Http\Models\Shop\CategoryModel;
 
 class ComCateRepository implements ComCateRepositoryInterface
 {

@@ -10,7 +10,7 @@ namespace App\Repositories;
 
 use App\Contracts\CouponsRepositoryInterface;
 use App\Facades\Common;
-use App\Http\Models\shop\CategoryModel;
+use App\Http\Models\Shop\CategoryModel;
 use App\Http\Models\Shop\CouponsModel;
 use App\Http\Models\Shop\CouponsUserModel;
 use App\Http\Models\Shop\GoodsModel;
