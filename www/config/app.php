@@ -194,6 +194,7 @@ return [
         App\Providers\PinyinServiceProvider::class,
         App\Providers\RedisCacheServiceProvider::class,
         App\Providers\CaptchaServiceProvider::class,
+        App\Providers\OssServiceProvider::class,
 //        Intervention\Image\ImageServiceProvider::class,
     ],
 
@@ -261,6 +262,7 @@ return [
         'Pinyin' => App\Facades\Pinyin::class,
         'RedisCache' => App\Facades\RedisCache::class,
         'Captcha' => App\Facades\Captcha::class,
+        'Oss' => App\Facades\Oss::class,
 //        'Image' => Intervention\Image\Facades\Image::class,
     ],
 

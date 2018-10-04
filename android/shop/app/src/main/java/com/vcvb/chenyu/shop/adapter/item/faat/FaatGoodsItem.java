@@ -43,7 +43,7 @@ public class FaatGoodsItem extends BaseItem<Goods> {
         TextView tv1 = holder.get(R.id.textView239);
         tv1.setText(mData.getGoodsName());
         TextView tv2 = holder.get(R.id.textView240);
-        tv2.setText(mData.getGoodsPriceFormat());
+        tv2.setText("1");
 
         View addCart = holder.get(R.id.view76);
     }

@@ -122,10 +122,6 @@ public class PaySuccessActivity extends BaseActivity {
         for (int i = 0; i < 5; i++) {
             Goods goods = new Goods();
             goods.setGoodsName("jkasdf"+i);
-            goods.setGoodsPrice(112.0);
-            goods.setGoodsPriceFormat("$112.0");
-            goods.setGoodsMarket(999.0);
-            goods.setGoodsMarketFormat("$999.0");
             goodses.add(goods);
         }
         orderDetail.setList(goodses);

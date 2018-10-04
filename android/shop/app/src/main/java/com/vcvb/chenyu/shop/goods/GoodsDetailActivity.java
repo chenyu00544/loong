@@ -426,7 +426,6 @@ public class GoodsDetailActivity extends GoodsActivity {
         for (int i = 0; i < 10; i++) {
             Goods goods = new Goods();
             goods.setGoodsId(i + "");
-            goods.setGoodsPriceFormat("$188.00");
             goods.setPic("http://pic8.nipic.com/20100705/2457331_121923653886_2.jpg");
             goods.setGoodsName("fasf" + i);
             goodses.add(goods);

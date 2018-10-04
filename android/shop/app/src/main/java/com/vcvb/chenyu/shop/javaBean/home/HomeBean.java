@@ -1,13 +1,19 @@
 package com.vcvb.chenyu.shop.javaBean.home;
 
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeBean {
-    private List<Slide> slides;
+
     private List<Adses> adses;
-    private List<Goods> goodsList;
+    private List<Goods> goodses;
 
     public List<Adses> getAdses() {
         return adses;
@@ -17,19 +23,39 @@ public class HomeBean {
         this.adses = adses;
     }
 
-    public List<Slide> getSlides() {
-        return slides;
+    public List<Goods> getGoodses() {
+        return goodses;
     }
 
-    public void setSlides(List<Slide> slides) {
-        this.slides = slides;
+    public void setGoodses(List<Goods> goodses) {
+        this.goodses = goodses;
     }
 
-    public List<Goods> getGoodsList() {
-        return goodsList;
-    }
-
-    public void setGoodsList(List<Goods> goodsList) {
-        this.goodsList = goodsList;
+    public void setData(JSONObject Json){
+        try {
+            JSONArray adsesJsonArray = Json.getJSONArray("adses");
+            List<Adses> adses = new ArrayList<>();
+            for (int i = 0; i < adsesJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) adsesJsonArray.get(i);
+                Adses ads = new Adses();
+                ads.setData(object);
+                adses.add(ads);
+            }
+            this.setAdses(adses);
+            JSONArray goodsesJsonArray = Json.getJSONArray("goodses");
+            List<Goods> goodses = new ArrayList<>();
+            for (int i = 0; i < goodsesJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) goodsesJsonArray.get(i);
+                Goods goods = JsonUtils.fromJsonObject(object, Goods.class);
+                goodses.add(goods);
+            }
+            this.setGoodses(goodses);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 }

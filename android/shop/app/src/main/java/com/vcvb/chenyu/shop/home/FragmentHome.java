@@ -41,17 +41,11 @@ import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.HomeItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
-import com.vcvb.chenyu.shop.image.Images;
-import com.vcvb.chenyu.shop.javaBean.home.Ads;
-import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
-import com.vcvb.chenyu.shop.javaBean.home.Slide;
 import com.vcvb.chenyu.shop.msg.MessageActivity;
 import com.vcvb.chenyu.shop.search.SearchActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.JsonUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
 import com.vcvb.chenyu.shop.tools.UrlParse;
 
 import org.json.JSONException;
@@ -181,9 +175,8 @@ public class FragmentHome extends BaseFragment {
             loadingDialog.show();
         }
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("page", "0");
+        HttpUtils.getInstance().post(ConstantManager.Url.HOME, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
                 if (json != null) {
@@ -196,7 +189,7 @@ public class FragmentHome extends BaseFragment {
                             } else if (refreshLayout != null) {
                                 refreshLayout.finishRefresh();
                             }
-//                            bindData();
+                            bindData();
                         }
                     });
                 }
@@ -217,147 +210,83 @@ public class FragmentHome extends BaseFragment {
                 });
             }
         });
-        mAdapter.clear();
-
-        String[] appUri = new String[]{"vcvbuy:://pages/goods/index?id=1",
-                "vcvbuy:://pages/faat/index?id=1", "vcvbuy:://pages/brand/index?id=1"};
-        ArrayList<Slide> slides = new ArrayList<>();
-        for (int i = 0; i < Images.imgUrls.length; i++) {
-            Slide banner = new Slide();
-            banner.setPic(Images.imgUrls[i]);
-            banner.setTitle("xxxooo" + i);
-            banner.setAppUri(appUri[i]);
-            slides.add(banner);
-        }
-        homeBean.setSlides(slides);
-
-        ArrayList<Adses> adses_arr = new ArrayList<>();
-        for (int i = 0; i < 11; i++) {
-            Adses adsess = new Adses();
-            if (i == 10) {
-                adsess.setIsType(8);
-            } else {
-                adsess.setIsType(i);
-            }
-            ArrayList<Ads> adses = new ArrayList<>();
-            for (int j = 0; j < 10; j++) {
-                Ads ads = new Ads();
-                ads.setPic(Images.imageUrls[j]);
-                if(i==0){
-                    ads.setAppUri("vcvbuy:://pages/categroy/index?id=" + j);
-                }else{
-                    ads.setAppUri("vcvbuy:://pages/goods/index?id=" + j);
-                }
-                adses.add(ads);
-            }
-            adsess.setAds(adses);
-            adses_arr.add(adsess);
-        }
-        homeBean.setAdses(adses_arr);
-
-        ArrayList<Goods> goodses = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Goods goods = new Goods();
-            goods.setGoodsId("" + i);
-            goods.setPic(Images.imageUrls[i]);
-            goods.setGoodsName("腾讯宣布推出QQ浏览器微信版，由" + i);
-            goods.setGoodsPriceFormat("$188.00");
-            goodses.add(goods);
-        }
-        homeBean.setGoodsList(goodses);
-
-        homeItemDecoration.setData(homeBean);
-        mAdapter.addAll(getItems(homeBean));
-        final int pos = homeBean.getAdses().size();
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                if (position > pos) {
-                    int p = position - pos - 1;
-                    Goods goods = homeBean.getGoodsList().get(p);
-                    Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("id", goods.getGoodsId());
-                    context.startActivity(intent);
-                }
-            }
-        });
     }
 
     protected List<Item> getItems(HomeBean bean) {
         List<Item> cells = new ArrayList<>();
-        if (bean.getSlides() != null && bean.getSlides().size() > 0) {
-            HomeSlideItem homeSlideItem = new HomeSlideItem(bean.getSlides(), context);
-            homeSlideItem.setOnItemClickListener(homeSlideItemListener);
-            cells.add(homeSlideItem);
-        }
         if (bean.getAdses() != null && bean.getAdses().size() > 0) {
             for (int i = 0; i < bean.getAdses().size(); i++) {
-                switch (bean.getAdses().get(i).getIsType()) {
-                    case 0:
+                switch (bean.getAdses().get(i).getType()) {
+                    case "slide":
+                        //nav
+                        HomeSlideItem homeSlideItem = new HomeSlideItem(bean.getAdses().get(i), context);
+                        homeSlideItem.setOnItemClickListener(homeSlideItemListener);
+                        cells.add(homeSlideItem);
+                        break;
+                    case "navigation":
                         //nav
                         HomeNavsItem homeNavsItem = new HomeNavsItem(bean.getAdses().get(i),
                                 context);
                         homeNavsItem.setOnItemClickListener(homeNavsItemListener);
                         cells.add(homeNavsItem);
                         break;
-                    case 1:
+                    case "1":
                         //1-2广告
                         HomeAds1Item homeAds1Item = new HomeAds1Item(bean.getAdses().get(i),
                                 context);
                         homeAds1Item.setOnItemClickListener(homeAds1ItemListener);
                         cells.add(homeAds1Item);
                         break;
-                    case 2:
+                    case "2":
                         //2*2广告
                         HomeAds2Item homeAds2Item = new HomeAds2Item(bean.getAdses().get(i),
                                 context);
                         homeAds2Item.setOnItemClickListener(homeAds2ItemListener);
                         cells.add(homeAds2Item);
                         break;
-                    case 3:
+                    case "3":
                         //2-1广告
                         HomeAds3Item homeAds3Item = new HomeAds3Item(bean.getAdses().get(i),
                                 context);
                         homeAds3Item.setOnItemClickListener(homeAds3ItemListener);
                         cells.add(homeAds3Item);
                         break;
-                    case 4:
+                    case "4":
                         //1*2广告
                         HomeAds4Item homeAds4Item = new HomeAds4Item(bean.getAdses().get(i),
                                 context);
                         homeAds4Item.setOnItemClickListener(homeAds4ItemListener);
                         cells.add(homeAds4Item);
                         break;
-                    case 5:
+                    case "5":
                         //3*3广告
                         HomeAds5Item homeAds5Item = new HomeAds5Item(bean.getAdses().get(i),
                                 context);
                         homeAds5Item.setOnItemClickListener(homeAds5ItemListener);
                         cells.add(homeAds5Item);
                         break;
-                    case 6:
+                    case "6":
                         //1*4广告
                         HomeAds6Item homeAds6Item = new HomeAds6Item(bean.getAdses().get(i),
                                 context);
                         homeAds6Item.setOnItemClickListener(homeAds6ItemListener);
                         cells.add(homeAds6Item);
                         break;
-                    case 7:
+                    case "7":
                         //条幅广告
                         HomeAds7Item homeAds7Item = new HomeAds7Item(bean.getAdses().get(i),
                                 context);
                         homeAds7Item.setOnItemClickListener(homeAds7ItemListener);
                         cells.add(homeAds7Item);
                         break;
-                    case 8:
+                    case "8":
                         //标题头
                         HomeAds8Item homeAds8Item = new HomeAds8Item(bean.getAdses().get(i),
                                 context);
                         homeAds8Item.setOnItemClickListener(homeAds8ItemListener);
                         cells.add(homeAds8Item);
                         break;
-                    case 9:
+                    case "9":
                         //品牌广告
                         HomeAds9Item homeAds9Item = new HomeAds9Item(bean.getAdses().get(i),
                                 context);
@@ -367,34 +296,93 @@ public class FragmentHome extends BaseFragment {
             }
 
         }
-        if (bean.getGoodsList() != null && bean.getGoodsList().size() > 0) {
-            for (int i = 0; i < bean.getGoodsList().size(); i++) {
-                cells.add(new HomeGoods_V_Item(bean.getGoodsList().get(i), context));
+        if (bean.getGoodses() != null && bean.getGoodses().size() > 0) {
+            for (int i = 0; i < bean.getGoodses().size(); i++) {
+                cells.add(new HomeGoods_V_Item(bean.getGoodses().get(i), context));
             }
         }
         return cells;
     }
 
     public void bindData() {
-//        System.out.println(data);
-        try {
-            if (data != null) {
-                homeBean = JsonUtils.fromJsonObject(data.getJSONObject("data"), HomeBean.class);
-//                System.out.println(homeData);
+        if (data != null) {
+            try {
+                homeBean.setData(data.getJSONObject("data"));
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (java.lang.InstantiationException e) {
-            e.printStackTrace();
         }
+        mAdapter.clear();
+
+//        String[] appUri = new String[]{"vcvbuy:://pages/goods/index?id=1",
+//                "vcvbuy:://pages/faat/index?id=1", "vcvbuy:://pages/brand/index?id=1"};
+//        ArrayList<Slide> slides = new ArrayList<>();
+//        for (int i = 0; i < Images.imgUrls.length; i++) {
+//            Slide banner = new Slide();
+//            banner.setPic(Images.imgUrls[i]);
+//            banner.setTitle("xxxooo" + i);
+//            banner.setAppUri(appUri[i]);
+//            slides.add(banner);
+//        }
+//        homeBean.setSlides(slides);
+//
+//        ArrayList<Adses> adses_arr = new ArrayList<>();
+//        for (int i = 0; i < 11; i++) {
+//            Adses adsess = new Adses();
+//            if (i == 10) {
+//                adsess.setIsType(8);
+//            } else {
+//                adsess.setIsType(i);
+//            }
+//            ArrayList<Ads> adses = new ArrayList<>();
+//            for (int j = 0; j < 10; j++) {
+//                Ads ads = new Ads();
+//                ads.setPic(Images.imageUrls[j]);
+//                if(i==0){
+//                    ads.setAppUri("vcvbuy:://pages/categroy/index?id=" + j);
+//                }else{
+//                    ads.setAppUri("vcvbuy:://pages/goods/index?id=" + j);
+//                }
+//                adses.add(ads);
+//            }
+//            adsess.setAds(adses);
+//            adses_arr.add(adsess);
+//        }
+//        homeBean.setAdses(adses_arr);
+//
+//        ArrayList<Goods> goodses = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            Goods goods = new Goods();
+//            goods.setGoodsId("" + i);
+//            goods.setPic(Images.imageUrls[i]);
+//            goods.setGoodsName("腾讯宣布推出QQ浏览器微信版，由" + i);
+//            goods.setGoodsPriceFormat("$188.00");
+//            goodses.add(goods);
+//        }
+//        homeBean.setGoodsList(goodses);
+//
+        homeItemDecoration.setData(homeBean);
+        mAdapter.addAll(getItems(homeBean));
+        final int pos = homeBean.getAdses().size();
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                if (position > pos) {
+                    int p = position - pos - 1;
+                    Goods goods = homeBean.getGoodses().get(p);
+                    Intent intent = new Intent(context, GoodsDetailActivity.class);
+                    intent.putExtra("id", goods.getGoodsId());
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 
     HomeSlideItem.OnClickListener homeSlideItemListener = new HomeSlideItem.OnClickListener() {
         @Override
         public void onClicked(int pos) {
-            String uri = homeBean.getSlides().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -406,7 +394,7 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -419,7 +407,7 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -431,7 +419,7 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -443,7 +431,7 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -455,7 +443,7 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -467,7 +455,7 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -479,7 +467,7 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -491,8 +479,8 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
-            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAppUri());
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
+            Log.i("tag", homeBean.getAdses().get(0).getAds().get(pos).getAd_code());
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);
@@ -504,7 +492,7 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(View view, int pos) {
             System.out.println(pos);
-            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAppUri();
+            String uri = homeBean.getAdses().get(0).getAds().get(pos).getAd_code();
             Class c = UrlParse.getUrlToClass(uri);
             Map<String, String> id = UrlParse.getUrlParams(uri);
             Intent intent = new Intent(context, c);

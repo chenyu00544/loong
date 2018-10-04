@@ -128,7 +128,6 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
             for (int j = 0; j < 20; j++) {
                 Goods goods = new Goods();
                 goods.setGoodsName("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
-                goods.setGoodsPriceFormat("$1000.00");
                 goods.setPic("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + "" +
                         ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
                 goodses.add(goods);

@@ -30,7 +30,7 @@ class OssRepository implements OssRepositoryInterface
         foreach ($osses as $oss){
 
             $regional = substr($oss->regional, 0, 2);
-            $http = $request->server()['REQUEST_SCHEME'];
+            $http = $request->server()['REQUEST_SCHEME'].'://';
             if($regional == 'us' || $regional == 'ap'){
                 $outside_site = $http . $oss->bucket . ".oss-" .$oss->regional. ".aliyuncs.com";
                 $inside_site = $http . $oss->bucket . ".oss-" .$oss->regional. "-internal.aliyuncs.com";

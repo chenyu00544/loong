@@ -7,8 +7,6 @@
  */
 
 namespace App\Services;
-
-
 use Illuminate\Support\Facades\Config;
 
 class UrlService
@@ -16,7 +14,6 @@ class UrlService
     public static function getImagePath($uri)
     {
         $shopConfig = Config::get('shopconfig');
-
         if (empty($uri)) {
             if ($shopConfig['open_oss'] == 1) {
                 return $shopConfig['cdn_url'] . 'styles/images/no_image.jpg';

@@ -34,5 +34,6 @@ Route::group(['prefix' => 'web', 'namespace' => 'Shop\Api'], function () {
 });
 
 Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
-    Route::any('index', 'IndexController@index');
+    Route::post('index', 'IndexController@index');
+    Route::post('index/loadmore', 'IndexController@loadmore');
 });

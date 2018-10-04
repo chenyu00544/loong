@@ -8,10 +8,10 @@
 
 namespace App\Providers;
 
-use \App\Services\VerifiableService;
+use App\Services\OssService;
 use Illuminate\Support\ServiceProvider;
 
-class VerifiableServiceProvider extends ServiceProvider
+class OssServiceProvider extends ServiceProvider
 {
     /**
      * Register the application services.
@@ -20,8 +20,8 @@ class VerifiableServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('VerifiableService', function () {
-            return new VerifiableService();
+        $this->app->singleton('OssService', function () {
+            return new OssService();
         });
     }
 }

@@ -76,9 +76,9 @@
                                     <td>{{$ad->position_name}}</td>
                                     <td>
                                         <span class="show">
-                                            <a href="{{url($ad->ad_code)}}" class="nyroModal">
+                                            <a href="{{url($ad->ad_url)}}" class="nyroModal">
                                                 <i class="glyphicon glyphicon-picture top2"
-                                                   data-tooltipimg="{{url($ad->ad_code)}}"
+                                                   data-tooltipimg="{{$ad->ad_url}}"
                                                    ctype="tooltip" title="tooltip"></i>
                                             </a>
                                         </span>

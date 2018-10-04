@@ -10,7 +10,7 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.image.GlideImageLoader;
-import com.vcvb.chenyu.shop.javaBean.home.Slide;
+import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -18,13 +18,12 @@ import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class HomeSlideItem extends BaseItem<List<Slide>> {
+public class HomeSlideItem extends BaseItem<Adses> {
     public static final int TYPE = Integer.MAX_VALUE - 5;
     public OnClickListener onClickListener;
 
-    public HomeSlideItem(List<Slide> beans, Context c) {
+    public HomeSlideItem(Adses beans, Context c) {
         super(beans, c);
     }
 
@@ -54,8 +53,8 @@ public class HomeSlideItem extends BaseItem<List<Slide>> {
         banner.setIndicatorGravity(BannerConfig.CENTER);
         banner.setImageLoader(new GlideImageLoader());
         ArrayList<String> imageUrls = new ArrayList<>();
-        for (int i = 0; i < mData.size(); i++) {
-            imageUrls.add(mData.get(i).getPic());
+        for (int i = 0; i < mData.getAds().size(); i++) {
+            imageUrls.add(mData.getAds().get(i).getAd_code());
         }
         banner.setImages(imageUrls);
         banner.start();

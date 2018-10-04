@@ -64,10 +64,11 @@
                             <label class="col-sm-4 control-label"><font class="red">*</font>上传广告图片：</label>
                             <div class="col-sm-4">
                                 <input type="file" name="ad_img" value="" class="fl">
+                                <input type="hidden" name="ad_url" value="{{$adInfo->ad_code}}" class="fl">
                                 <span class="img-show fl">
-                                    <a href="{{url($adInfo->ad_code)}}" target="_blank" class="nyroModal">
+                                    <a href="{{url($adInfo->ad_url)}}" target="_blank" class="nyroModal">
                                         <i class="glyphicon glyphicon-picture top5"
-                                           data-tooltipimg="{{url($adInfo->ad_code)}}" ectype="tooltip"
+                                           data-tooltipimg="{{$adInfo->ad_url}}" ectype="tooltip"
                                            data-toggle="tooltip" title="tooltip"></i>
                                     </a>
                                 </span>

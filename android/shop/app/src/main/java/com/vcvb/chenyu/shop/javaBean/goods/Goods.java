@@ -4,10 +4,52 @@ public class Goods {
     private String goodsId;
     private String pic;
     private String goodsName;
-    private String goodsPriceFormat;
-    private Double goodsPrice;
-    private String goodsMarketFormat;
-    private Double goodsMarket;
+
+    private String goods_name;
+    private String shop_price;
+    private String goods_thumb;
+    private String is_best;
+    private String market_price;
+
+    public String getGoods_name() {
+        return goods_name;
+    }
+
+    public String getGoods_thumb() {
+        return goods_thumb;
+    }
+
+    public String getIs_best() {
+        return is_best;
+    }
+
+    public String getMarket_price() {
+        return market_price;
+    }
+
+    public String getShop_price() {
+        return shop_price;
+    }
+
+    public void setGoods_name(String goods_name) {
+        this.goods_name = goods_name;
+    }
+
+    public void setGoods_thumb(String goods_thumb) {
+        this.goods_thumb = goods_thumb;
+    }
+
+    public void setIs_best(String is_best) {
+        this.is_best = is_best;
+    }
+
+    public void setMarket_price(String market_price) {
+        this.market_price = market_price;
+    }
+
+    public void setShop_price(String shop_price) {
+        this.shop_price = shop_price;
+    }
 
     public String getGoodsId() {
         return goodsId;
@@ -23,38 +65,6 @@ public class Goods {
 
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
-    }
-
-    public Double getGoodsPrice() {
-        return goodsPrice;
-    }
-
-    public void setGoodsPrice(Double goodsPrice) {
-        this.goodsPrice = goodsPrice;
-    }
-
-    public Double getGoodsMarket() {
-        return goodsMarket;
-    }
-
-    public void setGoodsMarket(Double goodsMarket) {
-        this.goodsMarket = goodsMarket;
-    }
-
-    public String getGoodsPriceFormat() {
-        return goodsPriceFormat;
-    }
-
-    public void setGoodsPriceFormat(String goodsPriceFormat) {
-        this.goodsPriceFormat = goodsPriceFormat;
-    }
-
-    public String getGoodsMarketFormat() {
-        return goodsMarketFormat;
-    }
-
-    public void setGoodsMarketFormat(String goodsMarketFormat) {
-        this.goodsMarketFormat = goodsMarketFormat;
     }
 
     public String getPic() {

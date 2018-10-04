@@ -1,31 +1,22 @@
 package com.vcvb.chenyu.shop.javaBean.home;
 
 public class Ads {
-    private String pic;
-    private String appUri;
-    private String title;
+    private String ad_code;
+    private String ad_link;
 
-    public String getPic() {
-        return pic;
+    public String getAd_code() {
+        return ad_code;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setAd_code(String ad_code) {
+        this.ad_code = ad_code;
     }
 
-    public String getAppUri() {
-        return appUri;
+    public String getAd_link() {
+        return ad_link;
     }
 
-    public void setAppUri(String appUri) {
-        this.appUri = appUri;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setAd_link(String ad_link) {
+        this.ad_link = ad_link;
     }
 }

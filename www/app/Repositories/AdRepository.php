@@ -35,20 +35,30 @@ class AdRepository implements AdRepositoryInterface
     public function getAdByPage($type, $search)
     {
         $where['ad_position.ad_terminal'] = $type;
-        return $this->adModel->getAdByPage($where, $search);
+        $adlist = $this->adModel->getAdByPage($where, $search);
+        foreach ($adlist as $value) {
+            $value->ad_url = FileHandle::getImgByOssUrl($value->ad_code);
+        }
+        return $adlist;
     }
 
     public function getAds($type, $pid)
     {
         $where['ad_position.ad_terminal'] = $type;
         $where['ad_position.position_id'] = $pid;
-        return $this->adModel->getAdByPage($where, []);
+        $adlist = $this->adModel->getAdByPage($where, []);
+        foreach ($adlist as $value) {
+            $value->ad_url = FileHandle::getImgByOssUrl($value->ad_code);
+        }
+        return $adlist;
     }
 
     public function getAd($id)
     {
         $where['ad_id'] = $id;
-        return $this->adModel->getAd($where);
+        $ad = $this->adModel->getAd($where);
+        $ad->ad_url = FileHandle::getImgByOssUrl($ad->ad_code);
+        return $ad;
     }
 
     public function adChange($data)
@@ -94,12 +104,15 @@ class AdRepository implements AdRepositoryInterface
                 $time_arr = explode('～', $value);
                 $updata['start_time'] = strtotime($time_arr[0]);
                 $updata['end_time'] = strtotime($time_arr[1]);
-            } elseif ($key == 'ad_terminal') {
+            } elseif ($key == 'ad_terminal' || $key == 'ad_url') {
                 continue;
             } elseif ($key == 'ad_img') {
                 $uri = 'ad' . DIRECTORY_SEPARATOR . $type;
                 $imgPath = FileHandle::upLoadImage($value, $uri);
                 $updata['ad_code'] = $imgPath;
+                if ($data['ad_url'] != '') {
+                    FileHandle::deleteFile($data['ad_url']);
+                }
             } else {
                 $updata[$key] = $value;
             }
