@@ -13,24 +13,28 @@ use App\Facades\FileHandle;
 use App\Http\Models\Shop\BrandModel;
 use App\Http\Models\Shop\CategoryModel;
 use App\Http\Models\Shop\FavourableActivityModel;
+use App\Http\Models\Shop\FavourableGoodsModel;
 use App\Http\Models\Shop\GoodsModel;
 
 class FavourableActivityRepository implements FavourableActivityRepositoryInterface
 {
 
     private $favourableActivityModel;
+    private $favourableGoodsModel;
     private $categoryModel;
     private $brandModel;
     private $goodsModel;
 
     public function __construct(
         FavourableActivityModel $favourableActivityModel,
+        FavourableGoodsModel $favourableGoodsModel,
         CategoryModel $categoryModel,
         BrandModel $brandModel,
         GoodsModel $goodsModel
     )
     {
         $this->favourableActivityModel = $favourableActivityModel;
+        $this->favourableGoodsModel = $favourableGoodsModel;
         $this->categoryModel = $categoryModel;
         $this->brandModel = $brandModel;
         $this->goodsModel = $goodsModel;
@@ -51,11 +55,13 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
     {
         $where['act_id'] = $id;
         $faat = $this->favourableActivityModel->getFavourableActivity($where);
-        $act_range_ext = explode(',', $faat->act_range_ext);
         $faat->user_rank = explode(',', $faat->user_rank);
         $range_arr = [];
         switch ($faat->act_range) {
             case 1:
+                foreach ($faat->fgs as $fg){
+                    $act_range_ext[] = $fg->cate_id;
+                }
                 $range_ext = $this->categoryModel->getComCatesByIn($act_range_ext);
                 foreach ($range_ext as $key => $value) {
                     $range_arr[$key]['id'] = $value->id;
@@ -63,6 +69,9 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
                 }
                 break;
             case 2:
+                foreach ($faat->fgs as $fg){
+                    $act_range_ext[] = $fg->brand_id;
+                }
                 $range_ext = $this->brandModel->getBrandByIn($act_range_ext);
                 foreach ($range_ext as $key => $value) {
                     $range_arr[$key]['id'] = $value->id;
@@ -70,6 +79,9 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
                 }
                 break;
             case 3:
+                foreach ($faat->fgs as $fg){
+                    $act_range_ext[] = $fg->goods_id;
+                }
                 $range_ext = $this->goodsModel->getGoodsesByIn($act_range_ext);
                 foreach ($range_ext as $key => $value) {
                     $range_arr[$key]['id'] = $value->goods_id;
@@ -89,6 +101,7 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
         $where['act_id'] = $id;
         $inarr = ['gift_id', 'gift_price', 'gift_name'];
         $gift = [];
+        $act_range_ext = [];
         foreach ($data as $key => $value) {
             if (in_array($key, $inarr)) {
                 foreach ($value as $k => $val) {
@@ -110,10 +123,10 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
                     $updata['user_rank'] = implode(',', $value);
                     break;
                 case 'act_range_ext':
-                    $updata['act_range_ext'] = implode(',', $value);
+                    $act_range_ext = $value;
                     break;
                 case 'activity_thumb':
-                    if($value->isValid()){
+                    if ($value->isValid()) {
                         $updata['activity_thumb'] = FileHandle::upLoadImage($value, 'activity');
                     }
                     break;
@@ -123,13 +136,33 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
             }
         }
         $updata['gift'] = serialize($gift);
-        return $this->favourableActivityModel->setFavourableActivity($where, $updata);
+        $re = $this->favourableActivityModel->setFavourableActivity($where, $updata);
+        $this->favourableGoodsModel->delFG($where);
+        $fg_data['act_id'] = $id;
+        if ($updata['act_range'] == 1) {
+            foreach ($act_range_ext as $value){
+                $fg_data['cate_id'] = $value;
+                $this->favourableGoodsModel->addFG($fg_data);
+            }
+        } elseif ($updata['act_range'] == 2) {
+            foreach ($act_range_ext as $value){
+                $fg_data['brand_id'] = $value;
+                $this->favourableGoodsModel->addFG($fg_data);
+            }
+        } elseif ($updata['act_range'] == 3) {
+            foreach ($act_range_ext as $value){
+                $fg_data['goods_id'] = $value;
+                $this->favourableGoodsModel->addFG($fg_data);
+            }
+        }
+        return $re;
     }
 
     public function addFavourableActivity($data, $admin)
     {
         $inarr = ['gift_id', 'gift_price', 'gift_name'];
         $gift = [];
+        $act_range_ext = [];
         foreach ($data as $key => $value) {
             if (in_array($key, $inarr)) {
                 foreach ($value as $k => $val) {
@@ -151,10 +184,10 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
                     $updata['user_rank'] = implode(',', $value);
                     break;
                 case 'act_range_ext':
-                    $updata['act_range_ext'] = implode(',', $value);
+                    $act_range_ext = $value;
                     break;
                 case 'activity_thumb':
-                    if($value->isValid()){
+                    if ($value->isValid()) {
                         $updata['activity_thumb'] = FileHandle::upLoadImage($value, 'activity');
                     }
                     break;
@@ -167,7 +200,27 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
         $updata['user_id'] = $admin->ru_id;
         $updata['sort_order'] = 50;
         $updata['review_status'] = 3;
-        return $this->favourableActivityModel->addFavourableActivity($updata);
+        $re = $this->favourableActivityModel->addFavourableActivity($updata);
+        $where['art_id'] = $re;
+        $this->favourableGoodsModel->delFG($where);
+        $fg_data['act_id'] = $re;
+        if ($updata['act_range'] == 1) {
+            foreach ($act_range_ext as $value){
+                $fg_data['cate_id'] = $value;
+                $this->favourableGoodsModel->addFG($fg_data);
+            }
+        } elseif ($updata['act_range'] == 2) {
+            foreach ($act_range_ext as $value){
+                $fg_data['brand_id'] = $value;
+                $this->favourableGoodsModel->addFG($fg_data);
+            }
+        } elseif ($updata['act_range'] == 3) {
+            foreach ($act_range_ext as $value){
+                $fg_data['goods_id'] = $value;
+                $this->favourableGoodsModel->addFG($fg_data);
+            }
+        }
+        return $re;
     }
 
     public function change($data)
@@ -181,7 +234,7 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
             case 'delete':
                 $updata = $data['id'];
                 $res = $this->favourableActivityModel->getFavourableActivitys($updata);
-                foreach ($res as $val){
+                foreach ($res as $val) {
                     FileHandle::deleteFile($val->activity_thumb);
                 }
                 $this->favourableActivityModel->delFavourableActivitys($updata);

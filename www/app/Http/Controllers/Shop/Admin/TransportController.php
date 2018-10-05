@@ -9,6 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\RedisCache;
 use App\Facades\Verifiable;
 use App\Repositories\RegionsRepository;
 use App\Repositories\TransportRepository;
@@ -111,7 +112,7 @@ class TransportController extends CommonController
     {
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
-        $userId = Cache::get('adminUser' . md5($ip) . $uid)->user_id;
+        $userId = RedisCache::get('adminUser' . md5($ip) . $uid)->user_id;
         $transportInfo = $this->transportRepository->getTransportInfo($id, $userId);
         return view('shop.admin.shipping.transportEdit', compact('transportInfo'));
     }

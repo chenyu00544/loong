@@ -23,6 +23,11 @@ class GoodsModel extends Model
         return $this->hasMany('App\Http\Models\App\GoodsVolumePriceModel', 'goods_id', 'goods_id');
     }
 
+    public function fg()
+    {
+        return $this->belongsToMany('App\Http\Models\App\FavourableActivityModel', 'favourable_goods', 'goods_id', 'act_id');
+    }
+
     public function getGoodses($where, $page = 1, $column = ['*'], $size = 10)
     {
         return $this->select($column)
@@ -39,6 +44,12 @@ class GoodsModel extends Model
     public function getGoods($where, $column = ['*'])
     {
         return $this->select($column)
+            ->with(['fg' => function ($query) {
+                $query->select(['*'])->where([['start_time', '<', time()], ['end_time', '>', time()]]);
+            }])
+            ->with(['gvp' => function ($query) {
+                $query->where(['price_type' => 1]);
+            }])
             ->where($where)
             ->first();
     }

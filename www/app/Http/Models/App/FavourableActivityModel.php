@@ -6,8 +6,7 @@
  * Time: 16:58
  * Desc:
  */
-
-namespace App\Http\Models\Shop;
+namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,11 +16,6 @@ class FavourableActivityModel extends Model
     protected $primaryKey = 'act_id';
     public $timestamps = false;
     protected $guarded = [];
-
-    public function fgs()
-    {
-        return $this->hasMany('App\Http\Models\Shop\FavourableGoodsModel', 'act_id', 'act_id');
-    }
 
     public function getFavourableActivityByPage($where, $search, $column = ['*'], $size = 15)
     {
@@ -47,7 +41,6 @@ class FavourableActivityModel extends Model
     public function getFavourableActivity($where, $column = ['*'])
     {
         return $this->select($column)
-            ->with(['fgs'])
             ->where($where)
             ->first();
     }

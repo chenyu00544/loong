@@ -12,16 +12,20 @@ use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\Url;
 use App\Http\Models\App\GoodsModel;
+use App\Http\Models\App\TransportModel;
 
 class GoodsRepository implements GoodsRepositoryInterface
 {
     private $goodsModel;
+    private $transportModel;
 
     public function __construct(
-        GoodsModel $goodsModel
+        GoodsModel $goodsModel,
+        TransportModel $transportModel
     )
     {
         $this->goodsModel = $goodsModel;
+        $this->transportModel = $transportModel;
     }
 
     public function getBestGoods($page = 1)
@@ -48,6 +52,24 @@ class GoodsRepository implements GoodsRepositoryInterface
     {
         $where['goods_id'] = $goods_id;
         $goods_detail = $this->goodsModel->getGoods($where);
+
+        //快递
+        if ($goods_detail->freight == 2) {
+            $twhere['tid'] = $goods_detail->tid;
+            $transport = $this->transportModel->getTransport($twhere);
+            $goods_detail->transport = $transport;
+        }
+
+        //评价
+
+        //品牌商品
+
+        //问大家
+
+        //产品固定属性
+
+        //产品可选属性
+
         return $goods_detail;
     }
 
