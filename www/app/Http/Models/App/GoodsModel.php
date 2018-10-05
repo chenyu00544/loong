@@ -18,13 +18,28 @@ class GoodsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function gvp()
+    {
+        return $this->hasMany('App\Http\Models\App\GoodsVolumePriceModel', 'goods_id', 'goods_id');
+    }
+
     public function getGoodses($where, $page = 1, $column = ['*'], $size = 10)
     {
         return $this->select($column)
+            ->with(['gvp' => function ($query) {
+                $query->where(['price_type' => 1]);
+            }])
             ->where($where)
             ->orderBy('sort_order', 'DESC')
             ->orderBy('add_time', 'DESC')
             ->offset(($page - 1) * $size)->limit($size)
             ->get();
+    }
+
+    public function getGoods($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
     }
 }

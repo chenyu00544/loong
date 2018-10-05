@@ -42,7 +42,7 @@ public class HomeSlideItem extends BaseItem<Adses> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         int width = ToolUtils.getWindowsWidth(context);
-        Banner banner = (Banner) holder.getView(R.id.goods_slide);
+        Banner banner = holder.get(R.id.goods_slide);
         //设置内置样式，内含六种特效
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         //设置轮播的动画效果，内含多种特效

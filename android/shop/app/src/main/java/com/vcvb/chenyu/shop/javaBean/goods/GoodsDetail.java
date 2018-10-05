@@ -1,5 +1,7 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class GoodsDetail {
@@ -128,5 +130,9 @@ public class GoodsDetail {
 
     public void setGoodsAttrs(List<GoodsAttrs> goodsAttrs) {
         this.goodsAttrs = goodsAttrs;
+    }
+
+    public void setData(JSONObject Json){
+
     }
 }

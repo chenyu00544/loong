@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 public class HomeAds1Item extends BaseItem<Adses> {
     public static final int TYPE = 2;
@@ -32,13 +34,13 @@ public class HomeAds1Item extends BaseItem<Adses> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        int width = context.getResources().getDisplayMetrics().widthPixels;
+        int width = ToolUtils.getWindowsWidth(context);
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
         Integer[] ids = new Integer[]{R.id.imageView99, R.id.imageView103, R.id.imageView102};
-        for (int i=0;i<ids.length;i++){
-            ImageView iv = holder.getImageView(ids[i]);
+        for (int i=0;i<mData.getAds().size();i++){
+            ImageView iv = holder.get(ids[i]);
             posMap.put(ids[i], i);
             iv.setOnClickListener(listener);
             if(i==0){
@@ -48,6 +50,7 @@ public class HomeAds1Item extends BaseItem<Adses> {
                 set.constrainWidth(iv.getId(), width * 225 / 375);
                 set.constrainHeight(iv.getId(), width * 150 / 375 * 5 / 9);
             }
+            Glide.with(context).load(mData.getAds().get(i).getAd_code()).into(iv);
         }
         set.applyTo(cly);
     }

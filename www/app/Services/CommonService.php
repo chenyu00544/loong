@@ -102,4 +102,9 @@ class CommonService
         }
         return $pList;
     }
+
+    public function priceFormat($price)
+    {
+        return '￥'.$price;
+    }
 }

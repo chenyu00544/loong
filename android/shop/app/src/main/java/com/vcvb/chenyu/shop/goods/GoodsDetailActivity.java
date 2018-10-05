@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.MainActivity;
@@ -31,14 +32,15 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsPriceItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSpecificationsItem;
-import com.vcvb.chenyu.shop.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.GoodsAddressDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsAttrDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsExplainDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsFaatDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.evaluate.QuestionsListActivity;
+import com.vcvb.chenyu.shop.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
@@ -63,13 +65,23 @@ import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.receiver.Receiver;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.Call;
+
 public class GoodsDetailActivity extends GoodsActivity {
+    private int goods_id;
+    private JSONObject goodsJson;
+
     int pos = 0;
     private View child1;
     private View line;
@@ -89,7 +101,6 @@ public class GoodsDetailActivity extends GoodsActivity {
     private ArrayList<GoodsAttr> selectAttrs = new ArrayList<>();
     private ArrayList<GoodsShip> ships = new ArrayList<>();
 
-    private boolean isImgText = true;
     private boolean isCollection = false;
 
     public GoodsDetailActivity() {
@@ -100,10 +111,13 @@ public class GoodsDetailActivity extends GoodsActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.goods_detail);
         context = this;
+        loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         changeStatusBarTextColor(true);
+        goods_id = getIntent().getIntExtra("id", 0);
         setNavBack();
         initView();
         initListener();
+        getData(true);
     }
 
     //在这个方法内才能获取正确的距离宽高参数
@@ -112,6 +126,38 @@ public class GoodsDetailActivity extends GoodsActivity {
         super.onWindowFocusChanged(hasFocus);
 //        eY = findViewById(R.id.goods_evaluate).getTop();
 //        eI = findViewById(R.id.goods_image_text_info).getTop();
+    }
+
+    @Override
+    public void getData(final boolean b) {
+        loadingDialog.show();
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("goods_id", goods_id + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.GOODSDETAIL, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                if (json != null) {
+                    goodsJson = json;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.dismiss();
+                            bindData();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "网络错误！", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -174,7 +220,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onClicked(View v) {
                 System.out.println(v);
-                switch (v.getId()){
+                switch (v.getId()) {
                     case ConstantManager.Menu.MESSAGE:
                         break;
                     case ConstantManager.Menu.HOME:
@@ -444,8 +490,8 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
         GoodsSpecifications goodsSpecifications = new GoodsSpecifications();
         goodsSpecifications.setGoodsSpecifications(specifications);
-        goodsSpecifications.setHeaderLogo("http://pic8.nipic" + "" + "" + "" + "" + "" + "" +
-                ".com/20100705/2457331_121923653886_2.jpg");
+        goodsSpecifications.setHeaderLogo("http://pic8.nipic" + "" + "" + "" + "" + "" + "" + ""
+                + ".com/20100705/2457331_121923653886_2.jpg");
         goodsDetails.setSpecifications(goodsSpecifications);
         ArrayList<GoodsDesc> descs = new ArrayList<>();
         for (int i = 0; i < Images.imageUrls.length; i++) {
@@ -459,6 +505,16 @@ public class GoodsDetailActivity extends GoodsActivity {
         goodsDatail.setAdapter(mAdapter);
         goodsDatail.setNestedScrollingEnabled(false);
         mAdapter.addAll(getItems(goodsDetails));
+    }
+
+    public void bindData(){
+        if(goodsJson != null){
+            try {
+                goodsDetails.setData(goodsJson.getJSONObject("data"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected List<Item> getItems(GoodsDetail goodsDetails) {
@@ -613,10 +669,10 @@ public class GoodsDetailActivity extends GoodsActivity {
                     startActivity(intent);
                     break;
                 case R.id.collection:
-                    if(isCollection == true){
+                    if (isCollection == true) {
                         Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
                         isCollection = false;
-                    }else{
+                    } else {
                         Glide.with(context).load(R.drawable.icon_love_active).into(collectionView);
                         isCollection = true;
                     }

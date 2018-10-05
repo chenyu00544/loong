@@ -11,7 +11,7 @@ import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
 
 public class HomeItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
-    private int pos = 0;
+    private HomeBean homeBean;
 
     public HomeItemDecoration(Context context) {
         super();
@@ -20,30 +20,32 @@ public class HomeItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     public void setData(HomeBean bean){
-        pos = bean.getAdses().size();
+        homeBean = bean;
     }
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State
             state) {
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
-            int position = parent.getChildAdapterPosition(view);
-            if (position > pos) {
-                if (pos % 2 == 0) {
-                    if (position % 2 != 0) {
-                        outRect.set(6, 3, 3, 3);
-                    } else {
-                        outRect.set(3, 3, 6, 3);
-                    }
-                }else{
-                    if (position % 2 == 0) {
-                        outRect.set(6, 3, 3, 3);
-                    } else {
-                        outRect.set(3, 3, 6, 3);
+            int pos = parent.getChildAdapterPosition(view);
+            if(homeBean != null){
+                if (pos < homeBean.getAdses().size()) {
+                    outRect.set(0, 0, 0, 0);
+                } else {
+                    if (homeBean.getAdses().size() % 2 != 0) {
+                        if (pos % 2 != 0) {
+                            outRect.set(6, 6, 3, 3);
+                        } else {
+                            outRect.set(3, 6, 6, 3);
+                        }
+                    }else{
+                        if (pos % 2 == 0) {
+                            outRect.set(6, 6, 3, 3);
+                        } else {
+                            outRect.set(3, 6, 6, 3);
+                        }
                     }
                 }
-            } else {
-                outRect.set(0, 0, 0, 0);
             }
         } else if (parent.getLayoutManager() instanceof LinearLayoutManager) {
             outRect.set(0, 0, 0, 0);

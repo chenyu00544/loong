@@ -33,15 +33,6 @@ public class HomeBean {
 
     public void setData(JSONObject Json){
         try {
-            JSONArray adsesJsonArray = Json.getJSONArray("adses");
-            List<Adses> adses = new ArrayList<>();
-            for (int i = 0; i < adsesJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) adsesJsonArray.get(i);
-                Adses ads = new Adses();
-                ads.setData(object);
-                adses.add(ads);
-            }
-            this.setAdses(adses);
             JSONArray goodsesJsonArray = Json.getJSONArray("goodses");
             List<Goods> goodses = new ArrayList<>();
             for (int i = 0; i < goodsesJsonArray.length(); i++) {
@@ -55,6 +46,20 @@ public class HomeBean {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONArray adsesJsonArray = Json.getJSONArray("adses");
+            List<Adses> adses = new ArrayList<>();
+            for (int i = 0; i < adsesJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) adsesJsonArray.get(i);
+                Adses ads = new Adses();
+                ads.setData(object);
+                adses.add(ads);
+            }
+            this.setAdses(adses);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

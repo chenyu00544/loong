@@ -12,6 +12,7 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.tools.IdsUtils;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 public class HomeAds6Item extends BaseItem<Adses> {
     public static final int TYPE = 7;
@@ -33,11 +34,11 @@ public class HomeAds6Item extends BaseItem<Adses> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        int width = context.getResources().getDisplayMetrics().widthPixels;
-        FlowLayout fl = (FlowLayout) holder.getView(R.id.four_wrap);
+        int width = ToolUtils.getWindowsWidth(context);
+        FlowLayout fl = holder.get(R.id.four_wrap);
         fl.removeAllViews();
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width / 4, width / 4);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < mData.getAds().size(); i++) {
             int id = IdsUtils.generateViewId();
             ImageView iv = new ImageView(context);
             iv.setId(id);
@@ -47,6 +48,7 @@ public class HomeAds6Item extends BaseItem<Adses> {
             Glide.with(context).load(R.drawable.icon_no_pic).into(iv);
             iv.setOnClickListener(listener);
             fl.addView(iv);
+            Glide.with(context).load(mData.getAds().get(i).getAd_code()).into(iv);
         }
     }
 }

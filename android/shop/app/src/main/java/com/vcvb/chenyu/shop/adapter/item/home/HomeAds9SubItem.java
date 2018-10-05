@@ -3,7 +3,9 @@ package com.vcvb.chenyu.shop.adapter.item.home;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -30,5 +32,7 @@ public class HomeAds9SubItem extends BaseItem<Ads> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         int width = context.getResources().getDisplayMetrics().widthPixels;
+        ImageView iv = holder.get(R.id.imageView115);
+        Glide.with(context).load(mData.getAd_code()).into(iv);
     }
 }

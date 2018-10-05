@@ -36,7 +36,7 @@ public class HomeNavsItem extends BaseItem<Adses> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        int width = context.getResources().getDisplayMetrics().widthPixels - ToolUtils.dip2px
+        int width = ToolUtils.getWindowsWidth(context) - ToolUtils.dip2px
                 (context, 12);
 
         ShadowViewHelper.bindShadowHelper(new ShadowProperty().setShadowRadius(ToolUtils.dip2px
@@ -48,10 +48,7 @@ public class HomeNavsItem extends BaseItem<Adses> {
             spac = mData.getAds().size();
         }
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width / spac, width / 4);
-        Integer[] ids = new Integer[]{R.drawable.icon_navs_cosmetics, R.drawable.icon_navs_milk,
-                R.drawable.icon_navs_nutrition, R.drawable.icon_navs_extravagant, R.drawable
-                .icon_navs_clothes};
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < mData.getAds().size(); i++) {
             int id = IdsUtils.generateViewId();
             ImageView imageView = new ImageView(context);
             imageView.setId(id);
@@ -59,7 +56,7 @@ public class HomeNavsItem extends BaseItem<Adses> {
             imageView.setLayoutParams(params);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setOnClickListener(listener);
-            Glide.with(context).load(ids[i % 5]).into(imageView);
+            Glide.with(context).load(mData.getAds().get(i).getAd_code()).into(imageView);
             flowLayout.addView(imageView);
         }
     }
