@@ -72,6 +72,10 @@ return array(
             'name' => '商品列表',
             'url' => 'admin/goods',
         ),
+        'comment' => array(
+            'name' => '用户评论',
+            'url' => 'admin/comment',
+        ),
         'brandlist' => array(
             'name' => '品牌管理',
             'url' => 'admin/brand',

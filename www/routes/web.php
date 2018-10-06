@@ -290,5 +290,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('dialog/merchants/brand/modify', 'DialogController@modifyMerchantsBrand');
     Route::post('dialog/merchants/brand/del/{id}', 'DialogController@delMerchantsBrand');
 
-
+    Route::resource('comment', 'CommentController');
+    Route::post('comment/change', 'CommentController@change');
 });

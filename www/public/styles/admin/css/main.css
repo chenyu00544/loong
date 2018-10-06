@@ -1066,6 +1066,10 @@ textarea{
     padding: 5px;
 }
 
+.pad-all-10 {
+    padding: 10px;
+}
+
 .pad-all-15 {
     padding: 15px;
 }
@@ -2887,4 +2891,9 @@ input[type=file].upload-file {
     padding-bottom: 15px;
     border: 1px solid #f0d58f;
     background: #fffdf0;
+}
+.comments .msg-info{
+    padding: 15px;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
 }
