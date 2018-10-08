@@ -241,7 +241,6 @@
                                     $(that).parent().parent().remove();
                                 }, 1000);
                             }
-
                         });
                 }, function () {
                 });

@@ -4,17 +4,34 @@
  * User: Administrator - chenyu
  * Date: 2018/6/22
  * Time: 16:58
- * Desc: 
+ * Desc:
  */
 
 namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AccountLogModel extends Model
+class CommentImgModel extends Model
 {
-    protected $table = 'account_log';
+    protected $table = 'comment_img';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function getCommentImgs($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->get();
+    }
+
+    public function addCommentImgs($data)
+    {
+        return $this->create($data);
+    }
+
+    public function delCommentImg($where)
+    {
+        return $this->where($where)->delete();
+    }
 }

@@ -71,12 +71,7 @@ class CommentController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
-        if (!$ver->passes()) {
-            return view('shop.admin.failed');
-        }
-        $re = $this->xxxxxxxxxxxxxx->xxxxxxxxxxxxxx($request->except('_token'));
-        return view('shop.admin.success');
+        //
     }
 
     /**
@@ -102,7 +97,8 @@ class CommentController extends CommonController
     public function edit($id)
     {
         $comments = $this->commentRepository->getComments($id);
-        return view('shop.admin.comment.commentInfo', compact('comments'));
+        $user = $this->user;
+        return view('shop.admin.comment.commentInfo', compact('comments', 'id', 'user'));
     }
 
     /**
@@ -114,11 +110,11 @@ class CommentController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["content" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->xxxxxxxxxxxxxx->XXXXXXXXXXXXXX($request->except('_token', '_method'), $id);
+        $re = $this->commentRepository->modifyComments($request, $id, $this->user);
         return view('shop.admin.success');
     }
 

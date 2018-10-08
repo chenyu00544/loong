@@ -2897,3 +2897,8 @@ input[type=file].upload-file {
     border: 1px solid #dbdbdb;
     border-radius: 5px;
 }
+
+.msg-img img{
+    width: 100px;
+    height: 100px;
+}

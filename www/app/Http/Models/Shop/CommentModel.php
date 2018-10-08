@@ -33,12 +33,18 @@ class CommentModel extends Model
         return $this->hasOne('App\Http\Models\Shop\SellerShopInfoModel', 'ru_id', 'ru_id');
     }
 
+    public function commentImg()
+    {
+        return $this->hasMany('App\Http\Models\Shop\CommentImgModel', 'comment_id', 'comment_id');
+    }
+
     public function getCommentByPage($where = [], $search = [], $column = ['*'], $size = 15)
     {
         $m = $this->select($column)
             ->with(['goods'])
             ->with(['article'])
             ->with(['shop'])
+            ->with(['commentImg'])
             ->where($where);
         if (!empty($search['seller'])) {
             if ($search['seller'] == 'selfsale') {
@@ -57,9 +63,36 @@ class CommentModel extends Model
     public function getComments($id, $column = ['*'])
     {
         return $this->select($column)
+            ->with(['goods'])
+            ->with(['article'])
+            ->with(['shop'])
+            ->with(['commentImg'])
             ->orWhere(['comment_id'=>$id])
             ->orWhere(['parent_id'=>$id])
+            ->orderBy('comment_id', 'DESC')
             ->get();
+    }
+
+    public function getComment($id, $column = ['*'])
+    {
+        return $this->select($column)
+            ->with(['goods'])
+            ->with(['article'])
+            ->with(['shop'])
+            ->with(['commentImg'])
+            ->where(['comment_id'=>$id])
+            ->first();
+    }
+
+    public function setComment($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function addComment($data)
+    {
+        return $this->create($data);
     }
 
     public function delComment($where)
