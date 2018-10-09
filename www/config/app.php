@@ -195,6 +195,7 @@ return [
         App\Providers\RedisCacheServiceProvider::class,
         App\Providers\CaptchaServiceProvider::class,
         App\Providers\OssServiceProvider::class,
+        App\Providers\AliyunSmsServiceProvider::class,
 //        Intervention\Image\ImageServiceProvider::class,
     ],
 
@@ -263,6 +264,7 @@ return [
         'RedisCache' => App\Facades\RedisCache::class,
         'Captcha' => App\Facades\Captcha::class,
         'Oss' => App\Facades\Oss::class,
+        'AliyunSms' => App\Facades\AliyunSms::class,
 //        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
