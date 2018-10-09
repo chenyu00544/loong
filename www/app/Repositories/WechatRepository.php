@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\WechatRepositoryInterface;
+use App\Facades\RedisCache;
 use App\Http\Models\Shop\WechatModel;
 
 class WechatRepository implements WechatRepositoryInterface
@@ -50,7 +51,12 @@ class WechatRepository implements WechatRepositoryInterface
         if (strpos($data['appsecret'], '******') !== false) {
             unset($data['appsecret']);
         }
-        return $this->wechatModel->setWechat($where, $data);
+        $re = $this->wechatModel->setWechat($where, $data);
+        $conf = $this->wechatModel->getWechat($where);
+        if($conf){
+            RedisCache::set('wechat_config', $conf->toArray());
+        }
+        return $re;
     }
 
     public function addWechat($data, $user)

@@ -146,7 +146,17 @@ class ShopConfigService
         foreach ($shopConf as $value) {
             $shop_conf[$value->code] = $value->value;
         }
-        RedisCache::set('shop_config', $shop_conf);
+        if($groups == 'shop'){
+            RedisCache::set('shop_config', $shop_conf);
+        }elseif($groups == 'goods'){
+            RedisCache::set('goods_config', $shop_conf);
+        }elseif($groups == 'seller'){
+            RedisCache::set('store_config', $shop_conf);
+        }elseif($groups == 'sms'){
+            RedisCache::set('sms_config', $shop_conf);
+        }elseif($groups == 'tp_api'){
+            RedisCache::set('kdniao_config', $shop_conf);
+        }
         return true;
     }
 

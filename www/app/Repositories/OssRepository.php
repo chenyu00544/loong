@@ -72,6 +72,7 @@ class OssRepository implements OssRepositoryInterface
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where['id'] = $id;
         $updata = $data;
+        $this->aliossConfigureModel->setAlioss(['is_use'=>'1'], ['is_use'=>'0']);
         $re = $this->aliossConfigureModel->setAlioss($where, $updata);
         if ($re) {
             $req['code'] = 1;
@@ -80,7 +81,9 @@ class OssRepository implements OssRepositoryInterface
         $oss = $this->getAlioss($id);
         if($oss){
             $oss = $oss->toArray();
-            RedisCache::set('oss', $oss);
+            if($oss['is_use'] == 1){
+                RedisCache::set('oss_config', $oss);
+            }
         }
         return $req;
     }

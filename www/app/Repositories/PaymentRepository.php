@@ -11,6 +11,7 @@ namespace App\Repositories;
 use App\Contracts\PaymentRepositoryInterface;
 use App\Facades\Html;
 use App\Facades\LangConfig;
+use App\Facades\RedisCache;
 use App\Http\Models\Shop\PaymentModel;
 
 class PaymentRepository implements PaymentRepositoryInterface
@@ -76,6 +77,7 @@ class PaymentRepository implements PaymentRepositoryInterface
                 $payConf[$key] = $value;
             }
         }
+        RedisCache::set($update['pay_code'] . '_config', array_merge($update, $payConf));
         $update['pay_config'] = serialize($payConf);
         return $this->paymentModel->setPayment($where, $update);
     }

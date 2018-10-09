@@ -41,7 +41,7 @@
                             <label class="col-sm-2 control-label wd-120">查询年月：</label>
                             <div class="col-sm-10">
                                 @foreach($date as $k => $v)
-                                    <input type="text" style="width: 145px" name="date"
+                                    <input type="text" style="width: 15%;" name="date"
                                            id="date_{{$k}}"
                                            class="form-control input-sm fl @if($k!=0) mar-left-15 @endif"
                                            value="{{$v}}">

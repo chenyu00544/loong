@@ -18,12 +18,12 @@ class OssService
     public function __construct()
     {
         if (!isset(self::$ossClient)) {
-            $oss = RedisCache::get('oss');
+            $oss = RedisCache::get('oss_config');
             if (!$oss) {
                 $oss = (new AliossConfigureModel())->getAlioss(['is_use' => 1]);
                 if ($oss) {
                     $oss = $oss->toArray();
-                    RedisCache::set('oss', $oss);
+                    RedisCache::set('oss_config', $oss);
                 }
             }
             if ($oss) {

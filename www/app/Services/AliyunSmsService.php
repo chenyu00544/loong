@@ -28,8 +28,8 @@ class AliyunSmsService
             $security = false;
 
             // fixme 必填: 请参阅 https://ak-console.aliyun.com/ 取得您的AK信息
-            $accessKeyId = "your access key id";
-            $accessKeySecret = "your access key secret";
+            self::$accessKeyId = "your access key id";
+            self::$accessKeySecret = "your access key secret";
 
             // fixme 必填: 短信接收号码
             $params["PhoneNumbers"] = "17000000000";

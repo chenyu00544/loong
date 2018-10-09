@@ -21,6 +21,7 @@
                         {{csrf_field()}}
                         {{method_field('PUT')}}
 
+                        <input type="hidden" name="pay_code" value="{{$payInfo->pay_code}}">
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>支付方式名称：</label>
                             <div class="col-sm-3 n-wd400">
