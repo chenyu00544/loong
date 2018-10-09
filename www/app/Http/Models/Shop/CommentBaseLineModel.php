@@ -11,9 +11,9 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AccountLogModel extends Model
+class CommentBaseLineModel extends Model
 {
-    protected $table = 'account_log';
+    protected $table = 'comment_baseline';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];

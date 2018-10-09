@@ -11,10 +11,10 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AccountLogModel extends Model
+class CollectGoodsModel extends Model
 {
-    protected $table = 'account_log';
-    protected $primaryKey = 'id';
+    protected $table = 'collect_goods';
+    protected $primaryKey = 'rec_id';
     public $timestamps = false;
     protected $guarded = [];
 }
