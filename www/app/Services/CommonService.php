@@ -22,9 +22,34 @@ class CommonService
         $key = '';
         $pattern = '1234567890abcdefghijklmnopqrstuvwxyz';
         for ($i = 0; $i < $mun; $i++) {
-            $key .= $pattern{mt_rand(0,35)};    //生成php随机数
+            $key .= $pattern{mt_rand(0, 35)};    //生成php随机数
         }
         return $key;
+    }
+
+    public static function randNum($mun)
+    {
+        $min = 1;
+        $max = 9;
+        for ($i = 1; $i < $mun; $i++) {
+            $min *= 10;
+            $max *= 10;
+            $max += 9;
+        }
+        return rand($min, $max);
+    }
+
+    //匹配字符串
+    public function pregMatchAll($str, $pattern = '/\${[a-z|_\-|A-Z]*}/')
+    {
+        preg_match_all($pattern, $str, $dir);
+        $req = [];
+        foreach ($dir as $val) {
+            foreach ($val as $k => $v){
+                $req[$k] = substr($v, 2,-1);
+            }
+        }
+        return $req;
     }
 
     //分页列表
@@ -105,6 +130,6 @@ class CommonService
 
     public function priceFormat($price)
     {
-        return '￥'.$price;
+        return '￥' . $price;
     }
 }

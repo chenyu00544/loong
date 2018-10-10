@@ -67,8 +67,8 @@ class CommentModel extends Model
             ->with(['article'])
             ->with(['shop'])
             ->with(['commentImg'])
-            ->orWhere(['comment_id'=>$id])
-            ->orWhere(['parent_id'=>$id])
+            ->orWhere(['comment_id' => $id])
+            ->orWhere(['parent_id' => $id])
             ->orderBy('comment_id', 'DESC')
             ->get();
     }
@@ -80,13 +80,19 @@ class CommentModel extends Model
             ->with(['article'])
             ->with(['shop'])
             ->with(['commentImg'])
-            ->where(['comment_id'=>$id])
+            ->where(['comment_id' => $id])
             ->first();
     }
 
     public function setComment($where, $data)
     {
         return $this->where($where)
+            ->update($data);
+    }
+
+    public function setComments($where, $data)
+    {
+        return $this->whereIn('comment_id', $where)
             ->update($data);
     }
 

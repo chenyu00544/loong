@@ -10,20 +10,20 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\CommentRepository;
+use App\Repositories\QuestionAnswerRepository;
 use Illuminate\Http\Request;
 
-class CommentController extends CommonController
+class QuestionAnswerController extends CommonController
 {
-    private $commentRepository;
+    private $questionAnswerRepository;
 
     public function __construct(
-        CommentRepository $commentRepository
+        QuestionAnswerRepository $questionAnswerRepository
     )
     {
         parent::__construct();
-        $this->checkPrivilege('comment');
-        $this->commentRepository = $commentRepository;
+        $this->checkPrivilege('qa');
+        $this->questionAnswerRepository = $questionAnswerRepository;
     }
 
     /**
@@ -35,13 +35,13 @@ class CommentController extends CommonController
     {
         $search['keywords'] = $request->get('keywords');
         $search['seller'] = 'selfsale';
-        $comments = $this->commentRepository->getCommentByPage($search);
-        return view('shop.admin.comment.comment', compact('comments', 'search'));
+        $comments = $this->questionAnswerRepository->getQuestionAnswerByPage($search);
+        return view('shop.admin.qanswer.qanswer', compact('comments', 'search'));
     }
 
     public function change(Request $request)
     {
-        return $this->commentRepository->setComment($request->except('_token'));
+        return $this->questionAnswerRepository->change($request->except('_token'));
     }
 
     public function adAdd($id)
@@ -84,8 +84,8 @@ class CommentController extends CommonController
     {
         $search['keywords'] = $request->get('keywords');
         $search['seller'] = $id ? $id : 'selfsale';
-        $comments = $this->commentRepository->getCommentByPage($search);
-        return view('shop.admin.comment.comment', compact('comments', 'search'));
+        $comments = $this->questionAnswerRepository->getQuestionAnswerByPage($search);
+        return view('shop.admin.qanswer.qanswer', compact('comments', 'search'));
     }
 
     /**
@@ -96,9 +96,9 @@ class CommentController extends CommonController
      */
     public function edit($id)
     {
-        $comments = $this->commentRepository->getComments($id);
+        $comments = $this->questionAnswerRepository->getQuestionAnswers($id);
         $user = $this->user;
-        return view('shop.admin.comment.commentInfo', compact('comments', 'id', 'user'));
+        return view('shop.admin.qanswer.qanswerInfo', compact('comments', 'id', 'user'));
     }
 
     /**
@@ -114,7 +114,7 @@ class CommentController extends CommonController
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->commentRepository->modifyComments($request, $id, $this->user);
+        $re = $this->questionAnswerRepository->setQuestionAnswers($request, $id, $this->user);
         return view('shop.admin.success');
     }
 
@@ -126,6 +126,6 @@ class CommentController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->commentRepository->delComment($id);
+        return $this->questionAnswerRepository->delQuestionAnswer($id);
     }
 }

@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\AlismsRepositoryInterface;
+use App\Facades\RedisCache;
 use App\Http\Models\Shop\AlismsConfigureModel;
 
 class AlismsRepository implements AlismsRepositoryInterface
@@ -43,6 +44,14 @@ class AlismsRepository implements AlismsRepositoryInterface
         if ($re) {
             $req['code'] = 1;
             $req['msg'] = '操作成功';
+            $res = $this->alismsConfigureModel->getAlismses();
+            if ($res->count() > 0) {
+                $_conf = [];
+                foreach ($res as $value) {
+                    $_conf[$value->send_time] = $value->toArray();
+                }
+                RedisCache::set('sms_type', $_conf);
+            }
         }
         return $req;
     }
@@ -85,16 +94,16 @@ class AlismsRepository implements AlismsRepositoryInterface
     public function getSendTemplate($temp)
     {
         $template = array(
-            'sms_order_placed' => '您有新订单，收货人：${consignee}，联系方式：${ordermobile}，请您及时查收.',
-            'sms_order_payed' => '您有新订单，收货人：${consignee}，联系方式：${ordermobile}，已付款成功.',
+            'sms_order_placed' => '您的订单，收货人：${consignee}，联系方式：${ordermobile}，如有错误请及时联系${server_phone}.',
+            'sms_order_payed' => '您的订单，收货人：${consignee}，联系方式：${ordermobile}，已付款成功.',
             'sms_order_shipped' => '尊敬的${username}用户，您的订单已发货，收货人${consignee}，请您及时查收.',
             'store_order_code' => '尊敬的${username}用户，您的提货码是：${code}，请不要把提货码泄露给其他人，如非本人操作，可不用理会.',
-            'sms_signin' => '验证码${code}，您正在注册成为${product}用户，感谢您的支持！',
+            'sms_signin' => '验证码${code}，您正在注册成为${app_name}用户，感谢您的支持！',
             'sms_find_signin' => '验证码${code}，用于密码找回，如非本人操作，请及时检查账户安全',
             'sms_code' => '您的验证码是：${code}，请不要把验证码泄露给其他人，如非本人操作，可不用理会',
-            'sms_price_notic' => '尊敬的${username}用户，您关注的商品${goodssn}，赶快下单吧！',
-            'sms_seller_signin' => '亲爱的${sellername}，您的新账号：${loginname}，新密码 ：${password}，如非本人操作，请及时核对。',
-            'user_account_code' => '尊敬的${username}，您于${addtime}发出的${fmtamount}元${processtype}申请于${optime}为${examine}审核，账户余额为：${usermoney}，祝您购物愉快。',
+            'sms_price_notic' => '尊敬的${username}用户，您关注的商品${product}，赶快下单吧！',
+            'sms_seller_signin' => '亲爱的${username}，您的新账号：${loginname}，新密码 ：${password}，如非本人操作，请及时核对。',
+            'user_account_code' => '尊敬的${username}，您于${old_time}发出的${fmtamount}元${processtype}申请于${now_time}为审核${examine}，账户余额为：${balance}，祝您购物愉快。',
         );
         return $template[$temp['temp']];
     }

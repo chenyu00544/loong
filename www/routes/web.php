@@ -292,4 +292,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::resource('comment', 'CommentController');
     Route::post('comment/change', 'CommentController@change');
+
+    Route::resource('qa', 'QuestionAnswerController');
+    Route::post('qa/change', 'QuestionAnswerController@change');
 });

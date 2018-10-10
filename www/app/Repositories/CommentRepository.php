@@ -35,12 +35,34 @@ class CommentRepository implements CommentRepositoryInterface
     public function getComments($id)
     {
         $comments = $this->commentModel->getComments($id);
-        foreach ($comments as $comment){
-            foreach ($comment->commentImg as $commentImg){
+        foreach ($comments as $comment) {
+            foreach ($comment->commentImg as $commentImg) {
                 $commentImg->comment_img = FileHandle::getImgByOssUrl($commentImg->comment_img);
             }
         }
         return $comments;
+    }
+
+    public function setComment($data)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        if ($data['type'] == 'status') {
+            $where['comment_id'] = $data['id'];
+            $update['status'] = $data['val'];
+            $re = $this->commentModel->setComment($where, $update);
+        } elseif ($data['type'] == 'allow') {
+            $where = $data['ids'];
+            $update['status'] = 1;
+            $re = $this->commentModel->setComments($where, $update);
+        } elseif ($data['type'] == 'deny') {
+            $where = $data['ids'];
+            $update['status'] = 0;
+            $re = $this->commentModel->setComments($where, $update);
+        }
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
     }
 
     public function modifyComments($data, $id, $user)

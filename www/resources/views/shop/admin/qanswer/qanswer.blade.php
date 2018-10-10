@@ -7,10 +7,10 @@
             <div class="tabs mar-top-5">
                 <ul class="fl">
                     <li class="@if($search['seller'] == 'selfsale') curr @endif fl">
-                        <a href="{{url('admin/comment/selfsale')}}">自营</a>
+                        <a href="{{url('admin/qa/selfsale')}}">自营</a>
                     </li>
                     <li class="@if($search['seller'] == 'seller') curr @endif fl">
-                        <a href="{{url('admin/comment/seller')}}">店铺</a>
+                        <a href="{{url('admin/qa/seller')}}">店铺</a>
                     </li>
                 </ul>
             </div>
@@ -27,11 +27,11 @@
             <div class="fromlist clearfix">
                 <div>
                     <div class="fr wd250">
-                        <form action="{{url('admin/comment')}}" method="get">
+                        <form action="{{url('admin/qa')}}" method="get">
                             {{csrf_field()}}
                             <input type="hidden" name="seller" value="{{$search['seller']}}">
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
-                                   class="form-control input-sm max-wd-190" placeholder="评论内容">
+                                   class="form-control input-sm max-wd-190" placeholder="问答内容">
                             <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr" value="查询">
                         </form>
                     </div>
@@ -44,7 +44,6 @@
                             </th>
                             <th class="text-center" style="width: 5%"><a>编号</a></th>
                             <th style="width: 10%"><a>用户名</a></th>
-                            <th style="width: 10%">商家名称</th>
                             <th style="width: 5%">类型</th>
                             <th style="width: 25%">评论对象</th>
                             <th style="width: 10%">IP地址</th>
@@ -58,12 +57,12 @@
                             @foreach($comments as $comment)
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="checkboxes" value="{{$comment->comment_id}}"
+                                        <input type="checkbox" name="checkboxes" value="{{$comment->qa_id}}"
                                                class="checkbox check-all"
-                                               id="checkbox_{{$comment->comment_id}}">
+                                               id="checkbox_{{$comment->qa_id}}">
                                     </td>
                                     <td class="text-center">
-                                        {{$comment->comment_id}}
+                                        {{$comment->qa_id}}
                                     </td>
                                     <td>{{$comment->user_name}}</td>
                                     <td>
@@ -172,7 +171,7 @@
                 var tag = $(this).data('type');
                 var id = $(this).children('input').val();
                 $.post(
-                    '{{url("admin/comment/change")}}',
+                    '{{url("admin/qa/change")}}',
                     {
                         id: id,
                         type: tag,
@@ -200,7 +199,7 @@
 
                 if (ids.length > 0 && select_type != 0) {
                     $.post(
-                        '{{url("admin/comment/change")}}',
+                        '{{url("admin/qa/change")}}',
                         {
                             ids: ids,
                             type: select_type,
@@ -232,7 +231,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/comment/')}}/" + Id,
+                        "{{url('admin/qa/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
