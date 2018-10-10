@@ -8,10 +8,10 @@
             <div class="explanation" id="explanation">
                 <div class="ex_tit"><h4>系统检测到您有影响商城运营的基本配置信息尚未配置：</h4></div>
                 <div class="ex_con">
-                    <span>短信配置尚未配置，<a href="sms_setting.php?act=step_up">前往配置</a></span>
-                    <span>邮件配置尚未配置，<a href="shop_config.php?act=mail_settings">前往配置</a></span>
-                    <span>支付方式尚未配置，<a href="payment.php?act=list">前往配置</a></span>
-                    <span>阿里OSS尚未配置，<a href="oss_configure.php?act=list">前往配置</a></span>
+                    <span>短信配置尚未配置，<a href="{{url('admin/sms')}}">前往配置</a></span>
+                    <span>邮件配置尚未配置，<a href="{{url('admin/email')}}">前往配置</a></span>
+                    <span>支付方式尚未配置，<a href="{{url('admin/pay')}}">前往配置</a></span>
+                    <span>阿里OSS尚未配置，<a href="{{url('admin/oss')}}">前往配置</a></span>
                 </div>
             </div>
         </div>

@@ -13,6 +13,7 @@ use App\Facades\LangConfig;
 use App\Facades\RedisCache;
 use App\Http\Models\Shop\AliossConfigureModel;
 use App\Http\Models\Shop\AlismsConfigureModel;
+use App\Http\Models\Shop\EmailConfigureModel;
 use App\Http\Models\Shop\PaymentModel;
 use App\Http\Models\Shop\ShopConfigModel;
 use App\Http\Models\Shop\WechatModel;
@@ -225,6 +226,17 @@ class CommonController extends Controller
                 $_conf[$value->send_time] = $value->toArray();
             }
             RedisCache::set('sms_type', $_conf);
+        }
+
+        //邮件配置
+        if (!RedisCache::get('smtp_config')) {
+            $m = (new EmailConfigureModel);
+            $conf = $m->getEmailConfigure();
+            $_conf = [];
+            if($conf){
+                $_conf = $conf->toArray();
+            }
+            RedisCache::set('smtp_config', $_conf);
         }
     }
 }

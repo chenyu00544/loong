@@ -295,4 +295,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::resource('qa', 'QuestionAnswerController');
     Route::post('qa/change', 'QuestionAnswerController@change');
+
+    Route::resource('email', 'EmailController');
+    Route::post('email/test/sendmail', 'EmailController@testSendMail');
 });

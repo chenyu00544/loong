@@ -48,6 +48,7 @@ return array(
         'sms' => '短信',
         'file' => '文件',
         'interface' => '接口',
+        'email' => '邮件',
     ),
 
     //三级导航
@@ -298,6 +299,12 @@ return array(
         'interface' => array(
             'name' => '快递鸟配置',
             'url' => 'admin/interface/kdniao',
+        ),
+    ),
+    'email' => array(
+        'email' => array(
+            'name' => '邮件服务器',
+            'url' => 'admin/email',
         ),
     ),
 );

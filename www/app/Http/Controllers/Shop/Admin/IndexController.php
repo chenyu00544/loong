@@ -16,6 +16,7 @@ class IndexController extends CommonController
     public function __construct()
     {
         parent::__construct();
+        $this->setConfCache();
     }
 
     public function index()
@@ -27,7 +28,6 @@ class IndexController extends CommonController
 
     public function info()
     {
-        $this->setConfCache();
         return view('shop.admin.info');
     }
 }
