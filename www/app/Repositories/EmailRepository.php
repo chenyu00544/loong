@@ -9,9 +9,9 @@
 namespace App\Repositories;
 
 use App\Contracts\EmailRepositoryInterface;
+use App\Facades\Email;
 use App\Facades\RedisCache;
 use App\Http\Models\Shop\EmailConfigureModel;
-use PHPMailer\PHPMailer\PHPMailer;
 
 class EmailRepository implements EmailRepositoryInterface
 {
@@ -50,31 +50,31 @@ class EmailRepository implements EmailRepositoryInterface
         return $re;
     }
 
-    public function testSendMail()
+    public function sendMail($data)
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
-        $mail = new PHPMailer();
-        try {
-            $mail->isSMTP();
-            $mail->SMTPDebug = 1;
-            $mail->CharSet = "UTF-8";
-            $mail->SMTPAuth = true;
-            $mail->SMTPSecure = "ssl";
-            $mail->Host = "smtp.126.com";
-            $mail->Port = 25;
-            $mail->Username = "vcvbuy@126.com";
-            $mail->Password = "vcvbuy00544";
-            $mail->setFrom("vcvbuy@126.com", "柠檬VC");
-            $mail->Subject = "Test";
-            $mail->MsgHTML("Thisisatest");//
-            $mail->addAddress("chenyu00544@163.com", "chenyu");
-//            $mail->addAddress("xxxxx_1@163.com", "leon");
-            $mail->send();
+        $params = [];
+        foreach ($data['data'] as $value){
+            $params[] = ['email' => $value['email'], 'username' => $value['user_name']];
+        }
+        $msg['content'] = $data['content'];
+        $msg['subtitle'] = $data['subtitle'];
+        $re = Email::sendEmail($params, $msg);
+        if ($re) {
             $req = ['code' => 1, 'msg' => '操作成功'];
-        } catch (phpmailerException $e) {
-            dd($e);
-        } catch (Exception $e) {
-            dd($e);
+        }
+        return $req;
+    }
+
+    public function testSendMail($data)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $params[] = ['email' => $data['email'], 'username' => $data['username']];
+        $msg['content'] = '<div></div><p><img alt="undefined" src="https://cbu01.alicdn.com/img/ibank/2018/333/257/9274752333_573552641.jpg"/><br/></p>';
+        $msg['subtitle'] = '这个是一个测试邮件';
+        $re = Email::sendEmail($params, $msg);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;
     }

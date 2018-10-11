@@ -147,6 +147,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="goods-btn">
                                 <a href="javascript:;" class="btn btn-default mar-all-10 prev" data-step="1"
                                    data-type="step" ectype="stepSubmit">上一步，选择商品模式</a>

@@ -306,5 +306,9 @@ return array(
             'name' => '邮件服务器',
             'url' => 'admin/email',
         ),
+        'sendemail' => array(
+            'name' => '发送邮件',
+            'url' => 'admin/email/send',
+        ),
     ),
 );

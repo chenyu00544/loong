@@ -99,8 +99,8 @@
                             <label class="col-sm-4 control-label">邮件编码：</label>
                             <div class="col-sm-4">
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="mail_charset" value="UTF8"
-                                           @if($email->mail_charset == 'UTF8') checked @endif> 国际化编码（utf8）
+                                    <input type="radio" name="mail_charset" value="UTF-8"
+                                           @if($email->mail_charset == 'UTF-8') checked @endif> 国际化编码（utf-8）
                                 </label>
                                 <label class="radio-inline fl">
                                     <input type="radio" name="mail_charset" value="GB2312"
@@ -116,7 +116,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">邮件地址：</label>
+                            <label class="col-sm-4 control-label">测试邮件地址：</label>
                             <div class="col-sm-5">
                                 <input type="text" name="test_mail_address" class="form-control wd-220 fl"
                                        value=""
@@ -147,7 +147,11 @@
         $(function () {
             $('.test_mail').on('click', function () {
                 var mail = $('input[name=test_mail_address]').val();
-                $.post("{{url('admin/email/test/sendmail')}}", {'_token': '{{csrf_token()}}'}, function (data) {
+                $.post("{{url('admin/email/test/sendmail')}}", {
+                    '_token': '{{csrf_token()}}',
+                    'username': '亲，在测试哦~~',
+                    'email': mail
+                }, function (data) {
                     layer.msg(data.msg, {icon: data.code});
                 })
             });

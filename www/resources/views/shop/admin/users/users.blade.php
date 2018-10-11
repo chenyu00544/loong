@@ -28,7 +28,7 @@
                     <a href="{{url('admin/users/create')}}"
                        class="btn btn-success btn-add btn-sm">　添加会员　</a>
 
-                    <div class="fr wd250">
+                    <div class="fr wd250 mar-top-10">
                         <form action="{{url('admin/users/')}}" method="get">
                             {{csrf_field()}}
                             <input type="text" name="keywords" value=""

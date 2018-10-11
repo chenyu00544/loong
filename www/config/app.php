@@ -196,6 +196,7 @@ return [
         App\Providers\CaptchaServiceProvider::class,
         App\Providers\OssServiceProvider::class,
         App\Providers\AliyunSmsServiceProvider::class,
+        App\Providers\EmailServiceProvider::class,
 //        Intervention\Image\ImageServiceProvider::class,
     ],
 
@@ -265,6 +266,7 @@ return [
         'Captcha' => App\Facades\Captcha::class,
         'Oss' => App\Facades\Oss::class,
         'AliyunSms' => App\Facades\AliyunSms::class,
+        'Email' => App\Facades\Email::class,
 //        'Image' => Intervention\Image\Facades\Image::class,
     ],
 

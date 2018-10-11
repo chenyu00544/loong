@@ -10,9 +10,8 @@ namespace App\Repositories;
 
 use App\Contracts\SearchRepositoryInterface;
 use App\Http\Models\Shop\BrandModel;
-use App\Http\Models\shop\CategoryModel;
+use App\Http\Models\Shop\CategoryModel;
 use App\Http\Models\Shop\GoodsModel;
-use App\Http\Models\Shop\SellerGradeModel;
 use App\Http\Models\Shop\UserRankModel;
 use App\Http\Models\Shop\UsersModel;
 
@@ -72,7 +71,7 @@ class SearchRepository implements SearchRepositoryInterface
                 break;
             case 4:
                 $search['user_name'] = $data['keywords'];
-                $re = $this->usersModel->searchUsers($search, ['user_id', 'user_name']);
+                $re = $this->usersModel->searchUsers($search, ['user_id', 'user_name', 'email']);
                 foreach ($re as $key => $value) {
                     $re[$key]->id = $value->user_id;
                     $re[$key]->name = $value->user_name;

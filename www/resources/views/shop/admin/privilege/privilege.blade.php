@@ -19,7 +19,7 @@
                     <a href="{{url('admin/privilege/create')}}"
                        class="btn btn-success btn-add btn-sm">添加管理员</a>
 
-                    <div class="fr wd250">
+                    <div class="fr wd250 mar-top-10">
                         <form action="{{url('admin/privilege/')}}" method="get">
                             {{csrf_field()}}
                             <input type="text" name="keywords" value=""

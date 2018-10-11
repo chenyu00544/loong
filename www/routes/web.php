@@ -298,4 +298,5 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::resource('email', 'EmailController');
     Route::post('email/test/sendmail', 'EmailController@testSendMail');
+    Route::post('email/send', 'EmailController@sendMail');
 });

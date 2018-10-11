@@ -43,9 +43,14 @@ class EmailController extends CommonController
 
     }
 
-    public function testSendMail()
+    public function sendMail(Request $request)
     {
-        return $this->emailRepository->testSendMail();
+        return $this->emailRepository->sendMail($request->except('_token'));
+    }
+
+    public function testSendMail(Request $request)
+    {
+        return $this->emailRepository->testSendMail($request->except('_token'));
     }
 
     public function adEdit($id, $ad_type)
@@ -81,7 +86,9 @@ class EmailController extends CommonController
      */
     public function show(Request $request, $id)
     {
-
+        if($id == 'send'){
+            return view('shop.admin.email.emailSend');
+        }
     }
 
     /**
