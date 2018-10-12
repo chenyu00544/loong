@@ -1,5 +1,7 @@
 ## cd d:/wamp64/www/github
-
+    D:\github\www\
+    D:\wamp64\www\compare\online\
+    
 #phpredis
         $redis = new Redis(); // 创建一个redis客户端对象
         $redis->connect('127.0.0.1') || die('连接redis服务器失败！'); // 连接redis服务器

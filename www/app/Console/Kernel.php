@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\TestCommand::class,
+        \App\Console\Commands\CronCommand::class,
     ];
 
     /**
@@ -42,6 +43,7 @@ class Kernel extends ConsoleKernel
 //            Log::info('任务调度');
 //        })->everyMinute();
         $schedule->command('command:TestCommand')->everyMinute();
+        $schedule->command('command:CronCommand')->everyMinute();
     }
 
     /**

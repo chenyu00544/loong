@@ -502,6 +502,10 @@ textarea{
     height: 30px;
 }
 
+.hg34 {
+    height: 34px;
+}
+
 .top-border {
     font-size: 0;
     line-height: 0;

@@ -198,6 +198,10 @@ return array(
             'name' => '商城设置',
             'url' => 'admin/shopconf',
         ),
+        'cron' => array(
+            'name' => '计划任务',
+            'url' => 'admin/cron',
+        ),
         'navsetup' => array(
             'name' => '自定义导航',
             'url' => 'admin/navsetup',
