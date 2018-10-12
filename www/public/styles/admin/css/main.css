@@ -502,8 +502,8 @@ textarea{
     height: 30px;
 }
 
-.hg34 {
-    height: 34px;
+.hg40 {
+    height: 40px;
 }
 
 .top-border {
@@ -1030,6 +1030,10 @@ textarea{
 
 .mar-top-5 {
     margin-top: 5px;
+}
+
+.mar-top-7 {
+    margin-top: 7px;
 }
 
 .mar-top-10 {

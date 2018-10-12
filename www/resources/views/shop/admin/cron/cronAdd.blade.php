@@ -21,28 +21,28 @@
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font c class="red">*</font>链接名称：</label>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <input type="text" name="link_name" class="form-control" value=""
                                        placeholder="链接名称">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font c class="red">*</font>链接地址：</label>
-                            <div class="col-sm-4 n-wd400">
+                            <div class="col-sm-4">
                                 <input type="text" name="link_url" class="form-control" value=""
                                        placeholder="链接地址">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">排序：</label>
-                            <div class="col-sm-1">
+                            <div class="col-sm-2">
                                 <input type="text" name="show_order" class="form-control" value=""
                                        placeholder="排序">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">链接LOGO：</label>
-                            <div class="col-sm-4 n-wd400">
+                            <div class="col-sm-4">
                                 <input type="file" name="link_logo" class="fl">
                             </div>
                             <input type="hidden" name="link_logo_bak" value="">

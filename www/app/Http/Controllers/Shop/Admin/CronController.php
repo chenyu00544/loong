@@ -4,7 +4,7 @@
  * User: Administrator - chenyu
  * Date: 2018/6/22
  * Time: 16:58
- * Desc: 
+ * Desc:
  */
 
 namespace App\Http\Controllers\Shop\Admin;
@@ -17,6 +17,8 @@ class CronController extends CommonController
 {
 
     private $cronsRepository;
+    private $week;
+    private $task;
 
     public function __construct(
         CronsRepository $cronsRepository
@@ -25,6 +27,8 @@ class CronController extends CommonController
         parent::__construct();
         $this->checkPrivilege('cron');
         $this->cronsRepository = $cronsRepository;
+        $this->week = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期七'];
+        $this->task = [];
     }
 
     /**
@@ -56,6 +60,9 @@ class CronController extends CommonController
      */
     public function create()
     {
+        $week = $this->week;
+        $task = $this->task;
+        return view('shop.admin.cron.cronAdd', compact('week', 'task'));
     }
 
     /**
@@ -94,7 +101,9 @@ class CronController extends CommonController
     public function edit($id)
     {
         $cron = $this->cronsRepository->getCron($id);
-        return view('shop.admin.cron.cronEdit', compact('cron'));
+        $week = $this->week;
+        $task = $this->task;
+        return view('shop.admin.cron.cronEdit', compact('cron', 'week', 'task'));
     }
 
     /**
