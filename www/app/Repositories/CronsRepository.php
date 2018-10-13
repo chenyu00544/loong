@@ -122,6 +122,7 @@ class CronsRepository implements CronsRepositoryInterface
             if ($cron->nextime < $time) {
                 $cron->thistime = $time;
                 $cron->nextime = $this->computingNexTime($cron->toArray());
+                $this->task($cron);
             }
         }
     }

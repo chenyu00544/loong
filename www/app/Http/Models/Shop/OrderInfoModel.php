@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\Shop;
 
 use function foo\func;
@@ -64,6 +65,14 @@ class OrderInfoModel extends Model
             });
         }
         return $m->paginate($size);
+    }
+
+    public function getOrderInfos($where, $column = ['*'], $size = 10)
+    {
+        return $this->select($column)
+            ->where($where)
+            ->limit($size)
+            ->get();
     }
 
     public function getOrderInfo($where, $column = ['*'])

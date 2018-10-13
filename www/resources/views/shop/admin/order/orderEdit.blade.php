@@ -70,16 +70,21 @@
                                     <dd>{{$user->user_name}}</dd>
                                     <dt>订单状态：</dt>
                                     <dd>
-                                        @if($order->order_status == 0) 未确认 @elseif($order->order_status == 1)
-                                            已确认 @elseif($order->order_status == 2)
-                                            已取消 @elseif($order->order_status == 3) 无效 @elseif($order->order_status == 4)
-                                            退货 @endif
-                                        @if($order->pay_status == 0) 未付款 @elseif($order->pay_status == 2)
-                                            已付款 @elseif($order->pay_status == 4) 已退款 @endif
-                                        @if($order->shipping_status == 0) 未发货 @elseif($order->shipping_status == 1)
-                                            已发货 @elseif($order->shipping_status == 2)
-                                            已收货 @elseif($order->shipping_status == 3)
-                                            配货中 @elseif($order->shipping_status == 5) 发货中 @endif
+                                        @if($order->order_status == 0) 未确认
+                                        @elseif($order->order_status == 1) 已确认
+                                        @elseif($order->order_status == 2) 已取消
+                                        @elseif($order->order_status == 3) 无效
+                                        @elseif($order->order_status == 4) 退货
+                                        @endif
+                                        @if($order->pay_status == 0) 未付款
+                                        @elseif($order->pay_status == 2) 已付款
+                                        @elseif($order->pay_status == 4) 已退款
+                                        @endif
+                                        @if($order->shipping_status == 0) 未发货
+                                        @elseif($order->shipping_status == 1) 已发货
+                                        @elseif($order->shipping_status == 2) 已收货
+                                        @elseif($order->shipping_status == 3) 配货中
+                                        @elseif($order->shipping_status == 5) 发货中 @endif
                                     </dd>
                                 </dl>
                                 <dl>
@@ -472,13 +477,13 @@
                 }, function (data) {
                     layer.msg(data.msg, {icon: data.code});
                     setTimeout(function () {
-                        if(type == 'delete'){
-                            if(ru_id > 0){
+                        if (type == 'delete') {
+                            if (ru_id > 0) {
                                 location.href = "{{url('admin/order/seller')}}";
-                            }else{
+                            } else {
                                 location.href = "{{url('admin/order/')}}";
                             }
-                        }else{
+                        } else {
                             location.href = "{{url('admin/order/')}}/" + order_id + "/edit";
                         }
 
