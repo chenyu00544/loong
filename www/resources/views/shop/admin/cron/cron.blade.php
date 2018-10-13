@@ -41,7 +41,7 @@
                         @foreach($crons as $cron)
                             <tr>
                                 <td>{{$cron->cron_name}}</td>
-                                <td>{{$cron->cron_desc}}</td>
+                                <td class="wsn">{{$cron->cron_desc}}</td>
                                 <td>{{date('Y-m-d H:i:s', $cron->thistime)}}</td>
                                 <td>{{date('Y-m-d H:i:s', $cron->nextime)}}</td>
                                 <td>

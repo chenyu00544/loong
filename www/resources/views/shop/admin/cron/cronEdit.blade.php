@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">系统设置 - 编辑此计划任务</div>
+        <div class="title">系统设置 - 编辑计划任务</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -38,7 +38,7 @@
                             <label class="col-sm-4 control-label">每次处理记录个数：</label>
                             <div class="col-sm-2">
                                 <input type="text" name="cron_num" class="form-control" value="{{$cron->cron_num}}"
-                                       placeholder="排序">
+                                       placeholder="个数">
                             </div>
                         </div>
                         <div class="form-group">
@@ -46,12 +46,12 @@
                             <div class="col-sm-4">
                                 <div class="clearfix hg40 pad-top-4">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="ttype" value="day"> 每月
+                                        <input type="radio" name="ttype" value="day" @if($cron->day > 0) checked @endif> 每月
                                     </label>
                                     <div class="fl wd-180">
                                         <select name="day" id="" class="form-control wd-120 input-sm fl">
                                             @for($i=1;$i<32;$i++)
-                                                <option value="{{$i}}">{{$i}}</option>
+                                                <option value="{{$i}}" @if($cron->day == $i) selected @endif>{{$i}}</option>
                                             @endfor
                                         </select>
                                         <span class="line-hg-30 mar-left-5">天</span>
@@ -59,12 +59,12 @@
                                 </div>
                                 <div class="clearfix hg40 pad-top-4">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="ttype" value="week"> 每周
+                                        <input type="radio" name="ttype" value="week" @if($cron->week > 0) checked @endif> 每周
                                     </label>
                                     <div class="fl wd-180">
                                         <select name="week" id="" class="form-control wd-120 input-sm fl">
                                             @foreach($week as $k => $w)
-                                                <option value="{{$k+1}}">{{$w}}</option>
+                                                <option value="{{$k+1}}" @if($cron->week == $k+1) selected @endif>{{$w}}</option>
                                             @endforeach
                                         </select>
                                         <span class="line-hg-30 mar-left-5">星期</span>
@@ -72,14 +72,21 @@
                                 </div>
                                 <div class="clearfix hg40 pad-top-4">
                                     <label class="radio-inline fl">
-                                        <input type="radio" name="ttype" value="hour" checked> 每日
+                                        <input type="radio" name="ttype" value="hour" @if($cron->day == 0 && $cron->week == 0) checked @endif> 每日
                                     </label>
                                     <div class="fl wd-180">
                                         <input type="text" name="hour" class="form-control input-sm fl"
                                                value="{{$cron->hour}}"
                                                placeholder="请用半角逗号分隔多个小时">
                                     </div>
-                                    <span class="line-hg-30 mar-left-5">小时</span>
+                                    <span class="line-hg-30 mar-left-5 fl mar-right-20">小时</span>
+                                    <div class="clearfix checkbox-items fl">
+                                        <div class="checkbox-item fl mar-right-20">
+                                            <input type="checkbox" class="ui-checkbox" value="1"
+                                                   id="all_hour" @if($cron->hour == '0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23') checked @endif>
+                                            <label class="ui-label mar-top-7" for="all_hour">全部</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -100,7 +107,7 @@
                                     <div class="checkbox-item fl mar-right-20">
                                         <input type="checkbox" name="cron_run_once" class="ui-checkbox" value="1"
                                                id="cron_run_once">
-                                        <label class="ui-label mar-left-5 mar-top-7" for="cron_run_once">关闭</label>
+                                        <label class="ui-label mar-top-7" for="cron_run_once">关闭</label>
                                     </div>
                                 </div>
                             </div>
@@ -118,8 +125,10 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">执行的任务：</label>
                             <div class="col-sm-4 checkbox-items">
-                                <select name="alow_files" id="" class="form-control wd-120 input-sm fl">
-                                    <option value="1">1</option>
+                                <select name="alow_files" id="" class="form-control wd-240 input-sm fl">
+                                    @foreach($task as $k => $t)
+                                        <option value="{{$k}}">{{$t}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -143,6 +152,18 @@
 @section('script')
     <script>
         $(function () {
+            $('#all_hour').on('click', function () {
+                var all = '';
+                for (var i = 0; i < 24; i++) {
+                    all += i + ',';
+                }
+                all = all.substr(0, all.length-1);
+                if($('input[name=hour]').val()==all){
+                    $('input[name=hour]').val('');
+                }else{
+                    $('input[name=hour]').val(all);
+                }
+            });
         });
     </script>
 @endsection

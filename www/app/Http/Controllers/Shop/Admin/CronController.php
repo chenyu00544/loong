@@ -28,7 +28,7 @@ class CronController extends CommonController
         $this->checkPrivilege('cron');
         $this->cronsRepository = $cronsRepository;
         $this->week = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期七'];
-        $this->task = [];
+        $this->task = ['order' => '订单到期处理', 'task' => '计划任务数据处理', 'notice_to_cb' => '红包优惠券到期提醒', 'notice_to_seller' => '新订单通知(商家)', 'notice_to_user' => '订单变化通知(用户)'];
     }
 
     /**
@@ -73,11 +73,11 @@ class CronController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
+        $ver = Verifiable::Validator($request->all(), []);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->xxxxxxxxxxxxxx->xxxxxxxxxxxxxx($request->except('_token'));
+        $re = $this->cronsRepository->addCron($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -115,11 +115,11 @@ class CronController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
+        $ver = Verifiable::Validator($request->all(), []);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->xxxxxxxxxxxxxx->XXXXXXXXXXXXXX($request->except('_token', '_method'), $id);
+        $re = $this->cronsRepository->setCron($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 

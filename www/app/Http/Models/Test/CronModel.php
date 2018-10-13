@@ -16,4 +16,10 @@ class CronModel extends Model
         $this->where(['name'=>'test'])
             ->increment('cron');
     }
+
+    public function incOrderCron()
+    {
+        $this->where(['name'=>'test'])
+            ->increment('order');
+    }
 }

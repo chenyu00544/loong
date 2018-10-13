@@ -197,6 +197,7 @@ return [
         App\Providers\OssServiceProvider::class,
         App\Providers\AliyunSmsServiceProvider::class,
         App\Providers\EmailServiceProvider::class,
+        App\Providers\CronServiceProvider::class,
 //        Intervention\Image\ImageServiceProvider::class,
     ],
 
@@ -267,6 +268,7 @@ return [
         'Oss' => App\Facades\Oss::class,
         'AliyunSms' => App\Facades\AliyunSms::class,
         'Email' => App\Facades\Email::class,
+        'Cron' => App\Facades\Cron::class,
 //        'Image' => Intervention\Image\Facades\Image::class,
     ],
 

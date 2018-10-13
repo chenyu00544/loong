@@ -44,4 +44,9 @@ class CronsModel extends Model
     {
         return $this->where($where)->update($data);
     }
+
+    public function addCron($data)
+    {
+        return $this->create($data);
+    }
 }

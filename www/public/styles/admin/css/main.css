@@ -113,7 +113,7 @@ textarea{
 }
 
 .wsn {
-    white-space: normal;
+    white-space: normal; !important;
 }
 
 .disn {
