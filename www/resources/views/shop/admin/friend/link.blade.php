@@ -30,16 +30,23 @@
                             <th class="col-sm-4 text-center">操作</th>
                         </tr>
                         </thead>
-                        <tbody>
-                        @foreach($friends as $friend)
-                            <tr>
-                                <td>
-                                    {{$friend->link_name}}
-                                </td>
-                                <td>
-                                    <a href="{{$friend->link_url}}" target="_blank">{{$friend->link_url}}</a>
-                                </td>
-                                <td>
+                        @if($friends->count() == 0)
+                            <tbody>
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
+                            </tr>
+                            </tbody>
+                        @else
+                            <tbody>
+                            @foreach($friends as $friend)
+                                <tr>
+                                    <td>
+                                        {{$friend->link_name}}
+                                    </td>
+                                    <td>
+                                        <a href="{{$friend->link_url}}" target="_blank">{{$friend->link_url}}</a>
+                                    </td>
+                                    <td>
                                     <span class="img-show fl">
                                         <a href="{{url($friend->link_logo)}}" target="_blank" class="nyroModal">
                                             <i class="glyphicon glyphicon-picture top2 img_{{$friend->link_id}}"
@@ -47,23 +54,24 @@
                                                data-toggle="tooltip" title="tooltip"></i>
                                         </a>
                                     </span>
-                                </td>
-                                </td>
-                                <td>
-                                    <input class="form-control input-sm changes" type="text"
-                                           data-id="{{$friend->link_id}}"
-                                           name="show_order"
-                                           value="{{$friend->show_order}}">
-                                </td>
-                                <td class="text-center">
-                                    <a type="button" href="{{url('admin/friend/'.$friend->link_id.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm"
-                                       data-id="{{$friend->link_id}}">删除</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
+                                    </td>
+                                    </td>
+                                    <td>
+                                        <input class="form-control input-sm changes" type="text"
+                                               data-id="{{$friend->link_id}}"
+                                               name="show_order"
+                                               value="{{$friend->show_order}}">
+                                    </td>
+                                    <td class="text-center">
+                                        <a type="button" href="{{url('admin/friend/'.$friend->link_id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm">编辑</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm"
+                                           data-id="{{$friend->link_id}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        @endif
                     </table>
                     <div class="page_list">
                         {{$friends->links()}}

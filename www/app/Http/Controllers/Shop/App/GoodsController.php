@@ -27,7 +27,10 @@ class GoodsController extends CommonController
     public function detail(Request $request)
     {
         $goods_id = !empty($request->get('goods_id')) ? $request->get('goods_id') : 0;
-        $data['goods_detail'] = $this->goodsRepository->getGoodsDetail($goods_id);
+        if(empty($goods_id)){
+            return ['code' => 9, 'msg' => '商品ID不为空', 'data' => []];
+        }
+        $data = $this->goodsRepository->getGoodsDetail($goods_id);
         return ['code' => 1, 'msg' => '', 'data' => $data];
     }
 }

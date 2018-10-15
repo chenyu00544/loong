@@ -11,20 +11,24 @@ namespace App\Repositories;
 use App\Contracts\CommentRepositoryInterface;
 use App\Facades\FileHandle;
 use App\Http\Models\Shop\CommentImgModel;
+use App\Http\Models\Shop\CommentLabelModel;
 use App\Http\Models\Shop\CommentModel;
 
 class CommentRepository implements CommentRepositoryInterface
 {
     private $commentModel;
     private $commentImgModel;
+    private $commentLabelModel;
 
     public function __construct(
         CommentModel $commentModel,
-        CommentImgModel $commentImgModel
+        CommentImgModel $commentImgModel,
+        CommentLabelModel $commentLabelModel
     )
     {
         $this->commentModel = $commentModel;
         $this->commentImgModel = $commentImgModel;
+        $this->commentLabelModel = $commentLabelModel;
     }
 
     public function getCommentByPage($search)
@@ -156,4 +160,38 @@ class CommentRepository implements CommentRepositoryInterface
         }
         return $req;
     }
+
+    public function getCommentLabels()
+    {
+        return $this->commentLabelModel->getCommentLabels();
+    }
+
+    public function getCommentLabel($id)
+    {
+        $where['id'] = $id;
+        return $this->commentLabelModel->getCommentLabel($where);
+    }
+
+    public function setCommentLabel($data, $id)
+    {
+        $where['id'] = $id;
+        return $this->commentLabelModel->setCommentLabel($where, $data);
+    }
+
+    public function addCommentLabel($data)
+    {
+        return $this->commentLabelModel->addCommentLabel($data);
+    }
+
+    public function delCommentLabel($id)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+        $where['id'] = $id;
+        $re = $this->commentLabelModel->delCommentLabel($where);
+        if ($re) {
+            $req = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $req;
+    }
+
 }

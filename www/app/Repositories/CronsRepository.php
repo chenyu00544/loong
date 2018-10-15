@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 use App\Contracts\CronsRepositoryInterface;
 use App\Facades\Cron;
+use App\Facades\RedisCache;
 use App\Http\Models\Shop\CronsModel;
 
 class CronsRepository implements CronsRepositoryInterface
@@ -54,7 +55,9 @@ class CronsRepository implements CronsRepositoryInterface
         }
         unset($data['ttype']);
         $data['nextime'] = $this->computingNexTime($data);
-        return $this->cronsModel->setCron($where, $data);
+        $re = $this->cronsModel->setCron($where, $data);
+        $this->setCronConfig();
+        return $re;
     }
 
     public function addCron($data)
@@ -76,6 +79,7 @@ class CronsRepository implements CronsRepositoryInterface
         unset($data['ttype']);
         $data['nextime'] = $this->computingNexTime($data);
         $re = $this->cronsModel->addCron($data);
+        $this->setCronConfig();
         return $re;
     }
 
@@ -91,6 +95,7 @@ class CronsRepository implements CronsRepositoryInterface
         }
         $re = $this->cronsModel->setCron($where, $updata);
         if (!empty($re)) {
+            $this->setCronConfig();
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;
@@ -237,13 +242,43 @@ class CronsRepository implements CronsRepositoryInterface
             case 'order':
                 Cron::orderConfirmTake($cron->cron_num);
                 break;
+            case 'notice_to_cb':
+                Cron::cbExpireRemind($cron->cron_num);
+                break;
+            case 'task':
+                Cron::CronUpdate();
+                break;
         }
-        $where['cron_id'] = $cron->cron_id;
-        $update['thistime'] = time();
-        $update['nextime'] = $cron->nextime;
-        if($cron->run_once == 1){
-            $update['enable'] = 0;
+
+
+        $crons = RedisCache::get('cron_config');
+        if ($crons) {
+            $crons[$cron->cron_id]->thistime = time();
+            $crons[$cron->cron_id]->nextime = $cron->nextime;
+            if ($crons[$cron->cron_id]->run_once == 1) {
+                unset($crons[$cron->cron_id]);
+            }
+            RedisCache::set('cron_config', $crons);
+            return $crons;
+        } else {
+            $where['cron_id'] = $cron->cron_id;
+            $update['thistime'] = time();
+            $update['nextime'] = $cron->nextime;
+            if ($cron->run_once == 1) {
+                $update['enable'] = 0;
+            }
+            $re = $this->cronsModel->setCron($where, $update);
+            return $re;
         }
-        return $this->cronsModel->setCron($where, $update);
+    }
+
+    public function setCronConfig()
+    {
+        $crons = $this->cronsModel->getCrons();
+        $_conf = [];
+        foreach ($crons as $cron) {
+            $_conf[$cron->cron_id] = $cron;
+        }
+        RedisCache::set('cron_config', $_conf);
     }
 }

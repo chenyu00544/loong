@@ -226,6 +226,10 @@ return array(
             'name' => '友情链接',
             'url' => 'admin/friend',
         ),
+        'comment_label' => array(
+            'name' => '评价标签',
+            'url' => 'admin/commentlabel',
+        ),
     ),
     'advertise' => array(
         'ad_list' => array(

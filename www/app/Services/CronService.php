@@ -9,20 +9,17 @@
 namespace App\Services;
 
 
+use App\Facades\RedisCache;
+use App\Http\Models\Shop\CronsModel;
 use App\Http\Models\Shop\OrderInfoModel;
 use App\Http\Models\Test\CronModel;
 
 class CronService
 {
-    private static $cronModel;
     private static $orderInfoModel;
 
     public function __construct()
     {
-        if (!isset(self::$cronModel)) {
-            self::$cronModel = new CronModel;
-        }
-        return self::$cronModel;
     }
 
     //更新未收货到期订单
@@ -34,7 +31,7 @@ class CronService
         $time = time();
         $where = [
             ['shipping_status', '=', 1],
-            ['shipping_time', '>', '`auto_delivery_time`*86400+'.$time]
+            ['shipping_time', '>', '`auto_delivery_time`*86400+' . $time]
         ];
         $orders = self::$orderInfoModel->getOrderInfos($where, ['*'], $limit);
         $whereIn = [];
@@ -44,5 +41,26 @@ class CronService
         $updata['shipping_status'] = 2;
         $updata['confirm_take_time'] = $time;
         self::$orderInfoModel->setOrderInfo([], $updata, $whereIn);
+    }
+    
+    //红包优惠券到期提醒
+    public function cbExpireRemind($limit = 50)
+    {
+        
+    }
+
+    //更新定时任务执行时间
+    public function CronUpdate()
+    {
+        $crons = RedisCache::get('cron_config');
+        if ($crons) {
+            $m = (new CronsModel);
+            foreach ($crons as $cron) {
+                $where['cron_id'] = $cron->cron_id;
+                $update['thistime'] = $cron->thistime;
+                $update['nextime'] = $cron->nextime;
+                $m->setCron($where, $update);
+            }
+        }
     }
 }

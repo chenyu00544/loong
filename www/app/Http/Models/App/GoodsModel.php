@@ -23,9 +23,19 @@ class GoodsModel extends Model
         return $this->hasMany('App\Http\Models\App\GoodsVolumePriceModel', 'goods_id', 'goods_id');
     }
 
-    public function fg()
+    public function faat()
     {
         return $this->belongsToMany('App\Http\Models\App\FavourableActivityModel', 'favourable_goods', 'goods_id', 'act_id');
+    }
+
+    public function qa()
+    {
+        return $this->hasMany('App\Http\Models\App\QuestionAnswerModel', 'id_value', 'goods_id');
+    }
+
+    public function gattr()
+    {
+        return $this->hasMany('App\Http\Models\App\GoodsAttrModel', 'goods_id', 'goods_id');
     }
 
     public function getGoodses($where, $page = 1, $column = ['*'], $size = 10)
@@ -44,12 +54,16 @@ class GoodsModel extends Model
     public function getGoods($where, $column = ['*'])
     {
         return $this->select($column)
-            ->with(['fg' => function ($query) {
+            ->with(['faat' => function ($query) {
                 $query->select(['*'])->where([['start_time', '<', time()], ['end_time', '>', time()]]);
             }])
             ->with(['gvp' => function ($query) {
                 $query->where(['price_type' => 1]);
             }])
+            ->with(['qa' => function ($query) {
+                $query->where(['parent_id' => 0])->limit(2);
+            }])
+            ->with(['gattr'])
             ->where($where)
             ->first();
     }

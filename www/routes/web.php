@@ -303,4 +303,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('cron', 'CronController');
     Route::post('cron/change', 'CronController@change');
     Route::post('cron/implement', 'CronController@implement');
+
+    Route::resource('commentlabel', 'CommentLabelController');
 });

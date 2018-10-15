@@ -13,6 +13,7 @@ use App\Facades\LangConfig;
 use App\Facades\RedisCache;
 use App\Http\Models\Shop\AliossConfigureModel;
 use App\Http\Models\Shop\AlismsConfigureModel;
+use App\Http\Models\Shop\CronsModel;
 use App\Http\Models\Shop\EmailConfigureModel;
 use App\Http\Models\Shop\PaymentModel;
 use App\Http\Models\Shop\ShopConfigModel;
@@ -237,6 +238,17 @@ class CommonController extends Controller
                 $_conf = $conf->toArray();
             }
             RedisCache::set('smtp_config', $_conf);
+        }
+
+        //定时任务配置
+        if (!RedisCache::get('cron_config')) {
+            $m = (new CronsModel);
+            $crons = $m->getCrons();
+            $_conf = [];
+            foreach ($crons as $cron){
+                $_conf[$cron->cron_id] = $cron;
+            }
+            RedisCache::set('cron_config', $_conf);
         }
     }
 }
