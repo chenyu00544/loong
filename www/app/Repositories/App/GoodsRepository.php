@@ -102,7 +102,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
             //评价
             $goods_detail->comment = $this->commentModel->getComments($goods_id);
-//商品属性整理
+
             //评价统计
             $commentLabels = $this->commentLabelModel->getCommentLabels();
             foreach ($commentLabels as $commentLabel) {
@@ -126,11 +126,11 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->user = $user;
             $goods_detail->goods_description = $this->goodsDescriptionModel->getGoodsDescriptions();
 
-            
+            //商品属性整理
             $goods_detail->gattr;
 
-            foreach ($goods_detail->gattr as $gatttr){
-                if($gatttr->attr){
+            foreach ($goods_detail->gattr as $gattr){
+                if($gattr->attr){
 
                 }
             }
