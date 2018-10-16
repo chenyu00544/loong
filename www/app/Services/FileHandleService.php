@@ -115,7 +115,7 @@ class FileHandleService
     {
         $shopConf = RedisCache::get('shop_config');
         if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
-            $oss = RedisCache::get('oss');
+            $oss = RedisCache::get('oss_config');
             return $oss['endpoint'].$uri;
         }else{
             return url($uri);

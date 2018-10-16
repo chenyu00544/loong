@@ -14,7 +14,6 @@ class IndexController extends CommonController
 
     public function index(Request $request)
     {
-        dd(date('S', time()));
         return view('shop.home.index.index');
     }
 

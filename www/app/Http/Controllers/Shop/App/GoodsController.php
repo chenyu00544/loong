@@ -27,10 +27,11 @@ class GoodsController extends CommonController
     public function detail(Request $request)
     {
         $goods_id = !empty($request->get('goods_id')) ? $request->get('goods_id') : 0;
+        $user_id = !empty($request->get('token')) ? decrypt($request->get('token')) : 0;
         if(empty($goods_id)){
             return ['code' => 9, 'msg' => '商品ID不为空', 'data' => []];
         }
-        $data = $this->goodsRepository->getGoodsDetail($goods_id);
+        $data = $this->goodsRepository->getGoodsDetail($goods_id, $user_id);
         return ['code' => 1, 'msg' => '', 'data' => $data];
     }
 }

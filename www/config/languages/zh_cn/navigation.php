@@ -230,6 +230,10 @@ return array(
             'name' => '评价标签',
             'url' => 'admin/commentlabel',
         ),
+        'goods_description' => array(
+            'name' => '产品说明',
+            'url' => 'admin/goodsdesc',
+        ),
     ),
     'advertise' => array(
         'ad_list' => array(

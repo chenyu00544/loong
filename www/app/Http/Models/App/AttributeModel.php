@@ -6,20 +6,14 @@
  * Time: 16:58
  * Desc:
  */
-
 namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GoodsAttrModel extends Model
+class AttributeModel extends Model
 {
-    protected $table = 'goods_attr';
-    protected $primaryKey = 'goods_attr_id';
+    protected $table = 'attribute';
+    protected $primaryKey = 'attr_id';
     public $timestamps = false;
     protected $guarded = [];
-
-    public function attr()
-    {
-        return $this->hasOne('App\Http\Models\App\AttributeModel', 'attr_id', 'attr_id');
-    }
 }

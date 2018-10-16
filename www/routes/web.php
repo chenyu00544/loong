@@ -305,4 +305,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('cron/implement', 'CronController@implement');
 
     Route::resource('commentlabel', 'CommentLabelController');
+
+    Route::resource('goodsdesc', 'GoodsDescriptionController');
 });

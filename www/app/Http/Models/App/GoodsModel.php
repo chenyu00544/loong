@@ -38,6 +38,16 @@ class GoodsModel extends Model
         return $this->hasMany('App\Http\Models\App\GoodsAttrModel', 'goods_id', 'goods_id');
     }
 
+    public function ggallery()
+    {
+        return $this->hasMany('App\Http\Models\App\GoodsGalleryModel', 'goods_id', 'goods_id');
+    }
+
+    public function shop()
+    {
+        return $this->hasOne('App\Http\Models\App\SellerShopInfoModel', 'ru_id', 'user_id');
+    }
+
     public function getGoodses($where, $page = 1, $column = ['*'], $size = 10)
     {
         return $this->select($column)
@@ -51,7 +61,7 @@ class GoodsModel extends Model
             ->get();
     }
 
-    public function getGoods($where, $column = ['*'])
+    public function getGoodsAndExt($where, $column = ['*'])
     {
         return $this->select($column)
             ->with(['faat' => function ($query) {
@@ -63,7 +73,19 @@ class GoodsModel extends Model
             ->with(['qa' => function ($query) {
                 $query->where(['parent_id' => 0])->limit(2);
             }])
-            ->with(['gattr'])
+            ->with(['gattr' => function ($query) {
+                $query->select(['goods_attr_id', 'goods_id', 'attr_id', 'color_value', 'attr_price', 'attr_value', 'attr_img_flie', 'attr_gallery_flie'])
+                    ->with(['attr' => function ($query) {
+                        $query->select(['attr_type', 'attr_id']);
+                    }])
+                    ->orderBy('attr_sort', 'DESC');
+            }])
+            ->with(['ggallery' => function ($query) {
+                $query->select(['img_id', 'goods_id', 'img_original', 'img_url'])->orderBy('img_desc', 'DESC');
+            }])
+            ->with(['shop' => function ($query) {
+                $query;
+            }])
             ->where($where)
             ->first();
     }

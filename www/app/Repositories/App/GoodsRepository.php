@@ -10,12 +10,15 @@ namespace App\Repositories\App;
 
 use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\Common;
+use App\Facades\FileHandle;
 use App\Facades\Url;
 use App\Http\Models\App\CommentExtModel;
 use App\Http\Models\App\CommentLabelModel;
 use App\Http\Models\App\CommentModel;
+use App\Http\Models\App\GoodsDescriptionModel;
 use App\Http\Models\App\GoodsModel;
 use App\Http\Models\App\TransportModel;
+use App\Http\Models\App\UsersModel;
 
 class GoodsRepository implements GoodsRepositoryInterface
 {
@@ -24,13 +27,17 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $commentModel;
     private $commentLabelModel;
     private $commentExtModel;
+    private $usersModel;
+    private $goodsDescriptionModel;
 
     public function __construct(
         GoodsModel $goodsModel,
         TransportModel $transportModel,
         CommentModel $commentModel,
         CommentLabelModel $commentLabelModel,
-        CommentExtModel $commentExtModel
+        CommentExtModel $commentExtModel,
+        UsersModel $usersModel,
+        GoodsDescriptionModel $goodsDescriptionModel
     )
     {
         $this->goodsModel = $goodsModel;
@@ -38,6 +45,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->commentModel = $commentModel;
         $this->commentLabelModel = $commentLabelModel;
         $this->commentExtModel = $commentExtModel;
+        $this->usersModel = $usersModel;
+        $this->goodsDescriptionModel = $goodsDescriptionModel;
     }
 
     public function getBestGoods($page = 1)
@@ -60,11 +69,30 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $goodses;
     }
 
-    public function getGoodsDetail($goods_id)
+    public function getGoodsDetail($goods_id, $user_id = 0)
     {
         $where['goods_id'] = $goods_id;
-        $goods_detail = $this->goodsModel->getGoods($where);
+        $where['is_on_sale'] = 1;
+        $where['is_delete'] = 0;
+        $where['review_status'] = 3;
+        $column = [
+            'goods_id', 'cat_id', 'user_id', 'goods_name', 'goods_sn', 'brand_id',
+            'goods_number', 'shop_price', 'market_price', 'promote_price', 'promote_start_date', 'promote_end_date',
+            'desc_mobile', 'goods_desc', 'goods_id', 'goods_thumb', 'original_img', 'goods_img', 'is_on_sale',
+            'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume',
+            'goods_type', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num', 'review_status',
+            'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
+            'pinyin_keyword', 'goods_brief',
+        ];
+        $goods_detail = $this->goodsModel->getGoodsAndExt($where, $column);
         if ($goods_detail) {
+            $mobile_descs = Common::pregMatchAll($goods_detail->desc_mobile, '/src=(".*?")/i');
+            foreach ($mobile_descs as $k => $mobile_desc) {
+                $mobile_descs[$k] = FileHandle::getImgByOssUrl($mobile_desc);
+            }
+            $goods_detail->mobile_descs = $mobile_descs;
+            $goods_detail->goods_video = FileHandle::getImgByOssUrl($goods_detail->goods_video);
+
             //快递
             if ($goods_detail->freight == 2) {
                 $twhere['tid'] = $goods_detail->tid;
@@ -74,20 +102,40 @@ class GoodsRepository implements GoodsRepositoryInterface
 
             //评价
             $goods_detail->comment = $this->commentModel->getComments($goods_id);
+//商品属性整理
             //评价统计
             $commentLabels = $this->commentLabelModel->getCommentLabels();
             foreach ($commentLabels as $commentLabel) {
                 $commentLabel->count = $this->commentExtModel->countCommentExt(['id_value' => $goods_id, 'label_id' => $commentLabel->id]);
             }
             $goods_detail->comment = $commentLabels;
+
             //品牌商品
-            $goods_detail->brands = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['*'], 15);
+            $goods_detail->brands = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['goods_name', 'goods_thumb', 'shop_price', 'promote_price', 'promote_start_date', 'promote_end_date'], 15);
 
-            //产品固定属性
+            //用户地址
+            $uwhere['user_id'] = $user_id;
+            $user = $this->usersModel->getUserByAddress($uwhere, ['user_id', 'address_id']);
+            if ($user) {
+                foreach ($user->addresses as $address) {
+                    if ($address->address_id == $user->address_id) {
+                        $user->default_address = $address;
+                    }
+                }
+            }
+            $goods_detail->user = $user;
+            $goods_detail->goods_description = $this->goodsDescriptionModel->getGoodsDescriptions();
 
-            //产品可选属性
+            
+            $goods_detail->gattr;
+
+            foreach ($goods_detail->gattr as $gatttr){
+                if($gatttr->attr){
+
+                }
+            }
+
         }
         return $goods_detail;
     }
-
 }

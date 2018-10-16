@@ -11,15 +11,10 @@ namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GoodsAttrModel extends Model
+class SellerShopInfoModel extends Model
 {
-    protected $table = 'goods_attr';
-    protected $primaryKey = 'goods_attr_id';
+    protected $table = 'seller_shop_info';
+    protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
-
-    public function attr()
-    {
-        return $this->hasOne('App\Http\Models\App\AttributeModel', 'attr_id', 'attr_id');
-    }
 }
