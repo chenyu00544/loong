@@ -87,7 +87,7 @@
                                         <div class="tDiv goods-info">
                                             <div class="img fl pad-all-5">
                                                 <a href="" target="_blank" title="">
-                                                    <img src="{{$goods->goods_thumb}}" width="68" height="68">
+                                                    <img src="{{$goods->original_img}}" width="68" height="68">
                                                 </a>
                                             </div>
                                             <div class="desc fl pad-all-5">

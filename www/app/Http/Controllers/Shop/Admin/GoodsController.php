@@ -204,6 +204,16 @@ class GoodsController extends CommonController
         return $this->goodsRepository->getProductAndGallerys($request->except('_token'), $id, $this->user->ru_id);
     }
 
+    public function delVolumePrice($id)
+    {
+        return $this->goodsRepository->delVolumePrice($id);
+    }
+
+    public function delFullCut($id)
+    {
+        return $this->goodsRepository->delFullCut($id);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

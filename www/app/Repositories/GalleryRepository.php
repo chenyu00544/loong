@@ -216,9 +216,9 @@ class GalleryRepository implements GalleryRepositoryInterface
 
     public function setGoodsGallery($data)
     {
-        $req = ['code' => 5, 'msg' => '删除失败'];
+        $req = ['code' => 5, 'msg' => '操作失败'];
 
-        if (!empty($data['cur_sort']) && !empty($data['cur_img_id']) && !empty($data['main_sort']) && !empty($data['main_img_id'])) {
+        if (isset($data['cur_sort']) && isset($data['cur_img_id']) && isset($data['main_sort']) && isset($data['main_img_id'])) {
             $cWhere['img_id'] = $data['cur_img_id'];
             $cData['img_desc'] = $data['main_sort'];
 
@@ -229,7 +229,7 @@ class GalleryRepository implements GalleryRepositoryInterface
             $re = $this->goodsGalleryModel->setGoodsGallery($mWhere, $mData);
             if($re){
                 $req['code'] = 1;
-                $req['msg'] = '删除成功';
+                $req['msg'] = '操作成功';
             }
         }
 
@@ -287,9 +287,15 @@ class GalleryRepository implements GalleryRepositoryInterface
         $re = $this->goodsGalleryModel->getGoodsGallery($where);
         if ($re) {
             if ($re->is_source == 0) {
-                FileHandle::deleteFile($re->img_url);
-                FileHandle::deleteFile($re->thumb_url);
-                FileHandle::deleteFile($re->img_original);
+                if(!empty($re->img_url)){
+                    FileHandle::deleteFile($re->img_url);
+                }
+                if(!empty($re->thumb_url)){
+                    FileHandle::deleteFile($re->thumb_url);
+                }
+                if(!empty($re->img_original)){
+                    FileHandle::deleteFile($re->img_original);
+                }
             }
             $this->goodsGalleryModel->delGoodsGallery($where);
             $req['code'] = 1;

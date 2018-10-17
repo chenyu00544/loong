@@ -108,6 +108,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/addgoodsattr', 'GoodsController@addGoodsAttr');
     Route::post('goods/setgoodsattr', 'GoodsController@setGoodsAttr');
     Route::post('goods/product/{id}', 'GoodsController@getGoodsByProduct');
+    Route::post('goods/delvolumeprice/{id}', 'GoodsController@delVolumePrice');
+    Route::post('goods/delfullcut/{id}', 'GoodsController@delFullCut');
     Route::resource('goods', 'GoodsController');
 
     Route::get('goodstype/goodstype/modal', 'GoodsTypeController@goodsTypeByModal');

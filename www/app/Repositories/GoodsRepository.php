@@ -20,6 +20,7 @@ use App\Http\Models\Shop\BrandModel;
 use App\Http\Models\Shop\GoodsAttrModel;
 use App\Http\Models\Shop\GoodsCateModel;
 use App\Http\Models\Shop\GoodsChangeLogModel;
+use App\Http\Models\Shop\GoodsFullCutModel;
 use App\Http\Models\Shop\GoodsExtendModel;
 use App\Http\Models\Shop\GoodsGalleryModel;
 use App\Http\Models\Shop\GoodsModel;
@@ -44,6 +45,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $goodsAttrModel;
     private $goodsTypeModel;
     private $goodsVolumePriceModel;
+    private $goodsFullCutModel;
     private $goodsChangeLogModel;
     private $brandModel;
     private $transportModel;
@@ -63,6 +65,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         GoodsAttrModel $goodsAttrModel,
         GoodsTypeModel $goodsTypeModel,
         GoodsVolumePriceModel $goodsVolumePriceModel,
+        GoodsFullCutModel $goodsFullCutModel,
         GoodsChangeLogModel $goodsChangeLogModel,
         BrandModel $brandModel,
         TransportModel $transportModel,
@@ -82,6 +85,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->goodsGalleryModel = $goodsGalleryModel;
         $this->goodsTypeModel = $goodsTypeModel;
         $this->goodsVolumePriceModel = $goodsVolumePriceModel;
+        $this->goodsFullCutModel = $goodsFullCutModel;
         $this->goodsChangeLogModel = $goodsChangeLogModel;
         $this->brandModel = $brandModel;
         $this->transportModel = $transportModel;
@@ -155,7 +159,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     //商品分页
     public function getGoodsPage($keywords, $parame = [], $size = 10)
     {
-        $goodsColumns = ['goods_id', 'goods_thumb', 'goods_name', 'user_id', 'brand_id', 'goods_type', 'goods_sn', 'shop_price', 'is_on_sale', 'is_best', 'is_new', 'is_hot', 'sort_order', 'goods_number', 'integral', 'commission_rate', 'is_promote', 'model_price', 'model_inventory', 'model_attr', 'review_status', 'review_content', 'store_best', 'store_new', 'store_hot', 'is_real', 'is_shipping', 'stages', 'goods_thumb', 'is_alone_sale', 'is_limit_buy', 'promote_end_date', 'limit_buy_end_date', 'bar_code', 'freight', 'tid'];
+        $goodsColumns = ['goods_id', 'goods_thumb', 'goods_name', 'user_id', 'brand_id', 'goods_type', 'goods_sn', 'shop_price', 'is_on_sale', 'is_best', 'is_new', 'is_hot', 'sort_order', 'goods_number', 'integral', 'commission_rate', 'is_promote', 'model_price', 'model_inventory', 'model_attr', 'review_status', 'review_content', 'store_best', 'store_new', 'store_hot', 'is_real', 'is_shipping', 'stages', 'goods_thumb', 'goods_img', 'original_img', 'is_alone_sale', 'is_limit_buy', 'promote_end_date', 'limit_buy_end_date', 'bar_code', 'freight', 'tid'];
         $where[] = ['is_delete', '=', '0'];
         foreach ($parame as $val) {
             switch ($val) {
@@ -214,7 +218,9 @@ class GoodsRepository implements GoodsRepositoryInterface
             foreach ($goods as $key => $val) {
                 $goods[$key]->brand_name = !empty($brandsFormat[$val->brand_id]) ? $brandsFormat[$val->brand_id] : '暂无';
                 $goods[$key]->transport = !empty($transportFormat[$val->tid]) ? $transportFormat[$val->tid] : [];
-                $goods[$key]->goods_thumb = Url::getImagePath($val->goods_thumb);
+                $goods[$key]->goods_thumb = FileHandle::getImgByOssUrl($val->goods_thumb);
+                $goods[$key]->goods_img = FileHandle::getImgByOssUrl($val->goods_img);
+                $goods[$key]->original_img = FileHandle::getImgByOssUrl($val->original_img);
                 $goods[$key]->is_attr = 0;
             }
         }
@@ -272,6 +278,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         //阶梯价格
         $req->goods_volume_prices = $this->goodsVolumePriceModel->getGoodsVolumePrice(['goods_id' => $id]);
 
+        //满减价格
+        $req->goods_consumption = $this->goodsFullCutModel->getGoodsFullCut(['goods_id' => $id]);
+
         //商品属性详细信息
         $goodsAttr = $this->goodsAttrModel->getGoodsAttrsJoinAttr(['goods_id' => $req->goods_id, 'attr_checked' => 1]);
 
@@ -325,7 +334,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
         //商品相册
         $goods_gallerys = $this->goodsGalleryModel->getGoodsGallerys(['goods_id' => $id]);
-        foreach ($goods_gallerys as $goods_gallery){
+        foreach ($goods_gallerys as $goods_gallery) {
             $goods_gallery->img_url = FileHandle::getImgByOssUrl($goods_gallery->img_url);
             $goods_gallery->thumb_url = FileHandle::getImgByOssUrl($goods_gallery->thumb_url);
             $goods_gallery->img_original = FileHandle::getImgByOssUrl($goods_gallery->img_original);
@@ -735,6 +744,18 @@ class GoodsRepository implements GoodsRepositoryInterface
                     $this->goodsVolumePriceModel->addGoodsVolumePrice($volumePrice);
                 }
             }
+
+            //满减价格买多少减多少
+            $fullCut['goods_id'] = $goods->goods_id;
+            $cfull = !empty($data['cfull']) ? $data['cfull'] : [];
+            $creduce = !empty($data['creduce']) ? $data['creduce'] : [];
+            if ($goodsData['is_fullcut'] == 1) {
+                for ($i = 0; $i < count($cfull); $i++) {
+                    $fullCut['cfull'] = $cfull[$i];
+                    $fullCut['creduce'] = $creduce[$i];
+                    $this->goodsFullCutModel->addGoodsFullCut($fullCut);
+                }
+            }
         }
         $rep = ['code' => 1, 'msg' => '修改成功'];
         return $rep;
@@ -764,6 +785,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         } else {
             $goodsGallery = $this->goodsGalleryModel->getGoodsGallery(['img_id' => $gallery_id]);
         }
+
         if (!empty($goodsGallery)) {
             $goodsData['goods_thumb'] = $goodsGallery->thumb_url;
             $goodsData['goods_img'] = $goodsGallery->img_url;
@@ -886,6 +908,13 @@ class GoodsRepository implements GoodsRepositoryInterface
 
         //更新商品相册
         $this->goodsGalleryModel->setGoodsGallery(['goods_id' => 0], ['goods_id' => $id]);
+        $gallery_ids = !empty($data['img_id']) ? $data['img_id'] : [];
+        $gallery_sort = !empty($data['old_img_desc']) ? $data['old_img_desc'] : [];
+        foreach ($gallery_ids as $gkey => $gallery_id) {
+            $gallery_where['img_id'] = $gallery_id;
+            $gallery_updata['img_desc'] = $gallery_sort[$gkey];
+            $this->goodsGalleryModel->setGoodsGallery($gallery_where, $gallery_updata);
+        }
 
         //更新扩展分类
         $this->goodsCateModel->setGoodsCate(['goods_id' => 0], ['goods_id' => $id]);
@@ -898,10 +927,36 @@ class GoodsRepository implements GoodsRepositoryInterface
         $volume_price_ids = !empty($data['volume_id']) ? $data['volume_id'] : [];
         if ($goodsData['is_volume'] == 1) {
             for ($i = 0; $i < count($volume_number); $i++) {
-                $whereVolume['id'] = $volume_price_ids[$i];
                 $volumePrice['volume_number'] = $volume_number[$i];
                 $volumePrice['volume_price'] = $volume_price[$i];
-                $this->goodsVolumePriceModel->setGoodsVolumePrice($whereVolume, $volumePrice);
+                if ($volume_price_ids[$i] != 0) {
+                    $whereVolume['id'] = $volume_price_ids[$i];
+                    unset($volumePrice['goods_id']);
+                    $this->goodsVolumePriceModel->setGoodsVolumePrice($whereVolume, $volumePrice);
+                } else {
+                    $volumePrice['goods_id'] = $id;
+                    $this->goodsVolumePriceModel->addGoodsVolumePrice($volumePrice);
+                }
+            }
+        }
+
+        //满减价格买多少减多少
+        $whereFullCut['goods_id'] = $id;
+        $cfull = !empty($data['cfull']) ? $data['cfull'] : [];
+        $creduce = !empty($data['creduce']) ? $data['creduce'] : [];
+        $fullcut_ids = !empty($data['fullcut_id']) ? $data['fullcut_id'] : [];
+        if ($goodsData['is_fullcut'] == 1) {
+            for ($i = 0; $i < count($cfull); $i++) {
+                $fullCut['cfull'] = $cfull[$i];
+                $fullCut['creduce'] = $creduce[$i];
+                if ($fullcut_ids[$i] != 0) {
+                    $whereFullCut['id'] = $fullcut_ids[$i];
+                    $this->goodsFullCutModel->setGoodsFullCut($whereFullCut, $fullCut);
+                    unset($fullCut['goods_id']);
+                } else {
+                    $fullCut['goods_id'] = $id;
+                    $this->goodsFullCutModel->addGoodsFullCut($fullCut);
+                }
             }
         }
 
@@ -1149,6 +1204,28 @@ class GoodsRepository implements GoodsRepositoryInterface
         $rep = ['code' => 0, 'msg' => '操作失败'];
         $where['cat_id'] = $id;
         $re = $this->goodsCateModel->delGoodsCate($where);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $rep;
+    }
+
+    public function delVolumePrice($id)
+    {
+        $rep = ['code' => 0, 'msg' => '操作失败'];
+        $where['id'] = $id;
+        $re = $this->goodsVolumePriceModel->delGoodsVolumePrice($where);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $rep;
+    }
+
+    public function delFullCut($id)
+    {
+        $rep = ['code' => 0, 'msg' => '操作失败'];
+        $where['id'] = $id;
+        $re = $this->goodsFullCutModel->delGoodsFullCut($where);
         if ($re) {
             $rep = ['code' => 1, 'msg' => '操作成功'];
         }

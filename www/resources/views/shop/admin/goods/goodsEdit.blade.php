@@ -367,7 +367,7 @@
                                         <div class="step-value">
                                             <div id="goods-figure" class="update-images">
                                                 <div class="img">
-                                                    <img src="{{$goodsInfo->goods_thumb}}"
+                                                    <img src="{{$goodsInfo->original_img}}"
                                                          class="goods-img-show">
                                                     <input type="hidden" name="goods_gallery_id" value="">
                                                 </div>
@@ -744,7 +744,8 @@
                                                             <td class="text-center">
                                                                 <a href="javascript:;"
                                                                    class="btn btn-info btn-sm del-v-p"
-                                                                   data-id="{{$loop->index+1}}">删除</a>
+                                                                   data-id="{{$loop->index+1}}"
+                                                                   data-vp_id="{{$goodsVolumePrice->id}}">删除</a>
                                                             </td>
                                                         @endforeach
                                                     </tr>
@@ -754,20 +755,68 @@
                                         </div>
                                     </div>
 
-                                    <!--<div class="item">
-                                    <div class="step-label">满减价格：</div>
-                                    <div class="step-value">
-                                    <div class="clearfix">
-                                    <label class="radio-inline fl padtop">
-                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="0"
-                                    checked> 否
-                                    </label>
-                                    <label class="radio-inline fl padtop">
-                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="1"> 是
-                                    </label>
+                                    <div class="item">
+                                        <div class="step-label">满减价格：</div>
+                                        <div class="step-value">
+                                            <div class="clearfix">
+                                                <label class="radio-inline fl padtop">
+                                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="0"
+                                                           @if($goodsInfo->is_fullcut == 0) checked @endif> 否
+                                                </label>
+                                                <label class="radio-inline fl padtop">
+                                                    <input class="mar-top-5" type="radio" name="is_fullcut" value="1"
+                                                           @if($goodsInfo->is_fullcut == 1) checked @endif> 是
+                                                </label>
+                                            </div>
+                                            <div class="is-fullcut-div"
+                                                 style="@if($goodsInfo->is_fullcut == 0) display: none; @endif">
+                                                <table class="table table-bordered fullcut-price" style="width: auto;">
+                                                    <tbody>
+                                                    <tr class="first-tr">
+                                                        <td class="text-center">满价格</td>
+                                                        @foreach($goodsInfo->goods_consumption as $goodsConsumption)
+                                                            <td>
+                                                                <input type="text" name="cfull[]"
+                                                                       value="{{$goodsConsumption->cfull}}"
+                                                                       class="form-control max-wd-100"
+                                                                       autocomplete="off">
+                                                                <input type="hidden" name="fullcut_id[]"
+                                                                       value="{{$goodsConsumption->id}}"
+                                                                       class="text w50"
+                                                                       autocomplete="off">
+                                                            </td>
+                                                        @endforeach
+                                                        <td class="" rowspan="3">
+                                                            <a href="javascript:;" class="add-f-p"></a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">减价格</td>
+                                                        @foreach($goodsInfo->goods_consumption as $goodsConsumption)
+                                                            <td>
+                                                                <input type="text" name="creduce[]"
+                                                                       value="{{$goodsConsumption->creduce}}"
+                                                                       class="form-control max-wd-100"
+                                                                       autocomplete="off">
+                                                            </td>
+                                                        @endforeach
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">操作</td>
+                                                        @foreach($goodsInfo->goods_consumption as $goodsConsumption)
+                                                            <td class="text-center">
+                                                                <a href="javascript:;"
+                                                                   class="btn btn-info btn-sm del-f-p"
+                                                                   data-id="{{$loop->index+1}}"
+                                                                   data-fc_id="{{$goodsConsumption->id}}">删除</a>
+                                                            </td>
+                                                        @endforeach
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
-                                    </div>
-                                    </div>-->
                                 </div>
                             </div>
 
@@ -1626,7 +1675,7 @@
                 var tbody = $(this).parent().parent().parent();
                 var html = '<td><input type="text" name="volume_number[]" value=""' +
                     'class="form-control max-wd-100" autocomplete="off">' +
-                    '<input type="hidden" name="volume_id[]" value="" autocomplete="off"></td>';
+                    '<input type="hidden" name="volume_id[]" value="0" autocomplete="off"></td>';
                 var html1 = '<td><input type="text" name="volume_price[]" value="" class="form-control max-wd-100" autocomplete="off"></td>';
                 var html2 = '<td class="text-center"><a href="javascript:;" class="btn btn-info btn-sm del-v-p" data-id="' + ($('.del-v-p').length + 1) + '">删除</a></td>';
                 tbody.find('tr').each(function (k, v) {
@@ -1641,6 +1690,7 @@
             });
             $('.is-volume-div').on('click', '.del-v-p', function () {
                 var id = $(this).data('id');
+                var vp_id = $(this).data('vp_id');
                 var tbody = $(this).parent().parent().parent();
                 tbody.find('tr').each(function (k, v) {
                     $(v).find('td').each(function (key, val) {
@@ -1652,6 +1702,57 @@
                 $('.del-v-p').each(function (k, v) {
                     $(v).data('id', (k + 1));
                 });
+                if (vp_id != undefined) {
+                    $.post("{{url('admin/goods/delvolumeprice')}}/" + vp_id, {'_token': "{{csrf_token()}}"}, function (data) {
+
+                    });
+                }
+            });
+
+            //单选满减价格
+            $('input[name=is_fullcut]').on('click', function () {
+                if ($(this).val() == 1) {
+                    $('.is-fullcut-div').show();
+                } else {
+                    $('.is-fullcut-div').hide();
+                }
+            });
+            $('.is-fullcut-div').on('click', '.add-f-p', function () {
+                var tbody = $(this).parent().parent().parent();
+                var html = '<td><input type="text" name="cfull[]" value=""' +
+                    'class="form-control max-wd-100" autocomplete="off">' +
+                    '<input type="hidden" name="fullcut_id[]" value="0" autocomplete="off"></td>';
+                var html1 = '<td><input type="text" name="creduce[]" value="" class="form-control max-wd-100" autocomplete="off"></td>';
+                var html2 = '<td class="text-center"><a href="javascript:;" class="btn btn-info btn-sm del-f-p" data-id="' + ($('.del-f-p').length + 1) + '">删除</a></td>';
+                tbody.find('tr').each(function (k, v) {
+                    if (k == 0) {
+                        $(v).find('td').last().before(html);
+                    } else if (k == 1) {
+                        $(v).append(html1);
+                    } else if (k == 2) {
+                        $(v).append(html2);
+                    }
+                })
+            });
+            $('.is-fullcut-div').on('click', '.del-f-p', function () {
+                var id = $(this).data('id');
+                var fc_id = $(this).data('fc_id');
+                var tbody = $(this).parent().parent().parent();
+                tbody.find('tr').each(function (k, v) {
+                    $(v).find('td').each(function (key, val) {
+                        if (id == key) {
+                            $(val).remove();
+                        }
+                    });
+                });
+                $('.del-f-p').each(function (k, v) {
+                    $(v).data('id', (k + 1));
+                });
+                if (fc_id != undefined) {
+                    $.post("{{url('admin/goods/delfullcut/')}}/" + fc_id, {'_token': "{{csrf_token()}}"}, function (data) {
+
+                    });
+                }
             });
 
             //开关

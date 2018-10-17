@@ -676,6 +676,42 @@
                                                     <input class="mar-top-5" type="radio" name="is_fullcut" value="1"> 是
                                                 </label>
                                             </div>
+                                            <div class="is-fullcut-div" style="display:none;">
+                                                <table class="table table-bordered fullcut-price" style="width: auto;">
+                                                    <tbody>
+                                                    <tr class="first-tr">
+                                                        <td class="text-center">数量</td>
+                                                        <td>
+                                                            <input type="text" name="cfull[]" value=""
+                                                                   class="form-control max-wd-100" autocomplete="off">
+                                                            <input type="hidden" name="fullcut_id[]" value=""
+                                                                   class="text w50"
+                                                                   autocomplete="off">
+                                                        </td>
+                                                        <td class="" rowspan="3">
+                                                            <a href="javascript:;" class="add-f-p"></a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">价格</td>
+                                                        <td>
+                                                            <input type="text" name="creduce[]"
+                                                                   value=""
+                                                                   class="form-control max-wd-100"
+                                                                   autocomplete="off">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">操作</td>
+                                                        <td class="text-center">
+                                                            <a href="javascript:;"
+                                                               class="btn btn-info btn-sm del-f-p"
+                                                               data-id="1">删除</a>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1398,6 +1434,47 @@
                     });
                 });
                 $('.del-v-p').each(function (k, v) {
+                    $(v).data('id', (k + 1));
+                });
+            });
+
+            //单选满减价格
+            $('input[name=is_fullcut]').on('click', function () {
+                if ($(this).val() == 1) {
+                    $('.is-fullcut-div').show();
+                } else {
+                    $('.is-fullcut-div').hide();
+                }
+            });
+            $('.is-fullcut-div').on('click', '.add-f-p', function () {
+                var tbody = $(this).parent().parent().parent();
+                var html = '<td><input type="text" name="cfull[]" value=""' +
+                    'class="form-control max-wd-100" autocomplete="off">' +
+                    '<input type="hidden" name="fullcut_id[]" value="0" autocomplete="off"></td>';
+                var html1 = '<td><input type="text" name="creduce[]" value="" class="form-control max-wd-100" autocomplete="off"></td>';
+                var html2 = '<td class="text-center"><a href="javascript:;" class="btn btn-info btn-sm del-f-p" data-id="' + ($('.del-f-p').length + 1) + '">删除</a></td>';
+                tbody.find('tr').each(function (k, v) {
+                    if (k == 0) {
+                        $(v).find('td').last().before(html);
+                    } else if (k == 1) {
+                        $(v).append(html1);
+                    } else if (k == 2) {
+                        $(v).append(html2);
+                    }
+                })
+            });
+            $('.is-fullcut-div').on('click', '.del-f-p', function () {
+                var id = $(this).data('id');
+                var fc_id = $(this).data('fc_id');
+                var tbody = $(this).parent().parent().parent();
+                tbody.find('tr').each(function (k, v) {
+                    $(v).find('td').each(function (key, val) {
+                        if (id == key) {
+                            $(val).remove();
+                        }
+                    });
+                });
+                $('.del-f-p').each(function (k, v) {
                     $(v).data('id', (k + 1));
                 });
             });
