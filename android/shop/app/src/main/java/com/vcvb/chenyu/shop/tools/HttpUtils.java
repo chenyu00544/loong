@@ -185,7 +185,9 @@ public class HttpUtils {
             String key = "";
             while (iterator.hasNext()) {
                 key = iterator.next().toString();
-                formEncodingBuilder.add(key, params.get(key));
+                if (params.get(key) != null) {
+                    formEncodingBuilder.add(key, params.get(key));
+                }
                 Log.d("post http", "post_Params===" + key + "====" + params.get(key));
             }
         }
@@ -200,8 +202,8 @@ public class HttpUtils {
      * @return
      */
     public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context
+                .CONNECTIVITY_SERVICE);
         if (cm == null) {
         } else {
             //如果仅仅是用来判断网络连接

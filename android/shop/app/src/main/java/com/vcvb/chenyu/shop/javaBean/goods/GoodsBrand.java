@@ -1,45 +1,61 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
+import com.vcvb.chenyu.shop.tools.JsonUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsBrand {
-    private String logo;
-    private String name;
-    private String price;
-    private List<String> goodsTips;
+    private Integer id;
+    private String brand_name;
+    private String brand_letter;
+    private String brand_first_char;
+    private String brand_logo;
     private List<Goods> goodses;
     private int isScroll = 0;
 
-    public String getLogo() {
-        return logo;
+    public Integer getId() {
+        return id;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getBrand_name() {
+        return brand_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBrand_name(String brand_name) {
+        this.brand_name = brand_name;
     }
 
-    public String getPrice() {
-        return price;
+    public String getBrand_letter() {
+        return brand_letter;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setBrand_letter(String brand_letter) {
+        this.brand_letter = brand_letter;
     }
 
-    public List<String> getGoodsTips() {
-        return goodsTips;
+    public String getBrand_first_char() {
+        return brand_first_char;
     }
 
-    public void setGoodsTips(List<String> goodsTips) {
-        this.goodsTips = goodsTips;
+    public void setBrand_first_char(String brand_first_char) {
+        this.brand_first_char = brand_first_char;
+    }
+
+    public String getBrand_logo() {
+        return brand_logo;
+    }
+
+    public void setBrand_logo(String brand_logo) {
+        this.brand_logo = brand_logo;
     }
 
     public List<Goods> getGoodses() {
@@ -56,5 +72,24 @@ public class GoodsBrand {
 
     public void setIsScroll(int isScroll) {
         this.isScroll = isScroll;
+    }
+
+    public void setData(JSONObject Json) throws JSONException {
+        try {
+            JSONArray goodsJsonArray = Json.getJSONArray("brand_goodses");
+            List<Goods> _goods = new ArrayList<>();
+            for (int i = 0; i < goodsJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) goodsJsonArray.get(i);
+                Goods goods = JsonUtils.fromJsonObject(object, Goods.class);
+                _goods.add(goods);
+            }
+            this.setGoodses(_goods);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 }

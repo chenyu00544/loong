@@ -243,8 +243,8 @@ public class MainActivity extends BaseActivity {
                 //获取服务器数据
                 //..
                 u.put("username", "cb");
-                u.put("token", "csdfafafkoimlvj09809mljalfadf" + "" + "" + "" + "" +
-                        ".adfjlajfoi098087.kjfaldjfladfl8979823423");
+                u.put("token",
+                        "eyJpdiI6ImN6S3l0RmcrSCt5Vmo5VUk2UTJ4Qnc9PSIsInZhbHVlIjoidStDQTVDY1h3ZmVsa01WbTFBUFdnZz09IiwibWFjIjoiOTFlZTFmODIxOTA1ZGI4MTJjM2IyOTNhYTlkMDhlZjhmOGM5ZjdiZDU0MDRhODI1ZDdmYTg2OTg3ZGQzOWIwMiJ9");
                 u.put("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg");
                 u.put("nickname", "chongchong");
 

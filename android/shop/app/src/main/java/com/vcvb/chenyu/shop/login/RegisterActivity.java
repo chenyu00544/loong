@@ -51,8 +51,7 @@ public class RegisterActivity extends BaseActivity {
         super.setNavBack();
         int gravity = Gravity.CENTER;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout
-                .LayoutParams.WRAP_CONTENT, LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                .LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TextView titleView = new TextView(this);
         titleView.setLayoutParams(layoutParams);
         titleView.setGravity(gravity);
@@ -68,8 +67,7 @@ public class RegisterActivity extends BaseActivity {
         nav_other.setAlpha(0);
 
         LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout
-                .LayoutParams.WRAP_CONTENT, LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                .LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout title_wrap = (LinearLayout) findViewById(R.id.title_wrap);
         title_wrap.setAlpha(1);
         title_wrap.setLayoutParams(layoutParams3);
@@ -77,16 +75,16 @@ public class RegisterActivity extends BaseActivity {
     }
 
     public void initView() {
-        qrCodeTv = (TextView) findViewById(R.id.textView69);
-        registerTv = (TextView) findViewById(R.id.textView68);
-        serverTv = (TextView) findViewById(R.id.textView71);
-        interestsTv = (TextView) findViewById(R.id.textView73);
+        qrCodeTv = findViewById(R.id.textView69);
+        registerTv = findViewById(R.id.textView68);
+        serverTv = findViewById(R.id.textView71);
+        interestsTv = findViewById(R.id.textView73);
         serverTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         interestsTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-        checkBox = (CheckBox) findViewById(R.id.checkBox5);
+        checkBox = findViewById(R.id.checkBox5);
 
-        phoneEdit = (EditText) findViewById(R.id.editText5);
+        phoneEdit = findViewById(R.id.editText5);
         phoneEdit.setFocusable(true);
         phoneEdit.setFocusableInTouchMode(true);
         phoneEdit.requestFocus();
@@ -98,8 +96,8 @@ public class RegisterActivity extends BaseActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams
                 .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 
-        qrCodeEdit = (EditText) findViewById(R.id.editText6);
-        passEdit = (EditText) findViewById(R.id.editText7);
+        qrCodeEdit = findViewById(R.id.editText6);
+        passEdit = findViewById(R.id.editText7);
     }
 
     public void initListener() {
@@ -121,8 +119,10 @@ public class RegisterActivity extends BaseActivity {
                     loading.show();
                     Intent intent = new Intent();
                     intent.putExtra("username", "cb");
-                    intent.putExtra("token", "csdfafafkoimlvj09809mljalfadf.adfjlajfoi098087.kjfaldjfladfl8979823423");
-                    intent.putExtra("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg");
+                    intent.putExtra("token",
+                            "eyJpdiI6ImN6S3l0RmcrSCt5Vmo5VUk2UTJ4Qnc9PSIsInZhbHVlIjoidStDQTVDY1h3ZmVsa01WbTFBUFdnZz09IiwibWFjIjoiOTFlZTFmODIxOTA1ZGI4MTJjM2IyOTNhYTlkMDhlZjhmOGM5ZjdiZDU0MDRhODI1ZDdmYTg2OTg3ZGQzOWIwMiJ9");
+                    intent.putExtra("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o" +
+                            ".jpg");
                     intent.putExtra("nickname", "chongchong");
                     loading.dismiss();
                     setResult(RESULT_OK, intent);

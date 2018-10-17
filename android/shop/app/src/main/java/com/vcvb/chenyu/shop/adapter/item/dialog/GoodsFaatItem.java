@@ -1,9 +1,6 @@
 package com.vcvb.chenyu.shop.adapter.item.dialog;
 
 import android.content.Context;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -35,11 +32,11 @@ public class GoodsFaatItem extends BaseItem<GoodsFaat> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView231);
-        SpannableString spannableString = new SpannableString(mData.getType() + mData.getInfo());
-        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(context.getResources()
-                .getColor(R.color.red));
-        spannableString.setSpan(foregroundColorSpan, 0, mData.getType().length(), Spanned
-                .SPAN_INCLUSIVE_EXCLUSIVE);
-        tv.setText(spannableString);
+//        SpannableString spannableString = new SpannableString(mData.getType() + mData.getInfo());
+//        ForegroundColorSpan foregroundColorSpan = new ForegroundColorSpan(context.getResources()
+//                .getColor(R.color.red));
+//        spannableString.setSpan(foregroundColorSpan, 0, mData.getType().length(), Spanned
+//                .SPAN_INCLUSIVE_EXCLUSIVE);
+//        tv.setText(spannableString);
     }
 }

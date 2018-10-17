@@ -111,7 +111,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group rang-ext" style="display: none;">
+                        <div class="form-group rang-ext" style="@if($faat->act_range == 0) display: none; @endif">
                             <label class="col-sm-4 control-label"><b>*</b>搜索并加入优惠范围：</label>
                             <div class="col-sm-8">
                                 <input type="text" class="keyword-1 form-control wd-120 input-sm fl" placeholder="关键字">

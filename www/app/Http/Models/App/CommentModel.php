@@ -23,12 +23,17 @@ class CommentModel extends Model
         return $this->hasMany('App\Http\Models\App\CommentImgModel', 'comment_id', 'comment_id');
     }
 
+    public function user()
+    {
+        return $this->hasOne('App\Http\Models\App\UsersModel', 'user_id', 'user_id');
+    }
+
     public function getComments($id, $column = ['*'])
     {
         return $this->select($column)
             ->with(['commentImg'])
-            ->orWhere(['id_value' => $id])
-            ->orWhere(['parent_id' => 0])
+            ->with(['user'])
+            ->where(['id_value' => $id, 'parent_id' => 0])
             ->orderBy('comment_id', 'DESC')
             ->limit(10)
             ->get();

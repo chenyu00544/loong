@@ -10,10 +10,10 @@ namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FavourableActivityModel extends Model
+class BrandModel extends Model
 {
-    protected $table = 'favourable_activity';
-    protected $primaryKey = 'act_id';
+    protected $table = 'brand';
+    protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
 }

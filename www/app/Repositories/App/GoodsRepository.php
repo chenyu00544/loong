@@ -92,6 +92,28 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
             $goods_detail->mobile_descs = $mobile_descs;
             $goods_detail->goods_video = FileHandle::getImgByOssUrl($goods_detail->goods_video);
+            $goods_detail->goods_thumb = FileHandle::getImgByOssUrl($goods_detail->goods_thumb);
+            $goods_detail->original_img = FileHandle::getImgByOssUrl($goods_detail->original_img);
+            $goods_detail->goods_img = FileHandle::getImgByOssUrl($goods_detail->goods_img);
+            $goods_detail->shop_price_format = Common::priceFormat($goods_detail->shop_price);
+            $goods_detail->market_price_format = Common::priceFormat($goods_detail->market_price);
+            $goods_detail->promote_price_format = Common::priceFormat($goods_detail->promote_price);
+            $goods_cause = explode(',', $goods_detail->goods_cause);
+            $causes = [];
+            $causeName = Common::causeName();
+            foreach ($goods_cause as $cause) {
+                $gcause['cause_type'] = $cause;
+                $gcause['name'] = $causeName[$cause];
+                $causes[] = $gcause;
+            }
+            $goods_detail->goods_cause = $causes;
+
+            $goods_detail->brand->brand_logo = FileHandle::getImgByOssUrl($goods_detail->brand->brand_logo);
+
+            foreach ($goods_detail->ggallery as $gallery){
+                $gallery->img_original = FileHandle::getImgByOssUrl($gallery->img_original);
+                $gallery->img_url = FileHandle::getImgByOssUrl($gallery->img_url);
+            }
 
             //快递
             if ($goods_detail->freight == 2) {
@@ -101,18 +123,29 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
 
             //评价
-            $goods_detail->comment = $this->commentModel->getComments($goods_id);
+            $goods_detail->comments = $this->commentModel->getComments($goods_id);
+            foreach ($goods_detail->comments as $comment){
+                $comment->user_logo = $comment->user->logo;
+                if($comment->user_logo != ''){
+                    $comment->user_logo = FileHandle::getImgByOssUrl($comment->user_logo);
+                }
+                unset($comment->user);
+            }
 
             //评价统计
             $commentLabels = $this->commentLabelModel->getCommentLabels();
             foreach ($commentLabels as $commentLabel) {
                 $commentLabel->count = $this->commentExtModel->countCommentExt(['id_value' => $goods_id, 'label_id' => $commentLabel->id]);
             }
-            $goods_detail->comment = $commentLabels;
+            $goods_detail->comment_label = $commentLabels;
 
             //品牌商品
-            $goods_detail->brands = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['goods_name', 'goods_thumb', 'shop_price', 'promote_price', 'promote_start_date', 'promote_end_date'], 15);
-
+            $goods_detail->brand_goodses = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['goods_name', 'original_img', 'shop_price', 'promote_price', 'promote_start_date', 'promote_end_date'], 15);
+            foreach ($goods_detail->brand_goodses as $brand_goods){
+                $brand_goods->original_img = FileHandle::getImgByOssUrl($brand_goods->original_img);
+                $brand_goods->shop_price_format = Common::priceFormat($brand_goods->shop_price);
+                $brand_goods->promote_price_format = Common::priceFormat($brand_goods->promote_price);
+            }
             //用户地址
             $uwhere['user_id'] = $user_id;
             $user = $this->usersModel->getUserByAddress($uwhere, ['user_id', 'address_id']);
@@ -128,13 +161,30 @@ class GoodsRepository implements GoodsRepositoryInterface
 
             //商品属性整理
             $goods_detail->gattr;
-
-            foreach ($goods_detail->gattr as $gattr){
-                if($gattr->attr){
-
+            $multi_attr = [];
+            $single_attr = [];
+            foreach ($goods_detail->gattr as $akey => $gattr) {
+                $gattr->attr_name = $gattr->attr->attr_name;
+                if ($gattr->attr->attr_type == 1) {
+                    if($gattr->attr_img_flie != ''){
+                        $gattr->attr_img_flie = FileHandle::getImgByOssUrl($gattr->attr_img_flie);
+                    }
+                    if($gattr->attr_gallery_flie != ''){
+                        $gattr->attr_gallery_flie = FileHandle::getImgByOssUrl($gattr->attr_gallery_flie);
+                    }
+                    $multi_attr[$gattr->attr_id][] = $gattr;
+                } else {
+                    $single_attr[] = $gattr;
                 }
+                unset($gattr->attr);
             }
-
+            unset($goods_detail->gattr);
+            $multi = [];
+            foreach ($multi_attr as $mattr){
+                $multi[] = $mattr;
+            }
+            $goods_detail->multi_attr = $multi;
+            $goods_detail->single_attr = $single_attr;
         }
         return $goods_detail;
     }

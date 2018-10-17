@@ -128,8 +128,14 @@ class CommonService
         return $pList;
     }
 
+    //格式化价格
     public function priceFormat($price)
     {
         return '￥' . $price;
+    }
+
+    public function causeName()
+    {
+        return ['维修','退货','换货','仅退款'];
     }
 }

@@ -367,7 +367,7 @@
                                         <div class="step-value">
                                             <div id="goods-figure" class="update-images">
                                                 <div class="img">
-                                                    <img src="{{url($goodsInfo->goods_thumb)}}"
+                                                    <img src="{{$goodsInfo->goods_thumb}}"
                                                          class="goods-img-show">
                                                     <input type="hidden" name="goods_gallery_id" value="">
                                                 </div>
@@ -1253,7 +1253,7 @@
                                             @foreach($goodsInfo->goods_gallerys as $goodsGallery)
                                                 <li id="gallery">
                                                     <div class="img">
-                                                        <img src="{{url($goodsGallery->img_original)}}" width="160"
+                                                        <img src="{{$goodsGallery->img_original}}" width="160"
                                                              height="160" id="external_img_url">
                                                     </div>
                                                     <div class="info">

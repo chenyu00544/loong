@@ -48,7 +48,7 @@ public class GoodsBannerItem extends BaseItem<List<GoodsBanner>> {
         banner.setImageLoader(new GlideImageLoader());
         ArrayList<String> imageUrls = new ArrayList<>();
         for (int i = 0; i < mData.size(); i++) {
-            imageUrls.add(mData.get(i).getImagePath());
+            imageUrls.add(mData.get(i).getImg_original());
         }
         banner.setImages(imageUrls);
         banner.start();

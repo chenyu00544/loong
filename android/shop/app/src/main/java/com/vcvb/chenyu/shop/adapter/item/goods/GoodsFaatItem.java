@@ -42,12 +42,12 @@ public class GoodsFaatItem extends BaseItem<List<GoodsFaat>> {
         for (int i = 0; i < mData.size(); i++) {
             switch (i) {
                 case 0:
-                    tv1.setText("[" + mData.get(i).getType() + "]");
-                    tv2.setText("[" + mData.get(i).getInfo() + "]");
+//                    tv1.setText("[" + mData.get(i).getType() + "]");
+//                    tv2.setText("[" + mData.get(i).getInfo() + "]");
                     break;
                 case 1:
-                    tv3.setText("[" + mData.get(i).getType() + "]");
-                    tv4.setText("[" + mData.get(i).getInfo() + "]");
+//                    tv3.setText("[" + mData.get(i).getType() + "]");
+//                    tv4.setText("[" + mData.get(i).getInfo() + "]");
                     break;
             }
         }

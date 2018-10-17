@@ -234,6 +234,10 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsColumns = ['*'];
         $req = $this->goodsModel->getGoods($id, $goodsColumns);
 
+        $req->goods_thumb = FileHandle::getImgByOssUrl($req->goods_thumb);
+        $req->goods_img = FileHandle::getImgByOssUrl($req->goods_img);
+        $req->original_img = FileHandle::getImgByOssUrl($req->original_img);
+
         //商品退货标识
         $req->goods_cause = explode(',', $req->goods_cause);
         $goodsCause = [0, 0, 0, 0];
@@ -320,8 +324,13 @@ class GoodsRepository implements GoodsRepositoryInterface
         $req->goods_attr_m = $goodsAttrM;
 
         //商品相册
-        $req->goods_gallerys = $this->goodsGalleryModel->getGoodsGallerys(['goods_id' => $id]);
-
+        $goods_gallerys = $this->goodsGalleryModel->getGoodsGallerys(['goods_id' => $id]);
+        foreach ($goods_gallerys as $goods_gallery){
+            $goods_gallery->img_url = FileHandle::getImgByOssUrl($goods_gallery->img_url);
+            $goods_gallery->thumb_url = FileHandle::getImgByOssUrl($goods_gallery->thumb_url);
+            $goods_gallery->img_original = FileHandle::getImgByOssUrl($goods_gallery->img_original);
+        }
+        $req->goods_gallerys = $goods_gallerys;
         return $req;
     }
 
