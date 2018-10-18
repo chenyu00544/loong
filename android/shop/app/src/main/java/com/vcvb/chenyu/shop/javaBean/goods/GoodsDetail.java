@@ -483,6 +483,16 @@ public class GoodsDetail {
         this.qas = qas;
     }
 
+    private GoodsTransport goodsTransport;
+
+    public GoodsTransport getGoodsTransport() {
+        return goodsTransport;
+    }
+
+    public void setGoodsTransport(GoodsTransport goodsTransport) {
+        this.goodsTransport = goodsTransport;
+    }
+
     public void setData(JSONObject Json) throws JSONException {
         this.setBanner(Json);
         this.setCommentLabel(Json);
@@ -500,6 +510,7 @@ public class GoodsDetail {
         this.setFaat(Json);
         this.setStore(Json);
         this.setQA(Json);
+        this.setTransport(Json);
 
         this.setGoods_id(Json.getInt("goods_id"));
         this.setCat_id(Json.getString("cat_id"));
@@ -805,6 +816,21 @@ public class GoodsDetail {
                 _qas.add(qa);
             }
             this.setQas(_qas);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setTransport(JSONObject Json){
+        try {
+            JSONObject tpJSONObject = Json.getJSONObject("transport");
+            GoodsTransport goodsTransport = JsonUtils.fromJsonObject(tpJSONObject, GoodsTransport.class);
+            goodsTransport.setData(tpJSONObject);
+            this.setGoodsTransport(goodsTransport);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

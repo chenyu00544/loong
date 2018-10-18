@@ -52,6 +52,7 @@ import com.vcvb.chenyu.shop.msg.MessageActivity;
 import com.vcvb.chenyu.shop.search.SearchActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.UrlParse;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +72,7 @@ public class FragmentHome extends BaseFragment {
 
     private JSONObject data;
     private JSONObject loadMoreData;
+    private JSONObject locationData;
 
     private RecyclerView mRecyclerView;
     private CYCGridAdapter mAdapter = new CYCGridAdapter();
@@ -186,7 +188,6 @@ public class FragmentHome extends BaseFragment {
     @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission
             .ACCESS_FINE_LOCATION})
     public void location() {
-        //基站定位
         LocationManager locationManager = (LocationManager) context.getSystemService(Context
                 .LOCATION_SERVICE);
 
@@ -210,13 +211,14 @@ public class FragmentHome extends BaseFragment {
             location = locationManager.getLastKnownLocation(provider);
         }
         if (location != null) {
-            System.out.println(location);
             HashMap<String, String> mp = new HashMap<>();
-            mp.put("lat_long", "" + location.getLatitude() + ',' + location.getLongitude());
+            mp.put("lat", "" + location.getLatitude());
+            mp.put("long", "" + location.getLongitude());
             HttpUtils.getInstance().post(ConstantManager.Url.GETGEO, mp, new HttpUtils.NetCall() {
                 @Override
                 public void success(Call call, JSONObject json) throws IOException {
-                    System.out.println(json);
+                    locationData = json;
+                    setLocationInfo();
                 }
 
                 @Override
@@ -224,6 +226,24 @@ public class FragmentHome extends BaseFragment {
 
                 }
             });
+        }
+    }
+
+    public void setLocationInfo() {
+        if (locationData != null) {
+            Map<String, String> user = (Map<String, String>) UserInfoUtils.getInstance(context)
+                    .getUserInfo();
+            try {
+                user.put("region_id", String.valueOf(locationData.getJSONObject("data").getInt
+                        ("region_id")));
+                user.put("region_name", String.valueOf(locationData.getJSONObject("data").getString
+                        ("region_name")));
+                user.put("formatted_address", String.valueOf(locationData.getJSONObject("data").getString
+                        ("formatted_address")));
+                UserInfoUtils.getInstance(context).setUserInfo(user);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

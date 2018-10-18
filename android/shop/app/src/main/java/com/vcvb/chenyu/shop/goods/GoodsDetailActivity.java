@@ -360,11 +360,11 @@ public class GoodsDetailActivity extends GoodsActivity {
             goodsAttrItem.setOnItemClickListener(attrListener);
             cells.add(goodsAttrItem);
         }
-//        if (goodsDetails.getGoodsShip() != null) {
-//            GoodsShipItem goodsShipItem = new GoodsShipItem(goodsDetails, context);
-//            goodsShipItem.setOnItemClickListener(shipListener);
-//            cells.add(goodsShipItem);
-//        }
+        if (goodsDetails.getGoodsTransport() != null) {
+            GoodsShipItem goodsShipItem = new GoodsShipItem(goodsDetails, context);
+            goodsShipItem.setOnItemClickListener(shipListener);
+            cells.add(goodsShipItem);
+        }
 //        if (goodsDetails.getShipFree() != null) {
 //            GoodsShipFreeItem goodsShipFreeItem = new GoodsShipFreeItem(goodsDetails.getShipFree
 //                    (), context);

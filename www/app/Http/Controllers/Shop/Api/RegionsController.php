@@ -55,6 +55,7 @@ class RegionsController extends CommonController
                 $area = mb_substr($content->regeocode->addressComponent->city, 0, -1, "utf-8");
                 $region = $this->regionsRepository->searchRegion($area);
             }
+            $region->formatted_address = $content->regeocode->addressComponent->province.$content->regeocode->addressComponent->city.$content->regeocode->addressComponent->district;
             return $this->ApiReturn($region);
         } catch (\Exception $e) {
             echo 'error:  ';

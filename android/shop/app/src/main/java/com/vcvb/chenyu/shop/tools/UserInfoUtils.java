@@ -29,10 +29,9 @@ public class UserInfoUtils {
     }
 
     public void setUserInfo(Map<String, String> userInfo) {
-        editor.putString("username", userInfo.get("username"));
-        editor.putString("token", userInfo.get("token"));
-        editor.putString("logo", userInfo.get("logo"));
-        editor.putString("nickname", userInfo.get("nickname"));
+        for (Map.Entry<String, String> entry : userInfo.entrySet()) {
+            editor.putString(entry.getKey(), entry.getValue());
+        }
         editor.commit();
     }
 

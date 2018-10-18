@@ -10,6 +10,7 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 public class GoodsShipItem extends BaseItem<GoodsDetail> {
     public static final int TYPE = 6;
@@ -37,17 +38,8 @@ public class GoodsShipItem extends BaseItem<GoodsDetail> {
         posMap.put(v.getId(), 0);
 
         TextView address = holder.getTextView(R.id.textView1);
-        String addressStr = "";
-//        if (mData.getProvince() != null) {
-//            addressStr += mData.getProvince() + " ";
-//        }
-//        if (mData.getCity() != null) {
-//            addressStr += mData.getCity() + " ";
-//        }
-//        if (mData.getCounty() != null) {
-//            addressStr += mData.getCounty() + " ";
-//        }
-//        address.setText(addressStr + mData.getAddress());
+        String addressStr = (String) UserInfoUtils.getInstance(context).getUserInfo().get("formatted_address");
+        address.setText(addressStr);
 //
 //        ImageView fromIv = holder.getImageView(R.id.imageView5);
 //        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
