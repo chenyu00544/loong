@@ -1,9 +1,15 @@
 package com.vcvb.chenyu.shop.home;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -57,7 +63,10 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class FragmentHome extends BaseFragment {
 
     private JSONObject data;
@@ -84,6 +93,7 @@ public class FragmentHome extends BaseFragment {
         initView();
         getData(true);
         initSearchView();
+        FragmentHomePermissionsDispatcher.locationWithCheck(this);
         return view;
     }
 
@@ -170,6 +180,51 @@ public class FragmentHome extends BaseFragment {
                 refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
             }
         });
+    }
+
+    //定位
+    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission
+            .ACCESS_FINE_LOCATION})
+    public void location() {
+        //基站定位
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context
+                .LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager
+                .PERMISSION_GRANTED) {
+            return;
+        }
+        Location location = null;
+        if (locationManager != null) {
+            List<String> prodiverlist = locationManager.getProviders(true);
+            String provider = "";
+            if (prodiverlist.contains(LocationManager.NETWORK_PROVIDER)) {
+                provider = LocationManager.NETWORK_PROVIDER;//网络定位
+            } else if (prodiverlist.contains(LocationManager.GPS_PROVIDER)) {
+                provider = LocationManager.GPS_PROVIDER;//GPS定位
+            } else {
+                provider = null;
+            }
+            location = locationManager.getLastKnownLocation(provider);
+        }
+        if (location != null) {
+            System.out.println(location);
+            HashMap<String, String> mp = new HashMap<>();
+            mp.put("lat_long", "" + location.getLatitude() + ',' + location.getLongitude());
+            HttpUtils.getInstance().post(ConstantManager.Url.GETGEO, mp, new HttpUtils.NetCall() {
+                @Override
+                public void success(Call call, JSONObject json) throws IOException {
+                    System.out.println(json);
+                }
+
+                @Override
+                public void failed(Call call, IOException e) {
+
+                }
+            });
+        }
     }
 
     public void getData(final boolean bool) {

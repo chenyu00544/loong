@@ -155,6 +155,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">备注：</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="remarks" class="form-control" value="{{$transportInfo['transport']->remarks}}"
+                                       placeholder="备注">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-sm-4 control-label">&nbsp;</div>
                             <div class="">
                                 <input type="submit" value="　确定　" class="btn btn-danger clearfix">

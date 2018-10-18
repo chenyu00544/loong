@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
@@ -32,6 +33,13 @@ class RegionsModel extends Model
         return $this->select($column)
             ->where([['region_type', $type], ['parent_id', $parent]])
             ->get();
+    }
+
+    public function searchRegions($keywords, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where('region_name', 'like', '%' . $keywords . '%')
+            ->first();
     }
 
     public function getRegionsRange($type_s = 0, $type_e = 0)
@@ -76,7 +84,7 @@ class RegionsModel extends Model
     public function getRegionsBySale($type = 1, $parent = 1)
     {
         return $this->with(['Order' => function ($query) {
-            $query->select(['pay_status','money_paid','province'])->where(['pay_status' => 2]);
+            $query->select(['pay_status', 'money_paid', 'province'])->where(['pay_status' => 2]);
         }])
             ->where([['region_type', $type], ['parent_id', $parent]])
             ->get();

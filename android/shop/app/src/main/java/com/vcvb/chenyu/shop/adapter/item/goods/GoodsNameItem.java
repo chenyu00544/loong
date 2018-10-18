@@ -33,7 +33,7 @@ public class GoodsNameItem extends BaseItem<GoodsDetail> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView name = holder.getTextView(R.id.textView18);
         TextView desc = holder.getTextView(R.id.textView19);
-//        name.setText(mData.getGoodsName());
-//        desc.setText(mData.getGoodsDesc());
+        name.setText(mData.getGoods_name());
+        desc.setText(mData.getGoods_brief());
     }
 }

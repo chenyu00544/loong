@@ -23,6 +23,11 @@ class GoodsModel extends Model
         return $this->hasMany('App\Http\Models\App\GoodsVolumePriceModel', 'goods_id', 'goods_id');
     }
 
+    public function fullcut()
+    {
+        return $this->hasMany('App\Http\Models\App\GoodsFullCutModel', 'goods_id', 'goods_id');
+    }
+
     public function faat()
     {
         return $this->belongsToMany('App\Http\Models\App\FavourableActivityModel', 'favourable_goods', 'goods_id', 'act_id');
@@ -75,6 +80,7 @@ class GoodsModel extends Model
             ->with(['gvp' => function ($query) {
                 $query->where(['price_type' => 1]);
             }])
+            ->with(['fullcut'])
             ->with(['qa' => function ($query) {
                 $query->where(['parent_id' => 0])->limit(2);
             }])

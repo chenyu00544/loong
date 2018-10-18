@@ -39,9 +39,9 @@ public class GoodsPriceItem extends BaseItem<GoodsDetail> {
         TextView goodsPrice = holder.getTextView(R.id.textView1);
         TextView goodsMarket = holder.getTextView(R.id.textView2);
         goodsMarket.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        if(mData.getIs_promote() == 1){
+        if (mData.getIs_promote() == 1) {
             goodsPrice.setText(mData.getPromote_price_format());
-        }else{
+        } else {
             goodsPrice.setText(mData.getShop_price_format());
         }
         goodsMarket.setText(mData.getMarket_price_format());
@@ -51,9 +51,9 @@ public class GoodsPriceItem extends BaseItem<GoodsDetail> {
         flowLayout.setChildSpacingForLastRow(8);
         flowLayout.setGravity(Gravity.CENTER_VERTICAL);
         flowLayout.removeAllViews();
-        if(mData.getIs_promote() == 1){
+        if (mData.getIs_promote() == 1) {
             TextView textView = new TextView(context);
-            textView.setText("促销价");
+            textView.setText("促销");
             textView.setTextColor(context.getResources().getColor(R.color.red));
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -65,18 +65,40 @@ public class GoodsPriceItem extends BaseItem<GoodsDetail> {
             flowLayout.addView(textView);
         }
 
-        if(mData.getIs_promote() == 1){
-            TextView textView = new TextView(context);
-            textView.setText("促销价");
-            textView.setTextColor(context.getResources().getColor(R.color.red));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-            textView.setLines(1);
-            textView.setMaxEms(8);
-            textView.setPadding(ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2),
-                    ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2));
-            textView.setBackgroundResource(R.drawable.shape_tip);
-            flowLayout.addView(textView);
+        if (mData.getIs_fullcut() == 1) {
+            if (mData.getGoodsFCS() != null) {
+                for (int i = 0; i < mData.getGoodsFCS().size(); i++) {
+                    TextView textView = new TextView(context);
+                    textView.setText("满" + mData.getGoodsFCS().get(i).getCfull_format() + "减" + mData
+                            .getGoodsFCS().get(i).getCreduce_format());
+                    textView.setTextColor(context.getResources().getColor(R.color.red));
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                    textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                    textView.setLines(1);
+                    textView.setPadding(ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2),
+                            ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2));
+                    textView.setBackgroundResource(R.drawable.shape_tip);
+                    flowLayout.addView(textView);
+                }
+            }
+        }
+
+        if (mData.getIs_volume() == 1) {
+            if(mData.getGoodsGVPS() != null){
+                for (int i = 0; i < mData.getGoodsGVPS().size(); i++) {
+                    TextView textView = new TextView(context);
+                    textView.setText(mData.getGoodsGVPS().get(i).getVolume_number() + "件" + mData
+                            .getGoodsGVPS().get(i).getVolume_price_format());
+                    textView.setTextColor(context.getResources().getColor(R.color.red));
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                    textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                    textView.setLines(1);
+                    textView.setPadding(ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2),
+                            ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2));
+                    textView.setBackgroundResource(R.drawable.shape_tip);
+                    flowLayout.addView(textView);
+                }
+            }
         }
     }
 }

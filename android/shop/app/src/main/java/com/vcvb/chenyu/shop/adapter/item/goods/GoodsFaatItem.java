@@ -9,14 +9,12 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsFaat;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 
-import java.util.List;
-
-public class GoodsFaatItem extends BaseItem<List<GoodsFaat>> {
+public class GoodsFaatItem extends BaseItem<GoodsDetail> {
     public static final int TYPE = 4;
 
-    public GoodsFaatItem(List<GoodsFaat> beans, Context c) {
+    public GoodsFaatItem(GoodsDetail beans, Context c) {
         super(beans, c);
     }
 
@@ -39,18 +37,34 @@ public class GoodsFaatItem extends BaseItem<List<GoodsFaat>> {
         TextView tv3 = holder.getTextView(R.id.textView4);
         TextView tv4 = holder.getTextView(R.id.textView5);
 
-        for (int i = 0; i < mData.size(); i++) {
-            switch (i) {
-                case 0:
-//                    tv1.setText("[" + mData.get(i).getType() + "]");
-//                    tv2.setText("[" + mData.get(i).getInfo() + "]");
-                    break;
-                case 1:
-//                    tv3.setText("[" + mData.get(i).getType() + "]");
-//                    tv4.setText("[" + mData.get(i).getInfo() + "]");
-                    break;
+        if (mData.getIs_volume() == 1) {
+            for (int i = 0; i < mData.getGoodsGVPS().size(); i++) {
+                switch (i) {
+                    case 0:
+                    tv1.setText("[促销]");
+                    tv2.setText("" + mData.getGoodsGVPS().get(i).getVolume_number() + "件"+mData.getGoodsGVPS().get(i).getVolume_price_format());
+                        break;
+                    case 1:
+                    tv3.setText("[促销]");
+                    tv4.setText("" + mData.getGoodsGVPS().get(i).getVolume_number() + "件"+mData.getGoodsGVPS().get(i).getVolume_price_format());
+                        break;
+                }
+            }
+        }else if (mData.getIs_fullcut() == 1) {
+            for (int i = 0; i < mData.getGoodsFCS().size(); i++) {
+                switch (i) {
+                    case 0:
+                    tv1.setText("[满减]");
+                    tv2.setText("满" + mData.getGoodsFCS().get(i).getCfull_format() + "减"+mData.getGoodsFCS().get(i).getCreduce_format());
+                        break;
+                    case 1:
+                    tv3.setText("[满减]");
+                    tv4.setText("满" + mData.getGoodsFCS().get(i).getCfull_format() + "减"+mData.getGoodsFCS().get(i).getCreduce_format());
+                        break;
+                }
             }
         }
+
         View v = holder.getItemView();
         posMap.put(v.getId(), 0);
         v.setOnClickListener(listener);

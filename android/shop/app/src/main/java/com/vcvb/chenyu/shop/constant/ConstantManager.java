@@ -80,9 +80,10 @@ public interface ConstantManager {
     }
 
     interface Url {
-        public String URIHOST = "http://www.vcvbuy.com/api/app/";
-        public String HOME = URIHOST + "index";
-        public String HOMELOADMORE = URIHOST + "index/loadmore";
-        public String GOODSDETAIL = URIHOST + "goods/detail";
+        public String URIHOST = "http://www.vcvbuy.com/api/";
+        public String HOME = URIHOST + "app/index";
+        public String HOMELOADMORE = URIHOST + "app/index/loadmore";
+        public String GOODSDETAIL = URIHOST + "app/goods/detail";
+        public String GETGEO = URIHOST + "region/geo/coder";
     }
 }

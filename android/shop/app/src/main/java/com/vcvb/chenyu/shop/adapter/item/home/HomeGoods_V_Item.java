@@ -106,7 +106,7 @@ public class HomeGoods_V_Item extends BaseItem<Goods> {
         RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override(
                         (width - ToolUtils.dip2px(context, 9)) / 2, (width - ToolUtils.dip2px(context, 9)) / 2);
-        Glide.with(context).load(mData.getGoods_img()).apply(requestOptions).into(iv);
+        Glide.with(context).load(mData.getOriginal_img()).apply(requestOptions).into(iv);
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);

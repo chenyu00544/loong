@@ -4,21 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsShip;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 
-public class GoodsShipItem extends BaseItem<GoodsShip> {
+public class GoodsShipItem extends BaseItem<GoodsDetail> {
     public static final int TYPE = 6;
 
-    public GoodsShipItem(GoodsShip beans, Context c) {
+    public GoodsShipItem(GoodsDetail beans, Context c) {
         super(beans, c);
     }
 
@@ -42,25 +38,25 @@ public class GoodsShipItem extends BaseItem<GoodsShip> {
 
         TextView address = holder.getTextView(R.id.textView1);
         String addressStr = "";
-        if (mData.getProvince() != null) {
-            addressStr += mData.getProvince() + " ";
-        }
-        if (mData.getCity() != null) {
-            addressStr += mData.getCity() + " ";
-        }
-        if (mData.getCounty() != null) {
-            addressStr += mData.getCounty() + " ";
-        }
-        address.setText(addressStr + mData.getAddress());
-
-        ImageView fromIv = holder.getImageView(R.id.imageView5);
-        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override(120, 120);
-        Glide.with(context).load(mData.getFromPic()).apply(requestOptions).into(fromIv);
-
-        TextView from = holder.getTextView(R.id.textView7);
-        from.setText(mData.getFrom());
-        TextView to = holder.getTextView(R.id.textView8);
-        to.setText(mData.getEnd());
+//        if (mData.getProvince() != null) {
+//            addressStr += mData.getProvince() + " ";
+//        }
+//        if (mData.getCity() != null) {
+//            addressStr += mData.getCity() + " ";
+//        }
+//        if (mData.getCounty() != null) {
+//            addressStr += mData.getCounty() + " ";
+//        }
+//        address.setText(addressStr + mData.getAddress());
+//
+//        ImageView fromIv = holder.getImageView(R.id.imageView5);
+//        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
+//                (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override(120, 120);
+//        Glide.with(context).load(mData.getFromPic()).apply(requestOptions).into(fromIv);
+//
+//        TextView from = holder.getTextView(R.id.textView7);
+//        from.setText(mData.getFrom());
+//        TextView to = holder.getTextView(R.id.textView8);
+//        to.setText(mData.getEnd());
     }
 }

@@ -219,7 +219,7 @@ class TokenService
      */
     public static function encode($payload, $keyId = null, $head = null)
     {
-        $key = 'vcbuy';
+        $key = 'vcvbuy';
         $alg = Config::get('config');
         $ttl = Config::get('config');
 

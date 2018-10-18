@@ -151,8 +151,7 @@ public class MainActivity extends BaseActivity {
             case 1:
                 if (fragmentCategory == null) {
                     fragmentCategory = new FragmentCategory();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentCategory,
-                            fragmentTag[1]);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentCategory, fragmentTag[1]);
                 } else {
                     fragmentTransaction.show(fragmentCategory);
                 }

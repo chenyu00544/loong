@@ -6,7 +6,7 @@ public class GoodsAttr {
     private boolean isSelect = false;
     private int buttonId = 0;
 
-    private String goods_attr_id;
+    private Integer goods_attr_id;
     private String goods_id;
     private String attr_id;
     private String color_value;
@@ -80,7 +80,7 @@ public class GoodsAttr {
         return color_value;
     }
 
-    public String getGoods_attr_id() {
+    public Integer getGoods_attr_id() {
         return goods_attr_id;
     }
 
@@ -116,7 +116,7 @@ public class GoodsAttr {
         this.color_value = color_value;
     }
 
-    public void setGoods_attr_id(String goods_attr_id) {
+    public void setGoods_attr_id(Integer goods_attr_id) {
         this.goods_attr_id = goods_attr_id;
     }
 }

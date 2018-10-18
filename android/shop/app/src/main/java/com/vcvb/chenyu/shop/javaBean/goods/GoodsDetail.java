@@ -13,6 +13,16 @@ import java.util.List;
 
 public class GoodsDetail {
 
+    private int isScroll = 0;
+
+    public int getIsScroll() {
+        return isScroll;
+    }
+
+    public void setIsScroll(int isScroll) {
+        this.isScroll = isScroll;
+    }
+
     private List<GoodsBanner> banners;
 
     public List<GoodsBanner> getBanners() {
@@ -211,6 +221,16 @@ public class GoodsDetail {
 
     public void setIs_volume(Integer is_volume) {
         this.is_volume = is_volume;
+    }
+
+    private Integer is_fullcut;
+
+    public Integer getIs_fullcut() {
+        return is_fullcut;
+    }
+
+    public void setIs_fullcut(Integer is_fullcut) {
+        this.is_fullcut = is_fullcut;
     }
 
     private Integer is_limit_buy;
@@ -443,131 +463,43 @@ public class GoodsDetail {
         this.shop = shop;
     }
 
+    private List<GoodsFC> goodsFCS;
+
+    public List<GoodsFC> getGoodsFCS() {
+        return goodsFCS;
+    }
+
+    public void setGoodsFCS(List<GoodsFC> goodsFCS) {
+        this.goodsFCS = goodsFCS;
+    }
+
+    private List<GoodsQA> qas;
+
+    public List<GoodsQA> getQas() {
+        return qas;
+    }
+
+    public void setQas(List<GoodsQA> qas) {
+        this.qas = qas;
+    }
+
     public void setData(JSONObject Json) throws JSONException {
-        try {
-            JSONArray bannersJsonArray = Json.getJSONArray("ggallery");
-            List<GoodsBanner> banners = new ArrayList<>();
-            for (int i = 0; i < bannersJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) bannersJsonArray.get(i);
-                GoodsBanner banner = JsonUtils.fromJsonObject(object,
-                        GoodsBanner.class);
-                banners.add(banner);
-            }
-            this.setBanners(banners);
-
-            JSONArray commentLabelJsonArray = Json.getJSONArray("comment_label");
-            List<GoodsCommentLabel> _commentLabels = new ArrayList<>();
-            for (int i = 0; i < commentLabelJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) commentLabelJsonArray.get(i);
-                GoodsCommentLabel commentLabel = JsonUtils.fromJsonObject(object,
-                        GoodsCommentLabel.class);
-                _commentLabels.add(commentLabel);
-            }
-            this.setCommentLabels(_commentLabels);
-
-            JSONArray causesJsonArray = Json.getJSONArray("goods_cause");
-            List<GoodsCause> _causes = new ArrayList<>();
-            for (int i = 0; i < causesJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) causesJsonArray.get(i);
-                GoodsCause cause = JsonUtils.fromJsonObject(object, GoodsCause.class);
-                _causes.add(cause);
-            }
-            this.setCauses(_causes);
-
-            JSONObject bObject = Json.getJSONObject("brand");
-            GoodsBrand goodsBrand = JsonUtils.fromJsonObject(bObject, GoodsBrand.class);
-            goodsBrand.setData(Json);
-            this.setGoodsBrand(goodsBrand);
-
-            JSONArray addressJsonArray = Json.getJSONObject("user").getJSONArray("addresses");
-            List<AddressBean> _addresses = new ArrayList<>();
-            for (int i = 0; i < addressJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) addressJsonArray.get(i);
-                AddressBean addressBean = JsonUtils.fromJsonObject(object, AddressBean.class);
-                _addresses.add(addressBean);
-            }
-            this.setAddressBeans(_addresses);
-
-            JSONArray goodsDescriptionJsonArray = Json.getJSONArray("goods_description");
-            List<GoodsDescription> _goodsDescriptions = new ArrayList<>();
-            for (int i = 0; i < goodsDescriptionJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) goodsDescriptionJsonArray.get(i);
-                GoodsDescription goodsDescription = JsonUtils.fromJsonObject(object,
-                        GoodsDescription.class);
-                _goodsDescriptions.add(goodsDescription);
-            }
-            this.setGoodsDescriptions(_goodsDescriptions);
-
-            JSONArray mAttrJsonArray = Json.getJSONArray("multi_attr");
-            List<List<GoodsAttr>> _mattrs = new ArrayList<>();
-            for (int i = 0; i < mAttrJsonArray.length(); i++) {
-                JSONArray mSubAttrJsonArray = (JSONArray) mAttrJsonArray.get(i);
-                List<GoodsAttr> _attrs = new ArrayList<>();
-                for (int j = 0; j < mSubAttrJsonArray.length(); j++) {
-                    JSONObject object = (JSONObject) mSubAttrJsonArray.get(j);
-                    GoodsAttr goodsAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
-                    _attrs.add(goodsAttr);
-                }
-                _mattrs.add(_attrs);
-            }
-            this.setMultiAttrs(_mattrs);
-
-            JSONArray sAttrJsonArray = Json.getJSONArray("single_attr");
-            List<GoodsAttr> _sattr = new ArrayList<>();
-            for (int i = 0; i < sAttrJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) sAttrJsonArray.get(i);
-                GoodsAttr goodsAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
-                _sattr.add(goodsAttr);
-            }
-            this.setSingleAttrs(_sattr);
-
-            JSONArray goodsInfoJsonArray = Json.getJSONArray("mobile_descs");
-            List<GoodsDesc> _goodsInfo = new ArrayList<>();
-            for (int i = 0; i < goodsInfoJsonArray.length(); i++) {
-                GoodsDesc goodsDesc = new GoodsDesc();
-                goodsDesc.setGoodsDescImg((String) goodsInfoJsonArray.get(i));
-                _goodsInfo.add(goodsDesc);
-            }
-            this.setGoodsDescs(_goodsInfo);
-
-            JSONArray gvpJsonArray = Json.getJSONArray("gvp");
-            List<GoodsGVP> _goodsGvp = new ArrayList<>();
-            for (int i = 0; i < gvpJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) gvpJsonArray.get(i);
-                GoodsGVP goodsGVP = JsonUtils.fromJsonObject(object, GoodsGVP.class);
-                _goodsGvp.add(goodsGVP);
-            }
-            this.setGoodsGVPS(_goodsGvp);
-
-            JSONArray commentsJsonArray = Json.getJSONArray("comments");
-            List<GoodsComment> _goodsComment = new ArrayList<>();
-            for (int i = 0; i < commentsJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) commentsJsonArray.get(i);
-                GoodsComment goodsComment = JsonUtils.fromJsonObject(object, GoodsComment.class);
-                _goodsComment.add(goodsComment);
-            }
-            this.setComments(_goodsComment);
-
-            JSONArray faatJsonArray = Json.getJSONArray("faat");
-            for (int i = 0; i < faatJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) faatJsonArray.get(i);
-                GoodsFaat goodsFaat = JsonUtils.fromJsonObject(object, GoodsFaat.class);
-                this.setGoodsFaat(goodsFaat);
-            }
-
-            JSONObject object = Json.getJSONObject("shop");
-            Shop shop = JsonUtils.fromJsonObject(object, Shop.class);
-            this.setShop(shop);
-
-            JSONArray qaJsonArray = Json.getJSONArray("qa");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (java.lang.InstantiationException e) {
-            e.printStackTrace();
-        }
+        this.setBanner(Json);
+        this.setCommentLabel(Json);
+        this.setGoodsCause(Json);
+        this.setBrand(Json);
+        this.setAddress(Json);
+        this.setGoodsDescription(Json);
+        this.setGoodsDescription(Json);
+        this.setMultiAttr(Json);
+        this.setSingleAttr(Json);
+        this.setMobileDescs(Json);
+        this.setGVP(Json);
+        this.setFullCut(Json);
+        this.setComment(Json);
+        this.setFaat(Json);
+        this.setStore(Json);
+        this.setQA(Json);
 
         this.setGoods_id(Json.getInt("goods_id"));
         this.setCat_id(Json.getString("cat_id"));
@@ -587,6 +519,7 @@ public class GoodsDetail {
         this.setIs_hot(Json.getInt("is_hot"));
         this.setIs_promote(Json.getInt("is_promote"));
         this.setIs_volume(Json.getInt("is_volume"));
+        this.setIs_fullcut(Json.getInt("is_fullcut"));
         this.setIs_limit_buy(Json.getInt("is_limit_buy"));
         this.setLimit_buy_num(Json.getInt("limit_buy_num"));
         this.setLimit_buy_start_date(Json.getLong("limit_buy_start_date"));
@@ -599,5 +532,285 @@ public class GoodsDetail {
         this.setShop_price_format(Json.getString("shop_price_format"));
         this.setMarket_price_format(Json.getString("market_price_format"));
         this.setPromote_price_format(Json.getString("promote_price_format"));
+    }
+
+    private void setBanner(JSONObject Json) {
+        try {
+            JSONArray bannersJsonArray = Json.getJSONArray("ggallery");
+            List<GoodsBanner> banners = new ArrayList<>();
+            for (int i = 0; i < bannersJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) bannersJsonArray.get(i);
+                GoodsBanner banner = JsonUtils.fromJsonObject(object, GoodsBanner.class);
+                banners.add(banner);
+            }
+            this.setBanners(banners);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setCommentLabel(JSONObject Json) {
+        try {
+            JSONArray commentLabelJsonArray = Json.getJSONArray("comment_label");
+            List<GoodsCommentLabel> _commentLabels = new ArrayList<>();
+            for (int i = 0; i < commentLabelJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) commentLabelJsonArray.get(i);
+                GoodsCommentLabel commentLabel = JsonUtils.fromJsonObject(object,
+                        GoodsCommentLabel.class);
+                _commentLabels.add(commentLabel);
+            }
+            this.setCommentLabels(_commentLabels);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setGoodsCause(JSONObject Json) {
+        try {
+            JSONArray causesJsonArray = Json.getJSONArray("goods_cause");
+            List<GoodsCause> _causes = new ArrayList<>();
+            for (int i = 0; i < causesJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) causesJsonArray.get(i);
+                GoodsCause cause = JsonUtils.fromJsonObject(object, GoodsCause.class);
+                _causes.add(cause);
+            }
+            this.setCauses(_causes);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setBrand(JSONObject Json) {
+        try {
+            JSONObject bObject = Json.getJSONObject("brand");
+            GoodsBrand goodsBrand = JsonUtils.fromJsonObject(bObject, GoodsBrand.class);
+            goodsBrand.setData(Json);
+            this.setGoodsBrand(goodsBrand);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setAddress(JSONObject Json) {
+        try {
+            JSONArray addressJsonArray = Json.getJSONObject("user").getJSONArray("addresses");
+            List<AddressBean> _addresses = new ArrayList<>();
+            for (int i = 0; i < addressJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) addressJsonArray.get(i);
+                AddressBean addressBean = JsonUtils.fromJsonObject(object, AddressBean.class);
+                _addresses.add(addressBean);
+            }
+            this.setAddressBeans(_addresses);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setGoodsDescription(JSONObject Json) {
+        try {
+            JSONArray goodsDescriptionJsonArray = Json.getJSONArray("goods_description");
+            List<GoodsDescription> _goodsDescriptions = new ArrayList<>();
+            for (int i = 0; i < goodsDescriptionJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) goodsDescriptionJsonArray.get(i);
+                GoodsDescription goodsDescription = JsonUtils.fromJsonObject(object,
+                        GoodsDescription.class);
+                _goodsDescriptions.add(goodsDescription);
+            }
+            this.setGoodsDescriptions(_goodsDescriptions);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setMultiAttr(JSONObject Json) {
+        try {
+            JSONArray mAttrJsonArray = Json.getJSONArray("multi_attr");
+            List<List<GoodsAttr>> _mattrs = new ArrayList<>();
+            for (int i = 0; i < mAttrJsonArray.length(); i++) {
+                JSONArray mSubAttrJsonArray = (JSONArray) mAttrJsonArray.get(i);
+                List<GoodsAttr> _attrs = new ArrayList<>();
+                for (int j = 0; j < mSubAttrJsonArray.length(); j++) {
+                    JSONObject object = (JSONObject) mSubAttrJsonArray.get(j);
+                    GoodsAttr goodsAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
+                    if(j == 0){
+                        goodsAttr.setIsSelect(true);
+                    }
+                    _attrs.add(goodsAttr);
+                }
+                _mattrs.add(_attrs);
+            }
+            this.setMultiAttrs(_mattrs);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setSingleAttr(JSONObject Json) {
+        try {
+            JSONArray sAttrJsonArray = Json.getJSONArray("single_attr");
+            List<GoodsAttr> _sattr = new ArrayList<>();
+            for (int i = 0; i < sAttrJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) sAttrJsonArray.get(i);
+                GoodsAttr goodsAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
+                _sattr.add(goodsAttr);
+            }
+            this.setSingleAttrs(_sattr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setMobileDescs(JSONObject Json) {
+        try {
+            JSONArray goodsInfoJsonArray = Json.getJSONArray("mobile_descs");
+            List<GoodsDesc> _goodsInfo = new ArrayList<>();
+            for (int i = 0; i < goodsInfoJsonArray.length(); i++) {
+                GoodsDesc goodsDesc = new GoodsDesc();
+                goodsDesc.setGoodsDescImg((String) goodsInfoJsonArray.get(i));
+                _goodsInfo.add(goodsDesc);
+            }
+            this.setGoodsDescs(_goodsInfo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setGVP(JSONObject Json) {
+        try {
+            JSONArray gvpJsonArray = Json.getJSONArray("gvp");
+            List<GoodsGVP> _goodsGvp = new ArrayList<>();
+            for (int i = 0; i < gvpJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) gvpJsonArray.get(i);
+                GoodsGVP goodsGVP = JsonUtils.fromJsonObject(object, GoodsGVP.class);
+                _goodsGvp.add(goodsGVP);
+            }
+            this.setGoodsGVPS(_goodsGvp);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setFullCut(JSONObject Json) {
+        try {
+            JSONArray fcJsonArray = Json.getJSONArray("fullcut");
+            List<GoodsFC> _goodsFCS = new ArrayList<>();
+            for (int i = 0; i < fcJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) fcJsonArray.get(i);
+                GoodsFC goodsFC = JsonUtils.fromJsonObject(object, GoodsFC.class);
+                _goodsFCS.add(goodsFC);
+            }
+            this.setGoodsFCS(_goodsFCS);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setComment(JSONObject Json) {
+        try {
+            JSONArray commentsJsonArray = Json.getJSONArray("comments");
+            List<GoodsComment> _goodsComment = new ArrayList<>();
+            for (int i = 0; i < commentsJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) commentsJsonArray.get(i);
+                GoodsComment goodsComment = JsonUtils.fromJsonObject(object, GoodsComment.class);
+                _goodsComment.add(goodsComment);
+            }
+            this.setComments(_goodsComment);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setFaat(JSONObject Json) {
+        try {
+            JSONArray faatJsonArray = Json.getJSONArray("faat");
+            for (int i = 0; i < faatJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) faatJsonArray.get(i);
+                GoodsFaat goodsFaat = JsonUtils.fromJsonObject(object, GoodsFaat.class);
+                this.setGoodsFaat(goodsFaat);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setStore(JSONObject Json) {
+        try {
+            JSONObject object = Json.getJSONObject("shop");
+            Shop shop = JsonUtils.fromJsonObject(object, Shop.class);
+            this.setShop(shop);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setQA(JSONObject Json) {
+        try {
+            JSONArray qaJsonArray = Json.getJSONArray("qa");
+            List<GoodsQA> _qas = new ArrayList<>();
+            for (int i = 0; i < qaJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) qaJsonArray.get(i);
+                GoodsQA qa = JsonUtils.fromJsonObject(object, GoodsQA.class);
+                _qas.add(qa);
+            }
+            this.setQas(_qas);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 }

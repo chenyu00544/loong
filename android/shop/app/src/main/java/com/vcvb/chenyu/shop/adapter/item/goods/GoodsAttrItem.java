@@ -9,15 +9,13 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttrs;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 
-import java.util.List;
-
-public class GoodsAttrItem extends BaseItem<List<GoodsAttrs>> {
+public class GoodsAttrItem extends BaseItem<GoodsDetail> {
     public static final int TYPE = 5;
 
-    public GoodsAttrItem(List<GoodsAttrs> beans, Context c) {
-        super(beans, c);
+    public GoodsAttrItem(GoodsDetail bean, Context c) {
+        super(bean, c);
     }
 
     @Override
@@ -36,10 +34,10 @@ public class GoodsAttrItem extends BaseItem<List<GoodsAttrs>> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         String attr = "";
         TextView tv = holder.getTextView(R.id.textView1);
-        for (int i = 0; i < mData.size(); i++) {
-            for (int j = 0; j < mData.get(i).getAttrs().size(); j++) {
-                if (mData.get(i).getAttrs().get(j).getIsSelect() == true) {
-                    attr += mData.get(i).getAttrs().get(j).getAttrName() + " ";
+        for (int i = 0; i < mData.getMultiAttrs().size(); i++) {
+            for (int j = 0; j < mData.getMultiAttrs().get(i).size(); j++) {
+                if (mData.getMultiAttrs().get(i).get(j).getIsSelect() == true) {
+                    attr += mData.getMultiAttrs().get(i).get(j).getAttr_value() + " ";
                 }
             }
         }

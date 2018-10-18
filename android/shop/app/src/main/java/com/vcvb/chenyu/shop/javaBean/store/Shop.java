@@ -1,10 +1,10 @@
 package com.vcvb.chenyu.shop.javaBean.store;
 
 public class Shop {
-    private String id;
+    private Integer id;
     private String shop_name;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -12,7 +12,7 @@ public class Shop {
         return shop_name;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

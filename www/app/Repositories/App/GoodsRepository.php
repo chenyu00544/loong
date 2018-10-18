@@ -76,10 +76,10 @@ class GoodsRepository implements GoodsRepositoryInterface
         $where['is_delete'] = 0;
         $where['review_status'] = 3;
         $column = [
-            'goods_id', 'cat_id', 'user_id', 'goods_name', 'goods_sn', 'brand_id',
+            'goods_id', 'cat_id', 'user_id', 'goods_name', 'goods_sn', 'brand_id', 'freight',
             'goods_number', 'shop_price', 'market_price', 'promote_price', 'promote_start_date', 'promote_end_date',
             'desc_mobile', 'goods_desc', 'goods_id', 'goods_thumb', 'original_img', 'goods_img', 'is_on_sale',
-            'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume',
+            'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume', 'is_fullcut',
             'goods_type', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num', 'review_status',
             'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
             'pinyin_keyword', 'goods_brief',
@@ -110,9 +110,18 @@ class GoodsRepository implements GoodsRepositoryInterface
 
             $goods_detail->brand->brand_logo = FileHandle::getImgByOssUrl($goods_detail->brand->brand_logo);
 
-            foreach ($goods_detail->ggallery as $gallery){
+            foreach ($goods_detail->ggallery as $gallery) {
                 $gallery->img_original = FileHandle::getImgByOssUrl($gallery->img_original);
                 $gallery->img_url = FileHandle::getImgByOssUrl($gallery->img_url);
+            }
+
+            foreach ($goods_detail->gvp as $gvp) {
+                $gvp->volume_price_format = Common::priceFormat((int)$gvp->volume_price);
+            }
+
+            foreach ($goods_detail->fullcut as $fullcut) {
+                $fullcut->cfull_format = Common::priceFormat((int)$fullcut->cfull);
+                $fullcut->creduce_format = Common::priceFormat((int)$fullcut->creduce);
             }
 
             //快递
@@ -124,9 +133,9 @@ class GoodsRepository implements GoodsRepositoryInterface
 
             //评价
             $goods_detail->comments = $this->commentModel->getComments($goods_id);
-            foreach ($goods_detail->comments as $comment){
+            foreach ($goods_detail->comments as $comment) {
                 $comment->user_logo = $comment->user->logo;
-                if($comment->user_logo != ''){
+                if ($comment->user_logo != '') {
                     $comment->user_logo = FileHandle::getImgByOssUrl($comment->user_logo);
                 }
                 unset($comment->user);
@@ -141,7 +150,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
             //品牌商品
             $goods_detail->brand_goodses = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['goods_name', 'original_img', 'shop_price', 'promote_price', 'promote_start_date', 'promote_end_date'], 15);
-            foreach ($goods_detail->brand_goodses as $brand_goods){
+            foreach ($goods_detail->brand_goodses as $brand_goods) {
                 $brand_goods->original_img = FileHandle::getImgByOssUrl($brand_goods->original_img);
                 $brand_goods->shop_price_format = Common::priceFormat($brand_goods->shop_price);
                 $brand_goods->promote_price_format = Common::priceFormat($brand_goods->promote_price);
@@ -166,10 +175,10 @@ class GoodsRepository implements GoodsRepositoryInterface
             foreach ($goods_detail->gattr as $akey => $gattr) {
                 $gattr->attr_name = $gattr->attr->attr_name;
                 if ($gattr->attr->attr_type == 1) {
-                    if($gattr->attr_img_flie != ''){
+                    if ($gattr->attr_img_flie != '') {
                         $gattr->attr_img_flie = FileHandle::getImgByOssUrl($gattr->attr_img_flie);
                     }
-                    if($gattr->attr_gallery_flie != ''){
+                    if ($gattr->attr_gallery_flie != '') {
                         $gattr->attr_gallery_flie = FileHandle::getImgByOssUrl($gattr->attr_gallery_flie);
                     }
                     $multi_attr[$gattr->attr_id][] = $gattr;
@@ -180,7 +189,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
             unset($goods_detail->gattr);
             $multi = [];
-            foreach ($multi_attr as $mattr){
+            foreach ($multi_attr as $mattr) {
                 $multi[] = $mattr;
             }
             $goods_detail->multi_attr = $multi;

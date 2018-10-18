@@ -26,6 +26,7 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsBrandItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsEvaluateItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsExplainItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsFaatItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsNameItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsPriceItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
@@ -236,17 +237,14 @@ public class GoodsDetailActivity extends GoodsActivity {
                 System.out.println(newState);
                 switch (newState) {
                     case 0: //不滚动
-//                        goodsDetails.getGoodsEvaluate().setIsScroll(1);
-//                        goodsDetails.getGoodsBrand().setIsScroll(1);
+                        goodsDetails.setIsScroll(1);
                         mAdapter.notifyDataSetChanged();
                         break;
                     case 1: // 按着手指滚动
-//                        goodsDetails.getGoodsEvaluate().setIsScroll(0);
-//                        goodsDetails.getGoodsBrand().setIsScroll(0);
+                        goodsDetails.setIsScroll(0);
                         break;
                     case 2: // 不按着手指滚动
-//                        goodsDetails.getGoodsEvaluate().setIsScroll(0);
-//                        goodsDetails.getGoodsBrand().setIsScroll(0);
+                        goodsDetails.setIsScroll(0);
                         break;
                 }
             }
@@ -341,24 +339,29 @@ public class GoodsDetailActivity extends GoodsActivity {
         if (goodsDetails.getBanners() != null && goodsDetails.getBanners().size() > 0) {
             cells.add(new GoodsBannerItem(goodsDetails.getBanners(), context));
         }
-        if (goodsDetails.getShop_price() != null) {
-            cells.add(new GoodsPriceItem(goodsDetails, context));
-        }
-//        if (goodsDetails.getGoodsName() != null && goodsDetails.getGoodsName() != "") {
-//            cells.add(new GoodsNameItem(goodsDetails, context));
-//        }
-//        if (goodsDetails.getFaats() != null && goodsDetails.getFaats().size() > 0) {
+        if (goodsDetails.getGoodsFaat() != null) {
 //            GoodsFaatItem goodsFaatItem = new GoodsFaatItem(goodsDetails.getFaats(), context);
 //            goodsFaatItem.setOnItemClickListener(faatListener);
 //            cells.add(goodsFaatItem);
-//        }
-//        if (goodsDetails.getGoodsAttrs() != null && goodsDetails.getGoodsAttrs().size() > 0) {
-//            GoodsAttrItem goodsAttrItem = new GoodsAttrItem(goodsDetails.getGoodsAttrs(), context);
-//            goodsAttrItem.setOnItemClickListener(attrListener);
-//            cells.add(goodsAttrItem);
-//        }
+        }
+        if (goodsDetails.getShop_price() != null) {
+            cells.add(new GoodsPriceItem(goodsDetails, context));
+        }
+        if (goodsDetails.getGoods_name() != null && goodsDetails.getGoods_name() != "") {
+            cells.add(new GoodsNameItem(goodsDetails, context));
+        }
+        if (goodsDetails.getIs_fullcut() == 1 || goodsDetails.getIs_volume() == 1) {
+            GoodsFaatItem goodsFaatItem = new GoodsFaatItem(goodsDetails, context);
+            goodsFaatItem.setOnItemClickListener(faatListener);
+            cells.add(goodsFaatItem);
+        }
+        if (goodsDetails.getMultiAttrs() != null && goodsDetails.getMultiAttrs().size() > 0) {
+            GoodsAttrItem goodsAttrItem = new GoodsAttrItem(goodsDetails, context);
+            goodsAttrItem.setOnItemClickListener(attrListener);
+            cells.add(goodsAttrItem);
+        }
 //        if (goodsDetails.getGoodsShip() != null) {
-//            GoodsShipItem goodsShipItem = new GoodsShipItem(goodsDetails.getGoodsShip(), context);
+//            GoodsShipItem goodsShipItem = new GoodsShipItem(goodsDetails, context);
 //            goodsShipItem.setOnItemClickListener(shipListener);
 //            cells.add(goodsShipItem);
 //        }
