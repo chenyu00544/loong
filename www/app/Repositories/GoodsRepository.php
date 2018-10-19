@@ -996,17 +996,16 @@ class GoodsRepository implements GoodsRepositoryInterface
         //更新商品单一属性
         $attr_id_listO = !empty($data['attr_id_listO']) ? $data['attr_id_listO'] : [];
         $attr_value_list = !empty($data['attr_value_list']) ? $data['attr_value_list'] : [];
-        $goods_attr_id_list = !empty($data['goods_attr_id_list']) ? $data['goods_attr_id_list'] : [];
         $whereAttr['goods_id'] = $id;
         $attrData['admin_id'] = $ru_id;
         for ($i = 0; $i < count($attr_id_listO); $i++) {
-            $whereAttr['goods_attr_id'] = $goods_attr_id_list[$i];
-            $attrData['attr_id'] = $attr_id_listO[$i];
+            $whereAttr['attr_id'] = $attr_id_listO[$i];
             $attrData['attr_value'] = $attr_value_list[$i];
             $attrData['attr_sort'] = 0;
             $attrData['attr_checked'] = 1;
             $this->goodsAttrModel->setGoodsAttr($whereAttr, $attrData);
         }
+
 
         //更新货品
         $product_id = !empty($data['product_id']) ? $data['product_id'] : [];
@@ -1039,7 +1038,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                     $goods_attr .= $val[$key] . '|';
                 }
                 $goods_attr = substr($goods_attr, 0, -1);
-                $maxProductsId += $i;
+                $maxProductsId += $key;
                 $product['goods_id'] = $id;
                 $product['admin_id'] = $ru_id;
                 $product['goods_attr'] = $goods_attr;

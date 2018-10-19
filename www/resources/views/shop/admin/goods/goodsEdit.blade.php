@@ -1098,8 +1098,6 @@
                                                     <div class="item-right-list goods-attr-type fl">
                                                         <input type="hidden" name="attr_id_listO[]"
                                                                value="{{$attr_o->attr_id}}">
-                                                        <input type="hidden" name="goods_attr_id_list[]"
-                                                               value="{{$attr_o->goods_attr_id}}">
                                                         <div class="label fl"
                                                              title="{{$attr_o->attr_name}}">{{$attr_o->attr_name}}：
                                                         </div>
@@ -1857,7 +1855,7 @@
                                 htmlM += '<div class="item-right-list fl"><div class="label fl">' + v.attr_name + '：' +
                                     '<input type="hidden" name="attr_id_listM[]" value="' + v.attr_id + '">' +
                                     '</div><div>';
-                                if (v.attr_input_type == 0) {
+                                if (v.attr_input_type == 1) {
                                     for (var i = 0; i < v.attr_values.length; i++) {
                                         htmlM += '<label class="checkbox-inline">' +
                                             '<input type="checkbox" name="attr_value_list1[' + v.attr_id + '][]"' +
@@ -1865,7 +1863,7 @@
                                     }
                                 }
                                 htmlM += '<div class="checkbox-inline">';
-                                if (v.attr_input_type == 1) {
+                                if (v.attr_input_type == 0) {
                                     htmlM += '<a href="javascript:;" class="btn btn-info btn-sm attr-custom" data-attr_id="' + v.attr_id + '">自定义</a>';
                                 }
                                 htmlM += '</div></div></div>';

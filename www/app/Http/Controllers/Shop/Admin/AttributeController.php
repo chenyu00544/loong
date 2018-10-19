@@ -9,12 +9,11 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\RedisCache;
 use App\Facades\Verifiable;
 use App\Repositories\AttributeRepository;
 use App\Repositories\GoodsTypeRepository;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
 
 class AttributeController extends CommonController
 {
@@ -52,7 +51,7 @@ class AttributeController extends CommonController
     {
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
-        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => Cache::get('adminUser' . md5($ip) . $uid)->ru_id]);
+        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => RedisCache::get('adminUser' . md5($ip) . $uid)->ru_id]);
         return view('shop.admin.attribute.modal.attributeAddModal', compact('goodsTypes'));
     }
 
@@ -74,7 +73,7 @@ class AttributeController extends CommonController
     {
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
-        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => Cache::get('adminUser' . md5($ip) . $uid)->ru_id]);
+        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => RedisCache::get('adminUser' . md5($ip) . $uid)->ru_id]);
         return view('shop.admin.attribute.attributeAdd', compact('goodsTypes'));
     }
 
@@ -117,7 +116,7 @@ class AttributeController extends CommonController
     {
         $uid = $request->cookie('user_id');
         $ip = $request->getClientIp();
-        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => Cache::get('adminUser' . md5($ip) . $uid)->ru_id]);
+        $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['user_id' => RedisCache::get('adminUser' . md5($ip) . $uid)->ru_id]);
         $attribute = $this->attributeRepository->getAttribute($id);
         return view('shop.admin.attribute.attributeEdit', compact('goodsTypes', 'attribute'));
     }

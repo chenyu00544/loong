@@ -51,6 +51,7 @@ import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
 import com.vcvb.chenyu.shop.msg.MessageActivity;
 import com.vcvb.chenyu.shop.search.SearchActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.UrlParse;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -231,15 +232,14 @@ public class FragmentHome extends BaseFragment {
 
     public void setLocationInfo() {
         if (locationData != null) {
-            Map<String, String> user = (Map<String, String>) UserInfoUtils.getInstance(context)
-                    .getUserInfo();
+            Map<String, String> user = new HashMap<>();
             try {
-                user.put("region_id", String.valueOf(locationData.getJSONObject("data").getInt
-                        ("region_id")));
-                user.put("region_name", String.valueOf(locationData.getJSONObject("data").getString
-                        ("region_name")));
-                user.put("formatted_address", String.valueOf(locationData.getJSONObject("data").getString
-                        ("formatted_address")));
+                user.put("region_id", String.valueOf(locationData.getJSONObject("data")
+                        .getString("region_id")));
+                user.put("region_name", String.valueOf(locationData.getJSONObject("data")
+                        .getString("region_name")));
+                user.put("formatted_address", String.valueOf(locationData.getJSONObject("data")
+                        .getString("formatted_address")));
                 UserInfoUtils.getInstance(context).setUserInfo(user);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -550,4 +550,19 @@ public class FragmentHome extends BaseFragment {
             }
         }
     };
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //发起定位
+                FragmentHomePermissionsDispatcher.locationWithCheck(this);
+            } else {
+                ToastUtils.showShortToast(context, "您拒绝了定位权限");
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }

@@ -45,4 +45,9 @@ class IndexController extends CommonController
         $data['goodses'] = $this->goodsRepository->getBestGoods($page);
         return ['code' => 1, 'msg' => '', 'data' => $data];
     }
+
+    public function test(Request $request)
+    {
+        echo RedisCache::get("test");
+    }
 }

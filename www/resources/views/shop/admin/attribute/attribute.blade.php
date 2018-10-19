@@ -37,30 +37,37 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($attributes as $attribute)
-                            <tr>
-                                <td>
-                                    <input type="checkbox" name="checkboxes" value="{{$attribute->attr_id}}"
-                                           class="checkbox check-all"
-                                           id="checkbox_{{$attribute->attr_id}}">
-                                </td>
-                                <td>{{$attribute->attr_id}}</td>
-                                <td>{{$attribute->attr_name}}</td>
-                                <td>{{$goodsType[$attribute->cat_id]}}</td>
-                                <td>@if($attribute->attr_type == 0)唯一属性@elseif($attribute->attr_type == 1)单选属性@else复选属性@endif</td>
-                                <td>@if($attribute->attr_input_type == 0)手工录入@else列表选择@endif</td>
-                                <td>{{$attribute->attr_values}}</td>
-                                <td><input class="form-control input-sm chang-order" type="text"
-                                           data-id="{{$attribute->attr_id}}" name="sort_order"
-                                           value="{{$attribute->sort_order}}"></td>
-                                <td class="text-center">
-                                    <a type="button" href="{{url('admin/attribute/'.$attribute->attr_id.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                       data-id="{{$attribute->attr_id}}">删除</a>
-                                </td>
+                        @if(count($attributes) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach($attributes as $attribute)
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="checkboxes" value="{{$attribute->attr_id}}"
+                                               class="checkbox check-all"
+                                               id="checkbox_{{$attribute->attr_id}}">
+                                    </td>
+                                    <td>{{$attribute->attr_id}}</td>
+                                    <td>{{$attribute->attr_name}}</td>
+                                    <td>{{$goodsType[$attribute->cat_id]}}</td>
+                                    <td>@if($attribute->attr_type == 0)唯一属性@elseif($attribute->attr_type == 1)单选属性@else
+                                            复选属性@endif</td>
+                                    <td>@if($attribute->attr_input_type == 0)手工录入@else列表选择@endif</td>
+                                    <td>{{$attribute->attr_values}}</td>
+                                    <td><input class="form-control input-sm chang-order" type="text"
+                                               data-id="{{$attribute->attr_id}}" name="sort_order"
+                                               value="{{$attribute->sort_order}}"></td>
+                                    <td class="text-center">
+                                        <a type="button" href="{{url('admin/attribute/'.$attribute->attr_id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
+                                           data-id="{{$attribute->attr_id}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                     <div class="clearfix bg-color-dray pad-top-4">

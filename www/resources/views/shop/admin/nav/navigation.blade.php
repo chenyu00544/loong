@@ -36,41 +36,44 @@
                             <tr class="">
                                 <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
+                        @else
+                            @foreach($navs as $nav)
+                                <tr>
+                                    <th>{{$nav->name}}</th>
+                                    <td>
+                                        <div class="switch-wrap clearfix">
+                                            <div class="switch @if($nav->ifshow) active @endif" data-type="ifshow"
+                                                 title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$nav->id}}">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="switch-wrap clearfix">
+                                            <div class="switch @if($nav->opennew) active @endif" data-type="opennew"
+                                                 title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$nav->id}}">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control input-sm chang-order" type="text"
+                                               data-id="{{$nav->id}}"
+                                               name="ord[]"
+                                               value="{{$nav->vieworder}}">
+                                    </td>
+                                    <td>{{$nav->position}}</td>
+                                    <td>
+                                        <a type="button" href="{{url('admin/navsetup/'.$nav->id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm">编辑</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm"
+                                           data-id="{{$nav->id}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endif
-                        @foreach($navs as $nav)
-                            <tr>
-                                <th>{{$nav->name}}</th>
-                                <td>
-                                    <div class="switch-wrap clearfix">
-                                        <div class="switch @if($nav->ifshow) active @endif" data-type="ifshow"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$nav->id}}">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="switch-wrap clearfix">
-                                        <div class="switch @if($nav->opennew) active @endif" data-type="opennew"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$nav->id}}">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input class="form-control input-sm chang-order" type="text" data-id="{{$nav->id}}"
-                                           name="ord[]"
-                                           value="{{$nav->vieworder}}">
-                                </td>
-                                <td>{{$nav->position}}</td>
-                                <td>
-                                    <a type="button" href="{{url('admin/navsetup/'.$nav->id.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm" data-id="{{$nav->id}}">删除</a>
-                                </td>
-                            </tr>
-                        @endforeach
                         </tbody>
                     </table>
                     <div class="page_list">

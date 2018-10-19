@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Home;
 
+use App\Facades\RedisCache;
 use Illuminate\Http\Request;
 
 class IndexController extends CommonController
@@ -19,6 +20,7 @@ class IndexController extends CommonController
 
     public function test(Request $request)
     {
-        dd($request->file('file'));
+//        RedisCache::set("test", "jkl;asdfjklasdfasdfjklasdfjkaflaksadfasdf");
+        echo RedisCache::get("test");
     }
 }

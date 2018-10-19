@@ -39,7 +39,14 @@ public class GoodsShipItem extends BaseItem<GoodsDetail> {
 
         TextView address = holder.getTextView(R.id.textView1);
         String addressStr = (String) UserInfoUtils.getInstance(context).getUserInfo().get("formatted_address");
-        address.setText(addressStr);
+        if(addressStr == null || addressStr == ""){
+            address.setText("请添加收货地址");
+        }else{
+            address.setText("至 "+addressStr);
+        }
+        if(){
+
+        }
 //
 //        ImageView fromIv = holder.getImageView(R.id.imageView5);
 //        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
