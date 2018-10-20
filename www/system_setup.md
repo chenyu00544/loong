@@ -302,3 +302,6 @@ mysql 远程登录密码 Vcvbuy00544!#%@$^
     
     laravel
     * * * * * /usr/local/bin/php /usr/local/var/www/projectName/artisan schedule:run >> /dev/null 2>&1
+    
+    
+    swoole 安装

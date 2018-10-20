@@ -179,6 +179,7 @@ return [
         //第三方下载的
         //composer require maatwebsite/excel=~2.0
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        SwooleTW\Http\LaravelServiceProvider::class,
 
         //cyc 添加的工具类
         App\Providers\CommonServiceProvider::class,
