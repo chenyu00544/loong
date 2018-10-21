@@ -1,6 +1,14 @@
 @extends('shop.layouts.index')
 @section('css')
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.css')}}">
+    <script>
+        var productUrl = "{{url('admin/goods/product/')}}/";
+        var goodsAttrUrl = "{{url('admin/goods/setgoodsattr/')}}";
+        var getAttributesUrl = "{{url('admin/attribute/getattributes/')}}/";
+        var getCatesUrl = "{{url('admin/typecate/getcates/')}}/";
+        var getTypeCatesUrl = "{{url('admin/goodstype/gettypescates/')}}/";
+        var getGoodsTypeUrl = "{{url('admin/goodstype/gettypes/')}}/";
+    </script>
 @endsection
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
@@ -1049,15 +1057,15 @@
                                             <input name="attr_parent_id" type="hidden" value="0">
                                             <div class="item-right-li">
                                                 <div class="value-select goods_type_cat">
-                                                    @foreach($goodsTypeCates as $goodsTypeCate)
-                                                        <select class="form-control max-wd-110 fl mar-right-20 select">
-                                                            <option value="0">请选择</option>
-                                                            @foreach($goodsTypeCate as $subGoodsTypeCate)
-                                                                <option value="{{$subGoodsTypeCate->cate_id}}"
-                                                                        @if($subGoodsTypeCate->select == 1) selected @endif>{{$subGoodsTypeCate->cat_name}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    @endforeach
+                                                    <select class="form-control max-wd-110 fl mar-right-20 select"
+                                                            v-for="(cates, k) in goodsTypeCates"
+                                                            @change="goodsTypeCate($event)"
+                                                            v-model="goodsTypeCatesSelect[k]" :data-level="k">
+                                                        <option value="0">请选择</option>
+                                                        <option :value="cate.cate_id" v-for="cate in cates">
+                                                            ${cate.cat_name}
+                                                        </option>
+                                                    </select>
                                                 </div>
                                                 <a class="btn btn-info add_goods_type_cat_win"
                                                    data-goodsid="">添加属性分类</a>
@@ -1071,12 +1079,12 @@
                                             <div class="item-right-li">
                                                 <div class="value-select goods_type">
                                                     <select id="cate_id"
-                                                            class="form-control max-wd-350 fl select-value" @change="goodsTypeChange">
+                                                            class="form-control max-wd-350 fl select-value"
+                                                            @change="goodsTypeChange($event)" v-model="goods_type">
                                                         <option value="0">请选择</option>
-                                                        @foreach($goodsTypes as $goodsType)
-                                                            <option value="{{$goodsType->cat_id}}"
-                                                                    @if($goodsType->cat_id == $goodsInfo->goods_type) selected @endif>{{$goodsType->cat_name}}</option>
-                                                        @endforeach
+                                                        <option v-for="goodsType in goodsTypes"
+                                                                :value="goodsType.cat_id">${goodsType.cat_name}
+                                                        </option>
                                                     </select>
                                                 </div>
                                                 <input name="goods_type" type="hidden"
@@ -1370,9 +1378,11 @@
     <script type="text/javascript" src="{{url('styles/plugin/ueditor/ueditor.all.min.js')}}"></script>
     <script type="text/javascript"
             src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
+
     <script>
+
         $(function () {
-            var goods_id = '{{$goodsInfo->goods_id}}';
+            var goods_id = $('input[name=goods_id]').val();
             var attrList = [];
             var attrMulti = [];
 
@@ -1384,8 +1394,6 @@
             $('body').on('click', function () {
                 $('.brand-select-container').hide();
             });
-
-            // $('.nyroModal').nyroModal();
 
             var ue = UE.getEditor('editor', {
                 initialFrameHeight: 500,
@@ -1766,22 +1774,6 @@
                 $(this).find('input').val(val);
             });
 
-            //选择属性分类
-            $('.goods_type_cat').on('change', '.select', function () {
-                setNextGoodsTypeCate(this, '{{csrf_token()}}', "{{url('admin/typecate/getcates/')}}/");
-                getGoodsTypes(this, '{{csrf_token()}}', "{{url('admin/goodstype/gettypes/')}}/");
-                $('.step-item-attr-checkbox .step-item-right').html('');
-                $('.step-item-attr-once .step-item-right').html('');
-                $('#attribute-table tbody').html('');
-                $('.attr-gallerys').html('');
-                $('#attribute-table').hide();
-                $('.attr-gallerys').hide();
-                $('.step-item-attr-checkbox').hide();
-                $('.step-item-attr-once').hide();
-                attrList = [];
-                attrMulti = [];
-            });
-
             //添加属性分类弹窗
             $('.add_goods_type_cat_win').on('click', function () {
                 layer.open({
@@ -1842,7 +1834,8 @@
 
 
             //选择商品类型
-            $('.select-value').on('change', function () {return;
+            $('.select-value').on('change', function () {
+                return;
                 var cat_id = $(this).val();
                 $('input[name=goods_type]').val(cat_id);
                 var htmlM = '';
@@ -2204,137 +2197,7 @@
             });
             $('input[name=desc_mobile]').val(imgs);
         }
-
-        var app = new Vue({
-            el: '#appFour',
-            data: {
-                goods_id: '{{$goodsInfo->goods_id}}',
-                model_price: '{{$goodsInfo->model_price}}',
-                url: "{{url('admin/goods/product/')}}/",
-                goodsAttrUrl: "{{url('admin/goods/setgoodsattr/')}}",
-                products: [],
-                goodsAttrImg: [],
-            },
-
-            mounted: function () {
-                this.initData();
-            },
-
-            methods: {
-                initData: function () {
-                    var that = this;
-                    $.post(this.url + this.goods_id, {
-                        '_token': '{{csrf_token()}}',
-                        'model_price': this.model_price
-                    }, function (data) {
-                        that.products = data.products;
-                        that.goodsAttrImg = data.goods_attr_img;
-                    });
-                },
-                loading: function (bool) {
-                    layer.load();
-                    if (bool) {
-                        layer.closeAll('loading');
-                    } else {
-                        setTimeout(function () {
-                            layer.closeAll('loading');
-                        }, 10000);
-                    }
-                },
-                goodsTypeChange:function (e) {
-                    var cat_id = $('.select-value').val();
-                    $('input[name=goods_type]').val(cat_id);
-                    $.post("{{url('admin/attribute/getattributes/')}}/" + cat_id, {'_token': '{{csrf_token()}}'}, function (data) {
-                        if(data.length > 0){
-                            $.each(data, function (k, v) {
-                                if (v.attr_type == 1) {
-                                    if (v.attr_input_type == 1) {
-
-                                    }
-                                }else{
-
-                                }
-                            });
-                            $('.step-item-attr-checkbox').show();
-                        }else{
-
-                        }
-                    });
-                },
-                selectValue: function (e) {
-                    var attr_values = [];
-                    var attr_v = [];
-                    var attr_id = 0;
-                    $('.attr-multi').find('.checkbox-inline input').each(function (k, v) {
-                        if ($(v).is(':checked')) {
-                            if ($(v).data('attr_id') == attr_id) {
-                                attr_v.push([$(v).val(), attr_id]);
-                            } else {
-                                if (attr_v.length > 0) {
-                                    attr_values.push(attr_v);
-                                }
-                                attr_v = [];
-                                attr_id = $(v).data('attr_id');
-                                attr_v.push([$(v).val(), attr_id]);
-                            }
-                        }
-                        if (k == $('.attr-multi').find('.checkbox-inline input').length - 1) {
-                            attr_values.push(attr_v);
-                        }
-                    });
-                    var that = this;
-                    $.post(this.url + this.goods_id, {
-                        '_token': '{{csrf_token()}}',
-                        'model_price': this.model_price,
-                        'attr_values': attr_values
-                    }, function (data) {
-                        that.products = data.products;
-                        that.goodsAttrImg = data.goods_attr_img;
-                    });
-                },
-                attrSortChange: function (e) {
-                    var that = this;
-                    that.loading(false);
-                    var sort = $(e.target).val()
-                        , goodsAttrId = $(e.target).data('goodsattrid');
-                    $.post(this.goodsAttrUrl, {
-                        'id': goodsAttrId,
-                        '_token': '{{csrf_token()}}',
-                        'attr_sort': sort,
-                    }, function (data) {
-                        that.loading(true);
-                    });
-                },
-                upLoadAttrImg: function (e) {
-                    var that = this;
-                    that.loading(false);
-                    var imgFile = $(e.target)[0].files[0]
-                        , goodsAttrId = $(e.target).data('goodsattrid')
-                        , oldattrimg_o = $(e.target).data('oldattrimg_o')
-                        , oldattrimg_t = $(e.target).data('oldattrimg_t')
-                        , form = new FormData();
-                    form.append('attr_img', imgFile);
-                    form.append('id', goodsAttrId);
-                    form.append('old_attr_img_o', oldattrimg_o);
-                    form.append('old_attr_img_t', oldattrimg_t);
-                    form.append('_token', '{{csrf_token()}}');
-                    $.ajax({
-                        url: this.goodsAttrUrl,
-                        type: "POST",
-                        data: form,
-                        contentType: false,
-                        processData: false,
-                        success: function (data) {
-                            if (data.code == 1) {
-                                that.initData();
-                            }
-                            that.loading(true);
-                        }
-                    });
-                },
-            },
-            delimiters: ['${', '}']
-        });
     </script>
+    <script type="text/javascript" src="{{url('styles/admin/js/goods.js').'?v='.$v}}"></script>
 @endsection
 @endsection

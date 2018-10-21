@@ -41,6 +41,19 @@ class GoodsTypeRepository implements GoodsTypeRepositoryInterface
         return $this->goodsTypeModel->getGoodsTypes($where);
     }
 
+    public function getGoodsTypesBySelect($where, $id)
+    {
+        $res = $this->goodsTypeModel->getGoodsTypes($where);
+        foreach ($res as $re) {
+            if ($re->cat_id == $id) {
+                $re->select = 1;
+            } else {
+                $re->select = 0;
+            }
+        }
+        return $res;
+    }
+
     public function getGoodsType($where)
     {
         return $this->goodsTypeModel->getGoodsType($where);

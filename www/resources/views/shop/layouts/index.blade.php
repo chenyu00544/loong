@@ -13,7 +13,7 @@
     @yield('css')
     <title>{{Config::get('config.admin_name')}}</title>
     <script>
-        var weburl = '{{Config::get('config.location')}}';
+        var weburl = '{{url('/')}}';
     </script>
 </head>
 <body>

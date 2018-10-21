@@ -42,6 +42,15 @@ class GoodsTypeController extends CommonController
         return $this->goodsTypeRepository->getGoodsTypes(['c_id' => $id]);
     }
 
+    public function getGoodsTypesAndCates($id)
+    {
+        $data = [];
+        $goodsTypes = $this->goodsTypeRepository->getGoodsType(['cat_id' => $id]);
+        $data['goodsTypeCates'] = $this->goodsTypeRepository->getGoodsTypeCateBySelect($goodsTypes->c_id);
+        $data['goodsTypes'] = $this->goodsTypeRepository->getGoodsTypesBySelect(['c_id' => $goodsTypes->c_id], $id);
+        return $data;
+    }
+
     public function goodsTypeByModal()
     {
         $typeCates = $this->goodsTypeRepository->getTypeCates(0);

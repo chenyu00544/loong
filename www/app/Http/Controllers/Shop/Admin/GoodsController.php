@@ -286,18 +286,12 @@ class GoodsController extends CommonController
         $goodsInfo = $this->goodsRepository->getGoods($id);
         $brandName = $this->brandRepository->getBrand($goodsInfo->brand_id);
         $comCates = $this->comCateRepository->getParentCateBySelect($goodsInfo->cat_id);
-        if(empty($comCates)){
+        if (empty($comCates)) {
             $comCates[] = $this->comCateRepository->getComCates();
         }
         $comCateSelect = $this->comCateRepository->getParentCate($goodsInfo->cat_id);
-        //属性分类
-        $goodsTypes = [];
-        if ($goodsInfo->goods_type > 0) {
-            $goodsTypes = $this->goodsTypeRepository->getGoodsType(['cat_id' => $goodsInfo->goods_type]);
-            $goodsTypeCates = $this->goodsTypeRepository->getGoodsTypeCateBySelect($goodsTypes->c_id);
-            $goodsTypes = $this->goodsTypeRepository->getGoodsTypes(['c_id' => $goodsTypes->c_id]);
-        }
-        return view('shop.admin.goods.goodsEdit', compact('comCates', 'brands', 'goodsInfo', 'transports', 'goodsTypeCates', 'goodsGallerys', 'comCateSelect', 'brandName', 'userRanks', 'now_date', 'goodsTypes'));
+
+        return view('shop.admin.goods.goodsEdit', compact('comCates', 'brands', 'goodsInfo', 'transports', 'goodsGallerys', 'comCateSelect', 'brandName', 'userRanks', 'now_date'));
     }
 
     /**

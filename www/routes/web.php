@@ -115,6 +115,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('goodstype/goodstype/modal', 'GoodsTypeController@goodsTypeByModal');
     Route::post('goodstype/addgoodstype', 'GoodsTypeController@addGoodsType');
     Route::post('goodstype/gettypes/{id}', 'GoodsTypeController@getTypes');
+    Route::post('goodstype/gettypescates/{id}', 'GoodsTypeController@getGoodsTypesAndCates');
     Route::resource('goodstype', 'GoodsTypeController');
 
     Route::get('typecate/typecate/modal', 'GoodsTypeCateController@goodsTypeCateByModal');

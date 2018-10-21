@@ -44,7 +44,7 @@ class GoodsTypeCateController extends CommonController
         if ($re->toArray()) {
             return ['code' => 1, 'data' => $re];
         } else {
-            return ['code' => 0];
+            return ['code' => 0, 'data' => []];
         }
     }
 
@@ -103,11 +103,11 @@ class GoodsTypeCateController extends CommonController
      */
     public function show($id)
     {
-        $ranks = ['0级','1级','二级', '三级', '四级', '五级', '六级', '七级', '八级', '九级', '十级'];
+        $ranks = ['0级', '1级', '二级', '三级', '四级', '五级', '六级', '七级', '八级', '九级', '十级'];
         $rank = ['0级'];
         $typeNav = 'typeCate';
         $typeCates = $this->goodsTypeRepository->getTypeCates($id);
-        foreach($typeCates as $item){
+        foreach ($typeCates as $item) {
             $rank = [$ranks[$item->level]];
         }
         return view('shop.admin.goodstype.typeCate', compact('typeNav', 'typeCates', 'rank'));
@@ -124,7 +124,7 @@ class GoodsTypeCateController extends CommonController
         $typeCate = $this->goodsTypeRepository->getTypeCate($id);
         $typeCates = $this->goodsTypeRepository->getTypeCates(0);
         $parentCates = $this->goodsTypeRepository->getParentCate($typeCate->parent_id);
-        return view('shop.admin.goodstype.typeCateEdit', compact('typeCate','typeCates', 'parentCates'));
+        return view('shop.admin.goodstype.typeCateEdit', compact('typeCate', 'typeCates', 'parentCates'));
     }
 
     /**
@@ -136,7 +136,7 @@ class GoodsTypeCateController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $re = $this->goodsTypeRepository->upDateTypeCate($request->except('_token','_method'), $id);
+        $re = $this->goodsTypeRepository->upDateTypeCate($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
