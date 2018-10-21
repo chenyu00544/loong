@@ -999,7 +999,7 @@
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
-                                                <th width="25%" class="text-center">颜色，尺码</th>
+                                                <th width="25%" class="text-center">属性</th>
                                                 <th width="9%"><em>*</em>市场价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_market"></i></th>
                                                 <th width="9%"><em>*</em>销售价 <i
@@ -1625,7 +1625,7 @@
                 });
             });
             //选择商品规格属性
-            $('.step-item-attr-checkbox .step-item-right').on('click', '.attr_value_list1', function () {
+            $('body').on('click', '.attr_value_list1', function () {console.log(123123123);
                 $('.step-item-attr-checkbox .step-item-right .attr_value_list1').each(function (k, v) {
                     if ($(v).is(':checked')) {
                         attrMulti[$(v).data('k')].attr_values[$(v).data('key')] = $(v).val();

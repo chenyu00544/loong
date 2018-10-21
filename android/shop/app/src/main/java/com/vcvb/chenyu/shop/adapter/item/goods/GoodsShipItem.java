@@ -44,9 +44,7 @@ public class GoodsShipItem extends BaseItem<GoodsDetail> {
         }else{
             address.setText("至 "+addressStr);
         }
-        if(){
 
-        }
 //
 //        ImageView fromIv = holder.getImageView(R.id.imageView5);
 //        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy

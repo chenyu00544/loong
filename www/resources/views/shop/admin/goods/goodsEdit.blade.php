@@ -1071,7 +1071,7 @@
                                             <div class="item-right-li">
                                                 <div class="value-select goods_type">
                                                     <select id="cate_id"
-                                                            class="form-control max-wd-350 fl select-value">
+                                                            class="form-control max-wd-350 fl select-value" @change="goodsTypeChange">
                                                         <option value="0">请选择</option>
                                                         @foreach($goodsTypes as $goodsType)
                                                             <option value="{{$goodsType->cat_id}}"
@@ -1158,7 +1158,7 @@
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
-                                                <th width="25%" class="text-center">颜色，尺码</th>
+                                                <th width="25%" class="text-center">属性</th>
                                                 <th width="9%"><em>*</em>市场价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_market"></i></th>
                                                 <th width="9%"><em>*</em>销售价 <i
@@ -1842,7 +1842,7 @@
 
 
             //选择商品类型
-            $('.select-value').on('change', function () {
+            $('.select-value').on('change', function () {return;
                 var cat_id = $(this).val();
                 $('input[name=goods_type]').val(cat_id);
                 var htmlM = '';
@@ -2240,6 +2240,26 @@
                             layer.closeAll('loading');
                         }, 10000);
                     }
+                },
+                goodsTypeChange:function (e) {
+                    var cat_id = $('.select-value').val();
+                    $('input[name=goods_type]').val(cat_id);
+                    $.post("{{url('admin/attribute/getattributes/')}}/" + cat_id, {'_token': '{{csrf_token()}}'}, function (data) {
+                        if(data.length > 0){
+                            $.each(data, function (k, v) {
+                                if (v.attr_type == 1) {
+                                    if (v.attr_input_type == 1) {
+
+                                    }
+                                }else{
+
+                                }
+                            });
+                            $('.step-item-attr-checkbox').show();
+                        }else{
+
+                        }
+                    });
                 },
                 selectValue: function (e) {
                     var attr_values = [];
