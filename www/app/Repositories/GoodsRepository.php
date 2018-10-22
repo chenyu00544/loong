@@ -281,57 +281,6 @@ class GoodsRepository implements GoodsRepositoryInterface
         //满减价格
         $req->goods_consumption = $this->goodsFullCutModel->getGoodsFullCut(['goods_id' => $id]);
 
-        //商品属性详细信息
-        $goodsAttr = $this->goodsAttrModel->getGoodsAttrsJoinAttr(['goods_id' => $req->goods_id, 'attr_checked' => 1]);
-
-        $goodsAttrO = [];
-        $goodsAttrM = [];
-        $attr_values = [];
-        foreach ($goodsAttr as $value) {
-            $goodsAttrArr[$value->goods_attr_id] = $value;
-            $val_bat = $value;
-            $attrValues = explode("\r\n", $val_bat->attr_values);
-            $val_bat->attr_values = $attrValues;
-            if ($value->attr_type == 0) {//唯一属性
-                $goodsAttrO[] = $val_bat;
-            } else {//单选属性
-                $attr_values[$value->attr_id][] = $value->attr_value;
-                $attr_sorts[$value->attr_id][] = $value->attr_sort;
-                $goods_attr_ids[$value->attr_id][] = $value->goods_attr_id;
-                $attr_img_flies[$value->attr_id][] = $value->attr_img_flie;
-                $attr_gallery_flies[$value->attr_id][] = $value->attr_gallery_flie;
-                $goodsAttrM[$value->attr_id] = $val_bat;
-            }
-        }
-
-        foreach ($attr_values as $key => $value) {
-            $i = 0;
-            foreach ($goodsAttrM[$key]->attr_values as $k => $val) {
-                if (in_array($val, $value)) {
-                    $select[$k] = 1;
-
-                    $attr_sorts_bak[$key][] = $attr_sorts[$key][$i];
-                    $goods_attr_ids_bak[$key][] = $goods_attr_ids[$key][$i];
-                    $attr_img_flies_bak[$key][] = $attr_img_flies[$key][$i];
-                    $attr_gallery_flies_bak[$key][] = $attr_gallery_flies[$key][$i];
-                    $i++;
-                } else {
-                    $select[$k] = 0;
-                    $attr_sorts_bak[$key][] = 0;
-                    $goods_attr_ids_bak[$key][] = 0;
-                    $attr_img_flies_bak[$key][] = 0;
-                    $attr_gallery_flies_bak[$key][] = 0;
-                }
-            }
-            $goodsAttrM[$key]->attr_sorts = $attr_sorts_bak[$key];
-            $goodsAttrM[$key]->goods_attr_ids = $goods_attr_ids_bak[$key];
-            $goodsAttrM[$key]->attr_img_flies = $attr_img_flies_bak[$key];
-            $goodsAttrM[$key]->attr_gallery_flies = $attr_gallery_flies_bak[$key];
-            $goodsAttrM[$key]->selected = $select;
-        }
-        $req->goods_attr_o = $goodsAttrO;
-        $req->goods_attr_m = $goodsAttrM;
-
         //商品相册
         $goods_gallerys = $this->goodsGalleryModel->getGoodsGallerys(['goods_id' => $id]);
         foreach ($goods_gallerys as $goods_gallery) {
@@ -999,7 +948,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $whereAttr['goods_id'] = $id;
         $attrData['admin_id'] = $ru_id;
         for ($i = 0; $i < count($attr_id_listO); $i++) {
-            $whereAttr['attr_id'] = $attr_id_listO[$i];
+            $whereAttr['goods_attr_id'] = $attr_id_listO[$i];
             $attrData['attr_value'] = $attr_value_list[$i];
             $attrData['attr_sort'] = 0;
             $attrData['attr_checked'] = 1;

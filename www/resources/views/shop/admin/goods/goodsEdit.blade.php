@@ -8,6 +8,7 @@
         var getCatesUrl = "{{url('admin/typecate/getcates/')}}/";
         var getTypeCatesUrl = "{{url('admin/goodstype/gettypescates/')}}/";
         var getGoodsTypeUrl = "{{url('admin/goodstype/gettypes/')}}/";
+        var getGoodsAttrUrl = "{{url('admin/goods/getgoodsattr/')}}/";
     </script>
 @endsection
 @section('content')
@@ -1097,68 +1098,63 @@
                                     </div>
                                     <div class="step-item step-item-bg">
                                         <div class="step-item-row step-item-attr-once clearfix"
-                                             style="@if(empty($goodsInfo->goods_attr_o)) display:none; @endif">
+                                             v-if="goodsAttrO.length > 0">
                                             <div class="step-item-left">
                                                 <h5>商品属性：</h5>
                                             </div>
                                             <div class="step-item-right attr-once">
-                                                @foreach($goodsInfo->goods_attr_o as $attr_o)
-                                                    <div class="item-right-list goods-attr-type fl">
-                                                        <input type="hidden" name="attr_id_listO[]"
-                                                               value="{{$attr_o->attr_id}}">
-                                                        <div class="label fl"
-                                                             title="{{$attr_o->attr_name}}">{{$attr_o->attr_name}}：
-                                                        </div>
-                                                        <div class="value-select">
-                                                            <select name="attr_value_list[]"
-                                                                    class="form-control max-wd-100 fl">
-                                                                @foreach($attr_o->attr_values as $attr_value)
-                                                                    <option value="{{$attr_value}}"
-                                                                            @if($attr_value == $attr_o->attr_value) selected @endif>{{$attr_value}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
+                                                <div class="item-right-list goods-attr-type fl"
+                                                     v-for="(attr_o, aok) in goodsAttrO">
+                                                    <input type="hidden" name="attr_id_listO[]"
+                                                           :value="attr_o.goods_attr_id">
+                                                    <div class="label fl"
+                                                         :title="attr_o.attr_name">${attr_o.attr_name}：
                                                     </div>
-                                                @endforeach
+                                                    <div class="value-select">
+                                                        <select name="attr_value_list[]"
+                                                                class="form-control max-wd-100 fl"
+                                                                v-model="attr_o.attr_value">
+                                                            <option :value="attr_value"
+                                                                    v-for="attr_value in attr_o.attr_values">
+                                                                ${attr_value}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="step-item-row step-item-attr-checkbox clearfix"
-                                             style="@if(empty($goodsInfo->goods_attr_m)) display:none; @endif">
+                                             v-if="goodsAttrM.length > 0">
                                             <div class="step-item-left">
                                                 <h5>商品规格：</h5>
                                             </div>
                                             <div class="step-item-right attr-multi">
-                                                @foreach($goodsInfo->goods_attr_m as $attr_m)
-                                                    <div class="item-right-list fl">
-                                                        <div class="label fl">{{$attr_m->attr_name}}：
-                                                            <input type="hidden" name="attr_id_listM[]"
-                                                                   value="{{$attr_m->attr_id}}">
-                                                        </div>
-                                                        <div>
-                                                            @for($i = 0; $i < count($attr_m->attr_values); $i++)
-                                                                <label class="checkbox-inline">
-                                                                    <input type="checkbox"
-                                                                           name="attr_value_list1[{{$attr_m->attr_id}}][]"
-                                                                           class="attr_value_list1"
-                                                                           data-key="{{$i}}"
-                                                                           data-k="{{$loop->index}}"
-                                                                           value="{{$attr_m->attr_values[$i]}}"
-                                                                           data-attr_id="{{$attr_m->attr_id}}"
-                                                                           @click="selectValue"
-                                                                           @if($attr_m->selected[$i] == 1) checked @endif>{{$attr_m->attr_values[$i]}}
-                                                                </label>
-                                                            @endfor
-                                                            @if($attr_m->attr_input_type == 1)
-                                                                <div class="checkbox-inline">
-                                                                    <a href="javascript:;"
-                                                                       class="btn btn-info btn-sm attr-custom"
-                                                                       data-attr_id="{{$attr_m->attr_id}}">自定义</a>
+                                                <div class="item-right-list fl" v-for="(attr_m, k) in goodsAttrM">
+                                                    <div class="label fl">${attr_m.attr_name}：
+                                                        <input type="hidden" name="attr_id_listM[]"
+                                                               :value="attr_m.attr_id">
+                                                    </div>
+                                                    <div class="clearfix">
+                                                        <label class="checkbox-inline"
+                                                               v-for="(v, key) in attr_m.attr_values">
+                                                            <input type="checkbox"
+                                                                   name="attr_value_list1[${attr_m.attr_id}][]"
+                                                                   class="attr_value_list1"
+                                                                   :data-key="key"
+                                                                   :data-k="k"
+                                                                   :value="v"
+                                                                   :data-attr_id="attr_m.attr_id"
+                                                                   :checked="attr_m.selected[key]==1"
+                                                                   @click="selectValue">${v}
+                                                        </label>
+                                                        <div class="checkbox-inline" v-if="attr_m.attr_input_type == 0">
+                                                            <a href="javascript:;"
+                                                               class="btn btn-info btn-sm attr-custom"
+                                                               :data-attr_id="attr_m.attr_id">自定义</a>
 
-                                                                </div>
-                                                            @endif
                                                         </div>
                                                     </div>
-                                                @endforeach
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1254,7 +1250,7 @@
                                     <h3>属性图片</h3>
                                 </div>
                                 <div class="attr-gallerys ps-container ps-active-y"
-                                     style="@if(empty($goodsInfo->goods_attr_m)) display:none; @endif">
+                                     v-if="goodsAttrM.length > 0">
                                     <div class="step-content attr-gallery clearfix"
                                          v-for="(attrImg, key) in goodsAttrImg">
                                         <div class="attr_tit">${attrImg.attr_name}：</div>
@@ -1385,11 +1381,6 @@
             var goods_id = $('input[name=goods_id]').val();
             var attrList = [];
             var attrMulti = [];
-
-            @foreach($goodsInfo->goods_attr_m as $attr_m)
-            attrList.push([]);
-            attrMulti.push({!! json_encode($attr_m) !!});
-            @endforeach
 
             $('body').on('click', function () {
                 $('.brand-select-container').hide();

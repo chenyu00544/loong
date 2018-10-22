@@ -24,6 +24,64 @@ class GoodsAttrRepository implements GoodsAttrRepositoryInterface
         $this->goodsAttrModel = $goodsAttrModel;
     }
 
+    public function getGoodsAttr($id)
+    {
+        //商品属性详细信息
+        $goodsAttr = $this->goodsAttrModel->getGoodsAttrsJoinAttr(['goods_id' => $id]);
+
+        $goodsAttrO = [];
+        $goodsAttrM = [];
+        $goodsAttrM_bak = [];
+        $attr_values = [];
+        foreach ($goodsAttr as $value) {
+            $goodsAttrArr[$value->goods_attr_id] = $value;
+            $val_bat = $value;
+            $attrValues = explode("\r\n", $val_bat->attr_values);
+            $val_bat->attr_values = $attrValues;
+            if ($value->attr_type == 0) {//唯一属性
+                $goodsAttrO[] = $val_bat;
+            } else {//单选属性
+                $attr_values[$value->attr_id][] = $value->attr_value;
+                $attr_sorts[$value->attr_id][] = $value->attr_sort;
+                $goods_attr_ids[$value->attr_id][] = $value->goods_attr_id;
+                $attr_img_flies[$value->attr_id][] = $value->attr_img_flie;
+                $attr_gallery_flies[$value->attr_id][] = $value->attr_gallery_flie;
+                $goodsAttrM_bak[$value->attr_id] = $val_bat;
+            }
+        }
+
+        foreach ($attr_values as $key => $value) {
+            $i = 0;
+            foreach ($goodsAttrM_bak[$key]->attr_values as $k => $val) {
+                if (in_array($val, $value)) {
+                    $select[$k] = 1;
+
+                    $attr_sorts_bak[$key][] = $attr_sorts[$key][$i];
+                    $goods_attr_ids_bak[$key][] = $goods_attr_ids[$key][$i];
+                    $attr_img_flies_bak[$key][] = $attr_img_flies[$key][$i];
+                    $attr_gallery_flies_bak[$key][] = $attr_gallery_flies[$key][$i];
+                    $i++;
+                } else {
+                    $select[$k] = 0;
+                    $attr_sorts_bak[$key][] = 0;
+                    $goods_attr_ids_bak[$key][] = 0;
+                    $attr_img_flies_bak[$key][] = 0;
+                    $attr_gallery_flies_bak[$key][] = 0;
+                }
+            }
+            $goodsAttrM_bak[$key]->attr_sorts = $attr_sorts_bak[$key];
+            $goodsAttrM_bak[$key]->goods_attr_ids = $goods_attr_ids_bak[$key];
+            $goodsAttrM_bak[$key]->attr_img_flies = $attr_img_flies_bak[$key];
+            $goodsAttrM_bak[$key]->attr_gallery_flies = $attr_gallery_flies_bak[$key];
+            $goodsAttrM_bak[$key]->selected = $select;
+            $goodsAttrM[] = $goodsAttrM_bak[$key];
+        }
+        $req['goods_attr_o'] = $goodsAttrO;
+        $req['goods_attr_m'] = $goodsAttrM;
+
+        return $req;
+    }
+
     public function setGoodsAttr($data)
     {
         $rep = ['code' => 5, 'msg' => '操作失败'];

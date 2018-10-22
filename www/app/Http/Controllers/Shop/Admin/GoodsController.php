@@ -186,6 +186,11 @@ class GoodsController extends CommonController
         return view('shop.admin.goods.modal.customAttr', compact('id', 'gid'));
     }
 
+    public function getGoodsAttr($id)
+    {
+        return $this->goodsAttrRepository->getGoodsAttr($id);
+    }
+
     //添加属性
     public function addGoodsAttr(Request $request)
     {

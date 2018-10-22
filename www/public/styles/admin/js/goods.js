@@ -11,11 +11,16 @@ var app = new Vue({
         getCatesUrl: getCatesUrl,
         getTypeCatesUrl: getTypeCatesUrl,
         getGoodsTypeUrl: getGoodsTypeUrl,
+        getGoodsAttrUrl: getGoodsAttrUrl,
         products: [],
         goodsTypes: [],
         goodsTypeCatesSelect: [],
         goodsTypeCates: [],
-        goodsAttrImg: []
+        goodsAttrImg: [],
+        goodsAttrMSelect: [],
+        goodsAttrM: [],
+        goodsAttrOSelect: [],
+        goodsAttrO: []
     },
 
     mounted: function () {
@@ -33,7 +38,7 @@ var app = new Vue({
                 that.goodsAttrImg = data.goods_attr_img;
             });
             $.post(this.getTypeCatesUrl + this.goods_type, {
-                _token: this.token,
+                _token: this.token
             }, function (data) {
                 that.goodsTypes = data.goodsTypes;
                 that.goodsTypeCates = data.goodsTypeCates;
@@ -44,6 +49,12 @@ var app = new Vue({
                         }
                     }
                 }
+            });
+            $.post(this.getGoodsAttrUrl + this.goods_id, {
+                _token: this.token
+            }, function (data) {
+                that.goodsAttrM = data.goods_attr_m;
+                that.goodsAttrO = data.goods_attr_o;
             });
         },
         loading: function (bool) {
@@ -61,24 +72,23 @@ var app = new Vue({
             this.getGoodsTypes(e.target);
         },
         goodsTypeChange: function (e) {
+            var that = this;
             var cat_id = $(e.target).val();
             $('input[name=goods_type]').val(cat_id);
             $.post(this.getAttributesUrl + cat_id, {_token: this.token}, function (data) {
-                console.log(data);
-                if (data.length > 0) {
-                    $.each(data, function (k, v) {
-                        if (v.attr_type == 1) {
-                            if (v.attr_input_type == 1) {
-
-                            }
-                        } else {
-
-                        }
-                    });
-                    $('.step-item-attr-checkbox').show();
-                } else {
-
-                }
+                var attrM = [];
+                var attrO = [];
+                $.each(data, function (k, v) {
+                    if (v.attr_type == 1) {
+                        that.goodsAttrMSelect = [];
+                        attrM.push(v);
+                    } else {
+                        that.goodsAttrOSelect.push([]);
+                        attrO.push(v)
+                    }
+                });
+                that.goodsAttrM = attrM;
+                that.goodsAttrO = attrO;
             });
         },
         selectValue: function (e) {

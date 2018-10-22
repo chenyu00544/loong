@@ -105,6 +105,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/changegoodsgallery', 'GoodsController@changeGoodsGallery');
     Route::post('goods/upgoodsgallery', 'GoodsController@upGoodsGalleryPic');
     Route::post('goods/delgoodsgallery', 'GoodsController@delGoodsGalleryPic');
+    Route::post('goods/getgoodsattr/{id}', 'GoodsController@getGoodsAttr');
     Route::post('goods/addgoodsattr', 'GoodsController@addGoodsAttr');
     Route::post('goods/setgoodsattr', 'GoodsController@setGoodsAttr');
     Route::post('goods/product/{id}', 'GoodsController@getGoodsByProduct');
