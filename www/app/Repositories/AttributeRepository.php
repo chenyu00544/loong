@@ -37,6 +37,17 @@ class AttributeRepository implements AttributeRepositoryInterface
         for ($i = 0; $i < count($re); $i++) {
             if($re[$i]->attr_values != ''){
                 $re[$i]->attr_values = explode(',', str_replace("\r\n", ',', $re[$i]->attr_values));
+                $selected = [];
+                $goods_attr_ids = [];
+                foreach ($re[$i]->attr_values as $key => $attr_value){
+                    if($key == 0){
+                        $re[$i]->attr_value = $attr_value;
+                    }
+                    $selected[] = 0;
+                    $goods_attr_ids[] = 0;
+                }
+                $re[$i]->selected = $selected;
+                $re[$i]->goods_attr_ids = $goods_attr_ids;
             }
         }
         return $re;

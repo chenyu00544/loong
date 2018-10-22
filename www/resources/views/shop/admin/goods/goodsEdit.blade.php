@@ -1129,29 +1129,29 @@
                                                 <h5>商品规格：</h5>
                                             </div>
                                             <div class="step-item-right attr-multi">
-                                                <div class="item-right-list fl" v-for="(attr_m, k) in goodsAttrM">
+                                                <div class="item-right-list fl" v-for="(attr_m, key) in goodsAttrM">
                                                     <div class="label fl">${attr_m.attr_name}：
                                                         <input type="hidden" name="attr_id_listM[]"
                                                                :value="attr_m.attr_id">
                                                     </div>
                                                     <div class="clearfix">
                                                         <label class="checkbox-inline"
-                                                               v-for="(v, key) in attr_m.attr_values">
+                                                               v-for="(v, k) in attr_m.attr_values">
+
                                                             <input type="checkbox"
-                                                                   name="attr_value_list1[${attr_m.attr_id}][]"
+                                                                   :name="'attr_value_list1['+attr_m.attr_id+'][]'"
                                                                    class="attr_value_list1"
                                                                    :data-key="key"
                                                                    :data-k="k"
                                                                    :value="v"
                                                                    :data-attr_id="attr_m.attr_id"
-                                                                   :checked="attr_m.selected[key]==1"
-                                                                   @click="selectValue">${v}
+                                                                   :checked="attr_m.selected[k]==1"
+                                                                   @click="selectValue($event)">${v}
                                                         </label>
                                                         <div class="checkbox-inline" v-if="attr_m.attr_input_type == 0">
                                                             <a href="javascript:;"
                                                                class="btn btn-info btn-sm attr-custom"
                                                                :data-attr_id="attr_m.attr_id">自定义</a>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1250,7 +1250,7 @@
                                     <h3>属性图片</h3>
                                 </div>
                                 <div class="attr-gallerys ps-container ps-active-y"
-                                     v-if="goodsAttrM.length > 0">
+                                     v-if="products.length > 0">
                                     <div class="step-content attr-gallery clearfix"
                                          v-for="(attrImg, key) in goodsAttrImg">
                                         <div class="attr_tit">${attrImg.attr_name}：</div>
@@ -1340,7 +1340,7 @@
                                            style="position: relative; z-index: 1;">
                                             <input type="file" multiple id="add-slide-img" class="add-slide-img"
                                                    style="opacity: 0;max-width: 0;height: 0;margin: 0">
-                                            <label for="add-slide-img" class=""><i
+                                            <label for="add-slide-img" class="ft-16"><i
                                                         class="glyphicon glyphicon-plus"></i>添加图片</label>
                                         </a>
                                         <a href="javascript:;"
@@ -1821,68 +1821,6 @@
                 } else if ($(this).hasClass('pro_warning')) {
                     $('input[name="product_warn_number[]"]').val($('input[name="product_warn_number[]"]').first().val());
                 }
-            });
-
-
-            //选择商品类型
-            $('.select-value').on('change', function () {
-                return;
-                var cat_id = $(this).val();
-                $('input[name=goods_type]').val(cat_id);
-                var htmlM = '';
-                var htmlO = '';
-                var key = 0;
-                $.post("{{url('admin/attribute/getattributes/')}}/" + cat_id, {'_token': '{{csrf_token()}}'}, function (data) {
-                    if (data.length > 0) {
-                        $.each(data, function (k, v) {
-                            if (v.attr_type == 1) {
-                                htmlM += '<div class="item-right-list fl"><div class="label fl">' + v.attr_name + '：' +
-                                    '<input type="hidden" name="attr_id_listM[]" value="' + v.attr_id + '">' +
-                                    '</div><div>';
-                                if (v.attr_input_type == 1) {
-                                    for (var i = 0; i < v.attr_values.length; i++) {
-                                        htmlM += '<label class="checkbox-inline">' +
-                                            '<input type="checkbox" name="attr_value_list1[' + v.attr_id + '][]"' +
-                                            ' class="attr_value_list1" data-key="' + i + '" data-k="' + key + '" value="' + v.attr_values[i] + '" data-attr_id="' + v.attr_id + '">' + v.attr_values[i] + '</label>';
-                                    }
-                                }
-                                htmlM += '<div class="checkbox-inline">';
-                                if (v.attr_input_type == 0) {
-                                    htmlM += '<a href="javascript:;" class="btn btn-info btn-sm attr-custom" data-attr_id="' + v.attr_id + '">自定义</a>';
-                                }
-                                htmlM += '</div></div></div>';
-                                $('.step-item-attr-checkbox .step-item-right').html(htmlM);
-                                $('.step-item-attr-checkbox').show();
-                                key++;
-                                attrList.push([]);
-                                attrMulti.push(v);
-                            } else {
-                                htmlO += '<div class="item-right-list goods-attr-type fl">' +
-                                    '<input type="hidden" name="attr_id_listO[]" value="' + v.attr_id + '">' +
-                                    '<div class="label fl" title="' + v.attr_name + '">' + v.attr_name + '：</div>' +
-                                    '<div class="value-select">' +
-                                    '<select name="attr_value_list[]" class="form-control max-wd-100 fl">';
-                                for (var i = 0; i < v.attr_values.length; i++) {
-                                    htmlO += '<option value="' + v.attr_values[i] + '">' + v.attr_values[i] + '</option>';
-                                }
-                                htmlO += '</select></div></div>';
-                                $('.step-item-attr-once .step-item-right').html(htmlO);
-                                $('.step-item-attr-once').show();
-                            }
-                        });
-                    } else {
-                        attrList = [];
-                        attrMulti = [];
-                        $('.step-item-attr-checkbox .step-item-right').html(htmlM);
-                        $('.step-item-attr-once .step-item-right').html(htmlO);
-                        $('#attribute-table tbody').html('');
-                        $('.attr-gallerys').html('');
-                        $('#attribute-table').hide();
-                        $('.attr-gallerys').hide();
-                        $('.step-item-attr-checkbox').hide();
-                        $('.step-item-attr-once').hide();
-                    }
-                });
             });
 
             //自定义商品规格属性

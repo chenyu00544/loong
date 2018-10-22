@@ -27,7 +27,7 @@ class GoodsAttrRepository implements GoodsAttrRepositoryInterface
     public function getGoodsAttr($id)
     {
         //商品属性详细信息
-        $goodsAttr = $this->goodsAttrModel->getGoodsAttrsJoinAttr(['goods_id' => $id]);
+        $goodsAttr = $this->goodsAttrModel->getGoodsAttrsJoinAttr(['goods_id' => $id, 'attr_checked' => 1]);
 
         $goodsAttrO = [];
         $goodsAttrM = [];

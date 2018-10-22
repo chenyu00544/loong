@@ -17,9 +17,7 @@ var app = new Vue({
         goodsTypeCatesSelect: [],
         goodsTypeCates: [],
         goodsAttrImg: [],
-        goodsAttrMSelect: [],
         goodsAttrM: [],
-        goodsAttrOSelect: [],
         goodsAttrO: []
     },
 
@@ -80,18 +78,26 @@ var app = new Vue({
                 var attrO = [];
                 $.each(data, function (k, v) {
                     if (v.attr_type == 1) {
-                        that.goodsAttrMSelect = [];
                         attrM.push(v);
                     } else {
-                        that.goodsAttrOSelect.push([]);
                         attrO.push(v)
                     }
                 });
                 that.goodsAttrM = attrM;
                 that.goodsAttrO = attrO;
+                that.products = [];
+                that.goodsAttrImg = [];
             });
         },
         selectValue: function (e) {
+            var key = $(e.target).data('key');
+            var k = $(e.target).data('k');
+            if ($(e.target).is(':checked')) {
+                this.goodsAttrM[key].selected[k] = 1;
+            }else{
+                this.goodsAttrM[key].selected[k] = 0;
+            }
+
             var attr_values = [];
             var attr_v = [];
             var attr_id = 0;
