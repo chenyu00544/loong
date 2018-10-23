@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.adapter.item.goods;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
@@ -19,20 +20,20 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
-import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsEvaluate;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsComment;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.tools.ReflexUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodsEvaluateItem extends BaseItem<GoodsEvaluate> {
+public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
     public static final int TYPE = 9;
     private DefaultItemDecoration defaultItemDecoration;
     private RecyclerView recyclerView;
 
-    public GoodsEvaluateItem(GoodsEvaluate beans, Context c) {
+    public GoodsEvaluateItem(GoodsDetail beans, Context c) {
         super(beans, c);
     }
 
@@ -48,8 +49,19 @@ public class GoodsEvaluateItem extends BaseItem<GoodsEvaluate> {
         return base;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        TextView commentTitle = holder.getTextView(R.id.textView23);
+        Integer commentCount = 0;
+        for (int i = 0; i < mData.getCommentLabels().size(); i++) {
+            commentCount += mData.getCommentLabels().get(i).getCount();
+        }
+        TextView goodPercentTv = holder.getTextView(R.id.textView22);
+        commentTitle.setText("商品评价(" + String.valueOf(commentCount) + ")");
+        Double goodPercent = (double) (commentCount / mData.getComments_number());
+        goodPercentTv.setText("好评率 " + String.valueOf(goodPercent) + "%");
+
         if (mData.getIsScroll() == 1) {
             ConstraintLayout v = (ConstraintLayout) holder.getItemView();
             TextView tv6 = holder.getTextView(R.id.textView24);
@@ -63,7 +75,7 @@ public class GoodsEvaluateItem extends BaseItem<GoodsEvaluate> {
                     defaultItemDecoration = new DefaultItemDecoration(context, 5);
                     recyclerView.addItemDecoration(defaultItemDecoration);
                 }
-                if (mData.getEvaluates().size() > 0) {
+                if (mData.getComments().size() > 0) {
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams)
                             recyclerView.getLayoutParams();
                     params.height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
@@ -71,78 +83,80 @@ public class GoodsEvaluateItem extends BaseItem<GoodsEvaluate> {
                 }
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setAdapter(mAdapter);
-                mAdapter.addAll(getItems(mData.getEvaluates()));
+                mAdapter.addAll(getItems(mData.getComments()));
                 CYCItemClickSupport.addTo(recyclerView).setOnItemClickListener(itemListener);
             }
 
-            for (int i = 0; i < mData.getProbs().size(); i++) {
-                ImageView imgIcon = new ImageView(context);
-                imgIcon.setId(ReflexUtils.getResByRid("id", "prob_icon_" + (i), context));
-                v.addView(imgIcon);
-                ConstraintLayout.LayoutParams icl1 = new ConstraintLayout.LayoutParams(0,
-                        ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                icl1.width = 40;
-                icl1.height = 35;
+            if (mData.getQas().size() > 0) {
+                for (int i = 0; i < mData.getQas().size(); i++) {
+                    ImageView imgIcon = new ImageView(context);
+                    imgIcon.setId(ReflexUtils.getResByRid("id", "prob_icon_" + (i), context));
+                    v.addView(imgIcon);
+                    ConstraintLayout.LayoutParams icl1 = new ConstraintLayout.LayoutParams(0,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                    icl1.width = 40;
+                    icl1.height = 35;
 
-                imgIcon.setLayoutParams(icl1);
-                imgIcon.setBackgroundResource(R.drawable.icon_problem);
-                imgIcon.setPadding(ToolUtils.dip2px(context, 6), ToolUtils.dip2px(context, 6),
-                        ToolUtils.dip2px(context, 6), ToolUtils.dip2px(context, 6));
+                    imgIcon.setLayoutParams(icl1);
+                    imgIcon.setBackgroundResource(R.drawable.icon_problem);
+                    imgIcon.setPadding(ToolUtils.dip2px(context, 6), ToolUtils.dip2px(context, 6)
+                            , ToolUtils.dip2px(context, 6), ToolUtils.dip2px(context, 6));
 
-                ConstraintSet constraintSetTv1 = new ConstraintSet();
-                constraintSetTv1.clone(v);
-                if (i == 0) {
-                    constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.TOP, tv6.getId(),
-                            ConstraintSet.BOTTOM, ToolUtils.dip2px(context, 12));
-                    constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.LEFT, tv6.getId(),
+                    ConstraintSet constraintSetTv1 = new ConstraintSet();
+                    constraintSetTv1.clone(v);
+                    if (i == 0) {
+                        constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.TOP, tv6.getId(),
+                                ConstraintSet.BOTTOM, ToolUtils.dip2px(context, 12));
+                        constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.LEFT, tv6.getId()
+                                , ConstraintSet.LEFT, 12);
+                    } else {
+                        int pid = ReflexUtils.getResByRid("id", "prob_icon_" + (i - 1), context);
+                        constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.TOP, pid,
+                                ConstraintSet.BOTTOM, ToolUtils.dip2px(context, 8));
+                        constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.LEFT, pid,
+                                ConstraintSet.LEFT, 0);
+                    }
+                    constraintSetTv1.applyTo(v);
+
+                    TextView ptv2 = new TextView(context);
+                    ptv2.setId(ReflexUtils.getResByRid("id", "answer_num_" + (i), context));
+                    v.addView(ptv2);
+                    ptv2.setText(mData.getQas().get(i).getUseful());
+                    ConstraintLayout.LayoutParams tcl2 = new ConstraintLayout.LayoutParams
+                            (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout
+                                    .LayoutParams.WRAP_CONTENT);
+                    ptv2.setLayoutParams(tcl2);
+                    ConstraintSet constraintSetTv3 = new ConstraintSet();
+                    constraintSetTv3.clone(v);
+                    constraintSetTv3.connect(ptv2.getId(), ConstraintSet.TOP, imgIcon.getId(),
+                            ConstraintSet.TOP, 0);
+                    constraintSetTv3.connect(ptv2.getId(), ConstraintSet.BOTTOM, imgIcon.getId(),
+                            ConstraintSet.BOTTOM, 0);
+                    constraintSetTv3.connect(ptv2.getId(), ConstraintSet.RIGHT, iv1.getId(),
+                            ConstraintSet.RIGHT, 0);
+                    constraintSetTv3.applyTo(v);
+
+                    TextView ptv1 = new TextView(context);
+                    ptv1.setId(ReflexUtils.getResByRid("id", "prob_" + (i), context));
+                    ptv1.setTextColor(Color.parseColor("#000000"));
+                    v.addView(ptv1);
+                    ptv1.setText(mData.getQas().get(i).getContent());
+                    ConstraintLayout.LayoutParams tcl1 = new ConstraintLayout.LayoutParams
+                            (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout
+                                    .LayoutParams.WRAP_CONTENT);
+                    ptv1.setLayoutParams(tcl1);
+                    ConstraintSet constraintSetTv2 = new ConstraintSet();
+                    constraintSetTv2.clone(v);
+                    constraintSetTv2.connect(ptv1.getId(), ConstraintSet.TOP, imgIcon.getId(),
+                            ConstraintSet.TOP, 0);
+                    constraintSetTv2.connect(ptv1.getId(), ConstraintSet.LEFT, imgIcon.getId(),
+                            ConstraintSet.RIGHT, 12);
+                    constraintSetTv2.connect(ptv1.getId(), ConstraintSet.BOTTOM, imgIcon.getId(),
+                            ConstraintSet.BOTTOM, 0);
+                    constraintSetTv2.connect(ptv1.getId(), ConstraintSet.RIGHT, ptv2.getId(),
                             ConstraintSet.LEFT, 12);
-                } else {
-                    int pid = ReflexUtils.getResByRid("id", "prob_icon_" + (i - 1), context);
-                    constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.TOP, pid,
-                            ConstraintSet.BOTTOM, ToolUtils.dip2px(context, 8));
-                    constraintSetTv1.connect(imgIcon.getId(), ConstraintSet.LEFT, pid,
-                            ConstraintSet.LEFT, 0);
+                    constraintSetTv2.applyTo(v);
                 }
-                constraintSetTv1.applyTo(v);
-
-                TextView ptv2 = new TextView(context);
-                ptv2.setId(ReflexUtils.getResByRid("id", "answer_num_" + (i), context));
-                v.addView(ptv2);
-                ptv2.setText(mData.getProbs().get(i).getAnswer_num());
-                ConstraintLayout.LayoutParams tcl2 = new ConstraintLayout.LayoutParams
-                        (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout
-                                .LayoutParams.WRAP_CONTENT);
-                ptv2.setLayoutParams(tcl2);
-                ConstraintSet constraintSetTv3 = new ConstraintSet();
-                constraintSetTv3.clone(v);
-                constraintSetTv3.connect(ptv2.getId(), ConstraintSet.TOP, imgIcon.getId(),
-                        ConstraintSet.TOP, 0);
-                constraintSetTv3.connect(ptv2.getId(), ConstraintSet.BOTTOM, imgIcon.getId(),
-                        ConstraintSet.BOTTOM, 0);
-                constraintSetTv3.connect(ptv2.getId(), ConstraintSet.RIGHT, iv1.getId(),
-                        ConstraintSet.RIGHT, 0);
-                constraintSetTv3.applyTo(v);
-
-                TextView ptv1 = new TextView(context);
-                ptv1.setId(ReflexUtils.getResByRid("id", "prob_" + (i), context));
-                ptv1.setTextColor(Color.parseColor("#000000"));
-                v.addView(ptv1);
-                ptv1.setText(mData.getProbs().get(i).getProblem());
-                ConstraintLayout.LayoutParams tcl1 = new ConstraintLayout.LayoutParams
-                        (ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout
-                                .LayoutParams.WRAP_CONTENT);
-                ptv1.setLayoutParams(tcl1);
-                ConstraintSet constraintSetTv2 = new ConstraintSet();
-                constraintSetTv2.clone(v);
-                constraintSetTv2.connect(ptv1.getId(), ConstraintSet.TOP, imgIcon.getId(),
-                        ConstraintSet.TOP, 0);
-                constraintSetTv2.connect(ptv1.getId(), ConstraintSet.LEFT, imgIcon.getId(),
-                        ConstraintSet.RIGHT, 12);
-                constraintSetTv2.connect(ptv1.getId(), ConstraintSet.BOTTOM, imgIcon.getId(),
-                        ConstraintSet.BOTTOM, 0);
-                constraintSetTv2.connect(ptv1.getId(), ConstraintSet.RIGHT, ptv2.getId(),
-                        ConstraintSet.LEFT, 12);
-                constraintSetTv2.applyTo(v);
             }
 
             TextView tv1 = holder.getTextView(R.id.textView22);
@@ -163,7 +177,7 @@ public class GoodsEvaluateItem extends BaseItem<GoodsEvaluate> {
         }
     }
 
-    public List<Item> getItems(List<Evaluates> bean) {
+    public List<Item> getItems(List<GoodsComment> bean) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < bean.size(); i++) {
             cells.add(new GoodsEvaluateSubItem(bean.get(i), context));

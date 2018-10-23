@@ -1,14 +1,32 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
 public class GoodsCommentImg {
-    private String logo;
+    private Integer id;
+    private String comment_img;
+    private String img_thumb;
 
-    public String getLogo() {
-        return logo;
+    public String getComment_img() {
+        return comment_img;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
+    public Integer getId() {
+        return id;
+    }
+
+    public String getImg_thumb() {
+        return img_thumb;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setComment_img(String comment_img) {
+        this.comment_img = comment_img;
+    }
+
+    public void setImg_thumb(String img_thumb) {
+        this.img_thumb = img_thumb;
     }
 }
 

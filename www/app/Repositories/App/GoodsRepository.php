@@ -82,7 +82,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume', 'is_fullcut',
             'goods_type', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num', 'review_status',
             'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
-            'pinyin_keyword', 'goods_brief',
+            'pinyin_keyword', 'goods_brief'
         ];
         $goods_detail = $this->goodsModel->getGoodsAndExt($where, $column);
         if ($goods_detail) {

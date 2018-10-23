@@ -11,15 +11,15 @@ import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.goods.Evaluates;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsComment;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-public class GoodsEvaluateSubItem extends BaseItem<Evaluates> {
+public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
     public static final int TYPE = 1;
 
-    public GoodsEvaluateSubItem(Evaluates beans, Context c) {
+    public GoodsEvaluateSubItem(GoodsComment beans, Context c) {
         super(beans, c);
     }
 
@@ -48,7 +48,9 @@ public class GoodsEvaluateSubItem extends BaseItem<Evaluates> {
         Glide.with(context).load(mData.getLogo()).apply(requestOptions)
                 .into(iv);
         ImageView iv2 = holder.getImageView(R.id.imageView3);
-        Glide.with(context).load(mData.getEva_img_url()).apply
-                (requestOptions2).into(iv2);
+        if(mData.getComment_imgs().size() > 0){
+            Glide.with(context).load(mData.getComment_imgs().get(0).getComment_img()).apply
+                    (requestOptions2).into(iv2);
+        }
     }
 }

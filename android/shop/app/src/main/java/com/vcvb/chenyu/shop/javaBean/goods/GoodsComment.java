@@ -1,5 +1,12 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
+import com.vcvb.chenyu.shop.tools.JsonUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsComment {
@@ -56,6 +63,26 @@ public class GoodsComment {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public void setData(JSONObject Json){
+        try {
+            JSONArray commentImgs = Json.getJSONArray("comment_img");
+            List<GoodsCommentImg> _comment_imgs = new ArrayList<>();
+            for (int i = 0; i < commentImgs.length(); i++) {
+                JSONObject object = (JSONObject) commentImgs.get(i);
+                GoodsCommentImg goodsCommentImg = JsonUtils.fromJsonObject(object, GoodsCommentImg.class);
+                _comment_imgs.add(goodsCommentImg);
+            }
+            this.setComment_imgs(_comment_imgs);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+
     }
 }
 

@@ -28,6 +28,7 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsExplainItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsFaatItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsNameItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsPriceItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.GoodsAddressDialog;
@@ -365,23 +366,20 @@ public class GoodsDetailActivity extends GoodsActivity {
             goodsShipItem.setOnItemClickListener(shipListener);
             cells.add(goodsShipItem);
         }
-//        if (goodsDetails.getShipFree() != null) {
-//            GoodsShipFreeItem goodsShipFreeItem = new GoodsShipFreeItem(goodsDetails.getShipFree
-//                    (), context);
-//            cells.add(goodsShipFreeItem);
-//        }
-//        if (goodsDetails.getGoodsExplains() != null) {
-//            GoodsExplainItem goodsExplainItem = new GoodsExplainItem(goodsDetails
-//                    .getGoodsExplains(), context);
-//            goodsExplainItem.setOnItemClickListener(explainListener);
-//            cells.add(goodsExplainItem);
-//        }
-//        if (goodsDetails.getGoodsEvaluate() != null) {
-//            GoodsEvaluateItem goodsEvaluateItem = new GoodsEvaluateItem(goodsDetails
-//                    .getGoodsEvaluate(), context);
-//            goodsEvaluateItem.setOnItemClickListener(evaluateListener);
-//            cells.add(goodsEvaluateItem);
-//        }
+        if (goodsDetails.getGoodsTransport() != null) {
+            GoodsShipFreeItem goodsShipFreeItem = new GoodsShipFreeItem(goodsDetails, context);
+            cells.add(goodsShipFreeItem);
+        }
+        if (goodsDetails.getGoodsDescriptions() != null) {
+            GoodsExplainItem goodsExplainItem = new GoodsExplainItem(goodsDetails, context);
+            goodsExplainItem.setOnItemClickListener(explainListener);
+            cells.add(goodsExplainItem);
+        }
+        if (goodsDetails.getCommentLabels() != null) {
+            GoodsEvaluateItem goodsEvaluateItem = new GoodsEvaluateItem(goodsDetails, context);
+            goodsEvaluateItem.setOnItemClickListener(evaluateListener);
+            cells.add(goodsEvaluateItem);
+        }
 //        if (goodsDetails.getGoodsBrand() != null) {
 //            GoodsBrandItem goodsBrandItem = new GoodsBrandItem(goodsDetails.getGoodsBrand(),
 //                    context);

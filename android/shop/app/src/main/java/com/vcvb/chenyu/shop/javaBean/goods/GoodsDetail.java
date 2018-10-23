@@ -493,6 +493,16 @@ public class GoodsDetail {
         this.goodsTransport = goodsTransport;
     }
 
+    private GoodsAttr goodsCountryCAttr;
+
+    public GoodsAttr getGoodsCountryCAttr() {
+        return goodsCountryCAttr;
+    }
+
+    public void setGoodsCountryCAttr(GoodsAttr goodsCountryCAttr) {
+        this.goodsCountryCAttr = goodsCountryCAttr;
+    }
+
     public void setData(JSONObject Json) throws JSONException {
         this.setBanner(Json);
         this.setCommentLabel(Json);
@@ -690,6 +700,11 @@ public class GoodsDetail {
             List<GoodsAttr> _sattr = new ArrayList<>();
             for (int i = 0; i < sAttrJsonArray.length(); i++) {
                 JSONObject object = (JSONObject) sAttrJsonArray.get(i);
+                String cstr = (String) object.get("attr_name");
+                if(cstr.equals("国家") || cstr.equals("地区")){
+                    GoodsAttr countryAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
+                    this.setGoodsCountryCAttr(countryAttr);
+                }
                 GoodsAttr goodsAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
                 _sattr.add(goodsAttr);
             }
@@ -763,6 +778,7 @@ public class GoodsDetail {
             for (int i = 0; i < commentsJsonArray.length(); i++) {
                 JSONObject object = (JSONObject) commentsJsonArray.get(i);
                 GoodsComment goodsComment = JsonUtils.fromJsonObject(object, GoodsComment.class);
+                goodsComment.setData(object);
                 _goodsComment.add(goodsComment);
             }
             this.setComments(_goodsComment);

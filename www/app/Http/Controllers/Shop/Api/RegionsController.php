@@ -47,12 +47,12 @@ class RegionsController extends CommonController
                     "Accept" => "application/json"]
             ]);
             $content = json_decode($response->getBody()->getContents());
-//            $area = mb_substr($content->result->addressComponent->district, 0, -1, "utf-8");
-            $area = mb_substr($content->regeocode->addressComponent->district, 0, -1, "utf-8");
+//            $area = mb_substr($content->result->addressComponent->city, 0, -1, "utf-8");
+            $area = mb_substr($content->regeocode->addressComponent->city, 0, -1, "utf-8");
             $region = $this->regionsRepository->searchRegion($area);
             if (!$region) {
-//                $area = mb_substr($content->result->addressComponent->city, 0, -1, "utf-8");
-                $area = mb_substr($content->regeocode->addressComponent->city, 0, -1, "utf-8");
+//                $area = mb_substr($content->result->addressComponent->province, 0, -1, "utf-8");
+                $area = mb_substr($content->regeocode->addressComponent->province, 0, -1, "utf-8");
                 $region = $this->regionsRepository->searchRegion($area);
             }
             $region->formatted_address = $content->regeocode->addressComponent->province.$content->regeocode->addressComponent->city.$content->regeocode->addressComponent->district;

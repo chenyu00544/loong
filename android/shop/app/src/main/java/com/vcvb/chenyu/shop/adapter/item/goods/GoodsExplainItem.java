@@ -9,14 +9,12 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsExplain;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 
-import java.util.List;
-
-public class GoodsExplainItem extends BaseItem<List<GoodsExplain>> {
+public class GoodsExplainItem extends BaseItem<GoodsDetail> {
     public static final int TYPE = 8;
 
-    public GoodsExplainItem(List<GoodsExplain> beans, Context c) {
+    public GoodsExplainItem(GoodsDetail beans, Context c) {
         super(beans, c);
     }
 
@@ -36,11 +34,11 @@ public class GoodsExplainItem extends BaseItem<List<GoodsExplain>> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView238);
         String str = "";
-        for (int i = 0; i < mData.size(); i++) {
-            if (i == mData.size() - 1) {
-                str += mData.get(i).getName();
+        for (int i = 0; i < mData.getGoodsDescriptions().size(); i++) {
+            if (i == mData.getGoodsDescriptions().size() - 1) {
+                str += mData.getGoodsDescriptions().get(i).getTitle();
             }else{
-                str += mData.get(i).getName() + " | ";
+                str += mData.getGoodsDescriptions().get(i).getTitle() + " | ";
             }
         }
         tv.setText(str);
