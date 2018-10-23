@@ -380,12 +380,12 @@ public class GoodsDetailActivity extends GoodsActivity {
             goodsEvaluateItem.setOnItemClickListener(evaluateListener);
             cells.add(goodsEvaluateItem);
         }
-//        if (goodsDetails.getGoodsBrand() != null) {
-//            GoodsBrandItem goodsBrandItem = new GoodsBrandItem(goodsDetails.getGoodsBrand(),
-//                    context);
-//            goodsBrandItem.setOnItemClickListener(brandListener);
-//            cells.add(goodsBrandItem);
-//        }
+        if (goodsDetails.getGoodsBrand() != null) {
+            GoodsBrandItem goodsBrandItem = new GoodsBrandItem(goodsDetails,
+                    context);
+            goodsBrandItem.setOnItemClickListener(brandListener);
+            cells.add(goodsBrandItem);
+        }
 //        if (goodsDetails.getSpecifications() != null) {
 //            cells.add(new GoodsSpecificationsItem(goodsDetails.getSpecifications(), context));
 //        }

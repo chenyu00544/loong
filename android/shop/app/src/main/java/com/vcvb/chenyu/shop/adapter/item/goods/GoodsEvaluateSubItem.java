@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -38,7 +39,8 @@ public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override(120, 120);
+                (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).error(R.drawable
+                .icon_boy_head).override(120, 120);
         RoundedCornersTransformation roundedCorners = new RoundedCornersTransformation(6, 0,
                 RoundedCornersTransformation.CornerType.RIGHT);
         RequestOptions requestOptions2 = RequestOptions.bitmapTransform(roundedCorners)
@@ -51,6 +53,14 @@ public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
         if(mData.getComment_imgs().size() > 0){
             Glide.with(context).load(mData.getComment_imgs().get(0).getComment_img()).apply
                     (requestOptions2).into(iv2);
+        }else{
+            Glide.with(context).load(R.drawable.icon_no_pic).apply
+                    (requestOptions2).into(iv2);
         }
+
+        TextView tv1 = holder.get(R.id.textView4);
+        tv1.setText(mData.getUser_name());
+        TextView tv2 = holder.get(R.id.textView5);
+        tv2.setText(mData.getContent());
     }
 }

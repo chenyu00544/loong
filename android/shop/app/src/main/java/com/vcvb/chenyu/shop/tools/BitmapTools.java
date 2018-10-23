@@ -1,6 +1,5 @@
 package com.vcvb.chenyu.shop.tools;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -115,7 +114,7 @@ public class BitmapTools {
     }
 
     public static void loadBitmap(Resources resources, String data, ImageView imageView){
-        Bitmap placeBitmap = BitmapFactory.decodeResource(resources, R.drawable.empty);
+        Bitmap placeBitmap = BitmapFactory.decodeResource(resources, R.drawable.icon_no_pic);
         if(cancelPotntialWork(data, imageView)){
             final BitmapWorkerTask task = new BitmapWorkerTask(imageView);
             final AsyncDrawable asyncDrawable = new AsyncDrawable(resources, placeBitmap, task);

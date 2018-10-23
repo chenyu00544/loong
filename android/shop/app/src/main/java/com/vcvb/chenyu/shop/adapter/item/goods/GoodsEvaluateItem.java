@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.nex3z.flowlayout.FlowLayout;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
@@ -22,6 +23,7 @@ import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsComment;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
+import com.vcvb.chenyu.shop.tools.IdsUtils;
 import com.vcvb.chenyu.shop.tools.ReflexUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
@@ -57,11 +59,35 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
         for (int i = 0; i < mData.getCommentLabels().size(); i++) {
             commentCount += mData.getCommentLabels().get(i).getCount();
         }
-        TextView goodPercentTv = holder.getTextView(R.id.textView22);
-        commentTitle.setText("商品评价(" + String.valueOf(commentCount) + ")");
-        Double goodPercent = (double) (commentCount / mData.getComments_number());
-        goodPercentTv.setText("好评率 " + String.valueOf(goodPercent) + "%");
 
+        commentTitle.setText("商品评价(" + String.valueOf(commentCount) + ")");
+        if (mData.getComments_number() > 0) {
+            TextView goodPercentTv = holder.getTextView(R.id.textView22);
+            Double goodPercent = (double) (commentCount / mData.getComments_number())*100;
+            goodPercentTv.setText("好评率 " + String.valueOf(goodPercent) + "%");
+        }
+
+        FlowLayout flowLayout = holder.get(R.id.comment_label);
+        flowLayout.setChildSpacing(8);
+        flowLayout.setRowSpacing(8);
+        flowLayout.setChildSpacingForLastRow(8);
+        flowLayout.removeAllViews();
+        for (int i = 0; i < mData.getCommentLabels().size(); i++) {
+            if (i < 3) {
+                TextView textView = new TextView(context);
+                textView.setId(IdsUtils.generateViewId());
+                textView.setPadding(ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2),
+                        ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2));
+                textView.setBackgroundResource(R.drawable.shape_tip);
+                textView.setTextColor(context.getResources().getColor(R.color.black_29));
+                textView.setTextSize(12);
+                textView.setText(mData.getCommentLabels().get(i).getLabel_name() + "(" + mData
+                        .getCommentLabels().get(i).getCount() + ")");
+                flowLayout.addView(textView);
+                posMap.put(textView.getId(), Integer.MAX_VALUE - i);
+                textView.setOnClickListener(listener);
+            }
+        }
         if (mData.getIsScroll() == 1) {
             ConstraintLayout v = (ConstraintLayout) holder.getItemView();
             TextView tv6 = holder.getTextView(R.id.textView24);
@@ -160,17 +186,8 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
             }
 
             TextView tv1 = holder.getTextView(R.id.textView22);
-            posMap.put(tv1.getId(), Integer.MAX_VALUE - 1);
+            posMap.put(tv1.getId(), Integer.MAX_VALUE - 4);
             tv1.setOnClickListener(listener);
-            TextView tv2 = holder.getTextView(R.id.textView13);
-            posMap.put(tv2.getId(), Integer.MAX_VALUE - 2);
-            tv2.setOnClickListener(listener);
-            TextView tv3 = holder.getTextView(R.id.textView16);
-            posMap.put(tv3.getId(), Integer.MAX_VALUE - 3);
-            tv3.setOnClickListener(listener);
-            TextView tv4 = holder.getTextView(R.id.textView17);
-            posMap.put(tv4.getId(), Integer.MAX_VALUE - 4);
-            tv4.setOnClickListener(listener);
             View tv5 = holder.getView(R.id.view75);
             posMap.put(tv5.getId(), Integer.MAX_VALUE - 5);
             tv5.setOnClickListener(listener);

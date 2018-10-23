@@ -1,13 +1,22 @@
 package com.vcvb.chenyu.shop.adapter.item.goods;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.nex3z.flowlayout.FlowLayout;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+import com.vcvb.chenyu.shop.tools.IdsUtils;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 public class GoodsBrandSubItem extends BaseItem<Goods> {
     public static final int TYPE = 1;
@@ -28,7 +37,39 @@ public class GoodsBrandSubItem extends BaseItem<Goods> {
         return base;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        ImageView imageView3 = holder.get(R.id.imageView3);
+        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy
+                (DiskCacheStrategy.AUTOMATIC).error(R.drawable.icon_no_pic).skipMemoryCache(true);
+        Glide.with(context).load(mData.getOriginal_img()).apply
+                (requestOptions).into(imageView3);
+
+        TextView textView5 = holder.get(R.id.textView5);
+        textView5.setText(mData.getGoods_name());
+
+        FlowLayout flowLayout = holder.get(R.id.faat_label);
+        flowLayout.setChildSpacing(8);
+        flowLayout.setRowSpacing(8);
+        flowLayout.setChildSpacingForLastRow(8);
+        flowLayout.removeAllViews();
+        if (mData.getIs_promote().equals("1") && (Integer.valueOf(mData.getPromote_end_date()) -
+                Integer.valueOf(mData.getCurrent_time())) > 0) {
+            int discount = Integer.valueOf(mData.getPromote_price()) / Integer.valueOf(mData
+                    .getShop_price());
+            TextView tv1 = new TextView(context);
+            tv1.setId(IdsUtils.generateViewId());
+            tv1.setPadding(ToolUtils.dip2px(context, 2), 0,
+                    ToolUtils.dip2px(context, 2), 0);
+            tv1.setBackgroundResource(R.drawable.shape_tip);
+            tv1.setTextColor(context.getResources().getColor(R.color.black_29));
+            tv1.setTextSize(10);
+            tv1.setText(discount + "折");
+            flowLayout.addView(tv1);
+        }
+//        TextView tv2 = new TextView(context);
+        TextView textView12 = holder.get(R.id.textView12);
+
     }
 }

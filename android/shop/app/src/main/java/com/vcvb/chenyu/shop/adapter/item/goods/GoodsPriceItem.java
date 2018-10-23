@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.adapter.item.goods;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
 import android.util.TypedValue;
@@ -34,6 +35,7 @@ public class GoodsPriceItem extends BaseItem<GoodsDetail> {
         return base;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView goodsPrice = holder.getTextView(R.id.textView1);

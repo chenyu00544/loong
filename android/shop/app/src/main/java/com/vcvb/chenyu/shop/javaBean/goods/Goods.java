@@ -23,6 +23,9 @@ public class Goods {
     private String sales_volume;
     private String volume_number;
     private String volume_price;
+    private String current_time;
+    private String promote_start_date;
+    private String promote_end_date;
 
     public int getGoods_id() {
         return goods_id;
@@ -88,6 +91,18 @@ public class Goods {
         return volume_price;
     }
 
+    public String getCurrent_time() {
+        return current_time;
+    }
+
+    public String getPromote_end_date() {
+        return promote_end_date;
+    }
+
+    public String getPromote_start_date() {
+        return promote_start_date;
+    }
+
     public void setGoods_id(int goods_id) {
         this.goods_id = goods_id;
     }
@@ -150,6 +165,18 @@ public class Goods {
 
     public void setVolume_price(String volume_price) {
         this.volume_price = volume_price;
+    }
+
+    public void setCurrent_time(String current_time) {
+        this.current_time = current_time;
+    }
+
+    public void setPromote_end_date(String promote_end_date) {
+        this.promote_end_date = promote_end_date;
+    }
+
+    public void setPromote_start_date(String promote_start_date) {
+        this.promote_start_date = promote_start_date;
     }
 
 

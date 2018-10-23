@@ -149,11 +149,12 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->comment_label = $commentLabels;
 
             //品牌商品
-            $goods_detail->brand_goodses = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['goods_name', 'original_img', 'shop_price', 'promote_price', 'promote_start_date', 'promote_end_date'], 15);
+            $goods_detail->brand_goodses = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['goods_name', 'original_img', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date'], 15);
             foreach ($goods_detail->brand_goodses as $brand_goods) {
                 $brand_goods->original_img = FileHandle::getImgByOssUrl($brand_goods->original_img);
                 $brand_goods->shop_price_format = Common::priceFormat($brand_goods->shop_price);
                 $brand_goods->promote_price_format = Common::priceFormat($brand_goods->promote_price);
+                $brand_goods->current_time = time();
             }
             //用户地址
             $uwhere['user_id'] = $user_id;

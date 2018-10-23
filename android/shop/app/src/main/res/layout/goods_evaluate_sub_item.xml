@@ -27,7 +27,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/empty" />
+        app:srcCompat="@drawable/icon_boy_head" />
 
     <TextView
         android:id="@+id/textView4"
@@ -37,7 +37,6 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="4dp"
-        android:text="使状态栏文"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
@@ -53,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.466"
-        app:srcCompat="@drawable/empty" />
+        app:srcCompat="@drawable/icon_no_pic" />
 
     <TextView
         android:id="@+id/textView5"
@@ -65,7 +64,6 @@
         android:layout_marginTop="2dp"
         android:ellipsize="end"
         android:lines="5"
-        android:text="小米和魅族的手机也可以达到这个效果，要做一些特殊的处理。可以参考小米和魅族的开发者文档。"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"

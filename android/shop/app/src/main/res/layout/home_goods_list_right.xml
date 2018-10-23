@@ -25,7 +25,7 @@
             android:layout_marginTop="0dp"
             android:contentDescription="@string/todo"
             android:scaleType="fitXY"
-            android:src="@drawable/empty" />
+            android:src="@drawable/icon_no_pic" />
 
         <TextView
             android:id="@+id/item_title_recyclerview"
