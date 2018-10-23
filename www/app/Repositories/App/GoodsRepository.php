@@ -167,7 +167,6 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
             $goods_detail->user = $user;
             $goods_detail->goods_description = $this->goodsDescriptionModel->getGoodsDescriptions();
-
             //商品属性整理
             $goods_detail->gattr;
             $multi_attr = [];

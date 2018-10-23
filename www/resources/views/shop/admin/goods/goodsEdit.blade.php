@@ -1106,7 +1106,7 @@
                                                 <div class="item-right-list goods-attr-type fl"
                                                      v-for="(attr_o, aok) in goodsAttrO">
                                                     <input type="hidden" name="attr_id_listO[]"
-                                                           :value="attr_o.goods_attr_id">
+                                                           :value="attr_o.attr_id">
                                                     <div class="label fl"
                                                          :title="attr_o.attr_name">${attr_o.attr_name}：
                                                     </div>
@@ -2127,6 +2127,6 @@
             $('input[name=desc_mobile]').val(imgs);
         }
     </script>
-    <script type="text/javascript" src="{{url('styles/admin/js/goods.js').'?v='.$v}}"></script>
+    <script type="text/javascript" src="{{url('styles/admin/js/goods.js')}}"></script>
 @endsection
 @endsection

@@ -948,11 +948,19 @@ class GoodsRepository implements GoodsRepositoryInterface
         $whereAttr['goods_id'] = $id;
         $attrData['admin_id'] = $ru_id;
         for ($i = 0; $i < count($attr_id_listO); $i++) {
-            $whereAttr['goods_attr_id'] = $attr_id_listO[$i];
+            $whereAttr['attr_id'] = $attr_id_listO[$i];
             $attrData['attr_value'] = $attr_value_list[$i];
             $attrData['attr_sort'] = 0;
             $attrData['attr_checked'] = 1;
-            $this->goodsAttrModel->setGoodsAttr($whereAttr, $attrData);
+            if(!$this->goodsAttrModel->setGoodsAttr($whereAttr, $attrData)){
+                $attrUpData['goods_id'] = $id;
+                $attrUpData['attr_id'] = $attr_id_listO[$i];
+                $attrUpData['attr_value'] = $attr_value_list[$i];
+                $attrUpData['attr_sort'] = 0;
+                $attrUpData['attr_checked'] = 1;
+                $attrUpData['admin_id'] = $ru_id;
+                $this->goodsAttrModel->addGoodsAttr($attrUpData);
+            }
         }
 
 
