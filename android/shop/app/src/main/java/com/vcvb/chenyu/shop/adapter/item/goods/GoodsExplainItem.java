@@ -34,10 +34,17 @@ public class GoodsExplainItem extends BaseItem<GoodsDetail> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView238);
         String str = "";
+        if (mData.getGoodsTexAttr() != null) {
+            if (mData.getGoodsTexAttr().getAttr_value().equals("0")) {
+                str = "包税 | ";
+            } else {
+                str = "税率" + mData.getGoodsTexAttr().getAttr_value() + "% | ";
+            }
+        }
         for (int i = 0; i < mData.getGoodsDescriptions().size(); i++) {
             if (i == mData.getGoodsDescriptions().size() - 1) {
                 str += mData.getGoodsDescriptions().get(i).getTitle();
-            }else{
+            } else {
                 str += mData.getGoodsDescriptions().get(i).getTitle() + " | ";
             }
         }

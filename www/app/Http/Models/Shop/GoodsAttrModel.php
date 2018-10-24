@@ -24,6 +24,13 @@ class GoodsAttrModel extends Model
             ->get();
     }
 
+    public function getGoodsAttr($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
     public function getGoodsAttrsJoinAttr($where, $column = ['*'])
     {
         return $this->select($column)

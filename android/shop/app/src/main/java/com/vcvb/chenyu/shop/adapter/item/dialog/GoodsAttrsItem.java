@@ -51,7 +51,7 @@ public class GoodsAttrsItem extends BaseItem<GoodsAttrs> {
         fl1.setChildSpacingForLastRow(16);
         for (int i = 0; i < mData.getAttrs().size(); i++) {
             TextView tv1 = new TextView(context);
-            tv1.setText(mData.getAttrs().get(i).getAttrName());
+            tv1.setText(mData.getAttrs().get(i).getAttr_name());
             int id = IdsUtils.generateViewId();
             mData.getAttrs().get(i).setButtonId(id);
             tv1.setId(id);

@@ -56,7 +56,7 @@ public class GoodsShipItem extends BaseItem<GoodsDetail> {
 
         ImageView fromIv = holder.getImageView(R.id.imageView5);
         RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override(120, 120);
+                (DiskCacheStrategy.AUTOMATIC).override(120, 120);
         String from_en = mData.getGoodsCountryCAttr().getAttr_value();
         String fromLoc = "海外直接采购";
         Integer cPic = R.drawable.c_au;

@@ -51,11 +51,9 @@
         android:layout_height="35dp"
         android:layout_marginTop="12dp"
         android:padding="5dp"
-        android:src="@drawable/icon_browse"
         app:layout_constraintEnd_toEndOf="@+id/textView7"
         app:layout_constraintStart_toStartOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/textView1"
-        app:srcCompat="@drawable/icon_browse" />
+        app:layout_constraintTop_toBottomOf="@+id/textView1"/>
 
     <ImageView
         android:id="@+id/imageView6"
@@ -74,7 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="海外直购"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@color/black_29"
         android:textSize="12sp"
@@ -90,7 +88,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
-        android:text="北京市"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@color/black_29"
         android:textSize="12sp"

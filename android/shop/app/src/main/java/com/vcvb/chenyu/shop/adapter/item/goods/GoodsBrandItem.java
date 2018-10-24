@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
@@ -22,6 +21,7 @@ import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsBrand;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +54,6 @@ public class GoodsBrandItem extends BaseItem<GoodsDetail> {
         posMap.put(brand.getId(), -1);
         brand.setOnClickListener(listener);
 
-        ImageView imageView7 = holder.get(R.id.imageView7);
-        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.AUTOMATIC).error(R.drawable.icon_no_pic).skipMemoryCache(true);
-        Glide.with(context).load(mData.getGoodsBrand().getBrand_logo()).apply
-                (requestOptions).into(imageView7);
-
         TextView textView = holder.get(R.id.textView);
         textView.setText(mData.getGoodsBrand().getBrand_name());
 
@@ -70,7 +64,8 @@ public class GoodsBrandItem extends BaseItem<GoodsDetail> {
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
                 mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 if (defaultItemDecoration == null) {
-                    defaultItemDecoration = new DefaultItemDecoration(context, 5);
+                    defaultItemDecoration = new DefaultItemDecoration(context, ToolUtils.dip2px
+                            (context, 5));
                     recyclerView.addItemDecoration(defaultItemDecoration);
                 }
                 if (mData.getGoodsBrand().getGoodses().size() > 0) {
@@ -84,6 +79,12 @@ public class GoodsBrandItem extends BaseItem<GoodsDetail> {
                 mAdapter.addAll(getItems(mData.getGoodsBrand()));
                 CYCItemClickSupport.addTo(recyclerView).setOnItemClickListener(itemListener);
             }
+
+            ImageView imageView7 = holder.get(R.id.imageView7);
+            RequestOptions requestOptions = RequestOptions.centerCropTransform().placeholder(R
+                    .drawable.icon_no_pic).skipMemoryCache(false).dontAnimate();
+            Glide.with(context).load(mData.getGoodsBrand().getBrand_logo()).apply(requestOptions)
+                    .into(imageView7);
         }
     }
 

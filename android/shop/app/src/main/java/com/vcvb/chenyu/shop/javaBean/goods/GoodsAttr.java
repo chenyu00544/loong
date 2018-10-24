@@ -2,7 +2,6 @@ package com.vcvb.chenyu.shop.javaBean.goods;
 
 public class GoodsAttr {
     private int attrId;
-    private String attrName;
     private boolean isSelect = false;
     private int buttonId = 0;
 
@@ -15,6 +14,7 @@ public class GoodsAttr {
     private String attr_img_flie;
     private String attr_gallery_flie;
     private String attr_name;
+    private Integer attr_group;
 
     public int getAttrId() {
         return attrId;
@@ -22,14 +22,6 @@ public class GoodsAttr {
 
     public void setAttrId(int attrId) {
         this.attrId = attrId;
-    }
-
-    public String getAttrName() {
-        return attrName;
-    }
-
-    public void setAttrName(String attrName) {
-        this.attrName = attrName;
     }
 
     public boolean getIsSelect() {
@@ -84,6 +76,10 @@ public class GoodsAttr {
         return goods_attr_id;
     }
 
+    public Integer getAttr_group() {
+        return attr_group;
+    }
+
     public void setGoods_id(String goods_id) {
         this.goods_id = goods_id;
     }
@@ -118,5 +114,13 @@ public class GoodsAttr {
 
     public void setGoods_attr_id(Integer goods_attr_id) {
         this.goods_attr_id = goods_attr_id;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
+
+    public void setAttr_group(Integer attr_group) {
+        this.attr_group = attr_group;
     }
 }

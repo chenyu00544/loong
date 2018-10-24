@@ -42,8 +42,8 @@ public class GoodsDescItem extends BaseItem<GoodsDesc> {
         set.clone(cly);
         ImageView iv = holder.getImageView(R.id.imageView82);
         set.constrainWidth(iv.getId(), width);
-        set.constrainHeight(iv.getId(), width);
+        set.constrainHeight(iv.getId(), width * mData.getHeight() / mData.getWidth());
         set.applyTo(cly);
-        Glide.with(context).load(mData.getGoodsDescImg()).into(iv);
+        Glide.with(context).load(mData.getDesc_url()).into(iv);
     }
 }

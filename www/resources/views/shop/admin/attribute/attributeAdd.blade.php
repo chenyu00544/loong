@@ -40,6 +40,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">所属分组：</label>
+                            <div class="col-sm-8 pre-cate">
+                                <div class="cate-option fl">
+                                    <select class="form-control select" name="attr_group" data-parent_id="0">
+                                        <option value="0">普通组</option>
+                                        <option value="1">税率</option>
+                                        <option value="2">地区</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">分类筛选样式：</label>
                             <div class="col-sm-4 n-wd400">
                                 <label class="radio-inline fl">

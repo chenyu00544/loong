@@ -76,7 +76,7 @@
                                 <input type="hidden" name="goods_model" id="goods_model" value="0">
                             </div>
                             <div class="goods-btn">
-                                <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="2"
+                                <a href="javascript:;" class="btn btn-info mar-all-10 next-step" data-step="2"
                                    data-type="step" data-down="false" ectype="stepSubmit">下一步，选择商品分类</a>
                             </div>
                         </div>
@@ -149,9 +149,9 @@
                             </div>
 
                             <div class="goods-btn">
-                                <a href="javascript:;" class="btn btn-default mar-all-10 prev" data-step="1"
+                                <a href="javascript:;" class="btn btn-default mar-all-10 prev-step" data-step="1"
                                    data-type="step" ectype="stepSubmit">上一步，选择商品模式</a>
-                                <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="3"
+                                <a href="javascript:;" class="btn btn-info mar-all-10 next-step" data-step="3"
                                    data-type="step" data-down="false" ectype="stepSubmit">下一步，填写通用信息</a>
                             </div>
                         </div>
@@ -518,7 +518,8 @@
                                             <a href="javascript:;" class="btn btn-danger web-desc">
                                                 <i class="glyphicon glyphicon-picture"></i> 添加图片</a>
                                         </div>
-                                        <input type="hidden" name="desc_mobile" value="">
+                                        <div class="desc_mobile">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -925,9 +926,9 @@
 
                             <div class="step-pn clearfix">
                                 <div class="goods-btn">
-                                    <a href="javascript:;" class="btn btn-default mar-all-10 prev" data-step="2"
+                                    <a href="javascript:;" class="btn btn-default mar-all-10 prev-step" data-step="2"
                                        data-type="step" ectype="stepSubmit">上一步，选择商品分类</a>
-                                    <a href="javascript:;" class="btn btn-info mar-all-10 next" data-step="4"
+                                    <a href="javascript:;" class="btn btn-info mar-all-10 next-step" data-step="4"
                                        data-type="step" data-down="false" ectype="stepSubmit">下一步，填写商品属性</a>
                                     <input class="btn btn-info mar-all-10" type="submit" value="完成,发布商品">
                                 </div>
@@ -1868,12 +1869,12 @@
             });
 
             //填写商品信息上一步
-            $('.prev').on('click', function () {
+            $('.prev-step').on('click', function () {
                 step($(this).data('step'));
             });
 
             //填写商品信息下一步
-            $('.next').on('click', function () {
+            $('.next-step').on('click', function () {
                 if ($(this).data('step') == 3 && $('input[name=cat_id]').val() <= 0) {
                     $('.choiceClass strong').html('您还未选择分类');
                     $('.cate-name').html('');
@@ -2023,9 +2024,9 @@
 
             var imgs = '';
             $('.section-warp .img').each(function () {
-                imgs += $.trim($(this).html());
+                imgs += '<div><input type="hidden" name="desc_url[]" value="' + $(this).find('img').attr('src') + '"><input type="hidden" name="desc_width[]" value="' + $(this).find('img').data('width') + '"><input type="hidden" name="desc_height[]" value="' + $(this).find('img').data('height') + '"></div>';
             });
-            $('input[name=desc_mobile]').val(imgs);
+            $('.desc_mobile').html(imgs);
         }
 
         function setProductSplicing(i, j, obj, pList, aList) {

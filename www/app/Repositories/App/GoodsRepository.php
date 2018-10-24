@@ -86,10 +86,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         ];
         $goods_detail = $this->goodsModel->getGoodsAndExt($where, $column);
         if ($goods_detail) {
-            $mobile_descs = Common::pregMatchAll($goods_detail->desc_mobile, '/src=(".*?")/i');
-            foreach ($mobile_descs as $k => $mobile_desc) {
-                $mobile_descs[$k] = FileHandle::getImgByOssUrl($mobile_desc);
-            }
+            $mobile_descs = unserialize($goods_detail->desc_mobile);
             $goods_detail->mobile_descs = $mobile_descs;
             $goods_detail->goods_video = FileHandle::getImgByOssUrl($goods_detail->goods_video);
             $goods_detail->goods_thumb = FileHandle::getImgByOssUrl($goods_detail->goods_thumb);
@@ -174,6 +171,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $single_attr = [];
             foreach ($goods_detail->gattr as $akey => $gattr) {
                 $gattr->attr_name = $gattr->attr->attr_name;
+                $gattr->attr_group = $gattr->attr->attr_group;
                 if ($gattr->attr->attr_type == 1) {
                     if ($gattr->attr_img_flie != '') {
                         $gattr->attr_img_flie = FileHandle::getImgByOssUrl($gattr->attr_img_flie);

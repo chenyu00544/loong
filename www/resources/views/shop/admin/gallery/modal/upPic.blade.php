@@ -61,7 +61,6 @@
 
             $('.btn-sure').click(function () {
                 layer.load();
-                var domain = "{{url('/')}}/";
                 var form = new FormData();
                 var files = $('input[name=pic]')[0].files;
                 for (var i = 0; i < files.length; i++) {
@@ -79,7 +78,7 @@
                         $.each(data, function (k, v) {
                             var html = '<li class="image-wrap fl clearfix pic-id-' + v.pic_id + '">' +
                                 '<div class="img-container">' +
-                                '<img src="' + domain + v.pic_image + '">' +
+                                '<img src="' + v.pic_file_bak + '">' +
                                 '</div>' +
                                 '<div class="checkbox-item">' +
                                 '<input type="checkbox" name="pic-id" value="' + v.pic_id + '" class="ui-checkbox">' +

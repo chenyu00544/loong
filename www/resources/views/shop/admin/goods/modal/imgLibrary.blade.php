@@ -24,9 +24,9 @@
                     <ul class="ga-images-ul">
                         @foreach($galleryPics as $galleryPic)
                             <li data-pic_id="{{$galleryPic->pic_id}}" data-exhibition_url="{{$galleryPic->pic_image}}"
-                                data-original_url="{{$galleryPic->pic_file}}" class="">
+                                data-original_url="{{$galleryPic->pic_file_bak}}" class="">
                                 <div class="img-container">
-                                    <img src="{{$galleryPic->pic_image}}">
+                                    <img src="{{$galleryPic->pic_file_bak}}">
                                 </div>
                                 <i class="checked"></i>
                             </li>
@@ -98,7 +98,7 @@
                                 var html = '';
                                 html += '<li data-url="' + v.pic_id + '" class="">' +
                                     '<div class="img-container">' +
-                                    '<img src="' + domain + v.pic_image + '">' +
+                                    '<img src="' + v.pic_file_bak + '">' +
                                     '</div>' +
                                     '<i class="checked"></i>' +
                                     '</li>';
@@ -144,10 +144,14 @@
                 var pic_id = [];
                 var pic_exhibition_url = [];
                 var pic_original_url = [];
+                var width = [];
+                var height = [];
                 $('.ga-images-ul li.current').each(function () {
                     pic_id.push($(this).data('pic_id'));
                     pic_exhibition_url.push($(this).data('exhibition_url'));
                     pic_original_url.push($(this).data('original_url'));
+                    width.push($(this).data('width'));
+                    height.push($(this).data('height'));
                 });
 
                 if (type == 'main') {
@@ -220,10 +224,11 @@
                     var html = '';
                     var imgs = '';
                     $.each(pic_original_url, function (k, v) {
-                        imgs += '<img src="' + v + '">';
+                        imgs += '<div><input type="hidden" name="desc_url[]" value="' + v + '"><input type="hidden" name="desc_width[]" value="' + width[k] + '"><input type="hidden" name="desc_height[]" value="' + height[k] + '"></div>';
+
                         html += '<div class="section s-img clearfix">' +
                             '<div class="img">' +
-                            '<img src="' + v + '">' +
+                            '<img src="' + v + '" data-width="' + width[k] + '" data-height="' + height[k] + '">' +
                             '</div>' +
                             '<div class="tools">';
                         if (parent.$('.section-warp section').length == 0 && k == 0) {
@@ -242,8 +247,7 @@
                             '</div>';
                     });
                     parent.$('.section-warp').append(html);
-                    var desc_mobile = parent.$('input[name=desc_mobile]').val();
-                    parent.$('input[name=desc_mobile]').val(desc_mobile + imgs);
+                    parent.$('.desc_mobile').append(imgs);
                     parent.layer.close(index);
                 }
             });
@@ -262,9 +266,9 @@
             }, function (data) {
                 var html = '';
                 $.each(data.data, function (k, v) {
-                    html += '<li data-pic_id="' + v.pic_id + '" data-exhibition_url="' + v.pic_image + '" data-original_url="' + v.pic_file + '" class="">' +
+                    html += '<li data-pic_id="' + v.pic_id + '" data-exhibition_url="' + v.pic_image_bak + '" data-original_url="' + v.pic_file_bak + '" class="" data-width="' + v.width + '" data-height="' + v.height + '">' +
                         '<div class="img-container">' +
-                        '<img src="' + v.pic_image + '">' +
+                        '<img src="' + v.pic_file_bak + '">' +
                         '</div>' +
                         '<i class="checked"></i>' +
                         '</li>';

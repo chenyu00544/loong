@@ -23,7 +23,7 @@
                         @foreach($galleryPics as $galleryPic)
                             <li class="image-wrap fl clearfix pic-id-{{$galleryPic->pic_id}}">
                                 <div class="img-container">
-                                    <img src="{{url($galleryPic->pic_image)}}">
+                                    <img src="{{$galleryPic->pic_file_bak}}">
                                 </div>
                                 <div class="checkbox-item">
                                     <input type="checkbox" name="pic-id" value="{{$galleryPic->pic_id}}"
@@ -89,11 +89,11 @@
             });
 
             //鼠标移入与移出图片
-            $('.image-item li').on('mouseenter', function () {
+            $('body').on('mouseenter', '.image-item li', function () {
                 $(this).find('.img-width').hide();
                 $(this).find('.img-handle').show();
             });
-            $('.image-item li').on('mouseleave', function () {
+            $('body').on('mouseleave', '.image-item li', function () {
                 $(this).find('.img-width').show();
                 $(this).find('.img-handle').hide();
             });

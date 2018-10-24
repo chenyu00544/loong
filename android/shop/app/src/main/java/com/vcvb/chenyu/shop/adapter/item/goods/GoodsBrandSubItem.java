@@ -18,6 +18,8 @@ import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.tools.IdsUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import java.math.BigDecimal;
+
 public class GoodsBrandSubItem extends BaseItem<Goods> {
     public static final int TYPE = 1;
 
@@ -42,9 +44,8 @@ public class GoodsBrandSubItem extends BaseItem<Goods> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         ImageView imageView3 = holder.get(R.id.imageView3);
         RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.AUTOMATIC).error(R.drawable.icon_no_pic).skipMemoryCache(true);
-        Glide.with(context).load(mData.getOriginal_img()).apply
-                (requestOptions).into(imageView3);
+                (DiskCacheStrategy.AUTOMATIC).error(R.drawable.icon_no_pic);
+        Glide.with(context).load(mData.getOriginal_img()).apply(requestOptions).into(imageView3);
 
         TextView textView5 = holder.get(R.id.textView5);
         textView5.setText(mData.getGoods_name());
@@ -54,22 +55,26 @@ public class GoodsBrandSubItem extends BaseItem<Goods> {
         flowLayout.setRowSpacing(8);
         flowLayout.setChildSpacingForLastRow(8);
         flowLayout.removeAllViews();
-        if (mData.getIs_promote().equals("1") && (Integer.valueOf(mData.getPromote_end_date()) -
-                Integer.valueOf(mData.getCurrent_time())) > 0) {
-            int discount = Integer.valueOf(mData.getPromote_price()) / Integer.valueOf(mData
-                    .getShop_price());
+
+        TextView textView12 = holder.get(R.id.textView12);
+        if (mData.getIs_promote().equals("1") && (mData.getPromote_end_date() - mData
+                .getCurrent_time()) > 0) {
+            Double discount = (Double.valueOf(mData.getPromote_price()) / Double.valueOf
+                                (mData.getShop_price()) * 10);
+            BigDecimal bg3 = new BigDecimal(discount);
+            discount = bg3.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
             TextView tv1 = new TextView(context);
             tv1.setId(IdsUtils.generateViewId());
-            tv1.setPadding(ToolUtils.dip2px(context, 2), 0,
-                    ToolUtils.dip2px(context, 2), 0);
+            tv1.setPadding(ToolUtils.dip2px(context, 2), 0, ToolUtils.dip2px(context, 2), 0);
             tv1.setBackgroundResource(R.drawable.shape_tip);
             tv1.setTextColor(context.getResources().getColor(R.color.black_29));
             tv1.setTextSize(10);
             tv1.setText(discount + "折");
             flowLayout.addView(tv1);
+            textView12.setText(mData.getPromote_price_format());
+        } else {
+            textView12.setText(mData.getShop_price_format());
         }
 //        TextView tv2 = new TextView(context);
-        TextView textView12 = holder.get(R.id.textView12);
-
     }
 }

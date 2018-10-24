@@ -118,6 +118,7 @@
             });
 
             $('.btn-del').click(function () {
+                var that = this;
                 var Id = $(this).data('id');
                 var url = $(this).data('url');
                 layer.confirm('您确定要删除吗', {
@@ -130,8 +131,8 @@
                             if (data.code == 1) {
                                 layer.msg(data.msg, {icon: data.code});
                                 setTimeout(function () {
-                                    location.href = location.href;
-                                }, 2000);
+                                    $(that).parent().parent().remove();
+                                }, 1000);
                             } else {
                                 layer.msg(data.msg, {icon: data.code});
                             }

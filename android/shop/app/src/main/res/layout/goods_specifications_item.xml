@@ -7,17 +7,6 @@
     android:paddingBottom="12dp"
     android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/imageView12"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ads_11_1" />
-
     <TextView
         android:id="@+id/textView29"
         android:layout_width="0dp"
@@ -26,12 +15,12 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:text="产品信息"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView12" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.nex3z.flowlayout.FlowLayout
         android:id="@+id/param_wrap"

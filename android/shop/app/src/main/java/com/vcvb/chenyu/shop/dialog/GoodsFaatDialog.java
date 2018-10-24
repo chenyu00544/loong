@@ -23,8 +23,9 @@ import android.widget.ImageView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsFaatItem;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsFaat;
+import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsFCItem;
+import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsGVPItem;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +37,14 @@ public class GoodsFaatDialog extends DialogFragment {
     View v;
     Context context;
     String tag;
-    List<GoodsFaat> attrs;
+    GoodsDetail attrs;
 
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private GridLayoutManager mLayoutManager;
 
     @SuppressLint("ValidFragment")
-    public GoodsFaatDialog(ArrayList<GoodsFaat> gattrs) {
+    public GoodsFaatDialog(GoodsDetail gattrs) {
         attrs = gattrs;
     }
 
@@ -89,11 +90,15 @@ public class GoodsFaatDialog extends DialogFragment {
         this.tag = tag;
     }
 
-    protected List<Item> getItems(List<GoodsFaat> list) {
+    protected List<Item> getItems(GoodsDetail bean) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            GoodsFaatItem goodsFaatItem = new GoodsFaatItem(list.get(i), context);
-            cells.add(goodsFaatItem);
+        for (int i = 0; i < bean.getGoodsGVPS().size(); i++) {
+            GoodsGVPItem goodsGVPItem = new GoodsGVPItem(bean.getGoodsGVPS().get(i), context);
+            cells.add(goodsGVPItem);
+        }
+        for (int i = 0; i < bean.getGoodsFCS().size(); i++) {
+            GoodsFCItem goodsFCItem = new GoodsFCItem(bean.getGoodsFCS().get(i), context);
+            cells.add(goodsFCItem);
         }
         return cells;
     }

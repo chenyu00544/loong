@@ -266,14 +266,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $req->member_price = $memPrice;
 
         //手机商品详细信息图
-        $req->desc_mobile_html = explode('">', $req->desc_mobile);
-        $descMobileHtml = [];
-        foreach ($req->desc_mobile_html as $value) {
-            if ($value != '') {
-                $descMobileHtml[] = $value . '">';
-            }
-        }
-        $req->desc_mobile_html = $descMobileHtml;
+        $req->desc_mobile_html = unserialize($req->desc_mobile);
 
         //阶梯价格
         $req->goods_volume_prices = $this->goodsVolumePriceModel->getGoodsVolumePrice(['goods_id' => $id]);
@@ -472,7 +465,17 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['cost_price'] = round((!empty($data['cost_price']) ? round($data['cost_price'], 2) : 0), 2);
 
         $goodsData['goods_desc'] = !empty($data['content']) ? trim($data['content']) : '';
-        $goodsData['desc_mobile'] = !empty($data['desc_mobile']) ? trim($data['desc_mobile']) : '';
+
+        //手机详情页处理
+        $desc_url = !empty($data['desc_url']) ? $data['desc_url'] : [];
+        $desc_width = !empty($data['desc_width']) ? $data['desc_width'] : [];
+        $desc_height = !empty($data['desc_height']) ? $data['desc_height'] : [];
+        $desc_mobile = [];
+        foreach ($desc_url as $k => $val) {
+            $desc_mobile[] = ['desc_url' => $val, 'width' => $desc_width[$k], 'height' => $desc_height[$k],];
+        }
+        $goodsData['desc_mobile'] = serialize($desc_mobile);
+
         $goodsData['goods_brief'] = !empty($data['goods_brief']) ? trim($data['goods_brief']) : '';
         $goodsData['goods_weight'] = !empty($data['goods_weight']) ? $data['goods_weight'] * $data['weight_unit'] : 0;
         $goodsData['is_best'] = !empty($data['is_best']) ? 1 : 0;
@@ -745,7 +748,17 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['cost_price'] = round((!empty($data['cost_price']) ? round($data['cost_price'], 2) : 0), 2);
 
         $goodsData['goods_desc'] = !empty($data['content']) ? trim($data['content']) : '';
-        $goodsData['desc_mobile'] = !empty($data['desc_mobile']) ? trim($data['desc_mobile']) : '';
+
+        //手机详情页处理
+        $desc_url = !empty($data['desc_url']) ? $data['desc_url'] : [];
+        $desc_width = !empty($data['desc_width']) ? $data['desc_width'] : [];
+        $desc_height = !empty($data['desc_height']) ? $data['desc_height'] : [];
+        $desc_mobile = [];
+        foreach ($desc_url as $k => $val) {
+            $desc_mobile[] = ['desc_url' => $val, 'width' => $desc_width[$k], 'height' => $desc_height[$k],];
+        }
+        $goodsData['desc_mobile'] = serialize($desc_mobile);
+
         $goodsData['goods_brief'] = !empty($data['goods_brief']) ? trim($data['goods_brief']) : '';
         $goodsData['goods_weight'] = !empty($data['goods_weight']) ? $data['goods_weight'] * $data['weight_unit'] : 0;
         $goodsData['is_best'] = !empty($data['is_best']) ? 1 : 0;
@@ -853,6 +866,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goodsData['goods_cause'] = "";
         $cause = !empty($data['return_type']) ? $data['return_type'] : [];
         $goodsData['goods_cause'] = implode(',', $cause);
+
         $re = $this->goodsModel->setGoods($where, $goodsData);
 
         //更新商品相册
@@ -952,7 +966,8 @@ class GoodsRepository implements GoodsRepositoryInterface
             $attrData['attr_value'] = $attr_value_list[$i];
             $attrData['attr_sort'] = 0;
             $attrData['attr_checked'] = 1;
-            if(!$this->goodsAttrModel->setGoodsAttr($whereAttr, $attrData)){
+            $this->goodsAttrModel->setGoodsAttr($whereAttr, $attrData);
+            if (!$this->goodsAttrModel->getGoodsAttrs(array_merge($whereAttr, ['attr_value' => $attr_value_list[$i]]))) {
                 $attrUpData['goods_id'] = $id;
                 $attrUpData['attr_id'] = $attr_id_listO[$i];
                 $attrUpData['attr_value'] = $attr_value_list[$i];
@@ -962,7 +977,6 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $this->goodsAttrModel->addGoodsAttr($attrUpData);
             }
         }
-
 
         //更新货品
         $product_id = !empty($data['product_id']) ? $data['product_id'] : [];

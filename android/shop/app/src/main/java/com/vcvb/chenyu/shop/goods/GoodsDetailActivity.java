@@ -23,6 +23,7 @@ import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsAttrItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsBannerItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsBrandItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsDescItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsEvaluateItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsExplainItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsFaatItem;
@@ -30,6 +31,7 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsNameItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsPriceItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSpecificationsItem;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.GoodsAddressDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsAttrDialog;
@@ -77,8 +79,8 @@ public class GoodsDetailActivity extends GoodsActivity {
     private GoodsDetail goodsDetails = new GoodsDetail();
     private ShopGridLayoutManager gridLayoutManager;
 
-    private GoodsAttrDialog goodsAttrDialog;
     private GoodsFaatDialog goodsFaatDialog;
+    private GoodsAttrDialog goodsAttrDialog;
     private GoodsAddressDialog goodsAddressDialog;
     private GoodsExplainDialog goodsExplainDialog;
 
@@ -341,9 +343,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             cells.add(new GoodsBannerItem(goodsDetails.getBanners(), context));
         }
         if (goodsDetails.getGoodsFaat() != null) {
-//            GoodsFaatItem goodsFaatItem = new GoodsFaatItem(goodsDetails.getFaats(), context);
-//            goodsFaatItem.setOnItemClickListener(faatListener);
-//            cells.add(goodsFaatItem);
+
         }
         if (goodsDetails.getShop_price() != null) {
             cells.add(new GoodsPriceItem(goodsDetails, context));
@@ -352,6 +352,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             cells.add(new GoodsNameItem(goodsDetails, context));
         }
         if (goodsDetails.getIs_fullcut() == 1 || goodsDetails.getIs_volume() == 1) {
+            goodsFaatDialog = new GoodsFaatDialog(goodsDetails);
             GoodsFaatItem goodsFaatItem = new GoodsFaatItem(goodsDetails, context);
             goodsFaatItem.setOnItemClickListener(faatListener);
             cells.add(goodsFaatItem);
@@ -386,14 +387,14 @@ public class GoodsDetailActivity extends GoodsActivity {
             goodsBrandItem.setOnItemClickListener(brandListener);
             cells.add(goodsBrandItem);
         }
-//        if (goodsDetails.getSpecifications() != null) {
-//            cells.add(new GoodsSpecificationsItem(goodsDetails.getSpecifications(), context));
-//        }
-//        if (goodsDetails.getDescs() != null && goodsDetails.getDescs().size() > 0) {
-//            for (int i = 0; i < goodsDetails.getDescs().size(); i++) {
-//                cells.add(new GoodsDescItem(goodsDetails.getDescs().get(i), context));
-//            }
-//        }
+        if (goodsDetails.getSingleAttrs() != null) {
+            cells.add(new GoodsSpecificationsItem(goodsDetails, context));
+        }
+        if (goodsDetails.getGoodsDescs() != null) {
+            for (int i = 0; i < goodsDetails.getGoodsDescs().size(); i++) {
+                cells.add(new GoodsDescItem(goodsDetails.getGoodsDescs().get(i), context));
+            }
+        }
         return cells;
     }
 

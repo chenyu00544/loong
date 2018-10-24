@@ -503,6 +503,16 @@ public class GoodsDetail {
         this.goodsCountryCAttr = goodsCountryCAttr;
     }
 
+    private GoodsAttr goodsTexAttr;
+
+    public GoodsAttr getGoodsTexAttr() {
+        return goodsTexAttr;
+    }
+
+    public void setGoodsTexAttr(GoodsAttr goodsTexAttr) {
+        this.goodsTexAttr = goodsTexAttr;
+    }
+
     public void setData(JSONObject Json) throws JSONException {
         this.setBanner(Json);
         this.setCommentLabel(Json);
@@ -677,7 +687,7 @@ public class GoodsDetail {
                 for (int j = 0; j < mSubAttrJsonArray.length(); j++) {
                     JSONObject object = (JSONObject) mSubAttrJsonArray.get(j);
                     GoodsAttr goodsAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
-                    if(j == 0){
+                    if (j == 0) {
                         goodsAttr.setIsSelect(true);
                     }
                     _attrs.add(goodsAttr);
@@ -700,10 +710,14 @@ public class GoodsDetail {
             List<GoodsAttr> _sattr = new ArrayList<>();
             for (int i = 0; i < sAttrJsonArray.length(); i++) {
                 JSONObject object = (JSONObject) sAttrJsonArray.get(i);
-                String cstr = (String) object.get("attr_name");
-                if(cstr.equals("国家") || cstr.equals("地区")){
+                String attr_group = (String) object.get("attr_group");
+                if (attr_group.equals("2")) {
                     GoodsAttr countryAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
                     this.setGoodsCountryCAttr(countryAttr);
+                }
+                if (attr_group.equals("1")) {
+                    GoodsAttr taxAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
+                    this.setGoodsTexAttr(taxAttr);
                 }
                 GoodsAttr goodsAttr = JsonUtils.fromJsonObject(object, GoodsAttr.class);
                 _sattr.add(goodsAttr);
@@ -723,12 +737,16 @@ public class GoodsDetail {
             JSONArray goodsInfoJsonArray = Json.getJSONArray("mobile_descs");
             List<GoodsDesc> _goodsInfo = new ArrayList<>();
             for (int i = 0; i < goodsInfoJsonArray.length(); i++) {
-                GoodsDesc goodsDesc = new GoodsDesc();
-                goodsDesc.setGoodsDescImg((String) goodsInfoJsonArray.get(i));
+                JSONObject object = (JSONObject) goodsInfoJsonArray.get(i);
+                GoodsDesc goodsDesc = JsonUtils.fromJsonObject(object, GoodsDesc.class);
                 _goodsInfo.add(goodsDesc);
             }
             this.setGoodsDescs(_goodsInfo);
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
             e.printStackTrace();
         }
     }
@@ -841,10 +859,11 @@ public class GoodsDetail {
         }
     }
 
-    private void setTransport(JSONObject Json){
+    private void setTransport(JSONObject Json) {
         try {
             JSONObject tpJSONObject = Json.getJSONObject("transport");
-            GoodsTransport goodsTransport = JsonUtils.fromJsonObject(tpJSONObject, GoodsTransport.class);
+            GoodsTransport goodsTransport = JsonUtils.fromJsonObject(tpJSONObject, GoodsTransport
+                    .class);
             goodsTransport.setData(tpJSONObject);
             this.setGoodsTransport(goodsTransport);
         } catch (JSONException e) {

@@ -70,7 +70,7 @@ class GalleryRepository implements GalleryRepositoryInterface
         $pageSize = empty($data['size']) ? 20 : $data['size'];
         $where['album_id'] = $data['album_id'];
         $page = $data['page'];
-        $re = $this->galleryAlbumPicModel->getGalleryPics($where, $page, $pageSize);
+        $res = $this->galleryAlbumPicModel->getGalleryPics($where, $page, $pageSize);
         $count = $this->galleryAlbumPicModel->countGalleryPic([$data['album_id']]);
         if ($count->count() > 0) {
             foreach ($count as $c) {
@@ -79,12 +79,20 @@ class GalleryRepository implements GalleryRepositoryInterface
         } else {
             $count = 0;
         }
-        foreach ($re as $key => $value) {
-            $value->pic_image = '/' . $value->pic_image;
-            $value->pic_file = '/' . $value->pic_file;
-            $value->pic_thumb = '/' . $value->pic_thumb;
+        foreach ($res as $key => $value) {
+            $value->pic_image_bak = FileHandle::getImgByOssUrl($value->pic_image);
+            $value->pic_file_bak = FileHandle::getImgByOssUrl($value->pic_file);
+            $value->pic_thumb_bak = FileHandle::getImgByOssUrl($value->pic_thumb);
+            $pic_spec = explode('×', $value->pic_spec);
+            if(count($pic_spec)>0){
+                $value->width = $pic_spec[0];
+                $value->height = $pic_spec[1];
+            }else{
+                $value->width = 0;
+                $value->height = 0;
+            }
         }
-        $rep = Common::paginate($re, $count, $page, $pageSize);
+        $rep = Common::paginate($res, $count, $page, $pageSize);
         return $rep;
     }
 
@@ -126,7 +134,9 @@ class GalleryRepository implements GalleryRepositoryInterface
         $where['album_id'] = $id;
         $re = $this->galleryAlbumModel->delGallery($where);
         if ($re) {
-            FileHandle::deleteFile($path);
+            if (!empty($path)) {
+                FileHandle::deleteFile($path);
+            }
             $req['code'] = 1;
             $req['msg'] = '删除成功';
         }
@@ -135,7 +145,11 @@ class GalleryRepository implements GalleryRepositoryInterface
 
     public function getGalleryPicsByPage($where = [])
     {
-        return $this->galleryAlbumPicModel->getGalleryPicsByPage($where);
+        $res = $this->galleryAlbumPicModel->getGalleryPicsByPage($where);
+        foreach ($res as $re) {
+            $re->pic_file_bak = FileHandle::getImgByOssUrl($re->pic_file);
+        }
+        return $res;
     }
 
     public function getGalleryPic($ids)
@@ -183,6 +197,9 @@ class GalleryRepository implements GalleryRepositoryInterface
             $updata['add_time'] = time();
             $rep[] = $this->galleryAlbumPicModel->addGalleryAlbumPic($updata);
         }
+        foreach ($rep as $k => $re){
+            $rep[$k]->pic_file_bak = FileHandle::getImgByOssUrl($rep[$k]->pic_file);
+        }
         return $rep;
     }
 
@@ -193,9 +210,15 @@ class GalleryRepository implements GalleryRepositoryInterface
             $where['pic_id'] = $value;
             $re = $this->galleryAlbumPicModel->delGalleryPic($where);
             if ($re) {
-                FileHandle::deleteFile($data['pic_image'][$key]);
-                FileHandle::deleteFile($data['pic_thumb'][$key]);
-                FileHandle::deleteFile($data['pic_file'][$key]);
+                if(!empty($data['pic_image'][$key])){
+                    FileHandle::deleteFile($data['pic_image'][$key]);
+                }
+                if(!empty($data['pic_thumb'][$key])){
+                    FileHandle::deleteFile($data['pic_thumb'][$key]);
+                }
+                if(!empty($data['pic_file'][$key])){
+                    FileHandle::deleteFile($data['pic_file'][$key]);
+                }
                 $req['code'] = 1;
                 $req['msg'] = '删除成功';
             }
@@ -227,7 +250,7 @@ class GalleryRepository implements GalleryRepositoryInterface
 
             $this->goodsGalleryModel->setGoodsGallery($cWhere, $cData);
             $re = $this->goodsGalleryModel->setGoodsGallery($mWhere, $mData);
-            if($re){
+            if ($re) {
                 $req['code'] = 1;
                 $req['msg'] = '操作成功';
             }
@@ -287,13 +310,13 @@ class GalleryRepository implements GalleryRepositoryInterface
         $re = $this->goodsGalleryModel->getGoodsGallery($where);
         if ($re) {
             if ($re->is_source == 0) {
-                if(!empty($re->img_url)){
+                if (!empty($re->img_url)) {
                     FileHandle::deleteFile($re->img_url);
                 }
-                if(!empty($re->thumb_url)){
+                if (!empty($re->thumb_url)) {
                     FileHandle::deleteFile($re->thumb_url);
                 }
-                if(!empty($re->img_original)){
+                if (!empty($re->img_original)) {
                     FileHandle::deleteFile($re->img_original);
                 }
             }
