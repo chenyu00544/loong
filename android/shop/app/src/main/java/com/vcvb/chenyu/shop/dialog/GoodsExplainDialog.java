@@ -26,7 +26,8 @@ import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsExplainItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsExplain;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDescription;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +40,15 @@ public class GoodsExplainDialog extends DialogFragment {
     Context context;
     String tag;
     OnClickListener onClickListener;
-    List<GoodsExplain> mList;
+    GoodsDetail detail;
 
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private GridLayoutManager mLayoutManager;
 
     @SuppressLint("ValidFragment")
-    public GoodsExplainDialog(ArrayList<GoodsExplain> list) {
-        mList = list;
+    public GoodsExplainDialog(GoodsDetail goodsDetail) {
+        detail = goodsDetail;
     }
 
     @Override
@@ -69,7 +70,7 @@ public class GoodsExplainDialog extends DialogFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.clear();
-        mAdapter.addAll(getItems(mList));
+        mAdapter.addAll(getItems(detail.getGoodsDescriptions()));
         ImageView close = v.findViewById(R.id.imageView117);
         close.setOnClickListener(listener);
         CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(itemListener);
@@ -95,7 +96,7 @@ public class GoodsExplainDialog extends DialogFragment {
         this.tag = tag;
     }
 
-    protected List<Item> getItems(List<GoodsExplain> list) {
+    protected List<Item> getItems(List<GoodsDescription> list) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
             GoodsExplainItem goodsExplainItem = new GoodsExplainItem(list.get(i), context);

@@ -17,6 +17,11 @@ public interface ConstantManager {
         public String ACCESS_ID = "XXXXXXX";
     }
 
+    interface ResultStatus {
+        public Integer ADDRESSRESULT = 1002;
+
+    }
+
     interface PhotoAlbum {
         public int PHOTOALBUM_REQUEST = 2001;
         public int REQUEST_IMAGE_CAPTURE = 2002;

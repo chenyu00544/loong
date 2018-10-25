@@ -645,6 +645,9 @@ public class GoodsDetail {
             for (int i = 0; i < addressJsonArray.length(); i++) {
                 JSONObject object = (JSONObject) addressJsonArray.get(i);
                 AddressBean addressBean = JsonUtils.fromJsonObject(object, AddressBean.class);
+                if(Json.getJSONObject("user").getInt("address_id") == addressBean.getAddress_id()){
+                    addressBean.setDef(true);
+                }
                 _addresses.add(addressBean);
             }
             this.setAddressBeans(_addresses);

@@ -1,7 +1,6 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
 public class GoodsAttr {
-    private int attrId;
     private boolean isSelect = false;
     private int buttonId = 0;
 
@@ -15,14 +14,6 @@ public class GoodsAttr {
     private String attr_gallery_flie;
     private String attr_name;
     private Integer attr_group;
-
-    public int getAttrId() {
-        return attrId;
-    }
-
-    public void setAttrId(int attrId) {
-        this.attrId = attrId;
-    }
 
     public boolean getIsSelect() {
         return isSelect;

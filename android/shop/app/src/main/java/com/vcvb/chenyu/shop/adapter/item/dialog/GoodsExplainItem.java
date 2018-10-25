@@ -8,12 +8,12 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsExplain;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDescription;
 
-public class GoodsExplainItem extends BaseItem<GoodsExplain> {
+public class GoodsExplainItem extends BaseItem<GoodsDescription> {
     public static final int TYPE = 1;
 
-    public GoodsExplainItem(GoodsExplain beans, Context c) {
+    public GoodsExplainItem(GoodsDescription beans, Context c) {
         super(beans, c);
     }
 
@@ -33,7 +33,7 @@ public class GoodsExplainItem extends BaseItem<GoodsExplain> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv1 = holder.getTextView(R.id.textView21);
         TextView tv2 = holder.getTextView(R.id.textView236);
-        tv1.setText(mData.getName());
-        tv2.setText(mData.getInfo());
+        tv1.setText(mData.getTitle());
+        tv2.setText(mData.getDescription());
     }
 }

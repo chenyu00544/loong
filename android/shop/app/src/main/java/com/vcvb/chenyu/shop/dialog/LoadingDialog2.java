@@ -24,6 +24,12 @@ public class LoadingDialog2 extends AlertDialog {
         super(context,themeResId);
     }
 
+    public LoadingDialog2(Context context) {
+        super(context,R.style.TransparentDialog);
+        this.setCancelable(false);
+        this.setCanceledOnTouchOutside(false);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

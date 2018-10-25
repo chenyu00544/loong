@@ -45,14 +45,25 @@ public class GoodsShipItem extends BaseItem<GoodsDetail> {
         TextView remarks = holder.getTextView(R.id.textView241);
         String addressStr = (String) UserInfoUtils.getInstance(context).getUserInfo().get
                 ("formatted_address");
-        if (addressStr == null || addressStr == "") {
+
+        if (mData.getAddressBeans() != null) {
+            for (int i = 0; i < mData.getAddressBeans().size(); i++) {
+                if (mData.getAddressBeans().get(i).isDef()) {
+                    String address_format = "至 %s %s %s %s";
+                    address.setText(String.format(address_format, mData.getAddressBeans().get(i)
+                            .getProvince_name(), mData.getAddressBeans().get(i).getCity_name(),
+                            mData.getAddressBeans().get(i).getDistrict_name(), mData
+                                    .getAddressBeans().get(i).getAddress()));
+                }
+            }
+        } else if (addressStr == null || addressStr.equals("")) {
             address.setText("请添加收货地址");
         } else {
-            address.setText("至 " + addressStr);
+            String address_format = "至 %s";
+            address.setText(String.format(address_format, addressStr));
         }
 
         remarks.setText(mData.getGoodsTransport().getRemarks());
-
 
         ImageView fromIv = holder.getImageView(R.id.imageView5);
         RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy

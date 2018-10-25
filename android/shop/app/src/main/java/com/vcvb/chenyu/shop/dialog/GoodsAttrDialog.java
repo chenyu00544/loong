@@ -27,7 +27,8 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsAttrsItem;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttrs;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.util.ArrayList;
@@ -43,6 +44,10 @@ public class GoodsAttrDialog extends DialogFragment {
     OnClickListener onClickListener;
     HashMap<String, Object> outAttr = new HashMap<>();
 
+    public ImageView attrImg;
+    public TextView goodsName;
+    public TextView goodsPrice;
+
     public TextView buy;
     public TextView add;
     public TextView confirm;
@@ -50,11 +55,11 @@ public class GoodsAttrDialog extends DialogFragment {
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private GridLayoutManager mLayoutManager;
-    List<GoodsAttrs> attrs;
+    GoodsDetail goodsDetail;
 
     @SuppressLint("ValidFragment")
-    public GoodsAttrDialog(ArrayList<GoodsAttrs> gattrs) {
-        attrs = gattrs;
+    public GoodsAttrDialog(GoodsDetail goodsDetail) {
+        this.goodsDetail = goodsDetail;
     }
 
     @Override
@@ -71,13 +76,18 @@ public class GoodsAttrDialog extends DialogFragment {
                              @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.dialog_goods_attr, container);
         window = getDialog().getWindow();
-        for (int i = 0; i < attrs.size(); i++) {
-            for (int j = 0; j < 8; j++) {
-                if(attrs.get(i).getAttrs().get(j).getIsSelect() == true){
-                    outAttr.put(i + "", attrs.get(i).getAttrs().get(j).getAttrId());
-                }
-            }
+
+        attrImg = v.findViewById(R.id.imageView83);
+        goodsName = v.findViewById(R.id.textView165);
+        goodsName.setText(goodsDetail.getGoods_name());
+        goodsPrice = v.findViewById(R.id.textView170);
+        if(goodsDetail.getIs_promote() == 1){
+            goodsPrice.setText(goodsDetail.getPromote_price_format());
+        }else{
+            goodsPrice.setText(goodsDetail.getShop_price_format());
         }
+        List<List<GoodsAttr>> attrs = goodsDetail.getMultiAttrs();
+
         ConstraintLayout cly = (ConstraintLayout) v;
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
@@ -142,12 +152,18 @@ public class GoodsAttrDialog extends DialogFragment {
         this.tag = tag;
     }
 
-    protected List<Item> getItems(List<GoodsAttrs> list) {
+    protected List<Item> getItems(List<List<GoodsAttr>> attrs) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            GoodsAttrsItem goodsAttrsItem = new GoodsAttrsItem(list.get(i), context);
+        for (int i = 0; i < attrs.size(); i++) {
+            GoodsAttrsItem goodsAttrsItem = new GoodsAttrsItem(attrs.get(i), context);
             goodsAttrsItem.setOnItemClickListener(listenerAttr);
             cells.add(goodsAttrsItem);
+            for (int j = 0; j < attrs.get(i).size(); j++) {
+                if (attrs.get(i).get(j).getIsSelect()) {
+                    outAttr.put(attrs.get(i).get(j).getAttr_id(), attrs.get(i).get(j)
+                            .getGoods_attr_id());
+                }
+            }
         }
         return cells;
     }
@@ -171,13 +187,12 @@ public class GoodsAttrDialog extends DialogFragment {
 
     GoodsAttrsItem.OnClickListener listenerAttr = new GoodsAttrsItem.OnClickListener() {
         @Override
-        public void onClicked(View view, GoodsAttrs goodsAttrs, int pos) {
-            for (int i = 0; i < goodsAttrs.getAttrs().size(); i++) {
-                if (goodsAttrs.getAttrs().get(i).getIsSelect() == true) {
-                    outAttr.put(pos + "", goodsAttrs.getAttrs().get(i).getAttrId());
-                    System.out.println(goodsAttrs.getAttrs().get(i).getAttrId());
+        public void onClicked(View view, List<GoodsAttr> attrs, int pos) {
+            for (int i = 0; i < attrs.size(); i++) {
+                if (attrs.get(i).getIsSelect()) {
+                    outAttr.put(attrs.get(i).getAttr_id(), attrs.get(i).getGoods_attr_id());
+                    System.out.println(outAttr);
                 }
-
             }
         }
     };

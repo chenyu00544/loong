@@ -19,6 +19,7 @@ import com.vcvb.chenyu.shop.adapter.item.address.AddressErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.address.AddressItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
@@ -88,8 +89,8 @@ public class AddressActivity extends BaseRecyclerViewActivity {
         super.initView();
         mRecyclerView = (RecyclerView) findViewById(R.id.content);
         mLayoutManager = new GridLayoutManager(context, 1);
-        DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(context, ToolUtils
-                .dip2px(context, 4));
+        DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(context,
+                ToolUtils.dip2px(context, 4));
         mRecyclerView.addItemDecoration(defaultItemDecoration);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -172,15 +173,13 @@ public class AddressActivity extends BaseRecyclerViewActivity {
             if (i == 0) {
                 bean.setDef(true);
             }
-            bean.setIsType(1);
-            bean.setUserName("setUserName" + i);
-            bean.setPhoneMun("setPhoneMun" + i);
-            bean.setAddressId(i);
-            bean.setAddressInfo("setAddressInfo" + i);
+            bean.setConsignee("setUserName" + i);
+            bean.setMobile("setPhoneMun" + i);
+            bean.setAddress_id(i);
+            bean.setAddress("setAddressInfo" + i);
             addresses.add(bean);
         }
         AddressBean bean = new AddressBean();
-        bean.setIsType(2);
         addresses.add(bean);
         mAdapter.addAll(getItems(addresses));
     }
@@ -238,19 +237,15 @@ public class AddressActivity extends BaseRecyclerViewActivity {
 
     protected List<Item> getItems(List<AddressBean> list) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case -1:
-                    cells.add(new AddressErrorItem(list.get(i), context));
-                    break;
-                case 1:
-                    cells.add(new AddressItem(list.get(i), context));
-                    break;
-                case 2:
-                    cells.add(new AddressAddItem(list.get(i), context));
-                    break;
+        if (list == null) {
+            cells.add(new AddressErrorItem(null, context));
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                cells.add(new AddressItem(list.get(i), context));
             }
+            cells.add(new AddressAddItem(null, context));
         }
+
         return cells;
     }
 
@@ -265,18 +260,20 @@ public class AddressActivity extends BaseRecyclerViewActivity {
         AddressBean bean;
         if (type == 1 && pos != -1) {
             bean = addresses.get(pos);
-            intent.putExtra("id", bean.getAddressId());
-            intent.putExtra("username", bean.getUserName());
-            intent.putExtra("phone", bean.getPhoneMun());
-            intent.putExtra("info", bean.getAddressInfo());
+            intent.putExtra("id", bean.getAddress_id());
+            intent.putExtra("username", bean.getConsignee());
+            intent.putExtra("phone", bean.getMobile());
+            String address_fromat = "%s %s %s %s";
+            intent.putExtra("info", String.format(address_fromat, bean.getProvince_name(), bean
+                    .getCity_name(), bean.getDistrict_name(), bean.getAddress()));
         }
         intent.putExtra("type", type);
-        startActivityForResult(intent, 1002);
+        startActivityForResult(intent, ConstantManager.ResultStatus.ADDRESSRESULT);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data != null){
+        if (data != null) {
             String result = data.getExtras().getString("result");
             Log.i("TAG", String.valueOf(requestCode));
             Log.i("TAG", String.valueOf(resultCode));

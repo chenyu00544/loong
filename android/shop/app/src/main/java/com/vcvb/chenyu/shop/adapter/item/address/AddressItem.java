@@ -33,13 +33,14 @@ public class AddressItem extends BaseItem<AddressBean> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView126);
-        TextView tv1 = holder.getTextView(R.id.textView127);
         TextView tv2 = holder.getTextView(R.id.textView128);
         CheckBox cb = (CheckBox) holder.getView(R.id.checkBox5);
-        tv.setText(mData.getUserName());
-        tv1.setText(mData.getPhoneMun());
-        tv2.setText(mData.getAddressInfo());
-        if (mData.getDef() == true) {
+        String consignee_fromat = "联系人: ：%s 手机号码: %s";
+        tv.setText(String.format(consignee_fromat, mData.getConsignee(), mData.getMobile()));
+        String address_fromat = "%s %s %s %s";
+        tv2.setText(String.format(address_fromat, mData.getProvince_name(), mData.getCity_name(),
+                mData.getDistrict_name(), mData.getAddress()));
+        if (mData.isDef()) {
             cb.setChecked(true);
         } else {
             cb.setChecked(false);

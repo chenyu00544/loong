@@ -25,8 +25,8 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsAddressItem;
-import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsShip;
+import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsNoAddressItem;
+import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +39,15 @@ public class GoodsAddressDialog extends DialogFragment {
     Context context;
     String tag;
     OnClickListener onClickListener;
-    List<GoodsShip> mList;
+    GoodsDetail goodsDetail;
 
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private GridLayoutManager mLayoutManager;
 
     @SuppressLint("ValidFragment")
-    public GoodsAddressDialog(ArrayList<GoodsShip> list) {
-        mList = list;
+    public GoodsAddressDialog(GoodsDetail detail) {
+        goodsDetail = detail;
     }
 
     @Override
@@ -69,10 +69,9 @@ public class GoodsAddressDialog extends DialogFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.clear();
-        mAdapter.addAll(getItems(mList));
+        mAdapter.addAll(getItems(goodsDetail));
         ImageView close = v.findViewById(R.id.imageView117);
         close.setOnClickListener(listener);
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(itemListener);
         return v;
     }
 
@@ -95,12 +94,19 @@ public class GoodsAddressDialog extends DialogFragment {
         this.tag = tag;
     }
 
-    protected List<Item> getItems(List<GoodsShip> list) {
+    protected List<Item> getItems(GoodsDetail bean) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            GoodsAddressItem goodsAddressItem = new GoodsAddressItem(list.get(i), context);
-            cells.add(goodsAddressItem);
+        if (bean.getAddressBeans() != null) {
+            for (int i = 0; i < bean.getAddressBeans().size(); i++) {
+                GoodsAddressItem goodsAddressItem = new GoodsAddressItem(bean.getAddressBeans()
+                        .get(i), context);
+                goodsAddressItem.setOnItemClickListener(addresslistener);
+                cells.add(goodsAddressItem);
+            }
         }
+        GoodsNoAddressItem goodsNoAddressItem = new GoodsNoAddressItem(null, context);
+        goodsNoAddressItem.setOnItemClickListener(noAddresslistener);
+        cells.add(goodsNoAddressItem);
         return cells;
     }
 
@@ -108,18 +114,28 @@ public class GoodsAddressDialog extends DialogFragment {
         void onClicked(View view, int pos);
     }
 
-    public void setOnItemClickListener(OnClickListener listener) {
-        onClickListener = listener;
-    }
-
-    CYCItemClickSupport.OnItemClickListener itemListener = new CYCItemClickSupport.OnItemClickListener() {
+    GoodsNoAddressItem.OnClickListener noAddresslistener = new GoodsNoAddressItem.OnClickListener
+            () {
         @Override
-        public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+        public void onClicked(View view, int pos) {
             if (onClickListener != null) {
-                onClickListener.onClicked(itemView, position);
+                onClickListener.onClicked(view, pos);
             }
         }
     };
+
+    GoodsAddressItem.OnClickListener addresslistener = new GoodsAddressItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            if (onClickListener != null) {
+                onClickListener.onClicked(view, pos);
+            }
+        }
+    };
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        onClickListener = listener;
+    }
 
     View.OnClickListener listener = new View.OnClickListener() {
         @Override

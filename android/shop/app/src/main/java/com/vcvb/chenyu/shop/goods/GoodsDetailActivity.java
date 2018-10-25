@@ -38,14 +38,17 @@ import com.vcvb.chenyu.shop.dialog.GoodsAttrDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsExplainDialog;
 import com.vcvb.chenyu.shop.dialog.GoodsFaatDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
+import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.evaluate.QuestionsListActivity;
 import com.vcvb.chenyu.shop.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttrs;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsShip;
+import com.vcvb.chenyu.shop.login.RegisterActivity;
 import com.vcvb.chenyu.shop.mycenter.CartActivity;
+import com.vcvb.chenyu.shop.mycenter.ModifyAddressActivity;
 import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
@@ -62,6 +65,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 
@@ -84,11 +88,12 @@ public class GoodsDetailActivity extends GoodsActivity {
     private GoodsAddressDialog goodsAddressDialog;
     private GoodsExplainDialog goodsExplainDialog;
 
-    private ArrayList<GoodsAttrs> gattrs = new ArrayList<>();
     private ArrayList<GoodsAttr> selectAttrs = new ArrayList<>();
     private ArrayList<GoodsShip> ships = new ArrayList<>();
 
     private boolean isCollection = false;
+
+    public LoginDialog loginDialog;
 
     public GoodsDetailActivity() {
     }
@@ -331,6 +336,9 @@ public class GoodsDetailActivity extends GoodsActivity {
             try {
                 goodsDetails.setData(goodsJson.getJSONObject("data"));
                 mAdapter.addAll(getItems(goodsDetails));
+
+                goodsAttrDialog = new GoodsAttrDialog(goodsDetails);
+                goodsAttrDialog.setOnItemClickListener(attrDialogListener);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -363,6 +371,8 @@ public class GoodsDetailActivity extends GoodsActivity {
             cells.add(goodsAttrItem);
         }
         if (goodsDetails.getGoodsTransport() != null) {
+            goodsAddressDialog = new GoodsAddressDialog(goodsDetails);
+            goodsAddressDialog.setOnItemClickListener(addressDialogListener);
             GoodsShipItem goodsShipItem = new GoodsShipItem(goodsDetails, context);
             goodsShipItem.setOnItemClickListener(shipListener);
             cells.add(goodsShipItem);
@@ -372,6 +382,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             cells.add(goodsShipFreeItem);
         }
         if (goodsDetails.getGoodsDescriptions() != null) {
+            goodsExplainDialog = new GoodsExplainDialog(goodsDetails);
             GoodsExplainItem goodsExplainItem = new GoodsExplainItem(goodsDetails, context);
             goodsExplainItem.setOnItemClickListener(explainListener);
             cells.add(goodsExplainItem);
@@ -382,8 +393,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             cells.add(goodsEvaluateItem);
         }
         if (goodsDetails.getGoodsBrand() != null) {
-            GoodsBrandItem goodsBrandItem = new GoodsBrandItem(goodsDetails,
-                    context);
+            GoodsBrandItem goodsBrandItem = new GoodsBrandItem(goodsDetails, context);
             goodsBrandItem.setOnItemClickListener(brandListener);
             cells.add(goodsBrandItem);
         }
@@ -490,7 +500,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     startActivity(intent);
                     break;
                 case R.id.collection:
-                    if (isCollection == true) {
+                    if (isCollection) {
                         Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
                         isCollection = false;
                     } else {
@@ -579,20 +589,18 @@ public class GoodsDetailActivity extends GoodsActivity {
                     goodsAttrDialog.dismiss();
                     break;
                 case "Sure":
-//                    selectAttrs.clear();
-//                    for (int i = 0; i < goodsDetails.getGoodsAttrs().size(); i++) {
-//                        int id = (int) attr.get(i + "");
-//                        for (int j = 0; j < goodsDetails.getGoodsAttrs().get(i).getAttrs().size()
-//                                ; j++) {
-//                            if (id == goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j)
-//                                    .getAttrId()) {
-//                                selectAttrs.add(goodsDetails.getGoodsAttrs().get(i).getAttrs()
-//                                        .get(j));
-//                                goodsDetails.getGoodsAttrs().get(i).getAttrs().get(j).setIsSelect
-//                                        (true);
-//                            }
-//                        }
-//                    }
+                    selectAttrs.clear();
+                    for (int i = 0; i < goodsDetails.getMultiAttrs().size(); i++) {
+                        for (int j = 0; j < goodsDetails.getMultiAttrs().get(i).size(); j++) {
+                            Integer goods_attr_id = (Integer) attr.get(goodsDetails.getMultiAttrs
+                                    ().get(i).get(j).getAttr_id());
+                            if (goods_attr_id == goodsDetails.getMultiAttrs().get(i).get(j)
+                                    .getGoods_attr_id()) {
+                                selectAttrs.add(goodsDetails.getMultiAttrs().get(i).get(j));
+                                goodsDetails.getMultiAttrs().get(i).get(j).setIsSelect(true);
+                            }
+                        }
+                    }
                     mAdapter.notifyDataSetChanged();
                     goodsAttrDialog.dismiss();
                     break;
@@ -604,9 +612,96 @@ public class GoodsDetailActivity extends GoodsActivity {
             .OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
-//            goodsDetails.setGoodsShip(ships.get(pos));
+            //前往添加地址
+            if (pos == -1) {
+                String token = (String) UserInfoUtils.getInstance(context).getUserInfo().get
+                        ("token");
+                if (token != null && !token.equals("")) {
+                    Intent intent = new Intent(GoodsDetailActivity.this, ModifyAddressActivity
+                            .class);
+                    startActivityForResult(intent, ConstantManager.ResultStatus.ADDRESSRESULT);
+                } else {
+                    //没有登录,显示登录框
+                    showLoginDialog();
+                }
+            } else {
+                if (goodsDetails.getAddressBeans() != null) {
+                    for (int i = 0; i < goodsDetails.getAddressBeans().size(); i++) {
+                        goodsDetails.getAddressBeans().get(i).setDef(false);
+                        if (i == pos) {
+                            goodsDetails.getAddressBeans().get(i).setDef(true);
+                        }
+                    }
+                }
+            }
             mAdapter.notifyDataSetChanged();
             goodsAddressDialog.dismiss();
         }
     };
+
+    //显示登录框
+    public void showLoginDialog() {
+        loginDialog = new LoginDialog(context);
+        loginDialog.setOnDialogClickListener(new LoginDialog
+                .OnDialogClickListener() {
+            @Override
+            public void onPhoneClickListener() {
+                System.out.println("onPhoneClickListener");
+                loginDialog.phoneLogin();
+            }
+
+            @Override
+            public void onEmailClickListener() {
+                System.out.println("onEmailClickListener");
+                loginDialog.emailLogin();
+            }
+
+            @Override
+            public void onRegisterClickListener() {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivityForResult(intent, ConstantManager.REGISTER_FOR_MY);
+            }
+
+            @Override
+            public void onProblemClickListener() {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLoginClickListener(Map<String, String> user) {
+                LoadingDialog2.getInstance(context).show();
+                System.out.println(user);
+                HashMap<String, String> u = new HashMap<>();
+                //获取服务器数据
+                //..
+                u.put("username", "cb");
+                u.put("token",
+                        "eyJpdiI6ImN6S3l0RmcrSCt5Vmo5VUk2UTJ4Qnc9PSIsInZhbHVlIjoidStDQTVDY1h3ZmVsa01WbTFBUFdnZz09IiwibWFjIjoiOTFlZTFmODIxOTA1ZGI4MTJjM2IyOTNhYTlkMDhlZjhmOGM5ZjdiZDU0MDRhODI1ZDdmYTg2OTg3ZGQzOWIwMiJ9");
+                u.put("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg");
+                u.put("nickname", "chongchong");
+
+//                UserInfoUtils.getInstance(context).setUserInfo(u);
+
+                try{
+                    Thread.sleep(2000);
+                }catch (Exception e ){
+
+                }
+                LoadingDialog2.getInstance(context).dismiss();
+                loginDialog.hide();
+            }
+        });
+        loginDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK){
+            if (requestCode == ConstantManager.ResultStatus.ADDRESSRESULT) {
+                System.out.println(data);
+            }
+        }
+    }
 }

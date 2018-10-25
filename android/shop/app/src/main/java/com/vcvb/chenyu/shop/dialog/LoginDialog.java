@@ -16,9 +16,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.tools.TimeUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginDialog extends Dialog {
     private static LoginDialog loginDialog;
@@ -51,6 +55,16 @@ public class LoginDialog extends Dialog {
 
     public LoginDialog(Context context, int themeResId) {
         super(context, themeResId);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Window window = getWindow();
+        window.setGravity(Gravity.BOTTOM);
+        window.setWindowAnimations(R.style.BottomShow);
+    }
+
+    public LoginDialog(Context context) {
+        super(context, R.style.TranslucentDialog);
+        this.setCancelable(false);
+        this.setCanceledOnTouchOutside(true);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         Window window = getWindow();
         window.setGravity(Gravity.BOTTOM);
@@ -139,15 +153,30 @@ public class LoginDialog extends Dialog {
         phoneProblem = this.findViewById(R.id.textView62);
         phoneLoginType = this.findViewById(R.id.textView63);
         phoneQRCode = this.findViewById(R.id.textView64);
+        if (TimeUtils.check(TimeUtils.SETTING_FINANCE_ACCOUNT_TIME, true)) {
+            TimeUtils.startCountdown(phoneQRCode);
+        }
         phoneEdit.setFocusable(true);
         phoneEdit.setFocusableInTouchMode(true);
         phoneEdit.requestFocus();
-        InputMethodManager imm = (InputMethodManager) phoneEdit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) phoneEdit.getContext().getSystemService
+                (Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(phoneEdit, 0);
         phoneQRCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!TextUtils.isEmpty(phoneEdit.getText())) {
+                    Pattern p = Pattern.compile("^((13[0-9])|(14[5,7])|(15[0-3,5-8])|(17[0,3," +
+                            "5-8])|(18[0-9])|(147))\\d{8}$");
+                    Matcher m = p.matcher(phoneEdit.getText().toString());
+                    if (m.matches()) {
+                        TimeUtils.check(TimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
+                        TimeUtils.startCountdown(phoneQRCode);
+                    } else {
+                        ToastUtils.showShortToast(getContext(), "输入的手机号码不正确");
+                    }
+                    //调用验证码接口
+                }
             }
         });
         backView.setOnClickListener(new View.OnClickListener() {
@@ -159,16 +188,16 @@ public class LoginDialog extends Dialog {
         phoneLoginType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(loginType){
+                if (loginType) {
                     //改为密码登录
-                    loginType= false;
+                    loginType = false;
                     phoneQRCode.setAlpha(0);
                     phoneQRCode.setEnabled(false);
                     phonePassEdit.setHint(R.string.password);
                     phoneLoginType.setText(R.string.qrcode_login);
-                }else{
+                } else {
                     //改为验证码登录
-                    loginType= true;
+                    loginType = true;
                     phoneQRCode.setAlpha(1);
                     phoneQRCode.setEnabled(true);
                     phonePassEdit.setHint(R.string.qrcode);
@@ -195,8 +224,11 @@ public class LoginDialog extends Dialog {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(phoneEdit.getText()) && !TextUtils.isEmpty(phonePassEdit.getText())) {
-                    setPhoneLogin();
+                if (!TextUtils.isEmpty(phoneEdit.getText()) && !TextUtils.isEmpty(phonePassEdit
+                        .getText())) {
+                    setPhoneLogin(true);
+                } else {
+                    setPhoneLogin(false);
                 }
             }
         });
@@ -211,8 +243,11 @@ public class LoginDialog extends Dialog {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(phoneEdit.getText()) && !TextUtils.isEmpty(phonePassEdit.getText())) {
-                    setPhoneLogin();
+                if (!TextUtils.isEmpty(phoneEdit.getText()) && !TextUtils.isEmpty(phonePassEdit
+                        .getText())) {
+                    setPhoneLogin(true);
+                } else {
+                    setPhoneLogin(false);
                 }
             }
         });
@@ -227,7 +262,8 @@ public class LoginDialog extends Dialog {
         emailEdit.setFocusable(true);
         emailEdit.setFocusableInTouchMode(true);
         emailEdit.requestFocus();
-        InputMethodManager imm = (InputMethodManager) emailEdit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) emailEdit.getContext().getSystemService
+                (Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(emailEdit, 0);
         backView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,8 +283,11 @@ public class LoginDialog extends Dialog {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(emailEdit.getText()) && !TextUtils.isEmpty(emailPassEdit.getText())) {
-                    setEmailLogin();
+                if (!TextUtils.isEmpty(emailEdit.getText()) && !TextUtils.isEmpty(emailPassEdit
+                        .getText())) {
+                    setEmailLogin(true);
+                } else {
+                    setEmailLogin(false);
                 }
             }
         });
@@ -264,51 +303,66 @@ public class LoginDialog extends Dialog {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!TextUtils.isEmpty(emailEdit.getText()) && !TextUtils.isEmpty(emailPassEdit.getText())) {
-                    setEmailLogin();
+                if (!TextUtils.isEmpty(emailEdit.getText()) && !TextUtils.isEmpty(emailPassEdit
+                        .getText())) {
+                    setEmailLogin(true);
+                } else {
+                    setEmailLogin(false);
                 }
             }
         });
     }
 
-    public void setPhoneLogin(){
-        if(phoneLogin != null){
-            phoneLogin.setBackgroundResource(R.drawable.shape_button_active);
-            phoneLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onDialogClickListener != null) {
-                        HashMap<String, String> user = new HashMap<>();
-                        user.put("username", phoneEdit.getText().toString());
-                        user.put("email", "");
-                        if(loginType){
-                            user.put("qrcode", phonePassEdit.getText().toString());
-                        }else{
-                            user.put("password", phonePassEdit.getText().toString());
+    public void setPhoneLogin(boolean bool) {
+        if (phoneLogin != null) {
+            if (bool) {
+                phoneLogin.setBackgroundResource(R.drawable.shape_button_active);
+                phoneLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onDialogClickListener != null) {
+                            HashMap<String, String> user = new HashMap<>();
+                            user.put("username", phoneEdit.getText().toString());
+                            user.put("email", "");
+                            if (loginType) {
+                                user.put("qrcode", phonePassEdit.getText().toString());
+                            } else {
+                                user.put("password", phonePassEdit.getText().toString());
+                            }
+                            System.out.println(user);
+                            onDialogClickListener.onLoginClickListener(user);
                         }
-                        onDialogClickListener.onLoginClickListener(user);
                     }
-                }
-            });
+                });
+            } else {
+                phoneLogin.setBackgroundResource(R.drawable.shape_button_none);
+                phoneLogin.setOnClickListener(null);
+            }
+
         }
     }
 
-    public void setEmailLogin(){
-        if(emailLogin != null){
-            emailLogin.setBackgroundResource(R.drawable.shape_button_active);
-            emailLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onDialogClickListener != null) {
-                        HashMap<String, String> user = new HashMap<>();
-                        user.put("email", emailEdit.getText().toString());
-                        user.put("username", "");
-                        user.put("password", emailPassEdit.getText().toString());
-                        user.put("type", "0");
-                        onDialogClickListener.onLoginClickListener(user);
+    public void setEmailLogin(boolean bool) {
+        if (emailLogin != null) {
+            if (bool) {
+                emailLogin.setBackgroundResource(R.drawable.shape_button_active);
+                emailLogin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onDialogClickListener != null) {
+                            HashMap<String, String> user = new HashMap<>();
+                            user.put("email", emailEdit.getText().toString());
+                            user.put("username", "");
+                            user.put("password", emailPassEdit.getText().toString());
+                            user.put("type", "0");
+                            onDialogClickListener.onLoginClickListener(user);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                emailLogin.setBackgroundResource(R.drawable.shape_button_none);
+                emailLogin.setOnClickListener(null);
+            }
         }
     }
 

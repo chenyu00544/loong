@@ -19,6 +19,11 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
+import com.vcvb.chenyu.shop.tools.TimeUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends BaseActivity {
     private Context context;
@@ -80,7 +85,9 @@ public class RegisterActivity extends BaseActivity {
         serverTv = findViewById(R.id.textView71);
         interestsTv = findViewById(R.id.textView73);
         serverTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        serverTv.getPaint().setAntiAlias(true);
         interestsTv.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        interestsTv.getPaint().setAntiAlias(true);
 
         checkBox = findViewById(R.id.checkBox5);
 
@@ -105,7 +112,18 @@ public class RegisterActivity extends BaseActivity {
         qrCodeTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!TextUtils.isEmpty(phoneEdit.getText())) {
+                    Pattern p = Pattern.compile("^((13[0-9])|(14[5,7])|(15[0-3,5-8])|(17[0,3," +
+                            "5-8])|(18[0-9])|(147))\\d{8}$");
+                    Matcher m = p.matcher(phoneEdit.getText().toString());
+                    if (m.matches()) {
+                        TimeUtils.check(TimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
+                        TimeUtils.startCountdown(qrCodeTv);
+                    } else {
+                        ToastUtils.showShortToast(context, "输入的手机号码不正确");
+                    }
+                    //调用验证码接口
+                }
             }
         });
         //立即注册
@@ -163,6 +181,8 @@ public class RegisterActivity extends BaseActivity {
                         .isChecked()) {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
+                }else{
+                    registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
             }
         });
@@ -185,6 +205,8 @@ public class RegisterActivity extends BaseActivity {
                         .isChecked()) {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
+                }else{
+                    registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
             }
         });
@@ -207,6 +229,8 @@ public class RegisterActivity extends BaseActivity {
                         .isChecked()) {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
+                }else{
+                    registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
             }
         });
