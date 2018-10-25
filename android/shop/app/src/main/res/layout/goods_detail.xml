@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true">
 
     <com.vcvb.chenyu.shop.overrideView.ShopRecyclerView
-        android:id="@+id/goods_datail"
+        android:id="@+id/goods_detail"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/white"

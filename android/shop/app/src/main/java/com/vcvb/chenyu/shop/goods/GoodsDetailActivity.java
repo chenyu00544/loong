@@ -1,12 +1,9 @@
 package com.vcvb.chenyu.shop.goods;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -53,7 +50,6 @@ import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 import com.vcvb.chenyu.shop.popwin.PopWin;
-import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
@@ -76,9 +72,8 @@ public class GoodsDetailActivity extends GoodsActivity {
     int pos = 0;
     private View child1;
     private View line;
-    private Receiver receiver;
 
-    private ShopRecyclerView goodsDatail;
+    private ShopRecyclerView goodsDetail;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private GoodsDetail goodsDetails = new GoodsDetail();
     private ShopGridLayoutManager gridLayoutManager;
@@ -166,7 +161,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsInfo.setTextSize(ts_18);
                 goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                 pos = 0;
-                goodsDatail.scrollToPosition(0);
+                goodsDetail.scrollToPosition(0);
             }
         });
         goodsEvaluate.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +174,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsEvaluate.setTextSize(ts_22);
                 goodsEvaluate.setTextColor(Color.parseColor("#000000"));
                 pos = 1180;
-                goodsDatail.scrollToPosition(8);
+                goodsDetail.scrollToPosition(8);
             }
         });
         goodsInfo.setOnClickListener(new View.OnClickListener() {
@@ -192,7 +187,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsEvaluate.setTextSize(ts_18);
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 pos = 2485;
-                goodsDatail.scrollToPosition(10);
+                goodsDetail.scrollToPosition(10);
             }
         });
 
@@ -236,7 +231,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout
                 .LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         //滑动监听
-        goodsDatail.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        goodsDetail.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int alpha = 0;
 
             @Override
@@ -261,21 +256,21 @@ public class GoodsDetailActivity extends GoodsActivity {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 child1 = gridLayoutManager.getChildAt(0);
-                if (goodsDatail.getChildAdapterPosition(child1) == 0) {
+                if (goodsDetail.getChildAdapterPosition(child1) == 0) {
                     goodsView.setTextSize(ts_22);
                     goodsView.setTextColor(Color.parseColor("#000000"));
                     goodsEvaluate.setTextSize(ts_18);
                     goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsInfo.setTextSize(ts_18);
                     goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
-                } else if (goodsDatail.getChildAdapterPosition(child1) == 8) {
+                } else if (goodsDetail.getChildAdapterPosition(child1) == 8) {
                     goodsView.setTextSize(ts_18);
                     goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsInfo.setTextSize(ts_18);
                     goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsEvaluate.setTextSize(ts_22);
                     goodsEvaluate.setTextColor(Color.parseColor("#000000"));
-                } else if (goodsDatail.getChildAdapterPosition(child1) == 10) {
+                } else if (goodsDetail.getChildAdapterPosition(child1) == 10) {
                     goodsInfo.setTextSize(ts_22);
                     goodsInfo.setTextColor(Color.parseColor("#000000"));
                     goodsView.setTextSize(ts_18);
@@ -320,15 +315,15 @@ public class GoodsDetailActivity extends GoodsActivity {
         addCart.setOnClickListener(listener);
         iv2.setOnClickListener(listener);
 
-        goodsDatail = findViewById(R.id.goods_datail);
-        goodsDatail.setFlingScale(0.3);
-        goodsDatail.setNestedScrollingEnabled(false);
+        goodsDetail = findViewById(R.id.goods_detail);
+        goodsDetail.setFlingScale(0.3);
+        goodsDetail.setNestedScrollingEnabled(false);
         gridLayoutManager = new ShopGridLayoutManager(this, 1);
         gridLayoutManager.setSpeedRatio(1);
-        goodsDatail.setLayoutManager(gridLayoutManager);
-        goodsDatail.setItemAnimator(new DefaultItemAnimator());
-        goodsDatail.setAdapter(mAdapter);
-        goodsDatail.setNestedScrollingEnabled(false);
+        goodsDetail.setLayoutManager(gridLayoutManager);
+        goodsDetail.setItemAnimator(new DefaultItemAnimator());
+        goodsDetail.setAdapter(mAdapter);
+        goodsDetail.setNestedScrollingEnabled(false);
     }
 
     public void bindData() {
@@ -411,72 +406,11 @@ public class GoodsDetailActivity extends GoodsActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("BannerClick");
-        intentFilter.addAction("FaatClick");
-        intentFilter.addAction("AttrClick");
-        intentFilter.addAction("ShipClick");
-        intentFilter.addAction("ShipFreeClick");
-        intentFilter.addAction("ExplainClick");
-        intentFilter.addAction("EvaluateClick");
-        intentFilter.addAction("EvaluateTag1Click");
-        intentFilter.addAction("EvaluateTag2Click");
-        intentFilter.addAction("EvaluateTag3Click");
-        intentFilter.addAction("EvaluateUserClick");
-        intentFilter.addAction("ProblemClick");
-        intentFilter.addAction("AnswerClick");
-        intentFilter.addAction("BrandClick");
-        intentFilter.addAction("BrandGoodsClick");
-        receiver = new Receiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case "BannerClick":
-                        int pos = intent.getIntExtra("pos", 0);
-                        break;
-                    case "FaatClick":
-                        break;
-                    case "AttrClick":
-                        break;
-                    case "ShipClick":
-                        break;
-                    case "ShipFreeClick":
-                        break;
-                    case "ExplainClick":
-                        break;
-                    case "EvaluateClick":
-                        break;
-                    case "EvaluateTag1Click":
-                        break;
-                    case "EvaluateTag2Click":
-                        break;
-                    case "EvaluateTag3Click":
-                        break;
-                    case "EvaluateUserClick":
-                        break;
-                    case "ProblemClick":
-                        break;
-                    case "AnswerClick":
-                        break;
-                    case "BrandClick":
-                        break;
-                    case "BrandGoodsClick":
-                        break;
-                    default:
-                        break;
-                }
-            }
-        };
-
-        broadcastManager.registerReceiver(receiver, intentFilter);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-        broadcastManager.unregisterReceiver(receiver);
     }
 
     @Override
@@ -570,6 +504,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 intent = new Intent(GoodsDetailActivity.this, BrandListActivity.class);
             } else {
                 intent = new Intent(GoodsDetailActivity.this, GoodsDetailActivity.class);
+                intent.putExtra("id", goodsDetails.getGoods_id());
             }
             startActivity(intent);
         }

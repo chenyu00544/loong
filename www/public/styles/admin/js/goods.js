@@ -6,7 +6,7 @@ var app = new Vue({
         goods_type: $('input[name=goods_type]').val(),
         model_price: $('input[name=goods_model]').val(),
         productUrl: productUrl,
-        goodsAttrUrl: goodsAttrUrl,
+        setGoodsAttrUrl: setGoodsAttrUrl,
         getAttributesUrl: getAttributesUrl,
         getCatesUrl: getCatesUrl,
         getTypeCatesUrl: getTypeCatesUrl,
@@ -133,7 +133,7 @@ var app = new Vue({
             that.loading(false);
             var sort = $(e.target).val()
                 , goodsAttrId = $(e.target).data('goodsattrid');
-            $.post(this.goodsAttrUrl, {
+            $.post(this.setGoodsAttrUrl, {
                 id: goodsAttrId,
                 _token: this.token,
                 attr_sort: sort,
@@ -155,7 +155,7 @@ var app = new Vue({
             form.append('old_attr_img_t', oldattrimg_t);
             form.append('_token', this.token);
             $.ajax({
-                url: this.goodsAttrUrl,
+                url: this.setGoodsAttrUrl,
                 type: "POST",
                 data: form,
                 contentType: false,

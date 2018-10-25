@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Facades\Oss;
 use App\Facades\RedisCache;
 use App\Helper\FileHelper;
+use Mockery\Exception;
+use OSS\Core\OssException;
 
 class FileHandleService
 {
@@ -131,7 +133,12 @@ class FileHandleService
         }
         $shopConf = RedisCache::get('shop_config');
         if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
-            Oss::deleteObject($file_path);
+            try{
+                Oss::deleteObject($file_path);
+            }catch (OssException $e){
+
+            }
+
         }
     }
 

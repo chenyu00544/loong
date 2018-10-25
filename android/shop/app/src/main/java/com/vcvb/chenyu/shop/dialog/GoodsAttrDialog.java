@@ -23,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -81,12 +82,22 @@ public class GoodsAttrDialog extends DialogFragment {
         goodsName = v.findViewById(R.id.textView165);
         goodsName.setText(goodsDetail.getGoods_name());
         goodsPrice = v.findViewById(R.id.textView170);
-        if(goodsDetail.getIs_promote() == 1){
+        if (goodsDetail.getIs_promote() == 1) {
             goodsPrice.setText(goodsDetail.getPromote_price_format());
-        }else{
+        } else {
             goodsPrice.setText(goodsDetail.getShop_price_format());
         }
         List<List<GoodsAttr>> attrs = goodsDetail.getMultiAttrs();
+
+        if (attrs != null) {
+            if (attrs.size() > 0) {
+                if (attrs.get(0) != null) {
+                    if (attrs.get(0).size() > 0) {
+                        Glide.with(context).load(attrs.get(0).get(0).getAttr_img_flie()).into(attrImg);
+                    }
+                }
+            }
+        }
 
         ConstraintLayout cly = (ConstraintLayout) v;
         ConstraintSet set = new ConstraintSet();

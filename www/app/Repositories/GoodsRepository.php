@@ -422,8 +422,9 @@ class GoodsRepository implements GoodsRepositoryInterface
             $attrValues = explode("\r\n", $value->attr_values);
             $value->attr_values = $attrValues;
             $value->attr_sort_n = 'attr_sort[' . $value->attr_id . '][]';
-            $value->attr_id_n = 'attr-img[' . $value->attr_id . '][]';
-            $value->attr_img_flie_o = url($value->attr_img_flie);
+            $value->attr_id_n = 'attr-img[' . $value->attr_id . '][' . $value->goods_attr_id . ']';
+            $value->dom_id_n = 'attr-img-'.$value->goods_attr_id;
+            $value->attr_img_flie_o = FileHandle::getImgByOssUrl($value->attr_img_flie);
             $goodsAttrM[$value->attr_id]['attr_name'] = $value->attr_name;
             $goodsAttrM[$value->attr_id]['values'][] = $value;
         }
@@ -967,7 +968,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $attrData['attr_sort'] = 0;
             $attrData['attr_checked'] = 1;
             $this->goodsAttrModel->setGoodsAttr($whereAttr, $attrData);
-            if (!$this->goodsAttrModel->getGoodsAttrs(array_merge($whereAttr, ['attr_value' => $attr_value_list[$i]]))) {
+            if (!$this->goodsAttrModel->getGoodsAttr(array_merge($whereAttr, ['attr_value' => $attr_value_list[$i]]))) {
                 $attrUpData['goods_id'] = $id;
                 $attrUpData['attr_id'] = $attr_id_listO[$i];
                 $attrUpData['attr_value'] = $attr_value_list[$i];

@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.css')}}">
     <script>
         var productUrl = "{{url('admin/goods/product/')}}/";
-        var goodsAttrUrl = "{{url('admin/goods/setgoodsattr/')}}";
+        var setGoodsAttrUrl = "{{url('admin/goods/setgoodsattr/')}}";
         var getAttributesUrl = "{{url('admin/attribute/getattributes/')}}/";
         var getCatesUrl = "{{url('admin/typecate/getcates/')}}/";
         var getTypeCatesUrl = "{{url('admin/goodstype/gettypescates/')}}/";
@@ -1277,14 +1277,14 @@
                                                class="btn btn-danger btn-sm up_img mar-left-10 fl"
                                                :data-goodsattrid="value.goods_attr_id"
                                                :data-attrid="value.attr_id">
-                                                <input type="file" id="attr-img"
+                                                <input type="file" :id="value.dom_id_n"
                                                        :name="value.attr_id_n"
                                                        :data-goodsattrid="value.goods_attr_id"
                                                        :data-oldattrimg_o="value.attr_img_flie"
                                                        :data-oldattrimg_t="value.attr_gallery_flie"
-                                                       @change="upLoadAttrImg"
+                                                       @change="upLoadAttrImg($event)"
                                                        style="opacity: 0;max-width: 0;height: 0;margin: 0">
-                                                <label for="attr-img">上传图片</label>
+                                                <label :for="value.dom_id_n">上传图片</label>
                                             </a>
                                             <span class="img-show attr-img-show fl">
                                                 <a :href="value.attr_img_flie_o" target="_blank"
@@ -2137,6 +2137,6 @@
             $('.desc_mobile').html(imgs);
         }
     </script>
-    <script type="text/javascript" src="{{url('styles/admin/js/goods.js')}}"></script>
+    <script type="text/javascript" src="{{url('styles/admin/js/goods.js?v='.$v)}}"></script>
 @endsection
 @endsection
