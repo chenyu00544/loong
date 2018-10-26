@@ -15,7 +15,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDesc;
 
 public class GoodsDescItem extends BaseItem<GoodsDesc> {
-    public static final int TYPE = 12;
+    public static final int TYPE = R.layout.goods_desc_item;
 
     public GoodsDescItem(GoodsDesc beans, Context c) {
         super(beans, c);
@@ -29,7 +29,7 @@ public class GoodsDescItem extends BaseItem<GoodsDesc> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goods_desc_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

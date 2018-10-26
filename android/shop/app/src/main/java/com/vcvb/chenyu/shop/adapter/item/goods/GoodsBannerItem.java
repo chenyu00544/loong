@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsBannerItem extends BaseItem<List<GoodsBanner>> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.goods_slide_item;
     Banner banner;
 
     public GoodsBannerItem(List<GoodsBanner> beans, Context c) {
@@ -35,7 +35,7 @@ public class GoodsBannerItem extends BaseItem<List<GoodsBanner>> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goods_slide_item, null));
+                .inflate(TYPE, null));
         banner = (Banner) base.getView(R.id.goods_slide);
         //设置内置样式，内含六种特效
         banner.setBannerStyle(BannerConfig.NUM_INDICATOR);

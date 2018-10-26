@@ -26,6 +26,7 @@ import com.vcvb.chenyu.shop.adapter.item.goods.GoodsExplainItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsFaatItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsNameItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsPriceItem;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSalesPromotionItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipFreeItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsSpecificationsItem;
@@ -51,6 +52,7 @@ import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.TimeUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -338,20 +340,34 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsAttrDialog = new GoodsAttrDialog(goodsDetails);
                 goodsAttrDialog.setOnItemClickListener(attrDialogListener);
 
-
+                if (goodsDetails.getCount_cart() > 0) {
+                    cartNum.setAlpha(1);
+                    cartNum.setText(String.valueOf(goodsDetails.getCount_cart()));
+                } else {
+                    cartNum.setAlpha(0);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    protected List<Item> getItems(GoodsDetail goodsDetails) {
+    protected List<Item> getItems(GoodsDetail goodsDetail) {
         List<Item> cells = new ArrayList<>();
         if (goodsDetails.getBanners() != null && goodsDetails.getBanners().size() > 0) {
             cells.add(new GoodsBannerItem(goodsDetails.getBanners(), context));
         }
-        if (goodsDetails.getGoodsFaat() != null) {
+        if (goodsDetails.getGoodsFaat() != null && (goodsDetails.getGoodsFaat().getEnd_time() -
+                goodsDetails.getGoodsFaat().getCurrent_time()) > 0) {
+            TimeUtils.startCountdown(goodsDetails.getGoodsFaat().getCurrent_time().longValue(), new TimeUtils.CallBack() {
 
+                @Override
+                public void time(Long time) {
+                    goodsDetails.getGoodsFaat().setCurrent_time(time.intValue());
+                    System.out.println(time);
+                }
+            });
+            cells.add(new GoodsSalesPromotionItem(goodsDetails, context));
         }
         if (goodsDetails.getShop_price() != null) {
             cells.add(new GoodsPriceItem(goodsDetails, context));

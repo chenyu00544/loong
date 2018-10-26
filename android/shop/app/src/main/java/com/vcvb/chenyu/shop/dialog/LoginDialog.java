@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.tools.TimeUtils;
+import com.vcvb.chenyu.shop.tools.CountDownTimeUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
 
 import java.util.HashMap;
@@ -153,8 +153,8 @@ public class LoginDialog extends Dialog {
         phoneProblem = this.findViewById(R.id.textView62);
         phoneLoginType = this.findViewById(R.id.textView63);
         phoneQRCode = this.findViewById(R.id.textView64);
-        if (TimeUtils.check(TimeUtils.SETTING_FINANCE_ACCOUNT_TIME, true)) {
-            TimeUtils.startCountdown(phoneQRCode);
+        if (CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME, true)) {
+            CountDownTimeUtils.startCountdown(phoneQRCode);
         }
         phoneEdit.setFocusable(true);
         phoneEdit.setFocusableInTouchMode(true);
@@ -170,8 +170,8 @@ public class LoginDialog extends Dialog {
                             "5-8])|(18[0-9])|(147))\\d{8}$");
                     Matcher m = p.matcher(phoneEdit.getText().toString());
                     if (m.matches()) {
-                        TimeUtils.check(TimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
-                        TimeUtils.startCountdown(phoneQRCode);
+                        CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
+                        CountDownTimeUtils.startCountdown(phoneQRCode);
                     } else {
                         ToastUtils.showShortToast(getContext(), "输入的手机号码不正确");
                     }

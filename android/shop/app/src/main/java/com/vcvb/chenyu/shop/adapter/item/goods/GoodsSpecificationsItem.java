@@ -19,7 +19,7 @@ import com.vcvb.chenyu.shop.tools.ReflexUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 public class GoodsSpecificationsItem extends BaseItem<GoodsDetail> {
-    public static final int TYPE = 11;
+    public static final int TYPE = R.layout.goods_specifications_item;
     int height;
 
     public GoodsSpecificationsItem(GoodsDetail beans, Context c) {
@@ -34,7 +34,7 @@ public class GoodsSpecificationsItem extends BaseItem<GoodsDetail> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goods_specifications_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

@@ -782,6 +782,7 @@ public class GoodsDetail {
             for (int i = 0; i < faatJsonArray.length(); i++) {
                 JSONObject object = (JSONObject) faatJsonArray.get(i);
                 GoodsFaat goodsFaat = JsonUtils.fromJsonObject(object, GoodsFaat.class);
+                goodsFaat.setData(object);
                 this.setGoodsFaat(goodsFaat);
             }
         } catch (JSONException e) {

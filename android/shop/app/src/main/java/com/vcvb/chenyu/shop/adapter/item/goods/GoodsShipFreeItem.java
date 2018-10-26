@@ -16,7 +16,7 @@ import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 import java.util.List;
 
 public class GoodsShipFreeItem extends BaseItem<GoodsDetail> {
-    public static final int TYPE = 7;
+    public static final int TYPE = R.layout.goods_ship_free_item;
 
     public GoodsShipFreeItem(GoodsDetail beans, Context c) {
         super(beans, c);
@@ -30,7 +30,7 @@ public class GoodsShipFreeItem extends BaseItem<GoodsDetail> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goods_ship_free_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

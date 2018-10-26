@@ -28,11 +28,6 @@ class GoodsModel extends Model
         return $this->hasMany('App\Http\Models\App\GoodsFullCutModel', 'goods_id', 'goods_id');
     }
 
-    public function faat()
-    {
-        return $this->belongsToMany('App\Http\Models\App\FavourableActivityModel', 'favourable_goods', 'goods_id', 'act_id');
-    }
-
     public function qa()
     {
         return $this->hasMany('App\Http\Models\App\QuestionAnswerModel', 'id_value', 'goods_id');
@@ -74,9 +69,6 @@ class GoodsModel extends Model
     public function getGoodsAndExt($where, $column = ['*'])
     {
         return $this->select($column)
-            ->with(['faat' => function ($query) {
-                $query->select(['*'])->where([['start_time', '<', time()], ['end_time', '>', time()], ['review_status', '=', 3]])->orderBy('sort_order', 'DESC')->limit(1);
-            }])
             ->with(['gvp' => function ($query) {
                 $query->where(['price_type' => 1]);
             }])
@@ -85,7 +77,7 @@ class GoodsModel extends Model
                 $query->where(['parent_id' => 0])->limit(2);
             }])
             ->with(['gattr' => function ($query) {
-                $query->select(['goods_attr_id', 'goods_id', 'attr_id', 'color_value', 'attr_price', 'attr_value', 'attr_img_flie', 'attr_gallery_flie','attr_checked'])->where(['attr_checked' => 1])
+                $query->select(['goods_attr_id', 'goods_id', 'attr_id', 'color_value', 'attr_price', 'attr_value', 'attr_img_flie', 'attr_gallery_flie', 'attr_checked'])->where(['attr_checked' => 1])
                     ->with(['attr' => function ($query) {
                         $query->select(['attr_type', 'attr_id', 'attr_name', 'attr_group']);
                     }])

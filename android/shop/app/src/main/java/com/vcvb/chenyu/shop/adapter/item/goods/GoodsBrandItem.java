@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoodsBrandItem extends BaseItem<GoodsDetail> {
-    public static final int TYPE = 10;
+    public static final int TYPE = R.layout.goods_brand_item;
     private DefaultItemDecoration defaultItemDecoration;
     private RecyclerView recyclerView;
 
@@ -43,7 +43,7 @@ public class GoodsBrandItem extends BaseItem<GoodsDetail> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goods_brand_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

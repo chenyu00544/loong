@@ -11,11 +11,11 @@ namespace App\Repositories\App;
 use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
-use App\Facades\Url;
 use App\Http\Models\App\CartModel;
 use App\Http\Models\App\CommentExtModel;
 use App\Http\Models\App\CommentLabelModel;
 use App\Http\Models\App\CommentModel;
+use App\Http\Models\App\FavourableGoodsModel;
 use App\Http\Models\App\GoodsDescriptionModel;
 use App\Http\Models\App\GoodsModel;
 use App\Http\Models\App\TransportModel;
@@ -31,6 +31,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $usersModel;
     private $goodsDescriptionModel;
     private $cartModel;
+    private $favourableGoodsModel;
 
     public function __construct(
         GoodsModel $goodsModel,
@@ -40,7 +41,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         CommentExtModel $commentExtModel,
         UsersModel $usersModel,
         GoodsDescriptionModel $goodsDescriptionModel,
-        CartModel $cartModel
+        CartModel $cartModel,
+        FavourableGoodsModel $favourableGoodsModel
     )
     {
         $this->goodsModel = $goodsModel;
@@ -51,6 +53,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->usersModel = $usersModel;
         $this->goodsDescriptionModel = $goodsDescriptionModel;
         $this->cartModel = $cartModel;
+        $this->favourableGoodsModel = $favourableGoodsModel;
     }
 
     public function getBestGoods($page = 1)
@@ -100,6 +103,22 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->market_price_format = Common::priceFormat($goods_detail->market_price);
             $goods_detail->promote_price_format = Common::priceFormat($goods_detail->promote_price);
             $goods_detail->count_cart = $this->cartModel->countCart(['user_id' => $user_id]);
+
+            //大型活动
+            $faats = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
+            foreach ($faats as $faat) {
+                $faat->current_time = time();
+                $faat->min_amount = Common::priceFormat($faat->min_amount);
+                if ($faat->act_type == 1) {
+                    $faat->act_type_ext = Common::priceFormat($faat->act_type_ext);
+                } elseif ($faat->act_type == 2) {
+                    $faat->act_type_ext = ((float)$faat->act_type_ext * 10) . '';
+                }
+
+                $faat->gift = unserialize($faat->gift);
+            }
+            $goods_detail->faat = $faats;
+
             $goods_cause = explode(',', $goods_detail->goods_cause);
             $causes = [];
             $causeName = Common::causeName();

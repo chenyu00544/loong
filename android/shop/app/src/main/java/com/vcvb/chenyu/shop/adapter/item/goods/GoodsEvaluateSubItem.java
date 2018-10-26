@@ -18,7 +18,7 @@ import com.vcvb.chenyu.shop.tools.ToolUtils;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.goods_evaluate_sub_item;
 
     public GoodsEvaluateSubItem(GoodsComment beans, Context c) {
         super(beans, c);
@@ -32,7 +32,7 @@ public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goods_evaluate_sub_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

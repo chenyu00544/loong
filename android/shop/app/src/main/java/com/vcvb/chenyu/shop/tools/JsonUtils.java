@@ -118,7 +118,8 @@ public class JsonUtils {
     }
 
     public static Object JsonObjectToObject(JSONObject obj, Field field) throws JSONException {
-        switch (getType(field.getType()))//field.getType:获取属性声明时类型对象（返回class对象）
+        //field.getType:获取属性声明时类型对象（返回class对象）
+        switch (getType(field.getType()))
         {
             case 0:
                 return obj.opt(field.getName());

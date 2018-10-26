@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
-import com.vcvb.chenyu.shop.tools.TimeUtils;
+import com.vcvb.chenyu.shop.tools.CountDownTimeUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
 
 import java.util.regex.Matcher;
@@ -117,8 +117,8 @@ public class RegisterActivity extends BaseActivity {
                             "5-8])|(18[0-9])|(147))\\d{8}$");
                     Matcher m = p.matcher(phoneEdit.getText().toString());
                     if (m.matches()) {
-                        TimeUtils.check(TimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
-                        TimeUtils.startCountdown(qrCodeTv);
+                        CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
+                        CountDownTimeUtils.startCountdown(qrCodeTv);
                     } else {
                         ToastUtils.showShortToast(context, "输入的手机号码不正确");
                     }

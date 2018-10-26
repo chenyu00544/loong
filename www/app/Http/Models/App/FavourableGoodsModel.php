@@ -18,35 +18,18 @@ class FavourableGoodsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getFGs($where, $column = ['*'])
+    public function getFaat($wheres, $column = ['*'])
     {
-        return $this->select($column)
-            ->where($where)
-            ->get();
+        $m = $this->select($column)
+            ->join('favourable_activity', 'favourable_activity.act_id', '=', 'favourable_goods.act_id')
+            ->where([['start_time', '<', time()], ['end_time', '>', time()], ['review_status', '=', 3]])
+            ->where(function ($query) {
+                $query->orWhere('terminal_type', 'all')->orWhere('terminal_type', 'app');
+            })
+            ->orderBy('sort_order', 'DESC')->limit(1);
+        foreach ($wheres as $where) {
+            $m->orWhere($where);
+        }
+        return $m->get();
     }
-
-    public function getFG($where, $column = ['*'])
-    {
-        return $this->select($column)
-            ->where($where)
-            ->first();
-    }
-
-    public function setFG($where, $updata)
-    {
-        return $this->where($where)
-            ->update($updata);
-    }
-
-    public function addFG($updata)
-    {
-        return $this->create($updata);
-    }
-
-    public function delFG($where)
-    {
-        return $this->where($where)
-            ->delete();
-    }
-
 }
