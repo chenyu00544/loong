@@ -12,6 +12,7 @@ use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\Url;
+use App\Http\Models\App\CartModel;
 use App\Http\Models\App\CommentExtModel;
 use App\Http\Models\App\CommentLabelModel;
 use App\Http\Models\App\CommentModel;
@@ -29,6 +30,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $commentExtModel;
     private $usersModel;
     private $goodsDescriptionModel;
+    private $cartModel;
 
     public function __construct(
         GoodsModel $goodsModel,
@@ -37,7 +39,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         CommentLabelModel $commentLabelModel,
         CommentExtModel $commentExtModel,
         UsersModel $usersModel,
-        GoodsDescriptionModel $goodsDescriptionModel
+        GoodsDescriptionModel $goodsDescriptionModel,
+        CartModel $cartModel
     )
     {
         $this->goodsModel = $goodsModel;
@@ -47,6 +50,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->commentExtModel = $commentExtModel;
         $this->usersModel = $usersModel;
         $this->goodsDescriptionModel = $goodsDescriptionModel;
+        $this->cartModel = $cartModel;
     }
 
     public function getBestGoods($page = 1)
@@ -95,6 +99,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->shop_price_format = Common::priceFormat($goods_detail->shop_price);
             $goods_detail->market_price_format = Common::priceFormat($goods_detail->market_price);
             $goods_detail->promote_price_format = Common::priceFormat($goods_detail->promote_price);
+            $goods_detail->count_cart = $this->cartModel->countCart(['user_id' => $user_id]);
             $goods_cause = explode(',', $goods_detail->goods_cause);
             $causes = [];
             $causeName = Common::causeName();

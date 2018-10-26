@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.BaseFragment;
 import com.vcvb.chenyu.shop.R;
@@ -42,6 +41,7 @@ public class FragmentMy extends BaseFragment {
         view = inflater.inflate(R.layout.fragment_my, container, false);
         context = getActivity();
         this.container = container;
+        initView();
         checkLogin();
         initListener();
         return view;
@@ -72,6 +72,11 @@ public class FragmentMy extends BaseFragment {
         super.onPause();
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
         broadcastManager.unregisterReceiver(receiver);
+    }
+
+    public void initView() {
+        TextView tv1 = view.findViewById(R.id.textView45);
+        tv1.setAlpha(1);
     }
 
     public void initListener() {
@@ -218,9 +223,8 @@ public class FragmentMy extends BaseFragment {
 //                RoundedCornersTransformation.CornerType.TOP);
 //        RequestOptions requestOptions = RequestOptions.bitmapTransform(corners).override(120,
 // 120);
-        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.RESOURCE).skipMemoryCache(false).override(120, 120);
-        if (mp.size() > 0) {
+        RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.icon_boy_head);
+        if (mp.get("nickname") != null ) {
             Glide.with(context).load((String) mp.get("logo")).apply(requestOptions).into(iv);
             tv.setText((CharSequence) mp.get("nickname"));
             iv.setOnClickListener(null);
@@ -238,7 +242,7 @@ public class FragmentMy extends BaseFragment {
                     showLoginDialog();
                 }
             });
-            iv.setBackgroundResource(R.drawable.icon_boy_head);
+            Glide.with(context).load(R.drawable.icon_boy_head).apply(requestOptions).into(iv);
             tv.setText(R.string.login_reg);
         }
     }

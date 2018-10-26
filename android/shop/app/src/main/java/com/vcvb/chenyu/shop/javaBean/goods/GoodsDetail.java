@@ -15,6 +15,58 @@ public class GoodsDetail {
 
     private int isScroll = 0;
 
+    private Integer goods_id;
+    private Integer is_best;
+    private Integer is_new;
+    private Integer is_hot;
+    private Integer is_promote;
+    private Integer is_volume;
+    private Integer is_fullcut;
+    private Integer is_limit_buy;
+    private Integer limit_buy_num;
+    private Integer sales_volume;
+    private Integer tid;
+    private Integer count_cart;
+    private Integer comments_number;
+    private String cat_id;
+    private String goods_name;
+    private String goods_sn;
+    private String brand_id;
+    private String goods_number;
+    private Double shop_price;
+    private Double market_price;
+    private Double promote_price;
+    private Long promote_start_date;
+    private Long promote_end_date;
+    private Long limit_buy_start_date;
+    private Long limit_buy_end_date;
+    private String goods_video;
+    private String goods_brief;
+    private String shop_price_format;
+    private String market_price_format;
+    private String promote_price_format;
+    private String original_img;
+    private String goods_img;
+    private List<AddressBean> addressBeans;
+    private List<GoodsDescription> goodsDescriptions;
+    private List<List<GoodsAttr>> multiAttrs;
+    private List<GoodsAttr> singleAttrs;
+    private List<GoodsDesc> goodsDescs;
+    private List<GoodsGVP> goodsGVPS;
+    private List<GoodsComment> comments;
+    private List<GoodsBanner> banners;
+    private List<GoodsCommentLabel> commentLabels;
+    private List<GoodsFC> goodsFCS;
+    private List<GoodsQA> qas;
+    private List<GoodsCause> causes;
+    private Shop shop;
+    private GoodsTransport goodsTransport;
+    private GoodsAttr goodsCountryCAttr;
+    private GoodsAttr goodsTexAttr;
+    private GoodsFaat goodsFaat;
+    private GoodsBrand goodsBrand;
+
+
     public int getIsScroll() {
         return isScroll;
     }
@@ -22,8 +74,6 @@ public class GoodsDetail {
     public void setIsScroll(int isScroll) {
         this.isScroll = isScroll;
     }
-
-    private List<GoodsBanner> banners;
 
     public List<GoodsBanner> getBanners() {
         return banners;
@@ -33,8 +83,6 @@ public class GoodsDetail {
         this.banners = banners;
     }
 
-    private List<GoodsCommentLabel> commentLabels;
-
     public List<GoodsCommentLabel> getCommentLabels() {
         return commentLabels;
     }
@@ -42,8 +90,6 @@ public class GoodsDetail {
     public void setCommentLabels(List<GoodsCommentLabel> commentLabels) {
         this.commentLabels = commentLabels;
     }
-
-    private Integer goods_id;
 
     public Integer getGoods_id() {
         return goods_id;
@@ -53,8 +99,6 @@ public class GoodsDetail {
         this.goods_id = goods_id;
     }
 
-    private String cat_id;
-
     public String getCat_id() {
         return cat_id;
     }
@@ -62,8 +106,6 @@ public class GoodsDetail {
     public void setCat_id(String cat_id) {
         this.cat_id = cat_id;
     }
-
-    private String goods_name;
 
     public void setGoods_name(String goods_name) {
         this.goods_name = goods_name;
@@ -73,8 +115,6 @@ public class GoodsDetail {
         return goods_name;
     }
 
-    private String goods_sn;
-
     public String getGoods_sn() {
         return goods_sn;
     }
@@ -82,8 +122,6 @@ public class GoodsDetail {
     public void setGoods_sn(String goods_sn) {
         this.goods_sn = goods_sn;
     }
-
-    private String brand_id;
 
     public String getBrand_id() {
         return brand_id;
@@ -93,8 +131,6 @@ public class GoodsDetail {
         this.brand_id = brand_id;
     }
 
-    private String goods_number;
-
     public String getGoods_number() {
         return goods_number;
     }
@@ -102,8 +138,6 @@ public class GoodsDetail {
     public void setGoods_number(String goods_number) {
         this.goods_number = goods_number;
     }
-
-    private Double shop_price;
 
     public Double getShop_price() {
         return shop_price;
@@ -113,8 +147,6 @@ public class GoodsDetail {
         this.shop_price = shop_price;
     }
 
-    private Double market_price;
-
     public Double getMarket_price() {
         return market_price;
     }
@@ -122,8 +154,6 @@ public class GoodsDetail {
     public void setMarket_price(Double market_price) {
         this.market_price = market_price;
     }
-
-    private Double promote_price;
 
     public Double getPromote_price() {
         return promote_price;
@@ -133,8 +163,6 @@ public class GoodsDetail {
         this.promote_price = promote_price;
     }
 
-    private Long promote_start_date;
-
     public Long getPromote_start_date() {
         return promote_start_date;
     }
@@ -142,8 +170,6 @@ public class GoodsDetail {
     public void setPromote_start_date(Long promote_start_date) {
         this.promote_start_date = promote_start_date;
     }
-
-    private Long promote_end_date;
 
     public Long getPromote_end_date() {
         return promote_end_date;
@@ -153,8 +179,6 @@ public class GoodsDetail {
         this.promote_end_date = promote_end_date;
     }
 
-    private String original_img;
-
     public String getOriginal_img() {
         return original_img;
     }
@@ -162,8 +186,6 @@ public class GoodsDetail {
     public void setOriginal_img(String original_img) {
         this.original_img = original_img;
     }
-
-    private String goods_img;
 
     public String getGoods_img() {
         return goods_img;
@@ -173,8 +195,6 @@ public class GoodsDetail {
         this.goods_img = goods_img;
     }
 
-    private Integer is_best;
-
     public Integer getIs_best() {
         return is_best;
     }
@@ -182,8 +202,6 @@ public class GoodsDetail {
     public void setIs_best(Integer is_best) {
         this.is_best = is_best;
     }
-
-    private Integer is_new;
 
     public Integer getIs_new() {
         return is_new;
@@ -193,8 +211,6 @@ public class GoodsDetail {
         this.is_new = is_new;
     }
 
-    private Integer is_hot;
-
     public Integer getIs_hot() {
         return is_hot;
     }
@@ -202,8 +218,6 @@ public class GoodsDetail {
     public void setIs_hot(Integer is_hot) {
         this.is_hot = is_hot;
     }
-
-    private Integer is_promote;
 
     public Integer getIs_promote() {
         return is_promote;
@@ -213,8 +227,6 @@ public class GoodsDetail {
         this.is_promote = is_promote;
     }
 
-    private Integer is_volume;
-
     public Integer getIs_volume() {
         return is_volume;
     }
@@ -222,8 +234,6 @@ public class GoodsDetail {
     public void setIs_volume(Integer is_volume) {
         this.is_volume = is_volume;
     }
-
-    private Integer is_fullcut;
 
     public Integer getIs_fullcut() {
         return is_fullcut;
@@ -233,8 +243,6 @@ public class GoodsDetail {
         this.is_fullcut = is_fullcut;
     }
 
-    private Integer is_limit_buy;
-
     public Integer getIs_limit_buy() {
         return is_limit_buy;
     }
@@ -242,8 +250,6 @@ public class GoodsDetail {
     public void setIs_limit_buy(Integer is_limit_buy) {
         this.is_limit_buy = is_limit_buy;
     }
-
-    private Integer limit_buy_num;
 
     public Integer getLimit_buy_num() {
         return limit_buy_num;
@@ -253,8 +259,6 @@ public class GoodsDetail {
         this.limit_buy_num = limit_buy_num;
     }
 
-    private Long limit_buy_start_date;
-
     public Long getLimit_buy_start_date() {
         return limit_buy_start_date;
     }
@@ -262,8 +266,6 @@ public class GoodsDetail {
     public void setLimit_buy_start_date(Long limit_buy_start_date) {
         this.limit_buy_start_date = limit_buy_start_date;
     }
-
-    private Long limit_buy_end_date;
 
     public Long getLimit_buy_end_date() {
         return limit_buy_end_date;
@@ -273,8 +275,6 @@ public class GoodsDetail {
         this.limit_buy_end_date = limit_buy_end_date;
     }
 
-    private Integer sales_volume;
-
     public Integer getSales_volume() {
         return sales_volume;
     }
@@ -282,8 +282,6 @@ public class GoodsDetail {
     public void setSales_volume(Integer sales_volume) {
         this.sales_volume = sales_volume;
     }
-
-    private Integer tid;
 
     public Integer getTid() {
         return tid;
@@ -293,8 +291,6 @@ public class GoodsDetail {
         this.tid = tid;
     }
 
-    private List<GoodsCause> causes;
-
     public List<GoodsCause> getCauses() {
         return causes;
     }
@@ -302,8 +298,6 @@ public class GoodsDetail {
     public void setCauses(List<GoodsCause> causes) {
         this.causes = causes;
     }
-
-    private Integer comments_number;
 
     public Integer getComments_number() {
         return comments_number;
@@ -313,8 +307,6 @@ public class GoodsDetail {
         this.comments_number = comments_number;
     }
 
-    private String goods_video;
-
     public String getGoods_video() {
         return goods_video;
     }
@@ -322,8 +314,6 @@ public class GoodsDetail {
     public void setGoods_video(String goods_video) {
         this.goods_video = goods_video;
     }
-
-    private String goods_brief;
 
     public String getGoods_brief() {
         return goods_brief;
@@ -333,8 +323,6 @@ public class GoodsDetail {
         this.goods_brief = goods_brief;
     }
 
-    private String shop_price_format;
-
     public String getShop_price_format() {
         return shop_price_format;
     }
@@ -342,8 +330,6 @@ public class GoodsDetail {
     public void setShop_price_format(String shop_price_format) {
         this.shop_price_format = shop_price_format;
     }
-
-    private String market_price_format;
 
     public String getMarket_price_format() {
         return market_price_format;
@@ -353,8 +339,6 @@ public class GoodsDetail {
         this.market_price_format = market_price_format;
     }
 
-    private String promote_price_format;
-
     public String getPromote_price_format() {
         return promote_price_format;
     }
@@ -362,8 +346,6 @@ public class GoodsDetail {
     public void setPromote_price_format(String promote_price_format) {
         this.promote_price_format = promote_price_format;
     }
-
-    private GoodsBrand goodsBrand;
 
     public GoodsBrand getGoodsBrand() {
         return goodsBrand;
@@ -373,8 +355,6 @@ public class GoodsDetail {
         this.goodsBrand = goodsBrand;
     }
 
-    private List<AddressBean> addressBeans;
-
     public List<AddressBean> getAddressBeans() {
         return addressBeans;
     }
@@ -382,8 +362,6 @@ public class GoodsDetail {
     public void setAddressBeans(List<AddressBean> addressBeans) {
         this.addressBeans = addressBeans;
     }
-
-    private List<GoodsDescription> goodsDescriptions;
 
     public List<GoodsDescription> getGoodsDescriptions() {
         return goodsDescriptions;
@@ -393,8 +371,6 @@ public class GoodsDetail {
         this.goodsDescriptions = goodsDescriptions;
     }
 
-    private List<List<GoodsAttr>> multiAttrs;
-
     public List<List<GoodsAttr>> getMultiAttrs() {
         return multiAttrs;
     }
@@ -402,8 +378,6 @@ public class GoodsDetail {
     public void setMultiAttrs(List<List<GoodsAttr>> multiAttrs) {
         this.multiAttrs = multiAttrs;
     }
-
-    private List<GoodsAttr> singleAttrs;
 
     public List<GoodsAttr> getSingleAttrs() {
         return singleAttrs;
@@ -413,8 +387,6 @@ public class GoodsDetail {
         this.singleAttrs = singleAttrs;
     }
 
-    private List<GoodsDesc> goodsDescs;
-
     public List<GoodsDesc> getGoodsDescs() {
         return goodsDescs;
     }
@@ -422,8 +394,6 @@ public class GoodsDetail {
     public void setGoodsDescs(List<GoodsDesc> goodsDescs) {
         this.goodsDescs = goodsDescs;
     }
-
-    private List<GoodsGVP> goodsGVPS;
 
     public List<GoodsGVP> getGoodsGVPS() {
         return goodsGVPS;
@@ -433,8 +403,6 @@ public class GoodsDetail {
         this.goodsGVPS = goodsGVPS;
     }
 
-    private List<GoodsComment> comments;
-
     public List<GoodsComment> getComments() {
         return comments;
     }
@@ -442,8 +410,6 @@ public class GoodsDetail {
     public void setComments(List<GoodsComment> comments) {
         this.comments = comments;
     }
-
-    private GoodsFaat goodsFaat;
 
     public GoodsFaat getGoodsFaat() {
         return goodsFaat;
@@ -453,8 +419,6 @@ public class GoodsDetail {
         this.goodsFaat = goodsFaat;
     }
 
-    private Shop shop;
-
     public Shop getShop() {
         return shop;
     }
@@ -462,8 +426,6 @@ public class GoodsDetail {
     public void setShop(Shop shop) {
         this.shop = shop;
     }
-
-    private List<GoodsFC> goodsFCS;
 
     public List<GoodsFC> getGoodsFCS() {
         return goodsFCS;
@@ -473,8 +435,6 @@ public class GoodsDetail {
         this.goodsFCS = goodsFCS;
     }
 
-    private List<GoodsQA> qas;
-
     public List<GoodsQA> getQas() {
         return qas;
     }
@@ -482,8 +442,6 @@ public class GoodsDetail {
     public void setQas(List<GoodsQA> qas) {
         this.qas = qas;
     }
-
-    private GoodsTransport goodsTransport;
 
     public GoodsTransport getGoodsTransport() {
         return goodsTransport;
@@ -493,8 +451,6 @@ public class GoodsDetail {
         this.goodsTransport = goodsTransport;
     }
 
-    private GoodsAttr goodsCountryCAttr;
-
     public GoodsAttr getGoodsCountryCAttr() {
         return goodsCountryCAttr;
     }
@@ -503,14 +459,20 @@ public class GoodsDetail {
         this.goodsCountryCAttr = goodsCountryCAttr;
     }
 
-    private GoodsAttr goodsTexAttr;
-
     public GoodsAttr getGoodsTexAttr() {
         return goodsTexAttr;
     }
 
     public void setGoodsTexAttr(GoodsAttr goodsTexAttr) {
         this.goodsTexAttr = goodsTexAttr;
+    }
+
+    public Integer getCount_cart() {
+        return count_cart;
+    }
+
+    public void setCount_cart(Integer count_cart) {
+        this.count_cart = count_cart;
     }
 
     public void setData(JSONObject Json) throws JSONException {
@@ -563,6 +525,7 @@ public class GoodsDetail {
         this.setShop_price_format(Json.getString("shop_price_format"));
         this.setMarket_price_format(Json.getString("market_price_format"));
         this.setPromote_price_format(Json.getString("promote_price_format"));
+        this.setCount_cart(Json.getInt("count_cart"));
     }
 
     private void setBanner(JSONObject Json) {
@@ -645,7 +608,8 @@ public class GoodsDetail {
             for (int i = 0; i < addressJsonArray.length(); i++) {
                 JSONObject object = (JSONObject) addressJsonArray.get(i);
                 AddressBean addressBean = JsonUtils.fromJsonObject(object, AddressBean.class);
-                if(Json.getJSONObject("user").getInt("address_id") == addressBean.getAddress_id()){
+                if (Json.getJSONObject("user").getInt("address_id") == addressBean.getAddress_id
+                        ()) {
                     addressBean.setDef(true);
                 }
                 _addresses.add(addressBean);

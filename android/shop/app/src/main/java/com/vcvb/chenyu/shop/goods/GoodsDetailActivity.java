@@ -72,6 +72,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     int pos = 0;
     private View child1;
     private View line;
+    private TextView cartNum;
 
     private ShopRecyclerView goodsDetail;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
@@ -324,6 +325,8 @@ public class GoodsDetailActivity extends GoodsActivity {
         goodsDetail.setItemAnimator(new DefaultItemAnimator());
         goodsDetail.setAdapter(mAdapter);
         goodsDetail.setNestedScrollingEnabled(false);
+
+        cartNum = findViewById(R.id.textView11);
     }
 
     public void bindData() {
@@ -334,6 +337,8 @@ public class GoodsDetailActivity extends GoodsActivity {
 
                 goodsAttrDialog = new GoodsAttrDialog(goodsDetails);
                 goodsAttrDialog.setOnItemClickListener(attrDialogListener);
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -529,8 +534,8 @@ public class GoodsDetailActivity extends GoodsActivity {
                         for (int j = 0; j < goodsDetails.getMultiAttrs().get(i).size(); j++) {
                             Integer goods_attr_id = (Integer) attr.get(goodsDetails.getMultiAttrs
                                     ().get(i).get(j).getAttr_id());
-                            if (goods_attr_id == goodsDetails.getMultiAttrs().get(i).get(j)
-                                    .getGoods_attr_id()) {
+                            if (goods_attr_id.equals(goodsDetails.getMultiAttrs().get(i).get(j)
+                                    .getGoods_attr_id())) {
                                 selectAttrs.add(goodsDetails.getMultiAttrs().get(i).get(j));
                                 goodsDetails.getMultiAttrs().get(i).get(j).setIsSelect(true);
                             }
@@ -577,8 +582,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     //显示登录框
     public void showLoginDialog() {
         loginDialog = new LoginDialog(context);
-        loginDialog.setOnDialogClickListener(new LoginDialog
-                .OnDialogClickListener() {
+        loginDialog.setOnDialogClickListener(new LoginDialog.OnDialogClickListener() {
             @Override
             public void onPhoneClickListener() {
                 System.out.println("onPhoneClickListener");
@@ -618,9 +622,9 @@ public class GoodsDetailActivity extends GoodsActivity {
 
 //                UserInfoUtils.getInstance(context).setUserInfo(u);
 
-                try{
+                try {
                     Thread.sleep(2000);
-                }catch (Exception e ){
+                } catch (Exception e) {
 
                 }
                 LoadingDialog2.getInstance(context).dismiss();
@@ -633,7 +637,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             if (requestCode == ConstantManager.ResultStatus.ADDRESSRESULT) {
                 System.out.println(data);
             }
