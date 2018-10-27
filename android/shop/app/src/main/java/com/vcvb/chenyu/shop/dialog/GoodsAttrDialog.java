@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -43,11 +45,13 @@ public class GoodsAttrDialog extends DialogFragment {
     Context context;
     String tag;
     OnClickListener onClickListener;
+    RequestOptions requestOptions;
     HashMap<String, Object> outAttr = new HashMap<>();
 
     public ImageView attrImg;
     public TextView goodsName;
     public TextView goodsPrice;
+    public TextView tax;
 
     public TextView buy;
     public TextView add;
@@ -78,6 +82,9 @@ public class GoodsAttrDialog extends DialogFragment {
         v = inflater.inflate(R.layout.dialog_goods_attr, container);
         window = getDialog().getWindow();
 
+        RoundedCorners roundedCorners = new RoundedCorners(ToolUtils.dip2px(context, 4));
+        requestOptions = RequestOptions.bitmapTransform(roundedCorners);
+
         attrImg = v.findViewById(R.id.imageView83);
         goodsName = v.findViewById(R.id.textView165);
         goodsName.setText(goodsDetail.getGoods_name());
@@ -87,13 +94,18 @@ public class GoodsAttrDialog extends DialogFragment {
         } else {
             goodsPrice.setText(goodsDetail.getShop_price_format());
         }
+        tax = v.findViewById(R.id.textView16);
+        String str = "税率" + goodsDetail.getGoodsTexAttr().getAttr_value() + "%";
+        tax.setText(str);
+
         List<List<GoodsAttr>> attrs = goodsDetail.getMultiAttrs();
 
         if (attrs != null) {
             if (attrs.size() > 0) {
                 if (attrs.get(0) != null) {
                     if (attrs.get(0).size() > 0) {
-                        Glide.with(context).load(attrs.get(0).get(0).getAttr_img_flie()).into(attrImg);
+                        Glide.with(context).load(attrs.get(0).get(0).getAttr_img_flie()).apply
+                                (requestOptions).into(attrImg);
                     }
                 }
             }
@@ -109,11 +121,11 @@ public class GoodsAttrDialog extends DialogFragment {
         confirm = v.findViewById(R.id.textView235);
         confirm.setOnClickListener(listener);
         outAttr.put("tag", tag);
-        if (tag == "Buy") {
+        if (tag.equals("Buy")) {
             set.constrainHeight(buy.getId(), ToolUtils.dip2px(context, 50));
             set.constrainHeight(add.getId(), 0);
             set.constrainHeight(confirm.getId(), 0);
-        } else if (tag == "AddCart") {
+        } else if (tag.equals("AddCart")) {
             set.constrainHeight(buy.getId(), 0);
             set.constrainHeight(add.getId(), ToolUtils.dip2px(context, 50));
             set.constrainHeight(confirm.getId(), 0);
@@ -125,9 +137,9 @@ public class GoodsAttrDialog extends DialogFragment {
 
 
         ImageView numAdd = v.findViewById(R.id.imageView85);
-        numAdd.setOnClickListener(listener1);
+        numAdd.setOnClickListener(attrNumListener);
         ImageView numSub = v.findViewById(R.id.imageView84);
-        numSub.setOnClickListener(listener1);
+        numSub.setOnClickListener(attrNumListener);
 
         mRecyclerView = v.findViewById(R.id.attr_wrap);
         mLayoutManager = new GridLayoutManager(context, 1);
@@ -135,9 +147,13 @@ public class GoodsAttrDialog extends DialogFragment {
         mAdapter = new CYCSimpleAdapter();
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.addAll(getItems(attrs));
-        int height = 70 * attrs.size();
-        if (height > 210) {
-            height = 210;
+        Integer row = 1;
+        if (attrs != null) {
+            row = attrs.size();
+        }
+        int height = 50 * row;
+        if (height > 200) {
+            height = 200;
         }
         set.constrainHeight(mRecyclerView.getId(), ToolUtils.dip2px(context, height));
         set.applyTo(cly);
@@ -202,13 +218,18 @@ public class GoodsAttrDialog extends DialogFragment {
             for (int i = 0; i < attrs.size(); i++) {
                 if (attrs.get(i).getIsSelect()) {
                     outAttr.put(attrs.get(i).getAttr_id(), attrs.get(i).getGoods_attr_id());
+                    if (attrs.get(i).getAttr_img_flie() != null && !attrs.get(i).getAttr_img_flie
+                            ().equals("")) {
+                        Glide.with(context).load(attrs.get(i).getAttr_img_flie()).apply
+                                (requestOptions).into(attrImg);
+                    }
                     System.out.println(outAttr);
                 }
             }
         }
     };
 
-    View.OnClickListener listener1 = new View.OnClickListener() {
+    View.OnClickListener attrNumListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             int num = 0;

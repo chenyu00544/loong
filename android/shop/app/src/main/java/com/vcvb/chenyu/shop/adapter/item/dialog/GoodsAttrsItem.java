@@ -20,7 +20,7 @@ import com.vcvb.chenyu.shop.tools.ToolUtils;
 import java.util.List;
 
 public class GoodsAttrsItem extends BaseItem<List<GoodsAttr>> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.dialog_attr_item;
     FlowLayout fl1;
     OnClickListener onClickListener;
     int pos;
@@ -37,7 +37,7 @@ public class GoodsAttrsItem extends BaseItem<List<GoodsAttr>> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dialog_attr_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

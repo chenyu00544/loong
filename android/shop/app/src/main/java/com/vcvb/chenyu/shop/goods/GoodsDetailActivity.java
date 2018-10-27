@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.goods;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.evaluate.QuestionsListActivity;
 import com.vcvb.chenyu.shop.faat.BrandListActivity;
+import com.vcvb.chenyu.shop.javaBean.cart.LocalCartBean;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsShip;
@@ -66,6 +68,8 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import xiaofei.library.datastorage.DataStorageFactory;
+import xiaofei.library.datastorage.IDataStorage;
 
 public class GoodsDetailActivity extends GoodsActivity {
     private int goods_id;
@@ -132,7 +136,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            loadingDialog.dismiss();
+                            loadingDialog.hide();
                             bindData();
                         }
                     });
@@ -359,12 +363,11 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
         if (goodsDetails.getGoodsFaat() != null && (goodsDetails.getGoodsFaat().getEnd_time() -
                 goodsDetails.getGoodsFaat().getCurrent_time()) > 0) {
-            TimeUtils.startCountdown(goodsDetails.getGoodsFaat().getCurrent_time().longValue(), new TimeUtils.CallBack() {
-
+            TimeUtils.startCountdown(new TimeUtils.CallBack() {
                 @Override
-                public void time(Long time) {
-                    goodsDetails.getGoodsFaat().setCurrent_time(time.intValue());
-                    System.out.println(time);
+                public void time() {
+                    goodsDetails.getGoodsFaat().setCurrent_time(goodsDetails.getGoodsFaat()
+                            .getCurrent_time() + 1);
                 }
             });
             cells.add(new GoodsSalesPromotionItem(goodsDetails, context));
@@ -542,6 +545,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     startActivity(intent);
                     break;
                 case "AddCart":
+                    addCart(attr);
                     goodsAttrDialog.dismiss();
                     break;
                 case "Sure":
@@ -648,6 +652,24 @@ public class GoodsDetailActivity extends GoodsActivity {
             }
         });
         loginDialog.show();
+    }
+
+    //添加到购物车
+    @SuppressLint("MissingPermission")
+    public void addCart(HashMap<String, Object> attr) {
+        System.out.println(attr);
+//        loadingDialog.show();
+        HashMap<String, String> mp = new HashMap<>();
+
+        if (UserInfoUtils.getInstance(context).getUserInfo().get("token") == null ||
+                UserInfoUtils.getInstance(context).getUserInfo().get("token") == "") {
+            List<LocalCartBean> cartBeans = new ArrayList<>();
+            IDataStorage dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
+            cartBeans = dataStorage.loadAll(LocalCartBean.class);
+        }else{
+            mp.put("goods_id", goods_id + "");
+            mp.put("token", (String) UserInfoUtils.getInstance(context).getUserInfo().get("token"));
+        }
     }
 
     @Override

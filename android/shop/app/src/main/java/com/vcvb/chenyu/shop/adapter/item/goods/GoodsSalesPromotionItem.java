@@ -37,6 +37,7 @@ public class GoodsSalesPromotionItem extends BaseItem<GoodsDetail> {
         TextView tv1 = holder.get(R.id.textView13);
         TextView tv2 = holder.get(R.id.textView14);
         CountdownView cdv = holder.get(R.id.countdownView);
+        CountdownView cdv1 = holder.get(R.id.countdownView1);
 
         GoodsFaat goodsFaat = mData.getGoodsFaat();
         tv1.setText(goodsFaat.getAct_name());
@@ -62,13 +63,17 @@ public class GoodsSalesPromotionItem extends BaseItem<GoodsDetail> {
         }
 
         Integer countDown = goodsFaat.getEnd_time() - goodsFaat.getCurrent_time();
-        if(countDown/86400 > 1){
-
-        }else{
-
-        }
         Long current_time = countDown.longValue()*1000;
+
+        if(countDown/86400 > 2){
+            cdv.setAlpha(1);
+            cdv1.setAlpha(0);
+        }else{
+            cdv.setAlpha(0);
+            cdv1.setAlpha(1);
+        }
         //毫秒数
         cdv.start(current_time);
+        cdv1.start(current_time);
     }
 }

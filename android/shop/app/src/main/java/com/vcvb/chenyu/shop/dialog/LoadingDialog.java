@@ -20,7 +20,7 @@ public class LoadingDialog extends AlertDialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.dialog_loading);
-        avi = (AVLoadingIndicatorView)this.findViewById(R.id.avi);
+        avi = this.findViewById(R.id.avi);
     }
 
     @Override
@@ -30,9 +30,13 @@ public class LoadingDialog extends AlertDialog {
     }
 
     @Override
+    public void hide() {
+        super.hide();
+    }
+
+    @Override
     public void dismiss() {
         super.dismiss();
-        avi.hide();
     }
 
     /**

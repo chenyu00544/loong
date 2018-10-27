@@ -38,18 +38,19 @@ public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        ImageView iv = holder.getImageView(R.id.imageView);
         RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
                 (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).error(R.drawable
                 .icon_boy_head).override(120, 120);
+        Glide.with(context).load(mData.getLogo()).apply(requestOptions)
+                .into(iv);
+
+        ImageView iv2 = holder.getImageView(R.id.imageView3);
         RoundedCornersTransformation roundedCorners = new RoundedCornersTransformation(6, 0,
                 RoundedCornersTransformation.CornerType.RIGHT);
         RequestOptions requestOptions2 = RequestOptions.bitmapTransform(roundedCorners)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override
                         (ToolUtils.dip2px(context,120), ToolUtils.dip2px(context,120));
-        ImageView iv = holder.getImageView(R.id.imageView);
-        Glide.with(context).load(mData.getLogo()).apply(requestOptions)
-                .into(iv);
-        ImageView iv2 = holder.getImageView(R.id.imageView3);
         if(mData.getComment_imgs().size() > 0){
             Glide.with(context).load(mData.getComment_imgs().get(0).getComment_img()).apply
                     (requestOptions2).into(iv2);

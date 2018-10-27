@@ -11,13 +11,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="0.5dp"
-        android:background="@drawable/bottom_border"
-        android:scaleType="centerCrop"
-        android:src="@drawable/icon_no_pic"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/icon_no_pic" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView164"

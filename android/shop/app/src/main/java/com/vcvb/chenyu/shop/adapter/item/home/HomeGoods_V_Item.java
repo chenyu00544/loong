@@ -101,11 +101,11 @@ public class HomeGoods_V_Item extends BaseItem<Goods> {
         }
 
         ImageView iv = holder.get(R.id.imageView78);
-        RoundedCornersTransformation roundedCorners = new RoundedCornersTransformation(ToolUtils.dip2px(context, 5), 0,
+        RoundedCornersTransformation roundedCorners = new RoundedCornersTransformation(8, 0,
                 RoundedCornersTransformation.CornerType.TOP);
-        RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override(
-                        (width - ToolUtils.dip2px(context, 9)) / 2, (width - ToolUtils.dip2px(context, 9)) / 2);
+        RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners).placeholder(R
+                .drawable.icon_goods_no_pic_v).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache
+                (true);
         Glide.with(context).load(mData.getOriginal_img()).apply(requestOptions).into(iv);
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();

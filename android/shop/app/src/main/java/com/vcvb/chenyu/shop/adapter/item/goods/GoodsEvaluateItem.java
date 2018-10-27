@@ -1,6 +1,5 @@
 package com.vcvb.chenyu.shop.adapter.item.goods;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
@@ -51,7 +50,6 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
         return base;
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView commentTitle = holder.getTextView(R.id.textView23);
@@ -63,7 +61,7 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
         commentTitle.setText("商品评价(" + String.valueOf(commentCount) + ")");
         if (mData.getComments_number() > 0) {
             TextView goodPercentTv = holder.getTextView(R.id.textView22);
-            Double goodPercent = (double) (commentCount / mData.getComments_number())*100;
+            Double goodPercent = (double) (commentCount / mData.getComments_number()) * 100;
             goodPercentTv.setText("好评率 " + String.valueOf(goodPercent) + "%");
         }
 
@@ -81,8 +79,9 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
                 textView.setBackgroundResource(R.drawable.shape_tip);
                 textView.setTextColor(context.getResources().getColor(R.color.black_29));
                 textView.setTextSize(12);
-                textView.setText(mData.getCommentLabels().get(i).getLabel_name() + "(" + mData
-                        .getCommentLabels().get(i).getCount() + ")");
+                String str = "%s(%s)";
+                textView.setText(String.format(str, mData.getCommentLabels().get(i).getLabel_name
+                        (), mData.getCommentLabels().get(i).getCount()));
                 flowLayout.addView(textView);
                 posMap.put(textView.getId(), Integer.MAX_VALUE - i);
                 textView.setOnClickListener(listener);

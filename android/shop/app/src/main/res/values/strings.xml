@@ -114,6 +114,7 @@
     <string name="hot_sale">热销榜</string>
 
     <string name="Include_tax">包税</string>
+    <string name="tax">税率:</string>
     <string name="Include_ship">包邮</string>
     <string name="Include_discount">优惠</string>
     <string name="ship_free">运费</string>
