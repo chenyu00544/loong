@@ -119,6 +119,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
             $goods_detail->faat = $faats;
 
+            //退货货标志
             $goods_cause = explode(',', $goods_detail->goods_cause);
             $causes = [];
             $causeName = Common::causeName();

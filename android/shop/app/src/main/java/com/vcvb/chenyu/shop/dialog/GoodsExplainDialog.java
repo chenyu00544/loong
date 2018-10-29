@@ -92,8 +92,13 @@ public class GoodsExplainDialog extends DialogFragment {
 
     @Override
     public void show(FragmentManager manager, String tag) {
-        super.show(manager, tag);
-        this.tag = tag;
+        try {
+            this.tag = tag;
+            manager.beginTransaction().remove(this).commit();
+            super.show(manager, tag);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     protected List<Item> getItems(List<GoodsDescription> list) {

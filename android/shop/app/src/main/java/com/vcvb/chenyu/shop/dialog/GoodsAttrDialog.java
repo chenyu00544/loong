@@ -61,6 +61,7 @@ public class GoodsAttrDialog extends DialogFragment {
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     private GridLayoutManager mLayoutManager;
     GoodsDetail goodsDetail;
+    List<List<GoodsAttr>> multiAttrs;
 
     @SuppressLint("ValidFragment")
     public GoodsAttrDialog(GoodsDetail goodsDetail) {
@@ -98,13 +99,13 @@ public class GoodsAttrDialog extends DialogFragment {
         String str = "税率" + goodsDetail.getGoodsTexAttr().getAttr_value() + "%";
         tax.setText(str);
 
-        List<List<GoodsAttr>> attrs = goodsDetail.getMultiAttrs();
+        multiAttrs = goodsDetail.getMultiAttrs();
 
-        if (attrs != null) {
-            if (attrs.size() > 0) {
-                if (attrs.get(0) != null) {
-                    if (attrs.get(0).size() > 0) {
-                        Glide.with(context).load(attrs.get(0).get(0).getAttr_img_flie()).apply
+        if (multiAttrs != null) {
+            if (multiAttrs.size() > 0) {
+                if (multiAttrs.get(0) != null) {
+                    if (multiAttrs.get(0).size() > 0) {
+                        Glide.with(context).load(multiAttrs.get(0).get(0).getAttr_img_flie()).apply
                                 (requestOptions).into(attrImg);
                     }
                 }
@@ -146,10 +147,10 @@ public class GoodsAttrDialog extends DialogFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new CYCSimpleAdapter();
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.addAll(getItems(attrs));
+        mAdapter.addAll(getItems(multiAttrs));
         Integer row = 1;
-        if (attrs != null) {
-            row = attrs.size();
+        if (multiAttrs != null) {
+            row = multiAttrs.size();
         }
         int height = 50 * row;
         if (height > 200) {
@@ -175,23 +176,34 @@ public class GoodsAttrDialog extends DialogFragment {
 
     @Override
     public void show(FragmentManager manager, String tag) {
-        super.show(manager, tag);
-        this.tag = tag;
+        try {
+            this.tag = tag;
+            manager.beginTransaction().remove(this).commit();
+            super.show(manager, tag);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     protected List<Item> getItems(List<List<GoodsAttr>> attrs) {
         List<Item> cells = new ArrayList<>();
+
+        List<Integer> attr_ids = new ArrayList<>();
+        List<Integer> goods_attr_ids = new ArrayList<>();
+
         for (int i = 0; i < attrs.size(); i++) {
             GoodsAttrsItem goodsAttrsItem = new GoodsAttrsItem(attrs.get(i), context);
             goodsAttrsItem.setOnItemClickListener(listenerAttr);
             cells.add(goodsAttrsItem);
             for (int j = 0; j < attrs.get(i).size(); j++) {
                 if (attrs.get(i).get(j).getIsSelect()) {
-                    outAttr.put(attrs.get(i).get(j).getAttr_id(), attrs.get(i).get(j)
-                            .getGoods_attr_id());
+                    attr_ids.add(attrs.get(i).get(j).getAttr_id());
+                    goods_attr_ids.add(attrs.get(i).get(j).getGoods_attr_id());
                 }
             }
         }
+        outAttr.put("attr_ids", attr_ids);
+        outAttr.put("goods_attr_ids", goods_attr_ids);
         return cells;
     }
 
@@ -215,17 +227,28 @@ public class GoodsAttrDialog extends DialogFragment {
     GoodsAttrsItem.OnClickListener listenerAttr = new GoodsAttrsItem.OnClickListener() {
         @Override
         public void onClicked(View view, List<GoodsAttr> attrs, int pos) {
+            List<Integer> attr_ids = new ArrayList<>();
+            List<Integer> goods_attr_ids = new ArrayList<>();
+            System.out.println(pos);
             for (int i = 0; i < attrs.size(); i++) {
                 if (attrs.get(i).getIsSelect()) {
-                    outAttr.put(attrs.get(i).getAttr_id(), attrs.get(i).getGoods_attr_id());
                     if (attrs.get(i).getAttr_img_flie() != null && !attrs.get(i).getAttr_img_flie
                             ().equals("")) {
                         Glide.with(context).load(attrs.get(i).getAttr_img_flie()).apply
                                 (requestOptions).into(attrImg);
                     }
-                    System.out.println(outAttr);
                 }
             }
+            for (int i = 0; i < multiAttrs.size(); i++) {
+                for (int j = 0; j < multiAttrs.get(i).size(); j++) {
+                    if (multiAttrs.get(i).get(j).getIsSelect()) {
+                        attr_ids.add(multiAttrs.get(i).get(j).getAttr_id());
+                        goods_attr_ids.add(multiAttrs.get(i).get(j).getGoods_attr_id());
+                    }
+                }
+            }
+            outAttr.put("attr_ids", attr_ids);
+            outAttr.put("goods_attr_ids", goods_attr_ids);
         }
     };
 

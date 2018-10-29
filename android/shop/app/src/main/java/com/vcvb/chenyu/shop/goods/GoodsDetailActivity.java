@@ -1,12 +1,12 @@
 package com.vcvb.chenyu.shop.goods;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -96,6 +96,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     private boolean isCollection = false;
 
     public LoginDialog loginDialog;
+    IDataStorage dataStorage;
 
     public GoodsDetailActivity() {
     }
@@ -108,6 +109,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         changeStatusBarTextColor(true);
         goods_id = getIntent().getIntExtra("id", 0);
+        dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
         setNavBack();
         initView();
         initListener();
@@ -344,11 +346,20 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsAttrDialog = new GoodsAttrDialog(goodsDetails);
                 goodsAttrDialog.setOnItemClickListener(attrDialogListener);
 
-                if (goodsDetails.getCount_cart() > 0) {
+                if (goodsDetails.getCount_cart() > 0 && (UserInfoUtils.getInstance(context)
+                        .getUserInfo().get("token") != null || UserInfoUtils.getInstance(context)
+                        .getUserInfo().get("token") != "")) {
                     cartNum.setAlpha(1);
                     cartNum.setText(String.valueOf(goodsDetails.getCount_cart()));
                 } else {
-                    cartNum.setAlpha(0);
+                    List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
+                    if (cartBeans.size() > 0) {
+                        String str = "%s";
+                        cartNum.setAlpha(1);
+                        cartNum.setText(String.format(str, cartBeans.size()));
+                    } else {
+                        cartNum.setAlpha(0);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -427,6 +438,51 @@ public class GoodsDetailActivity extends GoodsActivity {
         return cells;
     }
 
+    //添加到购物车
+    public void addCart(HashMap<String, Object> attr) {
+        System.out.println(attr);
+//        loadingDialog.show();
+        HashMap<String, String> mp = new HashMap<>();
+
+        if (UserInfoUtils.getInstance(context).getUserInfo().get("token") == null ||
+                UserInfoUtils.getInstance(context).getUserInfo().get("token") == "") {
+            List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
+
+            List<Integer> goods_attr_ids_bak = (List<Integer>) attr.get("goods_attr_ids");
+            if (cartBeans.size() > 0) {
+                for (int i = 0; i < cartBeans.size(); i++) {
+                    List<Integer> goods_attr_ids = cartBeans.get(i).getGoods_attr_ids();
+                    for (int j = 0; j < goods_attr_ids.size(); j++) {
+                        if (goods_attr_ids_bak.get(j).equals(goods_attr_ids.get(j))) {
+
+                        }
+                    }
+                }
+            } else {
+                LocalCartBean localCartBean = new LocalCartBean();
+                localCartBean.setGoods_id(goods_id);
+                localCartBean.setNum((Integer) attr.get("num"));
+                localCartBean.setAttr_ids((List<Integer>) attr.get("attr_ids"));
+                localCartBean.setGoods_attr_ids((List<Integer>) attr.get("goods_attr_ids"));
+                localCartBean.setHash_code(String.valueOf(localCartBean.hashCode()));
+                cartBeans.add(localCartBean);
+                dataStorage.storeOrUpdate(cartBeans);
+            }
+
+            cartBeans = dataStorage.loadAll(LocalCartBean.class);
+            if (cartBeans.size() > 0) {
+                String str = "%s";
+                cartNum.setAlpha(1);
+                cartNum.setText(String.format(str, cartBeans.size()));
+            } else {
+                cartNum.setAlpha(0);
+            }
+        } else {
+            mp.put("goods_id", goods_id + "");
+            mp.put("token", (String) UserInfoUtils.getInstance(context).getUserInfo().get("token"));
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -439,7 +495,7 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     @Override
     protected void onDestroy() {
-        setContentView(R.layout.view_null);
+        loadingDialog.dismiss();
         super.onDestroy();
     }
 
@@ -550,14 +606,17 @@ public class GoodsDetailActivity extends GoodsActivity {
                     break;
                 case "Sure":
                     selectAttrs.clear();
-                    for (int i = 0; i < goodsDetails.getMultiAttrs().size(); i++) {
-                        for (int j = 0; j < goodsDetails.getMultiAttrs().get(i).size(); j++) {
-                            Integer goods_attr_id = (Integer) attr.get(goodsDetails.getMultiAttrs
-                                    ().get(i).get(j).getAttr_id());
-                            if (goods_attr_id.equals(goodsDetails.getMultiAttrs().get(i).get(j)
-                                    .getGoods_attr_id())) {
-                                selectAttrs.add(goodsDetails.getMultiAttrs().get(i).get(j));
-                                goodsDetails.getMultiAttrs().get(i).get(j).setIsSelect(true);
+                    List<List<GoodsAttr>> multiAttrs = goodsDetails.getMultiAttrs();
+                    for (int i = 0; i < multiAttrs.size(); i++) {
+                        for (int j = 0; j < multiAttrs.get(i).size(); j++) {
+                            List<Integer> goods_attr_ids = (List<Integer>) attr.get
+                                    ("goods_attr_ids");
+                            for (Integer goods_attr_id : goods_attr_ids) {
+                                if (goods_attr_id.equals(multiAttrs.get(i).get(j)
+                                        .getGoods_attr_id())) {
+                                    selectAttrs.add(multiAttrs.get(i).get(j));
+                                    goodsDetails.getMultiAttrs().get(i).get(j).setIsSelect(true);
+                                }
                             }
                         }
                     }
@@ -654,24 +713,6 @@ public class GoodsDetailActivity extends GoodsActivity {
         loginDialog.show();
     }
 
-    //添加到购物车
-    @SuppressLint("MissingPermission")
-    public void addCart(HashMap<String, Object> attr) {
-        System.out.println(attr);
-//        loadingDialog.show();
-        HashMap<String, String> mp = new HashMap<>();
-
-        if (UserInfoUtils.getInstance(context).getUserInfo().get("token") == null ||
-                UserInfoUtils.getInstance(context).getUserInfo().get("token") == "") {
-            List<LocalCartBean> cartBeans = new ArrayList<>();
-            IDataStorage dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
-            cartBeans = dataStorage.loadAll(LocalCartBean.class);
-        }else{
-            mp.put("goods_id", goods_id + "");
-            mp.put("token", (String) UserInfoUtils.getInstance(context).getUserInfo().get("token"));
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -681,4 +722,11 @@ public class GoodsDetailActivity extends GoodsActivity {
             }
         }
     }
+
+    @Override
+    public void onPanelClosed(int featureId, Menu menu) {
+        super.onPanelClosed(featureId, menu);
+    }
+
+
 }
