@@ -170,7 +170,8 @@ public class LoginDialog extends Dialog {
                             "5-8])|(18[0-9])|(147))\\d{8}$");
                     Matcher m = p.matcher(phoneEdit.getText().toString());
                     if (m.matches()) {
-                        CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
+                        CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME,
+                                false);
                         CountDownTimeUtils.startCountdown(phoneQRCode);
                     } else {
                         ToastUtils.showShortToast(getContext(), "输入的手机号码不正确");
@@ -323,12 +324,12 @@ public class LoginDialog extends Dialog {
                         if (onDialogClickListener != null) {
                             HashMap<String, String> user = new HashMap<>();
                             user.put("username", phoneEdit.getText().toString());
-                            user.put("email", "");
-                            if (loginType) {
-                                user.put("qrcode", phonePassEdit.getText().toString());
-                            } else {
-                                user.put("password", phonePassEdit.getText().toString());
+                            if (loginType) {//验证码登录
+                                user.put("type", "1");
+                            } else {//密码登录
+                                user.put("type", "0");
                             }
+                            user.put("password", phonePassEdit.getText().toString());
                             System.out.println(user);
                             onDialogClickListener.onLoginClickListener(user);
                         }
@@ -351,8 +352,7 @@ public class LoginDialog extends Dialog {
                     public void onClick(View v) {
                         if (onDialogClickListener != null) {
                             HashMap<String, String> user = new HashMap<>();
-                            user.put("email", emailEdit.getText().toString());
-                            user.put("username", "");
+                            user.put("username", emailEdit.getText().toString());
                             user.put("password", emailPassEdit.getText().toString());
                             user.put("type", "0");
                             onDialogClickListener.onLoginClickListener(user);

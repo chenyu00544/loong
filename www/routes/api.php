@@ -42,4 +42,12 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('goods/detail', 'GoodsController@detail');
 
     Route::post('sms/send', 'SmsController@send');
+
+    Route::post('cart/index', 'CartController@index');
+    Route::post('cart/add', 'CartController@addCart');
+    Route::post('cart/set', 'CartController@setCart');
+    Route::post('cart/del', 'CartController@delCart');
+
+    Route::post('login/index', 'LoginController@index');
+    Route::post('login/reg', 'LoginController@register');
 });

@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Controllers\Shop\App;
+
+use App\Facades\Verifiable;
+use App\Repositories\App\UsersRepository;
+use Illuminate\Http\Request;
+
+class LoginController extends CommonController
+{
+
+    private $usersRepository;
+
+    public function __construct(
+        UsersRepository $usersRepository
+    )
+    {
+        parent::__construct();
+        $this->usersRepository = $usersRepository;
+    }
+
+    public function index(Request $request)
+    {
+        $ver = Verifiable::Validator($request->all(), ["username" => 'required', "password" => 'required']);
+        if (!$ver->passes()) {
+            return ['code' => 1, 'msg' => '账号密码错误', 'data' => ''];
+        }
+        $username = $request->get('username');
+        $password = $request->get('password');
+        $type = $request->get('type');
+
+        return $this->usersRepository->login($username, $password, $type);
+    }
+
+    public function register(Request $request)
+    {
+
+    }
+}

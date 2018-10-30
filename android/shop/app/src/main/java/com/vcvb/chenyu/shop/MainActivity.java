@@ -23,12 +23,20 @@ import com.vcvb.chenyu.shop.home.FragmentHome;
 import com.vcvb.chenyu.shop.home.FragmentMy;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import okhttp3.Call;
 
 public class MainActivity extends BaseActivity {
 
@@ -151,7 +159,8 @@ public class MainActivity extends BaseActivity {
             case 1:
                 if (fragmentCategory == null) {
                     fragmentCategory = new FragmentCategory();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentCategory, fragmentTag[1]);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentCategory,
+                            fragmentTag[1]);
                 } else {
                     fragmentTransaction.show(fragmentCategory);
                 }
@@ -237,22 +246,63 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onLoginClickListener(Map<String, String> user) {
                 LoadingDialog2.getInstance(context).show();
-                HashMap<String, String> u = new HashMap<>();
+                HashMap<String, String> mp = new HashMap<>();
+                mp.put("username", user.get("username"));
+                mp.put("password", user.get("password"));
+                mp.put("qrtype", user.get("type"));
+                HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
+                        () {
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        if (json != null) {
+                            try {
+                                if (json.getInt("code") == 0) {
+                                    JSONObject data = json.getJSONObject("data");
+                                    final String username = data.getString("user_name");
+                                    final String token = json.getString("token");
+                                    final String logo = data.getString("logo");
+                                    final String nick_name = data.getString("nick_name");
+                                    final String mobile_phone = data.getString("mobile_phone");
+                                    final String user_money = data.getString("user_money");
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            HashMap<String, String> u = new HashMap<>();
+                                            u.put("username", username);
+                                            u.put("token", token);
+                                            u.put("logo", logo);
+                                            u.put("nickname", nick_name);
+                                            u.put("mobile_phone", mobile_phone);
+                                            u.put("user_money", user_money);
+                                            UserInfoUtils.getInstance(context).setUserInfo(u);
 
-                //获取服务器数据
-                //..
-                u.put("username", "cb");
-                u.put("token",
-                        "eyJpdiI6ImN6S3l0RmcrSCt5Vmo5VUk2UTJ4Qnc9PSIsInZhbHVlIjoidStDQTVDY1h3ZmVsa01WbTFBUFdnZz09IiwibWFjIjoiOTFlZTFmODIxOTA1ZGI4MTJjM2IyOTNhYTlkMDhlZjhmOGM5ZjdiZDU0MDRhODI1ZDdmYTg2OTg3ZGQzOWIwMiJ9");
-                u.put("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg");
-                u.put("nickname", "chongchong");
+                                            LoadingDialog2.getInstance(context).dismiss();
+                                            Intent intent = new Intent();
+                                            intent.setAction("UserInfoCall");
+                                            LocalBroadcastManager.getInstance(context)
+                                                    .sendBroadcast(intent);
+                                            LoginDialog.getInstance(context).hide();
+                                        }
+                                    });
+                                } else {
+                                    ToastUtils.showShortToast(context, json.getString("msg"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
 
-                UserInfoUtils.getInstance(context).setUserInfo(u);
-                LoadingDialog2.getInstance(context).dismiss();
-                Intent intent = new Intent();
-                intent.setAction("UserInfoCall");
-                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                LoginDialog.getInstance(context).hide();
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "网络错误！", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
             }
         });
         LoginDialog.getInstance(this).show();

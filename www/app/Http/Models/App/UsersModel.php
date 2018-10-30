@@ -42,4 +42,12 @@ class UsersModel extends Model
             ->where($where)
             ->first();
     }
+
+    public function getUser($name, $column = ['*'])
+    {
+        return $this->select($column)
+            ->orWhere(['email' => $name])
+            ->orWhere(['mobile_phone' => $name])
+            ->first();
+    }
 }

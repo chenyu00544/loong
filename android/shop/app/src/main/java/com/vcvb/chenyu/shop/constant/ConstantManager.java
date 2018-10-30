@@ -90,5 +90,7 @@ public interface ConstantManager {
         public String HOMELOADMORE = URIHOST + "app/index/loadmore";
         public String GOODSDETAIL = URIHOST + "app/goods/detail";
         public String GETGEO = URIHOST + "region/geo/coder";
+        public String LOGIN = URIHOST + "app/login/index";
+        public String REGISTER = URIHOST + "app/login/reg";
     }
 }

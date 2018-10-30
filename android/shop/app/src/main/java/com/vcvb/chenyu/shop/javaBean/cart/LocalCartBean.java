@@ -8,7 +8,7 @@ import xiaofei.library.datastorage.annotation.ObjectId;
 @ClassId("LocalCartBean")
 public class LocalCartBean {
     @ObjectId
-    private String hash_code;
+    private String hash_code = "0";
 
     private Integer goods_id;
     private List<Integer> attr_ids;

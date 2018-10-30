@@ -206,7 +206,7 @@ public class GoodsDetailActivity extends GoodsActivity {
 
         final PopWin popWindow = new PopWin(GoodsDetailActivity.this, ToolUtils.dip2px(this, 156)
                 , ToolUtils.dip2px(this, 148));
-        final ImageView iv2 = (ImageView) findViewById(R.id.more);
+        final ImageView iv2 = findViewById(R.id.more);
         iv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -440,24 +440,36 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     //添加到购物车
     public void addCart(HashMap<String, Object> attr) {
-        System.out.println(attr);
 //        loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
 
         if (UserInfoUtils.getInstance(context).getUserInfo().get("token") == null ||
                 UserInfoUtils.getInstance(context).getUserInfo().get("token") == "") {
             List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
-
+            boolean bool = false;
             List<Integer> goods_attr_ids_bak = (List<Integer>) attr.get("goods_attr_ids");
             if (cartBeans.size() > 0) {
+
                 for (int i = 0; i < cartBeans.size(); i++) {
                     List<Integer> goods_attr_ids = cartBeans.get(i).getGoods_attr_ids();
-                    for (int j = 0; j < goods_attr_ids.size(); j++) {
-                        if (goods_attr_ids_bak.get(j).equals(goods_attr_ids.get(j))) {
-
-                        }
+                    if(goods_attr_ids.containsAll(goods_attr_ids_bak) && goods_attr_ids.size() == goods_attr_ids_bak.size()){
+                        bool = true;
+                    }
+                    if (bool) {
+                        cartBeans.get(i).setNum(cartBeans.get(i).getNum() + 1);
                     }
                 }
+
+                if (!bool) {
+                    LocalCartBean localCartBean = new LocalCartBean();
+                    localCartBean.setGoods_id(goods_id);
+                    localCartBean.setNum((Integer) attr.get("num"));
+                    localCartBean.setAttr_ids((List<Integer>) attr.get("attr_ids"));
+                    localCartBean.setGoods_attr_ids((List<Integer>) attr.get("goods_attr_ids"));
+                    localCartBean.setHash_code(String.valueOf(localCartBean.hashCode()));
+                    cartBeans.add(localCartBean);
+                }
+                dataStorage.storeOrUpdate(cartBeans);
             } else {
                 LocalCartBean localCartBean = new LocalCartBean();
                 localCartBean.setGoods_id(goods_id);
