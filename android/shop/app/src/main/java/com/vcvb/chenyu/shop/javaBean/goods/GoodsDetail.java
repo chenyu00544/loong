@@ -28,6 +28,7 @@ public class GoodsDetail {
     private Integer tid;
     private Integer count_cart;
     private Integer comments_number;
+    private Integer collect;
     private String cat_id;
     private String goods_name;
     private String goods_sn;
@@ -65,7 +66,6 @@ public class GoodsDetail {
     private GoodsAttr goodsTexAttr;
     private GoodsFaat goodsFaat;
     private GoodsBrand goodsBrand;
-
 
     public int getIsScroll() {
         return isScroll;
@@ -475,6 +475,14 @@ public class GoodsDetail {
         this.count_cart = count_cart;
     }
 
+    public Integer getCollect() {
+        return collect;
+    }
+
+    public void setCollect(Integer collect) {
+        this.collect = collect;
+    }
+
     public void setData(JSONObject Json) throws JSONException {
         this.setBanner(Json);
         this.setCommentLabel(Json);
@@ -526,6 +534,7 @@ public class GoodsDetail {
         this.setMarket_price_format(Json.getString("market_price_format"));
         this.setPromote_price_format(Json.getString("promote_price_format"));
         this.setCount_cart(Json.getInt("count_cart"));
+        this.setCollect(Json.getInt("collect"));
     }
 
     private void setBanner(JSONObject Json) {

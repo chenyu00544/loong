@@ -11,19 +11,24 @@ namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CartModel extends Model
+class CollectStoreModel extends Model
 {
-    protected $table = 'cart';
+    protected $table = 'collect_store';
     protected $primaryKey = 'rec_id';
     public $timestamps = false;
     protected $guarded = [];
 
-    public function countCart($where)
+    public function getCollectStore($where)
     {
-        return $this->where($where)->count();
+        return $this->where($where)->first();
     }
 
-    public function addCart($data)
+    public function setCollectStore($where, $data)
+    {
+        return $this->where($where)->update($data);
+    }
+
+    public function addCollectStore($data)
     {
         return $this->create($data);
     }

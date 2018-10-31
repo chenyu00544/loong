@@ -130,11 +130,18 @@ public class HttpUtils {
 
     //异步post
     public void post(String url, Map<String, String> params, final NetCall netCall) {
+        //构造token
+        String token = "";
+        if (params.get("token") != null) {
+            token = params.get("token");
+            params.remove("token");
+        }
         //1构造RequestBody
         RequestBody body = setRequestBody(params);
         //2 构造Request
         Request.Builder requestBuilder = new Request.Builder();
-        Request request = requestBuilder.post(body).url(url).build();
+        Request request = requestBuilder.addHeader("vcvbuy-Authorization", token).post(body).url
+                (url).build();
         //3 将Request封装为Call
         Call call = client.newCall(request);
         //4 执行Call

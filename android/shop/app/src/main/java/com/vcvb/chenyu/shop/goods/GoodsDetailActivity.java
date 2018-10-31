@@ -55,9 +55,11 @@ import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.TimeUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -73,6 +75,7 @@ import xiaofei.library.datastorage.IDataStorage;
 
 public class GoodsDetailActivity extends GoodsActivity {
     private int goods_id;
+    private String token;
     private JSONObject goodsJson;
 
     int pos = 0;
@@ -93,8 +96,6 @@ public class GoodsDetailActivity extends GoodsActivity {
     private ArrayList<GoodsAttr> selectAttrs = new ArrayList<>();
     private ArrayList<GoodsShip> ships = new ArrayList<>();
 
-    private boolean isCollection = false;
-
     public LoginDialog loginDialog;
     IDataStorage dataStorage;
 
@@ -110,6 +111,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         changeStatusBarTextColor(true);
         goods_id = getIntent().getIntExtra("id", 0);
         dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         setNavBack();
         initView();
         initListener();
@@ -129,7 +131,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
         mp.put("goods_id", goods_id + "");
-        mp.put("token", (String) UserInfoUtils.getInstance(context).getUserInfo().get("token"));
+        mp.put("token", token);
         HttpUtils.getInstance().post(ConstantManager.Url.GOODSDETAIL, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
@@ -346,10 +348,12 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsAttrDialog = new GoodsAttrDialog(goodsDetails);
                 goodsAttrDialog.setOnItemClickListener(attrDialogListener);
 
-                if (goodsDetails.getCount_cart() > 0 && (UserInfoUtils.getInstance(context)
-                        .getUserInfo().get("token") != null || UserInfoUtils.getInstance(context)
-                        .getUserInfo().get("token") != "")) {
-                    cartNum.setAlpha(1);
+                if (token != null && !token.equals("")) {
+                    if (goodsDetails.getCount_cart() > 0) {
+                        cartNum.setAlpha(1);
+                    } else {
+                        cartNum.setAlpha(0);
+                    }
                     cartNum.setText(String.valueOf(goodsDetails.getCount_cart()));
                 } else {
                     List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
@@ -360,6 +364,11 @@ public class GoodsDetailActivity extends GoodsActivity {
                     } else {
                         cartNum.setAlpha(0);
                     }
+                }
+                if (goodsDetails.getCollect() == 0) {
+                    Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
+                } else {
+                    Glide.with(context).load(R.drawable.icon_love_active).into(collectionView);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -440,19 +449,17 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     //添加到购物车
     public void addCart(HashMap<String, Object> attr) {
-//        loadingDialog.show();
-        HashMap<String, String> mp = new HashMap<>();
-
-        if (UserInfoUtils.getInstance(context).getUserInfo().get("token") == null ||
-                UserInfoUtils.getInstance(context).getUserInfo().get("token") == "") {
+        loadingDialog.show();
+        List<Integer> goods_attr_ids_bak = (List<Integer>) attr.get("goods_attr_ids");
+        if (token == null || token.equals("")) {
             List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
             boolean bool = false;
-            List<Integer> goods_attr_ids_bak = (List<Integer>) attr.get("goods_attr_ids");
             if (cartBeans.size() > 0) {
 
                 for (int i = 0; i < cartBeans.size(); i++) {
                     List<Integer> goods_attr_ids = cartBeans.get(i).getGoods_attr_ids();
-                    if(goods_attr_ids.containsAll(goods_attr_ids_bak) && goods_attr_ids.size() == goods_attr_ids_bak.size()){
+                    if (goods_attr_ids.containsAll(goods_attr_ids_bak) && goods_attr_ids.size()
+                            == goods_attr_ids_bak.size()) {
                         bool = true;
                     }
                     if (bool) {
@@ -490,8 +497,93 @@ public class GoodsDetailActivity extends GoodsActivity {
                 cartNum.setAlpha(0);
             }
         } else {
+            HashMap<String, String> mp = new HashMap<>();
             mp.put("goods_id", goods_id + "");
-            mp.put("token", (String) UserInfoUtils.getInstance(context).getUserInfo().get("token"));
+            mp.put("token", token);
+            mp.put("goods_attr_ids", StringUtils.join(goods_attr_ids_bak, ","));
+            HttpUtils.getInstance().post(ConstantManager.Url.ADDCART, mp, new HttpUtils.NetCall() {
+                @Override
+                public void success(Call call, JSONObject json) throws IOException {
+                    System.out.println(json);
+                    if (json != null) {
+                        try {
+                            if (json.getInt("code") == 0) {
+                                String str = "%s";
+                                cartNum.setAlpha(1);
+                                cartNum.setText(String.format(str, goodsDetails.getCount_cart() +
+                                        1));
+                            } else {
+                                ToastUtils.showShortToast(context, "已添加");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.hide();
+                        }
+                    });
+                }
+
+                @Override
+                public void failed(Call call, IOException e) {
+
+                }
+            });
+        }
+    }
+
+    //收藏
+    public void collectionGoods() {
+        if (token == null || token.equals("")) {
+            showLoginDialog();
+        } else {
+            HashMap<String, String> mp = new HashMap<>();
+            mp.put("goods_id", goods_id + "");
+            mp.put("token", token);
+            HttpUtils.getInstance().post(ConstantManager.Url.COLLECTGOODS, mp, new HttpUtils
+                    .NetCall() {
+                @Override
+                public void success(Call call, JSONObject json) throws IOException {
+                    System.out.println(json);
+                    try {
+                        if (json.getInt("code") == 0) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                }
+                            });
+                            if (json.getInt("is_attention") == 1) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Glide.with(context).load(R.drawable.icon_love_active)
+                                                .into(collectionView);
+                                    }
+                                });
+                            } else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Glide.with(context).load(R.drawable.icon_love_black).into
+                                                (collectionView);
+                                    }
+                                });
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void failed(Call call, IOException e) {
+
+                }
+            });
         }
     }
 
@@ -526,13 +618,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     startActivity(intent);
                     break;
                 case R.id.collection:
-                    if (isCollection) {
-                        Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
-                        isCollection = false;
-                    } else {
-                        Glide.with(context).load(R.drawable.icon_love_active).into(collectionView);
-                        isCollection = true;
-                    }
+                    collectionGoods();
                     break;
             }
         }
@@ -645,8 +731,6 @@ public class GoodsDetailActivity extends GoodsActivity {
         public void onClicked(View view, int pos) {
             //前往添加地址
             if (pos == -1) {
-                String token = (String) UserInfoUtils.getInstance(context).getUserInfo().get
-                        ("token");
                 if (token != null && !token.equals("")) {
                     Intent intent = new Intent(GoodsDetailActivity.this, ModifyAddressActivity
                             .class);
@@ -701,25 +785,59 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onLoginClickListener(Map<String, String> user) {
                 LoadingDialog2.getInstance(context).show();
-                System.out.println(user);
-                HashMap<String, String> u = new HashMap<>();
-                //获取服务器数据
-                //..
-                u.put("username", "cb");
-                u.put("token",
-                        "eyJpdiI6ImN6S3l0RmcrSCt5Vmo5VUk2UTJ4Qnc9PSIsInZhbHVlIjoidStDQTVDY1h3ZmVsa01WbTFBUFdnZz09IiwibWFjIjoiOTFlZTFmODIxOTA1ZGI4MTJjM2IyOTNhYTlkMDhlZjhmOGM5ZjdiZDU0MDRhODI1ZDdmYTg2OTg3ZGQzOWIwMiJ9");
-                u.put("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o.jpg");
-                u.put("nickname", "chongchong");
+                HashMap<String, String> mp = new HashMap<>();
+                mp.put("username", user.get("username"));
+                mp.put("password", user.get("password"));
+                mp.put("qrtype", user.get("type"));
+                HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
+                        () {
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        if (json != null) {
+                            try {
+                                if (json.getInt("code") == 0) {
+                                    JSONObject data = json.getJSONObject("data");
+                                    final String username = data.getString("user_name");
+                                    final String _token = json.getString("token");
+                                    final String logo = data.getString("logo");
+                                    final String nick_name = data.getString("nick_name");
+                                    final String mobile_phone = data.getString("mobile_phone");
+                                    final String user_money = data.getString("user_money");
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            HashMap<String, String> u = new HashMap<>();
+                                            u.put("username", username);
+                                            u.put("token", _token);
+                                            u.put("logo", logo);
+                                            u.put("nickname", nick_name);
+                                            u.put("mobile_phone", mobile_phone);
+                                            u.put("user_money", user_money);
+                                            UserInfoUtils.getInstance(context).setUserInfo(u);
+                                            token = _token;
+                                            LoadingDialog2.getInstance(context).dismiss();
+                                            loginDialog.hide();
+                                        }
+                                    });
+                                } else {
+                                    ToastUtils.showShortToast(context, json.getString("msg"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
 
-//                UserInfoUtils.getInstance(context).setUserInfo(u);
-
-                try {
-                    Thread.sleep(2000);
-                } catch (Exception e) {
-
-                }
-                LoadingDialog2.getInstance(context).dismiss();
-                loginDialog.hide();
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "网络错误！", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
             }
         });
         loginDialog.show();

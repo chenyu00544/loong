@@ -46,7 +46,7 @@ public class GoodsShipItem extends BaseItem<GoodsDetail> {
         String addressStr = (String) UserInfoUtils.getInstance(context).getUserInfo().get
                 ("formatted_address");
 
-        if (mData.getAddressBeans() != null) {
+        if (mData.getAddressBeans() != null && mData.getAddressBeans().size() > 0) {
             for (int i = 0; i < mData.getAddressBeans().size(); i++) {
                 if (mData.getAddressBeans().get(i).isDef()) {
                     String address_format = "至 %s %s %s %s";

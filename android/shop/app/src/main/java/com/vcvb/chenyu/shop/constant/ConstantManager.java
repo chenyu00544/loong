@@ -86,11 +86,20 @@ public interface ConstantManager {
 
     interface Url {
         public String URIHOST = "http://www.vcvbuy.com/api/";
+        public String GETGEO = URIHOST + "region/geo/coder";
+
         public String HOME = URIHOST + "app/index";
         public String HOMELOADMORE = URIHOST + "app/index/loadmore";
+
         public String GOODSDETAIL = URIHOST + "app/goods/detail";
-        public String GETGEO = URIHOST + "region/geo/coder";
+        public String ADDCART = URIHOST + "app/cart/add";
+
+
         public String LOGIN = URIHOST + "app/login/index";
         public String REGISTER = URIHOST + "app/login/reg";
+
+        public String COLLECTGOODS = URIHOST + "app/collect/goods";
+        public String COLLECTBRAND = URIHOST + "app/collect/brand";
+        public String COLLECTSTORE = URIHOST + "app/collect/store";
     }
 }

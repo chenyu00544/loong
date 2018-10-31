@@ -50,4 +50,8 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
 
     Route::post('login/index', 'LoginController@index');
     Route::post('login/reg', 'LoginController@register');
+
+    Route::post('collect/goods', 'CollectController@collectGoods');
+    Route::post('collect/brand', 'CollectController@collectBrand');
+    Route::post('collect/store', 'CollectController@collectStore');
 });

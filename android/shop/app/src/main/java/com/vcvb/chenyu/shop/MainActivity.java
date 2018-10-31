@@ -317,7 +317,9 @@ public class MainActivity extends BaseActivity {
         receiver = new Receiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
+                String str = intent.getAction();
+                assert str != null;
+                switch (str) {
                     case "LoginClick":
                         showLoginDialog();
                         break;

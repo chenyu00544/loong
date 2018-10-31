@@ -11,13 +11,16 @@ namespace App\Repositories\App;
 use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
+use App\Facades\RedisCache;
 use App\Http\Models\App\CartModel;
+use App\Http\Models\App\CollectGoodsModel;
 use App\Http\Models\App\CommentExtModel;
 use App\Http\Models\App\CommentLabelModel;
 use App\Http\Models\App\CommentModel;
 use App\Http\Models\App\FavourableGoodsModel;
 use App\Http\Models\App\GoodsDescriptionModel;
 use App\Http\Models\App\GoodsModel;
+use App\Http\Models\App\ProductsModel;
 use App\Http\Models\App\TransportModel;
 use App\Http\Models\App\UsersModel;
 
@@ -32,6 +35,8 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $goodsDescriptionModel;
     private $cartModel;
     private $favourableGoodsModel;
+    private $productsModel;
+    private $collectGoodsModel;
 
     public function __construct(
         GoodsModel $goodsModel,
@@ -42,7 +47,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         UsersModel $usersModel,
         GoodsDescriptionModel $goodsDescriptionModel,
         CartModel $cartModel,
-        FavourableGoodsModel $favourableGoodsModel
+        FavourableGoodsModel $favourableGoodsModel,
+        ProductsModel $productsModel,
+        CollectGoodsModel $collectGoodsModel
     )
     {
         $this->goodsModel = $goodsModel;
@@ -54,6 +61,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->goodsDescriptionModel = $goodsDescriptionModel;
         $this->cartModel = $cartModel;
         $this->favourableGoodsModel = $favourableGoodsModel;
+        $this->productsModel = $productsModel;
+        $this->collectGoodsModel = $collectGoodsModel;
     }
 
     public function getBestGoods($page = 1)
@@ -103,6 +112,8 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->market_price_format = Common::priceFormat($goods_detail->market_price);
             $goods_detail->promote_price_format = Common::priceFormat($goods_detail->promote_price);
             $goods_detail->count_cart = $this->cartModel->countCart(['user_id' => $user_id]);
+
+            $goods_detail->collect = $this->collectGoodsModel->countCollectGoods(['goods_id' => $goods_id, 'user_id' => $user_id, 'is_attention' => 1]);
 
             //大型活动
             $faats = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
@@ -219,5 +230,50 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->single_attr = $single_attr;
         }
         return $goods_detail;
+    }
+
+    public function addCart($request, $uid)
+    {
+        $goods_id = $request['goods_id'];
+        $where['goods_id'] = $goods_id;
+        $where['goods_attr_id'] = !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '';
+        if ($this->cartModel->countCart($where) == 0) {
+            $goods = $this->goodsModel->getGoods(['goods_id' => $goods_id]);
+            $goods_attr = [];
+            $attr_value = [];
+            if (!empty($request['goods_attr_ids'])) {
+                $goods_attr_ids = explode(',', $request['goods_attr_ids']);
+                $goods_attr = $this->productsModel->getProdcutAndAttr($goods_attr_ids);
+                foreach ($goods_attr->attrs as $attr) {
+                    $attr_value[] = $attr->attr_value;
+                }
+            }
+            $cart = [
+                'user_id' => $uid,
+                'goods_id' => $goods_id,
+                'goods_sn' => $goods->goods_sn,
+                'goods_name' => $goods->goods_name,
+                'market_price' => $goods->market_price,
+                'goods_price' => $goods->shop_price,
+                'goods_number' => 1,
+                'is_real' => $goods->is_real,
+                'goods_attr_id' => !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '',
+                'ru_id' => $goods->user_id,
+                'shopping_fee' => 0,
+                'warehouse_id' => 0,
+                'area_id' => 0,
+                'add_time' => time(),
+                'freight' => $goods->freight,
+                'tid' => $goods->tid,
+                'shipping_fee' => $goods->shipping_fee,
+                'take_time' => date(RedisCache::get('shop_config')['time_format'], time() + 86400 * 15),
+                'product_id' => !empty($goods_attr) ? $goods_attr->product_id : 0,
+                'goods_attr' => implode(',', $attr_value)
+            ];
+            $re = $this->cartModel->addCart($cart);
+            return $re;
+        }
+
+        return false;
     }
 }

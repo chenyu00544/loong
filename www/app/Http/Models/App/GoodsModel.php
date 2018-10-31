@@ -66,6 +66,13 @@ class GoodsModel extends Model
             ->get();
     }
 
+    public function getGoods($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
     public function getGoodsAndExt($where, $column = ['*'])
     {
         return $this->select($column)
