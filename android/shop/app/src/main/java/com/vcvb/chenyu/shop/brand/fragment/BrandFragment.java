@@ -126,8 +126,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             goodses.add(subbanner);
             for (int j = 0; j < 20; j++) {
                 Goods goods = new Goods();
-                goods.setGoodsName("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
-                goods.setPic("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + "" +
+                goods.setGoods_name("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
+                goods.setOriginal_img("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + "" +
                         ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
                 goodses.add(goods);
             }

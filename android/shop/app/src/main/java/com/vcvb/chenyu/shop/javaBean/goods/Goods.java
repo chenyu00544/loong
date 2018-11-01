@@ -1,9 +1,6 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
 public class Goods {
-    private String goodsId;
-    private String pic;
-    private String goodsName;
 
     private int goods_id;
     private String goods_name;
@@ -23,9 +20,14 @@ public class Goods {
     private String sales_volume;
     private String volume_number;
     private String volume_price;
+    private String goods_attr;
+    private String goods_attr_id;
     private Integer current_time;
     private Integer promote_start_date;
     private Integer promote_end_date;
+    private Integer ru_id;
+    private Integer product_id;
+    private Integer goods_number;
 
     public int getGoods_id() {
         return goods_id;
@@ -179,39 +181,45 @@ public class Goods {
         this.promote_start_date = promote_start_date;
     }
 
-
-
-
-
-
-    public String getGoodsId() {
-        return goodsId;
+    public String getGoods_attr() {
+        return goods_attr;
     }
 
-    public void setGoodsId(String goodsId) {
-        this.goodsId = goodsId;
+    public void setGoods_attr(String goods_attr) {
+        this.goods_attr = goods_attr;
     }
 
-    public String getGoodsName() {
-        return goodsName;
+    public String getGoods_attr_id() {
+        return goods_attr_id;
     }
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setGoods_attr_id(String goods_attr_id) {
+        this.goods_attr_id = goods_attr_id;
     }
 
-    public String getPic() {
-        return pic;
+    public Integer getRu_id() {
+        return ru_id;
     }
 
-    public void setPic(String pic) {
-        this.pic = pic;
+    public void setRu_id(Integer ru_id) {
+        this.ru_id = ru_id;
     }
 
+    public Integer getProduct_id() {
+        return product_id;
+    }
 
+    public void setProduct_id(Integer product_id) {
+        this.product_id = product_id;
+    }
 
+    public Integer getGoods_number() {
+        return goods_number;
+    }
 
-
+    public void setGoods_number(Integer goods_number) {
+        this.goods_number = goods_number;
+    }
 
     public String getMarket_price_format() {
         return market_price_format;

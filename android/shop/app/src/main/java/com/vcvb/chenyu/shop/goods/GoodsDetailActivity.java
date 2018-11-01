@@ -45,7 +45,6 @@ import com.vcvb.chenyu.shop.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.javaBean.cart.LocalCartBean;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsShip;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
 import com.vcvb.chenyu.shop.mycenter.CartActivity;
 import com.vcvb.chenyu.shop.mycenter.ModifyAddressActivity;
@@ -94,7 +93,6 @@ public class GoodsDetailActivity extends GoodsActivity {
     private GoodsExplainDialog goodsExplainDialog;
 
     private ArrayList<GoodsAttr> selectAttrs = new ArrayList<>();
-    private ArrayList<GoodsShip> ships = new ArrayList<>();
 
     public LoginDialog loginDialog;
     IDataStorage dataStorage;
@@ -140,7 +138,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            loadingDialog.hide();
+                            loadingDialog.dismiss();
                             bindData();
                         }
                     });
@@ -152,6 +150,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        loadingDialog.dismiss();
                         Toast.makeText(context, "网络错误！", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -321,10 +320,16 @@ public class GoodsDetailActivity extends GoodsActivity {
         TextView buy = findViewById(R.id.textView32);
         TextView addCart = findViewById(R.id.textView31);
         ImageView iv1 = findViewById(R.id.imageView11);
+        TextView server = findViewById(R.id.textView26);
+
         ImageView iv2 = findViewById(R.id.imageView13);
+        TextView cart = findViewById(R.id.textView27);
+        iv2.setOnClickListener(listener);
+        cart.setOnClickListener(listener);
+
         buy.setOnClickListener(listener);
         addCart.setOnClickListener(listener);
-        iv2.setOnClickListener(listener);
+
 
         goodsDetail = findViewById(R.id.goods_detail);
         goodsDetail.setFlingScale(0.3);
@@ -513,7 +518,12 @@ public class GoodsDetailActivity extends GoodsActivity {
                                 cartNum.setText(String.format(str, goodsDetails.getCount_cart() +
                                         1));
                             } else {
-                                ToastUtils.showShortToast(context, "已添加");
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtils.showShortToast(context, "已添加");
+                                    }
+                                });
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -522,7 +532,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            loadingDialog.hide();
+                            loadingDialog.dismiss();
                         }
                     });
                 }
@@ -587,6 +597,93 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
     }
 
+    //显示登录框
+    public void showLoginDialog() {
+        loginDialog = new LoginDialog(context);
+        loginDialog.setOnDialogClickListener(new LoginDialog.OnDialogClickListener() {
+            @Override
+            public void onPhoneClickListener() {
+                System.out.println("onPhoneClickListener");
+                loginDialog.phoneLogin();
+            }
+
+            @Override
+            public void onEmailClickListener() {
+                System.out.println("onEmailClickListener");
+                loginDialog.emailLogin();
+            }
+
+            @Override
+            public void onRegisterClickListener() {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivityForResult(intent, ConstantManager.REGISTER_FOR_MY);
+            }
+
+            @Override
+            public void onProblemClickListener() {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLoginClickListener(Map<String, String> user) {
+                LoadingDialog2.getInstance(context).show();
+                HashMap<String, String> mp = new HashMap<>();
+                mp.put("username", user.get("username"));
+                mp.put("password", user.get("password"));
+                mp.put("qrtype", user.get("type"));
+                HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
+                        () {
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        if (json != null) {
+                            try {
+                                if (json.getInt("code") == 0) {
+                                    JSONObject data = json.getJSONObject("data");
+                                    final String username = data.getString("user_name");
+                                    final String _token = json.getString("token");
+                                    final String logo = data.getString("logo");
+                                    final String nick_name = data.getString("nick_name");
+                                    final String mobile_phone = data.getString("mobile_phone");
+                                    final String user_money = data.getString("user_money");
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            HashMap<String, String> u = new HashMap<>();
+                                            u.put("username", username);
+                                            u.put("token", _token);
+                                            u.put("logo", logo);
+                                            u.put("nickname", nick_name);
+                                            u.put("mobile_phone", mobile_phone);
+                                            u.put("user_money", user_money);
+                                            UserInfoUtils.getInstance(context).setUserInfo(u);
+                                            token = _token;
+                                            LoadingDialog2.getInstance(context).dismiss();
+                                            loginDialog.hide();
+                                        }
+                                    });
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "网络错误！", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        loginDialog.show();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -613,6 +710,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 case R.id.textView31:
                     goodsAttrDialog.show(getSupportFragmentManager(), "AddCart");
                     break;
+                case R.id.textView27:
                 case R.id.imageView13:
                     Intent intent = new Intent(context, CartActivity.class);
                     startActivity(intent);
@@ -753,95 +851,6 @@ public class GoodsDetailActivity extends GoodsActivity {
             goodsAddressDialog.dismiss();
         }
     };
-
-    //显示登录框
-    public void showLoginDialog() {
-        loginDialog = new LoginDialog(context);
-        loginDialog.setOnDialogClickListener(new LoginDialog.OnDialogClickListener() {
-            @Override
-            public void onPhoneClickListener() {
-                System.out.println("onPhoneClickListener");
-                loginDialog.phoneLogin();
-            }
-
-            @Override
-            public void onEmailClickListener() {
-                System.out.println("onEmailClickListener");
-                loginDialog.emailLogin();
-            }
-
-            @Override
-            public void onRegisterClickListener() {
-                Intent intent = new Intent(context, RegisterActivity.class);
-                startActivityForResult(intent, ConstantManager.REGISTER_FOR_MY);
-            }
-
-            @Override
-            public void onProblemClickListener() {
-                Intent intent = new Intent(context, RegisterActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onLoginClickListener(Map<String, String> user) {
-                LoadingDialog2.getInstance(context).show();
-                HashMap<String, String> mp = new HashMap<>();
-                mp.put("username", user.get("username"));
-                mp.put("password", user.get("password"));
-                mp.put("qrtype", user.get("type"));
-                HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
-                        () {
-                    @Override
-                    public void success(Call call, JSONObject json) throws IOException {
-                        if (json != null) {
-                            try {
-                                if (json.getInt("code") == 0) {
-                                    JSONObject data = json.getJSONObject("data");
-                                    final String username = data.getString("user_name");
-                                    final String _token = json.getString("token");
-                                    final String logo = data.getString("logo");
-                                    final String nick_name = data.getString("nick_name");
-                                    final String mobile_phone = data.getString("mobile_phone");
-                                    final String user_money = data.getString("user_money");
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            HashMap<String, String> u = new HashMap<>();
-                                            u.put("username", username);
-                                            u.put("token", _token);
-                                            u.put("logo", logo);
-                                            u.put("nickname", nick_name);
-                                            u.put("mobile_phone", mobile_phone);
-                                            u.put("user_money", user_money);
-                                            UserInfoUtils.getInstance(context).setUserInfo(u);
-                                            token = _token;
-                                            LoadingDialog2.getInstance(context).dismiss();
-                                            loginDialog.hide();
-                                        }
-                                    });
-                                } else {
-                                    ToastUtils.showShortToast(context, json.getString("msg"));
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void failed(Call call, IOException e) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(context, "网络错误！", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-            }
-        });
-        loginDialog.show();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

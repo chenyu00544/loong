@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class CartController extends CommonController
 {
     private $goodsRepository;
+
     public function __construct(
         GoodsRepository $goodsRepository
     )
@@ -19,7 +20,13 @@ class CartController extends CommonController
 
     public function index(Request $request)
     {
-        return 1;
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $re = $this->goodsRepository->cartList($request->all(), $uid);
+            return ['code' => 0, 'msg' => '', 'data' => $re];
+        } else {
+            return ['code' => 1, 'msg' => '未登陆'];
+        }
     }
 
     public function addCart(Request $request)
@@ -27,9 +34,9 @@ class CartController extends CommonController
         $uid = Verifiable::authorization($request);
         if ($uid != '') {
             $re = $this->goodsRepository->addCart($request->all(), $uid);
-            if($re){
+            if ($re) {
                 return ['code' => 0, 'msg' => '添加成功'];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => '已经添加'];
             }
         } else {

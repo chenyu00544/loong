@@ -42,7 +42,7 @@ public class SearchGoodsHItem extends BaseItem<Goods> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView169);
-        tv.setText(mData.getGoodsName());
+        tv.setText(mData.getGoods_name());
         TextView tv1 = holder.getTextView(R.id.textView173);
         tv1.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 

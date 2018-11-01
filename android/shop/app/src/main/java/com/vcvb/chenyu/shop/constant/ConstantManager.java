@@ -93,7 +93,7 @@ public interface ConstantManager {
 
         public String GOODSDETAIL = URIHOST + "app/goods/detail";
         public String ADDCART = URIHOST + "app/cart/add";
-
+        public String CARTLIST = URIHOST + "app/cart/index";
 
         public String LOGIN = URIHOST + "app/login/index";
         public String REGISTER = URIHOST + "app/login/reg";

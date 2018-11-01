@@ -39,9 +39,9 @@ public class BrandGoodsItem extends BaseItem<Goods> {
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width / 3, width
                 / 3);
         iv.setLayoutParams(params);
-        Glide.with(context).load(mData.getPic()).into(iv);
+        Glide.with(context).load(mData.getOriginal_img()).into(iv);
         TextView tv1 = holder.get(R.id.textView239);
-        tv1.setText(mData.getGoodsName());
+        tv1.setText(mData.getGoods_name());
         TextView tv2 = holder.get(R.id.textView240);
         tv2.setText("1");
 

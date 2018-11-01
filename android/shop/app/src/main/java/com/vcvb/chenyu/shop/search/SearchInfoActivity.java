@@ -191,7 +191,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         goodses.clear();
         for (int i = 0; i < 10; i++) {
             Goods bean = new Goods();
-            bean.setGoodsName("央视网" + i);
+            bean.setGoods_name("央视网" + i);
             goodses.add(bean);
         }
         setData();

@@ -46,7 +46,7 @@ public class HomeGoods_H_Item extends BaseItem<Goods> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView164);
-        tv.setText(mData.getGoodsName());
+        tv.setText(mData.getGoods_name());
         TextView tv1 = holder.getTextView(R.id.textView167);
         tv1.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
 

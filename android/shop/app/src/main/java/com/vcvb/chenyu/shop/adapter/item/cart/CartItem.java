@@ -40,9 +40,11 @@ public class CartItem extends BaseItem<CartListBean> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView goodsName = holder.getTextView(R.id.textView85);
+        TextView goodsAttr = holder.getTextView(R.id.textView86);
         TextView goodsNum = holder.getTextView(R.id.textView90);
         TextView goodsPrice = holder.getTextView(R.id.textView87);
         TextView goodsMarket = holder.getTextView(R.id.textView88);
+        TextView promote = holder.getTextView(R.id.textView89);
         ImageView iv = holder.getImageView(R.id.imageView41);
         CheckBox cb = (CheckBox) holder.getView(R.id.checkBox3);
         TextView findSimilarity = holder.getTextView(R.id.textView109);
@@ -50,29 +52,27 @@ public class CartItem extends BaseItem<CartListBean> {
         TextView delete = holder.getTextView(R.id.textView111);
         View view = holder.getView(R.id.view30);
 
-        goodsName.setText(mData.getGoodsName());
-        goodsNum.setText(String.valueOf(mData.getGoodsNum()));
-        goodsPrice.setText(String.format("￥%.2f", mData.getGoodsPrice()));
-        goodsMarket.setText(String.format("￥%.2f", mData.getGoodsMarket()));
+        goodsName.setText(mData.getGoods().getGoods_name());
+        goodsAttr.setText(mData.getGoods().getGoods_attr());
+        goodsNum.setText(String.valueOf(mData.getGoods().getGoods_number()));
+        if (mData.getGoods().getIs_promote().equals("1")) {
+            goodsPrice.setText(mData.getGoods().getPromote_price_format());
+            promote.setText("促销");
+            promote.setAlpha(1);
+        }else{
+            goodsPrice.setText(mData.getGoods().getShop_price_format());
+            promote.setAlpha(0);
+        }
+        goodsMarket.setText(mData.getGoods().getMarket_price_format());
         goodsMarket.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        Glide.with(context).load(mData.getGoodsPic())
-//                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(iv);
+        Glide.with(context).load(mData.getGoods().getOriginal_img()).into(iv);
 
-        cb.setChecked(mData.getIsChecOnce());
+        cb.setChecked(mData.isCheckOnce());
 
         ConstraintSet set = new ConstraintSet();
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         set.clone(cly);
-        if (mData.getIsLong() == false) {
-            set.connect(view.getId(), ConstraintSet.TOP, cly.getId(), ConstraintSet.BOTTOM);
-            set.constrainWidth(findSimilarity.getId(), ToolUtils.dip2px(context, 0));
-            set.constrainHeight(findSimilarity.getId(), ToolUtils.dip2px(context, 0));
-            set.constrainWidth(iWantCollection.getId(), ToolUtils.dip2px(context, 0));
-            set.constrainHeight(iWantCollection.getId(), ToolUtils.dip2px(context, 0));
-            set.constrainWidth(delete.getId(), ToolUtils.dip2px(context, 0));
-            set.constrainHeight(delete.getId(), ToolUtils.dip2px(context, 0));
-        } else {
+        if (mData.isLong()) {
             set.connect(view.getId(), ConstraintSet.TOP, cly.getId(), ConstraintSet.TOP);
             set.constrainWidth(findSimilarity.getId(), ToolUtils.dip2px(context, 60));
             set.constrainHeight(findSimilarity.getId(), ToolUtils.dip2px(context, 60));
@@ -80,6 +80,14 @@ public class CartItem extends BaseItem<CartListBean> {
             set.constrainHeight(iWantCollection.getId(), ToolUtils.dip2px(context, 60));
             set.constrainWidth(delete.getId(), ToolUtils.dip2px(context, 60));
             set.constrainHeight(delete.getId(), ToolUtils.dip2px(context, 60));
+        } else {
+            set.connect(view.getId(), ConstraintSet.TOP, cly.getId(), ConstraintSet.BOTTOM);
+            set.constrainWidth(findSimilarity.getId(), ToolUtils.dip2px(context, 0));
+            set.constrainHeight(findSimilarity.getId(), ToolUtils.dip2px(context, 0));
+            set.constrainWidth(iWantCollection.getId(), ToolUtils.dip2px(context, 0));
+            set.constrainHeight(iWantCollection.getId(), ToolUtils.dip2px(context, 0));
+            set.constrainWidth(delete.getId(), ToolUtils.dip2px(context, 0));
+            set.constrainHeight(delete.getId(), ToolUtils.dip2px(context, 0));
         }
         set.applyTo(cly);
     }

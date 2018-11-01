@@ -29,14 +29,19 @@ import com.vcvb.chenyu.shop.adapter.item.cart.CartHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.CartItemDecoration;
-import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
-import com.vcvb.chenyu.shop.image.Images;
-import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
+import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+import com.vcvb.chenyu.shop.javaBean.store.Shop;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -49,6 +54,7 @@ import okhttp3.Call;
 public class FragmentCart extends BaseFragment {
     View view;
     Context context;
+    String token;
 
     private TextView editView;
     private ImageView msgView;
@@ -77,7 +83,9 @@ public class FragmentCart extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cart, container, false);
         context = getActivity();
+        loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         cly = (ConstraintLayout) view;
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         set.clone(cly);
         return view;
     }
@@ -108,7 +116,6 @@ public class FragmentCart extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-
     public void initListener() {
         refreshLayout = view.findViewById(R.id.cart_list);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -137,10 +144,6 @@ public class FragmentCart extends BaseFragment {
         editView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConstraintLayout payFoot = view.findViewById(R.id.pay_foot);
-                Toast.makeText(context, "editView", Toast.LENGTH_SHORT).show();
-                ConstraintLayout.LayoutParams lp;
-
                 if (editView.getText() == context.getString(R.string.edit)) {
                     editView.setText(R.string.over);
                     set.setVerticalBias(layer.getId(), 0);
@@ -164,9 +167,9 @@ public class FragmentCart extends BaseFragment {
                     bool = false;
                 }
                 for (int i = 0; i < carts.size(); i++) {
-                    carts.get(i).setIsChecOnce(bool);
+                    carts.get(i).setCheckOnce(bool);
                     if (carts.get(i).getIsType() == 2) {
-                        carts.get(i).setIsCheckAll(bool);
+                        carts.get(i).setCheckAll(bool);
                     }
                 }
                 setTotal();
@@ -183,8 +186,8 @@ public class FragmentCart extends BaseFragment {
             }
         });
 
-        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.checkBox2).setOnChildClickListener(new CYCItemClickSupport
-                .OnChildItemClickListener() {
+        //全选本品牌商品
+        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.checkBox2).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
 
             @Override
             public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
@@ -192,25 +195,26 @@ public class FragmentCart extends BaseFragment {
                 if (carts.get(position).getIsType() == 2) {
                     int npos = position;
                     boolean tbool = false;
-                    if (carts.get(position).getIsCheckAll() == true) {
-                        carts.get(position).setIsCheckAll(false);
+                    if (carts.get(position).isCheckAll()) {
+                        carts.get(position).setCheckAll(false);
                         tbool = false;
                     } else {
-                        carts.get(position).setIsCheckAll(true);
+                        carts.get(position).setCheckAll(true);
                         tbool = true;
                     }
                     npos += 1;
-                    while (carts.get(npos).getIsType() == 1) {
-                        carts.get(npos).setIsChecOnce(tbool);
+                    while (npos < carts.size() && carts.get(npos).getIsType() == 1) {
+                        carts.get(npos).setCheckOnce(tbool);
                         npos += 1;
                     }
                 }
+                setTotal();
                 mAdapter.notifyDataSetChanged();
             }
         });
 
-        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.checkBox3).setOnChildClickListener1(new CYCItemClickSupport
-                .OnChildItemClickListener1() {
+        //单选本品牌商品
+        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.checkBox3).setOnChildClickListener1(new CYCItemClickSupport.OnChildItemClickListener1() {
 
             @Override
             public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
@@ -219,106 +223,118 @@ public class FragmentCart extends BaseFragment {
                     int ppos = position;
                     int npos = position;
                     boolean tbool = false;
-                    if (carts.get(position).getIsChecOnce() == true) {
-                        carts.get(position).setIsChecOnce(false);
+                    if (carts.get(position).isCheckOnce()) {
+                        carts.get(position).setCheckOnce(false);
                         tbool = false;
                     } else {
-                        carts.get(position).setIsChecOnce(true);
+                        carts.get(position).setCheckOnce(true);
                         tbool = true;
                     }
                     npos += 1;
-                    while (carts.get(npos).getIsType() == 1) {
-                        if (carts.get(npos).getIsChecOnce() == true) {
+                    while (carts.size() > npos && carts.get(npos).getIsType() == 1) {
+                        if (carts.get(npos).isCheckOnce()) {
                             tbool = true;
                         }
                         npos += 1;
                     }
                     ppos -= 1;
-                    while (carts.get(ppos).getIsType() == 1) {
-                        if (carts.get(ppos).getIsChecOnce() == true) {
+                    while (ppos > 0 && carts.get(ppos).getIsType() == 1) {
+                        if (carts.get(ppos).isCheckOnce()) {
                             tbool = true;
                         }
                         ppos -= 1;
                     }
-                    carts.get(ppos).setIsCheckAll(tbool);
+                    carts.get(ppos).setCheckAll(tbool);
+                }
+                setTotal();
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        //减少商品数量
+        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView43).setOnChildClickListener2
+                (new CYCItemClickSupport.OnChildItemClickListener2() {
+
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                clearLong();
+                int num = carts.get(position).getGoods().getGoods_number();
+                if (num <= 1) {
+                    num = 1;
+                } else {
+                    num -= 1;
+                }
+                carts.get(position).getGoods().setGoods_number(num);
+                setTotal();
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        //增加商品数量
+        CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView44).setOnChildClickListener3
+                (new CYCItemClickSupport.OnChildItemClickListener3() {
+
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                clearLong();
+                int num = carts.get(position).getGoods().getGoods_number();
+                num += 1;
+                carts.get(position).getGoods().setGoods_number(num);
+                setTotal();
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        CYCItemClickSupport.BuildTo4(mRecyclerView, R.id.textView109).setOnChildClickListener4
+                (new CYCItemClickSupport.OnChildItemClickListener4() {
+
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                System.out.println(6);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        CYCItemClickSupport.BuildTo5(mRecyclerView, R.id.textView110).setOnChildClickListener5
+                (new CYCItemClickSupport.OnChildItemClickListener5() {
+
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                System.out.println(7);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        //删除商品
+        CYCItemClickSupport.BuildTo6(mRecyclerView, R.id.textView111).setOnChildClickListener6
+                (new CYCItemClickSupport.OnChildItemClickListener6() {
+
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                carts.remove(position);
+                mAdapter.remove(position);
+
+                for (int i = 0; i < carts.size(); i++) {
+                    if (carts.get(i).getIsType() == 2) {
+                        if (carts.size() > i + 1) {
+                            if (carts.get(i + 1).getIsType() == 2) {
+                                carts.remove(i);
+                                mAdapter.remove(i);
+                            }
+                        } else if (carts.size() == i + 1) {
+                            carts.remove(i);
+                            mAdapter.remove(i);
+                        }
+                    }
                 }
                 mAdapter.notifyDataSetChanged();
             }
         });
 
-        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView43).setOnChildClickListener2
-                (new CYCItemClickSupport.OnChildItemClickListener2() {
-
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        System.out.println(4);
-                        clearLong();
-                        int num = carts.get(position).getGoodsNum();
-                        if (num <= 1) {
-                            num = 1;
-                        } else {
-                            num -= 1;
-                        }
-                        carts.get(position).setGoodsNum(num);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-
-        CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView44).setOnChildClickListener3
-                (new CYCItemClickSupport.OnChildItemClickListener3() {
-
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        System.out.println(5);
-                        clearLong();
-                        int num = carts.get(position).getGoodsNum();
-                        num += 1;
-                        carts.get(position).setGoodsNum(num);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-        CYCItemClickSupport.BuildTo4(mRecyclerView, R.id.textView109).setOnChildClickListener4
-                (new CYCItemClickSupport.OnChildItemClickListener4() {
-
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        System.out.println(6);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-        CYCItemClickSupport.BuildTo5(mRecyclerView, R.id.textView110).setOnChildClickListener5
-                (new CYCItemClickSupport.OnChildItemClickListener5() {
-
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        System.out.println(7);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-        CYCItemClickSupport.BuildTo6(mRecyclerView, R.id.textView111).setOnChildClickListener6
-                (new CYCItemClickSupport.OnChildItemClickListener6() {
-
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        System.out.println(8);
-                        carts.remove(position);
-                        mAdapter.remove(position);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemLongClickListener(new CYCItemClickSupport
-                .OnItemLongClickListener() {
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemLongClickListener(new CYCItemClickSupport.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClicked(RecyclerView recyclerView, View itemView, int
                     position) {
                 clearLong();
-                carts.get(position).setIsLong(true);
+                carts.get(position).setLong(true);
                 System.out.println(2);
                 mAdapter.notifyDataSetChanged();
                 return true;
@@ -326,11 +342,16 @@ public class FragmentCart extends BaseFragment {
         });
         CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
                 .OnItemClickListener() {
-
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 clearLong();
-                System.out.println(1);
+                if (carts.get(position).getGoods() != null) {
+                    Intent intent = new Intent(context, GoodsDetailActivity.class);
+                    intent.putExtra("id", carts.get(position).getGoods().getGoods_id());
+                    context.startActivity(intent);
+                } else if (carts.get(position).getShop() != null) {
+
+                }
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -339,83 +360,91 @@ public class FragmentCart extends BaseFragment {
     //数据获取操作
     public void getCartData(final boolean bool) {
         if (bool) {
-            loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
         }
-        HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (bool) {
-                            loadingDialog.dismiss();
+        if (token != null && !token.equals("")) {
+            HashMap<String, String> mp = new HashMap<>();
+            mp.put("token", token);
+            HttpUtils.getInstance().post(ConstantManager.Url.CARTLIST, mp, new HttpUtils.NetCall() {
+                @Override
+                public void success(Call call, final JSONObject json) throws IOException {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (bool) {
+                                loadingDialog.dismiss();
+                            }
+                            bindData(json);
                         }
+                    });
+                }
 
-                        if (carts.size() != 0) {
-//                            setHaveDataByView();
-                        } else {
-//                            setNoDateByView();
+                @Override
+                public void failed(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (bool) {
+                                loadingDialog.dismiss();
+                            }
                         }
-                    }
-                });
-            }
+                    });
+                }
+            });
+        } else {
+            carts.clear();
+            mAdapter.addAll(getItems(carts));
+        }
+    }
 
-            @Override
-            public void failed(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (bool) {
-                            loadingDialog.dismiss();
-                        }
-//                        setNoDateByView();
-                    }
-                });
-            }
-        });
-
+    public void bindData(JSONObject json) {
         carts.clear();
-//        CartListBean bean = new CartListBean();
-//        bean.setIsType(-1);
-//        bean.setStoreName("store_name");
-//        carts.add(bean);
-        for (int i = 0; i < 5; i++) {
-            CartListBean bean = new CartListBean();
-            bean.setIsType(2);
-            bean.setStoreName("store_name" + i);
-            carts.add(bean);
-            for (int j = 0; j < 3; j++) {
-                bean = new CartListBean();
-                bean.setIsType(1);
-                bean.setGoodsName("goods_name" + j);
-                bean.setGoodsNum(j);
-                bean.setGoodsPic(Images.imageUrls[j + i * 3]);
-                bean.setGoodsPrice(j * 10.00);
-                bean.setGoodsMarket(j * 100.00);
-                carts.add(bean);
+        if (json != null) {
+            try {
+                if (json.getInt("code") == 0) {
+                    JSONArray jsonArray = json.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject cartJson = (JSONObject) jsonArray.get(i);
+                        CartListBean c = new CartListBean();
+                        c.setIsType(2);
+                        Shop shop = JsonUtils.fromJsonObject(cartJson.getJSONObject("store"),
+                                Shop.class);
+                        c.setShop(shop);
+                        carts.add(c);
+                        JSONArray goodses = cartJson.getJSONArray("goods");
+                        for (int j = 0; j < goodses.length(); j++) {
+                            CartListBean cart = new CartListBean();
+                            Goods goods = JsonUtils.fromJsonObject((JSONObject) goodses.get(j),
+                                    Goods.class);
+                            cart.setGoods(goods);
+                            carts.add(cart);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
             }
         }
+
         View payFoot = view.findViewById(R.id.pay_foot);
         CheckBox cb = view.findViewById(R.id.checkBox4);
         if (carts.size() > 0) {
             mAdapter.clear();
             if (carts.get(0).getIsType() == -1) {
-                set.connect(cb.getId(), ConstraintSet.TOP, payFoot.getId(), ConstraintSet.TOP,
-                        0);
-                set.connect(cb.getId(), ConstraintSet.BOTTOM, payFoot.getId(), ConstraintSet.BOTTOM,
-                        0);
+                set.connect(cb.getId(), ConstraintSet.TOP, payFoot.getId(), ConstraintSet.TOP, 0);
+                set.connect(cb.getId(), ConstraintSet.BOTTOM, payFoot.getId(), ConstraintSet
+                        .BOTTOM, 0);
                 set.constrainHeight(payFoot.getId(), 1);
                 cb.getBackground().mutate().setAlpha(0);
             } else {
                 set.connect(cb.getId(), ConstraintSet.TOP, payFoot.getId(), ConstraintSet.TOP,
                         ToolUtils.dip2px(context, 8));
-                set.connect(cb.getId(), ConstraintSet.BOTTOM, payFoot.getId(), ConstraintSet.BOTTOM,
-                        ToolUtils.dip2px(context, 8));
+                set.connect(cb.getId(), ConstraintSet.BOTTOM, payFoot.getId(), ConstraintSet
+                        .BOTTOM, ToolUtils.dip2px(context, 8));
                 set.constrainHeight(payFoot.getId(), ToolUtils.dip2px(context, 50));
                 cb.getBackground().mutate().setAlpha(255);
             }
@@ -426,17 +455,16 @@ public class FragmentCart extends BaseFragment {
 
     protected List<Item> getItems(List<CartListBean> list) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case -1:
-                    cells.add(new CartErrorItem(list.get(i), context));
-                    break;
-                case 2:
+        if (list.size() == 0) {
+            cells.add(new CartErrorItem(null, context));
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getShop() != null) {
                     cells.add(new CartHeaderItem(list.get(i), context));
-                    break;
-                case 1:
+                }
+                if (list.get(i).getGoods() != null) {
                     cells.add(new CartItem(list.get(i), context));
-                    break;
+                }
             }
         }
         return cells;
@@ -445,8 +473,8 @@ public class FragmentCart extends BaseFragment {
     //清理长按显示状态
     public void clearLong() {
         for (int i = 0; i < carts.size(); i++) {
-            if (carts.get(i).getIsLong() == true) {
-                carts.get(i).setIsLong(false);
+            if (carts.get(i).isLong()) {
+                carts.get(i).setLong(false);
             }
         }
     }
@@ -454,10 +482,16 @@ public class FragmentCart extends BaseFragment {
     //设置订单总金额
     public void setTotal() {
         double total = 0;
-        for (int i = 0; i < carts.size(); i++){
-            if(carts.get(i).getIsType() == 1){
-                if(carts.get(i).getIsChecOnce() == true){
-                    total += carts.get(i).getGoodsPrice();
+        for (int i = 0; i < carts.size(); i++) {
+            if (carts.get(i).getIsType() == 1) {
+                if (carts.get(i).isCheckOnce()) {
+                    if (carts.get(i).getGoods().getIs_promote().equals("1")) {
+                        total += Double.valueOf(carts.get(i).getGoods().getPromote_price()) *
+                                carts.get(i).getGoods().getGoods_number();
+                    } else {
+                        total += Double.valueOf(carts.get(i).getGoods().getShop_price()) * carts
+                                .get(i).getGoods().getGoods_number();
+                    }
                 }
             }
         }

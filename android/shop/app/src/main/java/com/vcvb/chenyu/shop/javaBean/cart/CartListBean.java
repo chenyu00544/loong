@@ -1,157 +1,61 @@
 package com.vcvb.chenyu.shop.javaBean.cart;
 
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+import com.vcvb.chenyu.shop.javaBean.store.Shop;
+
 public class CartListBean {
-    private int isType = 1;
-    private String goodsName;
-    private String tag = null;
-    private String attr;
-    private int goodsNum = 1;
-    private String storeId;
-    private String storeName;
-    private String cartId;
-    private String goodsPic;
-    private double goodsPrice;
-    private double goodsMarket;
-    private String goodsTag;
-    private String goodsFaat;
-    private String priceTotal;
+    private Integer isType = 1;
     private boolean isCheckAll = false;
     private boolean isCheckOnce = false;
     private boolean isLong = false;
+    private Shop shop;
+    private Goods goods;
 
-    public int getIsType() {
+    public Integer getIsType() {
         return isType;
     }
 
-    public void setIsType(int isType) {
+    public void setIsType(Integer isType) {
         this.isType = isType;
     }
 
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
-
-    public String getAttr() {
-        return attr;
-    }
-
-    public void setAttr(String attr) {
-        this.attr = attr;
-    }
-
-    public int getGoodsNum() {
-        return goodsNum;
-    }
-
-    public void setGoodsNum(int goodsNum) {
-        this.goodsNum = goodsNum;
-    }
-
-    public String getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public String getStoreName() {
-        return storeName;
-    }
-
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
-    public String getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
-    }
-
-    public String getGoodsPic() {
-        return goodsPic;
-    }
-
-    public void setGoodsPic(String goodsPic) {
-        this.goodsPic = goodsPic;
-    }
-
-    public double getGoodsPrice() {
-        return goodsPrice;
-    }
-
-    public void setGoodsPrice(double goodsPrice) {
-        this.goodsPrice = goodsPrice;
-    }
-
-    public double getGoodsMarket() {
-        return goodsMarket;
-    }
-
-    public void setGoodsMarket(double goodsMarket) {
-        this.goodsMarket = goodsMarket;
-    }
-
-    public String getGoodsTag() {
-        return goodsTag;
-    }
-
-    public void setGoodsTag(String goodsTag) {
-        this.goodsTag = goodsTag;
-    }
-
-    public String getGoodsFaat() {
-        return goodsFaat;
-    }
-
-    public void setGoodsFaat(String goodsFaat) {
-        this.goodsFaat = goodsFaat;
-    }
-
-    public String getPriceTotal() {
-        return priceTotal;
-    }
-
-    public void setPriceTotal(String priceTotal) {
-        this.priceTotal = priceTotal;
-    }
-
-    public boolean getIsCheckAll() {
+    public boolean isCheckAll() {
         return isCheckAll;
     }
 
-    public void setIsCheckAll(boolean isCheckAll) {
-        this.isCheckAll = isCheckAll;
+    public void setCheckAll(boolean checkAll) {
+        isCheckAll = checkAll;
     }
 
-    public boolean getIsChecOnce() {
+    public boolean isCheckOnce() {
         return isCheckOnce;
     }
 
-    public void setIsChecOnce(boolean isCheckOnce) {
-        this.isCheckOnce = isCheckOnce;
+    public void setCheckOnce(boolean checkOnce) {
+        isCheckOnce = checkOnce;
     }
 
-    public boolean getIsLong() {
+    public boolean isLong() {
         return isLong;
     }
 
-    public void setIsLong(boolean isLong) {
-        this.isLong = isLong;
+    public void setLong(boolean aLong) {
+        isLong = aLong;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void setShop(Shop shop) {
+        this.shop = shop;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
     }
 }

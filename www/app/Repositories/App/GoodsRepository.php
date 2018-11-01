@@ -134,14 +134,19 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_cause = explode(',', $goods_detail->goods_cause);
             $causes = [];
             $causeName = Common::causeName();
-            foreach ($goods_cause as $cause) {
-                $gcause['cause_type'] = $cause;
-                $gcause['name'] = $causeName[$cause];
-                $causes[] = $gcause;
+            if (count($goods_cause) > 0) {
+                foreach ($goods_cause as $cause) {
+                    if(!empty($cause)){
+                        $gcause['cause_type'] = $cause;
+                        $gcause['name'] = $causeName[$cause];
+                        $causes[] = $gcause;
+                    }
+                }
             }
             $goods_detail->goods_cause = $causes;
-
-            $goods_detail->brand->brand_logo = FileHandle::getImgByOssUrl($goods_detail->brand->brand_logo);
+            if(!empty($goods_detail->brand)){
+                $goods_detail->brand->brand_logo = FileHandle::getImgByOssUrl($goods_detail->brand->brand_logo);
+            }
 
             foreach ($goods_detail->ggallery as $gallery) {
                 $gallery->img_original = FileHandle::getImgByOssUrl($gallery->img_original);
@@ -230,6 +235,47 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->single_attr = $single_attr;
         }
         return $goods_detail;
+    }
+
+    public function cartList($request, $uid)
+    {
+        $column = ['rec_id', 'user_id', 'goods_id', 'goods_sn', 'product_id', 'goods_attr'
+            , 'goods_number', 'goods_attr_id', 'add_time', 'ru_id', 'goods_name'
+        ];
+        $where['user_id'] = $uid;
+        $rec_ids = [];
+        if (!empty($request['rec_ids'])) {
+            $rec_ids = explode(',', $request['rec_ids']);
+        }
+        $res = $this->cartModel->getCarts($where, $column, $rec_ids);
+        $data = [];
+        foreach ($res as $k => $re) {
+            $arr = $re->toArray();
+            foreach ($arr as $key => $value) {
+                if ($key == 'goods') {
+                    if ($arr['goods']['promote_end_date'] > time()) {
+                        $arr['goods']['is_promote'] = '1';
+                    } else {
+                        $arr['goods']['is_promote'] = '0';
+                    }
+                    $arr['goods']['original_img'] = FileHandle::getImgByOssUrl($arr['goods']['original_img']);
+                    $arr['goods']['shop_price_format'] = Common::priceFormat($arr['goods']['shop_price']);
+                    $arr['goods']['market_price_format'] = Common::priceFormat($arr['goods']['market_price']);
+                    $arr['goods']['promote_price_format'] = Common::priceFormat($arr['goods']['promote_price']);
+                } elseif ($key == 'store') {
+                    $arr['store']['shop_logo'] = FileHandle::getImgByOssUrl($arr['store']['shop_logo']);
+                    $data[$arr['store']['ru_id']]['store'] = $arr['store'];
+                } else {
+                    $arr['goods'][$key] = $value;
+                }
+            }
+            $data[$arr['store']['ru_id']]['goods'][] = $arr['goods'];
+        }
+        $data_bak = [];
+        foreach ($data as $d) {
+            $data_bak[] = $d;
+        }
+        return $data_bak;
     }
 
     public function addCart($request, $uid)

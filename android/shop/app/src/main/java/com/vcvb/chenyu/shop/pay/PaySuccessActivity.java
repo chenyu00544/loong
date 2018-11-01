@@ -121,7 +121,7 @@ public class PaySuccessActivity extends BaseActivity {
         List<Goods> goodses = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Goods goods = new Goods();
-            goods.setGoodsName("jkasdf"+i);
+            goods.setGoods_name("jkasdf"+i);
             goodses.add(goods);
         }
         orderDetail.setList(goodses);

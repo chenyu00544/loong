@@ -34,8 +34,8 @@ public class CartHeaderItem extends BaseItem<CartListBean> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView storeName = holder.getTextView(R.id.textView95);
-        storeName.setText(mData.getStoreName());
+        storeName.setText(mData.getShop().getShop_name());
         CheckBox cb = (CheckBox) holder.getView(R.id.checkBox2);
-        cb.setChecked(mData.getIsCheckAll());
+        cb.setChecked(mData.isCheckAll());
     }
 }
