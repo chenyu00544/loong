@@ -33,6 +33,7 @@ import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
+import com.vcvb.chenyu.shop.javaBean.cart.LocalCartBean;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.store.Shop;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
@@ -50,6 +51,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
+import xiaofei.library.datastorage.DataStorageFactory;
+import xiaofei.library.datastorage.IDataStorage;
 
 public class FragmentCart extends BaseFragment {
     View view;
@@ -76,6 +79,7 @@ public class FragmentCart extends BaseFragment {
 
     private ConstraintLayout cly;
     private ConstraintSet set = new ConstraintSet();
+    IDataStorage dataStorage;
 
     @Nullable
     @Override
@@ -83,6 +87,7 @@ public class FragmentCart extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cart, container, false);
         context = getActivity();
+        dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
         loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         cly = (ConstraintLayout) view;
         token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
@@ -269,7 +274,6 @@ public class FragmentCart extends BaseFragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
-
         //增加商品数量
         CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView44).setOnChildClickListener3
                 (new CYCItemClickSupport.OnChildItemClickListener3() {
@@ -284,6 +288,8 @@ public class FragmentCart extends BaseFragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
+
+        //找相似商品
         CYCItemClickSupport.BuildTo4(mRecyclerView, R.id.textView109).setOnChildClickListener4
                 (new CYCItemClickSupport.OnChildItemClickListener4() {
 
@@ -293,6 +299,8 @@ public class FragmentCart extends BaseFragment {
                 mAdapter.notifyDataSetChanged();
             }
         });
+
+        //收藏商品
         CYCItemClickSupport.BuildTo5(mRecyclerView, R.id.textView110).setOnChildClickListener5
                 (new CYCItemClickSupport.OnChildItemClickListener5() {
 
@@ -345,11 +353,17 @@ public class FragmentCart extends BaseFragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 clearLong();
-                if (carts.get(position).getGoods() != null) {
-                    Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("id", carts.get(position).getGoods().getGoods_id());
-                    context.startActivity(intent);
-                } else if (carts.get(position).getShop() != null) {
+                if(carts.size() > position){
+                    if (carts.get(position).getGoods() != null) {
+                        Intent intent = new Intent(context, GoodsDetailActivity.class);
+                        intent.putExtra("id", carts.get(position).getGoods().getGoods_id());
+                        context.startActivity(intent);
+                    } else if (carts.get(position).getShop() != null) {
+                        Intent intent = new Intent(context, GoodsDetailActivity.class);
+                        intent.putExtra("id", carts.get(position).getGoods().getGoods_id());
+                        context.startActivity(intent);
+                    }
+                }else{
 
                 }
                 mAdapter.notifyDataSetChanged();
@@ -359,10 +373,10 @@ public class FragmentCart extends BaseFragment {
 
     //数据获取操作
     public void getCartData(final boolean bool) {
-        if (bool) {
-            loadingDialog.show();
-        }
         if (token != null && !token.equals("")) {
+            if (bool) {
+                loadingDialog.show();
+            }
             HashMap<String, String> mp = new HashMap<>();
             mp.put("token", token);
             HttpUtils.getInstance().post(ConstantManager.Url.CARTLIST, mp, new HttpUtils.NetCall() {
@@ -392,13 +406,44 @@ public class FragmentCart extends BaseFragment {
                 }
             });
         } else {
-            carts.clear();
-            mAdapter.addAll(getItems(carts));
+
+            List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
+
+            HashMap<String, String> mp = new HashMap<>();
+            mp.put("token", token);
+            HttpUtils.getInstance().post(ConstantManager.Url.CARTLIST, mp, new HttpUtils.NetCall() {
+                @Override
+                public void success(Call call, final JSONObject json) throws IOException {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (bool) {
+                                loadingDialog.dismiss();
+                            }
+                            bindData(json);
+                        }
+                    });
+                }
+
+                @Override
+                public void failed(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (bool) {
+                                loadingDialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            });
+            bindData(null);
         }
     }
 
     public void bindData(JSONObject json) {
         carts.clear();
+        mAdapter.clear();
         if (json != null) {
             try {
                 if (json.getInt("code") == 0) {
@@ -433,7 +478,6 @@ public class FragmentCart extends BaseFragment {
         View payFoot = view.findViewById(R.id.pay_foot);
         CheckBox cb = view.findViewById(R.id.checkBox4);
         if (carts.size() > 0) {
-            mAdapter.clear();
             if (carts.get(0).getIsType() == -1) {
                 set.connect(cb.getId(), ConstraintSet.TOP, payFoot.getId(), ConstraintSet.TOP, 0);
                 set.connect(cb.getId(), ConstraintSet.BOTTOM, payFoot.getId(), ConstraintSet
@@ -448,8 +492,10 @@ public class FragmentCart extends BaseFragment {
                 set.constrainHeight(payFoot.getId(), ToolUtils.dip2px(context, 50));
                 cb.getBackground().mutate().setAlpha(255);
             }
-            set.applyTo(cly);
+        } else {
+            set.constrainHeight(payFoot.getId(), 1);
         }
+        set.applyTo(cly);
         mAdapter.addAll(getItems(carts));
     }
 
@@ -496,5 +542,11 @@ public class FragmentCart extends BaseFragment {
             }
         }
         totalView.setText(String.format("￥%.2f", total));
+    }
+
+    @Override
+    public void onResume() {
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
+        super.onResume();
     }
 }

@@ -454,7 +454,6 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     //添加到购物车
     public void addCart(HashMap<String, Object> attr) {
-        loadingDialog.show();
         List<Integer> goods_attr_ids_bak = (List<Integer>) attr.get("goods_attr_ids");
         if (token == null || token.equals("")) {
             List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
@@ -502,6 +501,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 cartNum.setAlpha(0);
             }
         } else {
+            loadingDialog.show();
             HashMap<String, String> mp = new HashMap<>();
             mp.put("goods_id", goods_id + "");
             mp.put("token", token);

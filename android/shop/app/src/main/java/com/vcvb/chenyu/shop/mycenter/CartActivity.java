@@ -339,10 +339,10 @@ public class CartActivity extends BaseRecyclerViewActivity {
 
     //数据获取操作
     public void getCartData(final boolean bool) {
-        if (bool) {
-            loadingDialog.show();
-        }
         if (token != null && !token.equals("")) {
+            if (bool) {
+                loadingDialog.show();
+            }
             HashMap<String, String> mp = new HashMap<>();
             mp.put("token", token);
             HttpUtils.getInstance().post(ConstantManager.Url.CARTLIST, mp, new HttpUtils.NetCall() {
@@ -372,8 +372,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
                 }
             });
         } else {
-            carts.clear();
-            mAdapter.addAll(getItems(carts));
+            bindData(null);
         }
     }
 
@@ -426,8 +425,11 @@ public class CartActivity extends BaseRecyclerViewActivity {
                 set.constrainHeight(payFoot.getId(), ToolUtils.dip2px(context, 50));
                 cb.getBackground().mutate().setAlpha(255);
             }
-            set.applyTo(cly);
+
+        } else {
+            set.constrainHeight(payFoot.getId(), 1);
         }
+        set.applyTo(cly);
         mAdapter.addAll(getItems(carts));
     }
 

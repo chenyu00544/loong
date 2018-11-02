@@ -22,20 +22,26 @@ public class CartItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, View view,
-                               RecyclerView parent, RecyclerView.State state) {
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State
+            state) {
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
             int position = parent.getChildAdapterPosition(view);
-            CartListBean bean = mList.get(position);
-            if(bean != null){
+            CartListBean bean;
+            if (mList.size() > position) {
+                bean = mList.get(position);
+            } else {
+                bean = null;
+            }
+
+            if (bean != null) {
                 if (bean.getIsType() == 2) {
                     outRect.set(0, 16, 0, 0);
-                }else if (bean.getIsType() == 1){
+                } else if (bean.getIsType() == 1) {
                     outRect.set(0, 0, 0, 0);
-                }else{
+                } else {
                     outRect.set(0, 0, 0, 0);
                 }
-            }else {
+            } else {
                 outRect.set(0, 0, 0, 16);
             }
         } else if (parent.getLayoutManager() instanceof LinearLayoutManager) {
