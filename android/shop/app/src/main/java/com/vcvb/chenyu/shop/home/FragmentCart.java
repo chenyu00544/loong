@@ -406,7 +406,6 @@ public class FragmentCart extends BaseFragment {
                 }
             });
         } else {
-
             List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
 
             HashMap<String, String> mp = new HashMap<>();
