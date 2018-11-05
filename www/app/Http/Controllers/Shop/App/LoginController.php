@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\App;
 
+use App\Facades\Common;
 use App\Facades\Verifiable;
 use App\Repositories\App\UsersRepository;
 use Illuminate\Http\Request;
@@ -35,5 +36,10 @@ class LoginController extends CommonController
     public function register(Request $request)
     {
 
+    }
+
+    public function getDeviceId(Request $request)
+    {
+        return ['code' => 0, 'msg' => '', 'data' => Common::md5Encrypt(time(), Common::randStr(10))];
     }
 }

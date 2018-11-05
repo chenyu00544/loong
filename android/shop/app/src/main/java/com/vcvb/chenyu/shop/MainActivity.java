@@ -63,6 +63,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         context = this;
         fragmentManager = getSupportFragmentManager();
+        getData();
         bottomInit();
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SAVED_INDEX, index);
@@ -306,6 +307,32 @@ public class MainActivity extends BaseActivity {
             }
         });
         LoginDialog.getInstance(this).show();
+    }
+
+    public void getData() {
+        if (UserInfoUtils.getInstance(context).getUserInfo().get("device_id") == null ||
+                UserInfoUtils.getInstance(context).getUserInfo().get("device_id").equals
+                        ("")) {
+            HashMap<String, String> mp = new HashMap<>();
+            HttpUtils.getInstance().post(ConstantManager.Url.GETDEVICEID, mp, new HttpUtils.NetCall
+                    () {
+                @Override
+                public void success(Call call, JSONObject json) throws IOException {
+                    HashMap<String, String> mp = new HashMap<>();
+                    try {
+                        mp.put("device_id", json.getString("data"));
+                        UserInfoUtils.getInstance(context).setUserInfo(mp);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void failed(Call call, IOException e) {
+
+                }
+            });
+        }
     }
 
     @Override

@@ -10,6 +10,7 @@ public class LocalCartBean {
     @ObjectId
     private String hash_code = "0";
 
+    private Integer rec_id;
     private Integer goods_id;
     private List<Integer> attr_ids;
     private List<Integer> goods_attr_ids;
@@ -21,6 +22,14 @@ public class LocalCartBean {
 
     public void setHash_code(String hash_code) {
         this.hash_code = hash_code;
+    }
+
+    public Integer getRec_id() {
+        return rec_id;
+    }
+
+    public void setRec_id(Integer rec_id) {
+        this.rec_id = rec_id;
     }
 
     public Integer getGoods_id() {

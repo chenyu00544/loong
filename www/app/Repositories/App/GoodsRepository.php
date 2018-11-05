@@ -136,7 +136,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $causeName = Common::causeName();
             if (count($goods_cause) > 0) {
                 foreach ($goods_cause as $cause) {
-                    if(!empty($cause)){
+                    if (!empty($cause)) {
                         $gcause['cause_type'] = $cause;
                         $gcause['name'] = $causeName[$cause];
                         $causes[] = $gcause;
@@ -144,7 +144,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                 }
             }
             $goods_detail->goods_cause = $causes;
-            if(!empty($goods_detail->brand)){
+            if (!empty($goods_detail->brand)) {
                 $goods_detail->brand->brand_logo = FileHandle::getImgByOssUrl($goods_detail->brand->brand_logo);
             }
 
@@ -242,12 +242,21 @@ class GoodsRepository implements GoodsRepositoryInterface
         $column = ['rec_id', 'user_id', 'goods_id', 'goods_sn', 'product_id', 'goods_attr'
             , 'goods_number', 'goods_attr_id', 'add_time', 'ru_id', 'goods_name'
         ];
-        $where['user_id'] = $uid;
+        $res = [];
+        $where['user_id'] = 0;
+        if ($uid != '' || !empty($uid)) {
+            $where['user_id'] = $uid;
+        }else{
+            if(!empty($request['device_id'])){
+                $where['session_id'] = $request['device_id'];
+            }
+        }
         $rec_ids = [];
         if (!empty($request['rec_ids'])) {
             $rec_ids = explode(',', $request['rec_ids']);
         }
         $res = $this->cartModel->getCarts($where, $column, $rec_ids);
+
         $data = [];
         foreach ($res as $k => $re) {
             $arr = $re->toArray();
@@ -278,48 +287,64 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $data_bak;
     }
 
-    public function addCart($request, $uid)
+    public function addCart($request, $uid = 0)
     {
         $goods_id = $request['goods_id'];
+        $session_id = !empty($request['device_id']) ? $request['device_id'] : 0;
         $where['goods_id'] = $goods_id;
         $where['goods_attr_id'] = !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '';
-        if ($this->cartModel->countCart($where) == 0) {
-            $goods = $this->goodsModel->getGoods(['goods_id' => $goods_id]);
-            $goods_attr = [];
-            $attr_value = [];
-            if (!empty($request['goods_attr_ids'])) {
-                $goods_attr_ids = explode(',', $request['goods_attr_ids']);
-                $goods_attr = $this->productsModel->getProdcutAndAttr($goods_attr_ids);
-                foreach ($goods_attr->attrs as $attr) {
-                    $attr_value[] = $attr->attr_value;
+        if (!empty($uid)) {
+            $count = $this->cartModel->countCart(['user_id' => $uid]);
+        } else {
+            $count = $this->cartModel->countCart(['session_id' => $session_id]);
+        }
+        if ($count < 30) {
+            $count = $this->cartModel->countCart($where);
+            if ($count == 0) {
+                $goods = $this->goodsModel->getGoods(['goods_id' => $goods_id]);
+                $goods_attr = [];
+                $attr_value = [];
+                if (!empty($request['goods_attr_ids'])) {
+                    $goods_attr_ids = explode(',', $request['goods_attr_ids']);
+                    $goods_attr = $this->productsModel->getProdcutAndAttr($goods_attr_ids);
+                    foreach ($goods_attr->attrs as $attr) {
+                        $attr_value[] = $attr->attr_value;
+                    }
                 }
+                $cart = [
+                    'user_id' => $uid,
+                    'session_id' => $session_id,
+                    'goods_id' => $goods_id,
+                    'goods_sn' => $goods->goods_sn,
+                    'goods_name' => $goods->goods_name,
+                    'market_price' => $goods->market_price,
+                    'goods_price' => $goods->shop_price,
+                    'goods_number' => 1,
+                    'is_real' => $goods->is_real,
+                    'goods_attr_id' => !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '',
+                    'ru_id' => $goods->user_id,
+                    'shopping_fee' => 0,
+                    'warehouse_id' => 0,
+                    'area_id' => 0,
+                    'add_time' => time(),
+                    'freight' => $goods->freight,
+                    'tid' => $goods->tid,
+                    'shipping_fee' => $goods->shipping_fee,
+                    'take_time' => date(RedisCache::get('shop_config')['time_format'], time() + 86400 * 15),
+                    'product_id' => !empty($goods_attr) ? $goods_attr->product_id : 0,
+                    'goods_attr' => implode(',', $attr_value)
+                ];
+                $re = $this->cartModel->addCart($cart);
+            } else {
+                if ($uid != 0) {
+                    $where['user_id'] = $uid;
+                }else{
+                    $where['session_id'] = $session_id;
+                }
+                $re = $this->cartModel->setCart($where, ['goods_number' => 'goods_number+1',]);
             }
-            $cart = [
-                'user_id' => $uid,
-                'goods_id' => $goods_id,
-                'goods_sn' => $goods->goods_sn,
-                'goods_name' => $goods->goods_name,
-                'market_price' => $goods->market_price,
-                'goods_price' => $goods->shop_price,
-                'goods_number' => 1,
-                'is_real' => $goods->is_real,
-                'goods_attr_id' => !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '',
-                'ru_id' => $goods->user_id,
-                'shopping_fee' => 0,
-                'warehouse_id' => 0,
-                'area_id' => 0,
-                'add_time' => time(),
-                'freight' => $goods->freight,
-                'tid' => $goods->tid,
-                'shipping_fee' => $goods->shipping_fee,
-                'take_time' => date(RedisCache::get('shop_config')['time_format'], time() + 86400 * 15),
-                'product_id' => !empty($goods_attr) ? $goods_attr->product_id : 0,
-                'goods_attr' => implode(',', $attr_value)
-            ];
-            $re = $this->cartModel->addCart($cart);
             return $re;
         }
-
         return false;
     }
 }

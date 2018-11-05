@@ -9,7 +9,6 @@
 
 namespace App\Http\Models\App;
 
-use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 
 class CartModel extends Model
@@ -51,6 +50,12 @@ class CartModel extends Model
             ->orderBy('add_time', 'DESC')
             ->get();
 
+    }
+
+    public function setCart($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
     }
 
     public function addCart($data)

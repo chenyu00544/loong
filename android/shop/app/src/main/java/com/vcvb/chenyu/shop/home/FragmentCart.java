@@ -41,6 +41,7 @@ import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -407,9 +408,12 @@ public class FragmentCart extends BaseFragment {
             });
         } else {
             List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
-
+            List<Integer> goods_ids = new ArrayList<>();
+            for (int i=0;i< cartBeans.size();i++){
+                goods_ids.add(cartBeans.get(i).getGoods_id());
+            }
             HashMap<String, String> mp = new HashMap<>();
-            mp.put("token", token);
+            mp.put("rec_ids", StringUtils.join(goods_ids, ','));
             HttpUtils.getInstance().post(ConstantManager.Url.CARTLIST, mp, new HttpUtils.NetCall() {
                 @Override
                 public void success(Call call, final JSONObject json) throws IOException {

@@ -53,6 +53,11 @@ class GoodsModel extends Model
         return $this->hasOne('App\Http\Models\App\BrandModel', 'id', 'brand_id');
     }
 
+    public function store()
+    {
+        return $this->hasOne('App\Http\Models\App\SellerShopInfoModel', 'ru_id', 'user_id');
+    }
+
     public function getGoodses($where, $page = 1, $column = ['*'], $size = 10)
     {
         return $this->select($column)

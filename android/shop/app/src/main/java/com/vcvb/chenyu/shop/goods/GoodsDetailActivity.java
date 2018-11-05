@@ -42,7 +42,6 @@ import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.evaluate.QuestionsListActivity;
 import com.vcvb.chenyu.shop.faat.BrandListActivity;
-import com.vcvb.chenyu.shop.javaBean.cart.LocalCartBean;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
@@ -353,23 +352,13 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsAttrDialog = new GoodsAttrDialog(goodsDetails);
                 goodsAttrDialog.setOnItemClickListener(attrDialogListener);
 
-                if (token != null && !token.equals("")) {
-                    if (goodsDetails.getCount_cart() > 0) {
-                        cartNum.setAlpha(1);
-                    } else {
-                        cartNum.setAlpha(0);
-                    }
-                    cartNum.setText(String.valueOf(goodsDetails.getCount_cart()));
+                if (goodsDetails.getCount_cart() > 0) {
+                    cartNum.setAlpha(1);
                 } else {
-                    List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
-                    if (cartBeans.size() > 0) {
-                        String str = "%s";
-                        cartNum.setAlpha(1);
-                        cartNum.setText(String.format(str, cartBeans.size()));
-                    } else {
-                        cartNum.setAlpha(0);
-                    }
+                    cartNum.setAlpha(0);
                 }
+                cartNum.setText(String.valueOf(goodsDetails.getCount_cart()));
+
                 if (goodsDetails.getCollect() == 0) {
                     Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
                 } else {
@@ -455,94 +444,48 @@ public class GoodsDetailActivity extends GoodsActivity {
     //添加到购物车
     public void addCart(HashMap<String, Object> attr) {
         List<Integer> goods_attr_ids_bak = (List<Integer>) attr.get("goods_attr_ids");
-        if (token == null || token.equals("")) {
-            List<LocalCartBean> cartBeans = dataStorage.loadAll(LocalCartBean.class);
-            boolean bool = false;
-            if (cartBeans.size() > 0) {
-
-                for (int i = 0; i < cartBeans.size(); i++) {
-                    List<Integer> goods_attr_ids = cartBeans.get(i).getGoods_attr_ids();
-                    if (goods_attr_ids.containsAll(goods_attr_ids_bak) && goods_attr_ids.size()
-                            == goods_attr_ids_bak.size()) {
-                        bool = true;
-                    }
-                    if (bool) {
-                        cartBeans.get(i).setNum(cartBeans.get(i).getNum() + 1);
+        HashMap<String, String> mp = new HashMap<>();
+        loadingDialog.show();
+        mp.put("goods_id", goods_id + "");
+        mp.put("token", token);
+        mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get("device_id"));
+        mp.put("goods_attr_ids", StringUtils.join(goods_attr_ids_bak, ","));
+        HttpUtils.getInstance().post(ConstantManager.Url.ADDCART, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                System.out.println(json);
+                if (json != null) {
+                    try {
+                        if (json.getInt("code") == 0) {
+                            String str = "%s";
+                            cartNum.setAlpha(1);
+                            cartNum.setText(String.format(str, goodsDetails.getCount_cart() +
+                                    1));
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ToastUtils.showShortToast(context, "已添加");
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
-
-                if (!bool) {
-                    LocalCartBean localCartBean = new LocalCartBean();
-                    localCartBean.setGoods_id(goods_id);
-                    localCartBean.setNum((Integer) attr.get("num"));
-                    localCartBean.setAttr_ids((List<Integer>) attr.get("attr_ids"));
-                    localCartBean.setGoods_attr_ids((List<Integer>) attr.get("goods_attr_ids"));
-                    localCartBean.setHash_code(String.valueOf(localCartBean.hashCode()));
-                    cartBeans.add(localCartBean);
-                }
-                dataStorage.storeOrUpdate(cartBeans);
-            } else {
-                LocalCartBean localCartBean = new LocalCartBean();
-                localCartBean.setGoods_id(goods_id);
-                localCartBean.setNum((Integer) attr.get("num"));
-                localCartBean.setAttr_ids((List<Integer>) attr.get("attr_ids"));
-                localCartBean.setGoods_attr_ids((List<Integer>) attr.get("goods_attr_ids"));
-                localCartBean.setHash_code(String.valueOf(localCartBean.hashCode()));
-                cartBeans.add(localCartBean);
-                dataStorage.storeOrUpdate(cartBeans);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                    }
+                });
             }
 
-            cartBeans = dataStorage.loadAll(LocalCartBean.class);
-            if (cartBeans.size() > 0) {
-                String str = "%s";
-                cartNum.setAlpha(1);
-                cartNum.setText(String.format(str, cartBeans.size()));
-            } else {
-                cartNum.setAlpha(0);
+            @Override
+            public void failed(Call call, IOException e) {
+
             }
-        } else {
-            loadingDialog.show();
-            HashMap<String, String> mp = new HashMap<>();
-            mp.put("goods_id", goods_id + "");
-            mp.put("token", token);
-            mp.put("goods_attr_ids", StringUtils.join(goods_attr_ids_bak, ","));
-            HttpUtils.getInstance().post(ConstantManager.Url.ADDCART, mp, new HttpUtils.NetCall() {
-                @Override
-                public void success(Call call, JSONObject json) throws IOException {
-                    System.out.println(json);
-                    if (json != null) {
-                        try {
-                            if (json.getInt("code") == 0) {
-                                String str = "%s";
-                                cartNum.setAlpha(1);
-                                cartNum.setText(String.format(str, goodsDetails.getCount_cart() +
-                                        1));
-                            } else {
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ToastUtils.showShortToast(context, "已添加");
-                                    }
-                                });
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingDialog.dismiss();
-                        }
-                    });
-                }
-
-                @Override
-                public void failed(Call call, IOException e) {
-
-                }
-            });
-        }
+        });
     }
 
     //收藏
