@@ -448,7 +448,8 @@ public class GoodsDetailActivity extends GoodsActivity {
         loadingDialog.show();
         mp.put("goods_id", goods_id + "");
         mp.put("token", token);
-        mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get("device_id"));
+        mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
+                ("device_id"));
         mp.put("goods_attr_ids", StringUtils.join(goods_attr_ids_bak, ","));
         HttpUtils.getInstance().post(ConstantManager.Url.ADDCART, mp, new HttpUtils.NetCall() {
             @Override
@@ -456,11 +457,16 @@ public class GoodsDetailActivity extends GoodsActivity {
                 System.out.println(json);
                 if (json != null) {
                     try {
+                        final Integer count_cart = json.getJSONObject("data").getInt("count_cart");
                         if (json.getInt("code") == 0) {
-                            String str = "%s";
-                            cartNum.setAlpha(1);
-                            cartNum.setText(String.format(str, goodsDetails.getCount_cart() +
-                                    1));
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String str = "%s";
+                                    cartNum.setAlpha(1);
+                                    cartNum.setText(String.format(str, count_cart));
+                                }
+                            });
                         } else {
                             runOnUiThread(new Runnable() {
                                 @Override

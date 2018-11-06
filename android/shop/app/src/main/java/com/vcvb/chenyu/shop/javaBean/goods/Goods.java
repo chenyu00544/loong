@@ -4,6 +4,7 @@ public class Goods {
 
     private int goods_id;
     private String goods_name;
+    private String cost_price;
     private String shop_price;
     private String shop_price_format;
     private String market_price;
@@ -28,6 +29,8 @@ public class Goods {
     private Integer ru_id;
     private Integer product_id;
     private Integer goods_number;
+    private Integer tax;
+    private Integer rec_id;
 
     public int getGoods_id() {
         return goods_id;
@@ -235,5 +238,29 @@ public class Goods {
 
     public void setShop_price_format(String shop_price_format) {
         this.shop_price_format = shop_price_format;
+    }
+
+    public Integer getTax() {
+        return tax;
+    }
+
+    public void setTax(Integer tax) {
+        this.tax = tax;
+    }
+
+    public String getCost_price() {
+        return cost_price;
+    }
+
+    public void setCost_price(String cost_price) {
+        this.cost_price = cost_price;
+    }
+
+    public Integer getRec_id() {
+        return rec_id;
+    }
+
+    public void setRec_id(Integer rec_id) {
+        this.rec_id = rec_id;
     }
 }

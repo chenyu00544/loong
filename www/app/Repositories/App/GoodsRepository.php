@@ -246,8 +246,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         $where['user_id'] = 0;
         if ($uid != '' || !empty($uid)) {
             $where['user_id'] = $uid;
-        }else{
-            if(!empty($request['device_id'])){
+        } else {
+            if (!empty($request['device_id'])) {
                 $where['session_id'] = $request['device_id'];
             }
         }
@@ -271,9 +271,12 @@ class GoodsRepository implements GoodsRepositoryInterface
                     $arr['goods']['shop_price_format'] = Common::priceFormat($arr['goods']['shop_price']);
                     $arr['goods']['market_price_format'] = Common::priceFormat($arr['goods']['market_price']);
                     $arr['goods']['promote_price_format'] = Common::priceFormat($arr['goods']['promote_price']);
+                    $arr['goods']['current_time'] = time();
                 } elseif ($key == 'store') {
                     $arr['store']['shop_logo'] = FileHandle::getImgByOssUrl($arr['store']['shop_logo']);
                     $data[$arr['store']['ru_id']]['store'] = $arr['store'];
+                } elseif ($key == 'tax') {
+                    $arr['goods']['tax'] = $value['attr_value'];
                 } else {
                     $arr['goods'][$key] = $value;
                 }
@@ -289,6 +292,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function addCart($request, $uid = 0)
     {
+        $uwhere = [];
         $goods_id = $request['goods_id'];
         $session_id = !empty($request['device_id']) ? $request['device_id'] : 0;
         $where['goods_id'] = $goods_id;
@@ -299,6 +303,13 @@ class GoodsRepository implements GoodsRepositoryInterface
             $count = $this->cartModel->countCart(['session_id' => $session_id]);
         }
         if ($count < 30) {
+            if ($uid != 0) {
+                $where['user_id'] = $uid;
+                $uwhere['user_id'] = $uid;
+            } else {
+                $where['session_id'] = $session_id;
+                $uwhere['session_id'] = $session_id;
+            }
             $count = $this->cartModel->countCart($where);
             if ($count == 0) {
                 $goods = $this->goodsModel->getGoods(['goods_id' => $goods_id]);
@@ -334,17 +345,28 @@ class GoodsRepository implements GoodsRepositoryInterface
                     'product_id' => !empty($goods_attr) ? $goods_attr->product_id : 0,
                     'goods_attr' => implode(',', $attr_value)
                 ];
-                $re = $this->cartModel->addCart($cart);
+                $this->cartModel->addCart($cart);
             } else {
-                if ($uid != 0) {
-                    $where['user_id'] = $uid;
-                }else{
-                    $where['session_id'] = $session_id;
-                }
-                $re = $this->cartModel->setCart($where, ['goods_number' => 'goods_number+1',]);
+                $this->cartModel->incrementCartGoodsNumber($where);
             }
-            return $re;
+
+            return ['count_cart' => $this->cartModel->countCart($uwhere)];
         }
-        return false;
+        return 0;
+    }
+
+    public function setCart($request)
+    {
+        $where['rec_id'] = !empty($request['rec_id']) ? $request['rec_id'] : 0;
+        if (!empty($request['goods_number'])) {
+            $update['goods_number'] = $request['goods_number'];
+            return $this->cartModel->setCart($where, $update);
+        }
+    }
+
+    public function delCart($request)
+    {
+        $where = explode(',', !empty($request['rec_ids']) ? $request['rec_ids'] : 0);
+        return $this->cartModel->delCarts($where);
     }
 }

@@ -26,7 +26,7 @@ public class GoodsDetail {
     private Integer limit_buy_num;
     private Integer sales_volume;
     private Integer tid;
-    private Integer count_cart;
+    private Integer count_cart = 0;
     private Integer comments_number;
     private Integer collect;
     private String cat_id;

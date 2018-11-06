@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use App\Facades\RedisCache;
+use App\Http\Models\Shop\CartModel;
 use App\Http\Models\Shop\CronsModel;
 use App\Http\Models\Shop\OrderInfoModel;
 use App\Http\Models\Test\CronModel;
@@ -62,5 +63,12 @@ class CronService
                 $m->setCron($where, $update);
             }
         }
+    }
+
+    //清理无状态购物车商品
+    public function ClearCart()
+    {
+        $m = (new CartModel());
+        $m->delCartsByTime();
     }
 }

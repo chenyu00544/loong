@@ -28,7 +28,7 @@ class CronController extends CommonController
         $this->checkPrivilege('cron');
         $this->cronsRepository = $cronsRepository;
         $this->week = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期七'];
-        $this->task = ['order' => '订单到期处理', 'task' => '计划任务数据处理', 'notice_to_cb' => '红包优惠券到期提醒', 'notice_to_seller' => '新订单通知(商家)', 'notice_to_user' => '订单变化通知(用户)'];
+        $this->task = ['order' => '订单到期处理', 'task' => '计划任务数据处理', 'notice_to_cb' => '红包优惠券到期提醒', 'notice_to_seller' => '新订单通知(商家)', 'notice_to_user' => '订单变化通知(用户)','clear_cart' => '清理购物车'];
     }
 
     /**

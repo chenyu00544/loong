@@ -53,6 +53,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('login/deviceid', 'LoginController@getDeviceId');
 
     Route::post('collect/goods', 'CollectController@collectGoods');
+    Route::post('collect/cartgoods', 'CollectController@collectCartGoods');
     Route::post('collect/brand', 'CollectController@collectBrand');
     Route::post('collect/store', 'CollectController@collectStore');
 });

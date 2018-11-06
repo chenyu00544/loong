@@ -94,12 +94,16 @@ public interface ConstantManager {
 
         public String GOODSDETAIL = URIHOST + "app/goods/detail";
 
-        public String ADDCART = URIHOST + "app/cart/add";
+        //购物车操作
         public String CARTLIST = URIHOST + "app/cart/index";
+        public String ADDCART = URIHOST + "app/cart/add";
+        public String SETCART = URIHOST + "app/cart/set";
+        public String DELCART = URIHOST + "app/cart/del";
 
         public String LOGIN = URIHOST + "app/login/index";
         public String REGISTER = URIHOST + "app/login/reg";
 
+        //收藏操作
         public String COLLECTGOODS = URIHOST + "app/collect/goods";
         public String COLLECTBRAND = URIHOST + "app/collect/brand";
         public String COLLECTSTORE = URIHOST + "app/collect/store";

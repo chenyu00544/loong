@@ -38,11 +38,21 @@ class CartController extends CommonController
 
     public function setCart(Request $request)
     {
-
+        $re = $this->goodsRepository->setCart($request->all());
+        if ($re) {
+            return ['code' => 0, 'msg' => ''];
+        } else {
+            return ['code' => 1, 'msg' => ''];
+        }
     }
 
     public function delCart(Request $request)
     {
-
+        $re = $this->goodsRepository->delCart($request->all());
+        if ($re) {
+            return ['code' => 0, 'msg' => ''];
+        } else {
+            return ['code' => 1, 'msg' => ''];
+        }
     }
 }

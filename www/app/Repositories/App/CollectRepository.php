@@ -33,25 +33,28 @@ class CollectRepository implements CollectRepositoryInterface
 
     public function collectGoods($request, $uid)
     {
-        $where['goods_id'] = $request['goods_id'];
-        $where['user_id'] = $uid;
-        $re = $this->collectGoodsModel->getCollectGoods($where);
-        if (!$re) {
-            $data['goods_id'] = $request['goods_id'];
-            $data['user_id'] = $uid;
-            $data['add_time'] = time();
-            $data['is_attention'] = 1;
-            $this->collectGoodsModel->addCollectGoods($data);
-            return $data;
-        } else {
-            if ($re->is_attention == 1) {
-                $data['is_attention'] = 0;
-            } else {
+        $goods_ids = explode(',', $request['goods_id']);
+        $data= [];
+        foreach ($goods_ids as $goods_id){
+            $where['goods_id'] = $goods_id;
+            $where['user_id'] = $uid;
+            $re = $this->collectGoodsModel->getCollectGoods($where);
+            if (!$re) {
+                $data['goods_id'] = $request['goods_id'];
+                $data['user_id'] = $uid;
+                $data['add_time'] = time();
                 $data['is_attention'] = 1;
+                $this->collectGoodsModel->addCollectGoods($data);
+            } else {
+                if ($re->is_attention == 1) {
+                    $data['is_attention'] = 0;
+                } else {
+                    $data['is_attention'] = 1;
+                }
+                $this->collectGoodsModel->setCollectGoods($where, $data);
             }
-            $this->collectGoodsModel->setCollectGoods($where, $data);
-            return $data;
         }
+        return $data;
     }
 
     public function collectBrand($request, $uid)

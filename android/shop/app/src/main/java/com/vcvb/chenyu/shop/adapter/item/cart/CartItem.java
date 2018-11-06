@@ -17,6 +17,9 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
+
+import java.util.Locale;
 
 public class CartItem extends BaseItem<CartListBean> {
     public static final int TYPE = 1;
@@ -39,27 +42,33 @@ public class CartItem extends BaseItem<CartListBean> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView goodsName = holder.getTextView(R.id.textView85);
-        TextView goodsAttr = holder.getTextView(R.id.textView86);
-        TextView goodsNum = holder.getTextView(R.id.textView90);
-        TextView goodsPrice = holder.getTextView(R.id.textView87);
-        TextView goodsMarket = holder.getTextView(R.id.textView88);
-        TextView promote = holder.getTextView(R.id.textView89);
-        ImageView iv = holder.getImageView(R.id.imageView41);
-        CheckBox cb = (CheckBox) holder.getView(R.id.checkBox3);
-        TextView findSimilarity = holder.getTextView(R.id.textView109);
-        TextView iWantCollection = holder.getTextView(R.id.textView110);
-        TextView delete = holder.getTextView(R.id.textView111);
-        View view = holder.getView(R.id.view30);
+        TextView goodsName = holder.get(R.id.textView85);
+        TextView goodsAttr = holder.get(R.id.textView86);
+        TextView goodsNum = holder.get(R.id.textView90);
+        TextView goodsPrice = holder.get(R.id.textView87);
+        TextView goodsMarket = holder.get(R.id.textView88);
+        TextView promote = holder.get(R.id.textView89);
+        TextView discount = holder.get(R.id.textView84);
+        ImageView iv = holder.get(R.id.imageView41);
+        CheckBox cb = holder.get(R.id.checkBox3);
+        TextView findSimilarity = holder.get(R.id.textView109);
+        TextView iWantCollection = holder.get(R.id.textView110);
+        TextView delete = holder.get(R.id.textView111);
+        View view = holder.get(R.id.view30);
 
         goodsName.setText(mData.getGoods().getGoods_name());
         goodsAttr.setText(mData.getGoods().getGoods_attr());
         goodsNum.setText(String.valueOf(mData.getGoods().getGoods_number()));
-        if (mData.getGoods().getIs_promote().equals("1")) {
+        if (mData.getGoods().getIs_promote().equals("1") && (mData.getGoods().getPromote_end_date
+                () - mData.getGoods().getCurrent_time()) > 0) {
             goodsPrice.setText(mData.getGoods().getPromote_price_format());
             promote.setText("促销");
             promote.setAlpha(1);
-        }else{
+            String str = "优惠￥%.2f";
+            Double disc = Double.valueOf(mData.getGoods().getShop_price()) - Double.valueOf(mData
+                    .getGoods().getPromote_price());
+            discount.setText(String.format(Locale.CHINA, str, disc));
+        } else {
             goodsPrice.setText(mData.getGoods().getShop_price_format());
             promote.setAlpha(0);
         }
@@ -76,8 +85,16 @@ public class CartItem extends BaseItem<CartListBean> {
             set.connect(view.getId(), ConstraintSet.TOP, cly.getId(), ConstraintSet.TOP);
             set.constrainWidth(findSimilarity.getId(), ToolUtils.dip2px(context, 60));
             set.constrainHeight(findSimilarity.getId(), ToolUtils.dip2px(context, 60));
-            set.constrainWidth(iWantCollection.getId(), ToolUtils.dip2px(context, 60));
-            set.constrainHeight(iWantCollection.getId(), ToolUtils.dip2px(context, 60));
+            String token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
+            if(token != null && !token.equals("")){
+                set.constrainWidth(iWantCollection.getId(), ToolUtils.dip2px(context, 60));
+                set.constrainHeight(iWantCollection.getId(), ToolUtils.dip2px(context, 60));
+                iWantCollection.setAlpha(1);
+            }else{
+                set.constrainWidth(iWantCollection.getId(), 1);
+                set.constrainHeight(iWantCollection.getId(), 1);
+                iWantCollection.setAlpha(0);
+            }
             set.constrainWidth(delete.getId(), ToolUtils.dip2px(context, 60));
             set.constrainHeight(delete.getId(), ToolUtils.dip2px(context, 60));
         } else {

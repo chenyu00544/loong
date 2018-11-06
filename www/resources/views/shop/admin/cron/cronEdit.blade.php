@@ -127,7 +127,7 @@
                             <div class="col-sm-4 checkbox-items">
                                 <select name="alow_files" id="" class="form-control wd-240 input-sm fl">
                                     @foreach($task as $k => $t)
-                                        <option value="{{$k}}">{{$t}}</option>
+                                        <option value="{{$k}}" @if($cron->alow_files == $k) selected @endif>{{$t}}</option>
                                     @endforeach
                                 </select>
                             </div>

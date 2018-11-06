@@ -76,9 +76,9 @@
 
     <string name="app_user">手机用户专享</string>
     <string name="goods_name">柠檬</string>
-    <string name="goods_price">￥99.9</string>
-    <string name="goods_market">￥199.9</string>
-    <string name="discount">优惠￥19.9</string>
+    <string name="goods_price">￥00.0</string>
+    <string name="goods_market">￥100.0</string>
+    <string name="discount">优惠￥0.0</string>
     <string name="goods_num">×1</string>
     <string name="goods_nums">1</string>
     <string name="total">合计:</string>

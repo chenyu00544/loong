@@ -248,6 +248,9 @@ class CronsRepository implements CronsRepositoryInterface
             case 'task':
                 Cron::CronUpdate();
                 break;
+            case 'clear_cart':
+                Cron::ClearCart();
+                break;
         }
 
 
