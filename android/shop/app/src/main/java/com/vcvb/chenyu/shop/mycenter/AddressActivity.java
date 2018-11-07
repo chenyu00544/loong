@@ -25,9 +25,12 @@ import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -38,6 +41,8 @@ import java.util.List;
 import okhttp3.Call;
 
 public class AddressActivity extends BaseRecyclerViewActivity {
+
+    String token;
     private List<AddressBean> addresses = new ArrayList<>();
 
     private RefreshLayout refreshLayout;
@@ -54,6 +59,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
         setContentView(R.layout.address_list);
         context = this;
         changeStatusBarTextColor(true);
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         setNavBack();
         initView();
         initRefresh();
@@ -97,7 +103,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         confirmDialog = new ConfirmDialog(context);
-        confirmDialog.setTitle(R.string.no_collection);
+        confirmDialog.setTitle(R.string.is_delete);
     }
 
     @Override
@@ -122,30 +128,21 @@ public class AddressActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void getData(final boolean b) {
-        super.getData(b);
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
         }
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.USERADDRESSES, mp, new HttpUtils.NetCall
+                () {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
+            public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (b) {
-                            loadingDialog.dismiss();
-                        }
-
-                        if (addresses.size() != 0) {
-//                            setHaveDataByView();
-                        } else {
-//                            setNoDateByView();
-                        }
+                        loadingDialog.dismiss();
+                        bindData(json);
                     }
                 });
             }
@@ -155,33 +152,32 @@ public class AddressActivity extends BaseRecyclerViewActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (b) {
-                            loadingDialog.dismiss();
-                        }
-//                        setNoDateByView();
+                        loadingDialog.dismiss();
                     }
                 });
             }
         });
+    }
 
+    public void bindData(JSONObject json) {
         addresses.clear();
-//        AddressBean bean = new AddressBean();
-//        bean.setIsType(-1);
-//        bean.setUserName("user_name");
-//        addresses.add(bean);
-        for (int i = 0; i < 5; i++) {
-            AddressBean bean = new AddressBean();
-            if (i == 0) {
-                bean.setDef(true);
+        if (json != null) {
+            try {
+                JSONArray addressesJSONArray = json.getJSONArray("data");
+                for (int i = 0; i < addressesJSONArray.length(); i++) {
+                    JSONObject object = (JSONObject) addressesJSONArray.get(i);
+                    AddressBean addressBean = JsonUtils.fromJsonObject(object, AddressBean
+                            .class);
+                    addresses.add(addressBean);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
             }
-            bean.setConsignee("setUserName" + i);
-            bean.setMobile("setPhoneMun" + i);
-            bean.setAddress_id(i);
-            bean.setAddress("setAddressInfo" + i);
-            addresses.add(bean);
         }
-        AddressBean bean = new AddressBean();
-        addresses.add(bean);
         mAdapter.addAll(getItems(addresses));
     }
 
@@ -238,7 +234,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
 
     protected List<Item> getItems(List<AddressBean> list) {
         List<Item> cells = new ArrayList<>();
-        if (list == null) {
+        if (list == null || list.size() == 0) {
             cells.add(new AddressErrorItem(null, context));
         } else {
             for (int i = 0; i < list.size(); i++) {
@@ -246,7 +242,6 @@ public class AddressActivity extends BaseRecyclerViewActivity {
             }
             cells.add(new AddressAddItem(null, context));
         }
-
         return cells;
     }
 

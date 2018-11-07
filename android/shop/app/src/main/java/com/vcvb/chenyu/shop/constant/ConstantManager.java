@@ -114,5 +114,12 @@ public interface ConstantManager {
         public String COLLECTGOODS = URIHOST + "app/collect/goods";
         public String COLLECTBRAND = URIHOST + "app/collect/brand";
         public String COLLECTSTORE = URIHOST + "app/collect/store";
+
+        //用户地址操作
+        public String USERADDRESSES = URIHOST + "app/user/addresses";
+        public String ADDADDRESS = URIHOST + "app/user/address/add";
+        public String SETADDRESS = URIHOST + "app/user/address/set";
+        public String DELADDRESS = URIHOST + "app/user/address/del";
+        public String SETDEFADDRESS = URIHOST + "app/user/address/setdef";
     }
 }

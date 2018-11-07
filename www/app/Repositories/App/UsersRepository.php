@@ -10,17 +10,21 @@ namespace App\Repositories\App;
 
 use App\Contracts\UsersRepositoryInterface;
 use App\Facades\Common;
+use App\Http\Models\App\UserAddressModel;
 use App\Http\Models\App\UsersModel;
 
 class UsersRepository implements UsersRepositoryInterface
 {
     private $usersModel;
+    private $userAddressModel;
 
     public function __construct(
-        UsersModel $usersModel
+        UsersModel $usersModel,
+        UserAddressModel $userAddressModel
     )
     {
         $this->usersModel = $usersModel;
+        $this->userAddressModel = $userAddressModel;
     }
 
     public function login($username, $password, $type)
@@ -43,5 +47,46 @@ class UsersRepository implements UsersRepositoryInterface
             }
         }
         return $req;
+    }
+
+    public function userAddresses($uid)
+    {
+        $where['user_id'] = $uid;
+        $res = $this->userAddressModel->userAddresses($where);
+        $user = $this->usersModel->getUser($uid);
+        foreach ($res as $re){
+            if($re->address_id == $user->address_id){
+                $re->def = 1;
+            }else{
+                $re->def = 0;
+            }
+        }
+        return $res;
+    }
+
+    public function setDefaultAddress($data, $uid)
+    {
+        $where['user_id'] = $uid;
+        $updata['address_id'] = $data['address_id'];
+        return $this->usersModel->setUsers($where, $updata);
+    }
+
+    public function setAddress($data)
+    {
+        $where['address_id'] = $data['address_id'];
+        $updata = [];
+        return $this->userAddressModel->setAddresses($where, $updata);
+    }
+
+    public function addAddress($data, $uid)
+    {
+        $updata = [];
+        return $this->userAddressModel->addAddresses($updata);
+    }
+
+    public function delAddress($uid)
+    {
+        $where['user_id'] = $uid;
+        return $this->userAddressModel->delAddresses($where);
     }
 }

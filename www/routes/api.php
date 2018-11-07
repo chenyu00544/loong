@@ -56,4 +56,10 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('collect/cartgoods', 'CollectController@collectCartGoods');
     Route::post('collect/brand', 'CollectController@collectBrand');
     Route::post('collect/store', 'CollectController@collectStore');
+
+    Route::post('user/addresses', 'UserController@addresses');
+    Route::post('user/address/setdef', 'UserController@setDefaultAddress');
+    Route::post('user/address/add', 'UserController@addAddress');
+    Route::post('user/address/set', 'UserController@setAddress');
+    Route::post('user/address/del', 'UserController@delAddress');
 });

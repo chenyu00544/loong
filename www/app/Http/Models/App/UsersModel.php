@@ -46,8 +46,15 @@ class UsersModel extends Model
     public function getUser($name, $column = ['*'])
     {
         return $this->select($column)
+            ->orWhere(['user_id' => $name])
             ->orWhere(['email' => $name])
             ->orWhere(['mobile_phone' => $name])
             ->first();
+    }
+
+    public function setUsers($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
     }
 }
