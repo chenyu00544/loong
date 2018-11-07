@@ -36,6 +36,7 @@ import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +45,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 
@@ -55,6 +57,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
     private TextView msgNum;
     private CheckBox selectAllCB;
     private TextView totalView;
+    private TextView totalTaxView;
     private TextView toPay;
     private View layer;
     private TextView del;
@@ -91,6 +94,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
         msgView = findViewById(R.id.imageView42);
         msgNum = findViewById(R.id.textView99);
         totalView = findViewById(R.id.textView106);
+        totalTaxView = findViewById(R.id.textView103);
         toPay = findViewById(R.id.textView107);
         layer = findViewById(R.id.view34);
         selectAllCB = findViewById(R.id.checkBox4);
@@ -116,6 +120,12 @@ public class CartActivity extends BaseRecyclerViewActivity {
             });
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
+        super.onResume();
     }
 
     public void initListener() {
@@ -146,10 +156,6 @@ public class CartActivity extends BaseRecyclerViewActivity {
         editView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ConstraintLayout payFoot = view.findViewById(R.id.pay_foot);
-                Toast.makeText(context, "editView", Toast.LENGTH_SHORT).show();
-                ConstraintLayout.LayoutParams lp;
-
                 if (editView.getText() == context.getString(R.string.edit)) {
                     editView.setText(R.string.over);
                     set.setVerticalBias(layer.getId(), 0);
@@ -158,15 +164,6 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     set.setVerticalBias(layer.getId(), 1);
                 }
                 set.applyTo(cly);
-            }
-        });
-
-        del.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAdapter.clear();
-                carts.remove(carts);
-                mAdapter.notifyDataSetChanged();
             }
         });
 
@@ -192,125 +189,46 @@ public class CartActivity extends BaseRecyclerViewActivity {
             }
         });
 
-        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.checkBox2).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
-
+        del.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                clearLong();
-                if (carts.get(position).getIsType() == 2) {
-                    int npos = position;
-                    boolean tbool = false;
-                    if (carts.get(position).isCheckAll()) {
-                        carts.get(position).setCheckAll(false);
-                        tbool = false;
-                    } else {
-                        carts.get(position).setCheckAll(true);
-                        tbool = true;
-                    }
-                    npos += 1;
-                    while (carts.get(npos).getIsType() == 1) {
-                        carts.get(npos).setCheckOnce(tbool);
-                        npos += 1;
-                    }
-                }
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.checkBox3).setOnChildClickListener1(new CYCItemClickSupport.OnChildItemClickListener1() {
-
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                clearLong();
-                if (carts.get(position).getIsType() == 1) {
-                    int ppos = position;
-                    int npos = position;
-                    boolean tbool = false;
-                    if (carts.get(position).isCheckOnce()) {
-                        carts.get(position).setCheckOnce(false);
-                        tbool = false;
-                    } else {
-                        carts.get(position).setCheckOnce(true);
-                        tbool = true;
-                    }
-                    npos += 1;
-                    while (carts.get(npos).getIsType() == 1) {
-                        if (carts.get(npos).isCheckOnce()) {
-                            tbool = true;
+            public void onClick(View view) {
+                List<Integer> _cartIds = new ArrayList<>();
+                List<CartListBean> _carts = new ArrayList<>();
+                for (int i = 0; i < carts.size(); i++) {
+                    if (carts.get(i).getIsType() != 2) {
+                        if (carts.get(i).isCheckOnce()) {
+                            _cartIds.add(carts.get(i).getGoods().getRec_id());
+                        } else {
+                            _carts.add(carts.get(i));
                         }
-                        npos += 1;
+                    } else {
+                        _carts.add(carts.get(i));
                     }
-                    ppos -= 1;
-                    while (carts.get(ppos).getIsType() == 1) {
-                        if (carts.get(ppos).isCheckOnce()) {
-                            tbool = true;
+                }
+                carts = new ArrayList<>(_carts);
+                for (int i = 0; i < carts.size(); i++) {
+                    if (carts.get(i).getIsType() == 2) {
+                        if (carts.size() > i + 1) {
+                            if (carts.get(i + 1).getIsType() == 2) {
+                                carts.remove(i);
+                            }
+                        } else if (carts.size() == i + 1) {
+                            carts.remove(i);
                         }
-                        ppos -= 1;
                     }
-                    carts.get(ppos).setCheckAll(tbool);
                 }
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView43).setOnChildClickListener2
-                (new CYCItemClickSupport.OnChildItemClickListener2() {
-
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(4);
-                clearLong();
-                int num = carts.get(position).getGoods().getGoods_number();
-                if (num <= 1) {
-                    num = 1;
-                } else {
-                    num -= 1;
+                System.out.println(_cartIds);
+                mAdapter.clear();
+                mAdapter.addAll(getItems(carts));
+                editView.setText(R.string.edit);
+                set.setVerticalBias(layer.getId(), 1);
+                set.applyTo(cly);
+                if (carts.size() == 0) {
+                    hideOrShowPayBottom(false);
                 }
-                carts.get(position).getGoods().setGoods_number(num);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView44).setOnChildClickListener3
-                (new CYCItemClickSupport.OnChildItemClickListener3() {
-
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(5);
-                clearLong();
-                int num = carts.get(position).getGoods().getGoods_number();
-                num += 1;
-                carts.get(position).getGoods().setGoods_number(num);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-        CYCItemClickSupport.BuildTo4(mRecyclerView, R.id.textView109).setOnChildClickListener4
-                (new CYCItemClickSupport.OnChildItemClickListener4() {
-
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(6);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-        CYCItemClickSupport.BuildTo5(mRecyclerView, R.id.textView110).setOnChildClickListener5
-                (new CYCItemClickSupport.OnChildItemClickListener5() {
-
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(7);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-        CYCItemClickSupport.BuildTo6(mRecyclerView, R.id.textView111).setOnChildClickListener6
-                (new CYCItemClickSupport.OnChildItemClickListener6() {
-
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(8);
-                carts.remove(position);
-                mAdapter.remove(position);
-                mAdapter.notifyDataSetChanged();
+                delCartGoods(_cartIds);
+                setCheckStatus();
+                setTotal();
             }
         });
 
@@ -320,82 +238,74 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     position) {
                 clearLong();
                 carts.get(position).setLong(true);
-                System.out.println(2);
                 mAdapter.notifyDataSetChanged();
                 return true;
-            }
-        });
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                clearLong();
-                System.out.println(1);
-                mAdapter.notifyDataSetChanged();
             }
         });
     }
 
     //数据获取操作
     public void getCartData(final boolean bool) {
-        if (token != null && !token.equals("")) {
-            if (bool) {
-                loadingDialog.show();
-            }
-            HashMap<String, String> mp = new HashMap<>();
-            mp.put("token", token);
-            HttpUtils.getInstance().post(ConstantManager.Url.CARTLIST, mp, new HttpUtils.NetCall() {
-                @Override
-                public void success(Call call, final JSONObject json) throws IOException {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (bool) {
-                                loadingDialog.dismiss();
-                            }
-                            bindData(json);
-                        }
-                    });
-                }
-
-                @Override
-                public void failed(Call call, IOException e) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (bool) {
-                                loadingDialog.dismiss();
-                            }
-                        }
-                    });
-                }
-            });
-        } else {
-            bindData(null);
+        if (bool) {
+            loadingDialog.show();
         }
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
+                ("device_id"));
+        HttpUtils.getInstance().post(ConstantManager.Url.CARTLIST, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishRefresh();
+                        if (bool) {
+                            loadingDialog.dismiss();
+                        }
+                        bindData(json);
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishRefresh();
+                        if (bool) {
+                            loadingDialog.dismiss();
+                        }
+                    }
+                });
+            }
+        });
     }
 
     public void bindData(JSONObject json) {
         carts.clear();
+        mAdapter.clear();
         if (json != null) {
             try {
                 if (json.getInt("code") == 0) {
                     JSONArray jsonArray = json.getJSONArray("data");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject cartJson = (JSONObject) jsonArray.get(i);
-                        if (i == 0) {
-                            CartListBean c = new CartListBean();
-                            Shop shop = JsonUtils.fromJsonObject(cartJson.getJSONObject("store"),
-                                    Shop.class);
-                            c.setShop(shop);
-                            carts.add(c);
+                        CartListBean c = new CartListBean();
+                        c.setIsType(2);
+                        Shop shop = JsonUtils.fromJsonObject(cartJson.getJSONObject("store"),
+                                Shop.class);
+                        c.setShop(shop);
+                        carts.add(c);
+                        JSONArray goodses = cartJson.getJSONArray("goods");
+                        for (int j = 0; j < goodses.length(); j++) {
+                            CartListBean cart = new CartListBean();
+                            Goods goods = JsonUtils.fromJsonObject((JSONObject) goodses.get(j),
+                                    Goods.class);
+                            cart.setGoods(goods);
+                            carts.add(cart);
                         }
-                        CartListBean cart = new CartListBean();
-                        Goods goods = JsonUtils.fromJsonObject(cartJson.getJSONObject("goods"),
-                                Goods.class);
-                        cart.setGoods(goods);
-                        carts.add(cart);
                     }
                 }
             } catch (JSONException e) {
@@ -407,10 +317,20 @@ public class CartActivity extends BaseRecyclerViewActivity {
             }
         }
 
+
+        if (carts.size() > 0) {
+            hideOrShowPayBottom(true);
+        } else {
+            hideOrShowPayBottom(false);
+        }
+        mAdapter.addAll(getItems(carts));
+    }
+
+    //显示隐藏结算栏
+    public void hideOrShowPayBottom(boolean b) {
         View payFoot = findViewById(R.id.pay_foot);
         CheckBox cb = findViewById(R.id.checkBox4);
-        if (carts.size() > 0) {
-            mAdapter.clear();
+        if (b) {
             if (carts.get(0).getIsType() == -1) {
                 set.connect(cb.getId(), ConstraintSet.TOP, payFoot.getId(), ConstraintSet.TOP, 0);
                 set.connect(cb.getId(), ConstraintSet.BOTTOM, payFoot.getId(), ConstraintSet
@@ -425,25 +345,29 @@ public class CartActivity extends BaseRecyclerViewActivity {
                 set.constrainHeight(payFoot.getId(), ToolUtils.dip2px(context, 50));
                 cb.getBackground().mutate().setAlpha(255);
             }
-
         } else {
             set.constrainHeight(payFoot.getId(), 1);
         }
         set.applyTo(cly);
-        mAdapter.addAll(getItems(carts));
     }
 
     protected List<Item> getItems(List<CartListBean> list) {
         List<Item> cells = new ArrayList<>();
         if (list.size() == 0) {
-            cells.add(new CartErrorItem(null, context));
+            CartErrorItem cartErrorItem = new CartErrorItem(null, context);
+            cartErrorItem.setOnItemClickListener(cartItemListener);
+            cells.add(cartErrorItem);
         } else {
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getShop() != null) {
-                    cells.add(new CartHeaderItem(list.get(i), context));
+                    CartHeaderItem cartHeaderItem = new CartHeaderItem(list.get(i), context);
+                    cartHeaderItem.setOnItemClickListener(cartItemListener);
+                    cells.add(cartHeaderItem);
                 }
                 if (list.get(i).getGoods() != null) {
-                    cells.add(new CartItem(list.get(i), context));
+                    CartItem cartItem = new CartItem(list.get(i), context);
+                    cartItem.setOnItemClickListener(cartItemListener);
+                    cells.add(cartItem);
                 }
             }
         }
@@ -462,13 +386,222 @@ public class CartActivity extends BaseRecyclerViewActivity {
     //设置订单总金额
     public void setTotal() {
         double total = 0;
+        double totalTax = 0;
+        boolean bool = true;
         for (int i = 0; i < carts.size(); i++) {
             if (carts.get(i).getIsType() == 1) {
                 if (carts.get(i).isCheckOnce()) {
-                    total += Double.valueOf(carts.get(i).getGoods().getShop_price());
+                    if (carts.get(i).getGoods().getIs_promote().equals("1")) {
+                        total += Double.valueOf(carts.get(i).getGoods().getPromote_price()) *
+                                carts.get(i).getGoods().getGoods_number();
+                    } else {
+                        total += Double.valueOf(carts.get(i).getGoods().getShop_price()) * carts
+                                .get(i).getGoods().getGoods_number();
+                    }
+                    totalTax += Double.valueOf(carts.get(i).getGoods().getShop_price()) * carts
+                            .get(i).getGoods().getGoods_number() * Double.valueOf(carts.get(i)
+                            .getGoods().getTax()) / 100;
+                } else {
+                    bool = false;
                 }
             }
         }
-        totalView.setText(String.format("￥%.2f", total));
+        if (carts.size() == 0) {
+            bool = false;
+        }
+        selectAllCB.setChecked(bool);
+        totalView.setText(String.format(Locale.CHINA, "￥%.2f", total + totalTax));
+        totalTaxView.setText(String.format(Locale.CHINA, "包含税费￥%.2f", totalTax));
     }
+
+    //增加减少商品数量同步服务器
+    public void modifyCartNum(Integer rec_id, Integer num) {
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("rec_id", String.valueOf(rec_id));
+        mp.put("goods_number", String.valueOf(num));
+        HttpUtils.getInstance().post(ConstantManager.Url.SETCART, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                System.out.println(json);
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+
+            }
+        });
+    }
+
+    //删除购物车商品
+    public void delCartGoods(List<Integer> rec_ids) {
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("rec_ids", StringUtils.join(rec_ids, ","));
+        HttpUtils.getInstance().post(ConstantManager.Url.DELCART, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                System.out.println(json);
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+
+            }
+        });
+    }
+
+    //收藏购物车商品
+    public void collectCartGoods(List<Integer> goods_ids) {
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("goods_id", StringUtils.join(goods_ids, ","));
+        HttpUtils.getInstance().post(ConstantManager.Url.COLLECTGOODS, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                System.out.println(json);
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+
+            }
+        });
+    }
+
+    //设置选中状态
+    public void setCheckStatus() {
+        boolean b = false;
+        for (int i = carts.size() - 1; i >= 0; i--) {
+            if (carts.get(i).getIsType() != 2) {
+                if (carts.get(i).isCheckOnce()) {
+                    b = true;
+                }
+            } else if (carts.get(i).getIsType() == 2) {
+                carts.get(i).setCheckAll(b);
+                b = false;
+            }
+        }
+    }
+
+    CartItem.OnClickListener cartItemListener = new CartItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            clearLong();
+            switch (view.getId()) {
+                case R.id.imageView41://跳转Activity Goods
+                case R.id.textView95: //跳转Activity Brand
+                    if (carts.size() > pos) {
+                        if (carts.get(pos).getGoods() != null && carts.get(pos).getIsType() == 1) {
+                            Intent intent = new Intent(context, GoodsDetailActivity.class);
+                            intent.putExtra("id", carts.get(pos).getGoods().getGoods_id());
+                            context.startActivity(intent);
+                        } else if (carts.get(pos).getShop() != null && carts.get(pos).getIsType()
+                                == 2) {
+                            System.out.println("Brand");
+//                        Intent intent = new Intent(context, GoodsDetailActivity.class);
+//                        intent.putExtra("id", carts.get(position).getShop().getRu_id());
+//                        context.startActivity(intent);
+                        }
+                    }
+                    break;
+                case R.id.view30:
+                    break;
+                case R.id.checkBox3://单选商品
+                    if (carts.get(pos).getIsType() == 1) {
+                        if (carts.get(pos).isCheckOnce()) {
+                            carts.get(pos).setCheckOnce(false);
+                        } else {
+                            carts.get(pos).setCheckOnce(true);
+                        }
+                    }
+                    setCheckStatus();
+                    setTotal();
+                    break;
+                case R.id.checkBox2://全选本品牌商品
+                    if (carts.get(pos).getIsType() == 2) {
+                        int npos = pos;
+                        boolean tbool = false;
+                        if (carts.get(pos).isCheckAll()) {
+                            carts.get(pos).setCheckAll(false);
+                            tbool = false;
+                        } else {
+                            carts.get(pos).setCheckAll(true);
+                            tbool = true;
+                        }
+                        npos += 1;
+                        while (npos < carts.size() && carts.get(npos).getIsType() == 1) {
+                            carts.get(npos).setCheckOnce(tbool);
+                            npos += 1;
+                        }
+                    }
+                    setTotal();
+                    break;
+                case R.id.imageView43://减少商品数量
+                    int num = carts.get(pos).getGoods().getGoods_number();
+                    if (num <= 1) {
+                        num = 1;
+                    } else {
+                        num -= 1;
+                    }
+                    carts.get(pos).getGoods().setGoods_number(num);
+                    setTotal();
+                    modifyCartNum(carts.get(pos).getGoods().getRec_id(), num);
+                    break;
+                case R.id.imageView44://增加商品数量
+                    int _num = carts.get(pos).getGoods().getGoods_number();
+                    _num += 1;
+                    carts.get(pos).getGoods().setGoods_number(_num);
+                    setTotal();
+                    mAdapter.notifyDataSetChanged();
+                    modifyCartNum(carts.get(pos).getGoods().getRec_id(), _num);
+                    break;
+                case R.id.textView111: //删除单件购物车商品
+                    List<Integer> rec_ids = new ArrayList<>();
+                    rec_ids.add(carts.get(pos).getGoods().getRec_id());
+                    carts.remove(pos);
+                    mAdapter.remove(pos);
+
+                    for (int i = 0; i < carts.size(); i++) {
+                        if (carts.get(i).getIsType() == 2) {
+                            if (carts.size() > i + 1) {
+                                if (carts.get(i + 1).getIsType() == 2) {
+                                    carts.remove(i);
+                                    mAdapter.remove(i);
+                                }
+                            } else if (carts.size() == i + 1) {
+                                carts.remove(i);
+                                mAdapter.remove(i);
+                            }
+                        }
+                    }
+                    delCartGoods(rec_ids);
+                    break;
+                case R.id.textView110://收藏商品
+                    List<Integer> goods_ids = new ArrayList<>();
+                    goods_ids.add(carts.get(pos).getGoods().getGoods_id());
+                    carts.remove(pos);
+                    mAdapter.remove(pos);
+
+                    for (int i = 0; i < carts.size(); i++) {
+                        if (carts.get(i).getIsType() == 2) {
+                            if (carts.size() > i + 1) {
+                                if (carts.get(i + 1).getIsType() == 2) {
+                                    carts.remove(i);
+                                    mAdapter.remove(i);
+                                }
+                            } else if (carts.size() == i + 1) {
+                                carts.remove(i);
+                                mAdapter.remove(i);
+                            }
+                        }
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    collectCartGoods(goods_ids);
+                    break;
+                case R.id.textView109://找相似商品
+                    break;
+                case R.id.textView82://购物车无商品去找找看
+                    break;
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+    };
 }

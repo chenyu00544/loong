@@ -49,6 +49,7 @@ public interface ConstantManager {
         public int PAY_SUCCESS = 5001;
     }
 
+
     interface Menu {
         public int MESSAGE = R.id.view33;
         public int HOME = R.id.view35;
@@ -82,6 +83,12 @@ public interface ConstantManager {
         public int ITEMS_7 = 6010;
         public int BANNER = 6011;
         public int ITEMHEADER = 6012;
+
+        public int ADDGOODSNUM = 6013;
+        public int SUBGOODSNUM = 6014;
+        public int CHECKBOXONCE = 6015;
+        public int CHECKBOXSUBALL = 6016;
+        public int CHECKBOXALL = 6017;
     }
 
     interface Url {

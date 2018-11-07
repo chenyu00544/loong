@@ -45,6 +45,7 @@ import com.vcvb.chenyu.shop.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
+import com.vcvb.chenyu.shop.mycenter.AddressActivity;
 import com.vcvb.chenyu.shop.mycenter.CartActivity;
 import com.vcvb.chenyu.shop.mycenter.ModifyAddressActivity;
 import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
@@ -125,7 +126,9 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     @Override
     public void getData(final boolean b) {
-        loadingDialog.show();
+        if (b) {
+            loadingDialog.show();
+        }
         HashMap<String, String> mp = new HashMap<>();
         mp.put("goods_id", goods_id + "");
         mp.put("token", token);
@@ -358,11 +361,12 @@ public class GoodsDetailActivity extends GoodsActivity {
                     cartNum.setAlpha(0);
                 }
                 cartNum.setText(String.valueOf(goodsDetails.getCount_cart()));
-
-                if (goodsDetails.getCollect() == 0) {
-                    Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
-                } else {
-                    Glide.with(context).load(R.drawable.icon_love_active).into(collectionView);
+                if(context!=null){
+                    if (goodsDetails.getCollect() == 0) {
+                        Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
+                    } else {
+                        Glide.with(context).load(R.drawable.icon_love_active).into(collectionView);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -549,6 +553,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     //显示登录框
     public void showLoginDialog() {
         loginDialog = new LoginDialog(context);
+        loginDialog.show();
         loginDialog.setOnDialogClickListener(new LoginDialog.OnDialogClickListener() {
             @Override
             public void onPhoneClickListener() {
@@ -576,7 +581,8 @@ public class GoodsDetailActivity extends GoodsActivity {
 
             @Override
             public void onLoginClickListener(Map<String, String> user) {
-                LoadingDialog2.getInstance(context).show();
+                final LoadingDialog2 loadingDialog2 = new LoadingDialog2(context);
+                loadingDialog2.show();
                 HashMap<String, String> mp = new HashMap<>();
                 mp.put("username", user.get("username"));
                 mp.put("password", user.get("password"));
@@ -607,8 +613,8 @@ public class GoodsDetailActivity extends GoodsActivity {
                                             u.put("user_money", user_money);
                                             UserInfoUtils.getInstance(context).setUserInfo(u);
                                             token = _token;
-                                            LoadingDialog2.getInstance(context).dismiss();
-                                            loginDialog.hide();
+                                            loadingDialog2.dismiss();
+                                            loginDialog.dismiss();
                                         }
                                     });
                                 }
@@ -630,11 +636,11 @@ public class GoodsDetailActivity extends GoodsActivity {
                 });
             }
         });
-        loginDialog.show();
     }
 
     @Override
     protected void onResume() {
+        getData(false);
         super.onResume();
     }
 
@@ -740,10 +746,20 @@ public class GoodsDetailActivity extends GoodsActivity {
             String tag = (String) attr.get("tag");
             switch (tag) {
                 case "Buy":
-                    System.out.println(attr);
-                    Intent intent = new Intent(context, OrderDetailsActivity.class);
-                    intent.putExtra("order", 1);
-                    startActivity(intent);
+                    if (token == null || token.equals("")) {
+                        showLoginDialog();
+                    } else {
+                        if (goodsDetails.getAddressBeans() != null && goodsDetails
+                                .getAddressBeans().size() > 0) {
+                            Intent intent = new Intent(context, OrderDetailsActivity.class);
+                            intent.putExtra("goods_id", goods_id);
+                            intent.putExtra("attr", attr);
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(context, AddressActivity.class);
+                            startActivity(intent);
+                        }
+                    }
                     break;
                 case "AddCart":
                     addCart(attr);

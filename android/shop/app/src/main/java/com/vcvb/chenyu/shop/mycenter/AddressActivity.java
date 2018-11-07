@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
@@ -62,7 +63,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,9 +73,9 @@ public class AddressActivity extends BaseRecyclerViewActivity {
             });
         }
 
-        TextView title = (TextView) findViewById(R.id.textView123);
+        TextView title = findViewById(R.id.textView123);
         title.setText(R.string.address);
-        TextView add = (TextView) findViewById(R.id.textView122);
+        TextView add = findViewById(R.id.textView122);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +88,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
     @Override
     public void initView() {
         super.initView();
-        mRecyclerView = (RecyclerView) findViewById(R.id.content);
+        mRecyclerView = findViewById(R.id.content);
         mLayoutManager = new GridLayoutManager(context, 1);
         DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(context,
                 ToolUtils.dip2px(context, 4));
@@ -111,12 +112,12 @@ public class AddressActivity extends BaseRecyclerViewActivity {
                 refreshLayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
             }
         });
-//        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-//            @Override
-//            public void onLoadMore(RefreshLayout refreshLayout) {
-//                refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
-//            }
-//        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
+            }
+        });
     }
 
     @Override

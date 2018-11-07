@@ -22,7 +22,7 @@ import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 import java.util.Locale;
 
 public class CartItem extends BaseItem<CartListBean> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.cart_content_have_data_item;
 
     public CartItem(CartListBean bean, Context c) {
         super(bean, c);
@@ -36,7 +36,7 @@ public class CartItem extends BaseItem<CartListBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cart_content_have_data_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 
@@ -50,11 +50,30 @@ public class CartItem extends BaseItem<CartListBean> {
         TextView promote = holder.get(R.id.textView89);
         TextView discount = holder.get(R.id.textView84);
         ImageView iv = holder.get(R.id.imageView41);
+        ImageView add = holder.get(R.id.imageView44);
+        ImageView sub = holder.get(R.id.imageView43);
         CheckBox cb = holder.get(R.id.checkBox3);
         TextView findSimilarity = holder.get(R.id.textView109);
         TextView iWantCollection = holder.get(R.id.textView110);
         TextView delete = holder.get(R.id.textView111);
         View view = holder.get(R.id.view30);
+
+        posMap.put(iv.getId(), position);
+        posMap.put(cb.getId(), position);
+        posMap.put(add.getId(), position);
+        posMap.put(sub.getId(), position);
+        posMap.put(findSimilarity.getId(), position);
+        posMap.put(iWantCollection.getId(), position);
+        posMap.put(delete.getId(), position);
+        posMap.put(view.getId(), position);
+        iv.setOnClickListener(listener);
+        cb.setOnClickListener(listener);
+        add.setOnClickListener(listener);
+        sub.setOnClickListener(listener);
+        findSimilarity.setOnClickListener(listener);
+        iWantCollection.setOnClickListener(listener);
+        delete.setOnClickListener(listener);
+        view.setOnClickListener(listener);
 
         goodsName.setText(mData.getGoods().getGoods_name());
         goodsAttr.setText(mData.getGoods().getGoods_attr());

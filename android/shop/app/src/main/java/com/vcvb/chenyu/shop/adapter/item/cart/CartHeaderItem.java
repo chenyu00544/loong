@@ -12,7 +12,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
 
 public class CartHeaderItem extends BaseItem<CartListBean> {
-    public static final int TYPE = 2;
+    public static final int TYPE = R.layout.cart_content_have_data_title_item;
 
     public CartHeaderItem(CartListBean bean, Context c) {
         super(bean, c);
@@ -26,16 +26,20 @@ public class CartHeaderItem extends BaseItem<CartListBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout
-                        .cart_content_have_data_title_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView storeName = holder.getTextView(R.id.textView95);
+        TextView storeName = holder.get(R.id.textView95);
         storeName.setText(mData.getShop().getShop_name());
-        CheckBox cb = (CheckBox) holder.getView(R.id.checkBox2);
+        CheckBox cb = holder.get(R.id.checkBox2);
         cb.setChecked(mData.isCheckAll());
+
+        posMap.put(cb.getId(), position);
+        cb.setOnClickListener(listener);
+        posMap.put(storeName.getId(), position);
+        storeName.setOnClickListener(listener);
     }
 }
