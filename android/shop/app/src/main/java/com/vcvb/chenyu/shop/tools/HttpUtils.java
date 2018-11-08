@@ -132,12 +132,13 @@ public class HttpUtils {
     public void post(String url, Map<String, String> params, final NetCall netCall) {
         //构造token
         Request.Builder requestBuilder = new Request.Builder();
-
-        if (params.get("token") != null && !params.get("token").equals("")) {
-            //构造token
-            String token = params.get("token");
-            params.remove("token");
-            requestBuilder.addHeader("vcvbuy-Authorization", token);
+        if(params != null){
+            if (params.get("token") != null && !params.get("token").equals("")) {
+                //构造token
+                String token = params.get("token");
+                params.remove("token");
+                requestBuilder.addHeader("vcvbuy-Authorization", token);
+            }
         }
         //1构造RequestBody
         RequestBody body = setRequestBody(params);

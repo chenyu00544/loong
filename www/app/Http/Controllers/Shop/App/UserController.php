@@ -32,7 +32,7 @@ class UserController extends CommonController
             $re = $this->usersRepository->userAddresses($uid);
             return ['code' => 0, 'msg' => '', 'data' => $re];
         }
-        return ['code' => 1, 'msg' => '', 'data' => []];
+        return ['code' => 1, 'msg' => '失败', 'data' => []];
     }
 
     public function addAddress(Request $request)
@@ -42,7 +42,7 @@ class UserController extends CommonController
             $re = $this->usersRepository->addAddress($request->all(), $uid);
             return ['code' => 0, 'msg' => '', 'data' => $re];
         }
-        return ['code' => 1, 'msg' => '', 'data' => []];
+        return ['code' => 1, 'msg' => '保存失败', 'data' => []];
     }
 
     public function setDefaultAddress(Request $request)

@@ -69,8 +69,6 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
-import xiaofei.library.datastorage.DataStorageFactory;
-import xiaofei.library.datastorage.IDataStorage;
 
 public class GoodsDetailActivity extends GoodsActivity {
     private int goods_id;
@@ -95,7 +93,6 @@ public class GoodsDetailActivity extends GoodsActivity {
     private ArrayList<GoodsAttr> selectAttrs = new ArrayList<>();
 
     public LoginDialog loginDialog;
-    IDataStorage dataStorage;
 
     public GoodsDetailActivity() {
     }
@@ -108,7 +105,6 @@ public class GoodsDetailActivity extends GoodsActivity {
         loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         changeStatusBarTextColor(true);
         goods_id = getIntent().getIntExtra("id", 0);
-        dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
         token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         setNavBack();
         initView();

@@ -33,6 +33,11 @@ class RegionsRepository implements RegionsRepositoryInterface
         return $reArr;
     }
 
+    public function getAllRegionsFormat()
+    {
+        return $this->regionsModel->getAllRegionsFormat();
+    }
+
     public function searchRegion($keywords = '')
     {
         return $this->regionsModel->searchRegions($keywords);

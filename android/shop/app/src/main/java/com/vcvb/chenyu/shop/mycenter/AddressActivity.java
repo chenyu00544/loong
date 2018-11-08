@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +23,7 @@ import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
+import com.vcvb.chenyu.shop.javaBean.address.Country;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
@@ -39,10 +39,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
+import xiaofei.library.datastorage.DataStorageFactory;
+import xiaofei.library.datastorage.IDataStorage;
 
 public class AddressActivity extends BaseRecyclerViewActivity {
 
     String token;
+    IDataStorage dataStorage;
     private List<AddressBean> addresses = new ArrayList<>();
 
     private RefreshLayout refreshLayout;
@@ -59,6 +62,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
         setContentView(R.layout.address_list);
         context = this;
         changeStatusBarTextColor(true);
+        dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
         token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         setNavBack();
         initView();
@@ -109,7 +113,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
     @Override
     public void initRefresh() {
         super.initRefresh();
-        refreshLayout = (RefreshLayout) findViewById(R.id.collection_list);
+        refreshLayout = findViewById(R.id.collection_list);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
@@ -157,6 +161,46 @@ public class AddressActivity extends BaseRecyclerViewActivity {
                 });
             }
         });
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Country> countries = dataStorage.loadAll(Country.class);
+                if (countries == null || countries.size() == 0) {
+                    HttpUtils.getInstance().post(ConstantManager.Url.ALLREGION, null, new HttpUtils.NetCall() {
+                        @Override
+                        public void success(Call call, JSONObject json) throws IOException {
+                            if (json != null) {
+                                try {
+                                    JSONArray countryJSONArray = json.getJSONArray("data");
+                                    List<Country> countries = new ArrayList<>();
+                                    for (int i = 0; i < countryJSONArray.length(); i++) {
+                                        JSONObject object = countryJSONArray.getJSONObject(i);
+                                        Country country = JsonUtils.fromJsonObject(object, Country.class);
+                                        country.setData(object.getJSONArray("province"));
+                                        countries.add(country);
+                                    }
+                                    //持久化
+                                    dataStorage.storeOrUpdate(countries);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (IllegalAccessException e) {
+                                    e.printStackTrace();
+                                } catch (java.lang.InstantiationException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void failed(Call call, IOException e) {
+
+                        }
+                    });
+                }
+            }
+        });
+        thread.start();
     }
 
     public void bindData(JSONObject json) {
@@ -234,7 +278,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
 
     protected List<Item> getItems(List<AddressBean> list) {
         List<Item> cells = new ArrayList<>();
-        if (list == null || list.size() == 0) {
+        if (list.size() == 0) {
             cells.add(new AddressErrorItem(null, context));
         } else {
             for (int i = 0; i < list.size(); i++) {
@@ -269,11 +313,8 @@ public class AddressActivity extends BaseRecyclerViewActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
-            String result = data.getExtras().getString("result");
-            Log.i("TAG", String.valueOf(requestCode));
-            Log.i("TAG", String.valueOf(resultCode));
-            Log.i("TAG", result);
+        if (resultCode == RESULT_OK) {
+            getData(false);
         }
     }
 }

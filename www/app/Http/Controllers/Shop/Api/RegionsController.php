@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Api;
 
+use App\Facades\RedisCache;
 use App\Facades\Token;
 use App\Repositories\RegionsRepository;
 use GuzzleHttp\Client;
@@ -20,6 +21,17 @@ class RegionsController extends CommonController
     {
         $data = $this->regionsRepository->getRegions($req->type, $req->parent);
         return $this->ApiReturn($data);
+    }
+
+    public function getAllRegions()
+    {
+        $data = RedisCache::get('regions');
+        if (!empty($data)) {
+            return $data;
+        }
+        $data = $this->regionsRepository->getAllRegionsFormat();
+        RedisCache::set('regions', ['code' => 0, 'msg' => '', 'data' => $data]);
+        return ['code' => 0, 'msg' => '', 'data' => $data];
     }
 
     public function getGeoCoder(Request $req)
@@ -55,7 +67,7 @@ class RegionsController extends CommonController
                 $area = mb_substr($content->regeocode->addressComponent->province, 0, -1, "utf-8");
                 $region = $this->regionsRepository->searchRegion($area);
             }
-            $region->formatted_address = $content->regeocode->addressComponent->province.$content->regeocode->addressComponent->city.$content->regeocode->addressComponent->district;
+            $region->formatted_address = $content->regeocode->addressComponent->province . $content->regeocode->addressComponent->city . $content->regeocode->addressComponent->district;
             return $this->ApiReturn($region);
         } catch (\Exception $e) {
             echo 'error:  ';

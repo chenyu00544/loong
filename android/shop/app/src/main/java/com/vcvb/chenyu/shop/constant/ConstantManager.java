@@ -116,6 +116,7 @@ public interface ConstantManager {
         public String COLLECTSTORE = URIHOST + "app/collect/store";
 
         //用户地址操作
+        public String ALLREGION = URIHOST + "region/all/format";
         public String USERADDRESSES = URIHOST + "app/user/addresses";
         public String ADDADDRESS = URIHOST + "app/user/address/add";
         public String SETADDRESS = URIHOST + "app/user/address/set";

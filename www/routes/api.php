@@ -26,6 +26,7 @@ Route::group(['prefix' => 'region', 'namespace' => 'Shop\Api'], function () {
     Route::any('getProvinces', 'RegionsController@getProvinces');
     Route::any('getCities', 'RegionsController@getCities');
     Route::any('geo/coder', 'RegionsController@getGeoCoder');
+    Route::any('all/format', 'RegionsController@getAllRegions');
 
     Route::any('captcha', 'CaptchaController@index');
 });

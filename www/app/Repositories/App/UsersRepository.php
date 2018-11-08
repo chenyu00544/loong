@@ -54,10 +54,10 @@ class UsersRepository implements UsersRepositoryInterface
         $where['user_id'] = $uid;
         $res = $this->userAddressModel->userAddresses($where);
         $user = $this->usersModel->getUser($uid);
-        foreach ($res as $re){
-            if($re->address_id == $user->address_id){
+        foreach ($res as $re) {
+            if ($re->address_id == $user->address_id) {
                 $re->def = 1;
-            }else{
+            } else {
                 $re->def = 0;
             }
         }
@@ -80,7 +80,15 @@ class UsersRepository implements UsersRepositoryInterface
 
     public function addAddress($data, $uid)
     {
-        $updata = [];
+        $updata['user_id'] = $uid;
+        $updata['consignee'] = $data['consignee'];
+        $updata['mobile'] = $data['phone'];
+        $updata['country'] = $data['country'];
+        $updata['province'] = $data['province'];
+        $updata['city'] = $data['city'];
+        $updata['district'] = $data['district'];
+        $updata['address'] = $data['address_info'];
+        $updata['update_time'] = time();
         return $this->userAddressModel->addAddresses($updata);
     }
 

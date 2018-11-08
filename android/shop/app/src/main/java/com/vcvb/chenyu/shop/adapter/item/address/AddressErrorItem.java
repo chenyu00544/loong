@@ -10,7 +10,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
 
 public class AddressErrorItem extends BaseItem<AddressBean> {
-    public static final int TYPE = -1;
+    public static final int TYPE = R.layout.address_nodata_item;
 
     public AddressErrorItem(AddressBean bean, Context c) {
         super(bean, c);
@@ -24,8 +24,7 @@ public class AddressErrorItem extends BaseItem<AddressBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout
-                        .address_nodata_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

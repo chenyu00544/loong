@@ -28,10 +28,43 @@ class RegionsModel extends Model
         return $this->hasMany('App\Http\Models\Shop\OrderInfoModel', 'province', 'region_id');
     }
 
+    public function province()
+    {
+        return $this->hasMany('App\Http\Models\Shop\RegionsModel', 'parent_id', 'region_id');
+    }
+
+    public function city()
+    {
+        return $this->hasMany('App\Http\Models\Shop\RegionsModel', 'parent_id', 'region_id');
+    }
+
+    public function district()
+    {
+        return $this->hasMany('App\Http\Models\Shop\RegionsModel', 'parent_id', 'region_id');
+    }
+
+    public function street()
+    {
+        return $this->hasMany('App\Http\Models\Shop\RegionsModel', 'parent_id', 'region_id');
+    }
+
     public function getRegions($type = 0, $parent = 0, $column = ['region_id', 'region_name', 'parent_id', 'region_type'])
     {
         return $this->select($column)
             ->where([['region_type', $type], ['parent_id', $parent]])
+            ->get();
+    }
+
+    public function getAllRegionsFormat()
+    {
+        return $this->where(['parent_id' => 0])
+            ->with(['province'=>function($query){
+                $query->with(['city'=>function($query){
+                    $query->with(['district'=>function($query){
+                        $query->with(['street']);
+                    }]);
+                }]);
+            }])
             ->get();
     }
 
