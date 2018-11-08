@@ -205,6 +205,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
 
     public void bindData(JSONObject json) {
         addresses.clear();
+        mAdapter.clear();
         if (json != null) {
             try {
                 JSONArray addressesJSONArray = json.getJSONArray("data");
@@ -233,7 +234,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
                 .OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                if (position == addresses.size() - 1) {
+                if (position == addresses.size()) {
                     //添加
                     goToAddressActivity(0, -1);
                 } else {
@@ -301,11 +302,6 @@ public class AddressActivity extends BaseRecyclerViewActivity {
         if (type == 1 && pos != -1) {
             bean = addresses.get(pos);
             intent.putExtra("id", bean.getAddress_id());
-            intent.putExtra("username", bean.getConsignee());
-            intent.putExtra("phone", bean.getMobile());
-            String address_fromat = "%s %s %s %s";
-            intent.putExtra("info", String.format(address_fromat, bean.getProvince_name(), bean
-                    .getCity_name(), bean.getDistrict_name(), bean.getAddress()));
         }
         intent.putExtra("type", type);
         startActivityForResult(intent, ConstantManager.ResultStatus.ADDRESSRESULT);

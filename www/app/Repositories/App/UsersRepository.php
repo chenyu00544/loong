@@ -55,6 +55,10 @@ class UsersRepository implements UsersRepositoryInterface
         $res = $this->userAddressModel->userAddresses($where);
         $user = $this->usersModel->getUser($uid);
         foreach ($res as $re) {
+            $re->country_name = $re->mapcountry->region_name;
+            $re->province_name = $re->mapprovince->region_name;
+            $re->city_name = $re->mapcity->region_name;
+            $re->district_name = $re->mapdistrict->region_name;
             if ($re->address_id == $user->address_id) {
                 $re->def = 1;
             } else {

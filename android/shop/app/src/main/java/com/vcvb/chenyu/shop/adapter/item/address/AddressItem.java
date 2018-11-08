@@ -35,7 +35,7 @@ public class AddressItem extends BaseItem<AddressBean> {
         TextView tv = holder.getTextView(R.id.textView126);
         TextView tv2 = holder.getTextView(R.id.textView128);
         CheckBox cb = (CheckBox) holder.getView(R.id.checkBox5);
-        String consignee_fromat = "联系人: ：%s 手机号码: %s";
+        String consignee_fromat = "联系人: %s 手机号码: %s";
         tv.setText(String.format(consignee_fromat, mData.getConsignee(), mData.getMobile()));
         String address_fromat = "%s %s %s %s";
         tv2.setText(String.format(address_fromat, mData.getProvince_name(), mData.getCity_name(),

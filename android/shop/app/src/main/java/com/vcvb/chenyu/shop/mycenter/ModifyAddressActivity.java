@@ -257,6 +257,7 @@ public class ModifyAddressActivity extends BaseActivity {
                                         public void time() {
                                             count --;
                                             if(count == 0){
+                                                setResult(RESULT_OK);
                                                 finish();
                                             }
                                         }

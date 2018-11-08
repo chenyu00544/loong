@@ -18,6 +18,11 @@ class UserAddressModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function mapcountry()
+    {
+        return $this->hasOne('App\Http\Models\App\RegionsModel', 'region_id', 'country');
+    }
+
     public function mapprovince()
     {
         return $this->hasOne('App\Http\Models\App\RegionsModel', 'region_id', 'province');
@@ -41,6 +46,7 @@ class UserAddressModel extends Model
     public function userAddresses($where, $column = ['*'])
     {
         return $this->select($column)
+            ->with(['mapcountry'])
             ->with(['mapprovince'])
             ->with(['mapcity'])
             ->with(['mapdistrict'])
