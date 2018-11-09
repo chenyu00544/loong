@@ -81,8 +81,14 @@ class RegionsController extends CommonController
         echo Token::encode();
     }
 
+
     public function deToken()
     {
-        $userId = '123456';
     }
+
+    public function test()
+    {
+
+    }
+
 }

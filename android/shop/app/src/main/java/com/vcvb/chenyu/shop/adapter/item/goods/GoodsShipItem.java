@@ -48,7 +48,7 @@ public class GoodsShipItem extends BaseItem<GoodsDetail> {
 
         if (mData.getAddressBeans() != null && mData.getAddressBeans().size() > 0) {
             for (int i = 0; i < mData.getAddressBeans().size(); i++) {
-                if (mData.getAddressBeans().get(i).isDef()) {
+                if (mData.getAddressBeans().get(i).getDef() == 1) {
                     String address_format = "至 %s %s %s %s";
                     address.setText(String.format(address_format, mData.getAddressBeans().get(i)
                             .getProvince_name(), mData.getAddressBeans().get(i).getCity_name(),

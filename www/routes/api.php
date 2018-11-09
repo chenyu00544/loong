@@ -27,6 +27,7 @@ Route::group(['prefix' => 'region', 'namespace' => 'Shop\Api'], function () {
     Route::any('getCities', 'RegionsController@getCities');
     Route::any('geo/coder', 'RegionsController@getGeoCoder');
     Route::any('all/format', 'RegionsController@getAllRegions');
+    Route::any('test', 'RegionsController@test');
 
     Route::any('captcha', 'CaptchaController@index');
 });
@@ -53,12 +54,14 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('login/reg', 'LoginController@register');
     Route::post('login/deviceid', 'LoginController@getDeviceId');
 
-    Route::post('collect/goods', 'CollectController@collectGoods');
+    Route::post('collect/goods/add', 'CollectController@collectGoods');
+    Route::post('collect/goodses', 'CollectController@colloectsByGoods');
     Route::post('collect/cartgoods', 'CollectController@collectCartGoods');
-    Route::post('collect/brand', 'CollectController@collectBrand');
-    Route::post('collect/store', 'CollectController@collectStore');
+    Route::post('collect/brand/add', 'CollectController@collectBrand');
+    Route::post('collect/store/add', 'CollectController@collectStore');
 
     Route::post('user/addresses', 'UserController@addresses');
+    Route::post('user/address/get', 'UserController@getAddress');
     Route::post('user/address/setdef', 'UserController@setDefaultAddress');
     Route::post('user/address/add', 'UserController@addAddress');
     Route::post('user/address/set', 'UserController@setAddress');

@@ -1,4 +1,0 @@
-.order,.address{padding:0 12px}
-.top-nav{background:#fff;}
-.order coupons-ul coupons-li,.address coupons-ul coupons-li{margin-top:12px;display: block}
-.goods-coupon-cont coupons-li .coupons-box.active .left .sup,.goods-coupon-cont coupons-li .coupons-box.active .left .price,.goods-coupon-cont coupons-li .coupons-box.active .right .s_name,.goods-coupon-cont coupons-li .coupons-box.active .right .s_cont{color:#bbb}

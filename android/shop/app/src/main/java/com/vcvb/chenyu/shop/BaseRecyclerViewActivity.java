@@ -10,6 +10,7 @@ import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 
 public class BaseRecyclerViewActivity extends BaseActivity {
+
     public RecyclerView mRecyclerView;
     public CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
     public GridLayoutManager mLayoutManager;

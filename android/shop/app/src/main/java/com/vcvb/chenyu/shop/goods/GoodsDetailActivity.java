@@ -502,7 +502,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             HashMap<String, String> mp = new HashMap<>();
             mp.put("goods_id", goods_id + "");
             mp.put("token", token);
-            HttpUtils.getInstance().post(ConstantManager.Url.COLLECTGOODS, mp, new HttpUtils
+            HttpUtils.getInstance().post(ConstantManager.Url.ADDCOLLECTGOODS, mp, new HttpUtils
                     .NetCall() {
                 @Override
                 public void success(Call call, JSONObject json) throws IOException {
@@ -801,9 +801,9 @@ public class GoodsDetailActivity extends GoodsActivity {
             } else {
                 if (goodsDetails.getAddressBeans() != null) {
                     for (int i = 0; i < goodsDetails.getAddressBeans().size(); i++) {
-                        goodsDetails.getAddressBeans().get(i).setDef(false);
+                        goodsDetails.getAddressBeans().get(i).setDef(0);
                         if (i == pos) {
-                            goodsDetails.getAddressBeans().get(i).setDef(true);
+                            goodsDetails.getAddressBeans().get(i).setDef(1);
                         }
                     }
                 }

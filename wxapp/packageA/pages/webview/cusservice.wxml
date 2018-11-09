@@ -1,5 +1,0 @@
-<view>
-  <web-view src="https://www.missmall.com/mobile/chat/index/index/goods_id/{{goods_id}}.html">
-
-  </web-view>
-</view>

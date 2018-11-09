@@ -3,6 +3,9 @@ package com.vcvb.chenyu.shop.mycenter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -17,14 +20,13 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
 import com.vcvb.chenyu.shop.javaBean.address.City;
 import com.vcvb.chenyu.shop.javaBean.address.Country;
 import com.vcvb.chenyu.shop.javaBean.address.District;
 import com.vcvb.chenyu.shop.javaBean.address.Province;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
-import com.vcvb.chenyu.shop.tools.TimeUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -43,17 +45,17 @@ import xiaofei.library.datastorage.IDataStorage;
 
 public class ModifyAddressActivity extends BaseActivity {
 
-    String token;
     Country country;
-    public LoadingDialog loadingDialog;
-    private TextView area;
+    IDataStorage dataStorage;
+    Integer address_id;
     private EditText userName;
     private EditText phone;
+    private TextView area;
     private EditText address_info;
+    private TextView save;
     private OptionsPickerView optionsPickerView;
-    IDataStorage dataStorage;
     private HashMap<String, String> mp = new HashMap<>();
-    Integer count;
+    private AddressBean address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,7 @@ public class ModifyAddressActivity extends BaseActivity {
         dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
         Intent intent = getIntent();
         intent.getIntExtra("type", 1);
+        address_id = intent.getIntExtra("id", 0);
         setNavBack();
         initView();
         initListener();
@@ -73,7 +76,7 @@ public class ModifyAddressActivity extends BaseActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,22 +89,15 @@ public class ModifyAddressActivity extends BaseActivity {
             });
         }
 
-        TextView title = (TextView) findViewById(R.id.textView123);
+        TextView title = findViewById(R.id.textView123);
         title.setText(R.string.add_address);
-        TextView save = (TextView) findViewById(R.id.textView122);
+        save = findViewById(R.id.textView122);
         save.setText(R.string.save);
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveAddress();
-            }
-        });
     }
 
     @Override
     public void initView() {
         super.initView();
-        loadingDialog = new LoadingDialog(context, R.style.TranslucentDialog);
         area = findViewById(R.id.textView117);
         userName = findViewById(R.id.editText9);
         phone = findViewById(R.id.editText10);
@@ -127,6 +123,9 @@ public class ModifyAddressActivity extends BaseActivity {
     @Override
     public void initListener() {
         super.initListener();
+        userName.addTextChangedListener(watcher);
+        phone.addTextChangedListener(watcher);
+        address_info.addTextChangedListener(watcher);
         area.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,6 +168,56 @@ public class ModifyAddressActivity extends BaseActivity {
 
     @Override
     public void getData(boolean b) {
+        if (address_id != 0) {
+            HashMap<String, String> _mp = new HashMap<>();
+            _mp.put("address_id", address_id + "");
+            HttpUtils.getInstance().post(ConstantManager.Url.GETADDRESS, _mp, new HttpUtils
+                    .NetCall() {
+                @Override
+                public void success(Call call, JSONObject json) throws IOException {
+                    if (json != null) {
+                        try {
+                            Integer code = json.getInt("code");
+                            final String msg = json.getString("msg");
+                            if (code == 0) {
+                                JSONObject object = json.getJSONObject("data");
+                                address = JsonUtils.fromJsonObject(object, AddressBean.class);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        bindViewData();
+                                    }
+                                });
+                            } else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtils.showShortToast(context, msg);
+                                    }
+                                });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (java.lang.InstantiationException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void failed(Call call, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.showShortToast(context, "网络错误,请稍后重试");
+                        }
+                    });
+                }
+            });
+        }
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -194,81 +243,58 @@ public class ModifyAddressActivity extends BaseActivity {
         thread.start();
     }
 
+    //显示视图数据
+    public void bindViewData() {
+        userName.setText(address.getConsignee());
+        mp.put("consignee", address.getConsignee());
+        phone.setText(address.getMobile());
+        mp.put("phone", address.getMobile());
+        String str = "%s-%s-%s";
+        area.setText(String.format(str, address.getProvince_name(), address.getCity_name(),
+                address.getDistrict_name()));
+        area.setTextColor(context.getResources().getColor(R.color.black));
+        mp.put("country", address.getCountry() + "");
+        mp.put("province", address.getProvince() + "");
+        mp.put("city", address.getCity() + "");
+        mp.put("district", address.getDistrict() + "");
+        address_info.setText(address.getAddress());
+        mp.put("address_info", address.getAddress());
+    }
+
+    //添加保存地址
     public void saveAddress() {
         mp.put("token", token);
+        mp.put("address_id", address_id + "");
         mp.put("consignee", userName.getText().toString());
         mp.put("phone", phone.getText().toString());
         mp.put("address_info", address_info.getText().toString());
-        boolean bool = true;
-        if (token == null || token.equals("")) {
-            bool = false;
-            ToastUtils.showShortToast(context, "未登陆");
-        }
+        boolean bool = checkAddress(true);
         if (bool) {
-            if (mp.get("consignee") == null || mp.get("consignee").equals("")) {
-                bool = false;
-                ToastUtils.showShortToast(context, "请填写收件人信息");
-            }
-        }
-
-        if (bool) {
-            if (mp.get("phone") == null || mp.get("phone").equals("")) {
-                bool = false;
-                ToastUtils.showShortToast(context, "请填写收件人手机号码");
-            }
-        }
-
-        if (bool) {
-            if (mp.get("country") == null || mp.get("country").equals("") || mp.get("province")
-                    == null || mp.get("province").equals("") || mp.get("city") == null || mp.get
-                    ("city").equals("") || mp.get("district") == null || mp.get("district")
-                    .equals("")) {
-                bool = false;
-                ToastUtils.showShortToast(context, "请选择所在地区");
-            }
-        }
-
-        if (bool) {
-            if (mp.get("address_info") == null || mp.get("address_info").equals("")) {
-                bool = false;
-                ToastUtils.showShortToast(context, "请填写收件人街道、小区等详细信息");
-            }
-        }
-
-        if (bool) {
-            loadingDialog.show();
             HttpUtils.getInstance().post(ConstantManager.Url.ADDADDRESS, mp, new HttpUtils
                     .NetCall() {
                 @Override
                 public void success(Call call, final JSONObject json) throws IOException {
                     try {
-                        System.out.println(json);
                         Integer code = json.getInt("code");
                         final String msg = json.getString("msg");
                         if (code == 0) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    count = 3;
-                                    loadingDialog.dismiss();
                                     ToastUtils.showShortToast(context, "保存成功");
-                                    TimeUtils.startCountdown(new TimeUtils.CallBack() {
+                                    new Handler().postDelayed(new Runnable() {
                                         @Override
-                                        public void time() {
-                                            count --;
-                                            if(count == 0){
-                                                setResult(RESULT_OK);
-                                                finish();
-                                            }
+                                        public void run() {
+                                            setResult(RESULT_OK);
+                                            finish();
                                         }
-                                    });
+                                    }, 2000);
                                 }
                             });
                         } else {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    loadingDialog.dismiss();
                                     ToastUtils.showShortToast(context, msg);
                                 }
                             });
@@ -283,13 +309,68 @@ public class ModifyAddressActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            loadingDialog.dismiss();
                             ToastUtils.showShortToast(context, "网络错误,请稍后重试");
                         }
                     });
                 }
             });
         }
+    }
+
+    //检查数据填写
+    private boolean checkAddress(boolean isshow) {
+        boolean bool = true;
+        if (token == null || token.equals("")) {
+            bool = false;
+            ToastUtils.showShortToast(context, "未登陆");
+        }
+        if (bool) {
+            if (mp.get("consignee") == null || mp.get("consignee").equals("")) {
+                bool = false;
+                if (isshow) {
+                    ToastUtils.showShortToast(context, "请填写收件人信息");
+                }
+
+            }
+        }
+
+        if (bool) {
+            if (mp.get("phone") == null || mp.get("phone").equals("")) {
+                bool = false;
+                if (isshow) {
+                    ToastUtils.showShortToast(context, "请填写收件人手机号码");
+                }
+            }
+        }
+
+        if (bool) {
+            if (mp.get("country") == null || mp.get("country").equals("") || mp.get("province")
+                    == null || mp.get("province").equals("") || mp.get("city") == null || mp.get
+                    ("city").equals("") || mp.get("district") == null || mp.get("district")
+                    .equals("")) {
+                bool = false;
+                if (isshow) {
+                    ToastUtils.showShortToast(context, "请选择所在地区");
+                }
+            }
+        }
+
+        if (bool) {
+            if (mp.get("address_info") == null || mp.get("address_info").equals("")) {
+                bool = false;
+                if (isshow) {
+                    ToastUtils.showShortToast(context, "请填写收件人街道、小区等详细信息");
+                }
+            }
+        }
+        if (bool) {
+            save.setTextColor(context.getResources().getColor(R.color.black));
+            save.setOnClickListener(listener);
+        } else {
+            save.setTextColor(context.getResources().getColor(R.color.gray));
+            save.setOnClickListener(null);
+        }
+        return bool;
     }
 
     //设置地区三级联动数据
@@ -363,6 +444,7 @@ public class ModifyAddressActivity extends BaseActivity {
             mp.put("district", district.getRegion_id() + "");
             area.setText(str);
             area.setTextColor(context.getResources().getColor(R.color.black));
+            checkAddress(false);
         }
     };
     //地区选择监听接口
@@ -380,6 +462,31 @@ public class ModifyAddressActivity extends BaseActivity {
             mp.put("district", district.getRegion_id() + "");
             area.setText(str);
             area.setTextColor(context.getResources().getColor(R.color.black));
+            checkAddress(false);
+        }
+    };
+
+    TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            checkAddress(false);
+        }
+    };
+
+    View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            saveAddress();
         }
     };
 }

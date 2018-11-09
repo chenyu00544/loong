@@ -1,5 +1,0 @@
-.profile-list .admin {
-  padding-left: 15px;
-  font-size: 30rpx;
-  color: #333;
-}

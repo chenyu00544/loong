@@ -282,7 +282,7 @@ public class MainActivity extends BaseActivity {
                                             intent.setAction("UserInfoCall");
                                             LocalBroadcastManager.getInstance(context)
                                                     .sendBroadcast(intent);
-                                            LoginDialog.getInstance(context).hide();
+                                            LoginDialog.getInstance(context).dismiss();
                                         }
                                     });
                                 } else {
@@ -379,7 +379,7 @@ public class MainActivity extends BaseActivity {
                 Intent intent = new Intent();
                 intent.setAction("UserInfoCall");
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                LoginDialog.getInstance(context).hide();
+                LoginDialog.getInstance(context).dismiss();
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.vcvb.chenyu.shop.mycenter;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,22 +14,25 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.collection.CollectionErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.collection.CollectionItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.collection.CollectionBean;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -44,8 +46,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
     private List<CollectionBean> collections = new ArrayList<>();
 
     private RefreshLayout refreshLayout;
-
-    public LoadingDialog loadingDialog;
+    private Integer page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         changeStatusBarTextColor(true);
         setContentView(R.layout.collection_list);
         context = this;
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         setNavBack();
         initView();
         initRefresh();
@@ -65,8 +67,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         super.setNavBack();
         int gravity = Gravity.CENTER;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout
-                .LayoutParams.WRAP_CONTENT, LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                .LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TextView titleView = new TextView(this);
         titleView.setLayoutParams(layoutParams);
         titleView.setGravity(gravity);
@@ -76,8 +77,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         titleView.setSingleLine();
 
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(ToolUtils.dip2px
-                (context, 60), LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                (context, 60), LinearLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout nav_other = (LinearLayout) findViewById(R.id.nav_other);
         nav_other.setLayoutParams(layoutParams2);
         nav_other.setAlpha(1);
@@ -86,7 +86,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
 
         final PopWin popWindow = new PopWin(MyCollectionActivity.this, ToolUtils.dip2px(context,
                 156), ToolUtils.dip2px(context, 148));
-        final ImageView iv2 = (ImageView) findViewById(R.id.more);
+        final ImageView iv2 = findViewById(R.id.more);
         iv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,23 +101,22 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         });
 
         LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout
-                .LayoutParams.WRAP_CONTENT, LinearLayout
-                .LayoutParams.WRAP_CONTENT);
-        LinearLayout title_wrap = (LinearLayout) findViewById(R.id.title_wrap);
+                .LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout title_wrap = findViewById(R.id.title_wrap);
         title_wrap.setAlpha(1);
         title_wrap.setLayoutParams(layoutParams3);
         title_wrap.addView(titleView);
     }
 
     public void initView() {
-        mRecyclerView = (RecyclerView) findViewById(R.id.content);
+        mRecyclerView = findViewById(R.id.content);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     public void initRefresh() {
-        refreshLayout = (RefreshLayout) findViewById(R.id.collection_list);
+        refreshLayout = findViewById(R.id.collection_list);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
@@ -127,6 +126,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
+                loadmore();
                 refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
             }
         });
@@ -138,24 +138,18 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
             loadingDialog.show();
         }
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("token", token);
+        mp.put("page", page + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.COLLECTGOODSES, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
+            public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-
-                        if (collections.size() != 0) {
-//                            setHaveDataByView();
-                        } else {
-//                            setNoDateByView();
-                        }
+                        bindViewData(json);
                     }
                 });
             }
@@ -168,36 +162,79 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-//                        setNoDateByView();
                     }
                 });
             }
         });
+    }
 
+    public void loadmore() {
+        HashMap<String, String> mp = new HashMap<>();
+        page += 1;
+        mp.put("token", token);
+        mp.put("page", page + "");
+        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindViewMoreData(json);
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void bindViewData(JSONObject json) {
         collections.clear();
-//        CollectionBean bean = new CollectionBean();
-//        bean.setIsType(-1);
-//        bean.setGoodsName("store_name");
-//        collections.add(bean);
-        for (int i = 0; i < 10; i++) {
-            CollectionBean bean = new CollectionBean();
-            bean.setIsType(1);
-            bean.setGoodsName("goods_name" + i);
-            collections.add(bean);
+        mAdapter.clear();
+        if (json != null) {
+            try {
+                Integer code = json.getInt("code");
+                if (code == 0) {
+                    JSONArray arr = json.getJSONArray("data");
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject object = (JSONObject) arr.get(i);
+                        CollectionBean bean = JsonUtils.fromJsonObject(object, CollectionBean
+                                .class);
+                        collections.add(bean);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
         }
         mAdapter.addAll(getItems(collections));
     }
 
+    public void bindViewMoreData(JSONObject json) {
+        if (json != null) {
+
+        }
+    }
+
     protected List<Item> getItems(List<CollectionBean> list) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case -1:
-                    cells.add(new CollectionErrorItem(list.get(i), context));
-                    break;
-                case 1:
-                    cells.add(new CollectionItem(list.get(i), context));
-                    break;
+        if (list == null || list.size() == 0) {
+            cells.add(new CollectionErrorItem(null, context));
+        }else{
+            for (int i = 0; i < list.size(); i++) {
+                cells.add(new CollectionItem(list.get(i), context));
             }
         }
         return cells;
@@ -241,28 +278,26 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView48).setOnChildClickListener1
                 (new CYCItemClickSupport.OnChildItemClickListener1() {
 
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        clearLong();
-                        System.out.println(2);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                clearLong();
+                System.out.println(2);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
         CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.textView119).setOnChildClickListener2
                 (new CYCItemClickSupport.OnChildItemClickListener2() {
 
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        clearLong();
-                        System.out.println(3);
-                        collections.remove(position);
-                        mAdapter.remove(position);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                clearLong();
+                System.out.println(3);
+                collections.remove(position);
+                mAdapter.remove(position);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     //清理长按显示状态

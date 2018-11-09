@@ -453,7 +453,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
     public void collectCartGoods(List<Integer> goods_ids) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("goods_id", StringUtils.join(goods_ids, ","));
-        HttpUtils.getInstance().post(ConstantManager.Url.COLLECTGOODS, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.ADDCOLLECTGOODS, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
                 System.out.println(json);

@@ -18,6 +18,21 @@ class CollectGoodsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function goods()
+    {
+        return $this->hasOne('App\Http\Models\App\GoodsModel','goods_id','goods_id');
+    }
+
+    public function getColloectsByGoods($where, $page = 1, $column = ['*'], $size = 10)
+    {
+        return $this->select($column)
+            ->where($where)
+            ->with(['goods'])
+            ->offset(($page - 1) * $size)
+            ->limit($size)
+            ->get();
+    }
+
     public function getCollectGoods($where)
     {
         return $this->where($where)->first();

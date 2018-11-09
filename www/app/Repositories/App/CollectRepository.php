@@ -31,11 +31,30 @@ class CollectRepository implements CollectRepositoryInterface
         $this->collectStoreModel = $collectStoreModel;
     }
 
+    public function colloectsByGoods($data, $uid)
+    {
+        $where['user_id'] = $uid;
+        $where['is_attention'] = 1;
+        $page = $data['page'];
+        $res = $this->collectGoodsModel->getColloectsByGoods($where, $page);
+        foreach ($res as $re) {
+            if(!empty($re->goods->toArray())){
+                foreach ($re->goods->toArray() as $k => $v) {
+                    if ($k != 'add_time') {
+                        $re->$k = $v;
+                    }
+                }
+            }
+            unset($re->goods);
+        }
+        return $res;
+    }
+
     public function collectGoods($request, $uid)
     {
         $goods_ids = explode(',', $request['goods_id']);
-        $data= [];
-        foreach ($goods_ids as $goods_id){
+        $data = [];
+        foreach ($goods_ids as $goods_id) {
             $where['goods_id'] = $goods_id;
             $where['user_id'] = $uid;
             $re = $this->collectGoodsModel->getCollectGoods($where);

@@ -40,9 +40,23 @@ class UserController extends CommonController
         $uid = Verifiable::authorization($request);
         if ($uid != '') {
             $re = $this->usersRepository->addAddress($request->all(), $uid);
-            return ['code' => 0, 'msg' => '', 'data' => $re];
+            if ($re) {
+                return ['code' => 0, 'msg' => '', 'data' => $re];
+            } else {
+                return ['code' => 0, 'msg' => $re, 'data' => []];
+            }
         }
-        return ['code' => 1, 'msg' => '保存失败', 'data' => []];
+        return ['code' => 1, 'msg' => '未登陆', 'data' => []];
+    }
+
+    public function getAddress(Request $request)
+    {
+        $re = $this->usersRepository->getAddress($request->all());
+        if($re){
+            return ['code' => 0, 'msg' => '', 'data' => $re];
+        }else{
+            return ['code' => 1, 'msg' => '地址已删除', 'data' => []];
+        }
     }
 
     public function setDefaultAddress(Request $request)
@@ -62,7 +76,12 @@ class UserController extends CommonController
 
     public function delAddress(Request $request)
     {
-        $re = $this->usersRepository->delAddress($request->all());
-        return ['code' => 0, 'msg' => '', 'data' => $re];
+        $uid = Verifiable::authorization($request);
+        $re = $this->usersRepository->delAddress($request->all(), $uid);
+        if($re){
+            return ['code' => 0, 'msg' => '', 'data' => $re];
+        }else{
+            return ['code' => 1, 'msg' => '', 'data' => $re];
+        }
     }
 }

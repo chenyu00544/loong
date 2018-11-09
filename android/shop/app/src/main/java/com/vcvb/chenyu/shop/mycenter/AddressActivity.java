@@ -3,7 +3,6 @@ package com.vcvb.chenyu.shop.mycenter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +16,6 @@ import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.address.AddressAddItem;
 import com.vcvb.chenyu.shop.adapter.item.address.AddressErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.address.AddressItem;
-import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
@@ -26,6 +24,7 @@ import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
 import com.vcvb.chenyu.shop.javaBean.address.Country;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -44,7 +43,6 @@ import xiaofei.library.datastorage.IDataStorage;
 
 public class AddressActivity extends BaseRecyclerViewActivity {
 
-    String token;
     IDataStorage dataStorage;
     private List<AddressBean> addresses = new ArrayList<>();
 
@@ -54,7 +52,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
 
     private ConfirmDialog confirmDialog;
 
-    private int pos;
+    private int p;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,7 +165,8 @@ public class AddressActivity extends BaseRecyclerViewActivity {
             public void run() {
                 List<Country> countries = dataStorage.loadAll(Country.class);
                 if (countries == null || countries.size() == 0) {
-                    HttpUtils.getInstance().post(ConstantManager.Url.ALLREGION, null, new HttpUtils.NetCall() {
+                    HttpUtils.getInstance().post(ConstantManager.Url.ALLREGION, null, new
+                            HttpUtils.NetCall() {
                         @Override
                         public void success(Call call, JSONObject json) throws IOException {
                             if (json != null) {
@@ -176,7 +175,8 @@ public class AddressActivity extends BaseRecyclerViewActivity {
                                     List<Country> countries = new ArrayList<>();
                                     for (int i = 0; i < countryJSONArray.length(); i++) {
                                         JSONObject object = countryJSONArray.getJSONObject(i);
-                                        Country country = JsonUtils.fromJsonObject(object, Country.class);
+                                        Country country = JsonUtils.fromJsonObject(object,
+                                                Country.class);
                                         country.setData(object.getJSONArray("province"));
                                         countries.add(country);
                                     }
@@ -211,8 +211,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
                 JSONArray addressesJSONArray = json.getJSONArray("data");
                 for (int i = 0; i < addressesJSONArray.length(); i++) {
                     JSONObject object = (JSONObject) addressesJSONArray.get(i);
-                    AddressBean addressBean = JsonUtils.fromJsonObject(object, AddressBean
-                            .class);
+                    AddressBean addressBean = JsonUtils.fromJsonObject(object, AddressBean.class);
                     addresses.add(addressBean);
                 }
             } catch (JSONException e) {
@@ -229,39 +228,6 @@ public class AddressActivity extends BaseRecyclerViewActivity {
     @Override
     public void initListener() {
         super.initListener();
-
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                if (position == addresses.size()) {
-                    //添加
-                    goToAddressActivity(0, -1);
-                } else {
-                    //修改
-                    goToAddressActivity(1, position);
-                }
-            }
-        });
-
-        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.checkBox5).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                for (int i = 0; i < addresses.size(); i++) {
-                    addresses.get(i).setDef(false);
-                }
-                addresses.get(position).setDef(true);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.view37).setOnChildClickListener1(new CYCItemClickSupport.OnChildItemClickListener1() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                pos = position;
-                confirmDialog.show();
-            }
-        });
 
         confirmDialog.setOnDialogClickListener(new ConfirmDialog.OnDialogClickListener() {
             @Override
@@ -283,17 +249,90 @@ public class AddressActivity extends BaseRecyclerViewActivity {
             cells.add(new AddressErrorItem(null, context));
         } else {
             for (int i = 0; i < list.size(); i++) {
-                cells.add(new AddressItem(list.get(i), context));
+                AddressItem addressItem = new AddressItem(list.get(i), context);
+                addressItem.setOnItemClickListener(addressListener);
+                cells.add(addressItem);
             }
-            cells.add(new AddressAddItem(null, context));
+            AddressAddItem addressAddItem = new AddressAddItem(null, context);
+            addressAddItem.setOnItemClickListener(addListener);
+            cells.add(addressAddItem);
         }
         return cells;
     }
 
     public void removeAddresses() {
-        addresses.remove(pos);
-        mAdapter.remove(pos);
-        mAdapter.notifyDataSetChanged();
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("address_id", addresses.get(p).getAddress_id() + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.DELADDRESS, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                if(json != null){
+                    try {
+                        Integer code = json.getInt("code");
+                        if(code == 0){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addresses.remove(p);
+                                    mAdapter.remove(p);
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+
+            }
+        });
+    }
+
+    public void setDefAddress(final Integer pos){
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("address_id", addresses.get(pos).getAddress_id() + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.SETDEFADDRESS, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                System.out.println(json);
+                if(json != null){
+                    try {
+                        Integer code = json.getInt("code");
+                        if(code == 0){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    for (int i = 0; i < addresses.size(); i++) {
+                                        addresses.get(i).setDef(0);
+                                    }
+                                    addresses.get(pos).setDef(1);
+                                    mAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtils.showShortToast(context, "网路错误");
+                    }
+                });
+            }
+        });
     }
 
     public void goToAddressActivity(int type, int pos) {
@@ -313,4 +352,30 @@ public class AddressActivity extends BaseRecyclerViewActivity {
             getData(false);
         }
     }
+
+    AddressAddItem.OnClickListener addListener = new AddressAddItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            goToAddressActivity(0, -1);
+        }
+    };
+
+    AddressItem.OnClickListener addressListener = new AddressItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            switch (view.getId()) {
+                case R.id.view5:
+                    goToAddressActivity(1, pos);
+                    break;
+                case R.id.checkBox5:
+                case R.id.textView124:
+                    setDefAddress(pos);
+                    break;
+                case R.id.view37:
+                    p = pos;
+                    confirmDialog.show();
+                    break;
+            }
+        }
+    };
 }

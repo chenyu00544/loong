@@ -111,13 +111,15 @@ public interface ConstantManager {
         public String REGISTER = URIHOST + "app/login/reg";
 
         //收藏操作
-        public String COLLECTGOODS = URIHOST + "app/collect/goods";
-        public String COLLECTBRAND = URIHOST + "app/collect/brand";
-        public String COLLECTSTORE = URIHOST + "app/collect/store";
+        public String ADDCOLLECTGOODS = URIHOST + "app/collect/goods/add";
+        public String COLLECTGOODSES = URIHOST + "app/collect/goodses";
+        public String ADDCOLLECTBRAND = URIHOST + "app/collect/brand/add";
+        public String ADDCOLLECTSTORE = URIHOST + "app/collect/store/add";
 
         //用户地址操作
         public String ALLREGION = URIHOST + "region/all/format";
         public String USERADDRESSES = URIHOST + "app/user/addresses";
+        public String GETADDRESS = URIHOST + "app/user/address/get";
         public String ADDADDRESS = URIHOST + "app/user/address/add";
         public String SETADDRESS = URIHOST + "app/user/address/set";
         public String DELADDRESS = URIHOST + "app/user/address/del";

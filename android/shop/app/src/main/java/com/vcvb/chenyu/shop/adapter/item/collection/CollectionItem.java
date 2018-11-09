@@ -15,7 +15,7 @@ import com.vcvb.chenyu.shop.javaBean.collection.CollectionBean;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 public class CollectionItem extends BaseItem<CollectionBean> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.collection_item;
 
     public CollectionItem(CollectionBean bean, Context c) {
         super(bean, c);
@@ -29,8 +29,7 @@ public class CollectionItem extends BaseItem<CollectionBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout
-                        .collection_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

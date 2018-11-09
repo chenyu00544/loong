@@ -42,7 +42,7 @@
         android:layout_marginTop="8dp"
         android:padding="8dp"
         android:text="@string/add_item"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

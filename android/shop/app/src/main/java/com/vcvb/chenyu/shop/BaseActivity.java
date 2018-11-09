@@ -14,6 +14,7 @@ import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 
 public class BaseActivity extends AppCompatActivity {
 
+    public String token;
     public LinearLayout nav_bar;
     public LinearLayout nav_back;
     public LoadingDialog loadingDialog;

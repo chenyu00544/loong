@@ -619,7 +619,7 @@ public class GoodsDetail {
                 AddressBean addressBean = JsonUtils.fromJsonObject(object, AddressBean.class);
                 if (Json.getJSONObject("user").getInt("address_id") == addressBean.getAddress_id
                         ()) {
-                    addressBean.setDef(true);
+                    addressBean.setDef(1);
                 }
                 _addresses.add(addressBean);
             }

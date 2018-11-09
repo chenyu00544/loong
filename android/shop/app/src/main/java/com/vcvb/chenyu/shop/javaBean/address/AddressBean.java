@@ -1,7 +1,7 @@
 package com.vcvb.chenyu.shop.javaBean.address;
 
 public class AddressBean {
-    private boolean def = false;
+    private Integer def = 0;
     private String address_name;
     private Integer user_id;
     private String consignee;
@@ -19,11 +19,11 @@ public class AddressBean {
     private String mobile;
     private String zipcode;
 
-    public boolean isDef() {
+    public Integer getDef() {
         return def;
     }
 
-    public void setDef(boolean def) {
+    public void setDef(Integer def) {
         this.def = def;
     }
 

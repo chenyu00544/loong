@@ -68,6 +68,17 @@ class UsersRepository implements UsersRepositoryInterface
         return $res;
     }
 
+    public function getAddress($data)
+    {
+        $where['address_id'] = $data['address_id'];
+        $re = $this->userAddressModel->getAddress($where);
+        $re->country_name = $re->mapcountry->region_name;
+        $re->province_name = $re->mapprovince->region_name;
+        $re->city_name = $re->mapcity->region_name;
+        $re->district_name = $re->mapdistrict->region_name;
+        return $re;
+    }
+
     public function setDefaultAddress($data, $uid)
     {
         $where['user_id'] = $uid;
@@ -79,26 +90,45 @@ class UsersRepository implements UsersRepositoryInterface
     {
         $where['address_id'] = $data['address_id'];
         $updata = [];
-        return $this->userAddressModel->setAddresses($where, $updata);
+        return $this->userAddressModel->setAddress($where, $updata);
     }
 
     public function addAddress($data, $uid)
     {
-        $updata['user_id'] = $uid;
-        $updata['consignee'] = $data['consignee'];
-        $updata['mobile'] = $data['phone'];
-        $updata['country'] = $data['country'];
-        $updata['province'] = $data['province'];
-        $updata['city'] = $data['city'];
-        $updata['district'] = $data['district'];
-        $updata['address'] = $data['address_info'];
-        $updata['update_time'] = time();
-        return $this->userAddressModel->addAddresses($updata);
+        $count = $this->userAddressModel->countAddress(['user_id' => $uid]);
+        if ($count >= 10) {
+            return '限定十个地址，已添加满';
+        }
+        if (empty($data['address_id'])) {
+            $updata['user_id'] = $uid;
+            $updata['consignee'] = $data['consignee'];
+            $updata['mobile'] = $data['phone'];
+            $updata['country'] = $data['country'];
+            $updata['province'] = $data['province'];
+            $updata['city'] = $data['city'];
+            $updata['district'] = $data['district'];
+            $updata['address'] = $data['address_info'];
+            $updata['update_time'] = time();
+            return $this->userAddressModel->addAddress($updata);
+        } else {
+            $where['address_id'] = $data['address_id'];
+            $updata['user_id'] = $uid;
+            $updata['consignee'] = $data['consignee'];
+            $updata['mobile'] = $data['phone'];
+            $updata['country'] = $data['country'];
+            $updata['province'] = $data['province'];
+            $updata['city'] = $data['city'];
+            $updata['district'] = $data['district'];
+            $updata['address'] = $data['address_info'];
+            $updata['update_time'] = time();
+            return $this->userAddressModel->setAddress($where, $updata);
+        }
     }
 
-    public function delAddress($uid)
+    public function delAddress($data, $uid)
     {
         $where['user_id'] = $uid;
-        return $this->userAddressModel->delAddresses($where);
+        $where['address_id'] = $data['address_id'];
+        return $this->userAddressModel->delAddress($where);
     }
 }

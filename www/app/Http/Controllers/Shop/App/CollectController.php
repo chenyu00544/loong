@@ -18,6 +18,21 @@ class CollectController extends CommonController
         $this->collectRepository = $collectRepository;
     }
 
+    public function colloectsByGoods(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $re = $this->collectRepository->colloectsByGoods($request->all(), $uid);
+            if ($re) {
+                return ['code' => 0, 'msg' => '', 'data' => $re];
+            }else{
+                return ['code' => 0, 'msg' => '', 'data' => []];
+            }
+        } else {
+            return ['code' => 1, 'msg' => '未登陆'];
+        }
+    }
+
     public function collectGoods(Request $request)
     {
         $uid = Verifiable::authorization($request);

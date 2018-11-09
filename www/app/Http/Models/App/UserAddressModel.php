@@ -55,18 +55,35 @@ class UserAddressModel extends Model
             ->get();
     }
 
-    public function setAddresses($where, $data)
+    public function getAddress($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->with(['mapcountry'])
+            ->with(['mapprovince'])
+            ->with(['mapcity'])
+            ->with(['mapdistrict'])
+            ->with(['mapstreet'])
+            ->where($where)
+            ->first();
+    }
+
+    public function setAddress($where, $data)
     {
         return $this->where($where)
             ->update($data);
     }
 
-    public function addAddresses($data)
+    public function addAddress($data)
     {
         return $this->create($data);
     }
 
-    public function delAddresses($where)
+    public function countAddress($where)
+    {
+        return $this->where($where)->count();
+    }
+
+    public function delAddress($where)
     {
         return $this->where($where)
             ->delete();
