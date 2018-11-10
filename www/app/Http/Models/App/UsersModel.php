@@ -24,6 +24,11 @@ class UsersModel extends Model
         return $this->hasMany('App\Http\Models\App\UserAddressModel', 'user_id', 'user_id');
     }
 
+    public function real()
+    {
+        return $this->hasOne('App\Http\Models\App\UsersRealModel', 'user_id', 'user_id');
+    }
+
     public function getUserByAddress($where, $column = ['*'])
     {
         return $this->select($column)
@@ -49,6 +54,7 @@ class UsersModel extends Model
             ->orWhere(['user_id' => $name])
             ->orWhere(['email' => $name])
             ->orWhere(['mobile_phone' => $name])
+            ->with(['real'])
             ->first();
     }
 

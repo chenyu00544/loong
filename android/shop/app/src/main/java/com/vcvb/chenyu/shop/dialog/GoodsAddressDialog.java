@@ -94,7 +94,7 @@ public class GoodsAddressDialog extends DialogFragment {
             this.tag = tag;
             manager.beginTransaction().remove(this).commit();
             super.show(manager, tag);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -108,10 +108,11 @@ public class GoodsAddressDialog extends DialogFragment {
                 goodsAddressItem.setOnItemClickListener(addresslistener);
                 cells.add(goodsAddressItem);
             }
+        } else if (bean.getAddressBeans() == null || bean.getAddressBeans().size() == 0) {
+            GoodsNoAddressItem goodsNoAddressItem = new GoodsNoAddressItem(null, context);
+            goodsNoAddressItem.setOnItemClickListener(noAddresslistener);
+            cells.add(goodsNoAddressItem);
         }
-        GoodsNoAddressItem goodsNoAddressItem = new GoodsNoAddressItem(null, context);
-        goodsNoAddressItem.setOnItemClickListener(noAddresslistener);
-        cells.add(goodsNoAddressItem);
         return cells;
     }
 

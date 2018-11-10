@@ -44,10 +44,29 @@ class UsersRepository implements UsersRepositoryInterface
                 } else {
                     $req = ['code' => 1, 'msg' => '密码错误', 'data' => '', 'token' => ''];
                 }
+                $user->is_real = '0';
+                if (!empty($user->real)) {
+                    if ($user->real->review_status == 1) {
+                        $user->is_real = '1';
+                    }
+                }
             }
         }
         return $req;
     }
+
+    public function getUserInfo($uid)
+    {
+        $user = $this->usersModel->getUser($uid);
+        $user->is_real = '0';
+        if(!empty($user->real)){
+            if($user->real->review_status == 1){
+                $user->is_real = '1';
+            }
+        }
+        return $user;
+    }
+
 
     public function userAddresses($uid)
     {

@@ -228,7 +228,8 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         }
     }
 
-    protected List<Item> getItems(List<CollectionBean> list) {
+    protected List<Item> getItems(List<CollectionBean> list)
+    {
         List<Item> cells = new ArrayList<>();
         if (list == null || list.size() == 0) {
             cells.add(new CollectionErrorItem(null, context));
@@ -239,7 +240,6 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         }
         return cells;
     }
-
     public void initListener() {
         CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
                 .OnItemClickListener() {

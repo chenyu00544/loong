@@ -107,8 +107,10 @@ public interface ConstantManager {
         public String SETCART = URIHOST + "app/cart/set";
         public String DELCART = URIHOST + "app/cart/del";
 
+        //用户账号操作
         public String LOGIN = URIHOST + "app/login/index";
         public String REGISTER = URIHOST + "app/login/reg";
+        public String GETUSERINFO = URIHOST + "app/user/index";
 
         //收藏操作
         public String ADDCOLLECTGOODS = URIHOST + "app/collect/goods/add";

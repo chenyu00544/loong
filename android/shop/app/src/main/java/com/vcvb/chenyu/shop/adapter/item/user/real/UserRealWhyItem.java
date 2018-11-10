@@ -11,7 +11,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 
 public class UserRealWhyItem extends BaseItem<UserInfoBean> {
-    public static final int TYPE = 4;
+    public static final int TYPE = R.layout.user_real_why_item;
 
     public UserRealWhyItem(UserInfoBean bean, Context c) {
         super(bean, c);
@@ -25,11 +25,14 @@ public class UserRealWhyItem extends BaseItem<UserInfoBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_real_why_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        TextView tv = holder.get(R.id.textView148);
+        tv.setText("根据海关规定,根据海关规定,根据海关规定,根据海关规定," +
+                "根据海关规定根据海关规定根据海关规定，根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定，根据海关规定");
     }
 }

@@ -22,7 +22,12 @@ class UserController extends CommonController
 
     public function index(Request $request)
     {
-
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $re = $this->usersRepository->getAddress($uid);
+            return ['code' => 0, 'msg' => '', 'data' => $re];
+        }
+        return ['code' => 1, 'msg' => '', 'data' => []];
     }
 
     public function addresses(Request $request)

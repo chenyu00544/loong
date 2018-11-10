@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.jude.swipbackhelper.SwipeListener;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -49,6 +50,7 @@ public class BaseActivity extends AppCompatActivity {
                     public void onScrollToClose() {//当滑动关闭
                     }
                 });
+        token = (String) UserInfoUtils.getInstance(this).getUserInfo().get("token");
     }
 
     @Override

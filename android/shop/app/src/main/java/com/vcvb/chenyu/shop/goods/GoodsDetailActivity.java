@@ -48,6 +48,7 @@ import com.vcvb.chenyu.shop.login.RegisterActivity;
 import com.vcvb.chenyu.shop.mycenter.AddressActivity;
 import com.vcvb.chenyu.shop.mycenter.CartActivity;
 import com.vcvb.chenyu.shop.mycenter.ModifyAddressActivity;
+import com.vcvb.chenyu.shop.mycenter.userinfo.UserRealNameActivity;
 import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
@@ -72,7 +73,7 @@ import okhttp3.Call;
 
 public class GoodsDetailActivity extends GoodsActivity {
     private int goods_id;
-    private String token;
+    private String isReal = "0";
     private JSONObject goodsJson;
 
     int pos = 0;
@@ -105,7 +106,6 @@ public class GoodsDetailActivity extends GoodsActivity {
         loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         changeStatusBarTextColor(true);
         goods_id = getIntent().getIntExtra("id", 0);
-        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         setNavBack();
         initView();
         initListener();
@@ -357,7 +357,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     cartNum.setAlpha(0);
                 }
                 cartNum.setText(String.valueOf(goodsDetails.getCount_cart()));
-                if(context!=null){
+                if (context != null) {
                     if (goodsDetails.getCollect() == 0) {
                         Glide.with(context).load(R.drawable.icon_love_black).into(collectionView);
                     } else {
@@ -591,24 +591,26 @@ public class GoodsDetailActivity extends GoodsActivity {
                             try {
                                 if (json.getInt("code") == 0) {
                                     JSONObject data = json.getJSONObject("data");
-                                    final String username = data.getString("user_name");
-                                    final String _token = json.getString("token");
-                                    final String logo = data.getString("logo");
-                                    final String nick_name = data.getString("nick_name");
-                                    final String mobile_phone = data.getString("mobile_phone");
-                                    final String user_money = data.getString("user_money");
+                                    String username = data.getString("user_name");
+                                    String _token = json.getString("token");
+                                    String logo = data.getString("logo");
+                                    String nick_name = data.getString("nick_name");
+                                    String mobile_phone = data.getString("mobile_phone");
+                                    String user_money = data.getString("user_money");
+                                    String is_real = data.getString("is_real");
+                                    HashMap<String, String> u = new HashMap<>();
+                                    u.put("username", username);
+                                    u.put("token", _token);
+                                    u.put("logo", logo);
+                                    u.put("nickname", nick_name);
+                                    u.put("mobile_phone", mobile_phone);
+                                    u.put("user_money", user_money);
+                                    u.put("is_real", is_real);
+                                    UserInfoUtils.getInstance(context).setUserInfo(u);
+                                    token = _token;
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            HashMap<String, String> u = new HashMap<>();
-                                            u.put("username", username);
-                                            u.put("token", _token);
-                                            u.put("logo", logo);
-                                            u.put("nickname", nick_name);
-                                            u.put("mobile_phone", mobile_phone);
-                                            u.put("user_money", user_money);
-                                            UserInfoUtils.getInstance(context).setUserInfo(u);
-                                            token = _token;
                                             loadingDialog2.dismiss();
                                             loginDialog.dismiss();
                                         }
@@ -634,6 +636,37 @@ public class GoodsDetailActivity extends GoodsActivity {
         });
     }
 
+    //检查账号是否已认证
+    public void checkUserForReal() {
+        if (isReal.equals("0")) {
+            HashMap<String, String> _mp = new HashMap<>();
+            _mp.put("token", token);
+            HttpUtils.getInstance().post(ConstantManager.Url.GETUSERINFO, _mp, new HttpUtils
+                    .NetCall() {
+                @Override
+                public void success(Call call, JSONObject json) throws IOException {
+                    if (json != null) {
+                        try {
+                            if (json.getInt("code") == 0) {
+                                JSONObject data = json.getJSONObject("data");
+                                isReal = data.getString("is_real");
+                                HashMap<String, String> u = new HashMap<>();
+                                u.put("is_real", isReal);
+                                UserInfoUtils.getInstance(context).setUserInfo(u);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                @Override
+                public void failed(Call call, IOException e) {
+
+                }
+            });
+        }
+    }
+
     @Override
     protected void onResume() {
         getData(false);
@@ -657,6 +690,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             switch (view.getId()) {
                 case R.id.textView32:
                     goodsAttrDialog.show(getSupportFragmentManager(), "Buy");
+                    checkUserForReal();
                     break;
                 case R.id.textView31:
                     goodsAttrDialog.show(getSupportFragmentManager(), "AddCart");
@@ -747,11 +781,16 @@ public class GoodsDetailActivity extends GoodsActivity {
                     } else {
                         if (goodsDetails.getAddressBeans() != null && goodsDetails
                                 .getAddressBeans().size() > 0) {
-                            Intent intent = new Intent(context, OrderDetailsActivity.class);
-                            intent.putExtra("goods_id", goods_id);
-                            intent.putExtra("attr", attr);
-                            startActivity(intent);
-                        }else{
+                            if (isReal.equals("0")) {
+                                Intent intent = new Intent(context, UserRealNameActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Intent intent = new Intent(context, OrderDetailsActivity.class);
+                                intent.putExtra("goods_id", goods_id);
+                                intent.putExtra("attr", attr);
+                                startActivity(intent);
+                            }
+                        } else {
                             Intent intent = new Intent(context, AddressActivity.class);
                             startActivity(intent);
                         }

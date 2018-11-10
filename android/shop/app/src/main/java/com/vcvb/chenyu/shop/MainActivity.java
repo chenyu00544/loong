@@ -259,24 +259,25 @@ public class MainActivity extends BaseActivity {
                             try {
                                 if (json.getInt("code") == 0) {
                                     JSONObject data = json.getJSONObject("data");
-                                    final String username = data.getString("user_name");
-                                    final String token = json.getString("token");
-                                    final String logo = data.getString("logo");
-                                    final String nick_name = data.getString("nick_name");
-                                    final String mobile_phone = data.getString("mobile_phone");
-                                    final String user_money = data.getString("user_money");
+                                    String username = data.getString("user_name");
+                                    String token = json.getString("token");
+                                    String logo = data.getString("logo");
+                                    String nick_name = data.getString("nick_name");
+                                    String mobile_phone = data.getString("mobile_phone");
+                                    String user_money = data.getString("user_money");
+                                    String is_real = data.getString("is_real");
+                                    HashMap<String, String> u = new HashMap<>();
+                                    u.put("username", username);
+                                    u.put("token", token);
+                                    u.put("logo", logo);
+                                    u.put("nickname", nick_name);
+                                    u.put("mobile_phone", mobile_phone);
+                                    u.put("user_money", user_money);
+                                    u.put("is_real", is_real);
+                                    UserInfoUtils.getInstance(context).setUserInfo(u);
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            HashMap<String, String> u = new HashMap<>();
-                                            u.put("username", username);
-                                            u.put("token", token);
-                                            u.put("logo", logo);
-                                            u.put("nickname", nick_name);
-                                            u.put("mobile_phone", mobile_phone);
-                                            u.put("user_money", user_money);
-                                            UserInfoUtils.getInstance(context).setUserInfo(u);
-
                                             LoadingDialog2.getInstance(context).dismiss();
                                             Intent intent = new Intent();
                                             intent.setAction("UserInfoCall");
@@ -311,11 +312,10 @@ public class MainActivity extends BaseActivity {
 
     public void getData() {
         if (UserInfoUtils.getInstance(context).getUserInfo().get("device_id") == null ||
-                UserInfoUtils.getInstance(context).getUserInfo().get("device_id").equals
-                        ("")) {
+                UserInfoUtils.getInstance(context).getUserInfo().get("device_id").equals("")) {
             HashMap<String, String> mp = new HashMap<>();
-            HttpUtils.getInstance().post(ConstantManager.Url.GETDEVICEID, mp, new HttpUtils.NetCall
-                    () {
+            HttpUtils.getInstance().post(ConstantManager.Url.GETDEVICEID, mp, new HttpUtils
+                    .NetCall() {
                 @Override
                 public void success(Call call, JSONObject json) throws IOException {
                     HashMap<String, String> mp = new HashMap<>();
@@ -374,6 +374,7 @@ public class MainActivity extends BaseActivity {
                 u.put("token", data.getStringExtra("token"));
                 u.put("logo", data.getStringExtra("logo"));
                 u.put("nickname", data.getStringExtra("nickname"));
+                u.put("is_real", data.getStringExtra("is_real"));
 
                 UserInfoUtils.getInstance(context).setUserInfo(u);
                 Intent intent = new Intent();

@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="pressed_colorAccent">#801f40</color>
 
     <color name="colorBack_morandi">#965456</color>
     <color name="colorBack_morandi_99">#99965456</color>
@@ -15,6 +15,7 @@
     <color name="sky">#4962ef</color>
     <color name="color_e">#EEEEEE</color>
     <color name="red">#BF1212</color>
+    <color name="pressed_red">#730b0b</color>
     <color name="orange">#FF6347</color>
     <color name="black">#000000</color>
     <color name="black_29">#292929</color>

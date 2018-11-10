@@ -60,6 +60,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('collect/brand/add', 'CollectController@collectBrand');
     Route::post('collect/store/add', 'CollectController@collectStore');
 
+    Route::post('user/index', 'UserController@index');
     Route::post('user/addresses', 'UserController@addresses');
     Route::post('user/address/get', 'UserController@getAddress');
     Route::post('user/address/setdef', 'UserController@setDefaultAddress');

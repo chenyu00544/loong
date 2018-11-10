@@ -85,12 +85,12 @@
         android:layout_width="120dp"
         android:layout_height="70dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ads1_12_1"
+        android:src="@drawable/card_back"
         app:layout_constraintBottom_toBottomOf="@+id/imageView71"
         app:layout_constraintEnd_toEndOf="@+id/imageView69"
         app:layout_constraintStart_toStartOf="@+id/imageView69"
         app:layout_constraintTop_toBottomOf="@+id/textView151"
-        app:srcCompat="@drawable/ads1_12_1" />
+        app:srcCompat="@drawable/card_back" />
 
     <ImageView
         android:id="@+id/imageView71"
@@ -98,12 +98,12 @@
         android:layout_height="70dp"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/ads1_12_2"
+        android:src="@drawable/card_front"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView68"
         app:layout_constraintStart_toStartOf="@+id/imageView68"
         app:layout_constraintTop_toBottomOf="@+id/textView150"
-        app:srcCompat="@drawable/ads1_12_2" />
+        app:srcCompat="@drawable/card_front" />
 
     <ImageView
         android:id="@+id/imageView72"

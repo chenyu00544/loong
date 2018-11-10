@@ -15,7 +15,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 
 public class UserRealItem extends BaseItem<UserInfoBean> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.user_real_item;
 
     public UserRealItem(UserInfoBean bean, Context c) {
         super(bean, c);
@@ -29,7 +29,7 @@ public class UserRealItem extends BaseItem<UserInfoBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_real_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

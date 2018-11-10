@@ -194,11 +194,15 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $brand_goods->promote_price_format = Common::priceFormat($brand_goods->promote_price);
                 $brand_goods->current_time = time();
             }
+
             //用户地址
             $uwhere['user_id'] = $user_id;
             $user = $this->usersModel->getUserByAddress($uwhere, ['user_id', 'address_id']);
             if ($user) {
                 foreach ($user->addresses as $address) {
+                    $address->province_name = $address->mapprovince->region_name;
+                    $address->city_name = $address->mapcity->region_name;
+                    $address->district_name = $address->mapdistrict->region_name;
                     if ($address->address_id == $user->address_id) {
                         $user->default_address = $address;
                     }
@@ -206,6 +210,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
             $goods_detail->user = $user;
             $goods_detail->goods_description = $this->goodsDescriptionModel->getGoodsDescriptions();
+
             //商品属性整理
             $goods_detail->gattr;
             $multi_attr = [];
