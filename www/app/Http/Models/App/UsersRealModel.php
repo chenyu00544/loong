@@ -16,4 +16,11 @@ class UsersRealModel extends Model
     protected $primaryKey = 'real_id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function getUsersReal($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
 }

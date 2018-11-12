@@ -12,19 +12,23 @@ use App\Contracts\UsersRepositoryInterface;
 use App\Facades\Common;
 use App\Http\Models\App\UserAddressModel;
 use App\Http\Models\App\UsersModel;
+use App\Http\Models\App\UsersRealModel;
 
 class UsersRepository implements UsersRepositoryInterface
 {
     private $usersModel;
     private $userAddressModel;
+    private $usersRealModel;
 
     public function __construct(
         UsersModel $usersModel,
-        UserAddressModel $userAddressModel
+        UserAddressModel $userAddressModel,
+        UsersRealModel $usersRealModel
     )
     {
         $this->usersModel = $usersModel;
         $this->userAddressModel = $userAddressModel;
+        $this->usersRealModel = $usersRealModel;
     }
 
     public function login($username, $password, $type)
@@ -59,8 +63,8 @@ class UsersRepository implements UsersRepositoryInterface
     {
         $user = $this->usersModel->getUser($uid);
         $user->is_real = '0';
-        if(!empty($user->real)){
-            if($user->real->review_status == 1){
+        if (!empty($user->real)) {
+            if ($user->real->review_status == 1) {
                 $user->is_real = '1';
             }
         }
@@ -149,5 +153,18 @@ class UsersRepository implements UsersRepositoryInterface
         $where['user_id'] = $uid;
         $where['address_id'] = $data['address_id'];
         return $this->userAddressModel->delAddress($where);
+    }
+
+    public function getUsersReal($uid)
+    {
+        $where['user_id'] = $uid;
+        $explain = '根据海关规定,任何出入关口的商品都必须实名登记并且缴纳关税,根据海关规定,根据海关规定,根据海关规定根据海关规定根据海关规定，根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定，根据海关规定';
+        $re = $this->usersRealModel->getUsersReal($where);
+        if($re){
+            $re->explain = $explain;
+        }else{
+            $re['explain'] = $explain;
+        }
+        return $re;
     }
 }

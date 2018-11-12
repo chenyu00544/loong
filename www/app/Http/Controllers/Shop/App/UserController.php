@@ -57,9 +57,9 @@ class UserController extends CommonController
     public function getAddress(Request $request)
     {
         $re = $this->usersRepository->getAddress($request->all());
-        if($re){
+        if ($re) {
             return ['code' => 0, 'msg' => '', 'data' => $re];
-        }else{
+        } else {
             return ['code' => 1, 'msg' => '地址已删除', 'data' => []];
         }
     }
@@ -82,11 +82,31 @@ class UserController extends CommonController
     public function delAddress(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        $re = $this->usersRepository->delAddress($request->all(), $uid);
-        if($re){
-            return ['code' => 0, 'msg' => '', 'data' => $re];
-        }else{
-            return ['code' => 1, 'msg' => '', 'data' => $re];
+        if ($uid != '') {
+            $re = $this->usersRepository->delAddress($request->all(), $uid);
+            if ($re) {
+                return ['code' => 0, 'msg' => '', 'data' => $re];
+            }
         }
+        return ['code' => 1, 'msg' => '', 'data' => []];
+    }
+
+    public function real(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $re = $this->usersRepository->getUsersReal($uid);
+            if ($re) {
+                return ['code' => 0, 'msg' => '', 'data' => $re];
+            }else {
+                return ['code' => 1, 'msg' => '', 'data' => []];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登陆', 'data' => []];
+    }
+
+    public function setReal(Request $request)
+    {
+        dd($request->all());
     }
 }

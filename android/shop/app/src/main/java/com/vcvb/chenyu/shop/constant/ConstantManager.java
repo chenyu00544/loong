@@ -111,6 +111,8 @@ public interface ConstantManager {
         public String LOGIN = URIHOST + "app/login/index";
         public String REGISTER = URIHOST + "app/login/reg";
         public String GETUSERINFO = URIHOST + "app/user/index";
+        public String USERREAL = URIHOST + "app/user/real";
+        public String SETUSERREAL = URIHOST + "app/user/real/set";
 
         //收藏操作
         public String ADDCOLLECTGOODS = URIHOST + "app/collect/goods/add";

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,17 +18,17 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealCardItem;
 import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealItem;
-import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealTitleItem;
 import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealWhyItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
+import com.vcvb.chenyu.shop.javaBean.user.UserReal;
 import com.vcvb.chenyu.shop.receiver.Receiver;
-import com.vcvb.chenyu.shop.staticdata.Users;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -44,10 +43,12 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class UserRealNameActivity extends BaseRecyclerViewActivity {
 
-    private List<UserInfoBean> users = new ArrayList<>();
+    private UserReal real = new UserReal();
     private Receiver receiver;
     private TextView save;
     private int pos = 0;
+    private HashMap<String, String> mp = new HashMap<>();
+    private List<String> files = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,42 +74,48 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
             });
         }
 
-        TextView titleView = (TextView) findViewById(R.id.textView123);
+        TextView titleView = findViewById(R.id.textView123);
         titleView.setText(R.string.real_title);
         titleView.setTextColor(Color.parseColor("#000000"));
         titleView.setTextSize(18);
         titleView.setSingleLine();
 
-        save = (TextView) findViewById(R.id.textView122);
+        save = findViewById(R.id.textView122);
         save.setText(R.string.save);
     }
 
     @Override
+    public void initView() {
+        super.initView();
+        mRecyclerView = (RecyclerView) findViewById(R.id.user_list);
+        mLayoutManager = new GridLayoutManager(context, 1);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
     public void getData(final boolean b) {
-        super.getData(b);
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
         }
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.USERREAL, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
+            public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-
-                        if (users.size() != 0) {
-//                            setHaveDataByView();
-                        } else {
-//                            setNoDateByView();
-                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                bindViewData(json);
+                            }
+                        });
                     }
                 });
             }
@@ -121,38 +128,39 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-//                        setNoDateByView();
+                        ToastUtils.showShortToast(context, "网络错误,请稍后重试");
                     }
                 });
             }
         });
-
-        users.clear();
-        for (int i = 0; i < Users.realname.size(); i++) {
-            UserInfoBean bean = new UserInfoBean();
-            bean.setIsType(Users.realname.get(i).get("type"));
-            bean.setTitle(Users.realname.get(i).get("title"));
-            users.add(bean);
-        }
-        mAdapter.addAll(getItems(users));
     }
 
-    @Override
-    public void initView() {
-        super.initView();
-        mRecyclerView = (RecyclerView) findViewById(R.id.user_list);
-        mLayoutManager = new GridLayoutManager(context, 1);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+    public void bindViewData(JSONObject json) {
+        if (json != null) {
+            try {
+                Integer code = json.getInt("code");
+                if (code == 0) {
+                    JSONObject object = json.getJSONObject("data");
+                    real = JsonUtils.fromJsonObject(object, UserReal.class);
+                }
+                mAdapter.addAll(getItems(real));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //相册权限
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showPhotoAlbum() {
         Intent intent = new Intent(UserRealNameActivity.this, UserLogoActivity.class);
-        if(pos == 1){
+        if (pos == 1) {
             intent.putExtra("card_uri", "CARD_IMG_FRONT.jpg");
-        }else{
+        } else {
             intent.putExtra("card_uri", "CARD_IMG_BACK.jpg");
         }
         startActivityForResult(intent, ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST);
@@ -175,57 +183,59 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
 
         CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView69).setOnChildClickListener1
                 (new CYCItemClickSupport.OnChildItemClickListener1() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                goToAlbum(2);
-            }
-        });
+                    @Override
+                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
+                            position) {
+                        goToAlbum(2);
+                    }
+                });
 
         CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView73).setOnChildClickListener2
                 (new CYCItemClickSupport.OnChildItemClickListener2() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                users.get(4).setImgUriFront(null);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+                    @Override
+                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
+                            position) {
+                        real.setFront_of_id_card(null);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
 
         CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView72).setOnChildClickListener3
                 (new CYCItemClickSupport.OnChildItemClickListener3() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                users.get(4).setImgUriBack(null);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+                    @Override
+                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
+                            position) {
+                        real.setReverse_of_id_card(null);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //保存实名认证
+                System.out.println(111);
+                HttpUtils.getInstance().postFile(ConstantManager.Url.SETUSERREAL, mp, files, new
+                        HttpUtils.NetCall() {
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        System.out.println(json);
+                    }
+                    @Override
+                    public void failed(Call call, IOException e) {
+
+                    }
+                });
             }
         });
 
     }
 
-    protected List<Item> getItems(List<UserInfoBean> list) {
+    protected List<Item> getItems(UserReal real) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case 1:
-                    cells.add(new UserRealItem(list.get(i), context));
-                    break;
-                case 2:
-                    cells.add(new UserRealTitleItem(list.get(i), context));
-                    break;
-                case 3:
-                    cells.add(new UserRealCardItem(list.get(i), context));
-                    break;
-                case 4:
-                    cells.add(new UserRealWhyItem(list.get(i), context));
-                    break;
-            }
-        }
+        cells.add(new UserRealItem(real, context));
+        cells.add(new UserRealCardItem(real, context));
+        cells.add(new UserRealWhyItem(real, context));
         return cells;
     }
 
@@ -242,15 +252,16 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                 switch (intent.getAction()) {
                     case "cardNameChange":
                         System.out.println(intent.getStringExtra("data"));
+                        mp.put("card_name", intent.getStringExtra("data"));
                         break;
                     case "cardNumChange":
                         System.out.println(intent.getStringExtra("data"));
+                        mp.put("card_num", intent.getStringExtra("data"));
                         break;
                 }
             }
         };
         broadcastManager.registerReceiver(receiver, intentFilter);
-
     }
 
     @Override
@@ -267,9 +278,17 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
             switch (requestCode) {
                 case ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST:
                     if (pos == 1) {
-                        users.get(4).setImgUriFront((Uri) data.getParcelableExtra("uri"));
+                        if (files.size() > 0) {
+                            files.remove(0);
+                        }
+                        real.setFront_of_id_card(String.valueOf(data.getParcelableExtra("uri")));
+                        files.add(real.getFront_of_id_card());
                     } else if (pos == 2) {
-                        users.get(4).setImgUriBack((Uri) data.getParcelableExtra("uri"));
+                        if (files.size() > 1) {
+                            files.remove(1);
+                        }
+                        real.setReverse_of_id_card(String.valueOf(data.getParcelableExtra("uri")));
+                        files.add(real.getReverse_of_id_card());
                     }
                     mAdapter.notifyDataSetChanged();
                     break;

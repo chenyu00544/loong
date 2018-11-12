@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.BaseFragment;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.mycenter.AddressActivity;
 import com.vcvb.chenyu.shop.mycenter.BrowseActivity;
 import com.vcvb.chenyu.shop.mycenter.MyCollectionActivity;
@@ -32,7 +33,9 @@ public class FragmentMy extends BaseFragment {
     View view;
     Context context;
     ViewGroup container;
+    String token;
     private Receiver receiver;
+    private ConfirmDialog confirmDialog;
 
     @Nullable
     @Override
@@ -40,6 +43,7 @@ public class FragmentMy extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my, container, false);
         context = getActivity();
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         this.container = container;
         initView();
         checkLogin();
@@ -77,6 +81,8 @@ public class FragmentMy extends BaseFragment {
     public void initView() {
         TextView tv1 = view.findViewById(R.id.textView45);
         tv1.setAlpha(1);
+        confirmDialog = new ConfirmDialog(context);
+        confirmDialog.setTitle(R.string.is_logout);
     }
 
     public void initListener() {
@@ -194,7 +200,7 @@ public class FragmentMy extends BaseFragment {
         singOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickSignOut();
+                onClickLogout();
             }
         });
 
@@ -212,19 +218,30 @@ public class FragmentMy extends BaseFragment {
                 }
             }
         });
+
+        confirmDialog.setOnDialogClickListener(new ConfirmDialog.OnDialogClickListener() {
+            @Override
+            public void onConfirmClickListener() {
+                confirmDialog.dismiss();
+                logoutBySure();
+            }
+
+            @Override
+            public void onCancelClickListener() {
+                confirmDialog.dismiss();
+            }
+        });
     }
 
     public void checkLogin() {
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         Map<String, ?> mp = UserInfoUtils.getInstance(context).getUserInfo();
         ImageView iv = view.findViewById(R.id.imageView15);
         TextView tv = view.findViewById(R.id.textView30);
 
-//        RoundedCornersTransformation corners = new RoundedCornersTransformation(30, 0,
-//                RoundedCornersTransformation.CornerType.TOP);
-//        RequestOptions requestOptions = RequestOptions.bitmapTransform(corners).override(120,
-// 120);
-        RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable.icon_boy_head);
-        if (mp.get("nickname") != null ) {
+        RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable
+                .icon_boy_head);
+        if (mp.get("nickname") != null) {
             Glide.with(context).load((String) mp.get("logo")).apply(requestOptions).into(iv);
             tv.setText((CharSequence) mp.get("nickname"));
             iv.setOnClickListener(null);
@@ -247,8 +264,13 @@ public class FragmentMy extends BaseFragment {
         }
     }
 
-    //退出登录
-    public void onClickSignOut() {
+    //退出登录吗?
+    public void onClickLogout(){
+        confirmDialog.show();
+    }
+
+    //确定退出登录
+    public void logoutBySure() {
         UserInfoUtils.getInstance(context).clear();
         checkLogin();
     }
@@ -260,33 +282,57 @@ public class FragmentMy extends BaseFragment {
     }
 
     public void goToOrderActivity(int type) {
-        Intent intent = new Intent(context, OrderActivity.class);
-        intent.putExtra("type", type);
-        startActivity(intent);
+        if (token == null || token.equals("")) {
+            showLoginDialog();
+        } else {
+            Intent intent = new Intent(context, OrderActivity.class);
+            intent.putExtra("type", type);
+            startActivity(intent);
+        }
     }
 
     public void goToReturnOrderActivity() {
-        Intent intent = new Intent(context, OrderActivity.class);
-        startActivity(intent);
+        if (token == null || token.equals("")) {
+            showLoginDialog();
+        } else {
+            Intent intent = new Intent(context, OrderActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void goToCollectionActivity() {
-        Intent intent = new Intent(context, MyCollectionActivity.class);
-        startActivity(intent);
+        if (token == null || token.equals("")) {
+            showLoginDialog();
+        } else {
+            Intent intent = new Intent(context, MyCollectionActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void goToAddressActivity() {
-        Intent intent = new Intent(context, AddressActivity.class);
-        startActivity(intent);
+        if (token == null || token.equals("")) {
+            showLoginDialog();
+        } else {
+            Intent intent = new Intent(context, AddressActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void goToBrowseActivity() {
-        Intent intent = new Intent(context, BrowseActivity.class);
-        startActivity(intent);
+        if (token == null || token.equals("")) {
+            showLoginDialog();
+        } else {
+            Intent intent = new Intent(context, BrowseActivity.class);
+            startActivity(intent);
+        }
     }
 
     public void goToUserCenterActivity() {
-        Intent intent = new Intent(context, UserInfoActivity.class);
-        startActivity(intent);
+        if (token == null || token.equals("")) {
+            showLoginDialog();
+        } else {
+            Intent intent = new Intent(context, UserInfoActivity.class);
+            startActivity(intent);
+        }
     }
 }

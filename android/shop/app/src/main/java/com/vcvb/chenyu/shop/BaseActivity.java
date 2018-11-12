@@ -16,6 +16,7 @@ import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 public class BaseActivity extends AppCompatActivity {
 
     public String token;
+    public String is_real;
     public LinearLayout nav_bar;
     public LinearLayout nav_back;
     public LoadingDialog loadingDialog;
@@ -51,6 +52,7 @@ public class BaseActivity extends AppCompatActivity {
                     }
                 });
         token = (String) UserInfoUtils.getInstance(this).getUserInfo().get("token");
+        is_real = (String) UserInfoUtils.getInstance(this).getUserInfo().get("is_real");
     }
 
     @Override

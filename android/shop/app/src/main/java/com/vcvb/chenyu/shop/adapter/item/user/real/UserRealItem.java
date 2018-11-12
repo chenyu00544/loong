@@ -12,12 +12,12 @@ import android.widget.EditText;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
+import com.vcvb.chenyu.shop.javaBean.user.UserReal;
 
-public class UserRealItem extends BaseItem<UserInfoBean> {
+public class UserRealItem extends BaseItem<UserReal> {
     public static final int TYPE = R.layout.user_real_item;
 
-    public UserRealItem(UserInfoBean bean, Context c) {
+    public UserRealItem(UserReal bean, Context c) {
         super(bean, c);
     }
 
@@ -34,9 +34,15 @@ public class UserRealItem extends BaseItem<UserInfoBean> {
     }
 
     @Override
-    public void onBindViewHolder(CYCBaseViewHolder holder, final int position) {
-        final EditText tv = (EditText) holder.getView(R.id.editText12);
-        tv.setHint(mData.getTitle());
+    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        final EditText tv = holder.get(R.id.editText12);
+        final EditText tv2 = holder.get(R.id.editText17);
+        if (mData.getReal_name() != null) {
+            tv.setText(mData.getReal_name());
+        }
+        if (mData.getSelf_num() != null) {
+            tv2.setText(mData.getSelf_num());
+        }
         tv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -51,15 +57,29 @@ public class UserRealItem extends BaseItem<UserInfoBean> {
             @Override
             public void afterTextChanged(Editable editable) {
                 Intent intent = new Intent();
-                if(position == 1){
-                    intent.setAction("cardNameChange");
-                    intent.putExtra("data", String.valueOf(tv.getText()));
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                }else if(position == 2){
-                    intent.setAction("cardNumChange");
-                    intent.putExtra("data", String.valueOf(tv.getText()));
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                }
+                intent.setAction("cardNameChange");
+                intent.putExtra("data", String.valueOf(tv.getText()));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            }
+        });
+
+        tv2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Intent intent = new Intent();
+                intent.setAction("cardNumChange");
+                intent.putExtra("data", String.valueOf(tv2.getText()));
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });
     }

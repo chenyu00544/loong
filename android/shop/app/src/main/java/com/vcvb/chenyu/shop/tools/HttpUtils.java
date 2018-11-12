@@ -11,17 +11,21 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -132,7 +136,7 @@ public class HttpUtils {
     public void post(String url, Map<String, String> params, final NetCall netCall) {
         //构造token
         Request.Builder requestBuilder = new Request.Builder();
-        if(params != null){
+        if (params != null) {
             if (params.get("token") != null && !params.get("token").equals("")) {
                 //构造token
                 String token = params.get("token");
@@ -159,6 +163,49 @@ public class HttpUtils {
                 netCall.success(call, jsonObject);
             }
         });
+    }
+
+    //异步post文件及参数
+    public void postFile(String url, Map<String, String> params, List<String> files, final NetCall
+            netCall) {
+        Request.Builder requestBuilder = new Request.Builder();
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        if (params != null) {
+            if (params.get("token") != null && !params.get("token").equals("")) {
+                //构造token
+                String token = params.get("token");
+                params.remove("token");
+                requestBuilder.addHeader("vcvbuy-Authorization", token);
+            }
+        }
+
+        if (files != null && files.size() > 0) {
+            for (int i = 0; i < files.size(); i++) {
+                if (!files.get(i).equals("")) {
+                    String fileUri = files.get(i);
+                    File file = new File(fileUri);
+                    RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
+                    String filename = file.getName();
+                    builder.addFormDataPart("file_" + i, filename, body);
+                }
+            }
+        }
+
+        Request request = requestBuilder.post(builder.build()).url(url).build();
+
+        client.newBuilder().readTimeout(10000, TimeUnit.MILLISECONDS).build().newCall(request)
+                .enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        netCall.failed(call, e);
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        JSONObject jsonObject = parseJsonData(response.body().string());
+                        netCall.success(call, jsonObject);
+                    }
+                });
     }
 
     /**
