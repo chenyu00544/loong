@@ -278,7 +278,8 @@ mysql数据库安装
     # 查看所有数据库用户
     mysql>SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
 
-
+    sql-mode="NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
+    Incorrect datetime value: '0000-00-00 00:00:00'
 
 mysql密码：Loong00544!#%&
 

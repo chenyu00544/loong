@@ -28,6 +28,7 @@ class IndexController extends CommonController
 
     public function info()
     {
+        echo ADMIN_PATH;
         return view('shop.admin.info');
     }
 }
