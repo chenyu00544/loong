@@ -39,6 +39,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapAppRoutes();
 
+        $this->mapWxAppRoutes();
+
         $this->mapWebRoutes();
 
         $this->mapAdminRoutes();
@@ -86,5 +88,13 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/app.php'));
+    }
+
+    protected function mapWxAppRoutes()
+    {
+        Route::prefix('app')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/wxapp.php'));
     }
 }

@@ -1,4 +1,4 @@
-阿里云的centos7.4配置NGINX
+##阿里云的centos7.4配置NGINX
 
     yum update 更新资源库
     yum install nginx即可
@@ -73,11 +73,11 @@
     
     重启
     systemctl restart nginx
-阿里云centos7.4安装mysql5.7
-使用root登录
-Long19860212
+##阿里云centos7.4安装mysql5.7
+##使用root登录
+##Long19860212
 
-安装PHP
+##安装PHP
 
     #tar zxvf php-5.6.38.tar.gz
     #cd php-5.6.38配置安装进入到目录，我们需要在安装的时候将安装目录配置到/usr/local/php/里
@@ -138,7 +138,7 @@ Long19860212
 
     # /usr/local/nginx/sbin/nginx -s reload
     
-安装redis
+##安装redis
 
     $ wget http://download.redis.io/releases/redis-4.0.11.tar.gz 
     cd /usr/local
@@ -161,7 +161,7 @@ Long19860212
     $ chkconfig --add redis_6379
     $ chkconfig redis_6379 on
     
-mysql数据库安装
+##mysql数据库安装
     
     1.确保服务器系统处于最新状态
     [root@localhost ~]# yum -y update
@@ -224,7 +224,7 @@ mysql数据库安装
 
 ---------------------------------------------------------------------
 
-其他功能:
+##其他功能:
 
     # 检查并且显示Apache相关安装包
     [root@localhost ~]# rpm -qa | grep mysql
@@ -281,11 +281,11 @@ mysql数据库安装
     sql-mode="NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
     Incorrect datetime value: '0000-00-00 00:00:00'
 
-mysql密码：Loong00544!#%&
+##mysql密码：Loong00544!#%&
 
-mysql 远程登录密码 Vcvbuy00544!#%@$^
+##mysql 远程登录密码 Vcvbuy00544!#%@$^
 
-定时任务
+##定时任务
 
     yum install crontabs 
     systemctl enable crond （设为开机启动） 
@@ -306,3 +306,17 @@ mysql 远程登录密码 Vcvbuy00544!#%@$^
     
     
     swoole 安装
+    
+    启动 php artisan swoole:http start
+    
+    
+##Apache Benchmark(简称ab) 是Apache安装包中自带的压力测试工具， ab 在 centOS7 下的安装和使用方法
+
+    ①.ab(apache benchmark)安装
+    命令： yum -y install httpd-tools
+    
+    GET压测
+    ab -n 1000 -c 10 http://localhost/index.php
+    
+    POST压测
+    ab -n 1000 -c 100 -p postdata.txt -T application/x-www-form-urlencoded "http://localhost/index.php"
