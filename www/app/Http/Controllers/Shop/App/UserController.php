@@ -24,7 +24,7 @@ class UserController extends CommonController
     {
         $uid = Verifiable::authorization($request);
         if ($uid != '') {
-            $re = $this->usersRepository->getAddress($uid);
+            $re = $this->usersRepository->getUserInfo($uid);
             return ['code' => 0, 'msg' => '', 'data' => $re];
         }
         return ['code' => 1, 'msg' => '', 'data' => []];
@@ -107,6 +107,15 @@ class UserController extends CommonController
 
     public function setReal(Request $request)
     {
-        dd($request->all());
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $re = $this->usersRepository->setUsersReal($request->all(), $uid);
+            if ($re) {
+                return ['code' => 0, 'msg' => '', 'data' => $re];
+            }else {
+                return ['code' => 1, 'msg' => '', 'data' => []];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登陆', 'data' => []];
     }
 }

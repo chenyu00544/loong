@@ -73,7 +73,6 @@ import okhttp3.Call;
 
 public class GoodsDetailActivity extends GoodsActivity {
     private int goods_id;
-    private String isReal = "0";
     private JSONObject goodsJson;
 
     int pos = 0;
@@ -215,7 +214,6 @@ public class GoodsDetailActivity extends GoodsActivity {
         popWindow.setClickListener(new PopWin.OnItemClickListener() {
             @Override
             public void onClicked(View v) {
-                System.out.println(v);
                 switch (v.getId()) {
                     case ConstantManager.Menu.MESSAGE:
                         break;
@@ -245,7 +243,6 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                System.out.println(newState);
                 switch (newState) {
                     case 0: //不滚动
                         goodsDetails.setIsScroll(1);
@@ -286,7 +283,6 @@ public class GoodsDetailActivity extends GoodsActivity {
                     goodsEvaluate.setTextSize(ts_18);
                     goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 }
-//                System.out.println(dy);
                 pos += dy;
                 if (pos <= 0) {
                     pos = 0;
@@ -454,7 +450,6 @@ public class GoodsDetailActivity extends GoodsActivity {
         HttpUtils.getInstance().post(ConstantManager.Url.ADDCART, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
-                System.out.println(json);
                 if (json != null) {
                     try {
                         final Integer count_cart = json.getJSONObject("data").getInt("count_cart");
@@ -506,7 +501,6 @@ public class GoodsDetailActivity extends GoodsActivity {
                     .NetCall() {
                 @Override
                 public void success(Call call, JSONObject json) throws IOException {
-                    System.out.println(json);
                     try {
                         if (json.getInt("code") == 0) {
                             runOnUiThread(new Runnable() {
@@ -638,10 +632,10 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     //检查账号是否已认证
     public void checkUserForReal() {
-        if (isReal.equals("0")) {
+        if (is_real.equals("0")) {
             HashMap<String, String> _mp = new HashMap<>();
             _mp.put("token", token);
-            HttpUtils.getInstance().post(ConstantManager.Url.GETUSERINFO, _mp, new HttpUtils
+            HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, _mp, new HttpUtils
                     .NetCall() {
                 @Override
                 public void success(Call call, JSONObject json) throws IOException {
@@ -649,9 +643,9 @@ public class GoodsDetailActivity extends GoodsActivity {
                         try {
                             if (json.getInt("code") == 0) {
                                 JSONObject data = json.getJSONObject("data");
-                                isReal = data.getString("is_real");
+                                is_real = data.getString("is_real");
                                 HashMap<String, String> u = new HashMap<>();
-                                u.put("is_real", isReal);
+                                u.put("is_real", is_real);
                                 UserInfoUtils.getInstance(context).setUserInfo(u);
                             }
                         } catch (JSONException e) {
@@ -670,6 +664,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     @Override
     protected void onResume() {
         getData(false);
+        checkUserForReal();
         super.onResume();
     }
 
@@ -690,7 +685,6 @@ public class GoodsDetailActivity extends GoodsActivity {
             switch (view.getId()) {
                 case R.id.textView32:
                     goodsAttrDialog.show(getSupportFragmentManager(), "Buy");
-                    checkUserForReal();
                     break;
                 case R.id.textView31:
                     goodsAttrDialog.show(getSupportFragmentManager(), "AddCart");
@@ -781,7 +775,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     } else {
                         if (goodsDetails.getAddressBeans() != null && goodsDetails
                                 .getAddressBeans().size() > 0) {
-                            if (isReal.equals("0")) {
+                            if (is_real.equals("0")) {
                                 Intent intent = new Intent(context, UserRealNameActivity.class);
                                 startActivity(intent);
                             } else {

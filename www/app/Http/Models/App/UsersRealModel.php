@@ -23,4 +23,19 @@ class UsersRealModel extends Model
             ->where($where)
             ->first();
     }
+
+    public function setUsersReal($where, $data)
+    {
+        return $this->where($where)->update($data);
+    }
+
+    public function addUsersReal($data)
+    {
+        return $this->create($data);
+    }
+
+    public function getUsersRealCount($where)
+    {
+        return $this->where($where)->count();
+    }
 }

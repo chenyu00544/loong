@@ -10,6 +10,7 @@ namespace App\Repositories\App;
 
 use App\Contracts\UsersRepositoryInterface;
 use App\Facades\Common;
+use App\Facades\FileHandle;
 use App\Http\Models\App\UserAddressModel;
 use App\Http\Models\App\UsersModel;
 use App\Http\Models\App\UsersRealModel;
@@ -71,7 +72,6 @@ class UsersRepository implements UsersRepositoryInterface
         return $user;
     }
 
-
     public function userAddresses($uid)
     {
         $where['user_id'] = $uid;
@@ -122,28 +122,19 @@ class UsersRepository implements UsersRepositoryInterface
         if ($count >= 10) {
             return '限定十个地址，已添加满';
         }
+        $updata['user_id'] = $uid;
+        $updata['consignee'] = $data['consignee'];
+        $updata['mobile'] = $data['phone'];
+        $updata['country'] = $data['country'];
+        $updata['province'] = $data['province'];
+        $updata['city'] = $data['city'];
+        $updata['district'] = $data['district'];
+        $updata['address'] = $data['address_info'];
+        $updata['update_time'] = time();
         if (empty($data['address_id'])) {
-            $updata['user_id'] = $uid;
-            $updata['consignee'] = $data['consignee'];
-            $updata['mobile'] = $data['phone'];
-            $updata['country'] = $data['country'];
-            $updata['province'] = $data['province'];
-            $updata['city'] = $data['city'];
-            $updata['district'] = $data['district'];
-            $updata['address'] = $data['address_info'];
-            $updata['update_time'] = time();
             return $this->userAddressModel->addAddress($updata);
         } else {
             $where['address_id'] = $data['address_id'];
-            $updata['user_id'] = $uid;
-            $updata['consignee'] = $data['consignee'];
-            $updata['mobile'] = $data['phone'];
-            $updata['country'] = $data['country'];
-            $updata['province'] = $data['province'];
-            $updata['city'] = $data['city'];
-            $updata['district'] = $data['district'];
-            $updata['address'] = $data['address_info'];
-            $updata['update_time'] = time();
             return $this->userAddressModel->setAddress($where, $updata);
         }
     }
@@ -160,11 +151,53 @@ class UsersRepository implements UsersRepositoryInterface
         $where['user_id'] = $uid;
         $explain = '根据海关规定,任何出入关口的商品都必须实名登记并且缴纳关税,根据海关规定,根据海关规定,根据海关规定根据海关规定根据海关规定，根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定根据海关规定，根据海关规定';
         $re = $this->usersRealModel->getUsersReal($where);
-        if($re){
+        if ($re) {
             $re->explain = $explain;
-        }else{
+        } else {
             $re['explain'] = $explain;
         }
+        $re->front_of_id_card = FileHandle::getImgByOssUrl($re->front_of_id_card);
+        $re->reverse_of_id_card = FileHandle::getImgByOssUrl($re->reverse_of_id_card);
         return $re;
+    }
+
+    public function setUsersReal($data, $uid)
+    {
+        $path = 'user_card';
+        $where['user_id'] = $uid;
+        $re = $this->usersRealModel->getUsersReal($where);
+        $updata = [];
+        foreach ($data as $key => $value) {
+            if ($key == 'file_0') {
+                if ($value->isValid()) {
+                    $uri = FileHandle::upLoadImage($value, $path);
+                    $updata['front_of_id_card'] = $uri;
+                    if ($re) {
+                        FileHandle::deleteFile($re->front_of_id_card);
+                    }
+                }
+            } elseif ($key == 'file_1') {
+                if ($value->isValid()) {
+                    $uri = FileHandle::upLoadImage($value, $path);
+                    $updata['reverse_of_id_card'] = $uri;
+                    if ($re) {
+                        FileHandle::deleteFile($re->reverse_of_id_card);
+                    }
+                }
+            } elseif ($key == 'card_name') {
+                $updata['real_name'] = $value;
+            } elseif ($key == 'card_num') {
+                $updata['self_num'] = $value;
+            }
+        }
+        $updata['add_time'] = time();
+        $updata['review_status'] = 3;
+        if ($re) {
+            $req = $this->usersRealModel->setUsersReal($where, $updata);
+        } else {
+            $updata['user_id'] = $uid;
+            $req = $this->usersRealModel->addUsersReal($updata);
+        }
+        return ['review_status' => 3];
     }
 }

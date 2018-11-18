@@ -1,5 +1,7 @@
 package com.vcvb.chenyu.shop.constant;
 
+import android.os.Environment;
+
 import com.vcvb.chenyu.shop.R;
 
 public interface ConstantManager {
@@ -17,9 +19,13 @@ public interface ConstantManager {
         public String ACCESS_ID = "XXXXXXX";
     }
 
+    interface ImgPath {
+        public String PATH = Environment.getExternalStorageDirectory() + "/Android/data/com.vcvb.chenyu" +
+                ".shop/files/";
+    }
+
     interface ResultStatus {
         public Integer ADDRESSRESULT = 1002;
-
     }
 
     interface PhotoAlbum {
@@ -48,7 +54,6 @@ public interface ConstantManager {
     interface Pay {
         public int PAY_SUCCESS = 5001;
     }
-
 
     interface Menu {
         public int MESSAGE = R.id.view33;
@@ -110,9 +115,9 @@ public interface ConstantManager {
         //用户账号操作
         public String LOGIN = URIHOST + "app/login/index";
         public String REGISTER = URIHOST + "app/login/reg";
-        public String GETUSERINFO = URIHOST + "app/user/index";
-        public String USERREAL = URIHOST + "app/user/real";
-        public String SETUSERREAL = URIHOST + "app/user/real/set";
+        public String GET_USER_INFO = URIHOST + "app/user/index";
+        public String USER_REAL = URIHOST + "app/user/real";
+        public String SET_USER_REAL = URIHOST + "app/user/real/set";
 
         //收藏操作
         public String ADDCOLLECTGOODS = URIHOST + "app/collect/goods/add";

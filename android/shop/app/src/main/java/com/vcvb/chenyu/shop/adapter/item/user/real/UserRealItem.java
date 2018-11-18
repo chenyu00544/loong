@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
@@ -37,6 +38,18 @@ public class UserRealItem extends BaseItem<UserReal> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         final EditText tv = holder.get(R.id.editText12);
         final EditText tv2 = holder.get(R.id.editText17);
+        TextView textView = holder.get(R.id.textView242);
+        if(mData.getReview_status() == 3){
+            textView.setText(R.string.examine);
+            textView.setTextColor(context.getResources().getColor(R.color.red));
+        }else if(mData.getReview_status() == 2){
+            textView.setText(R.string.examine_adopt_no);
+            textView.setTextColor(context.getResources().getColor(R.color.red));
+        }else if(mData.getReview_status() == 1){
+            textView.setText(R.string.examine_adopt);
+            textView.setTextColor(context.getResources().getColor(R.color.sky));
+        }
+
         if (mData.getReal_name() != null) {
             tv.setText(mData.getReal_name());
         }

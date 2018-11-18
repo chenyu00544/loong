@@ -105,7 +105,7 @@ public class ToolUtils {
                                        String[] selectionArgs) {
 
         Cursor cursor = null;
-        final String column = "_data";
+        final String column = MediaStore.Images.Media.DATA;
         final String[] projection = {column};
 
         try {
@@ -115,6 +115,8 @@ public class ToolUtils {
                 final int index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(index);
             }
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
         } finally {
             if (cursor != null)
                 cursor.close();

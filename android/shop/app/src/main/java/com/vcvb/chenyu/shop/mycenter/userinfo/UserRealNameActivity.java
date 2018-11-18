@@ -31,6 +31,7 @@ import com.vcvb.chenyu.shop.tools.ToastUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
     private TextView save;
     private int pos = 0;
     private HashMap<String, String> mp = new HashMap<>();
-    private List<String> files = new ArrayList<>();
+    private List<File> files = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
         }
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
-        HttpUtils.getInstance().post(ConstantManager.Url.USERREAL, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.USER_REAL, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
@@ -142,6 +143,8 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                 if (code == 0) {
                     JSONObject object = json.getJSONObject("data");
                     real = JsonUtils.fromJsonObject(object, UserReal.class);
+                    mp.put("real_name", (real.getReal_name() != null ? real.getReal_name() : ""));
+                    mp.put("card_num", (real.getSelf_num() != null ? real.getSelf_num() : ""));
                 }
                 mAdapter.addAll(getItems(real));
             } catch (JSONException e) {
@@ -174,6 +177,8 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
     @Override
     public void initListener() {
         super.initListener();
+
+        //身份证正面，前往相册选图
         CYCItemClickSupport.BuildTo(mRecyclerView, R.id.imageView68).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
             @Override
             public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
@@ -181,6 +186,7 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
             }
         });
 
+        //身份证反面，前往相册选图
         CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView69).setOnChildClickListener1
                 (new CYCItemClickSupport.OnChildItemClickListener1() {
                     @Override
@@ -190,6 +196,7 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                     }
                 });
 
+        //删除身份证正面
         CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView73).setOnChildClickListener2
                 (new CYCItemClickSupport.OnChildItemClickListener2() {
                     @Override
@@ -199,7 +206,7 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                         mAdapter.notifyDataSetChanged();
                     }
                 });
-
+        //删除身份证反面
         CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView72).setOnChildClickListener3
                 (new CYCItemClickSupport.OnChildItemClickListener3() {
                     @Override
@@ -213,19 +220,49 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
+                loadingDialog.show();
                 //保存实名认证
-                System.out.println(111);
-                HttpUtils.getInstance().postFile(ConstantManager.Url.SETUSERREAL, mp, files, new
+                mp.put("token", token);
+                HttpUtils.getInstance().postImage(ConstantManager.Url.SET_USER_REAL, mp, files, new
                         HttpUtils.NetCall() {
-                    @Override
-                    public void success(Call call, JSONObject json) throws IOException {
-                        System.out.println(json);
-                    }
-                    @Override
-                    public void failed(Call call, IOException e) {
+                            @Override
+                            public void success(Call call, JSONObject json) throws IOException {
+                                try {
+                                    if (json.getInt("code") == 0) {
+                                        Integer review_status = json.getJSONObject("data").getInt
+                                                ("review_status");
+                                        real.setReview_status(review_status);
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mAdapter.notifyDataSetChanged();
+                                            }
+                                        });
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        loadingDialog.dismiss();
+                                    }
+                                });
+                            }
 
-                    }
-                });
+                            @Override
+                            public void failed(Call call, IOException e) {
+                                System.out.println(e.getMessage());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        loadingDialog.dismiss();
+                                        ToastUtils.showShortToast(context, "错误");
+                                    }
+                                });
+                            }
+                        });
             }
         });
 
@@ -282,13 +319,13 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                             files.remove(0);
                         }
                         real.setFront_of_id_card(String.valueOf(data.getParcelableExtra("uri")));
-                        files.add(real.getFront_of_id_card());
+                        files.add(new File(ConstantManager.ImgPath.PATH, "CARD_IMG_FRONT.jpg"));
                     } else if (pos == 2) {
                         if (files.size() > 1) {
                             files.remove(1);
                         }
                         real.setReverse_of_id_card(String.valueOf(data.getParcelableExtra("uri")));
-                        files.add(real.getReverse_of_id_card());
+                        files.add(new File(ConstantManager.ImgPath.PATH, "CARD_IMG_BACK.jpg"));
                     }
                     mAdapter.notifyDataSetChanged();
                     break;

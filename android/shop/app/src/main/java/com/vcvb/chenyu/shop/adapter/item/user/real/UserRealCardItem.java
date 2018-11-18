@@ -4,8 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -36,8 +39,10 @@ public class UserRealCardItem extends BaseItem<UserReal> {
         ImageView iv2 = holder.getImageView(R.id.imageView69);
         ImageView iv3 = holder.getImageView(R.id.imageView73);
         ImageView iv4 = holder.getImageView(R.id.imageView72);
+        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy
+                (DiskCacheStrategy.NONE).skipMemoryCache(true).override(120, 120);
         if (mData.getFront_of_id_card() != null) {
-            Glide.with(context).load(mData.getFront_of_id_card()).into(iv1);
+            Glide.with(context).load(mData.getFront_of_id_card()).apply(requestOptions).into(iv1);
             iv3.setAlpha(255);
         } else {
             Glide.with(context).load(R.drawable.icon_up_card).into(iv1);
@@ -45,11 +50,23 @@ public class UserRealCardItem extends BaseItem<UserReal> {
         }
 
         if (mData.getReverse_of_id_card() != null) {
-            Glide.with(context).load(mData.getFront_of_id_card()).into(iv2);
+            Glide.with(context).load(mData.getReverse_of_id_card()).apply(requestOptions).into(iv2);
             iv4.setAlpha(255);
         } else {
             Glide.with(context).load(R.drawable.icon_up_card).into(iv2);
             iv4.setAlpha(0);
+        }
+
+        TextView textView = holder.get(R.id.textView243);
+        if(mData.getReview_status() == 3){
+            textView.setText(R.string.examine);
+            textView.setTextColor(context.getResources().getColor(R.color.red));
+        }else if(mData.getReview_status() == 2){
+            textView.setText(R.string.examine_adopt_no);
+            textView.setTextColor(context.getResources().getColor(R.color.red));
+        }else if(mData.getReview_status() == 1){
+            textView.setText(R.string.examine_adopt);
+            textView.setTextColor(context.getResources().getColor(R.color.sky));
         }
     }
 }

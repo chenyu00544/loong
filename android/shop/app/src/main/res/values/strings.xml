@@ -182,6 +182,9 @@
     <string name="why">为什么需要实名认证</string>
     <string name="reminder">温馨提示:请上传原始比例的身份证正反面，请勿涂改裁剪，保证身份证信息清晰显示，否则无法通过审核</string>
     <string name="examples">示例</string>
+    <string name="examine">审核中</string>
+    <string name="examine_adopt">审核通过</string>
+    <string name="examine_adopt_no">审核未通过</string>
 
     <string name="comprehensive">综合</string>
     <string name="sales_volume">销量</string>

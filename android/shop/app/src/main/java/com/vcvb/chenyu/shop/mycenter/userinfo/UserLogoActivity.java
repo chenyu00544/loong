@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.GridLayoutManager;
@@ -39,8 +38,7 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
 
     private List<Material> photos = new ArrayList<>();
 
-    String path = Environment.getExternalStorageDirectory() + "/Android/data/com.vcvb.chenyu" +
-            ".shop/files/";
+    String path = ConstantManager.ImgPath.PATH;
     File mCameraFile = new File(path, "IMAGE_FILE_NAME.jpg");//照相机的File对象
     File mCropFile = new File(path, "IMAGE_CROP_NAME.jpg");//裁剪后输出图片
 
@@ -71,7 +69,7 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,20 +79,20 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
             });
         }
 
-        TextView titleView = (TextView) findViewById(R.id.textView123);
+        TextView titleView = findViewById(R.id.textView123);
         titleView.setText(R.string.all_photo);
         titleView.setTextColor(Color.parseColor("#000000"));
         titleView.setTextSize(18);
         titleView.setSingleLine();
 
-        TextView add = (TextView) findViewById(R.id.textView122);
+        TextView add = findViewById(R.id.textView122);
         add.setAlpha(0);
     }
 
     @Override
     public void initView() {
         super.initView();
-        mRecyclerView = (RecyclerView) findViewById(R.id.user_logo);
+        mRecyclerView = findViewById(R.id.user_logo);
         DefaultItemDecoration defaultItemDecoration = new DefaultItemDecoration(context,
                 ToolUtils.dip2px(context, 2));
         mRecyclerView.addItemDecoration(defaultItemDecoration);
@@ -251,8 +249,8 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
 //        intent.putExtra("aspectX", 1);
 //        intent.putExtra("aspectY", 1);
         // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 250);
-        intent.putExtra("outputY", 250);
+//        intent.putExtra("outputX", 250);
+//        intent.putExtra("outputY", 250);
         intent.putExtra("return-data", false);
         //去除默认的人脸识别，否则和剪裁匡重叠
         intent.putExtra("noFaceDetection", false);

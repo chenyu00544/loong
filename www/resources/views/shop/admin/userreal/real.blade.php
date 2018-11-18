@@ -29,10 +29,10 @@
                         <form action="{{url('admin/usersreal/')}}" method="get">
                             {{csrf_field()}}
                             <select name="review_status" class="form-control input-sm max-wd-100 fl">
-                                <option value="-1" @if($review_status == -1) selected @endif>全部</option>
-                                <option value="0" @if($review_status == 0) selected @endif>未审核</option>
-                                <option value="1" @if($review_status == 1) selected @endif>审核通过</option>
-                                <option value="2" @if($review_status == 2) selected @endif>审核未通过</option>
+                                <option value="-1">全部</option>
+                                <option value="0">未审核</option>
+                                <option value="1">审核通过</option>
+                                <option value="2">审核未通过</option>
                             </select>
 
                             <input type="text" name="keywords" value="{{$keywords}}"
@@ -82,7 +82,7 @@
                                         {{$userReal->self_num}}
                                     </td>
                                     <td>
-                                        @if($userReal->review_status == 0) 未审核
+                                        @if($userReal->review_status == 0 || $userReal->review_status == 3) 未审核
                                         @elseif($userReal->review_status==1) 审核通过
                                         @elseif($userReal->review_status==2) 审核不通过 @endif
                                     </td>

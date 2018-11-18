@@ -166,10 +166,10 @@ public class HttpUtils {
     }
 
     //异步post文件及参数
-    public void postFile(String url, Map<String, String> params, List<String> files, final NetCall
+    public void postImage(String url, Map<String, String> params, List<File> files, final NetCall
             netCall) {
+        OkHttpClient client = new OkHttpClient();
         Request.Builder requestBuilder = new Request.Builder();
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (params != null) {
             if (params.get("token") != null && !params.get("token").equals("")) {
                 //构造token
@@ -179,21 +179,28 @@ public class HttpUtils {
             }
         }
 
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (files != null && files.size() > 0) {
             for (int i = 0; i < files.size(); i++) {
                 if (!files.get(i).equals("")) {
-                    String fileUri = files.get(i);
-                    File file = new File(fileUri);
-                    RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
-                    String filename = file.getName();
-                    builder.addFormDataPart("file_" + i, filename, body);
+                    String filename = files.get(i).getName();
+                    builder.addFormDataPart("file_" + i, filename, RequestBody.create(MediaType
+                            .parse("image/*"), files.get(i)));
                 }
+            }
+        }
+
+        if (params != null) {
+            // map 里面是请求中所需要的 key 和 value
+            for (Map.Entry entry : params.entrySet()) {
+                builder.addFormDataPart(String.valueOf(entry.getKey()), String.valueOf(entry
+                        .getValue()));
             }
         }
 
         Request request = requestBuilder.post(builder.build()).url(url).build();
 
-        client.newBuilder().readTimeout(10000, TimeUnit.MILLISECONDS).build().newCall(request)
+        client.newCall(request)
                 .enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
@@ -202,8 +209,13 @@ public class HttpUtils {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        JSONObject jsonObject = parseJsonData(response.body().string());
-                        netCall.success(call, jsonObject);
+                        if (response.isSuccessful()) {
+                            JSONObject jsonObject = parseJsonData(response.body().string());
+                            netCall.success(call, jsonObject);
+                        } else {
+                            Log.i("lfq", response.message() + " error : body " + response.body()
+                                    .string());
+                        }
                     }
                 });
     }

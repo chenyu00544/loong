@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\UsersRealRepositoryInterface;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\UsersRealModel;
 
 class UsersRealRepository implements UsersRealRepositoryInterface
@@ -38,7 +39,10 @@ class UsersRealRepository implements UsersRealRepositoryInterface
     public function getUserReal($id)
     {
         $where['real_id'] = $id;
-        return $this->usersRealModel->getUserReal($where);
+        $re = $this->usersRealModel->getUserReal($where);
+        $re->front_of_id_card = FileHandle::getImgByOssUrl($re->front_of_id_card);
+        $re->reverse_of_id_card = FileHandle::getImgByOssUrl($re->reverse_of_id_card);
+        return $re;
     }
 
     public function changes($data)

@@ -13,7 +13,6 @@ import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 
 public class GoodsActivity extends BaseActivity {
-    public String isReal = "0";
     public TextView goodsView;
     public TextView goodsEvaluate;
     public TextView goodsInfo;
@@ -25,7 +24,6 @@ public class GoodsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isReal = (String) UserInfoUtils.getInstance(context).getUserInfo().get("is_real");
     }
 
     @Override
