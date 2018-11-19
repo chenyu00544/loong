@@ -246,7 +246,7 @@ public class FragmentCart extends BaseFragment {
         mp.put("token", token);
         mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
                 ("device_id"));
-        HttpUtils.getInstance().post(ConstantManager.Url.CARTLIST, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.CART_LIST, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 getActivity().runOnUiThread(new Runnable() {
@@ -412,7 +412,7 @@ public class FragmentCart extends BaseFragment {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("rec_id", String.valueOf(rec_id));
         mp.put("goods_number", String.valueOf(num));
-        HttpUtils.getInstance().post(ConstantManager.Url.SETCART, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.SET_CART, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
                 System.out.println(json);
@@ -429,7 +429,7 @@ public class FragmentCart extends BaseFragment {
     public void delCartGoods(List<Integer> rec_ids) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("rec_ids", StringUtils.join(rec_ids, ","));
-        HttpUtils.getInstance().post(ConstantManager.Url.DELCART, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.DEL_CART, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
                 System.out.println(json);

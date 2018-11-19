@@ -3,7 +3,6 @@ package com.vcvb.chenyu.shop.order;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAddressItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderGoodsItem;
@@ -20,10 +18,10 @@ import com.vcvb.chenyu.shop.adapter.item.order.OrderPayTypeItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderTotalItem;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.javaBean.SerializableHashMap;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.pay.PaySuccessActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
 
 import org.json.JSONObject;
 
@@ -38,7 +36,9 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
 
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
-    private String orderId;
+    private String orderId = "";
+    private Integer goodsId;
+    private HashMap<String, Object> attr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,11 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
         setContentView(R.layout.order_details);
         changeStatusBarTextColor(true);
         context = this;
+        goodsId = getIntent().getIntExtra("goods_id", 0);
+        orderId = getIntent().getStringExtra("order");
+        Bundle bundle = getIntent().getExtras();
+        attr = ((SerializableHashMap) bundle.get("map")).getMap();
+        System.out.println(attr);
         setNavBack();
         initView();
         getData(true);
@@ -74,29 +79,35 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void getData(final boolean b) {
-        orderId = getIntent().getStringExtra("order");
-        super.getData(b);
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
         }
-
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        if (orderId != null && !orderId.equals("")) {
+            mp.put("order_id", orderId);
+        } else {
+            mp.put("goods_id", goodsId + "");
+            mp.put("num", attr.get("num") + "");
+            List<Integer> attr_ids = (List<Integer>) attr.get("attr_ids");
+            List<Integer> goods_attr_ids = (List<Integer>) attr.get("goods_attr_ids");
+            if (attr_ids != null && goods_attr_ids != null && attr_ids.size() > 0 &&
+                    goods_attr_ids.size() > 0) {
+                for (int i = 0; i < attr_ids.size(); i++) {
+                    mp.put("attr_" + i, attr_ids.get(i) + "#" + goods_attr_ids.get(i));
+                }
+            }
+        }
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.GET_ORDER, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
+                System.out.println(json);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (b) {
                             loadingDialog.dismiss();
-                        }
-
-                        if (orderDetails.size() != 0) {
-                        } else {
                         }
                     }
                 });

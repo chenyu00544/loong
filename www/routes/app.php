@@ -42,4 +42,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('user/address/del', 'UserController@delAddress');
     Route::post('user/real', 'UserController@real');
     Route::post('user/real/set', 'UserController@setReal');
+
+    Route::post('order/index', 'UserController@index');
+    Route::post('order/get', 'UserController@getOrder');
 });

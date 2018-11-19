@@ -42,6 +42,7 @@ import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.evaluate.QuestionsListActivity;
 import com.vcvb.chenyu.shop.faat.BrandListActivity;
+import com.vcvb.chenyu.shop.javaBean.SerializableHashMap;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
@@ -447,7 +448,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
                 ("device_id"));
         mp.put("goods_attr_ids", StringUtils.join(goods_attr_ids_bak, ","));
-        HttpUtils.getInstance().post(ConstantManager.Url.ADDCART, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.ADD_CART, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
                 if (json != null) {
@@ -779,9 +780,13 @@ public class GoodsDetailActivity extends GoodsActivity {
                                 Intent intent = new Intent(context, UserRealNameActivity.class);
                                 startActivity(intent);
                             } else {
+                                SerializableHashMap map = new SerializableHashMap();
+                                map.setMap(attr);
+                                Bundle bundle=new Bundle();
+                                bundle.putSerializable("map", map);
                                 Intent intent = new Intent(context, OrderDetailsActivity.class);
                                 intent.putExtra("goods_id", goods_id);
-                                intent.putExtra("attr", attr);
+                                intent.putExtras(bundle);
                                 startActivity(intent);
                             }
                         } else {

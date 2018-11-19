@@ -107,10 +107,10 @@ public interface ConstantManager {
         public String GOODSDETAIL = URIHOST + "app/goods/detail";
 
         //购物车操作
-        public String CARTLIST = URIHOST + "app/cart/index";
-        public String ADDCART = URIHOST + "app/cart/add";
-        public String SETCART = URIHOST + "app/cart/set";
-        public String DELCART = URIHOST + "app/cart/del";
+        public String CART_LIST = URIHOST + "app/cart/index";
+        public String ADD_CART = URIHOST + "app/cart/add";
+        public String SET_CART = URIHOST + "app/cart/set";
+        public String DEL_CART = URIHOST + "app/cart/del";
 
         //用户账号操作
         public String LOGIN = URIHOST + "app/login/index";
@@ -133,5 +133,8 @@ public interface ConstantManager {
         public String SETADDRESS = URIHOST + "app/user/address/set";
         public String DELADDRESS = URIHOST + "app/user/address/del";
         public String SETDEFADDRESS = URIHOST + "app/user/address/setdef";
+
+        //订单操作
+        public String GET_ORDER = URIHOST + "app/order/get";
     }
 }
