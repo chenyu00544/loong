@@ -121,6 +121,6 @@ class GoodsModel extends Model
                     ->orderBy('attr_sort', 'DESC');
             }])
             ->where($where)
-            ->first();
+            ->get();
     }
 }

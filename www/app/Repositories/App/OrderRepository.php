@@ -11,6 +11,7 @@ namespace App\Repositories\App;
 use App\Contracts\OrderRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
+use App\Facades\RedisCache;
 use App\Http\Models\App\FavourableGoodsModel;
 use App\Http\Models\App\GoodsModel;
 use App\Http\Models\App\OrderInfoModel;
@@ -87,6 +88,7 @@ class OrderRepository implements OrderRepositoryInterface
                 return [];
             }
 
+            $order['order_id'] = RedisCache::incrby("order_id");
             $order['order_sn'] = date(VCVB_SNDATE, time()) . rand(100000, 999999);
             $order['user_id'] = $uid;
 
@@ -96,8 +98,10 @@ class OrderRepository implements OrderRepositoryInterface
             //用户留言
             $order['postscript'] = !empty($data['postmsg']) ? $data['postmsg'] : '';
 
-
             $pay = $this->paymentModel->getPayment(['pay_id'=>$data['pay']]);
+
+            $order['pay_id'] = $pay->pay_id;
+            $order['pay_name'] = $pay->pay_name;
 
             //用户地址
             $uwhere['user_id'] = $uid;

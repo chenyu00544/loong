@@ -21,6 +21,6 @@ class IndexController extends CommonController
     public function test(Request $request)
     {
 //        RedisCache::set("test", "jkl;asdfjklasdfasdfjklasdfjkaflaksadfasdf");
-        echo RedisCache::get("test");
+        echo RedisCache::incrby("order_id");
     }
 }

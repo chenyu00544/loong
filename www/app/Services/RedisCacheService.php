@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class RedisCacheService
 {
@@ -75,11 +76,11 @@ class RedisCacheService
     public function incr($key)
     {
         if (self::$redis != 'connect_failed') {
-            if(!self::$redis->get($key)){
+            if (!self::$redis->get($key)) {
                 $gid = Cache::get($key);
                 self::$redis->set($key, $gid + 1);
                 $guid = $gid + 1;
-            }else{
+            } else {
                 $guid = self::$redis->incr($key);
             }
             Cache::forever($key, $guid);
@@ -91,18 +92,19 @@ class RedisCacheService
         }
     }
 
-    //分布式自增ID SEED
+    //获取分布式自增ID SEED 然后自增
     public function incrby($key)
     {
-        $seed = 5;
+        $seed = 1;
         if (self::$redis != 'connect_failed') {
-            if(!self::$redis->get($key)){
+            if (!self::$redis->get($key)) {
                 $gid = Cache::get($key);
                 self::$redis->set($key, $gid + $seed);
                 $guid = $gid + $seed;
-            }else{
+            } else {
                 $guid = self::$redis->incrby($key, $seed);
             }
+            DB::table('global_key_id')->where(['key_id' => 1])->update([$key => $guid]);
             Cache::forever($key, $guid);
             return $guid;
         } else {
@@ -112,15 +114,20 @@ class RedisCacheService
         }
     }
 
+    //获取分布式自增ID
     public function getIncr($key)
     {
         if (self::$redis != 'connect_failed') {
-            if(!self::$redis->get($key)){
+            if (!self::$redis->get($key)) {
                 $gid = Cache::get($key);
                 self::$redis->set($key, $gid);
                 $guid = $gid;
-            }else{
+            } else {
                 $guid = self::$redis->get($key);
+            }
+            if(!$guid){
+                $re = DB::table('global_key_id')->where(['key_id' => 1])->first();
+                $guid = $re->$key;
             }
             return $guid;
         } else {

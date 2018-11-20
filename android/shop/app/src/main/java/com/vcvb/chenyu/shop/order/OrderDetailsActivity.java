@@ -18,7 +18,6 @@ import com.vcvb.chenyu.shop.adapter.item.order.OrderPayTypeItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderTotalItem;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.javaBean.SerializableHashMap;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.pay.PaySuccessActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
@@ -38,8 +37,6 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
     private String orderId = "";
-    private Integer goodsId;
-    private HashMap<String, Object> attr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +44,7 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
         setContentView(R.layout.order_details);
         changeStatusBarTextColor(true);
         context = this;
-        goodsId = getIntent().getIntExtra("goods_id", 0);
-        orderId = getIntent().getStringExtra("order");
-        Bundle bundle = getIntent().getExtras();
-        attr = ((SerializableHashMap) bundle.get("map")).getMap();
-        System.out.println(attr);
+        orderId = getIntent().getStringExtra("order_id");
         setNavBack();
         initView();
         getData(true);
@@ -85,22 +78,9 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
             loadingDialog.show();
         }
         HashMap<String, String> mp = new HashMap<>();
-        if (orderId != null && !orderId.equals("")) {
-            mp.put("order_id", orderId);
-        } else {
-            mp.put("goods_id", goodsId + "");
-            mp.put("num", attr.get("num") + "");
-            List<Integer> attr_ids = (List<Integer>) attr.get("attr_ids");
-            List<Integer> goods_attr_ids = (List<Integer>) attr.get("goods_attr_ids");
-            if (attr_ids != null && goods_attr_ids != null && attr_ids.size() > 0 &&
-                    goods_attr_ids.size() > 0) {
-                for (int i = 0; i < attr_ids.size(); i++) {
-                    mp.put("attr_" + i, attr_ids.get(i) + "_" + goods_attr_ids.get(i));
-                }
-            }
-        }
+        mp.put("order_id", orderId);
         mp.put("token", token);
-        HttpUtils.getInstance().post(ConstantManager.Url.ADD_ORDER, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.GET_ORDER, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {

@@ -42,7 +42,6 @@ import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.evaluate.QuestionsListActivity;
 import com.vcvb.chenyu.shop.faat.BrandListActivity;
-import com.vcvb.chenyu.shop.javaBean.SerializableHashMap;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
@@ -662,6 +661,56 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
     }
 
+    //生成订单
+    public void addOrder(HashMap<String, Object> attr){
+        loadingDialog.show();
+        HashMap<String, String> mp = new HashMap<>();
+
+        mp.put("goods_id", goods_id + "");
+        mp.put("num", attr.get("num") + "");
+        List<Integer> attr_ids = (List<Integer>) attr.get("attr_ids");
+        List<Integer> goods_attr_ids = (List<Integer>) attr.get("goods_attr_ids");
+        if (attr_ids != null && goods_attr_ids != null && attr_ids.size() > 0 &&
+                goods_attr_ids.size() > 0) {
+            for (int i = 0; i < attr_ids.size(); i++) {
+                mp.put("attr_" + i, attr_ids.get(i) + "_" + goods_attr_ids.get(i));
+            }
+        }
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.ADD_ORDER, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        try {
+                            if(json.getInt("code") == 0){
+                                Intent intent = new Intent(context, OrderDetailsActivity.class);
+                                intent.putExtra("order_id", json.getJSONObject("data").getString("order_id"));
+                                startActivity(intent);
+                            }else{
+                                ToastUtils.showShortToast(context, json.getString("msg"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         getData(false);
@@ -780,14 +829,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                                 Intent intent = new Intent(context, UserRealNameActivity.class);
                                 startActivity(intent);
                             } else {
-                                SerializableHashMap map = new SerializableHashMap();
-                                map.setMap(attr);
-                                Bundle bundle=new Bundle();
-                                bundle.putSerializable("map", map);
-                                Intent intent = new Intent(context, OrderDetailsActivity.class);
-                                intent.putExtra("goods_id", goods_id);
-                                intent.putExtras(bundle);
-                                startActivity(intent);
+                                addOrder(attr);
                             }
                         } else {
                             Intent intent = new Intent(context, AddressActivity.class);
