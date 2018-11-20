@@ -3,7 +3,7 @@
 /**
  * SHOP 常量
  */
-define('APPNAME', 'DscMall');
+define('APPNAME', 'VCVB');
 define('VERSION', 'v1.0');
 define('RELEASE', '20181022');
 define('CHARSET', 'utf-8');
@@ -15,7 +15,8 @@ define('SUPPLLY_PATH', 'suppliers');
 define('AUTH_KEY', 'this is a key');
 define('OLD_AUTH_KEY', '');
 define('API_TIME', '');
-define('EC_TEMPLATE', 'ecmoban_dsc2017');
+define('EC_TEMPLATE', '');
+define('VCVB_SNDATE', 'YmdHis');
 
 define('MOBILE_WECHAT',             dirname(__DIR__) . '/Modules/Admin/Controllers/WechatController.php'); //微商城目录
 define('MOBILE_DRP',                dirname(__DIR__) . '/Modules/Admin/Controllers/DrpController.php'); //微分销目录
@@ -107,24 +108,13 @@ define('OS_SPLITING_PART',          6); // 部分分单
 define('OS_RETURNED_PART',          7); // 部分已退货
 define('OS_ONLY_REFOUND',           8); // 仅退款
 
-/* 订单状态(mobile) */
-define('STATUS_CREATED',            0); // 待付款
-define('STATUS_PAID',               1); // 已付款
-define('STATUS_DELIVERING',         2); // 发货中
-define('STATUS_DELIVERIED',         3); // 已收货，待评价
-define('STATUS_FINISHED',           4); // 已完成
-define('STATUS_CANCELLED',          5); // 已取消
-
-
-/* 支付类型 */
-define('PAY_ORDER',                 0); // 订单支付
-define('PAY_SURPLUS',               1); // 会员预付款
-define('PAY_APPLYGRADE',            2); // 商家升级付款  by kong grade
-define('PAY_TOPUP',                 3); // 商家账户充值
-define('PAY_APPLYTEMP',             4); // 商家购买模板付款  by kong grade
-define('PAY_WHOLESALE',             5); // 批发支付
-define('PAY_REGISTERED',            6); // 购买成为分销商
-define('PAY_TEAM_ORDER',            7); // 拼团购买
+/* 支付状态 */
+define('PS_UNPAYED',                0); // 未付款
+define('PS_PAYING',                 1); // 付款中
+define('PS_PAYED',                  2); // 已付款
+define('PS_PAYED_PART',             3); // 部分付款--预售定金
+define('PS_REFOUND',           		4); // 已退款
+define('PS_REFOUND_PART',           5); // 部分退款
 
 /* 配送状态 */
 define('SS_UNSHIPPED',              0); // 未发货
@@ -135,13 +125,23 @@ define('SS_SHIPPED_PART',           4); // 已发货(部分商品)
 define('SS_SHIPPED_ING',            5); // 发货中(处理分单)
 define('OS_SHIPPED_PART',           6); // 已发货(部分商品)
 
+/* 支付状态(mobile) */
+define('STATUS_CREATED',            0); // 待付款
+define('STATUS_PAID',               1); // 已付款
+define('STATUS_DELIVERING',         2); // 发货中
+define('STATUS_DELIVERIED',         3); // 已收货，待评价
+define('STATUS_FINISHED',           4); // 已完成
+define('STATUS_CANCELLED',          5); // 已取消
+
 /* 支付状态 */
-define('PS_UNPAYED',                0); // 未付款
-define('PS_PAYING',                 1); // 付款中
-define('PS_PAYED',                  2); // 已付款
-define('PS_PAYED_PART',             3); // 部分付款--预售定金
-define('PS_REFOUND',           		4); // 已退款
-define('PS_REFOUND_PART',           5); // 部分退款
+define('PAY_ORDER',                 0); // 待付款
+define('PAY_SURPLUS',               1); // 会员预付款
+define('PAY_APPLYGRADE',            2); // 商家升级付款  by kong grade
+define('PAY_TOPUP',                 3); // 商家账户充值
+define('PAY_APPLYTEMP',             4); // 商家购买模板付款  by kong grade
+define('PAY_WHOLESALE',             5); // 批发支付
+define('PAY_REGISTERED',            6); // 购买成为分销商
+define('PAY_TEAM_ORDER',            7); // 拼团购买
 
 /* 综合状态 */
 define('CS_AWAIT_PAY',              100); // 待付款：货到付款且已发货且未付款，非货到付款且未付款

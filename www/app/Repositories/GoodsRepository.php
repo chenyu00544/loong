@@ -266,7 +266,11 @@ class GoodsRepository implements GoodsRepositoryInterface
         $req->member_price = $memPrice;
 
         //手机商品详细信息图
-        $req->desc_mobile_html = unserialize($req->desc_mobile);
+        if($req->desc_mobile){
+            $req->desc_mobile_html = unserialize($req->desc_mobile);
+        }else{
+            $req->desc_mobile_html = [];
+        }
 
         //阶梯价格
         $req->goods_volume_prices = $this->goodsVolumePriceModel->getGoodsVolumePrice(['goods_id' => $id]);

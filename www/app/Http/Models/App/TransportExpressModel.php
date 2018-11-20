@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,4 +17,9 @@ class TransportExpressModel extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function shipping()
+    {
+        return $this->hasOne('App\Http\Models\App\ShippingModel', 'shipping_id', 'shipping_id');
+    }
 }

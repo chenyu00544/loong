@@ -105,4 +105,22 @@ class GoodsModel extends Model
             ->where($where)
             ->first();
     }
+
+    public function getGoodsByOrder($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->with(['gvp' => function ($query) {
+                $query->where(['price_type' => 1]);
+            }])
+            ->with(['fullcut'])
+            ->with(['gattr' => function ($query) {
+                $query->select(['goods_attr_id', 'goods_id', 'attr_id', 'color_value', 'attr_price', 'attr_value', 'attr_img_flie', 'attr_gallery_flie', 'attr_checked'])->where(['attr_checked' => 1])
+                    ->with(['attr' => function ($query) {
+                        $query->select(['attr_type', 'attr_id', 'attr_name', 'attr_group']);
+                    }])
+                    ->orderBy('attr_sort', 'DESC');
+            }])
+            ->where($where)
+            ->first();
+    }
 }

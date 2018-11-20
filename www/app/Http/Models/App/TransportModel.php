@@ -36,4 +36,15 @@ class TransportModel extends Model
             ->where($where)
             ->first();
     }
+
+    public function getTransportByShip($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->with(['t_exp'=>function($query){
+                $query->with(['shipping']);
+            }])
+            ->with(['t_ext'])
+            ->where($where)
+            ->first();
+    }
 }

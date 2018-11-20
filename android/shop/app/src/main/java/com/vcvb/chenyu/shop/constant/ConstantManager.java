@@ -136,5 +136,6 @@ public interface ConstantManager {
 
         //订单操作
         public String GET_ORDER = URIHOST + "app/order/get";
+        public String ADD_ORDER = URIHOST + "app/order/add";
     }
 }

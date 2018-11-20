@@ -33,7 +33,7 @@ class UsersModel extends Model
     {
         return $this->select($column)
             ->with(['addresses' => function ($query) {
-                $query->select(['address_id', 'user_id', 'consignee', 'country', 'province', 'city', 'district', 'address', 'mobile'])
+                $query->select(['address_id', 'user_id', 'consignee', 'country', 'province', 'city', 'district', 'address', 'mobile', 'zipcode', 'email', 'best_time', 'sign_building'])
                     ->with(['mapprovince' => function ($query) {
                         $query->select(['region_id', 'region_name']);
                     }])

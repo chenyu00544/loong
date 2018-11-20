@@ -125,7 +125,6 @@ class GoodsRepository implements GoodsRepositoryInterface
                 } elseif ($faat->act_type == 2) {
                     $faat->act_type_ext = ((float)$faat->act_type_ext * 10) . '';
                 }
-
                 $faat->gift = unserialize($faat->gift);
             }
             $goods_detail->faat = $faats;
@@ -153,10 +152,12 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $gallery->img_url = FileHandle::getImgByOssUrl($gallery->img_url);
             }
 
+            //阶梯价格
             foreach ($goods_detail->gvp as $gvp) {
                 $gvp->volume_price_format = Common::priceFormat((int)$gvp->volume_price);
             }
 
+            //满减价格
             foreach ($goods_detail->fullcut as $fullcut) {
                 $fullcut->cfull_format = Common::priceFormat((int)$fullcut->cfull);
                 $fullcut->creduce_format = Common::priceFormat((int)$fullcut->creduce);
@@ -212,7 +213,6 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->goods_description = $this->goodsDescriptionModel->getGoodsDescriptions();
 
             //商品属性整理
-            $goods_detail->gattr;
             $multi_attr = [];
             $single_attr = [];
             foreach ($goods_detail->gattr as $akey => $gattr) {

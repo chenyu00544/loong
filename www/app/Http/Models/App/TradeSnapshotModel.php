@@ -6,7 +6,7 @@
  * Time: 16:58
  * Desc: 交易快照
  */
-namespace App\Http\Models\Shop;
+namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
 

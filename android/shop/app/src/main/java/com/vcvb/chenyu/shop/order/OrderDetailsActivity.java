@@ -23,6 +23,7 @@ import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.pay.PaySuccessActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -94,21 +95,21 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
             if (attr_ids != null && goods_attr_ids != null && attr_ids.size() > 0 &&
                     goods_attr_ids.size() > 0) {
                 for (int i = 0; i < attr_ids.size(); i++) {
-                    mp.put("attr_" + i, attr_ids.get(i) + "#" + goods_attr_ids.get(i));
+                    mp.put("attr_" + i, attr_ids.get(i) + "_" + goods_attr_ids.get(i));
                 }
             }
         }
         mp.put("token", token);
-        HttpUtils.getInstance().post(ConstantManager.Url.GET_ORDER, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.ADD_ORDER, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                System.out.println(json);
+            public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (b) {
                             loadingDialog.dismiss();
                         }
+                        bindViewData(json);
                     }
                 });
             }
@@ -125,7 +126,19 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
                 });
             }
         });
+    }
 
+    public void bindViewData(JSONObject json){
+        if(json != null){
+            try {
+                Integer code = json.getInt("code");
+                if(code == 0){
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         for (int i = 1; i < 9; i++) {
             OrderDetail orderDetail = new OrderDetail();
             orderDetail.setIsType(i);
