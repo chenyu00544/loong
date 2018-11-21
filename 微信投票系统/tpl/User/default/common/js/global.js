@@ -73,7 +73,7 @@ var global_obj={
 				if(data.status==1){
 					window.location.reload();
 				}else{
-					alert(data.msg);
+					// alert(data.msg);
 					$('#config_form input:submit').attr('disabled', false);
 				}
 			}, 'json');

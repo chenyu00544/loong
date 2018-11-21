@@ -70,7 +70,7 @@
 <td>
 <input type='hidden' name="picurl_guanggao[id][]"> 
 <input type="text" style="height:30px;width:750px" name="picurl_guanggao[url][]" id="picurl_guanggao_1" value="{iMicms:$vo.picurl_guanggao}" class="px" onclick="" style="width:300px;">
-<a href="#" onclick="upyunPicUpload('picurl_guanggao_1',700,400,'{iMicms:$token}')" class="btn btn-primary btn_submit  J_ajax_submit_btn">上传</a> 
+<a href="#" onclick="upyunPicUpload('picurl_guanggao_1',700,400,'{iMicms:$token}')" class="btn btn-primary btn_submit  J_ajax_submit_btn">上传</a>
 <a href="#" onclick="viewImg('picurl_guanggao_1')">预览</a>
 &nbsp;&nbsp;<a href="javascript:;" onclick="delguang(1)">删除</a>
 &nbsp;&nbsp;<a href="javascript:;" id="addg2"  onclick="newguang(2)">添加</a>&nbsp;填写图片外链地址，大小为640X295
@@ -101,11 +101,7 @@
 <th width="83">每个微信用户可投票数：</th>
 <td><input style="height:30px;width:250px;" type="text" name="tpnub" value="{iMicms:$vo.tpnub}" class="px" style="width:550px;"><span style="color:red;font-weight:400;font-size:12px;">（可以限制每天投票数，也可以现在此次活动投票数 "投票设置"中可以设置票数分配规则！可设置每人每天给同一个作品只能投一票）</span></td>
 </tr>
-
-<tr>
-<th width="83">同一个IP下每天能投多少票：</th>
-<td><input style="height:30px;width:250px;" type="text" name="ipnubs" value="{iMicms:$vo.ipnubs}" class="px" style="width:550px;"><span style="color:red;font-weight:400;font-size:12px;">（防止死粉刷票，如果填写0则不限制）</span></td>
-</tr>
+<input type="hidden" name="ipnubs" value="0">
 <tr>
 <th width="83">报名期和投票期重叠的时间段每个作品的投票数限额：</th>
 <td><input style="height:30px;width:250px;" type="text" name="btcdxz" value="{iMicms:$vo.btcdxz}" class="px" style="width:550px;"><span style="color:red;font-weight:400;font-size:12px;"><br>（又能报名又能投票期间每个作品最多能得多少票，填0为不限制！比如报名时间是 1-10号 投票时间是 5-30号，那么5-10号期间每个作品的最高票数只能是设置的这么多，这样可以防止前后报名作品的票数差距太大！）</span></td>
@@ -154,53 +150,20 @@
 </td>
 </tr>
 
-<tr>
-<th width="83">虚拟浏览量：</th>
-<td><input style="height:30px;width:150px;" type="area" name="xncheck" value="{iMicms:$vo.xncheck}" class="px" style="width:550px;"> &nbsp;<span style="color:red;font-weight:400;font-size:12px;">首页浏览量的值为 真实浏览量+虚拟浏览量</span></td>
-</tr>
-<tr>
-<th width="83">虚拟投票数：</th>
-<td><input style="height:30px;width:150px;" type="area" name="xntps" value="{iMicms:$vo.xntps}" class="px" style="width:550px;"> &nbsp;<span style="color:red;font-weight:400;font-size:12px;">首页投票数的值为 真实投票数+虚拟投票数</span></td>
-</tr>
-<tr>
-<th width="83">虚拟报名数：</th>
-<td><input style="height:30px;width:150px;" type="area" name="xnbms" value="{iMicms:$vo.xnbms}" class="px" style="width:550px;"> &nbsp;<span style="color:red;font-weight:400;font-size:12px;">首页报名的值为 真实报名数+虚拟报名数</span></td>
-</tr>
-<tr>
-<th width="83">无法在线报名帮助：</th>
-<td valign="top"><textarea  name="wfbmbz" style="width: 350px; height: 80px; "><?php if(empty($vo['wfbmbz'])){echo "若在线报名失败，可以将报名信息：姓名+联系方式+描述+宝贝照片（1~5张，至少1张）发给我们：qq:[填写客服qq]";}else{ echo html_entity_decode(htmlspecialchars_decode($vo['wfbmbz']));} ?> </textarea>
-</tr>
-<tr>
+<tr style="display:none;">
 <th valign="top">第三方统计代码</th>
 
 <td valign="top"><textarea  name="cnzz" style="width: 650px; height: 170px; "><?php echo html_entity_decode(htmlspecialchars_decode($vo['cnzz'])); ?> </textarea>
 </td>
 </tr>
-<tr>
-<th width="83">首页背景音乐：</th>
-<td><input style="height:30px;width:750px;" type="text" name="music" value="{iMicms:$vo.music}" class="px" style="width:550px;"></td>
- </tr>
- <tr>
-<th width="83">首页顶部公告：</th>
-<td><input style="height:30px;width:750px;" type="text" name="gonggao" value="{iMicms:$vo.gonggao}" class="px" style="width:550px;"></td>
- </tr>
-<tr>
-<th valign="top">被投票时自动通知模板</th>
 
-<td valign="top"><textarea  name="sms_content" style="width: 650px; height: 70px; "><?php echo html_entity_decode(htmlspecialchars_decode($vo['sms_content'])); ?> </textarea>
-变量类型：{frend} 好友名，{vcount}当前票数，{num}当前排名，{diffmaxcount}与第一名差距,{diffmincount}与上一名差距</td>
-</tr>
 <script type="text/javascript">
 $(document).ready(function(){
 });
 //addguang
 function newguang(id){
 var newid=id+1;
- //  <input type="text" name="picurl_guanggao[]" value="{iMicms:$vo.picurl_guanggao}" class="px" onclick="" id="picurl_guanggao" style="width:300px;">
-//<a href="#" onclick="upyunPicUpload('picurl_guanggao',700,400,'{iMicms:$token}')" class="btn btn-primary btn_submit  J_ajax_submit_btn">上传</a> 
-//<a href="#" onclick="viewImg('picurl_guanggao')">预览</a>
-//&nbsp;&nbsp;<a href="javascript:;" onclick="delguang(1)">删除</a>
-//&nbsp;&nbsp;<a href="javascript:;" id="add2"  onclick="newguang(2)">添加</a>
+
 var str ="<tr class='guang'><th>广告图片：</th><td>";
 	str+="<input type='hidden' name='picurl_guanggao[id][]' value=''>"
 	str+= "<input type=\"text\" style='height:30px;width:750px' name=\"picurl_guanggao[url][]\" id=\"picurl_guanggao_"+id+"\" value='' class='px' onclick='' style=\"width:300px;\">";
@@ -323,39 +286,9 @@ var str= "<tbody id='div_add_del_"+index+"' name='div_add_del'>";
 }
 
   </script>
-<!-- <tr >
-<th>单选/多选：<br /><span style="color:red;font-weight:400;font-size:12px;">（意思是只能帮单个人投 还是可以帮多人投）</span></th>
-<td>
-  <p style="width: 120px; float: left; display: block; line-height: 32px; height: 32px;">
-    <select name="cknums" class="input-medium">
-      <option value="1" <if condition="$vo['cknums'] eq 1">selected</if>>单选</option>
-      <option value="2" <if condition="$vo['cknums'] eq 2">selected</if>>多选</option>
-    </select>
-</p>
-     
-</td>
-</tr> -->
+
 <tr>
-<!-- <th width="83">投票选择：</th>
-	<td>
-  <div class="list">   
-     <div class="fun_title">   
-        <span rel="" <?php if($vo['votelimit'] == 1) {?> class="ad_on" title="点击关闭"<?php } else {?>class="ad_off" title="点击开启"<?php }?>></span><p> (想要每天可以投一票请点开启)</p>
-     </div>   
-   </div>  
-  </td>
-  </tr> -->
-   <tr>
-  <th width="83">参赛选手被投票时是否通知：</th>
-	<td>
-  <div class="list">   
-     <div class="fun_title">   
-        <span rel="is_sendsms" <?php if($vo['is_sendsms'] == 1) {?> class="ad_on" title="点击关闭"<?php } else {?>class="ad_off" title="点击开启"<?php }?>></span><p> </p>
-     </div>   
-   </div>  
-  </td>
-  </tr>
-  <input type="hidden" name="is_sendsms" id="is_sendsms" value='<?php echo intval($vo['is_sendsms']);?>'>
+    <input type="hidden" name="is_sendsms" id="is_sendsms" value='0'>
   <tr>
   <th width="83">报名作品是否需要审核：</th>
 	<td>

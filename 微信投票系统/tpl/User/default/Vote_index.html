@@ -19,17 +19,16 @@
 			<a href="{iMicms::U('Index/useredit')}"   title="修改密码" class="btn btn-primary btn_submit  J_ajax_submit_btn">修改密码</a>&nbsp&nbsp&nbsp
 			<a href="{iMicms::U('Home/Index/logout')}"   title="退出登陆" class="btn btn-primary btn_submit  J_ajax_submit_btn">退出登陆</a>&nbsp&nbsp&nbsp
             <else/>
-            <a href="{iMicms::U('Vote/add',array('type'=>'text'))}"  title="发起文字投票" class="btn btn-primary btn_submit  J_ajax_submit_btn" style="display:none"><img src="{iMicms::RES}/images/text.png" class="vm">发起文字投票</a>
+            <!--<a href="{iMicms::U('Vote/add',array('type'=>'text'))}"  title="发起文字投票" class="btn btn-primary btn_submit  J_ajax_submit_btn" style="display:none"><img src="{iMicms::RES}/images/text.png" class="vm">发起文字投票</a>-->
 			<a href="{iMicms::U('Vote/add',array('type'=>'img'))}"   title="发起图片投票" class="btn btn-primary btn_submit  J_ajax_submit_btn"><img src="{iMicms::RES}/images/pic.png" class="vm">发起图片投票</a>&nbsp&nbsp&nbsp
 			<a href="{iMicms::U('Vote/check',array('id'=>$_SESSION['uid']))}"   title="审核信息" class="btn btn-primary btn_submit  J_ajax_submit_btn">审核选手</a>&nbsp&nbsp&nbsp
-			<a href="{iMicms::U('./Home/Index/help',array('token'=>$_SESSION['token']))}"   title="API接口" class="btn btn-primary btn_submit  J_ajax_submit_btn">接口绑定</a>&nbsp&nbsp&nbsp
-			<a href="{iMicms::U('Diymen/index',array('token'=>$_SESSION['token']))}"   title="底部菜单" class="btn btn-primary btn_submit  J_ajax_submit_btn">自定义菜单</a>&nbsp&nbsp&nbsp
+			<!--<a href="{iMicms::U('./Home/Index/help',array('token'=>$_SESSION['token']))}"   title="API接口" class="btn btn-primary btn_submit  J_ajax_submit_btn">接口绑定</a>&nbsp&nbsp&nbsp-->
+			<!--<a href="{iMicms::U('Diymen/index',array('token'=>$_SESSION['token']))}"   title="底部菜单" class="btn btn-primary btn_submit  J_ajax_submit_btn">自定义菜单</a>&nbsp&nbsp&nbsp-->
 			<a href="{iMicms::U('Areply/index',array('id'=>$_SESSION['id'],'token'=>$_SESSION['token']))}"   title="关注回复" class="btn btn-primary btn_submit  J_ajax_submit_btn">回复设置</a>&nbsp&nbsp&nbsp
-			
-			
+                <a href="{iMicms::U('Diymen/index',array('token'=>$_SESSION['token']))}"   title="底部菜单" class="btn btn-primary btn_submit  J_ajax_submit_btn">底部菜单</a>&nbsp&nbsp&nbsp
 			<a href="{iMicms::U('Vote/gongzhong',array('id'=>$_SESSION['uid']))}"   title="投票设置" class="btn btn-primary btn_submit  J_ajax_submit_btn">投票设置</a>&nbsp&nbsp&nbsp
-			<a href="{iMicms::U('Lottery/index',array('id'=>$_SESSION['uid']))}"   title="大转盘管理" class="btn btn-primary btn_submit  J_ajax_submit_btn">大转盘管理</a>&nbsp&nbsp&nbsp
-			<a href="{iMicms::U('Index/useredit')}"   title="修改密码" class="btn btn-primary btn_submit  J_ajax_submit_btn">修改密码</a>&nbsp&nbsp&nbsp
+			<a href="{iMicms::U('Problem/index',array('id'=>$_SESSION['uid']))}"   title="问题设置" class="btn btn-primary btn_submit  J_ajax_submit_btn">问题设置</a>&nbsp&nbsp&nbsp
+			<!--<a href="{iMicms::U('Index/useredit')}"   title="修改密码" class="btn btn-primary btn_submit  J_ajax_submit_btn">修改密码</a>&nbsp&nbsp&nbsp-->
 			<a href="{iMicms::U('Home/Index/logout')}"   title="退出登陆" class="btn btn-primary btn_submit  J_ajax_submit_btn">退出登陆</a>
 			</if>
             </div>

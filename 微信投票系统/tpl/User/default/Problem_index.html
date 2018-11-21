@@ -1,0 +1,210 @@
+<include file="Public:head"/>
+<script src="{iMicms::STATICS}/jquery-ui.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="{iMicms::STATICS}/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="{iMicms::STATICS}/jquery-ui.theme.css"/>
+<link rel="stylesheet" type="text/css" href="{iMicms::STATICS}/jquery-ui.structure.css"/>
+<style>
+    .img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .img img {
+        width: 100%;
+        display: block;
+
+    }
+
+    .linkp {
+        list-style-type: none;
+        margin-right: 130px;
+        text-align: right;
+        color: red;
+        letter-spacing: 5px;
+    }
+
+    .linkp a {
+        color: #000;
+    }
+
+    .linkp li a {
+        letter-spacing: 2px;
+    }
+
+    .linkp .total {
+        float: right;
+    }
+</style>
+<div class="content">
+
+    <div class="cLineB">
+        <h4 class="left">添加和编辑问题<span class="FAQ"></span></h4>
+        <div class="clr"></div>
+        <!--<a href="{iMicms::U('User/Problem/set')}" class="right btn btn-primary btn_submit  J_ajax_submit_btn　"-->
+           <!--style="margin-left:27px;margin-right:27px">参数设置</a>-->
+        <a href="{iMicms::U('User/Vote/index')}" class="right btn btn-primary btn_submit  J_ajax_submit_btn" style="margin-right: 15px;">返回</a>
+        <a href="{iMicms::U('User/Problem/add')}" class="right btn btn-primary btn_submit  J_ajax_submit_btn" style="margin-right: 15px;">添加问题</a>
+    </div>
+    <div class="msgWrap">
+        <form method="post" action="index.php?ac=vote-manage&amp;id=9878" id="info">
+            <table class="ListProduct" border="0" cellspacing="0" cellpadding="0" width="100%">
+                <thead>
+                <tr>
+                    <th class="select">选择</th>
+                    <th>问题</th>
+                    <th>答案</th>
+                    <th>选项</th>
+                    <th>选项</th>
+                    <th>选项</th>
+                    <th>选项</th>
+                    <th>选项</th>
+                    <th class="time">添加时间</th>
+                    <th class="norightborder">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr></tr>
+                <volist id="list" name="lists">
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="del_id" value="{iMicms:$list.id}" class="checkitem"></td>
+                        <td>{iMicms:$list.problem}</td>
+                        <td>{iMicms:$list.answer}</td>
+                        <volist id="answer" name="list.answers">
+                            <td>{iMicms:$answer.answer}</td>
+                        </volist>
+                        <td>{iMicms:$list.add_time|date='Y-m-d H:i:s',###}</td>
+                        <td class="norightborder">
+                            <a href="{iMicms::U('User/Problem/edit')}&id={iMicms:$list.id}"
+                               class="btn btn-primary btn_submit  J_ajax_submit_btn">编辑</a>
+                            <a href="javascript:;" onclick="delitem({iMicms:$list.id})"
+                               class="btn btn-primary btn_submit  J_ajax_submit_btn">删除</a>
+                        </td>
+                    </tr>
+                </volist>
+                <tr>
+                    <td><input type="checkbox" id="all_id" name="all_id" value="0" class="checkitem"></td>
+                    <td><label for="all_id">全选</label></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><a href="javascript:;" onclick="acheck('del')" title="全部删除"
+                           class="btn btn-primary btn_submit J_ajax_submit_btn">全部删除</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <div style="clear:both"></div>
+        <div class="linkp">{iMicms:$page}</div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#all_id").change(function () {
+                    var idval = $("#all_id").val()
+                    if (0 == idval) {
+                        $("#all_id").val(1);
+                        $("table :checkbox").attr("checked", true);
+                    }
+                    else {
+                        $("#all_id").val(0);
+                        $("table :checkbox").attr("checked", false);
+
+                    }
+
+
+                });
+            });
+
+            function ocheckshow(id) {
+                $("#checkit").dialog(
+                    {
+                        modal: true,
+                        buttons: {
+                            "确定": function () {
+                                var vid = $("#selectvote").val();
+                                var submitData = {
+                                    vid: vid,
+                                    id: id,
+                                };
+                                $.post('index.php?g=User&m=Vote&a=check_vote', submitData, function (bakcdata) {
+                                    var obj = eval('(' + bakcdata + ')');
+                                    if (obj.success == 1) {
+                                        alert('报名信息已加入');
+                                        parent.location = "javascript:location.reload()";
+                                        return 0;
+                                    }
+                                    else {
+                                        alert('报名信息添加失败，请再试');
+                                        return false;
+                                    }
+                                });
+                                $(this).dialog('close');
+                            },
+                            "取消": function () {
+                                $(this).dialog('close');
+                            }
+                        }
+                    });
+            }
+
+            function delitem(id) {
+                var result = confirm('您确定要删除此报名信息?');
+                if (!result) {
+                    return false;
+                }
+                var submitData = {
+                    id: id,
+                };
+                $.post("{iMicms::U('Vote/del_item')}", submitData,
+                    function (data) {
+                        var obj = eval('(' + data + ')');
+                        if (0 == obj.errno) {
+                            alert('信息删除成功');
+                            parent.location = "javascript:location.reload()";
+                            return 0;
+                        }
+                        else {
+                            alert("信息删除失败，请重试");
+                            return 0;
+                        }
+                    });
+            }
+
+            function acheck(typ) {
+                var aid = new Array();
+                var i = 0;
+                $("input[name='del_id']:checkbox").each(function () {
+                    if ($(this).attr("checked")) {
+                        aid[i] = $(this).val();
+                        i++;
+                    }
+                });
+
+                if (0 == aid.length) {
+                    alert("前先选择要添加的选项");
+                    return false;
+                } else {
+                    var id = aid.join(',');
+                    if ('del' == typ) {
+                        var bool = confirm("确定要删除这些选项么？");
+                        if (bool) {
+                            $.post("{iMicms::U('User/Problem/del')}", {pid: aid}, function (data) {
+                                location.reload();
+                            });
+                        }
+                    }
+                }
+            }
+        </script>
+    </div>
+    <div class="cLine">
+        <div class="pageNavigator right">
+            <div class="pages"></div>
+        </div>
+        <div class="clr"></div>
+    </div>
+</div>
+<include file="Public:footer"/>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="keywords" content="微信投票管理系统"/>
+    <meta name="description" content="{iMicms::C('content')}"/>
+    <link rel="stylesheet" type="text/css" href="{iMicms::RES}/css/vote/bootstrap_min.css?2013-9-13-2" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{iMicms::RES}/css/vote/bootstrap_responsive_min.css?2013-9-13-2"
+          media="all"/>
+    <link rel="stylesheet" type="text/css" href="{iMicms::RES}/css/vote/sstyle.css?2013-9-13-2" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{iMicms::RES}/css/vote/todc_bootstrap_button.css?2013-9-13-2"
+          media="all"/>
+    <link rel="stylesheet" type="text/css" href="{iMicms::RES}/css/vote/themes.css?2013-9-13-2" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{iMicms::RES}/css/vote/daterangepicker.css?2013-9-13-2" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{iMicms::RES}/css/vote/inside.css?2013-9-13-2" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{iMicms::RES}/css/vote/chosen.css?2013-9-13-2" media="all"/>
+    <script type="text/javascript" src="{iMicms::RES}/js/jQuery.js?2013-9-13-2"></script>
+    <title>微信投票管理系统</title>
+    <link rel="shortcut icon" href="/tpl/static/favicon.ico"/>
+    <!--[if lte IE 9]>
+    <script src="{iMicms::RES}/js/watermark.js"></script><![endif]-->
+    <!--[if IE 7]>
+    <link href="{iMicms::RES}/css/vote/font_awesome_ie7.css" rel="stylesheet"/><![endif]-->
+</head>
+<body>
+<div id="main">
+    <div class="container-fluid">
+
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="box">
+                    <div class="box-title">
+                        <div class="span10">
+                            <h3><i class="icon-edit"></i>编辑问题</h3>
+                        </div>
+                        <div class="span2"><a class="btn" href="Javascript:window.history.go(-1)">返回</a></div>
+                    </div>
+                    <div class="box-content">
+                        <form action="" method="post" class="form-horizontal form-validate"
+                              enctype="multipart/form-data">
+
+                            <input type="hidden" name="id" value="{iMicms:$problem.id}">
+                            <div class="control-group">
+                                <label class="control-label">问题：</label>
+                                <div class="controls">
+                                    <textarea name="problem"
+                                              rows="3"
+                                              cols="10"
+                                              placeholder="请填写答案">{iMicms:$problem.problem}</textarea>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label" for="title">答案：</label>
+                                <div class="controls">
+                                    <input type="text" name="answer" id="title" value="{iMicms:$problem.answer}"
+                                           class="input-large" data-rule-required="true" data-rule-maxlength="60"/><span
+                                        class="help-inline">请填写下面添加答案的选项字母</span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">选项：</label>
+                                <div class="controls answer">
+                                    <span class=""><a class="btn insertoption">添加选项</a></span>
+                                    <div class="a-wrap">
+                                        <volist id="answer" name="problem.answers">
+                                            <div style="margin-top: 10px">
+                                                <input type="hidden" name="aid[]" value="{iMicms:$answer.id}">
+                                                <span class="help-inline option-answer">{iMicms:$answer.alias}</span>.　
+                                                <textarea
+                                                        name="option[]"
+                                                        rows="3"
+                                                        cols="10"
+                                                        placeholder="请填写答案">{iMicms:$answer.answer}</textarea>
+                                                <a href="javascript:;" class="btn btn-primary btn_submit  J_ajax_submit_btn"
+                                                   data-aid="{iMicms:$answer.id}" data-pid="{iMicms:$answer.pid}">删除</a>
+                                            </div>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button id="bsubmit" type="submit" data-loading-text="提交中..." class="btn btn-primary">
+                                    保存
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.insertoption').click(function () {
+            var i = 0;
+            var zi = 'A';
+            var zimu = ['A', 'B', 'C', 'D', 'E', 'F'];
+            $.each($('.option-answer'), function (k, v) {
+                i = k + 1;
+                zi = $(v).html();
+            });
+            if (zi == 'F') {
+                alert('最多添加6个答案');
+                return;
+            }
+            var html = '<div style="margin-top: 10px"><input type="hidden" name="aid[]" value="0">\n' +
+                '                                        <span class="help-inline option-answer">' + zimu[i] + '</span>.　<textarea name="option[]" rows="3"\n' +
+                '                                                                                      cols="10" placeholder="请填写答案"></textarea>\n' +
+                '<a href="javascript:;" class="btn btn-primary btn_submit  J_ajax_submit_btn" data-aid="0">删除</a></div>';
+            $('.a-wrap').append(html);
+        });
+
+        $('body').on('click', '.J_ajax_submit_btn', function () {
+            var pid = $(this).data('pid');
+            var id = $(this).data('aid');
+            if (id > 0) {
+                $.post("{iMicms::U('User/Problem/answer_del')}", {id: id, pid: pid}, function (data) {
+                    var html = '';
+                    $.each(eval('(' + data + ')'), function (k, v) {
+
+                        html += '<div style="margin-top: 10px">\n' +
+                            '                                        <span class="help-inline option-answer">' + v.alias + '</span>.　<textarea name="option[]" rows="3"\n' +
+                            '                                                                                      cols="10" placeholder="请填写答案">' + v.answer + '</textarea>\n' +
+                            '<a href="javascript:;" class="btn btn-primary btn_submit  J_ajax_submit_btn" data-aid="'+v.id+'" data-pid="'+v.pid+'">删除</a></div>';
+                    });
+
+                    $('.a-wrap').html(html);
+                });
+            } else {
+                $(this).parent().parent().remove();
+            }
+        });
+    });
+</script>
+</body>
+</html>

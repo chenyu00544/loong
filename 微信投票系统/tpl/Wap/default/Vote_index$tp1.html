@@ -98,9 +98,20 @@
                 background-repeat: no-repeat;
                 background-position: center center;
             }
-</style>   
-
-<script>
+</style>
+    <script type="text/javascript">
+        // 对浏览器的UserAgent进行正则匹配，不含有微信独有标识的则为其他浏览器
+        var useragent = navigator.userAgent;
+        if (useragent.match(/MicroMessenger/i) != 'MicroMessenger') {
+            // 这里警告框会阻塞当前页面继续加载
+            alert('已禁止本次访问：您必须使用微信内置浏览器访问本页面！');
+            // 以下代码是用javascript强行关闭当前页面
+            var opened = window.open('about:blank', '_self');
+            opened.opener = null;
+            opened.close();
+        }
+    </script>
+    <script>
 $(function() {
                     var audio = $('#media');
                     audio[0].play();
@@ -155,7 +166,7 @@ scroll.onmouseover=function(){clearInterval(myvar);}
         <div class="num_box">
             <if condition="$ishavezp eq 1"><a href="{iMicms::U('Vote/detail',array('token'=>$token,'id'=>$id,'zid'=>$havezpid))}" class="join_us">我的参赛</a>
 			<else/>
-			<if  condition="$istime eq 1"><a href="{iMicms::U('Vote/signup',array('token'=>$token,'id'=>$id))}" class="join_us">我要报名</a></if></if>          
+            </if>
             <ul class="num_box_ul">
                 <li>
                     <span class="text">已报名</span>
@@ -227,7 +238,6 @@ scroll.onmouseover=function(){clearInterval(myvar);}
     <div class="text_a clearfix" id="sort">
         <a href="{iMicms::U('Vote/index',array('token'=>$token,'id'=>$id))}" class="active">最新参赛</a>
         <a href="{iMicms::U('Vote/rank',array('token'=>$token,'id'=>$id))}" >投票排行</a>
-      <!--  <a href="{iMicms::U('Vote/hongbao',array('token'=>$token,'id'=>$id))}" style="background:#f04a52">领取红包</a>-->
     </div>
     <div class="blank20"></div>
     <div id="pageCon" class="match_page masonry" style="padding-bottom: 50px">
@@ -288,6 +298,61 @@ scroll.onmouseover=function(){clearInterval(myvar);}
 </section>
 
 <section>
+    <notempty name="problems">
+    <div class="pop" id="dati" style="display:none;" >
+        <div class="mengceng"></div>
+        <div class="pop_up" style="background-color: #fff; opacity: 1;top:20%;">
+            <div style="display: none" class="problem_conf" data-question_num="{iMicms:$problem_conf.question_num}" data-answer_num="{iMicms:$problem_conf.answer_num}" data-sure_num="0"></div>
+            <volist name="problems" id="problem" key="i">
+                <div class="qa" style="<if condition='$i neq 1'> display:none </if>">
+                    <div class="title" style="color: #000; text-align: left; border-bottom: 1px solid #eee; padding-bottom: 10px;">选择题({iMicms:$i}/{iMicms:$problem_conf.question_num})</div>
+                    <div>
+                        <div class="question" data-answer="{iMicms:$problem.answer}" style="color: #000; text-align: left;white-space:normal;word-break:break-all;word-wrap:break-word;padding: 5px">问题：{iMicms:$problem.problem}</div>
+                        <volist name="problem.answers" id="answer" key="j">
+                            <div class="answer" style="color: #000;text-align: left;padding: 5px">
+                                <input style="width: 15px;height: 15px;" type="radio" name="option{iMicms:$i}" value="{iMicms:$answer.alias}" id="option{iMicms:$i}{iMicms:$j}">
+                                <label style="line-height: 15px;" for="option{iMicms:$i}{iMicms:$j}">{iMicms:$answer.alias}. {iMicms:$answer.answer}</label>
+                            </div>
+                        </volist>
+                    </div>
+                    <div class="content" style="color:#000;background-color: #fff;">
+                        <div class="text_a">
+                            <a href="javascript:;" class="active sure">确定</a>
+                        </div>
+                    </div>
+                </div>
+            </volist>
+        </div>
+    </div>
+    </notempty>
+
+    <div class="pop" id="qa_tip_yes" style="display:none;">
+        <div class="mengceng"></div>
+        <div class="pop_up">
+            <span class="qa_tip_closed" id="toupiaook">&nbsp;</span>
+            <p class="tit_p" id="dia_title">回答正确!</p>
+            <p class="tit_txt" id="content">恭喜您为您支持的作品投上了一票！</p>
+        </div>
+    </div>
+
+    <div class="pop" id="qa_tip_no" style="display:none;">
+        <div class="mengceng"></div>
+        <div class="pop_up">
+            <span class="qa_tip_closed" id="toupiaook">&nbsp;</span>
+            <p class="tit_p" id="dia_title">回答错误!</p>
+            <p class="tit_txt" id="content">请继续努力！</p>
+        </div>
+    </div>
+
+    <div class="pop" id="qa_error" style="display:none;">
+        <div class="mengceng"></div>
+        <div class="pop_up">
+            <span class="qa_tip_closed" id="toupiaook">&nbsp;</span>
+            <p class="tit_p" id="dia_title">回答结束!</p>
+            <p class="tit_txt" id="content">点击投票可以重新回答问题！</p>
+        </div>
+    </div>
+
     <div class="pop" id="guanzhu" style="display:none" >
         <div class="mengceng"></div>
         <div class="pop_up">
@@ -319,7 +384,6 @@ scroll.onmouseover=function(){clearInterval(myvar);}
             <p class="tit_txt" >投票数据分析中，请等待......</p>
         </div>
     </div>
-    
     <div class="pop" id="voting" style="display:none;">
         <div class="mengceng"></div>
         <div class="pop_up">
@@ -351,7 +415,7 @@ scroll.onmouseover=function(){clearInterval(myvar);}
   <ul>
     <li class="ico_1"><span class="ico"><img src="{iMicms::STATICS}/vote//index2/i1.png" /></span><span class="txt">首页</span></li>
     <li class="ico_2"><span class="ico"><img src="{iMicms::STATICS}/vote//index2/i3.png" /></span><span class="txt">排名</span></li>
-    <li class="ico_3"><span class="ico"><img src="{iMicms::STATICS}/vote//index2/i11.png" /></span><span class="txt"><notempty name='ishavezp' >我的<else/>报名</notempty></span></li>
+    <!-- <li class="ico_3"><span class="ico"><img src="{iMicms::STATICS}/vote//index2/i11.png" /></span><span class="txt"><notempty name='ishavezp' >我的<else/>报名</notempty></span></li> -->
     <if condition="$user['tpjl']==1 && $user['tpjlnum'] gt 0 && $user['gldzpid'] neq 0" >
    <li class="ico_4"><span class="ico"><img src="{iMicms::STATICS}/vote/index2/i4.png" /></span><span class="txt">免费抽奖</span></li>
    <else/>
@@ -409,6 +473,131 @@ scroll.onmouseover=function(){clearInterval(myvar);}
 
 <script type="text/javascript">
 $(function($){
+
+    $('.pre').on('click', function () {
+        alert(1)
+    });
+
+    $('.next').on('click', function () {
+        alert(2)
+    });
+
+    $('.qa_tip_closed').on('click', function () {
+        $(this).parent().parent().hide();
+    });
+
+    $('.sure').on('click', function () {
+        var qa = $(this).parent().parent().parent();
+        var answer = qa.find('.question').data('answer').toLowerCase();
+        var option = qa.find('input:checked').val().toLowerCase();
+        if(answer == option){
+            var answer_num = $('.problem_conf').data('answer_num');
+            var sure_num = $('.problem_conf').data('sure_num');
+            $('.problem_conf').data('sure_num', sure_num+1);
+            if(answer_num == $('.problem_conf').data('sure_num')) {
+                qa.parent().parent().hide();
+                $.ajax({
+                    type: "POST",
+                    url: "{iMicms::U('Vote/ticket')}",
+                    cache: false,
+                    data: {
+                        answer_num: answer_num,
+                        zid:$('#dati').data('zid'),
+                        vid:'{iMicms:$id}',
+                        token:'{iMicms:$token}',
+                        '__hash__':$('input[name="__hash__"]').val()
+                    },
+                    success: function(data) {
+                        if (data == 102) {//未关注
+                            $('#voting2').hide();
+                            $('#guanzhu').show();
+                        } else if (data == 108) {//投票成功
+                            $('#voting2').hide();
+                            $('#voted').show();
+                            setTimeout(function () {
+                                $('#voted').hide();
+                                location.reload();
+                            },2000);
+                        } else if (data == 106) {//此用户今日已无法投票
+                            $('#voting2').hide();
+                            $('#voting_title').html('无法投票');
+                            $('#voting_content').html('<eq name="user.tpxzmos" value="1"> 您今日的票数已投完，请明日再投！<else/> 您本次活动的票数已投完，感谢您的参与！</eq>');
+                            $('#voting').show();
+                        } else if (data == 105) {//此IP下今日已无法投票
+                            $('#voting2').hide();
+                            $('#voting_title').html('无法投票');
+                            $('#voting_content').html('此IP今日票数已投完，请明日再投！');
+                            $('#voting').show();
+                        } else if (data == 103) {//投票还未开始
+                            $('#voting2').hide();
+                            $('#voting_title').html('投票还未开始');
+                            $('#voting_content').html('请{iMicms:$vote.statdate|date='Y-m-d H:i:s',###}后再来！');
+                            $('#voting').show();
+                        } else if (data == 104) {//投票已经结束
+                            $('#voting2').hide();
+                            $('#voting_title').html('投票已经结束');
+                            $('#voting_content').html('');
+                            $('#voting').show();
+                        } else if (data == 107) {//投票已经结束
+                            $('#voting2').hide();
+                            $('#voting_title').html('投票失败');
+                            $('#voting_content').html('此作品无法投票，可能出于审核中或已被屏蔽！');
+                            $('#voting').show();
+                        } else if (data == 110) {//ip不在限制区域中
+                            $('#voting2').hide();
+                            $('#voting_title').html('投票失败');
+                            $('#voting_content').html("仅允许 {iMicms:$user['area']} 区域的用户投票！");  //不在允许投票区域的提示
+                            $('#voting').show();
+                        }else if (data == 111) {//投票已经结束
+                            $('#voting2').hide();
+                            $('#voting_title').html('投票失败');
+                            $('#voting_content').html('您不能投票给自己!');  //限制期内已给他投过提示
+                            $('#voting').show();
+                        }else if (data == 109) {//投票已经结束
+                            $('#voting2').hide();
+                            $('#voting_title').html('投票失败');
+                            $('#voting_content').html('<eq name="user.tpxzmos" value="1"> 您已经投过啦，每天可投一次,明天再来吧!<else/> 您已经投过了，同一用户只能投票一次!</eq>');  //限制期内已给他投过提示
+                            $('#voting').show();
+                        }else if (data == 120) {//报名期间达到投票限制数
+                            $('#voting2').hide();
+                            $('#voting_title').html('投票失败');
+                            $('#voting_content').html('报名期内优先投票最多{iMicms:$vote.btcdxz}票！正式投票为<php> echo date("Y-m-d H:i",$vote[statdate]);</php>开始，请到时再继续投票 感谢您的参与！');
+                            $('#voting').show();
+                        }else if (data == 888) {//编号投票
+                            $('#voting2').hide();
+                            $('#voting_title').html('进入公众号，回复“TP' +  self.data('itid') + '”给我投票哦！');
+                            $('#voting_content').html('<a href="{iMicms:$vote['wxgzurl']}" class="gz_btn">进入我们的公众号</a>');
+                            $('#voting').show();
+                        }else if (data == 999) {//编号投票
+                            $('#voting2').hide();
+                            $('#dati').show();
+                        }else{
+                            $('#voting2').hide();
+                        }
+                    }
+                });
+            }
+        }else{
+            if(qa.next().length== 0){
+                $('#qa_error').show();
+            }else{
+                $('#qa_tip_no').show();
+            }
+        }
+        setTimeout(function () {
+            if(qa.next().length== 0){
+                qa.parent().parent().hide();
+                $('.qa').first().show();
+            } else {
+                qa.next().show();
+            }
+            qa.hide();
+            $('#qa_error').hide();
+            $('#qa_tip_yes').hide();
+            $('#qa_tip_no').hide();
+        }, 3000);
+    });
+
 	$("#search_form").submit(function(){
 		var keyword = $("#searchText").val();
 		if(keyword.length == 0){alert('请输入选手姓名或编号');return false;}
@@ -572,17 +761,18 @@ var itid;
         $('.vote').on('tap', function(e){
             e.preventDefault();
             var self = $(e.target).closest('.vote');
-			 $('#voting2').show();
+            var zid = self.data('itid');
+            $('#dati').data('zid',zid);
+            $('#voting2').show();
             $.ajax({
                 type: "POST",
                 url: "{iMicms::U('Vote/ticket')}",
                 cache: false,
                 data: {
-                    zid:self.data('itid'),
+                    zid:zid,
 					vid:'{iMicms:$id}',
 					token:'{iMicms:$token}',
 					'__hash__':$('input[name="__hash__"]').val()
-					
                 },
                 success: function(data) {
                   if (data == 102) {//未关注
@@ -641,6 +831,12 @@ var itid;
 						$('#voting_title').html('进入公众号，回复“TP' +  self.data('itid') + '”给我投票哦！');
 						$('#voting_content').html('<a href="{iMicms:$vote['wxgzurl']}" class="gz_btn">进入我们的公众号</a>');
                         $('#voting').show();
+                    }else if (data == 999) {//编号投票
+                      $('#voting2').hide();
+                      $('#dati').show();
+                    }else{
+                      $('#voting2').hide();
+                      alert(data);
                     }
                 }
             });
