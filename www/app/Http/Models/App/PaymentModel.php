@@ -21,6 +21,7 @@ class PaymentModel extends Model
     {
         return $this->select($column)
             ->where($where)
+            ->orderBy('pay_id', 'ASC')
             ->first();
     }
 }

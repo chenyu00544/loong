@@ -58,6 +58,11 @@ class GoodsModel extends Model
         return $this->hasOne('App\Http\Models\App\SellerShopInfoModel', 'ru_id', 'user_id');
     }
 
+    public function goodsext()
+    {
+        return $this->hasOne('App\Http\Models\App\GoodsExtendModel', 'goods_id', 'goods_id');
+    }
+
     public function getGoodses($where, $page = 1, $column = ['*'], $size = 10)
     {
         return $this->select($column)
@@ -119,6 +124,9 @@ class GoodsModel extends Model
                         $query->select(['attr_type', 'attr_id', 'attr_name', 'attr_group']);
                     }])
                     ->orderBy('attr_sort', 'DESC');
+            }])
+            ->with(['goodsext' => function($query){
+                $query->select(['goods_id', 'is_reality', 'is_return', 'is_fast', 'extend_id']);
             }])
             ->where($where)
             ->get();

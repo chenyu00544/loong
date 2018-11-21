@@ -18,4 +18,9 @@ class OrderGoodsModel extends Model
     protected $primaryKey = 'rec_id';
     public $timestamps = false;
     protected $guarded = [];
+
+    public function addOrderGoods($data)
+    {
+        return $this->create($data);
+    }
 }

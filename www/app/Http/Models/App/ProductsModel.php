@@ -23,7 +23,7 @@ class ProductsModel extends Model
         return $this->hasMany('App\Http\Models\App\GoodsAttrModel', 'goods_id', 'goods_id');
     }
 
-    public function getProdcutAndAttr($ids, $column = ['*'])
+    public function getProdcutAndAttr($ids, $column = ['*'], $where = [])
     {
         sort($ids);
         $gids = implode('|', $ids);
@@ -31,6 +31,7 @@ class ProductsModel extends Model
             ->with(['attrs' => function ($query) use ($ids) {
                 $query->whereIn('goods_attr_id', $ids);
             }])
+            ->where($where)
             ->where('goods_attr', $gids)
             ->first();
     }

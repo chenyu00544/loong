@@ -14,8 +14,10 @@ use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\App\FavourableGoodsModel;
 use App\Http\Models\App\GoodsModel;
+use App\Http\Models\App\OrderGoodsModel;
 use App\Http\Models\App\OrderInfoModel;
 use App\Http\Models\App\PaymentModel;
+use App\Http\Models\App\ProductsModel;
 use App\Http\Models\App\TransportModel;
 use App\Http\Models\App\UsersModel;
 
@@ -23,27 +25,33 @@ class OrderRepository implements OrderRepositoryInterface
 {
 
     private $orderInfoModel;
+    private $orderGoodsModel;
     private $goodsModel;
     private $favourableGoodsModel;
     private $usersModel;
     private $transportModel;
     private $paymentModel;
+    private $productsModel;
 
     public function __construct(
         OrderInfoModel $orderInfoModel,
+        OrderGoodsModel $orderGoodsModel,
         GoodsModel $goodsModel,
         FavourableGoodsModel $favourableGoodsModel,
         UsersModel $usersModel,
         TransportModel $transportModel,
-        PaymentModel $paymentModel
+        PaymentModel $paymentModel,
+        ProductsModel $productsModel
     )
     {
         $this->orderInfoModel = $orderInfoModel;
+        $this->orderGoodsModel = $orderGoodsModel;
         $this->goodsModel = $goodsModel;
         $this->favourableGoodsModel = $favourableGoodsModel;
         $this->usersModel = $usersModel;
         $this->transportModel = $transportModel;
         $this->paymentModel = $paymentModel;
+        $this->productsModel = $productsModel;
     }
 
     public function getOrders($data, $uid)
@@ -84,7 +92,7 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
 
-            if(empty($data['pay'])){
+            if (empty($data['pay'])) {
                 return [];
             }
 
@@ -95,10 +103,11 @@ class OrderRepository implements OrderRepositoryInterface
             $order['order_status'] = OS_UNCONFIRMED;
             $order['pay_status'] = PS_UNPAYED;
             $order['shipping_status'] = SS_UNSHIPPED;
-            //用户留言
-            $order['postscript'] = !empty($data['postmsg']) ? $data['postmsg'] : '';
 
-            $pay = $this->paymentModel->getPayment(['pay_id'=>$data['pay']]);
+            //用户留言
+            $order['postscript'] = !empty($data['postmsg']) ? @trim($data['postmsg']) : '';
+
+            $pay = $this->paymentModel->getPayment([]);
 
             $order['pay_id'] = $pay->pay_id;
             $order['pay_name'] = $pay->pay_name;
@@ -117,6 +126,7 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
             $return['user'] = $user;
+
             $order['consignee'] = $user->default_address->consignee;
             $order['country'] = $user->default_address->country;
             $order['province'] = $user->default_address->province;
@@ -143,8 +153,21 @@ class OrderRepository implements OrderRepositoryInterface
                 'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
                 'pinyin_keyword', 'goods_brief'
             ];
-            $goods_detail = $this->goodsModel->getGoodsByOrder($where, $column);
-            if ($goods_detail) {
+            $goodses = $this->goodsModel->getGoodsByOrder($where, $column);
+            foreach ($goodses as $goods_detail) {
+                $order_goods['rec_id'] = RedisCache::incrby("order_goods_id");
+                $order_goods['user_id'] = $uid;
+                $order_goods['order_id'] = $order['order_id'];
+                $order_goods['goods_name'] = $goods_detail->goods_name;
+                $order_goods['goods_id'] = $goods_detail->goods_id;
+                $order_goods['goods_sn'] = $goods_detail->goods_sn;
+                $order_goods['o_goods_number'] = $num;
+                $order_goods['market_price'] = $goods_detail->market_price;
+                $order_goods['goods_price'] = $goods_detail->shop_price;
+                $order_goods['ru_id'] = $goods_detail->user_id;
+                $order_goods['is_real'] = empty($goods_detail->is_real) ? 1 : 0;
+                $order_goods['extension_code'] = '';
+
 
                 //大型活动
                 $faats = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
@@ -157,37 +180,36 @@ class OrderRepository implements OrderRepositoryInterface
                     }
                 }
 
+                if (!empty($goods_detail->goodsext)) {
+                    $order_goods['is_reality'] = $goods_detail->goodsext->is_reality;
+                    $order_goods['is_return'] = $goods_detail->goodsext->is_return;
+                    $order_goods['is_fast'] = $goods_detail->goodsext->is_fast;
+                }
+
+                //商品规格
+                if (count($goods_attr_ids) > 0) {
+                    $pwhere['goods_id'] = $goods_id;
+                    $product = $this->productsModel->getProdcutAndAttr($goods_attr_ids, ['*'], $pwhere);
+                    $goods_attr = [];
+                    foreach ($product->attrs as $attr) {
+                        $goods_attr[] = $attr->attr_value;
+                    }
+                    $order_goods['product_id'] = $product->product_id;
+                    $order_goods['goods_attr'] = implode(',', $goods_attr);
+                    $order_goods['goods_attr_id'] = $product->goods_attr;
+                    $order_goods['product_sn'] = $product->product_sn;
+                }
+
                 //快递
                 if ($goods_detail->freight == 2) {
-                    $twhere['tid'] = $goods_detail->tid;
-                    $transport = $this->transportModel->getTransportByShip($twhere);
-
-                    $t_exp_shipping_fee = 0;
-                    foreach ($transport->t_exp as $key => $t_exp) {
-                        if ($key == 0) {
-                            $order['shipping_id'] = $t_exp->shipping->shipping_id;
-                            $order['shipping_name'] = $t_exp->shipping->shipping_name;
-                            $order['shipping_code'] = $t_exp->shipping->shipping_code;
-                            $t_exp_shipping_fee = $t_exp->shipping->shipping_fee;
-                        }
-                    }
-
-                    //运费计算
-                    $t_ext_shipping_fee = 0;
-                    foreach ($transport->t_ext as $t_ext) {
-                        $top_area_ids = explode(',', $t_ext->top_area_id);
-                        if (in_array($user->default_address->province, $top_area_ids)) {
-                            $area_ids = explode(',', $t_ext->area_id);
-                            if (in_array($user->default_address->city, $area_ids)) {
-                                $t_ext_shipping_fee = $t_ext->sprice;
-                            }
-                        }
-                    }
-
-                    $order['shipping_fee'] = $t_exp_shipping_fee + $t_ext_shipping_fee;
+                    $order_goods['freight'] = $goods_detail->freight;
+                    $order_goods['tid'] = $goods_detail->tid;
                 } else {
-                    $order['shipping_fee'] = $goods_detail->shipping_fee;
+                    $order_goods['tid'] = 0;
+                    $order_goods['freight'] = $goods_detail->freight;
                 }
+                $order_goods['shipping_fee'] = 0;
+                $this->orderGoodsModel->addOrderGoods($order_goods);
 
                 //商品属性整理
                 $goods_detail->gattr;
@@ -203,14 +225,14 @@ class OrderRepository implements OrderRepositoryInterface
                 }
                 $goods_detail->multi_attr = $multi_attr;
                 unset($goods_detail->gattr);
+                $return['goods'][] = $goods_detail;
             }
-            $return['goods'][] = $goods_detail;
-
 
             dd($order);
             return $return;
         } else {
             //购物车结算购买
+
         }
     }
 }

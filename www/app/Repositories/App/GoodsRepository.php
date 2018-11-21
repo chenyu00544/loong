@@ -322,7 +322,8 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $attr_value = [];
                 if (!empty($request['goods_attr_ids'])) {
                     $goods_attr_ids = explode(',', $request['goods_attr_ids']);
-                    $goods_attr = $this->productsModel->getProdcutAndAttr($goods_attr_ids);
+                    $pwhere['goods_id'] = $goods_id;
+                    $goods_attr = $this->productsModel->getProdcutAndAttr($goods_attr_ids, ['*'], $pwhere);
                     foreach ($goods_attr->attrs as $attr) {
                         $attr_value[] = $attr->attr_value;
                     }
