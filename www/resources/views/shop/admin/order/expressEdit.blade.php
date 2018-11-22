@@ -31,12 +31,12 @@
                                     <label class="radio-inline fl">
                                         <input type="radio" name="shipping_id" id="pay_id_{{$express->shipping_id}}"
                                                value="{{$express->shipping_id}}" style="margin-top: 7px"
-                                               data-order_id="{{$order->order_id}}" data-shipping_name="{{$express->shipping_name}}"
-                                               @if($order->shipping_id == $express->shipping_id) checked @endif> {{$express->shipping_name}}
+                                               data-order_id="{{$order->order_id}}" data-shipping_name="{{$express->shipping->shipping_name}}"
+                                               @if($order->shipping_id == $express->shipping_id) checked @endif> {{$express->shipping->shipping_name}}
                                     </label>
                                 </td>
                                 <td>
-                                    <div class="wd-750 oh">{!! $express->shipping_desc !!}</div>
+                                    <div class="wd-750 oh">{!! $express->shipping->shipping_desc !!}</div>
                                 </td>
                                 <td>{{$express->shipping_fee}}</td>
                             </tr>

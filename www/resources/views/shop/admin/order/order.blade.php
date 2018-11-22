@@ -126,7 +126,7 @@
                                         <div>
                                             <div class="img fl">
                                                 <img width="80"
-                                                     src="{{url($goods->goods_thumb)}}">
+                                                     src="{{$goods->original_img}}">
                                             </div>
                                             <div class="product-info">
                                                 <div class="name mar-bt-5">
@@ -163,7 +163,7 @@
                                         <div>{{$goods->goods_price}}</div>
                                     </td>
                                     <td class="td-number text-center">
-                                        <div>{{$goods->goods_number}}</div>
+                                        <div>{{$goods->o_goods_number}}</div>
                                     </td>
                                     <td class="text-center" f>
                                         <div>

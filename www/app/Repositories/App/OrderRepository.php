@@ -79,10 +79,12 @@ class OrderRepository implements OrderRepositoryInterface
     public function addOrder($data, $uid)
     {
         $return = [];
+        $time = time();
         if (empty($data['cart_ids'])) {
             //直接购买
-            $goods_id = $data['goods_id'];
-            $num = empty($data['num']) ? 1 : $data['num'];
+            $goods_id = intval($data['goods_id']);
+            $num = empty($data['num']) ? 1 : intval($data['num']);
+            $froms = empty($data['froms']) ? '' : trim($data['froms']);
             $goods_attr_ids = [];
             for ($i = 0; $i < count($data); $i++) {
                 if (!empty($data['attr_' . $i])) {
@@ -95,22 +97,7 @@ class OrderRepository implements OrderRepositoryInterface
             if (empty($data['pay'])) {
                 return [];
             }
-
-            $order['order_id'] = RedisCache::incrby("order_id");
-            $order['order_sn'] = date(VCVB_SNDATE, time()) . rand(100000, 999999);
-            $order['user_id'] = $uid;
-
-            $order['order_status'] = OS_UNCONFIRMED;
-            $order['pay_status'] = PS_UNPAYED;
-            $order['shipping_status'] = SS_UNSHIPPED;
-
-            //用户留言
-            $order['postscript'] = !empty($data['postmsg']) ? @trim($data['postmsg']) : '';
-
             $pay = $this->paymentModel->getPayment([]);
-
-            $order['pay_id'] = $pay->pay_id;
-            $order['pay_name'] = $pay->pay_name;
 
             //用户地址
             $uwhere['user_id'] = $uid;
@@ -127,18 +114,6 @@ class OrderRepository implements OrderRepositoryInterface
             }
             $return['user'] = $user;
 
-            $order['consignee'] = $user->default_address->consignee;
-            $order['country'] = $user->default_address->country;
-            $order['province'] = $user->default_address->province;
-            $order['city'] = $user->default_address->city;
-            $order['district'] = $user->default_address->district;
-            $order['address'] = $user->default_address->address;
-            $order['mobile'] = $user->default_address->mobile;
-            $order['zipcode'] = $user->default_address->zipcode;
-            $order['email'] = $user->default_address->email;
-            $order['best_time'] = $user->default_address->best_time;
-            $order['sign_building'] = $user->default_address->sign_building;
-
             //购买的商品信息
             $where['goods_id'] = $goods_id;
             $where['is_on_sale'] = 1;
@@ -154,10 +129,47 @@ class OrderRepository implements OrderRepositoryInterface
                 'pinyin_keyword', 'goods_brief'
             ];
             $goodses = $this->goodsModel->getGoodsByOrder($where, $column);
+            $goods_amount = [];  //商品总金额
+            $discount = [];      //折扣金额
+            $tax = [];           //税费
+            $shipping_fee = []; //快递费用
+            $order_goodses = [];
+
             foreach ($goodses as $goods_detail) {
+
+                if (empty($order[$goods_detail->user_id]['order_id'])) {
+                    $goods_amount[$goods_detail->user_id] = 0;
+                    $discount[$goods_detail->user_id] = 0;
+                    $tax[$goods_detail->user_id] = 0;
+                    $order[$goods_detail->user_id] = [
+                        'order_id' => RedisCache::incrby("order_id"),
+                        'order_sn' => date(VCVB_SNDATE, time()) . rand(100000, 999999),
+                        'user_id' => $uid,
+                        'order_status' => OS_UNCONFIRMED,
+                        'pay_status' => PS_UNPAYED,
+                        'shipping_status' => SS_UNSHIPPED,
+                        'postscript' => !empty($data['postmsg']) ? @trim($data['postmsg']) : '',    //用户留言
+                        'pay_id' => $pay->pay_id,
+                        'pay_name' => $pay->pay_name,
+                        'consignee' => $user->default_address->consignee,
+                        'country' => $user->default_address->country,
+                        'province' => $user->default_address->province,
+                        'city' => $user->default_address->city,
+                        'district' => $user->default_address->district,
+                        'address' => $user->default_address->address,
+                        'mobile' => $user->default_address->mobile,
+                        'zipcode' => $user->default_address->zipcode,
+                        'email' => $user->default_address->email,
+                        'best_time' => $user->default_address->best_time,
+                        'sign_building' => $user->default_address->sign_building,
+                        'ru_id' => $goods_detail->user_id,
+                    ];
+                }
+
+
                 $order_goods['rec_id'] = RedisCache::incrby("order_goods_id");
                 $order_goods['user_id'] = $uid;
-                $order_goods['order_id'] = $order['order_id'];
+                $order_goods['order_id'] = $order[$goods_detail->user_id]['order_id'];
                 $order_goods['goods_name'] = $goods_detail->goods_name;
                 $order_goods['goods_id'] = $goods_detail->goods_id;
                 $order_goods['goods_sn'] = $goods_detail->goods_sn;
@@ -167,19 +179,62 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goods['ru_id'] = $goods_detail->user_id;
                 $order_goods['is_real'] = empty($goods_detail->is_real) ? 1 : 0;
                 $order_goods['extension_code'] = '';
+                $shop_price = $goods_detail->shop_price;
+                $g_amount = $shop_price * $num;
 
+                //本身商品的促销活动
+                if ($goods_detail->is_promote == 1 && $goods_detail->promote_start_date < $time && $goods_detail->promote_end_date > $time) {
+                    $g_amount = $goods_detail->promote_price * $num;
+                }
 
-                //大型活动
-                $faats = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
-                foreach ($faats as $k => $faat) {
-                    if ($k == 0) {
-                        $goods_detail->faat_act_id = $faat->act_id;
-                        $goods_detail->faat_act_type = $faat->act_type;
-                        $goods_detail->faat_act_type_ext = $faat->act_type_ext;
-                        $goods_detail->faat_min_amount = $faat->min_amount;
+                //本身商品的阶梯价格
+                if ($goods_detail->is_volume == 1) {
+                    $gvp_k = -1;
+                    foreach ($goods_detail->gvp as $key => $gvp) {
+                        if ($num >= $gvp->volume_number) {
+                            $gvp_k = $key;
+                        }
+                    }
+                    if ($gvp_k >= 0) {
+                        $v_amount = $goods_detail->gvp[$gvp_k]->volume_price * $num;
+                        if ($g_amount > $v_amount) {
+                            $g_amount = $v_amount;
+                        }
                     }
                 }
 
+                $goods_amount[$goods_detail->user_id] += $g_amount;
+
+                //大型活动
+                $faat = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
+                if ($faat) {
+                    $goods_detail->faat_act_id = $faat->act_id;
+                    $goods_detail->faat_act_type = $faat->act_type;
+                    $goods_detail->faat_act_type_ext = $faat->act_type_ext;
+                    $goods_detail->faat_min_amount = $faat->min_amount;
+                    if ($goods_amount[$goods_detail->user_id] > $faat->min_amoun) {
+                        if ($faat->act_type == 1) {
+                            $discount[$goods_detail->user_id] += $faat->act_type_ext;
+                        } elseif ($faat->act_type == 2) {
+                            $discount[$goods_detail->user_id] += $goods_amount[$goods_detail->user_id] * (1 - $faat->act_type_ext);
+                        }
+                    }
+                }
+
+                //本身商品的满减活动
+                if ($goods_detail->is_fullcut == 1) {
+                    $fullcut_k = -1;
+                    foreach ($goods_detail->fullcut as $key => $fullcut) {
+                        if ($goods_amount[$goods_detail->user_id] >= $fullcut->cfull) {
+                            $fullcut_k = $key;
+                        }
+                    }
+                    if ($fullcut_k >= 0) {
+                        $discount[$goods_detail->user_id] += $goods_detail->fullcut[$fullcut_k]->creduce;
+                    }
+                }
+
+                //商品扩展信息
                 if (!empty($goods_detail->goodsext)) {
                     $order_goods['is_reality'] = $goods_detail->goodsext->is_reality;
                     $order_goods['is_return'] = $goods_detail->goodsext->is_return;
@@ -202,13 +257,23 @@ class OrderRepository implements OrderRepositoryInterface
 
                 //快递
                 if ($goods_detail->freight == 2) {
+                    $ship = $this->transportModel->getTransportByShip(['tid' => $goods_detail->tid]);
                     $order_goods['freight'] = $goods_detail->freight;
                     $order_goods['tid'] = $goods_detail->tid;
+                    foreach ($ship->t_ext as $t_ext) {
+                        $area_ids = explode(',', $t_ext->area_id);
+                        if (in_array($order[$goods_detail->user_id]['city'], $area_ids)) {
+                            $order_goods['shipping_fee'] = $t_ext->sprice;
+                            $shipping_fee[$goods_detail->user_id] = $t_ext->sprice;
+                        }
+                    }
                 } else {
                     $order_goods['tid'] = 0;
                     $order_goods['freight'] = $goods_detail->freight;
+                    $order_goods['shipping_fee'] = $goods_detail->shipping_fee;
+                    $shipping_fee[$goods_detail->user_id] = $goods_detail->shipping_fee;
                 }
-                $order_goods['shipping_fee'] = 0;
+
                 $this->orderGoodsModel->addOrderGoods($order_goods);
 
                 //商品属性整理
@@ -221,14 +286,31 @@ class OrderRepository implements OrderRepositoryInterface
                     }
                     if ($gattr->attr->attr_group == 1 && $gattr->attr->attr_name == '税率') {
                         $goods_detail->tax = $gattr->attr_value;
+                        $tax[$goods_detail->user_id] += $goods_amount[$goods_detail->user_id] * ($gattr->attr_value / 100);
                     }
                 }
                 $goods_detail->multi_attr = $multi_attr;
                 unset($goods_detail->gattr);
-                $return['goods'][] = $goods_detail;
-            }
+                $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
-            dd($order);
+                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
+
+                $order[$goods_detail->user_id]['referer'] = '本站';
+                $order[$goods_detail->user_id]['froms'] = $froms;
+                $order[$goods_detail->user_id]['add_time'] = $time;
+                $order[$goods_detail->user_id]['is_update_sale'] = 0;
+            }
+            foreach ($order as $key => $o) {
+                $re = $this->orderInfoModel->addOrder($o);
+                $o['goodses'] = $order_goodses[$key];
+                if($re){
+                    $return['order'][] = $o;
+                }
+            }
             return $return;
         } else {
             //购物车结算购买

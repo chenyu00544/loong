@@ -17,9 +17,15 @@ class TransportExpressModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function shipping()
+    {
+        return $this->hasOne('App\Http\Models\Shop\ShippingModel', 'shipping_id', 'shipping_id');
+    }
+
     public function getExpressAll($where = ['ru_id' => 0], $column = ['*'])
     {
         return $this->select($column)
+            ->with(['shipping'])
 //            ->join('shipping','shipping.shipping_id','=','transport_express.shipping_id')
             ->where($where)
             ->get();

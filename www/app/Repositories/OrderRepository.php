@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\OrderRepositoryInterface;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\DeliveryGoodsModel;
 use App\Http\Models\Shop\DeliveryOrderModel;
 use App\Http\Models\Shop\MerchantsShopInformationModel;
@@ -128,6 +129,9 @@ class OrderRepository implements OrderRepositoryInterface
             $req[$key]->province = $this->regionsModel->getRegion($value->province)->region_name;
             $req[$key]->city = $this->regionsModel->getRegion($value->city)->region_name;
             $req[$key]->district = $this->regionsModel->getRegion($value->district)->region_name;
+            foreach ($value->Goods as $goods) {
+                $goods->original_img = FileHandle::getImgByOssUrl($goods->original_img);
+            }
         }
 
         return $req;
@@ -218,7 +222,11 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $where['order_id'] = $id;
         $column = ['*'];
-        return $this->orderGoodsModel->getOrderGoodses($where, $column);
+        $res = $this->orderGoodsModel->getOrderGoodses($where, $column);
+        foreach ($res as $re) {
+            $re->original_img = FileHandle::getImgByOssUrl($re->original_img);
+        }
+        return $res;
     }
 
     public function getOrderReturnGoodses($id)

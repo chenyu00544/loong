@@ -389,6 +389,25 @@
                 })
             });
 
+            $('.check-all').click(function () {
+                document.cookie = "name=123123123";
+
+                var search = "name="//查询检索的值
+                var returnvalue = "";//返回值
+                if (document.cookie.length > 0) {
+                    sd = document.cookie.indexOf(search);
+                    if (sd != -1) {
+                        sd += search.length;
+                        end = document.cookie.indexOf(";", sd);
+                        if (end == -1)
+                            end = document.cookie.length;
+                        //unescape() 函数可对通过 escape() 编码的字符串进行解码。
+                        returnvalue = unescape(document.cookie.substring(sd, end))
+                    }
+                }
+                alert(returnvalue);
+            });
+
             //删除
             $('.btn-del').click(function () {
                 var Id = $(this).data('id');

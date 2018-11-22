@@ -32,7 +32,7 @@
                     <dl class="last @if($order->shipping_status == 2) cur @endif">
                         <dt class="cursor">4</dt>
                         <dd class="s-text">确认收货</dd>
-                        @if(!empty($order->confirm_take_time))
+                        @if(!empty($order->confirm_take_time) && $order->shipping_status == 2)
                             <dd class="s-time">{{date('Y-m-d H:i:s', $order->confirm_take_time)}}</dd>
                         @endif
                     </dl>
@@ -253,7 +253,7 @@
                                                 <div>
                                                     <div class="img fl">
                                                         <img width="80"
-                                                             src="{{url($orderGoods->goods_thumb)}}">
+                                                             src="{{$orderGoods->original_img}}">
                                                     </div>
                                                     <div class="product-info">
                                                         <div class="name">

@@ -116,18 +116,16 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->collect = $this->collectGoodsModel->countCollectGoods(['goods_id' => $goods_id, 'user_id' => $user_id, 'is_attention' => 1]);
 
             //大型活动
-            $faats = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
-            foreach ($faats as $faat) {
-                $faat->current_time = time();
-                $faat->min_amount = Common::priceFormat($faat->min_amount);
-                if ($faat->act_type == 1) {
-                    $faat->act_type_ext = Common::priceFormat($faat->act_type_ext);
-                } elseif ($faat->act_type == 2) {
-                    $faat->act_type_ext = ((float)$faat->act_type_ext * 10) . '';
-                }
-                $faat->gift = unserialize($faat->gift);
+            $faat = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
+            $faat->current_time = time();
+            $faat->min_amount = Common::priceFormat($faat->min_amount);
+            if ($faat->act_type == 1) {
+                $faat->act_type_ext = Common::priceFormat($faat->act_type_ext);
+            } elseif ($faat->act_type == 2) {
+                $faat->act_type_ext = ((float)$faat->act_type_ext * 10) . '';
             }
-            $goods_detail->faat = $faats;
+            $faat->gift = unserialize($faat->gift);
+            $goods_detail->faat = $faat;
 
             //退货货标志
             $goods_cause = explode(',', $goods_detail->goods_cause);

@@ -787,13 +787,10 @@ public class GoodsDetail {
 
     private void setFaat(JSONObject Json) {
         try {
-            JSONArray faatJsonArray = Json.getJSONArray("faat");
-            for (int i = 0; i < faatJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) faatJsonArray.get(i);
-                GoodsFaat goodsFaat = JsonUtils.fromJsonObject(object, GoodsFaat.class);
-                goodsFaat.setData(object);
-                this.setGoodsFaat(goodsFaat);
-            }
+            JSONObject faatJsonObject = Json.getJSONObject("faat");
+            GoodsFaat goodsFaat = JsonUtils.fromJsonObject(faatJsonObject, GoodsFaat.class);
+            goodsFaat.setData(faatJsonObject);
+            this.setGoodsFaat(goodsFaat);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

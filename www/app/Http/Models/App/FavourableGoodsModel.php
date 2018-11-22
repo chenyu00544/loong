@@ -30,6 +30,6 @@ class FavourableGoodsModel extends Model
         foreach ($wheres as $where) {
             $m->orWhere($where);
         }
-        return $m->get();
+        return $m->first();
     }
 }

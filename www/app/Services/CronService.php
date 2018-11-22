@@ -32,16 +32,18 @@ class CronService
         $time = time();
         $where = [
             ['shipping_status', '=', 1],
-            ['shipping_time', '>', '`auto_delivery_time`*86400+' . $time]
+            ['shipping_time', '<', $time.'-`auto_delivery_time`*86400']
         ];
         $orders = self::$orderInfoModel->getOrderInfos($where, ['*'], $limit);
         $whereIn = [];
         foreach ($orders as $order) {
             $whereIn[] = $order->order_id;
         }
-        $updata['shipping_status'] = 2;
-        $updata['confirm_take_time'] = $time;
-        self::$orderInfoModel->setOrderInfo([], $updata, $whereIn);
+        if(count($whereIn)>0){
+            $updata['shipping_status'] = 2;
+            $updata['confirm_take_time'] = $time;
+            self::$orderInfoModel->setOrderInfo([], $updata, $whereIn);
+        }
     }
     
     //红包优惠券到期提醒
