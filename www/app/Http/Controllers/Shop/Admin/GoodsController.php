@@ -174,7 +174,7 @@ class GoodsController extends CommonController
         return $this->galleryRepository->setGoodsGallery($request->except('_token'));
     }
 
-    //上传商品轮播图api
+    //删除商品轮播图api
     public function delGoodsGalleryPic(Request $request)
     {
         return $this->galleryRepository->delGoodsGalleryPic($request->except('_token'));

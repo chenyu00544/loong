@@ -65,14 +65,65 @@ class OrderRepository implements OrderRepositoryInterface
     public function getOrder($data, $uid)
     {
         $where['user_id'] = $uid;
-        $where['order_id'] = $data['order_id'];
-        $re = $this->orderInfoModel->getOrder($where);
-        return $re;
+        $order_ids = explode(',', $data['order_id']);
+
+        //付款方式
+        $pays = $this->paymentModel->getPayments(['enabled' => 1], ['pay_id', 'pay_code', 'pay_name', 'pay_fee']);
+        $return['pays'] = $pays;
+
+        //用户地址
+        $uwhere['user_id'] = $uid;
+        $user = $this->usersModel->getUserByAddress($uwhere, ['user_id', 'address_id']);
+        $addresses = [];
+        if ($user) {
+            foreach ($user->addresses as $address) {
+                $address->province_name = $address->mapprovince->region_name;
+                $address->city_name = $address->mapcity->region_name;
+                $address->district_name = $address->mapdistrict->region_name;
+                if ($address->address_id == $user->address_id) {
+                    $address->def = 1;
+                } else {
+                    $address->def = 0;
+                }
+                $addresses[] = $address;
+            }
+        }
+        $return['address'] = $addresses;
+
+        $column = ['*'];
+        $res = $this->orderInfoModel->getOrder($where, $column, $order_ids);
+        foreach ($res as $re){
+            foreach ($re->OrderGoods as $order_goods){
+                $order_goods->goods_thumb = FileHandle::getImgByOssUrl($order_goods->Goods->goods_thumb);
+                $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);
+                $order_goods->original_img = FileHandle::getImgByOssUrl($order_goods->Goods->original_img);
+                $order_goods->goods_video = FileHandle::getImgByOssUrl($order_goods->Goods->goods_video);
+
+                $order_goods->market_price_format = Common::priceFormat($order_goods->Goods->market_price);
+                $order_goods->shop_price_format = Common::priceFormat($order_goods->Goods->shop_price);
+                $order_goods->is_promote = $order_goods->Goods->is_promote;
+                $order_goods->promote_start_date = $order_goods->Goods->promote_start_date;
+                $order_goods->promote_end_date = $order_goods->Goods->promote_end_date;
+                $order_goods->promote_price_format = Common::priceFormat($order_goods->Goods->promote_price);
+                $order_goods->is_on_sale = $order_goods->Goods->is_on_sale;
+                $order_goods->is_delete = $order_goods->Goods->is_delete;
+                $order_goods->current_time = time();
+                unset($order_goods->Goods);
+            }
+        }
+        $return['order'] = $res;
+        return $return;
     }
 
     public function setOrder($data, $uid)
     {
         $where['user_id'] = $uid;
+
+        //付款方式
+        if (!empty($data['pay'])) {
+            $pay = $this->paymentModel->getPayment(['pay_id' => $data['pay']]);
+        }
+
         return $this->orderInfoModel->setOrder($where, $data);
     }
 
@@ -94,11 +145,6 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
 
-            if (empty($data['pay'])) {
-                return [];
-            }
-            $pay = $this->paymentModel->getPayment([]);
-
             //用户地址
             $uwhere['user_id'] = $uid;
             $user = $this->usersModel->getUserByAddress($uwhere, ['user_id', 'address_id']);
@@ -112,7 +158,7 @@ class OrderRepository implements OrderRepositoryInterface
                     }
                 }
             }
-            $return['user'] = $user;
+//            $return['user'] = $user;
 
             //购买的商品信息
             $where['goods_id'] = $goods_id;
@@ -149,8 +195,6 @@ class OrderRepository implements OrderRepositoryInterface
                         'pay_status' => PS_UNPAYED,
                         'shipping_status' => SS_UNSHIPPED,
                         'postscript' => !empty($data['postmsg']) ? @trim($data['postmsg']) : '',    //用户留言
-                        'pay_id' => $pay->pay_id,
-                        'pay_name' => $pay->pay_name,
                         'consignee' => $user->default_address->consignee,
                         'country' => $user->default_address->country,
                         'province' => $user->default_address->province,
@@ -234,6 +278,7 @@ class OrderRepository implements OrderRepositoryInterface
                     }
                 }
 
+
                 //商品扩展信息
                 if (!empty($goods_detail->goodsext)) {
                     $order_goods['is_reality'] = $goods_detail->goodsext->is_reality;
@@ -306,9 +351,9 @@ class OrderRepository implements OrderRepositoryInterface
             }
             foreach ($order as $key => $o) {
                 $re = $this->orderInfoModel->addOrder($o);
-                $o['goodses'] = $order_goodses[$key];
-                if($re){
-                    $return['order'][] = $o;
+//                $o['goodses'] = $order_goodses[$key];
+                if ($re) {
+                    $return['order'][] = $o['order_id'];
                 }
             }
             return $return;

@@ -18,52 +18,36 @@ class OrderInfoModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function Goods()
-    {
-        //GoodsModel前必须加App\Http\Models\Shop, 第二个参数是表名，无需前缀，第三个参数是本类的字段，第四个参数是要查找的字段
-        return $this->belongsToMany('App\Http\Models\App\GoodsModel', 'order_goods', 'order_id', 'goods_id');
-    }
-
     public function OrderGoods()
     {
-        return $this->hasOne('App\Http\Models\App\OrderGoodsModel', 'order_id', 'order_id');
-    }
-
-    public function UserAddress()
-    {
-        return $this->hasOne('App\Http\Models\App\UserAddressModel', 'user_id', 'user_id');
+        return $this->hasMany('App\Http\Models\App\OrderGoodsModel', 'order_id', 'order_id');
     }
 
     public function getOrders($where, $page = 0, $column = ['*'], $size = 10)
     {
         $m = $this->select($column)
-            ->with(['Goods' => function ($query) {
-                $query->select(['*'])->get();
-            }])
             ->with(['OrderGoods' => function ($query) {
-                $query->select(['*'])->get();
-            }])
-            ->with(['UserAddress' => function ($query) {
-                $query->select(['*'])->get();
+                $query->select(['*'])
+                    ->with(['Goods'])
+                    ->get();
             }])
             ->where($where)->offset($page * $size)->limit($size);
         return $m->get();
     }
 
-    public function getOrder($where, $column = ['*'])
+    public function getOrder($where, $column = ['*'], $whereIn = [])
     {
         $m = $this->select($column)
-            ->with(['Goods' => function ($query) {
-                $query->select(['*'])->get();
-            }])
             ->with(['OrderGoods' => function ($query) {
-                $query->select(['*'])->get();
-            }])
-            ->with(['UserAddress' => function ($query) {
-                $query->select(['*'])->get();
+                $query->select(['*'])
+                    ->with(['Goods'])
+                    ->get();
             }])
             ->where($where);
-        return $m->first();
+        if (!empty($whereIn)) {
+            $m->whereIn('order_id', $whereIn);
+        }
+        return $m->get();
     }
 
     public function setOrder($where, $data)

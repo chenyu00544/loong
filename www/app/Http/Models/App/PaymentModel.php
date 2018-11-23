@@ -17,11 +17,19 @@ class PaymentModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function getPayments($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->orderBy('pay_order', 'DESC')
+            ->get();
+    }
+
     public function getPayment($where, $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
-            ->orderBy('pay_id', 'ASC')
+            ->orderBy('pay_order', 'DESC')
             ->first();
     }
 }

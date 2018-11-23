@@ -84,10 +84,10 @@ class GalleryRepository implements GalleryRepositoryInterface
             $value->pic_file_bak = FileHandle::getImgByOssUrl($value->pic_file);
             $value->pic_thumb_bak = FileHandle::getImgByOssUrl($value->pic_thumb);
             $pic_spec = explode('×', $value->pic_spec);
-            if(count($pic_spec)>0){
+            if (count($pic_spec) > 0) {
                 $value->width = $pic_spec[0];
                 $value->height = $pic_spec[1];
-            }else{
+            } else {
                 $value->width = 0;
                 $value->height = 0;
             }
@@ -197,7 +197,7 @@ class GalleryRepository implements GalleryRepositoryInterface
             $updata['add_time'] = time();
             $rep[] = $this->galleryAlbumPicModel->addGalleryAlbumPic($updata);
         }
-        foreach ($rep as $k => $re){
+        foreach ($rep as $k => $re) {
             $rep[$k]->pic_file_bak = FileHandle::getImgByOssUrl($rep[$k]->pic_file);
         }
         return $rep;
@@ -210,13 +210,13 @@ class GalleryRepository implements GalleryRepositoryInterface
             $where['pic_id'] = $value;
             $re = $this->galleryAlbumPicModel->delGalleryPic($where);
             if ($re) {
-                if(!empty($data['pic_image'][$key])){
+                if (!empty($data['pic_image'][$key])) {
                     FileHandle::deleteFile($data['pic_image'][$key]);
                 }
-                if(!empty($data['pic_thumb'][$key])){
+                if (!empty($data['pic_thumb'][$key])) {
                     FileHandle::deleteFile($data['pic_thumb'][$key]);
                 }
-                if(!empty($data['pic_file'][$key])){
+                if (!empty($data['pic_file'][$key])) {
                     FileHandle::deleteFile($data['pic_file'][$key]);
                 }
                 $req['code'] = 1;
@@ -292,12 +292,14 @@ class GalleryRepository implements GalleryRepositoryInterface
             $thumb_img = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'thumb_img';
             $exhibition_img = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'exhibition_img';
             $updata['img_original'] = FileHandle::upLoadImage($file, $original_img);
-            $updata['thumb_url'] = FileHandle::upLoadThumbImage($updata['img_original'], $thumb_img);
-            $updata['img_url'] = FileHandle::upLoadExhibitionImage($updata['img_original'], $exhibition_img, 0.8);
+//            $updata['thumb_url'] = FileHandle::upLoadThumbImage($updata['img_original'], $thumb_img);
+//            $updata['img_url'] = FileHandle::upLoadExhibitionImage($updata['img_original'], $exhibition_img, 0.8);
+            $updata['thumb_url'] = $updata['img_original'];
+            $updata['img_url'] = $updata['img_original'];
             $updata['goods_id'] = $goods_id;
             $updata['is_source'] = 0;
             $re = $this->goodsGalleryModel->addGoodsGallery($updata);
-            $re->img_original = '/' . $re->img_original;
+            $re->img_original = FileHandle::getImgByOssUrl($re->img_original);
             $rep[] = $re;
         }
         return $rep;

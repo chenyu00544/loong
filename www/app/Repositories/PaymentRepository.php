@@ -111,7 +111,17 @@ class PaymentRepository implements PaymentRepositoryInterface
     {
         $rep = ['code' => 5, 'msg' => '修改失败'];
         $where['pay_id'] = $data['id'];
-        $updata['pay_order'] = $data['pay_order'];
+        $key = '';
+        if ($data['type'] == 'pay_order') {
+            $key = 'pay_order';
+        } elseif ($data['type'] == 'enabled') {
+            $key = 'enabled';
+        } elseif ($data['type'] == 'is_cod') {
+            $key = 'is_cod';
+        } elseif ($data['type'] == 'is_online') {
+            $key = 'is_online';
+        }
+        $updata[$key] = $data['val'];
         $re = $this->paymentModel->setPayment($where, $updata);
         if ($re) {
             $rep = ['code' => 1, 'msg' => '修改成功'];

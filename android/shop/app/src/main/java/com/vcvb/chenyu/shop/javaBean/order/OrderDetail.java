@@ -1,276 +1,59 @@
 package com.vcvb.chenyu.shop.javaBean.order;
 
-import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetail {
-    private int isType;
-    private String orderId;
-    private String orderDate;
-    private int addressId;
-    private String orderConsignee;
-    private String orderPhone;
-    private String orderAddress;
+    private String order_id;
+    private String main_order_id;
+    private String order_sn;
+    private Integer user_id;
+    private Integer order_status;
+    private Integer pay_status;
+    private Integer shipping_status;
+    private String shipping_fee;
+    private String goods_amount;
+    private String insure_fee;
+    private String pay_fee;
+    private String pack_fee;
+    private String card_fee;
+    private String money_paid;
+    private String order_amount;
+    private String discount;
+    private String tax;
+    private List<OrderGoods> orderGoodses;
 
-    private int goodsId;
-    private String goodsPic;
-    private String goodsName;
-    private String goodsAttr;
-    private int goodsAttrId;
-    private String goodsPriceFormat;
-    private Double goodsPrice;
-    private String goodsMarketFormat;
-    private Double goodsMarket;
-    private int goodsNum;
 
-    private Double shipFree;
-    private String shipFreeFormat;
-
-    private Double discount;
-    private String discountFormat;
-
-    private Double totalPay;
-    private String totalPayFormat;
-    private Double totalPayAble;
-    private String totalPayAbleFormat;
-
-    private Double totalOncePay;
-    private String totalOncePayFormat;
-
-    private int payType;
-
-    private List<Goods> list;
-
-    public int getIsType() {
-        return isType;
+    public List<OrderGoods> getOrderGoodses() {
+        return orderGoodses;
     }
 
-    public void setIsType(int isType) {
-        this.isType = isType;
+    public void setOrderGoodses(List<OrderGoods> orderGoodses) {
+        this.orderGoodses = orderGoodses;
     }
 
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
-
-    public Double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
-    }
-
-    public Double getGoodsMarket() {
-        return goodsMarket;
-    }
-
-    public void setGoodsMarket(Double goodsMarket) {
-        this.goodsMarket = goodsMarket;
-    }
-
-    public int getGoodsNum() {
-        return goodsNum;
-    }
-
-    public void setGoodsNum(int goodsNum) {
-        this.goodsNum = goodsNum;
-    }
-
-    public Double getGoodsPrice() {
-        return goodsPrice;
-    }
-
-    public void setGoodsPrice(Double goodsPrice) {
-        this.goodsPrice = goodsPrice;
-    }
-
-    public Double getShipFree() {
-        return shipFree;
-    }
-
-    public void setShipFree(Double shipFree) {
-        this.shipFree = shipFree;
-    }
-
-    public Double getTotalPay() {
-        return totalPay;
-    }
-
-    public void setTotalPay(Double totalPay) {
-        this.totalPay = totalPay;
-    }
-
-    public Double getTotalPayAble() {
-        return totalPayAble;
-    }
-
-    public void setTotalPayAble(Double totalPayAble) {
-        this.totalPayAble = totalPayAble;
-    }
-
-    public String getTotalPayAbleFormat() {
-        return totalPayAbleFormat;
-    }
-
-    public void setTotalPayAbleFormat(String totalPayAbleFormat) {
-        this.totalPayAbleFormat = totalPayAbleFormat;
-    }
-
-    public int getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
-    }
-
-    public int getGoodsAttrId() {
-        return goodsAttrId;
-    }
-
-    public void setGoodsAttrId(int goodsAttrId) {
-        this.goodsAttrId = goodsAttrId;
-    }
-
-    public int getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(int goodsId) {
-        this.goodsId = goodsId;
-    }
-
-    public String getDiscountFormat() {
-        return discountFormat;
-    }
-
-    public void setDiscountFormat(String discountFormat) {
-        this.discountFormat = discountFormat;
-    }
-
-    public String getGoodsAttr() {
-        return goodsAttr;
-    }
-
-    public void setGoodsAttr(String goodsAttr) {
-        this.goodsAttr = goodsAttr;
-    }
-
-    public String getGoodsMarketFormat() {
-        return goodsMarketFormat;
-    }
-
-    public void setGoodsMarketFormat(String goodsMarketFormat) {
-        this.goodsMarketFormat = goodsMarketFormat;
-    }
-
-    public String getGoodsPic() {
-        return goodsPic;
-    }
-
-    public void setGoodsPic(String goodsPic) {
-        this.goodsPic = goodsPic;
-    }
-
-    public String getGoodsPriceFormat() {
-        return goodsPriceFormat;
-    }
-
-    public void setGoodsPriceFormat(String goodsPriceFormat) {
-        this.goodsPriceFormat = goodsPriceFormat;
-    }
-
-    public String getOrderAddress() {
-        return orderAddress;
-    }
-
-    public void setOrderAddress(String orderAddress) {
-        this.orderAddress = orderAddress;
-    }
-
-    public String getOrderConsignee() {
-        return orderConsignee;
-    }
-
-    public void setOrderConsignee(String orderConsignee) {
-        this.orderConsignee = orderConsignee;
-    }
-
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(String orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getOrderPhone() {
-        return orderPhone;
-    }
-
-    public void setOrderPhone(String orderPhone) {
-        this.orderPhone = orderPhone;
-    }
-
-    public String getShipFreeFormat() {
-        return shipFreeFormat;
-    }
-
-    public void setShipFreeFormat(String shipFreeFormat) {
-        this.shipFreeFormat = shipFreeFormat;
-    }
-
-    public String getTotalPayFormat() {
-        return totalPayFormat;
-    }
-
-    public void setTotalPayFormat(String totalPayFormat) {
-        this.totalPayFormat = totalPayFormat;
-    }
-
-    public Double getTotalOncePay() {
-        return totalOncePay;
-    }
-
-    public void setTotalOncePay(Double totalOncePay) {
-        this.totalOncePay = totalOncePay;
-    }
-
-    public String getTotalOncePayFormat() {
-        return totalOncePayFormat;
-    }
-
-    public void setTotalOncePayFormat(String totalOncePayFormat) {
-        this.totalOncePayFormat = totalOncePayFormat;
-    }
-
-    public int getPayType() {
-        return payType;
-    }
-
-    public void setPayType(int payType) {
-        this.payType = payType;
-    }
-
-    public List<Goods> getList() {
-        return list;
-    }
-
-    public void setList(List<Goods> list) {
-        this.list = list;
+    public void setData(JSONObject json) {
+        try {
+            JSONArray orderGoodsJSONArray = json.getJSONArray("order_goods");
+            List<OrderGoods> orderGoodsList = new ArrayList<>();
+            for (int i = 0; i < orderGoodsJSONArray.length(); i++) {
+                JSONObject object = (JSONObject) orderGoodsJSONArray.get(i);
+                OrderGoods orderGoods = JsonUtils.fromJsonObject(object, OrderGoods.class);
+                orderGoodsList.add(orderGoods);
+            }
+            this.setOrderGoodses(orderGoodsList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -20,8 +20,9 @@
                     <table class="table table-hover table-condensed">
                         <thead>
                         <tr>
-                            <th class="col-md-2">支付方式名称</th>
+                            <th class="col-md-1">支付方式名称</th>
                             <th class="col-md-5">支付方式描述</th>
+                            <th class="col-md-1">是否开启</th>
                             <th class="col-md-1">费用</th>
                             <th class="col-md-1">排序</th>
                             <th class="col-md-3 text-center">操作</th>
@@ -31,7 +32,16 @@
                         @foreach($payConfig as $pay)
                             <tr>
                                 <td>{{$pay['pay_name']}}</td>
-                                <td>{!! $pay['pay_desc'] !!}</td>
+                                <td style="white-space: normal;">{!! $pay['pay_desc'] !!}</td>
+                                <td>
+                                    <div class="switch-wrap clearfix">
+                                        <div class="switch @if($pay['enabled']) active @endif" data-type="enabled"
+                                             title="是">
+                                            <div class="circle"></div>
+                                            <input type="hidden" value="{{$pay['pay_id']}}">
+                                        </div>
+                                    </div>
+                                </td>
                                 <td>{{$pay['pay_fee']}}</td>
                                 <td><input type="text" class="form-control changes" data-id="{{$pay['pay_id']}}"
                                            value="{{$pay['pay_order']}}" @if(empty($pay['install'])) disabled @endif></td>
@@ -60,13 +70,41 @@
 @section('script')
     <script>
         $(function () {
-            //编辑
+
+            $('.switch').click(function () {
+                var val = 0;
+                if ($(this).hasClass('active')) {
+                    val = 0;
+                    $(this).removeClass('active');
+                } else {
+                    val = 1;
+                    $(this).addClass('active');
+                }
+
+                var tag = $(this).data('type');
+                var id = $(this).children('input').val();
+                $.post(
+                    '{{url("admin/pay/changes")}}',
+                    {
+                        id: id,
+                        type: tag,
+                        val: val,
+                        _token: '{{csrf_token()}}'
+                    },
+                    function (data) {
+
+                    }
+                );
+            });
+
+            //排序
             $('.changes').on('change', function () {
                 var id = $(this).data('id');
                 var pay_order = $(this).val();
                 $.post("{{url('admin/pay/changes')}}", {
                     id: id,
-                    pay_order: pay_order,
+                    type: 'pay_order',
+                    val: pay_order,
                     _token: '{{csrf_token()}}'
                 }, function () {
                     layer.msg(data.msg, {icon: data.code});

@@ -2,7 +2,7 @@ package com.vcvb.chenyu.shop.javaBean.goods;
 
 public class Goods {
 
-    private int goods_id;
+    private Integer goods_id;
     private String goods_name;
     private String cost_price;
     private String shop_price;
@@ -32,7 +32,7 @@ public class Goods {
     private Integer tax;
     private Integer rec_id;
 
-    public int getGoods_id() {
+    public Integer getGoods_id() {
         return goods_id;
     }
 
@@ -108,7 +108,7 @@ public class Goods {
         return promote_start_date;
     }
 
-    public void setGoods_id(int goods_id) {
+    public void setGoods_id(Integer goods_id) {
         this.goods_id = goods_id;
     }
 

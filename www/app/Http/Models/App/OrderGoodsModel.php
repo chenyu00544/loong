@@ -19,6 +19,11 @@ class OrderGoodsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function Goods()
+    {
+        return $this->hasOne('App\Http\Models\App\GoodsModel', 'goods_id', 'goods_id');
+    }
+
     public function addOrderGoods($data)
     {
         return $this->create($data);

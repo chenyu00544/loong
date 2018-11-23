@@ -265,7 +265,13 @@ public class GoodsAttrDialog extends DialogFragment {
                         num = 1;
                         outAttr.put("num", 1);
                     }
-                    ((TextView) v.findViewById(R.id.textView181)).setText(num + "");
+                    if(goodsDetail.getIs_limit_buy() == 1){
+                        if(num > goodsDetail.getLimit_buy_num()){
+                            num = goodsDetail.getLimit_buy_num();
+                            outAttr.put("num", num);
+                        }
+                    }
+                    ((TextView) v.findViewById(R.id.textView181)).setText(num);
                     break;
                 case R.id.imageView84:
                     if (outAttr.get("num") != null && (int) outAttr.get("num") > 1) {
@@ -275,7 +281,7 @@ public class GoodsAttrDialog extends DialogFragment {
                         num = 1;
                         outAttr.put("num", 1);
                     }
-                    ((TextView) v.findViewById(R.id.textView181)).setText(num + "");
+                    ((TextView) v.findViewById(R.id.textView181)).setText(num);
                     break;
             }
         }

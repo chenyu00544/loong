@@ -51,17 +51,36 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">是否可用：</label>
+                            <div class="col-sm-4 n-wd400">
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="enabled" value="1" @if($payInfo->enabled == 1) checked="true" @endif> 是
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="enabled" value="0" @if($payInfo->enabled == 0) checked="true" @endif> 否
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">货到付款：</label>
-                            <div class="col-sm-2 n-wd400">
-                                <label class="control-label">@if($payInfo->is_cod) 是 @else 否 @endif</label>
-                                <input type="hidden" class="form-control" name="is_cod" value="{{$payInfo->is_cod}}">
+                            <div class="col-sm-4 n-wd400">
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_cod" value="1" @if($payInfo->is_cod == 1) checked="true" @endif> 是
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_cod" value="0" @if($payInfo->is_cod == 0) checked="true" @endif> 否
+                                </label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>在线支付：</label>
-                            <div class="col-sm-2 n-wd400">
-                                <label class="control-label">@if($payInfo->is_online) 是 @else 否 @endif</label>
-                                <input type="hidden" class="form-control" name="is_online" value="{{$payInfo->is_online}}">
+                            <div class="col-sm-4 n-wd400">
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_online" value="1" @if($payInfo->is_online == 1) checked="true" @endif> 是
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_online" value="0" @if($payInfo->is_online == 0) checked="true" @endif> 否
+                                </label>
                             </div>
                         </div>
                         <div class="item">

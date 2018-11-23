@@ -60,6 +60,7 @@ import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -653,6 +654,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                         }
                     }
                 }
+
                 @Override
                 public void failed(Call call, IOException e) {
 
@@ -662,7 +664,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     }
 
     //生成订单
-    public void addOrder(HashMap<String, Object> attr){
+    public void addOrder(HashMap<String, Object> attr) {
         loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
 
@@ -670,8 +672,8 @@ public class GoodsDetailActivity extends GoodsActivity {
         mp.put("num", attr.get("num") + "");
         List<Integer> attr_ids = (List<Integer>) attr.get("attr_ids");
         List<Integer> goods_attr_ids = (List<Integer>) attr.get("goods_attr_ids");
-        if (attr_ids != null && goods_attr_ids != null && attr_ids.size() > 0 &&
-                goods_attr_ids.size() > 0) {
+        if (attr_ids != null && goods_attr_ids != null && attr_ids.size() > 0 && goods_attr_ids
+                .size() > 0) {
             for (int i = 0; i < attr_ids.size(); i++) {
                 mp.put("attr_" + i, attr_ids.get(i) + "_" + goods_attr_ids.get(i));
             }
@@ -685,11 +687,13 @@ public class GoodsDetailActivity extends GoodsActivity {
                     public void run() {
                         loadingDialog.dismiss();
                         try {
-                            if(json.getInt("code") == 0){
+                            if (json.getInt("code") == 0) {
                                 Intent intent = new Intent(context, OrderDetailsActivity.class);
-                                intent.putExtra("order_id", json.getJSONObject("data").getString("order_id"));
+                                JSONArray orderIds = json.getJSONObject("data").getJSONArray
+                                        ("order");
+                                intent.putExtra("order_id", StringUtils.join(orderIds, ","));
                                 startActivity(intent);
-                            }else{
+                            } else {
                                 ToastUtils.showShortToast(context, json.getString("msg"));
                             }
                         } catch (JSONException e) {
