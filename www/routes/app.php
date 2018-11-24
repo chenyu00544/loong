@@ -10,6 +10,12 @@
 |
 */
 Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
+    Route::get('/', function () {
+        return [
+            'status' => 'success',
+            'message' => 'API version 1.'
+        ];
+    });
     Route::any('index', 'IndexController@index');
     Route::post('index/loadmore', 'IndexController@loadmore');
     Route::post('test', 'IndexController@test');
