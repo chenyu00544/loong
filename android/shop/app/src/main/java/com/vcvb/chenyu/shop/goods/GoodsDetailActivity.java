@@ -444,6 +444,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         HashMap<String, String> mp = new HashMap<>();
         loadingDialog.show();
         mp.put("goods_id", goods_id + "");
+        mp.put("froms", "android");
         mp.put("token", token);
         mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
                 ("device_id"));

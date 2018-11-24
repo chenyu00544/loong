@@ -29,8 +29,8 @@ class LoginController extends CommonController
         $username = $request->get('username');
         $password = $request->get('password');
         $type = $request->get('type');
-
-        return $this->usersRepository->login($username, $password, $type);
+        $ip = $request->getClientIp();
+        return $this->usersRepository->login($username, $password, $type, $ip);
     }
 
     public function register(Request $request)

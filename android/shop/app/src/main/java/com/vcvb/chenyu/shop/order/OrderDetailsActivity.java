@@ -11,6 +11,7 @@ import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAddressItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderIdItem;
@@ -20,6 +21,7 @@ import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
+import com.vcvb.chenyu.shop.javaBean.order.OrderGoods;
 import com.vcvb.chenyu.shop.javaBean.order.Pay;
 import com.vcvb.chenyu.shop.pay.PaySuccessActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
@@ -139,8 +141,7 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
                     JSONArray payJSONArray = json.getJSONObject("data").getJSONArray("pays");
                     for (int i = 0; i < payJSONArray.length(); i++) {
                         JSONObject object = (JSONObject) payJSONArray.get(i);
-                        Pay pay = JsonUtils.fromJsonObject(object, Pay
-                                .class);
+                        Pay pay = JsonUtils.fromJsonObject(object, Pay.class);
                         pays.add(pay);
                     }
 
@@ -154,42 +155,6 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
                 e.printStackTrace();
             }
         }
-//        for (int i = 1; i < 9; i++) {
-//            OrderDetail orderDetail = new OrderDetail();
-//            orderDetail.setIsType(i);
-//            if (i == 1) {
-//                orderDetail.setAddressId(i);
-//                orderDetail.setOrderConsignee("asdffa");
-//                orderDetail.setOrderPhone("18858788888");
-//                orderDetail.setOrderAddress("asdfjklasdfjkladjkl");
-//            } else if (i == 2) {
-//                orderDetail.setOrderId("6546579846516598");
-//                orderDetail.setOrderDate("2020-19-22 00:00:00");
-//                orderDetail.setTotalOncePay(18.40);
-//                orderDetail.setTotalOncePayFormat("$18.40");
-//            } else if (i > 2 && i < 7) {
-//                orderDetail.setGoodsName("asdfafasf" + i);
-//                orderDetail.setGoodsAttr("dfas12123fasf" + i);
-//                orderDetail.setGoodsPrice(15.5);
-//                orderDetail.setGoodsPriceFormat("$15.5");
-//                orderDetail.setGoodsMarket(25.5);
-//                orderDetail.setGoodsMarketFormat("$25.5");
-//                orderDetail.setGoodsNum(i);
-//            } else if (i == 7) {
-//                orderDetail.setPayType(0);
-//            } else if (i == 8) {
-//                orderDetail.setTotalPay(188.40);
-//                orderDetail.setTotalPayFormat("$188.40");
-//                orderDetail.setTotalPayAble(180.40);
-//                orderDetail.setTotalPayAbleFormat("$180.40");
-//                orderDetail.setShipFree(5.00);
-//                orderDetail.setShipFreeFormat("$5.00");
-//                orderDetail.setDiscount(22.00);
-//                orderDetail.setDiscountFormat("$22.00");
-//            }
-//            orderDetails.add(orderDetail);
-//        }
-
     }
 
     @Override
@@ -199,28 +164,39 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
 
     protected List<Item> getItems() {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case 1:
-                    cells.add(new OrderAddressItem(list.get(i), context));
-                    break;
-                case 2:
-                    cells.add(new OrderIdItem(list.get(i), context));
-                    break;
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                    cells.add(new OrderGoodsItem(list.get(i), context));
-                    break;
-                case 7:
-                    cells.add(new OrderPayTypeItem(list.get(i), context));
-                    break;
-                case 8:
-                    cells.add(new OrderTotalItem(list.get(i), context));
-                    break;
+        for (int i = 0; i < addresses.size(); i++) {
+            if (addresses.get(i).getDef() == 1) {
+                OrderAddressItem orderAddressItem = new OrderAddressItem(addresses.get(i), context);
+                orderAddressItem.setOnItemClickListener(addressListener);
+                cells.add(orderAddressItem);
             }
         }
+
+        for (int i = 0; i < orderDetails.size(); i++) {
+            OrderIdItem orderIdItem = new OrderIdItem(orderDetails.get(i), context);
+            cells.add(orderIdItem);
+            List<OrderGoods> orderGoodsList = orderDetails.get(i).getOrderGoodses();
+            for (int j = 0; j < orderGoodsList.size(); j++) {
+                OrderGoodsItem orderGoodsItem = new OrderGoodsItem(orderGoodsList.get(j), context);
+                cells.add(orderGoodsItem);
+            }
+        }
+
+        for (int i = 0; i < pays.size(); i++) {
+            if (pay_code != null && !pay_code.equals("")) {
+                if (pays.get(i).getPay_code().equals(pay_code)) {
+                    pays.get(i).setDef(1);
+                }
+            } else {
+                pay_code = pays.get(0).getPay_code();
+                pays.get(0).setDef(1);
+            }
+        }
+        OrderPayTypeItem orderPayTypeItem = new OrderPayTypeItem(pays, context);
+        orderPayTypeItem.setOnItemClickListener(payListener);
+        cells.add(orderPayTypeItem);
+
+        cells.add(new OrderTotalItem(orderDetails, context));
         return cells;
     }
 
@@ -244,6 +220,20 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
                     OrderDetailsActivity.this.finish();
                     break;
             }
+        }
+    };
+
+    OrderPayTypeItem.OnClickListener payListener = new GoodsShipItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(112);
+        }
+    };
+
+    OrderAddressItem.OnClickListener addressListener = new OrderAddressItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            System.out.println(12);
         }
     };
 }

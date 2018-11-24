@@ -18,43 +18,160 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.BaseFragment;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
+import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 import com.vcvb.chenyu.shop.mycenter.AddressActivity;
 import com.vcvb.chenyu.shop.mycenter.BrowseActivity;
 import com.vcvb.chenyu.shop.mycenter.MyCollectionActivity;
 import com.vcvb.chenyu.shop.mycenter.OrderActivity;
 import com.vcvb.chenyu.shop.mycenter.userinfo.UserInfoActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import okhttp3.Call;
 
 public class FragmentMy extends BaseFragment {
     View view;
-    Context context;
     ViewGroup container;
-    String token;
     private Receiver receiver;
     private ConfirmDialog confirmDialog;
+    private UserInfoBean userInfoBean;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_my, container, false);
         context = getActivity();
-        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         this.container = container;
         initView();
-        checkLogin();
         initListener();
         return view;
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            getData();
+        }
+    }
+
+    @Override
+    public void getData() {
+        if (token != null && !token.equals("")) {
+            HashMap<String, String> mp = new HashMap<>();
+            mp.put("token", token);
+            HttpUtils.getInstance().post(ConstantManager.Url.USER_INFO, mp, new HttpUtils.NetCall() {
+                @Override
+                public void success(Call call, final JSONObject json) throws IOException {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bindViewData(json);
+                        }
+                    });
+                }
+
+                @Override
+                public void failed(Call call, IOException e) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.showShortToast(context, "网络错误");
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public void bindViewData(JSONObject json) {
+        if (json != null) {
+            try {
+                int code = json.getInt("code");
+                if (code == 0) {
+                    JSONObject object = json.getJSONObject("data");
+                    userInfoBean = JsonUtils.fromJsonObject(object, UserInfoBean.class);
+                    HashMap<String, String> mp = new HashMap<>();
+                    mp.put("nickname", userInfoBean.getNick_name());
+                    mp.put("logo", userInfoBean.getLogo());
+                    UserInfoUtils.getInstance(context).setUserInfo(mp);
+                    bindView();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void bindView() {
+        checkLogin();
+        TextView user_money = view.findViewById(R.id.textView33);
+        TextView bonus_money = view.findViewById(R.id.textView34);
+        TextView pay_points = view.findViewById(R.id.textView52);
+        user_money.setText(userInfoBean.getUser_money());
+        bonus_money.setText(userInfoBean.getBonus_money());
+        pay_points.setText(userInfoBean.getPay_points());
+
+        TextView order_unpayed = view.findViewById(R.id.textView45);
+        if (userInfoBean.getOrder_unpayed_count() > 0) {
+            order_unpayed.setAlpha(1);
+            String str = "%d";
+            order_unpayed.setText(String.format(Locale.CHINA, str, userInfoBean
+                    .getOrder_unpayed_count()));
+        }
+        TextView order_unship = view.findViewById(R.id.textView46);
+        if (userInfoBean.getOrder_unship_count() > 0) {
+            order_unship.setAlpha(1);
+            String str = "%d";
+            order_unship.setText(String.format(Locale.CHINA, str, userInfoBean
+                    .getOrder_unship_count()));
+        }
+        TextView order_shipped = view.findViewById(R.id.textView47);
+        if (userInfoBean.getOrder_shipped_count() > 0) {
+            order_shipped.setAlpha(1);
+            String str = "%d";
+            order_shipped.setText(String.format(Locale.CHINA, str, userInfoBean
+                    .getOrder_shipped_count()));
+        }
+        TextView order_comment = view.findViewById(R.id.textView48);
+        if (userInfoBean.getOrder_comment_count() > 0) {
+            order_comment.setAlpha(1);
+            String str = "%d";
+            order_comment.setText(String.format(Locale.CHINA, str, userInfoBean
+                    .getOrder_comment_count()));
+        }
+        TextView order_return = view.findViewById(R.id.textView49);
+        if (userInfoBean.getOrder_return_count() > 0) {
+            order_return.setAlpha(1);
+            String str = "%d";
+            order_return.setText(String.format(Locale.CHINA, str, userInfoBean
+                    .getOrder_return_count()));
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        checkLogin();
+        getData();
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("UserInfoCall");
@@ -63,7 +180,7 @@ public class FragmentMy extends BaseFragment {
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()) {
                     case "UserInfoCall":
-                        checkLogin();
+                        getData();
                         break;
                 }
             }
@@ -79,8 +196,6 @@ public class FragmentMy extends BaseFragment {
     }
 
     public void initView() {
-        TextView tv1 = view.findViewById(R.id.textView45);
-        tv1.setAlpha(1);
         confirmDialog = new ConfirmDialog(context);
         confirmDialog.setTitle(R.string.is_logout);
     }
@@ -233,6 +348,7 @@ public class FragmentMy extends BaseFragment {
         });
     }
 
+    //检查是否已经登录
     public void checkLogin() {
         token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         Map<String, ?> mp = UserInfoUtils.getInstance(context).getUserInfo();
@@ -265,7 +381,7 @@ public class FragmentMy extends BaseFragment {
     }
 
     //退出登录吗?
-    public void onClickLogout(){
+    public void onClickLogout() {
         confirmDialog.show();
     }
 

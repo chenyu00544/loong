@@ -1,10 +1,19 @@
 package com.vcvb.chenyu.shop.javaBean.order;
 
 public class Pay {
+    private Integer def = 0;
     private Integer pay_id;
     private Integer pay_fee;
     private String pay_code;
     private String pay_name;
+
+    public Integer getDef() {
+        return def;
+    }
+
+    public void setDef(Integer def) {
+        this.def = def;
+    }
 
     public Integer getPay_id() {
         return pay_id;

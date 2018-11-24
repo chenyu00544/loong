@@ -17,6 +17,8 @@ public class BaseActivity extends AppCompatActivity {
 
     public String token;
     public String is_real;
+    public String pay_code;
+
     public LinearLayout nav_bar;
     public LinearLayout nav_back;
     public LoadingDialog loadingDialog;
@@ -53,6 +55,7 @@ public class BaseActivity extends AppCompatActivity {
                 });
         token = (String) UserInfoUtils.getInstance(this).getUserInfo().get("token");
         is_real = (String) UserInfoUtils.getInstance(this).getUserInfo().get("is_real");
+        pay_code = (String) UserInfoUtils.getInstance(this).getUserInfo().get("pay_code");
     }
 
     @Override

@@ -12,13 +12,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.user.UserItem;
-import com.vcvb.chenyu.shop.adapter.item.user.UserLogoItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
@@ -142,9 +138,9 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
         users.clear();
         for (int i = 0; i < Users.users.size(); i++) {
             UserInfoBean bean = new UserInfoBean();
-            bean.setIsType(Users.users.get(i).get("type"));
-            bean.setTitle(Users.users.get(i).get("title"));
-            bean.setSubTitle(Users.users.get(i).get("subtitle"));
+//            bean.setIsType(Users.users.get(i).get("type"));
+//            bean.setTitle(Users.users.get(i).get("title"));
+//            bean.setSubTitle(Users.users.get(i).get("subtitle"));
             users.add(bean);
         }
         mAdapter.addAll(getItems(users));
@@ -165,7 +161,7 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
             @Override
             public void onManClickListener() {
                 sexDialog.setTick(true);
-                users.get(pos).setSubTitle(R.string.man);
+//                users.get(pos).setSubTitle(R.string.man);
                 mAdapter.notifyDataSetChanged();
                 sexDialog.dismiss();
             }
@@ -173,7 +169,7 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
             @Override
             public void onWomanClickListener() {
                 sexDialog.setTick(false);
-                users.get(pos).setSubTitle(R.string.woman);
+//                users.get(pos).setSubTitle(R.string.woman);
                 mAdapter.notifyDataSetChanged();
                 sexDialog.dismiss();
             }
@@ -188,14 +184,14 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
     protected List<Item> getItems(List<UserInfoBean> list) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case 1:
-                    cells.add(new UserItem(list.get(i), context));
-                    break;
-                case 2:
-                    cells.add(new UserLogoItem(list.get(i), context));
-                    break;
-            }
+//            switch (list.get(i).getIsType()) {
+//                case 1:
+//                    cells.add(new UserItem(list.get(i), context));
+//                    break;
+//                case 2:
+//                    cells.add(new UserLogoItem(list.get(i), context));
+//                    break;
+//            }
         }
         return cells;
     }
@@ -218,11 +214,11 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
                 startActivityForResult(intent, ConstantManager.User.NICKNAME);
                 break;
             case 2:
-                if(users.get(pos).getSubTitle() == R.string.man){
-                    sexDialog.setTick(true);
-                }else if(users.get(pos).getSubTitle() == R.string.woman){
-                    sexDialog.setTick(false);
-                }
+//                if(users.get(pos).getSubTitle() == R.string.man){
+//                    sexDialog.setTick(true);
+//                }else if(users.get(pos).getSubTitle() == R.string.woman){
+//                    sexDialog.setTick(false);
+//                }
                 sexDialog.show();
                 break;
             case 3:
@@ -257,12 +253,12 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
                 case ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST:
                     Uri imageUri = data.getParcelableExtra("uri");
                     System.out.println(imageUri);
-                    users.get(pos).setImgPath(imageUri.toString());
+//                    users.get(pos).setImgPath(imageUri.toString());
                     uploadHeaderLogo();
                     break;
                 case ConstantManager.User.NICKNAME:
                     String nickname = data.getStringExtra("nickname");
-                    users.get(pos).setName(nickname);
+//                    users.get(pos).setName(nickname);
                     mAdapter.notifyDataSetChanged();
                     break;
             }

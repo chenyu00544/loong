@@ -8,13 +8,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.user.useraccount.UserAccountItem;
-import com.vcvb.chenyu.shop.adapter.item.user.useraccount.UserAccountTitleItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
@@ -116,16 +112,16 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
         users.clear();
         for (int i = 0; i < Users.accounts.size(); i++) {
             UserInfoBean bean = new UserInfoBean();
-            bean.setIsType(Users.accounts.get(i).get("type"));
-            bean.setTitle(Users.accounts.get(i).get("title"));
-            bean.setSubTitle(Users.accounts.get(i).get("subtitle"));
-            if(false){
-                bean.setIcon(Users.accounts.get(i).get("icon_a"));
-            }else{
-                bean.setIcon(Users.accounts.get(i).get("icon"));
-            }
-            bean.setIsBind(false);
-            bean.setName("sdaf"+i);
+//            bean.setIsType(Users.accounts.get(i).get("type"));
+//            bean.setTitle(Users.accounts.get(i).get("title"));
+//            bean.setSubTitle(Users.accounts.get(i).get("subtitle"));
+//            if(false){
+//                bean.setIcon(Users.accounts.get(i).get("icon_a"));
+//            }else{
+//                bean.setIcon(Users.accounts.get(i).get("icon"));
+//            }
+//            bean.setIsBind(false);
+//            bean.setName("sdaf"+i);
             users.add(bean);
         }
         mAdapter.addAll(getItems(users));
@@ -154,14 +150,14 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
     protected List<Item> getItems(List<UserInfoBean> list) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case 1:
-                    cells.add(new UserAccountItem(list.get(i), context));
-                    break;
-                case 2:
-                    cells.add(new UserAccountTitleItem(list.get(i), context));
-                    break;
-            }
+//            switch (list.get(i).getIsType()) {
+//                case 1:
+//                    cells.add(new UserAccountItem(list.get(i), context));
+//                    break;
+//                case 2:
+//                    cells.add(new UserAccountTitleItem(list.get(i), context));
+//                    break;
+//            }
         }
         return cells;
     }

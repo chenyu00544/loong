@@ -11,6 +11,9 @@ namespace App\Repositories\App;
 use App\Contracts\UsersRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
+use App\Facades\RedisCache;
+use App\Http\Models\App\OrderInfoModel;
+use App\Http\Models\App\OrderReturnModel;
 use App\Http\Models\App\UserAddressModel;
 use App\Http\Models\App\UsersModel;
 use App\Http\Models\App\UsersRealModel;
@@ -20,22 +23,28 @@ class UsersRepository implements UsersRepositoryInterface
     private $usersModel;
     private $userAddressModel;
     private $usersRealModel;
+    private $orderInfoModel;
+    private $orderReturnModel;
 
     public function __construct(
         UsersModel $usersModel,
         UserAddressModel $userAddressModel,
-        UsersRealModel $usersRealModel
+        UsersRealModel $usersRealModel,
+        OrderInfoModel $orderInfoModel,
+        OrderReturnModel $orderReturnModel
     )
     {
         $this->usersModel = $usersModel;
         $this->userAddressModel = $userAddressModel;
         $this->usersRealModel = $usersRealModel;
+        $this->orderInfoModel = $orderInfoModel;
+        $this->orderReturnModel = $orderReturnModel;
     }
 
-    public function login($username, $password, $type)
+    public function login($username, $password, $type, $ip)
     {
         $req = ['code' => 1, 'msg' => '账号密码错误', 'data' => '', 'token' => ''];
-        $column = ['user_id', 'email', 'user_name', 'nick_name', 'logo', 'password', 'salt', 'mobile_phone', 'user_money'];
+        $column = ['user_id', 'email', 'user_name', 'nick_name', 'logo', 'password', 'salt', 'mobile_phone', 'user_money', 'visit_count'];
         $user = $this->usersModel->getUser($username, $column);
         if ($user) {
             if ($type == 1) {
@@ -46,10 +55,19 @@ class UsersRepository implements UsersRepositoryInterface
                 $pass = Common::md5Encrypt($password, $user->salt);
                 if ($user->password == $pass) {
                     $req = ['code' => 0, 'msg' => '', 'data' => $user, 'token' => encrypt($user->user_id)];
+                    $where['user_id'] = $user->user_id;
+                    $updata = [
+                        'last_login' => time(),
+                        'last_time' => date(RedisCache::get('shop_config')['time_format'], time()),
+                        'last_ip' => $ip,
+                        'visit_count' => $user->visit_count + 1
+                    ];
+                    $this->usersModel->setUsers($where, $updata);
                 } else {
                     $req = ['code' => 1, 'msg' => '密码错误', 'data' => '', 'token' => ''];
                 }
                 $user->is_real = '0';
+                $user->logo = FileHandle::getImgByOssUrl($user->logo);
                 if (!empty($user->real)) {
                     if ($user->real->review_status == 1) {
                         $user->is_real = '1';
@@ -62,13 +80,70 @@ class UsersRepository implements UsersRepositoryInterface
 
     public function getUserInfo($uid)
     {
-        $user = $this->usersModel->getUser($uid);
+        $column = ['user_id', 'email', 'is_email', 'nick_name', 'sex', 'birthday', 'user_money', 'frozen_money', 'bonus_money', 'pay_points',
+            'rank_points', 'address_id', 'user_rank', 'mobile_phone', 'is_phone', 'credit_line', 'logo'];
+        $user = $this->usersModel->getUser($uid, $column);
         $user->is_real = '0';
+        $user->logo = FileHandle::getImgByOssUrl($user->logo);
+
         if (!empty($user->real)) {
             if ($user->real->review_status == 1) {
                 $user->is_real = '1';
             }
+            unset($user->real);
         }
+
+        //待付款
+        $order_orwhere = [
+            [['order_status', '<>', OS_CANCELED]],
+            [['order_status', '<>', OS_INVALID]],
+        ];
+        $order_where = [
+            ['pay_status', '=', PS_UNPAYED],
+            ['shipping_status', '=', SS_UNSHIPPED],
+            ['user_id', '=', $uid],
+        ];
+        $order_unpayed_count = $this->orderInfoModel->countOrder($order_where, $order_orwhere);
+        $user->order_unpayed_count = $order_unpayed_count;
+
+        //待发货
+        $order_where = [
+            ['order_status', '=', OS_CONFIRMED],
+            ['pay_status', '=', PS_PAYED],
+            ['shipping_status', '=', SS_UNSHIPPED],
+            ['user_id', '=', $uid],
+        ];
+        $order_unship_count = $this->orderInfoModel->countOrder($order_where);
+        $user->order_unship_count = $order_unship_count;
+
+        //待收货
+        $order_where = [
+            ['order_status', '=', OS_CONFIRMED],
+            ['shipping_status', '=', SS_SHIPPED],
+            ['user_id', '=', $uid],
+        ];
+        $order_shipped_count = $this->orderInfoModel->countOrder($order_where);
+        $user->order_shipped_count = $order_shipped_count;
+
+        //待评价
+        $order_where = [
+            ['order_status', '=', OS_CONFIRMED],
+            ['shipping_status', '=', SS_RECEIVED],
+            ['comment_status', '=', CS_UNCOMMENT],
+            ['user_id', '=', $uid],
+        ];
+        $order_comment_count = $this->orderInfoModel->countOrder($order_where);
+        $user->order_comment_count = $order_comment_count;
+
+        //退换货
+        $order_where = [
+            ['return_status', '<>', RS_CHANGE_END],
+            ['refound_status', '=', RS_NOREFOUND],
+            ['user_id', '=', $uid],
+        ];
+        $order_return_count = $this->orderReturnModel->countOrderReturn($order_where);
+        $user->order_return_count = $order_return_count;
+
         return $user;
     }
 

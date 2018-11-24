@@ -6,9 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -38,16 +35,16 @@ public class UserLogoItem extends BaseItem<UserInfoBean> {
         TextView tv = holder.getTextView(R.id.textView139);
         ImageView iv = holder.getImageView(R.id.imageView61);
 
-        tv.setText(mData.getSubTitle());
-        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.NONE).skipMemoryCache(true).override(120, 120);
-
-        if(mData.getImgPath() == null){
-            Glide.with(context).load(mData.getImageId()).apply
-                    (requestOptions).into(iv);
-        }else{
-            Glide.with(context).load(mData.getImgPath()).apply
-                    (requestOptions).into(iv);
-        }
+//        tv.setText(mData.getSubTitle());
+//        RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
+//                (DiskCacheStrategy.NONE).skipMemoryCache(true).override(120, 120);
+//
+//        if(mData.getImgPath() == null){
+//            Glide.with(context).load(mData.getImageId()).apply
+//                    (requestOptions).into(iv);
+//        }else{
+//            Glide.with(context).load(mData.getImgPath()).apply
+//                    (requestOptions).into(iv);
+//        }
     }
 }

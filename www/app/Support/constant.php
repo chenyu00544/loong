@@ -38,13 +38,6 @@ define('RF_COMPLETE',               4); // 完成退换货
 define('RF_AGREE_APPLY',            5); // 同意申请
 define('REFUSE_APPLY',              6); // 拒绝申请
 
-define('FF_NOREFOUND', 0) ;//未退款
-define('FF_REFOUND', 1) ;//已退款
-define('FF_EXCHANGE', 2) ;//已换货
-define('FF_MAINTENANCE', 3) ;//已维修
-define('FF_NOEXCHANGE', 4) ;//未换货
-define('FF_NOMAINTENANCE', 5) ;//未维修
-
 /* 图片处理相关常数 */
 define('ERR_INVALID_IMAGE',         1);
 define('ERR_NO_GD',                 2);
@@ -119,11 +112,31 @@ define('PS_REFOUND_PART',           5); // 部分退款
 /* 配送状态 */
 define('SS_UNSHIPPED',              0); // 未发货
 define('SS_SHIPPED',                1); // 已发货
-define('SS_RECEIVED',               2); // 已收货
+define('SS_RECEIVED',               2); // 已收货，待评价
 define('SS_PREPARING',              3); // 备货中
 define('SS_SHIPPED_PART',           4); // 已发货(部分商品)
 define('SS_SHIPPED_ING',            5); // 发货中(处理分单)
 define('OS_SHIPPED_PART',           6); // 已发货(部分商品)
+
+/* 评价状态 */
+define('CS_UNCOMMENT',              0); // 未评价
+define('CS_COMMENTED',              1); // 已评价
+
+/* 退货同意状态 */
+define('OR_UNAGREE',                0) ;//未同意
+define('OR_AGREE',                  1) ;//已同意
+
+/* 退换货状态 */
+define('RS_USER_RETURN',            0) ;//商品未退回
+define('RS_USER_RETURNING',         1) ;//商品退回中
+define('RS_USER_RETURNED',          2) ;//商品已退回
+define('RS_CHANGE_SHIP',            3) ;//商品换货寄出
+define('RS_CHANGE_END',             4) ;//商品换货结束
+
+/* 订单退款状态 */
+define('RS_NOREFOUND',              0) ;//未退款
+define('RS_REFOUND',                1) ;//已退款
+define('RS_PARTREFOUND',            2) ;//部分已退款
 
 /* 支付状态(mobile) */
 define('STATUS_CREATED',            0); // 待付款

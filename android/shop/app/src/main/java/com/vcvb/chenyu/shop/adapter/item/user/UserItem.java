@@ -33,11 +33,11 @@ public class UserItem extends BaseItem<UserInfoBean> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView137);
         TextView tv2 = holder.getTextView(R.id.textView138);
-        tv.setText(mData.getTitle());
-        if (mData.getName() != null) {
-            tv2.setText(mData.getName());
-        }else{
-            tv2.setText(mData.getSubTitle());
-        }
+//        tv.setText(mData.getTitle());
+//        if (mData.getName() != null) {
+//            tv2.setText(mData.getName());
+//        }else{
+//            tv2.setText(mData.getSubTitle());
+//        }
     }
 }

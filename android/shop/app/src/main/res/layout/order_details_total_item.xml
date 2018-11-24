@@ -30,29 +30,38 @@
         android:id="@+id/textView198"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/ship_free"
         app:layout_constraintStart_toStartOf="@+id/textView197"
         app:layout_constraintTop_toBottomOf="@+id/textView197" />
 
     <TextView
+        android:id="@+id/textView244"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/tax_fee"
+        app:layout_constraintStart_toStartOf="@+id/textView199"
+        app:layout_constraintTop_toBottomOf="@+id/textView198" />
+
+    <TextView
         android:id="@+id/textView199"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/Include_discount"
         app:layout_constraintStart_toStartOf="@+id/textView198"
-        app:layout_constraintTop_toBottomOf="@+id/textView198" />
+        app:layout_constraintTop_toBottomOf="@+id/textView244" />
 
     <TextView
         android:id="@+id/textView200"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/pay_total"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView199"
+        app:layout_constraintStart_toStartOf="@+id/textView244"
         app:layout_constraintTop_toBottomOf="@+id/textView199" />
 
     <TextView
@@ -108,4 +117,17 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView200"
         app:layout_constraintTop_toTopOf="@+id/textView200" />
+
+    <TextView
+        android:id="@+id/textView245"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView244"
+        app:layout_constraintEnd_toEndOf="@+id/textView203"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView244"
+        app:layout_constraintTop_toTopOf="@+id/textView244" />
+
 </android.support.constraint.ConstraintLayout>

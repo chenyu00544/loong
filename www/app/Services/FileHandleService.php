@@ -116,13 +116,27 @@ class FileHandleService
     public static function getImgByOssUrl($uri)
     {
         $shopConf = RedisCache::get('shop_config');
-        if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
-            $oss = RedisCache::get('oss_config');
-            return $oss['endpoint'].$uri;
-        }else{
-            return url($uri);
+
+        //uri图片链接
+        if (!empty($uri) && (strpos($uri, 'http://') === false && strpos($uri, 'https://') === false && strpos($uri, 'errorImg.png') === false)) {
+            if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
+                $oss = RedisCache::get('oss_config');
+                return $oss['endpoint'].$uri;
+            }else{
+                return url($uri);
+            }
         }
 
+        //完整图片链接
+        if (strtolower(substr($uri, 0, 4)) == 'http') {
+            return $uri;
+        }
+
+        //没有图片链接设置默认图片
+        $no_picture = isset($shopConf['no_picture']) && !empty($shopConf['no_picture']) ? str_replace("../", "", $shopConf['no_picture']) : '';
+        $url = empty($uri) ? $no_picture : $uri;
+
+        return url($url);
     }
 
     public static function deleteFile($file_path)

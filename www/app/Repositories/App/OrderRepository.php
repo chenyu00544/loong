@@ -56,8 +56,21 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function getOrders($data, $uid)
     {
-        $where['user_id'] = $uid;
         $page = $data['page'] - 1;
+        if(!empty($data[''])){
+
+        }
+        //待付款
+        $order_orwhere = [
+            [['order_status', '<>', OS_CANCELED]],
+            [['order_status', '<>', OS_INVALID]],
+        ];
+        $where = [
+            ['pay_status', '=', PS_UNPAYED],
+            ['shipping_status', '=', SS_UNSHIPPED],
+            ['user_id', '=', $uid],
+        ];
+
         $res = $this->orderInfoModel->getOrders($where, $page);
         return $res;
     }
@@ -93,6 +106,7 @@ class OrderRepository implements OrderRepositoryInterface
         $column = ['*'];
         $res = $this->orderInfoModel->getOrder($where, $column, $order_ids);
         foreach ($res as $re){
+            $re->add_time_date = date('Y-m-d H:i:s', $re->add_time);
             foreach ($re->OrderGoods as $order_goods){
                 $order_goods->goods_thumb = FileHandle::getImgByOssUrl($order_goods->Goods->goods_thumb);
                 $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);

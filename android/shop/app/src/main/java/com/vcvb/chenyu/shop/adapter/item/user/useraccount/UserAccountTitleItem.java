@@ -32,6 +32,6 @@ public class UserAccountTitleItem extends BaseItem<UserInfoBean> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView143);
-        tv.setText(mData.getTitle());
+//        tv.setText(mData.getTitle());
     }
 }

@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 public class BaseFragment<T> extends Fragment {
+    public String token;
     public View view;
     public Context context;
     /**
@@ -32,6 +34,7 @@ public class BaseFragment<T> extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         context = getActivity();
         loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 

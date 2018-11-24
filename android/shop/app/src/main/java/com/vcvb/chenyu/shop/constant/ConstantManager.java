@@ -99,7 +99,8 @@ public interface ConstantManager {
     interface Url {
         public String URIHOST = "http://www.vcvbuy.com/api/";
         public String GETGEO = URIHOST + "region/geo/coder";
-        public String GETDEVICEID = URIHOST + "app/login/deviceid";
+        public String GETDEVICEID = URIHOST + "app/login/deviceid"; //获取未登录UID
+        public String ALLREGION = URIHOST + "region/all/format"; //获取地址数据包
 
         public String HOME = URIHOST + "app/index";
         public String HOMELOADMORE = URIHOST + "app/index/loadmore";
@@ -126,15 +127,18 @@ public interface ConstantManager {
         public String ADDCOLLECTSTORE = URIHOST + "app/collect/store/add";
 
         //用户地址操作
-        public String ALLREGION = URIHOST + "region/all/format";
         public String USERADDRESSES = URIHOST + "app/user/addresses";
         public String GETADDRESS = URIHOST + "app/user/address/get";
         public String ADDADDRESS = URIHOST + "app/user/address/add";
-        public String SETADDRESS = URIHOST + "app/user/address/set";
+        public String SETADDRESS = URIHOST + "app/user/address/set"; //添加和设置合并 这个暂时无用
         public String DELADDRESS = URIHOST + "app/user/address/del";
         public String SETDEFADDRESS = URIHOST + "app/user/address/setdef";
 
+        //用户数据操作
+        public String USER_INFO = URIHOST + "app/user/index";
+
         //订单操作
+        public String ORDER = URIHOST + "app/order/index";
         public String GET_ORDER = URIHOST + "app/order/get";
         public String ADD_ORDER = URIHOST + "app/order/add";
     }

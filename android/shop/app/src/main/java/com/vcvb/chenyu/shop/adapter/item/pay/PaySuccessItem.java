@@ -41,13 +41,13 @@ public class PaySuccessItem extends BaseItem<OrderDetail> {
         tv2.setOnClickListener(listener);
         tv2.setTag("HOME");
         TextView t1 = holder.getTextView(R.id.textView210);
-        t1.setText(mData.getOrderConsignee());
+//        t1.setText(mData.getOrderConsignee());
         TextView t2 = holder.getTextView(R.id.textView211);
-        t2.setText(mData.getOrderPhone());
+//        t2.setText(mData.getOrderPhone());
         TextView t3 = holder.getTextView(R.id.textView212);
-        t3.setText(mData.getOrderAddress());
+//        t3.setText(mData.getOrderAddress());
         TextView t4 = holder.getTextView(R.id.textView214);
-        t4.setText(mData.getTotalPayAbleFormat());
+//        t4.setText(mData.getTotalPayAbleFormat());
     }
 
     public void setOnItemClickListener(OnClickListener listener) {

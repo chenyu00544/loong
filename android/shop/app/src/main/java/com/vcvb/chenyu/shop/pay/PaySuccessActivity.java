@@ -14,7 +14,6 @@ import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.goods.GoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.pay.PayGoodsHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.pay.PaySuccessItem;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.PayItemDecoration;
@@ -114,17 +113,17 @@ public class PaySuccessActivity extends BaseActivity {
             }
         });
 
-        orderDetail.setOrderConsignee("dsfaf");
-        orderDetail.setOrderPhone("18858786888");
-        orderDetail.setOrderAddress("jklasdfjkl;asdfuiopjkasdfasdf");
-        orderDetail.setTotalPayAbleFormat("$999.0");
+//        orderDetail.setOrderConsignee("dsfaf");
+//        orderDetail.setOrderPhone("18858786888");
+//        orderDetail.setOrderAddress("jklasdfjkl;asdfuiopjkasdfasdf");
+//        orderDetail.setTotalPayAbleFormat("$999.0");
         List<Goods> goodses = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             Goods goods = new Goods();
             goods.setGoods_name("jkasdf"+i);
             goodses.add(goods);
         }
-        orderDetail.setList(goodses);
+//        orderDetail.setList(goodses);
         mAdapter.addAll(getItems(orderDetail));
     }
 
@@ -134,9 +133,9 @@ public class PaySuccessActivity extends BaseActivity {
         paySuccessItem.setOnItemClickListener(paySuccessItemListener);
         cells.add(paySuccessItem);
         cells.add(new PayGoodsHeaderItem(orderDetail, context));
-        for (int i = 0; i < orderDetail.getList().size(); i++){
-            cells.add(new GoodsItem(orderDetail.getList().get(i), context));
-        }
+//        for (int i = 0; i < orderDetail.getList().size(); i++){
+//            cells.add(new GoodsItem(orderDetail.getList().get(i), context));
+//        }
         return cells;
     }
 

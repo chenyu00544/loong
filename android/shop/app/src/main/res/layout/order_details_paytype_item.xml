@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
@@ -38,4 +38,13 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView195"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView195" />
+
+    <ImageView
+        android:id="@+id/imageView127"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView196"
+        app:layout_constraintEnd_toStartOf="@+id/textView196"
+        app:layout_constraintTop_toTopOf="@+id/textView196"
+        app:srcCompat="@drawable/alipay" />
 </android.support.constraint.ConstraintLayout>

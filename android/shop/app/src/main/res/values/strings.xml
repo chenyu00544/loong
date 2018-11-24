@@ -211,6 +211,7 @@
     <string name="wechatpay">微信支付</string>
     <string name="goods_total">商品总金额</string>
     <string name="pay_total">应付金额</string>
+    <string name="tax_fee">税费</string>
     <string name="now_pay">立即支付</string>
     <string name="pay">支付</string>
     <string name="pay_success">支付成功</string>

@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
+import com.vcvb.chenyu.shop.javaBean.order.OrderGoods;
 
-public class OrderGoodsItem extends BaseItem<OrderDetail> {
-    public static final int TYPE = 3;
+public class OrderGoodsItem extends BaseItem<OrderGoods> {
+    public static final int TYPE = R.layout.order_details_goods_item;
 
-    public OrderGoodsItem(OrderDetail bean, Context c) {
+    public OrderGoodsItem(OrderGoods bean, Context c) {
         super(bean, c);
     }
 
@@ -27,7 +28,7 @@ public class OrderGoodsItem extends BaseItem<OrderDetail> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.order_details_goods_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 
@@ -40,11 +41,14 @@ public class OrderGoodsItem extends BaseItem<OrderDetail> {
         TextView tv4 = holder.getTextView(R.id.textView190);
         TextView tv5 = holder.getTextView(R.id.textView191);
 
-        tv1.setText(mData.getGoodsName());
-        tv2.setText(mData.getGoodsAttr());
-        tv3.setText(mData.getGoodsPriceFormat());
-        tv4.setText(mData.getGoodsMarketFormat());
+        tv1.setText(mData.getGoods_name());
+        tv2.setText(mData.getGoods_attr());
+        tv3.setText(mData.getShop_price_format());
+        tv4.setText(mData.getMarket_price_format());
         tv4.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
-        tv5.setText("× "+mData.getGoodsNum());
+        String str = "× %s";
+        tv5.setText(String.format(str, mData.getO_goods_number()));
+
+        Glide.with(context).load(mData.getOriginal_img()).into(iv);
     }
 }
