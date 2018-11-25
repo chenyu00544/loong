@@ -51,6 +51,5 @@ public class LoadingDialog2 extends AlertDialog {
     @Override
     public void dismiss() {
         super.dismiss();
-        avi.hide();
     }
 }

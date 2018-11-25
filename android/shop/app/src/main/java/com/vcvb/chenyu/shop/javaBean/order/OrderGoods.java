@@ -2,7 +2,6 @@ package com.vcvb.chenyu.shop.javaBean.order;
 
 public class OrderGoods {
 
-
     private Integer rec_id;
     private Integer goods_id;
     private Integer order_id;

@@ -138,7 +138,7 @@ public interface ConstantManager {
         public String USER_INFO = URIHOST + "app/user/index";
 
         //订单操作
-        public String ORDER = URIHOST + "app/order/index";
+        public String ORDERS = URIHOST + "app/order/index";
         public String GET_ORDER = URIHOST + "app/order/get";
         public String ADD_ORDER = URIHOST + "app/order/add";
     }

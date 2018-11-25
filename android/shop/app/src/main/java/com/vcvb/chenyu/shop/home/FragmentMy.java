@@ -24,7 +24,7 @@ import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 import com.vcvb.chenyu.shop.mycenter.AddressActivity;
 import com.vcvb.chenyu.shop.mycenter.BrowseActivity;
 import com.vcvb.chenyu.shop.mycenter.MyCollectionActivity;
-import com.vcvb.chenyu.shop.mycenter.OrderActivity;
+import com.vcvb.chenyu.shop.order.OrderListActivity;
 import com.vcvb.chenyu.shop.mycenter.userinfo.UserInfoActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
@@ -72,6 +72,7 @@ public class FragmentMy extends BaseFragment {
 
     @Override
     public void getData() {
+        checkLogin();
         if (token != null && !token.equals("")) {
             HashMap<String, String> mp = new HashMap<>();
             mp.put("token", token);
@@ -123,7 +124,6 @@ public class FragmentMy extends BaseFragment {
     }
 
     public void bindView() {
-        checkLogin();
         TextView user_money = view.findViewById(R.id.textView33);
         TextView bonus_money = view.findViewById(R.id.textView34);
         TextView pay_points = view.findViewById(R.id.textView52);
@@ -137,6 +137,9 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_unpayed.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_unpayed_count()));
+        }else{
+            order_unpayed.setText("0");
+            order_unpayed.setAlpha(0);
         }
         TextView order_unship = view.findViewById(R.id.textView46);
         if (userInfoBean.getOrder_unship_count() > 0) {
@@ -144,6 +147,9 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_unship.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_unship_count()));
+        }else {
+            order_unship.setText("0");
+            order_unship.setAlpha(0);
         }
         TextView order_shipped = view.findViewById(R.id.textView47);
         if (userInfoBean.getOrder_shipped_count() > 0) {
@@ -151,6 +157,9 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_shipped.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_shipped_count()));
+        }else {
+            order_shipped.setText("0");
+            order_shipped.setAlpha(0);
         }
         TextView order_comment = view.findViewById(R.id.textView48);
         if (userInfoBean.getOrder_comment_count() > 0) {
@@ -158,6 +167,9 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_comment.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_comment_count()));
+        }else {
+            order_comment.setText("0");
+            order_comment.setAlpha(0);
         }
         TextView order_return = view.findViewById(R.id.textView49);
         if (userInfoBean.getOrder_return_count() > 0) {
@@ -165,6 +177,9 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_return.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_return_count()));
+        }else {
+            order_return.setText("0");
+            order_return.setAlpha(0);
         }
     }
 
@@ -201,7 +216,7 @@ public class FragmentMy extends BaseFragment {
     }
 
     public void initListener() {
-        View orderAll1 = view.findViewById(R.id.view2);
+        View orderAll1 = view.findViewById(R.id.view81);
         orderAll1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -357,7 +372,7 @@ public class FragmentMy extends BaseFragment {
 
         RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable
                 .icon_boy_head);
-        if (mp.get("nickname") != null) {
+        if (mp.get("nickname") != null && token != null && !token.equals("")) {
             Glide.with(context).load((String) mp.get("logo")).apply(requestOptions).into(iv);
             tv.setText((CharSequence) mp.get("nickname"));
             iv.setOnClickListener(null);
@@ -388,7 +403,16 @@ public class FragmentMy extends BaseFragment {
     //确定退出登录
     public void logoutBySure() {
         UserInfoUtils.getInstance(context).clear();
+        userInfoBean.setUser_money("0");
+        userInfoBean.setBonus_money("0");
+        userInfoBean.setPay_points("0");
+        userInfoBean.setOrder_unpayed_count(0);
+        userInfoBean.setOrder_unship_count(0);
+        userInfoBean.setOrder_shipped_count(0);
+        userInfoBean.setOrder_comment_count(0);
+        userInfoBean.setOrder_return_count(0);
         checkLogin();
+        bindView();
     }
 
     public void showLoginDialog() {
@@ -401,7 +425,7 @@ public class FragmentMy extends BaseFragment {
         if (token == null || token.equals("")) {
             showLoginDialog();
         } else {
-            Intent intent = new Intent(context, OrderActivity.class);
+            Intent intent = new Intent(context, OrderListActivity.class);
             intent.putExtra("type", type);
             startActivity(intent);
         }
@@ -411,7 +435,7 @@ public class FragmentMy extends BaseFragment {
         if (token == null || token.equals("")) {
             showLoginDialog();
         } else {
-            Intent intent = new Intent(context, OrderActivity.class);
+            Intent intent = new Intent(context, OrderListActivity.class);
             startActivity(intent);
         }
     }

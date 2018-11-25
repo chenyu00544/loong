@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.mycenter;
+package com.vcvb.chenyu.shop.order;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,12 +21,12 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.OrderRecyclerViewAdapter;
+import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.OrderItemDecoration;
-import com.vcvb.chenyu.shop.javaBean.order.OrderListBean;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
 
 import org.json.JSONObject;
 
@@ -34,11 +34,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import okhttp3.Call;
 
-public class OrderActivity extends BaseActivity {
+public class OrderListActivity extends BaseActivity {
     private Context context;
     private View line;
     private TextView tv1;
@@ -50,14 +49,15 @@ public class OrderActivity extends BaseActivity {
     private ConstraintLayout cly;
 
     private RecyclerView mRecyclerView;
-    private OrderRecyclerViewAdapter mAdapter;
-    private List<OrderListBean> orders;
+    private CYCSimpleAdapter mAdapter;
+    private List<OrderDetail> orders;
     private GridLayoutManager mLayoutManager;
 
     private View noDataView;
     private View haveDataView;
 
     private int type = 0;
+    private int page = 1;
 
     private RefreshLayout refreshLayout;
 
@@ -91,14 +91,14 @@ public class OrderActivity extends BaseActivity {
 
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(120, LinearLayout
                 .LayoutParams.WRAP_CONTENT);
-        LinearLayout nav_other = (LinearLayout) findViewById(R.id.nav_other);
+        LinearLayout nav_other = findViewById(R.id.nav_other);
         nav_other.setLayoutParams(layoutParams2);
         nav_other.setAlpha(0);
 
         LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout
                 .LayoutParams.WRAP_CONTENT, LinearLayout
                 .LayoutParams.WRAP_CONTENT);
-        LinearLayout title_wrap = (LinearLayout) findViewById(R.id.title_wrap);
+        LinearLayout title_wrap = findViewById(R.id.title_wrap);
         title_wrap.setAlpha(1);
         title_wrap.setLayoutParams(layoutParams3);
         title_wrap.addView(titleView);
@@ -107,15 +107,15 @@ public class OrderActivity extends BaseActivity {
     public void initView() {
         orders = new ArrayList<>();
         line = findViewById(R.id.view26);
-        tv1 = (TextView) findViewById(R.id.textView74);
-        tv2 = (TextView) findViewById(R.id.textView75);
-        tv3 = (TextView) findViewById(R.id.textView76);
-        tv4 = (TextView) findViewById(R.id.textView77);
-        tv5 = (TextView) findViewById(R.id.textView78);
+        tv1 = findViewById(R.id.textView74);
+        tv2 = findViewById(R.id.textView75);
+        tv3 = findViewById(R.id.textView76);
+        tv4 = findViewById(R.id.textView77);
+        tv5 = findViewById(R.id.textView78);
 
         Intent intent = getIntent();
         type = intent.getIntExtra("type", 1);
-        getOrderByList(type);
+        getData(type);
         setTypeStyle(type);
     }
 
@@ -123,60 +123,56 @@ public class OrderActivity extends BaseActivity {
         tv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getOrderByList(1);
+                getData(1);
                 setTypeStyle(1);
             }
         });
         tv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getOrderByList(2);
+                getData(2);
                 setTypeStyle(2);
             }
         });
         tv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getOrderByList(3);
+                getData(3);
                 setTypeStyle(3);
             }
         });
         tv4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getOrderByList(4);
+                getData(4);
                 setTypeStyle(4);
             }
         });
         tv5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getOrderByList(5);
+                getData(5);
                 setTypeStyle(5);
             }
         });
     }
 
-    public void getOrderByList(int type) {
+    public void getData(int type) {
         this.type = type;
         loadingDialog = new LoadingDialog(this, R.style.TransparentDialog);
         loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("page", page + "");
+        mp.put("token", token);
+        mp.put("order_type", "" + type);
+        HttpUtils.getInstance().post(ConstantManager.Url.ORDERS, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
+            public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         loadingDialog.dismiss();
-                        if (orders.size() != 0) {
-                            setHaveDataByView();
-                        } else {
-                            setNoDateByView();
-                        }
+                        bindViewData(json);
                     }
                 });
             }
@@ -193,40 +189,79 @@ public class OrderActivity extends BaseActivity {
             }
         });
 
-        orders.clear();
-        for (int i = 0; i < 5; i++) {
-            OrderListBean order = new OrderListBean();
-            order.setIsType(2);
-            order.setStoreName("store_name" + i);
-            orders.add(order);
-            for (int j = 0; j < 3; j++) {
-                order = new OrderListBean();
-                order.setIsType(1);
-                order.setGoodsName("goods_name" + j);
-                orders.add(order);
-            }
-            order = new OrderListBean();
-            if (type == 1) {
-                Random random = new Random();
-                int k = random.nextInt(6);
-                if (k == 2) {
-                    order.setIsType(3);
-                    order.setPriceTotal("$19" + i + ".00");
-                } else if (k == 0 || k == 1) {
-                    order.setIsType(4);
-                } else {
-                    order.setIsType(k);
-                }
-            } else if (type == 2) {
-                order.setIsType(3);
-                order.setPriceTotal("$19" + i + ".00");
-            } else if (type == 3 || type == 4) {
-                order.setIsType(4);
-            } else if (type == 5) {
-                order.setIsType(5);
-            }
-            orders.add(order);
+//        orders.clear();
+//        for (int i = 0; i < 5; i++) {
+//            OrderListBean order = new OrderListBean();
+//            order.setIsType(2);
+//            order.setStoreName("store_name" + i);
+//            orders.add(order);
+//            for (int j = 0; j < 3; j++) {
+//                order = new OrderListBean();
+//                order.setIsType(1);
+//                order.setGoodsName("goods_name" + j);
+//                orders.add(order);
+//            }
+//            order = new OrderListBean();
+//            if (type == 1) {
+//                Random random = new Random();
+//                int k = random.nextInt(6);
+//                if (k == 2) {
+//                    order.setIsType(3);
+//                    order.setPriceTotal("$19" + i + ".00");
+//                } else if (k == 0 || k == 1) {
+//                    order.setIsType(4);
+//                } else {
+//                    order.setIsType(k);
+//                }
+//            } else if (type == 2) {
+//                order.setIsType(3);
+//                order.setPriceTotal("$19" + i + ".00");
+//            } else if (type == 3 || type == 4) {
+//                order.setIsType(4);
+//            } else if (type == 5) {
+//                order.setIsType(5);
+//            }
+//            orders.add(order);
+//        }
+    }
+
+    public void bindViewData(JSONObject json) {
+        if (orders.size() != 0) {
+            setHaveDataByView();
+        } else {
+            setNoDateByView();
         }
+    }
+
+    public void loadmore() {
+        page += 1;
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("page", page + "");
+        mp.put("token", token);
+        mp.put("order_type", "" + type);
+        HttpUtils.getInstance().post(ConstantManager.Url.ORDERS, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        bindViewData(json);
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        setNoDateByView();
+                    }
+                });
+            }
+        });
     }
 
     public void setTypeStyle(int type) {
@@ -300,7 +335,7 @@ public class OrderActivity extends BaseActivity {
                     .BOTTOM, 0);
             set.applyTo(cly);
             mRecyclerView = haveDataView.findViewById(R.id.order_content);
-            mAdapter = new OrderRecyclerViewAdapter(context, orders);
+            mAdapter = new CYCSimpleAdapter();
             mLayoutManager = new GridLayoutManager(context, 1);
             OrderItemDecoration spaces = new OrderItemDecoration(context, orders);
             mRecyclerView.addItemDecoration(spaces);

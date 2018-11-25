@@ -20,7 +20,7 @@ import com.vcvb.chenyu.shop.adapter.itemdecoration.PayItemDecoration;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
-import com.vcvb.chenyu.shop.mycenter.OrderActivity;
+import com.vcvb.chenyu.shop.order.OrderListActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 
@@ -167,7 +167,7 @@ public class PaySuccessActivity extends BaseActivity {
                     startActivity(intent);
                     break;
                 case "ORDER":
-                    Intent intent_o = new Intent(PaySuccessActivity.this, OrderActivity.class);
+                    Intent intent_o = new Intent(PaySuccessActivity.this, OrderListActivity.class);
                     startActivity(intent_o);
                     break;
             }

@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity {
     private int index = 0;
     private String SAVED_INDEX = "SAVED_INDEX";
     private String[] fragmentTag = new String[]{"home", "categroy", "find", "cart", "my"};
+    private LoadingDialog2 loadingDialog2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -246,6 +247,8 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onLoginClickListener(Map<String, String> user) {
+//                loadingDialog2 = new LoadingDialog2(context);
+//                loadingDialog2.show();
                 LoadingDialog2.getInstance(context).show();
                 HashMap<String, String> mp = new HashMap<>();
                 mp.put("username", user.get("username"));

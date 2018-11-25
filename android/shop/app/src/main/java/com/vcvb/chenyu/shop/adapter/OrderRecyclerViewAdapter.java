@@ -8,12 +8,13 @@ import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.viewholder.BaseViewHolder;
+import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.javaBean.order.OrderListBean;
 
 import java.util.List;
 
 public class OrderRecyclerViewAdapter extends BaseRecyclerAdapter<OrderListBean> {
-    public OrderRecyclerViewAdapter(Context context, List<OrderListBean> list) {
+    public OrderRecyclerViewAdapter(Context context, List<OrderDetail> list) {
         super(context, list);
     }
 

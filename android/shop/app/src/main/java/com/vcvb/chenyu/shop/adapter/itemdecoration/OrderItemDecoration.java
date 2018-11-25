@@ -7,15 +7,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.javaBean.order.OrderListBean;
 
 import java.util.List;
 
 public class OrderItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
-    private List<OrderListBean> mList;
+    private List<OrderDetail> mList;
 
-    public OrderItemDecoration(Context context, List<OrderListBean> list) {
+    public OrderItemDecoration(Context context, List<OrderDetail> list) {
         super();
         mContext = context;
         mList = list;
@@ -26,7 +27,7 @@ public class OrderItemDecoration extends RecyclerView.ItemDecoration {
                                RecyclerView parent, RecyclerView.State state) {
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
             int position = parent.getChildAdapterPosition(view);
-            OrderListBean bean = mList.get(position);
+            OrderDetail bean = mList.get(position);
             if(bean != null){
                 if (bean.getIsType() == 2) {
                     outRect.set(16, 16, 16, 0);
