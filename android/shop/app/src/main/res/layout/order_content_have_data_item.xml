@@ -41,12 +41,13 @@
 
     <TextView
         android:id="@+id/textView86"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:ellipsize="end"
+        android:gravity="center_vertical"
         android:textColor="@color/gray"
         android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView87"
         app:layout_constraintStart_toStartOf="@+id/textView85"
         app:layout_constraintTop_toBottomOf="@+id/textView85"
         tools:ignore="RtlSymmetry" />
@@ -55,12 +56,12 @@
         android:id="@+id/textView87"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/goods_price"
         android:textColor="@color/orange"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/textView86"
-        app:layout_constraintTop_toBottomOf="@+id/textView86" />
+        app:layout_constraintBottom_toBottomOf="@+id/imageView41"
+        app:layout_constraintStart_toStartOf="@+id/textView86" />
 
     <TextView
         android:id="@+id/textView88"

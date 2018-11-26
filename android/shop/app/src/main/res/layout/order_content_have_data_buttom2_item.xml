@@ -7,7 +7,7 @@
     android:background="@drawable/order_footer_border">
 
     <TextView
-        android:id="@+id/textView95"
+        android:id="@+id/buy_again"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView92"
+        android:id="@+id/after_sale"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
@@ -40,8 +40,8 @@
         android:text="@string/sale_after"
         android:textColor="@color/gray"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView95"
-        app:layout_constraintEnd_toStartOf="@+id/textView95"
-        app:layout_constraintTop_toTopOf="@+id/textView95" />
+        app:layout_constraintBottom_toBottomOf="@+id/buy_again"
+        app:layout_constraintEnd_toStartOf="@+id/buy_again"
+        app:layout_constraintTop_toTopOf="@+id/buy_again" />
 
 </android.support.constraint.ConstraintLayout>

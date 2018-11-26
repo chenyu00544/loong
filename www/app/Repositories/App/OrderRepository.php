@@ -199,13 +199,15 @@ class OrderRepository implements OrderRepositoryInterface
     public function setOrder($data, $uid)
     {
         $where['user_id'] = $uid;
+        $where['order_id'] = $data['order_id'];
+        $updata['order_status'] = $data['order_status'];
 
         //付款方式
         if (!empty($data['pay'])) {
             $pay = $this->paymentModel->getPayment(['pay_id' => $data['pay']]);
         }
 
-        return $this->orderInfoModel->setOrder($where, $data);
+        return $this->orderInfoModel->setOrder($where, $updata);
     }
 
     public function addOrder($data, $uid)

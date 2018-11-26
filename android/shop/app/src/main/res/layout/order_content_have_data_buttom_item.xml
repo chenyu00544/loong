@@ -8,7 +8,7 @@
     android:background="@drawable/order_footer_border">
 
     <TextView
-        android:id="@+id/textView95"
+        android:id="@+id/now_pay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView91"
+        android:id="@+id/cancel_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
@@ -41,9 +41,9 @@
         android:text="@string/cancel_order"
         android:textColor="@color/gray"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView95"
-        app:layout_constraintEnd_toStartOf="@+id/textView95"
-        app:layout_constraintTop_toTopOf="@+id/textView95"
+        app:layout_constraintBottom_toBottomOf="@+id/now_pay"
+        app:layout_constraintEnd_toStartOf="@+id/now_pay"
+        app:layout_constraintTop_toTopOf="@+id/now_pay"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView93"
+        android:id="@+id/goods_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"

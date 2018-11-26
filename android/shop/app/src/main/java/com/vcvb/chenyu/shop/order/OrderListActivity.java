@@ -22,14 +22,12 @@ import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.order.OrderListFooterUnpayedItem;
-import com.vcvb.chenyu.shop.adapter.item.order.OrderListGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderListItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderNoDataItem;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.OrderItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
@@ -58,15 +56,17 @@ public class OrderListActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
-    ;
+
     private List<OrderDetail> orders = new ArrayList<>();
     private GridLayoutManager mLayoutManager;
     private OrderItemDecoration spaces;
 
     private int type = 0;
     private int page = 1;
+    private int position = 0;
 
     private RefreshLayout refreshLayout;
+    private ConfirmDialog confirmDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +144,9 @@ public class OrderListActivity extends BaseActivity {
                 refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
             }
         });
+
+        confirmDialog = new ConfirmDialog(context);
+        confirmDialog.setTitle(R.string.is_delete);
     }
 
     public void initListener() {
@@ -180,6 +183,19 @@ public class OrderListActivity extends BaseActivity {
             public void onClick(View view) {
                 getData(5, true);
                 setTypeStyle(5);
+            }
+        });
+
+        confirmDialog.setOnDialogClickListener(new ConfirmDialog.OnDialogClickListener() {
+            @Override
+            public void onConfirmClickListener() {
+                cancelOrder();
+                confirmDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelClickListener() {
+                confirmDialog.dismiss();
             }
         });
     }
@@ -321,50 +337,8 @@ public class OrderListActivity extends BaseActivity {
         if (orders.size() > 0) {
             for (int i = 0; i < orderList.size(); i++) {
                 OrderListItem orderListItem = new OrderListItem(orderList.get(i), context);
+                orderListItem.setOnItemClickListener(orderListListener);
                 cells.add(orderListItem);
-
-
-//                //设置头部
-//                decoration.add(ConstantManager.Item.HEADER);
-//                cells.add(new OrderListHeaderItem(orderList.get(i), context));
-//
-//                //设置中间商品
-//                for (int j = 0; j < orderList.get(i).getOrderGoodses().size(); j++) {
-//                    decoration.add(ConstantManager.Item.ITEMS);
-//                    OrderListGoodsItem orderListGoodsItem = new OrderListGoodsItem(orderList.get
-//                            (i).getOrderGoodses().get(j), context);
-//                    orderListGoodsItem.setOnItemClickListener(orderGoodsListener);
-//                    cells.add(orderListGoodsItem);
-//                }
-//
-//                //设置尾部
-//                decoration.add(ConstantManager.Item.FOOTER);
-//                if (orderList.get(i).getPay_status() == 0 && orderList.get(i).getShipping_status
-//                        () == 0) {
-//                    OrderListFooterUnpayedItem orderListFooterUnpayedItem = new
-//                            OrderListFooterUnpayedItem(orderList.get(i), context);
-//                    orderListFooterUnpayedItem.setOnItemClickListener(unpayedOrderListener);
-//                    cells.add(orderListFooterUnpayedItem);
-//                } else if (orderList.get(i).getPay_status() == 2 && orderList.get(i)
-//                        .getShipping_status() == 0) {
-//                    OrderListFooterUnshipItem orderListFooterUnshipItem = new
-//                            OrderListFooterUnshipItem(orderList.get(i), context);
-//                    cells.add(orderListFooterUnshipItem);
-//                } else if (orderList.get(i).getPay_status() == 2 && orderList.get(i)
-//                        .getShipping_status() == 1) {
-//                    OrderListFooterShippedItem orderListFooterShippedItem = new
-//                            OrderListFooterShippedItem(orderList.get(i), context);
-//                    cells.add(orderListFooterShippedItem);
-//                } else if (orderList.get(i).getPay_status() == 2 && orderList.get(i)
-//                        .getShipping_status() == 2) {
-//                    OrderListFooterUnCommentItem orderListFooterUnCommentItem = new
-//                            OrderListFooterUnCommentItem(orderList.get(i), context);
-//                    cells.add(orderListFooterUnCommentItem);
-//                } else if (orderList.get(i).getOrder_status() == 4) {
-//                    OrderListFooterReturnItem orderListFooterUnpayedItem = new
-//                            OrderListFooterReturnItem(orderList.get(i), context);
-//                    cells.add(orderListFooterUnpayedItem);
-//                }
             }
         } else {
             cells.add(new OrderNoDataItem(null, context));
@@ -411,12 +385,11 @@ public class OrderListActivity extends BaseActivity {
     }
 
     //取消订单
-    public void cancelOrder(final int order_pos) {
-        final OrderDetail orderDetail = orders.get(order_pos);
-        orders.remove(order_pos);
-        mAdapter.remove(order_pos);
+    public void cancelOrder() {
+        final OrderDetail orderDetail = orders.get(position);
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
+//        mp.put("order_status", "2");
         mp.put("order_id", orderDetail.getOrder_id_str());
         HttpUtils.getInstance().post(ConstantManager.Url.CANCEL_ORDER, mp, new HttpUtils.NetCall() {
             @Override
@@ -424,8 +397,8 @@ public class OrderListActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        orders.remove(order_pos);
-                        mAdapter.remove(order_pos, orderDetail.getOrderGoodses().size() + 2);
+                        orders.remove(position);
+                        mAdapter.remove(position);
                         mAdapter.notifyDataSetChanged();
                     }
                 });
@@ -441,42 +414,37 @@ public class OrderListActivity extends BaseActivity {
                 });
             }
         });
-        System.out.println(order_pos);
+        System.out.println(position);
     }
 
-    public Integer getOrderIndex(int pos) {
-        int p = 0;
-        for (int i = 0; i < orders.size(); i++) {
-            p += 1;
-            p += orders.get(i).getOrderGoodses().size();
-            if (pos == p) {
-                return i;
-            }
-            p += 1;
-        }
-        return 0;
-    }
-
-    OrderListGoodsItem.OnClickListener orderGoodsListener = new OrderListGoodsItem
+    OrderListItem.OnClickListener orderListListener = new OrderListItem
             .OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
-            //pos为goods_id
-            Intent intent = new Intent(OrderListActivity.this, GoodsDetailActivity.class);
-            intent.putExtra("id", pos);
-            startActivity(intent);
-        }
-    };
-
-    OrderListFooterUnpayedItem.OnClickListener unpayedOrderListener = new
-            OrderListFooterUnpayedItem.OnClickListener() {
-        @Override
-        public void onClicked(View view, int pos) {
+            position = pos;
             switch (view.getId()) {
-                case R.id.textView91://取消订单
-                    cancelOrder(getOrderIndex(pos));
+                case R.id.now_pay://立即购买
                     break;
-                case R.id.textView95://支付订单
+                case R.id.cancel_order://取消购买
+                    confirmDialog.show();
+                    break;
+                case R.id.buy_again://再次购买
+
+                    break;
+                case R.id.after_sale://售后
+
+                    break;
+                case R.id.look_express://查看物流
+
+                    break;
+                case R.id.take_goods://确认收货
+
+                    break;
+                case R.id.evaluate://评价
+
+                    break;
+                default:
+
                     break;
             }
         }

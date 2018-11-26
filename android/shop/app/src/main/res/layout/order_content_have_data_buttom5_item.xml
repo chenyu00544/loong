@@ -7,7 +7,7 @@
     android:background="@drawable/order_footer_border">
 
     <TextView
-        android:id="@+id/textView95"
+        android:id="@+id/sale_after"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -19,29 +19,11 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="4dp"
-        android:text="@string/check_info"
+        android:text="@string/sale_after"
         android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView94"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
-        android:background="@drawable/shape_skip"
-        android:paddingBottom="4dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="4dp"
-        android:text="@string/sale_after"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView95"
-        app:layout_constraintEnd_toStartOf="@+id/textView95"
-        app:layout_constraintTop_toTopOf="@+id/textView95" />
 
 </android.support.constraint.ConstraintLayout>

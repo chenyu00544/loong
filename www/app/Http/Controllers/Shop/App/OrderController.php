@@ -60,4 +60,18 @@ class OrderController extends CommonController
         }
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
+
+    public function cancelOrder(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if($uid != ''){
+            $data = $this->orderRepository->setOrder($request->all(), $uid);
+            if($data){
+                return ['code' => 0, 'msg' => '', 'data' => $data];
+            }else{
+                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登录', 'data' => []];
+    }
 }
