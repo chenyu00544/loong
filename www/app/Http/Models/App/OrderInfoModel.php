@@ -23,7 +23,7 @@ class OrderInfoModel extends Model
         return $this->hasMany('App\Http\Models\App\OrderGoodsModel', 'order_id', 'order_id');
     }
 
-    public function getOrders($where, $page = 0, $column = ['*'], $size = 10)
+    public function getOrders($where, $orWhere=[], $page = 0, $column = ['*'], $size = 10)
     {
         $m = $this->select($column)
             ->with(['OrderGoods' => function ($query) {
@@ -31,8 +31,15 @@ class OrderInfoModel extends Model
                     ->with(['Goods'])
                     ->get();
             }])
-            ->where($where)->offset($page * $size)->limit($size);
-        return $m->get();
+            ->where($where);
+        if(!empty($orWhere)){
+            $m->where(function($query) use ($orWhere){
+                foreach ($orWhere as $where){
+                    $query->where($where);
+                }
+            });
+        }
+        return $m->orderBy('add_time', 'DESC')->offset($page * $size)->limit($size)->get();
     }
 
     public function getOrder($where, $column = ['*'], $whereIn = [])
@@ -47,7 +54,7 @@ class OrderInfoModel extends Model
         if (!empty($whereIn)) {
             $m->whereIn('order_id', $whereIn);
         }
-        return $m->get();
+        return $m->orderBy('add_time', 'DESC')->get();
     }
 
     public function setOrder($where, $data)

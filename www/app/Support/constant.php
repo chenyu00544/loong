@@ -99,7 +99,7 @@ define('OS_RETURNED',               4); // 退货
 define('OS_SPLITED',                5); // 已分单
 define('OS_SPLITING_PART',          6); // 部分分单
 define('OS_RETURNED_PART',          7); // 部分已退货
-define('OS_ONLY_REFOUND',           8); // 仅退款
+define('OS_ONLY_REFOUND',           8); // 仅退款3
 
 /* 支付状态 */
 define('PS_UNPAYED',                0); // 未付款

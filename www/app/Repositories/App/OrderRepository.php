@@ -57,21 +57,86 @@ class OrderRepository implements OrderRepositoryInterface
     public function getOrders($data, $uid)
     {
         $page = $data['page'] - 1;
-        if(!empty($data[''])){
-
+        $order_orwhere = [];
+        $order_where = [];
+        if (!empty($data['order_type'])) {
+            switch ($data['order_type']) {
+                case 1:
+                    //全部
+                    $order_orwhere = [
+                        [['order_status', '<>', OS_CANCELED]],
+                        [['order_status', '<>', OS_INVALID]],
+                    ];
+                    break;
+                case 2:
+                    //待付款
+                    $order_orwhere = [
+                        [['order_status', '<>', OS_CANCELED]],
+                        [['order_status', '<>', OS_INVALID]],
+                        [['order_status', '<>', OS_RETURNED]],
+                    ];
+                    $order_where = [
+                        ['pay_status', '=', PS_UNPAYED],
+                        ['shipping_status', '=', SS_UNSHIPPED],
+                        ['user_id', '=', $uid],
+                    ];
+                    break;
+                case 3:
+                    //待发货
+                    $order_where = [
+                        ['order_status', '=', OS_CONFIRMED],
+                        ['pay_status', '=', PS_PAYED],
+                        ['shipping_status', '=', SS_UNSHIPPED],
+                        ['user_id', '=', $uid],
+                    ];
+                    break;
+                case 4:
+                    //待收货
+                    $order_where = [
+                        ['order_status', '=', OS_CONFIRMED],
+                        ['shipping_status', '=', SS_SHIPPED],
+                        ['user_id', '=', $uid],
+                    ];
+                    break;
+                case 5:
+                    //待评价
+                    $order_where = [
+                        ['order_status', '=', OS_CONFIRMED],
+                        ['shipping_status', '=', SS_RECEIVED],
+                        ['comment_status', '=', CS_UNCOMMENT],
+                        ['user_id', '=', $uid],
+                    ];
+                    break;
+                default:
+                    $order_orwhere = [
+                        [['order_status', '<>', OS_CANCELED]],
+                        [['order_status', '<>', OS_INVALID]],
+                    ];
+            }
         }
-        //待付款
-        $order_orwhere = [
-            [['order_status', '<>', OS_CANCELED]],
-            [['order_status', '<>', OS_INVALID]],
-        ];
-        $where = [
-            ['pay_status', '=', PS_UNPAYED],
-            ['shipping_status', '=', SS_UNSHIPPED],
-            ['user_id', '=', $uid],
-        ];
+        $res = $this->orderInfoModel->getOrders($order_where, $order_orwhere, $page, ['*']);
+        foreach ($res as $re) {
+            $re->add_time_date = date('Y-m-d', $re->add_time);
+            $re->current_time = time();
+            $re->order_id_str = (string)$re->order_id;
+            foreach ($re->OrderGoods as $order_goods) {
+                $order_goods->goods_thumb = FileHandle::getImgByOssUrl($order_goods->Goods->goods_thumb);
+                $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);
+                $order_goods->original_img = FileHandle::getImgByOssUrl($order_goods->Goods->original_img);
+                $order_goods->goods_video = FileHandle::getImgByOssUrl($order_goods->Goods->goods_video);
 
-        $res = $this->orderInfoModel->getOrders($where, $page);
+                $order_goods->market_price_format = Common::priceFormat($order_goods->Goods->market_price);
+                $order_goods->shop_price_format = Common::priceFormat($order_goods->Goods->shop_price);
+                $order_goods->is_promote = $order_goods->Goods->is_promote;
+                $order_goods->promote_start_date = $order_goods->Goods->promote_start_date;
+                $order_goods->promote_end_date = $order_goods->Goods->promote_end_date;
+                $order_goods->promote_price_format = Common::priceFormat($order_goods->Goods->promote_price);
+                $order_goods->is_on_sale = $order_goods->Goods->is_on_sale;
+                $order_goods->is_delete = $order_goods->Goods->is_delete;
+                $order_goods->current_time = time();
+                unset($order_goods->Goods);
+            }
+        }
         return $res;
     }
 
@@ -105,9 +170,11 @@ class OrderRepository implements OrderRepositoryInterface
 
         $column = ['*'];
         $res = $this->orderInfoModel->getOrder($where, $column, $order_ids);
-        foreach ($res as $re){
-            $re->add_time_date = date('Y-m-d H:i:s', $re->add_time);
-            foreach ($re->OrderGoods as $order_goods){
+        foreach ($res as $re) {
+            $re->add_time_date = date('Y-m-d', $re->add_time);
+            $re->current_time = time();
+            $re->order_id_str = (string)$re->order_id;
+            foreach ($re->OrderGoods as $order_goods) {
                 $order_goods->goods_thumb = FileHandle::getImgByOssUrl($order_goods->Goods->goods_thumb);
                 $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);
                 $order_goods->original_img = FileHandle::getImgByOssUrl($order_goods->Goods->original_img);

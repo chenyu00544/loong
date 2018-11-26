@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
-
-    <View
-        android:id="@+id/view55"
-        android:layout_width="wrap_content"
-        android:layout_height="10dp"
-        android:background="@color/gray_d"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="@drawable/order_head_border">
 
     <TextView
         android:id="@+id/textView192"
@@ -26,17 +17,18 @@
         android:text="@string/order_id"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view55" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView193"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView192"
+        app:layout_constraintEnd_toStartOf="@+id/textView194"
         app:layout_constraintStart_toEndOf="@+id/textView192"
         app:layout_constraintTop_toTopOf="@+id/textView192" />
 
@@ -55,7 +47,7 @@
     <View
         android:id="@+id/view53"
         android:layout_width="wrap_content"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/gray_d"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

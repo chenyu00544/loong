@@ -11,7 +11,6 @@ import android.support.transition.TransitionManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,12 +21,21 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
+import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderListFooterUnpayedItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderListGoodsItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderListItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderNoDataItem;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.OrderItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -49,12 +57,11 @@ public class OrderListActivity extends BaseActivity {
     private ConstraintLayout cly;
 
     private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter;
-    private List<OrderDetail> orders;
+    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
+    ;
+    private List<OrderDetail> orders = new ArrayList<>();
     private GridLayoutManager mLayoutManager;
-
-    private View noDataView;
-    private View haveDataView;
+    private OrderItemDecoration spaces;
 
     private int type = 0;
     private int page = 1;
@@ -79,8 +86,7 @@ public class OrderListActivity extends BaseActivity {
         super.setNavBack();
         int gravity = Gravity.CENTER;
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout
-                .LayoutParams.WRAP_CONTENT, LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                .LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         TextView titleView = new TextView(this);
         titleView.setLayoutParams(layoutParams);
         titleView.setGravity(gravity);
@@ -96,8 +102,7 @@ public class OrderListActivity extends BaseActivity {
         nav_other.setAlpha(0);
 
         LinearLayout.LayoutParams layoutParams3 = new LinearLayout.LayoutParams(LinearLayout
-                .LayoutParams.WRAP_CONTENT, LinearLayout
-                .LayoutParams.WRAP_CONTENT);
+                .LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         LinearLayout title_wrap = findViewById(R.id.title_wrap);
         title_wrap.setAlpha(1);
         title_wrap.setLayoutParams(layoutParams3);
@@ -105,7 +110,6 @@ public class OrderListActivity extends BaseActivity {
     }
 
     public void initView() {
-        orders = new ArrayList<>();
         line = findViewById(R.id.view26);
         tv1 = findViewById(R.id.textView74);
         tv2 = findViewById(R.id.textView75);
@@ -115,52 +119,78 @@ public class OrderListActivity extends BaseActivity {
 
         Intent intent = getIntent();
         type = intent.getIntExtra("type", 1);
-        getData(type);
+        getData(type, true);
         setTypeStyle(type);
+
+        mRecyclerView = findViewById(R.id.order_content);
+        mLayoutManager = new GridLayoutManager(context, 1);
+        spaces = new OrderItemDecoration(context);
+        mRecyclerView.addItemDecoration(spaces);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+        refreshLayout = findViewById(R.id.order_wrap);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                getData(type, false);
+                refreshLayout.finishRefresh(10000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                loadmore();
+                refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
+            }
+        });
     }
 
     public void initListener() {
         tv1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getData(1);
+                getData(1, true);
                 setTypeStyle(1);
             }
         });
         tv2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getData(2);
+                getData(2, true);
                 setTypeStyle(2);
             }
         });
         tv3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getData(3);
+                getData(3, true);
                 setTypeStyle(3);
             }
         });
         tv4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getData(4);
+                getData(4, true);
                 setTypeStyle(4);
             }
         });
         tv5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getData(5);
+                getData(5, true);
                 setTypeStyle(5);
             }
         });
     }
 
-    public void getData(int type) {
+    public void getData(int type, final boolean bool) {
+        page = 1;
         this.type = type;
-        loadingDialog = new LoadingDialog(this, R.style.TransparentDialog);
-        loadingDialog.show();
+        if (bool) {
+            loadingDialog = new LoadingDialog(this, R.style.TransparentDialog);
+            loadingDialog.show();
+        }
         HashMap<String, String> mp = new HashMap<>();
         mp.put("page", page + "");
         mp.put("token", token);
@@ -171,7 +201,12 @@ public class OrderListActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        loadingDialog.dismiss();
+                        if (bool) {
+                            loadingDialog.dismiss();
+                        }
+                        if (refreshLayout != null) {
+                            refreshLayout.finishRefresh();
+                        }
                         bindViewData(json);
                     }
                 });
@@ -182,54 +217,42 @@ public class OrderListActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        loadingDialog.dismiss();
-                        setNoDateByView();
+                        if (bool) {
+                            loadingDialog.dismiss();
+                        }
+                        if (refreshLayout != null) {
+                            refreshLayout.finishRefresh();
+                        }
                     }
                 });
             }
         });
-
-//        orders.clear();
-//        for (int i = 0; i < 5; i++) {
-//            OrderListBean order = new OrderListBean();
-//            order.setIsType(2);
-//            order.setStoreName("store_name" + i);
-//            orders.add(order);
-//            for (int j = 0; j < 3; j++) {
-//                order = new OrderListBean();
-//                order.setIsType(1);
-//                order.setGoodsName("goods_name" + j);
-//                orders.add(order);
-//            }
-//            order = new OrderListBean();
-//            if (type == 1) {
-//                Random random = new Random();
-//                int k = random.nextInt(6);
-//                if (k == 2) {
-//                    order.setIsType(3);
-//                    order.setPriceTotal("$19" + i + ".00");
-//                } else if (k == 0 || k == 1) {
-//                    order.setIsType(4);
-//                } else {
-//                    order.setIsType(k);
-//                }
-//            } else if (type == 2) {
-//                order.setIsType(3);
-//                order.setPriceTotal("$19" + i + ".00");
-//            } else if (type == 3 || type == 4) {
-//                order.setIsType(4);
-//            } else if (type == 5) {
-//                order.setIsType(5);
-//            }
-//            orders.add(order);
-//        }
     }
 
     public void bindViewData(JSONObject json) {
-        if (orders.size() != 0) {
-            setHaveDataByView();
-        } else {
-            setNoDateByView();
+        if (json != null) {
+            mAdapter.clear();
+            orders.clear();
+            try {
+                Integer code = json.getInt("code");
+                if (code == 0) {
+                    JSONArray orderJSONArray = json.getJSONArray("data");
+                    for (int i = 0; i < orderJSONArray.length(); i++) {
+                        JSONObject object = (JSONObject) orderJSONArray.get(i);
+                        OrderDetail orderDetail = JsonUtils.fromJsonObject(object, OrderDetail
+                                .class);
+                        orderDetail.setData(object);
+                        orders.add(orderDetail);
+                    }
+                    mAdapter.addAll(getItems(orders));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -245,8 +268,10 @@ public class OrderListActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        loadingDialog.dismiss();
-                        bindViewData(json);
+                        bindViewMoreData(json);
+                        if (refreshLayout != null) {
+                            refreshLayout.finishLoadMore();
+                        }
                     }
                 });
             }
@@ -256,14 +281,98 @@ public class OrderListActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        loadingDialog.dismiss();
-                        setNoDateByView();
+                        if (refreshLayout != null) {
+                            refreshLayout.finishLoadMore();
+                        }
                     }
                 });
             }
         });
     }
 
+    public void bindViewMoreData(JSONObject json) {
+        if (json != null) {
+            try {
+                Integer code = json.getInt("code");
+                if (code == 0) {
+                    List<OrderDetail> _orders = new ArrayList<>();
+                    JSONArray orderJSONArray = json.getJSONArray("data");
+                    for (int i = 0; i < orderJSONArray.length(); i++) {
+                        JSONObject object = (JSONObject) orderJSONArray.get(i);
+                        OrderDetail orderDetail = JsonUtils.fromJsonObject(object, OrderDetail
+                                .class);
+                        orderDetail.setData(object);
+                        _orders.add(orderDetail);
+                    }
+                    mAdapter.addAll(_orders.size(), getItems(_orders));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected List<Item> getItems(List<OrderDetail> orderList) {
+        List<Item> cells = new ArrayList<>();
+        if (orders.size() > 0) {
+            for (int i = 0; i < orderList.size(); i++) {
+                OrderListItem orderListItem = new OrderListItem(orderList.get(i), context);
+                cells.add(orderListItem);
+
+
+//                //设置头部
+//                decoration.add(ConstantManager.Item.HEADER);
+//                cells.add(new OrderListHeaderItem(orderList.get(i), context));
+//
+//                //设置中间商品
+//                for (int j = 0; j < orderList.get(i).getOrderGoodses().size(); j++) {
+//                    decoration.add(ConstantManager.Item.ITEMS);
+//                    OrderListGoodsItem orderListGoodsItem = new OrderListGoodsItem(orderList.get
+//                            (i).getOrderGoodses().get(j), context);
+//                    orderListGoodsItem.setOnItemClickListener(orderGoodsListener);
+//                    cells.add(orderListGoodsItem);
+//                }
+//
+//                //设置尾部
+//                decoration.add(ConstantManager.Item.FOOTER);
+//                if (orderList.get(i).getPay_status() == 0 && orderList.get(i).getShipping_status
+//                        () == 0) {
+//                    OrderListFooterUnpayedItem orderListFooterUnpayedItem = new
+//                            OrderListFooterUnpayedItem(orderList.get(i), context);
+//                    orderListFooterUnpayedItem.setOnItemClickListener(unpayedOrderListener);
+//                    cells.add(orderListFooterUnpayedItem);
+//                } else if (orderList.get(i).getPay_status() == 2 && orderList.get(i)
+//                        .getShipping_status() == 0) {
+//                    OrderListFooterUnshipItem orderListFooterUnshipItem = new
+//                            OrderListFooterUnshipItem(orderList.get(i), context);
+//                    cells.add(orderListFooterUnshipItem);
+//                } else if (orderList.get(i).getPay_status() == 2 && orderList.get(i)
+//                        .getShipping_status() == 1) {
+//                    OrderListFooterShippedItem orderListFooterShippedItem = new
+//                            OrderListFooterShippedItem(orderList.get(i), context);
+//                    cells.add(orderListFooterShippedItem);
+//                } else if (orderList.get(i).getPay_status() == 2 && orderList.get(i)
+//                        .getShipping_status() == 2) {
+//                    OrderListFooterUnCommentItem orderListFooterUnCommentItem = new
+//                            OrderListFooterUnCommentItem(orderList.get(i), context);
+//                    cells.add(orderListFooterUnCommentItem);
+//                } else if (orderList.get(i).getOrder_status() == 4) {
+//                    OrderListFooterReturnItem orderListFooterUnpayedItem = new
+//                            OrderListFooterReturnItem(orderList.get(i), context);
+//                    cells.add(orderListFooterUnpayedItem);
+//                }
+            }
+        } else {
+            cells.add(new OrderNoDataItem(null, context));
+        }
+        return cells;
+    }
+
+    //订单类型样式
     public void setTypeStyle(int type) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(cly);
@@ -301,62 +410,75 @@ public class OrderListActivity extends BaseActivity {
         set.applyTo(cly);
     }
 
-    public void setNoDateByView() {
-        cly.removeView(haveDataView);
-        noDataView = LayoutInflater.from(this).inflate(R.layout.order_content_no_data,
-                null);
-        if (findViewById(R.id.no_data) == null) {
-            cly.addView(noDataView);
-        }
-        set.connect(noDataView.getId(), ConstraintSet.TOP, tv1.getId(), ConstraintSet.BOTTOM,
-                0);
-        set.connect(noDataView.getId(), ConstraintSet.LEFT, cly.getId(), ConstraintSet.LEFT, 0);
-        set.connect(noDataView.getId(), ConstraintSet.RIGHT, cly.getId(), ConstraintSet
-                .RIGHT, 0);
-        set.connect(noDataView.getId(), ConstraintSet.BOTTOM, cly.getId(), ConstraintSet
-                .BOTTOM, 0);
-        set.applyTo(cly);
+    //取消订单
+    public void cancelOrder(final int order_pos) {
+        final OrderDetail orderDetail = orders.get(order_pos);
+        orders.remove(order_pos);
+        mAdapter.remove(order_pos);
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("order_id", orderDetail.getOrder_id_str());
+        HttpUtils.getInstance().post(ConstantManager.Url.CANCEL_ORDER, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        orders.remove(order_pos);
+                        mAdapter.remove(order_pos, orderDetail.getOrderGoodses().size() + 2);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
+        System.out.println(order_pos);
     }
 
-    public void setHaveDataByView() {
-        cly.removeView(noDataView);
-        haveDataView = LayoutInflater.from(this).inflate(R.layout
-                .order_content_have_data, null);
-
-        if (findViewById(R.id.have_data) == null) {
-            cly.addView(haveDataView);
-            set.connect(haveDataView.getId(), ConstraintSet.TOP, tv1.getId(), ConstraintSet
-                    .BOTTOM, 4);
-            set.connect(haveDataView.getId(), ConstraintSet.LEFT, cly.getId(), ConstraintSet
-                    .LEFT, 0);
-            set.connect(haveDataView.getId(), ConstraintSet.RIGHT, cly.getId(), ConstraintSet
-                    .RIGHT, 0);
-            set.connect(haveDataView.getId(), ConstraintSet.BOTTOM, cly.getId(), ConstraintSet
-                    .BOTTOM, 0);
-            set.applyTo(cly);
-            mRecyclerView = haveDataView.findViewById(R.id.order_content);
-            mAdapter = new CYCSimpleAdapter();
-            mLayoutManager = new GridLayoutManager(context, 1);
-            OrderItemDecoration spaces = new OrderItemDecoration(context, orders);
-            mRecyclerView.addItemDecoration(spaces);
-            mRecyclerView.setLayoutManager(mLayoutManager);
-            mRecyclerView.setAdapter(mAdapter);
-
-            refreshLayout = (RefreshLayout) haveDataView;
-            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-                @Override
-                public void onRefresh(RefreshLayout refreshLayout) {
-                    refreshLayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
-                }
-            });
-            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-                @Override
-                public void onLoadMore(RefreshLayout refreshLayout) {
-                    refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
-                }
-            });
-        } else {
-            mAdapter.notifyDataSetChanged();
+    public Integer getOrderIndex(int pos) {
+        int p = 0;
+        for (int i = 0; i < orders.size(); i++) {
+            p += 1;
+            p += orders.get(i).getOrderGoodses().size();
+            if (pos == p) {
+                return i;
+            }
+            p += 1;
         }
+        return 0;
     }
+
+    OrderListGoodsItem.OnClickListener orderGoodsListener = new OrderListGoodsItem
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            //pos为goods_id
+            Intent intent = new Intent(OrderListActivity.this, GoodsDetailActivity.class);
+            intent.putExtra("id", pos);
+            startActivity(intent);
+        }
+    };
+
+    OrderListFooterUnpayedItem.OnClickListener unpayedOrderListener = new
+            OrderListFooterUnpayedItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            switch (view.getId()) {
+                case R.id.textView91://取消订单
+                    cancelOrder(getOrderIndex(pos));
+                    break;
+                case R.id.textView95://支付订单
+                    break;
+            }
+        }
+    };
 }

@@ -88,12 +88,13 @@ public interface ConstantManager {
         public int ITEMS_7 = 6010;
         public int BANNER = 6011;
         public int ITEMHEADER = 6012;
+        public int ITEMFOOTER = 6013;
 
-        public int ADDGOODSNUM = 6013;
-        public int SUBGOODSNUM = 6014;
-        public int CHECKBOXONCE = 6015;
-        public int CHECKBOXSUBALL = 6016;
-        public int CHECKBOXALL = 6017;
+        public int ADDGOODSNUM = 6014;
+        public int SUBGOODSNUM = 6015;
+        public int CHECKBOXONCE = 6016;
+        public int CHECKBOXSUBALL = 6017;
+        public int CHECKBOXALL = 6018;
     }
 
     interface Url {
@@ -141,5 +142,6 @@ public interface ConstantManager {
         public String ORDERS = URIHOST + "app/order/index";
         public String GET_ORDER = URIHOST + "app/order/get";
         public String ADD_ORDER = URIHOST + "app/order/add";
+        public String CANCEL_ORDER = URIHOST + "app/order/cancel";
     }
 }

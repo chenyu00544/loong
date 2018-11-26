@@ -10,10 +10,12 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 
-public class OrderIdItem extends BaseItem<OrderDetail> {
-    public static final int TYPE = R.layout.order_details_goods_header_item;
+import java.util.Locale;
 
-    public OrderIdItem(OrderDetail bean, Context c) {
+public class OrderListFooterUnpayedItem extends BaseItem<OrderDetail> {
+    public static final int TYPE = R.layout.order_content_have_data_buttom_item;
+
+    public OrderListFooterUnpayedItem(OrderDetail bean, Context c) {
         super(bean, c);
     }
 
@@ -31,9 +33,15 @@ public class OrderIdItem extends BaseItem<OrderDetail> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView tv1 = holder.getTextView(R.id.textView193);
-        TextView tv2 = holder.getTextView(R.id.textView194);
-        tv1.setText(mData.getOrder_id_str());
-        tv2.setText(mData.getAdd_time_date());
+        TextView tv = holder.get(R.id.textView93);
+        String str = "￥ %s";
+        tv.setText(String.format(Locale.CHINA, str, mData.getOrder_amount()));
+
+        TextView cancelOrder = holder.get(R.id.textView91);
+        TextView payOrder = holder.get(R.id.textView95);
+        posMap.put(cancelOrder.getId(), position);
+        posMap.put(payOrder.getId(), position);
+        cancelOrder.setOnClickListener(listener);
+        payOrder.setOnClickListener(listener);
     }
 }

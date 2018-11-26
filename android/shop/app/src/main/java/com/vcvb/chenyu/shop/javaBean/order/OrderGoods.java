@@ -11,7 +11,6 @@ public class OrderGoods {
     private String product_sn;
     private Integer o_goods_number;
 
-    private Integer current_time;
     private String goods_name;
     private String goods_sn;
 
@@ -40,6 +39,8 @@ public class OrderGoods {
     private String goods_attr;
     private String goods_attr_id;
     private String shipping_fee;
+
+    private Integer current_time;
 
     public Integer getRec_id() {
         return rec_id;
@@ -95,14 +96,6 @@ public class OrderGoods {
 
     public void setO_goods_number(Integer o_goods_number) {
         this.o_goods_number = o_goods_number;
-    }
-
-    public Integer getCurrent_time() {
-        return current_time;
-    }
-
-    public void setCurrent_time(Integer current_time) {
-        this.current_time = current_time;
     }
 
     public String getGoods_name() {
@@ -287,5 +280,13 @@ public class OrderGoods {
 
     public void setShipping_fee(String shipping_fee) {
         this.shipping_fee = shipping_fee;
+    }
+
+    public Integer getCurrent_time() {
+        return current_time;
+    }
+
+    public void setCurrent_time(Integer current_time) {
+        this.current_time = current_time;
     }
 }

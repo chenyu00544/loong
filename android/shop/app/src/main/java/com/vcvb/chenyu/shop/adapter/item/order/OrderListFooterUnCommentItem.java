@@ -10,10 +10,10 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 
-public class OrderIdItem extends BaseItem<OrderDetail> {
-    public static final int TYPE = R.layout.order_details_goods_header_item;
+public class OrderListFooterUnCommentItem extends BaseItem<OrderDetail> {
+    public static final int TYPE = R.layout.order_content_have_data_buttom4_item;
 
-    public OrderIdItem(OrderDetail bean, Context c) {
+    public OrderListFooterUnCommentItem(OrderDetail bean, Context c) {
         super(bean, c);
     }
 
@@ -31,9 +31,6 @@ public class OrderIdItem extends BaseItem<OrderDetail> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView tv1 = holder.getTextView(R.id.textView193);
-        TextView tv2 = holder.getTextView(R.id.textView194);
-        tv1.setText(mData.getOrder_id_str());
-        tv2.setText(mData.getAdd_time_date());
+
     }
 }

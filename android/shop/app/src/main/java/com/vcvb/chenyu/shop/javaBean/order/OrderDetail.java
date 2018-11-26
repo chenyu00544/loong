@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDetail {
-    private String order_id;
+    private String order_id_str;
     private String main_order_id;
     private String order_sn;
     private Integer user_id;
@@ -18,6 +18,7 @@ public class OrderDetail {
     private Integer pay_status;
     private Integer shipping_status;
     private Integer add_time;
+    private Integer current_time;
     private String shipping_fee;
     private String goods_amount;
     private String insure_fee;
@@ -32,12 +33,12 @@ public class OrderDetail {
     private List<OrderGoods> orderGoodses;
 
 
-    public String getOrder_id() {
-        return order_id;
+    public String getOrder_id_str() {
+        return order_id_str;
     }
 
-    public void setOrder_id(String order_id) {
-        this.order_id = order_id;
+    public void setOrder_id_str(String order_id_str) {
+        this.order_id_str = order_id_str;
     }
 
     public String getMain_order_id() {
@@ -190,6 +191,14 @@ public class OrderDetail {
 
     public void setOrderGoodses(List<OrderGoods> orderGoodses) {
         this.orderGoodses = orderGoodses;
+    }
+
+    public Integer getCurrent_time() {
+        return current_time;
+    }
+
+    public void setCurrent_time(Integer current_time) {
+        this.current_time = current_time;
     }
 
     public void setData(JSONObject json) {
