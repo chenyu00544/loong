@@ -111,7 +111,7 @@ class GoodsModel extends Model
             ->first();
     }
 
-    public function getGoodsByOrder($where, $column = ['*'])
+    public function getGoodsByOrder($where, $column = ['*'], $whereIn = [])
     {
         return $this->select($column)
             ->with(['gvp' => function ($query) {
@@ -125,10 +125,11 @@ class GoodsModel extends Model
                     }])
                     ->orderBy('attr_sort', 'DESC');
             }])
-            ->with(['goodsext' => function($query){
+            ->with(['goodsext' => function ($query) {
                 $query->select(['goods_id', 'is_reality', 'is_return', 'is_fast', 'extend_id']);
             }])
             ->where($where)
+            ->whereIn('goods_id', $whereIn)
             ->get();
     }
 }

@@ -25,8 +25,12 @@ class ProductsModel extends Model
 
     public function getProdcutAndAttr($ids, $column = ['*'], $where = [])
     {
-        sort($ids);
-        $gids = implode('|', $ids);
+        if(is_array($ids)){
+            sort($ids);
+            $gids = implode('|', $ids);
+        }else{
+            $gids = $ids;
+        }
         return $this->select($column)
             ->with(['attrs' => function ($query) use ($ids) {
                 $query->whereIn('goods_attr_id', $ids);

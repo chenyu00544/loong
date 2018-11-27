@@ -10,13 +10,18 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Http\Requests;
+use App\Http\Models\Shop\OrderInfoModel;
 
 class IndexController extends CommonController
 {
-    public function __construct()
+    private $infoModel;
+    public function __construct(
+        OrderInfoModel $infoModel
+    )
     {
         parent::__construct();
         $this->setConfCache();
+        $this->infoModel = $infoModel;
     }
 
     public function index()
@@ -28,7 +33,6 @@ class IndexController extends CommonController
 
     public function info()
     {
-        echo ADMIN_PATH;
         return view('shop.admin.info');
     }
 }

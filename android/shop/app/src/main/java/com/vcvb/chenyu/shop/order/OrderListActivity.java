@@ -414,7 +414,37 @@ public class OrderListActivity extends BaseActivity {
                 });
             }
         });
-        System.out.println(position);
+    }
+
+    // fixme 再次购买
+
+    public void buyAgain(){
+        final OrderDetail orderDetail = orders.get(position);
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("froms", "android");
+        mp.put("order_id", orderDetail.getOrder_id_str());
+        HttpUtils.getInstance().post(ConstantManager.Url.ADD_ORDER, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println(json);
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
     }
 
     OrderListItem.OnClickListener orderListListener = new OrderListItem
@@ -430,7 +460,7 @@ public class OrderListActivity extends BaseActivity {
                     confirmDialog.show();
                     break;
                 case R.id.buy_again://再次购买
-                    System.out.println("再次购买");
+                    buyAgain();
                     break;
                 case R.id.after_sale://售后
                     System.out.println("售后");

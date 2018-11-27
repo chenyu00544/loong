@@ -84,7 +84,10 @@ class OrderInfoModel extends Model
 
     public function setOrderInfo($where = [], $data, $whereIn = [])
     {
-        $m = $this->where($where);
+        $m = $this;
+        if(!empty($where)){
+            $m->where($where);
+        }
         if (!empty($whereIn)) {
             $m->whereIn('order_id', $whereIn);
         }
