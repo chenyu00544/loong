@@ -67,6 +67,9 @@ class OrderRepository implements OrderRepositoryInterface
                         [['order_status', '<>', OS_CANCELED]],
                         [['order_status', '<>', OS_INVALID]],
                     ];
+                    $order_where = [
+                        ['user_id', '=', $uid],
+                    ];
                     break;
                 case 2:
                     //待付款
@@ -112,6 +115,9 @@ class OrderRepository implements OrderRepositoryInterface
                         [['order_status', '<>', OS_CANCELED]],
                         [['order_status', '<>', OS_INVALID]],
                     ];
+                    $order_where = [
+                        ['user_id', '=', $uid],
+                    ];
             }
         }
         $res = $this->orderInfoModel->getOrders($order_where, $order_orwhere, $page, ['*']);
@@ -119,7 +125,7 @@ class OrderRepository implements OrderRepositoryInterface
             $re->add_time_date = date('Y-m-d', $re->add_time);
             $re->current_time = time();
             $re->order_id_str = (string)$re->order_id;
-            foreach ($re->OrderGoods as $order_goods) {
+            foreach ($re->orderGoods as $order_goods) {
                 $order_goods->goods_thumb = FileHandle::getImgByOssUrl($order_goods->Goods->goods_thumb);
                 $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);
                 $order_goods->original_img = FileHandle::getImgByOssUrl($order_goods->Goods->original_img);

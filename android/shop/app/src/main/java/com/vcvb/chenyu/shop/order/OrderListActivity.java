@@ -389,7 +389,7 @@ public class OrderListActivity extends BaseActivity {
         final OrderDetail orderDetail = orders.get(position);
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
-//        mp.put("order_status", "2");
+        mp.put("order_status", "2");
         mp.put("order_id", orderDetail.getOrder_id_str());
         HttpUtils.getInstance().post(ConstantManager.Url.CANCEL_ORDER, mp, new HttpUtils.NetCall() {
             @Override
@@ -423,25 +423,26 @@ public class OrderListActivity extends BaseActivity {
         public void onClicked(View view, int pos) {
             position = pos;
             switch (view.getId()) {
-                case R.id.now_pay://立即购买
+                case R.id.now_pay://立即支付
+                    System.out.println("立即支付");
                     break;
                 case R.id.cancel_order://取消购买
                     confirmDialog.show();
                     break;
                 case R.id.buy_again://再次购买
-
+                    System.out.println("再次购买");
                     break;
                 case R.id.after_sale://售后
-
+                    System.out.println("售后");
                     break;
                 case R.id.look_express://查看物流
-
+                    System.out.println("查看物流");
                     break;
                 case R.id.take_goods://确认收货
-
+                    System.out.println("确认收货");
                     break;
                 case R.id.evaluate://评价
-
+                    System.out.println("评价");
                     break;
                 default:
 

@@ -634,7 +634,7 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     //检查账号是否已认证
     public void checkUserForReal() {
-        if (is_real == null && is_real.equals("0")) {
+        if (is_real != null && is_real.equals("0")) {
             HashMap<String, String> _mp = new HashMap<>();
             _mp.put("token", token);
             HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, _mp, new HttpUtils

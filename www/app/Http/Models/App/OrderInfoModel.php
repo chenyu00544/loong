@@ -18,7 +18,7 @@ class OrderInfoModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function OrderGoods()
+    public function orderGoods()
     {
         return $this->hasMany('App\Http\Models\App\OrderGoodsModel', 'order_id', 'order_id');
     }
@@ -26,7 +26,7 @@ class OrderInfoModel extends Model
     public function getOrders($where, $orWhere=[], $page = 0, $column = ['*'], $size = 10)
     {
         $m = $this->select($column)
-            ->with(['OrderGoods' => function ($query) {
+            ->with(['orderGoods' => function ($query) {
                 $query->select(['*'])
                     ->with(['Goods'])
                     ->get();
@@ -45,7 +45,7 @@ class OrderInfoModel extends Model
     public function getOrder($where, $column = ['*'], $whereIn = [])
     {
         $m = $this->select($column)
-            ->with(['OrderGoods' => function ($query) {
+            ->with(['orderGoods' => function ($query) {
                 $query->select(['*'])
                     ->with(['Goods'])
                     ->get();

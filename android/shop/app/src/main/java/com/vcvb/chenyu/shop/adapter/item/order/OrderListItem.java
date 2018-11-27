@@ -48,11 +48,21 @@ public class OrderListItem extends BaseItem<OrderDetail> {
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
         View wrap = holder.get(R.id.order_wrap);
+        cly.removeAllViews();
 
-        View header = holder.get(R.id.order_title);
+        View header = LayoutInflater.from(context).inflate(R.layout
+                .order_content_have_data_header_item, null);
+        cly.addView(header);
+        set.constrainHeight(header.getId(), ToolUtils.dip2px(context, 40));
+        set.connect(header.getId(), ConstraintSet.TOP, wrap.getId(), ConstraintSet
+                .TOP, 0);
+        set.connect(header.getId(), ConstraintSet.LEFT, wrap.getId(), ConstraintSet
+                .LEFT, 0);
+        set.connect(header.getId(), ConstraintSet.RIGHT, wrap.getId(), ConstraintSet
+                .RIGHT, 0);
+
         TextView orderSn = header.findViewById(R.id.textView193);
         orderSn.setText(mData.getOrder_sn());
-
         TextView addTime = header.findViewById(R.id.textView194);
         addTime.setText(mData.getAdd_time_date());
 
@@ -72,6 +82,7 @@ public class OrderListItem extends BaseItem<OrderDetail> {
                     .RIGHT, 0);
             view_id = og.getId();
             cly.addView(og);
+
 
             ImageView iv = og.findViewById(R.id.imageView41);
             RequestOptions requestOptions = RequestOptions.centerCropTransform().placeholder(R
@@ -133,9 +144,9 @@ public class OrderListItem extends BaseItem<OrderDetail> {
         } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 1) {
             foot = LayoutInflater.from(context).inflate(R.layout
                     .order_content_have_data_buttom3_item, null);
-            TextView buy_again = foot.findViewById(R.id.buy_again);
-            posMap.put(buy_again.getId(), position);
-            buy_again.setOnClickListener(listener);
+            TextView after_sale = foot.findViewById(R.id.after_sale);
+            posMap.put(after_sale.getId(), position);
+            after_sale.setOnClickListener(listener);
             TextView look_express = foot.findViewById(R.id.look_express);
             posMap.put(look_express.getId(), position);
             look_express.setOnClickListener(listener);
@@ -145,9 +156,9 @@ public class OrderListItem extends BaseItem<OrderDetail> {
         } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 2) {
             foot = LayoutInflater.from(context).inflate(R.layout
                     .order_content_have_data_buttom4_item, null);
-            TextView sale_after = foot.findViewById(R.id.sale_after);
-            posMap.put(sale_after.getId(), position);
-            sale_after.setOnClickListener(listener);
+            TextView after_sale = foot.findViewById(R.id.after_sale);
+            posMap.put(after_sale.getId(), position);
+            after_sale.setOnClickListener(listener);
             TextView buy_again = foot.findViewById(R.id.buy_again);
             posMap.put(buy_again.getId(), position);
             buy_again.setOnClickListener(listener);
