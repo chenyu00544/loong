@@ -33,7 +33,7 @@ public class OrderIdItem extends BaseItem<OrderDetail> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv1 = holder.getTextView(R.id.textView193);
         TextView tv2 = holder.getTextView(R.id.textView194);
-        tv1.setText(mData.getOrder_id_str());
+        tv1.setText(mData.getOrder_sn());
         tv2.setText(mData.getAdd_time_date());
     }
 }

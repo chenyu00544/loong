@@ -9,8 +9,8 @@
     <View
         android:id="@+id/view52"
         android:layout_width="wrap_content"
-        android:layout_height="10dp"
-        android:background="@color/gray_d"
+        android:layout_height="5dp"
+        android:background="@color/gray_f5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,7 +72,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="8dp"
-        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="@+id/textView197"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -85,12 +84,23 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="@+id/textView198"
         app:layout_constraintEnd_toEndOf="@+id/textView201"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView198"
         app:layout_constraintTop_toTopOf="@+id/textView198" />
+
+    <TextView
+        android:id="@+id/textView245"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView244"
+        app:layout_constraintEnd_toEndOf="@+id/textView203"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/textView244"
+        app:layout_constraintTop_toTopOf="@+id/textView244" />
 
     <TextView
         android:id="@+id/textView203"
@@ -117,17 +127,5 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView200"
         app:layout_constraintTop_toTopOf="@+id/textView200" />
-
-    <TextView
-        android:id="@+id/textView245"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView244"
-        app:layout_constraintEnd_toEndOf="@+id/textView203"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textView244"
-        app:layout_constraintTop_toTopOf="@+id/textView244" />
 
 </android.support.constraint.ConstraintLayout>

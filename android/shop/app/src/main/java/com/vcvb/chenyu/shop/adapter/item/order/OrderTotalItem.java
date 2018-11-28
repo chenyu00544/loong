@@ -36,8 +36,8 @@ public class OrderTotalItem extends BaseItem<List<OrderDetail>> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv1 = holder.getTextView(R.id.textView201);
         TextView tv2 = holder.getTextView(R.id.textView202);
-        TextView tv3 = holder.getTextView(R.id.textView203);
-        TextView tv4 = holder.getTextView(R.id.textView245);
+        TextView tv3 = holder.getTextView(R.id.textView245);
+        TextView tv4 = holder.getTextView(R.id.textView203);
         TextView tv5 = holder.getTextView(R.id.textView204);
 
         Double goods_amount = 0.0;
@@ -51,18 +51,17 @@ public class OrderTotalItem extends BaseItem<List<OrderDetail>> {
             shipping_fee += Double.valueOf(mData.get(i).getShipping_fee());
             tax += Double.valueOf(mData.get(i).getTax());
             discount += Double.valueOf(mData.get(i).getDiscount());
-            pay_total += goods_amount+shipping_fee+tax-discount;
         }
-
-        String goods_amount_str = "￥%f";
+        pay_total += goods_amount+shipping_fee+tax-discount;
+        String goods_amount_str = "￥%.2f";
         tv1.setText(String.format(Locale.CHINA, goods_amount_str, goods_amount));
-        String shipping_fee_str = "+ ￥%f";
+        String shipping_fee_str = "+ ￥%.2f";
         tv2.setText(String.format(Locale.CHINA, shipping_fee_str, shipping_fee));
-        String tax_str = "+ ￥%f";
+        String tax_str = "+ ￥%.2f";
         tv3.setText(String.format(Locale.CHINA, tax_str, tax));
-        String discount_str = "- ￥%f";
+        String discount_str = "- ￥%.2f";
         tv4.setText(String.format(Locale.CHINA, discount_str, discount));
-        String pay_total_str = "￥%f";
+        String pay_total_str = "￥%.2f";
         tv5.setText(String.format(Locale.CHINA, pay_total_str, pay_total));
     }
 }

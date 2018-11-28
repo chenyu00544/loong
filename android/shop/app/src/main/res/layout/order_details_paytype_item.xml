@@ -9,8 +9,8 @@
     <View
         android:id="@+id/view51"
         android:layout_width="wrap_content"
-        android:layout_height="10dp"
-        android:background="@color/gray_d"
+        android:layout_height="5dp"
+        android:background="@color/gray_f5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

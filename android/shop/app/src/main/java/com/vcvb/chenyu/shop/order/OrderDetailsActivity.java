@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
 
@@ -44,7 +45,10 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
     private List<Pay> pays = new ArrayList<>();
     private List<AddressBean> addresses = new ArrayList<>();
 
+    private TextView payTotalView;
+
     private String orderId = "";
+    private Double pay_total = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,8 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        payTotalView = findViewById(R.id.textView206);
     }
 
     @Override
@@ -87,6 +93,7 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
         }
         HashMap<String, String> mp = new HashMap<>();
         mp.put("order_id", orderId);
+//        mp.put("order_id", "117,118");
         mp.put("token", token);
         HttpUtils.getInstance().post(ConstantManager.Url.GET_ORDER, mp, new HttpUtils.NetCall() {
             @Override
@@ -172,6 +179,11 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
             }
         }
 
+        Double goods_amount = 0.0;
+        Double shipping_fee = 0.0;
+        Double tax = 0.0;
+        Double discount = 0.0;
+        pay_total = 0.0;
         for (int i = 0; i < orderDetails.size(); i++) {
             OrderIdItem orderIdItem = new OrderIdItem(orderDetails.get(i), context);
             cells.add(orderIdItem);
@@ -180,8 +192,14 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
                 OrderGoodsItem orderGoodsItem = new OrderGoodsItem(orderGoodsList.get(j), context);
                 cells.add(orderGoodsItem);
             }
+            goods_amount += Double.valueOf(orderDetails.get(i).getGoods_amount());
+            shipping_fee += Double.valueOf(orderDetails.get(i).getShipping_fee());
+            tax += Double.valueOf(orderDetails.get(i).getTax());
+            discount += Double.valueOf(orderDetails.get(i).getDiscount());
         }
-
+        pay_total += goods_amount+shipping_fee+tax-discount;
+        String pay_total_str = "￥%.2f";
+        payTotalView.setText(String.format(Locale.CHINA, pay_total_str, pay_total));
         for (int i = 0; i < pays.size(); i++) {
             if (pay_code != null && !pay_code.equals("")) {
                 if (pays.get(i).getPay_code().equals(pay_code)) {

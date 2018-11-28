@@ -137,6 +137,7 @@ public class HttpUtils {
         //构造token
         Request.Builder requestBuilder = new Request.Builder();
         if (params != null) {
+            params.put("froms", "android");
             if (params.get("token") != null && !params.get("token").equals("")) {
                 //构造token
                 String token = params.get("token");

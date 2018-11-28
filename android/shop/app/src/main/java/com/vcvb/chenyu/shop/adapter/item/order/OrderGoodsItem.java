@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -43,12 +44,20 @@ public class OrderGoodsItem extends BaseItem<OrderGoods> {
 
         tv1.setText(mData.getGoods_name());
         tv2.setText(mData.getGoods_attr());
-        tv3.setText(mData.getShop_price_format());
+
+        if (mData.getIs_promote() == 1 && mData.getCurrent_time() < mData.getPromote_end_date()
+                && mData.getCurrent_time() > mData.getPromote_start_date()) {
+            tv3.setText(mData.getPromote_price_format());
+        } else {
+            tv3.setText(mData.getShop_price_format());
+        }
+
         tv4.setText(mData.getMarket_price_format());
         tv4.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         String str = "× %s";
         tv5.setText(String.format(str, mData.getO_goods_number()));
-
-        Glide.with(context).load(mData.getOriginal_img()).into(iv);
+        RequestOptions requestOptions = RequestOptions.centerCropTransform().placeholder(R
+                .drawable.icon_no_pic);
+        Glide.with(context).load(mData.getOriginal_img()).apply(requestOptions).into(iv);
     }
 }

@@ -1,6 +1,11 @@
 @extends('shop.layouts.index')
 @section('content')
-    <form class="form-horizontal" method="post" action="{{url('admin/login')}}">
+    <div id="mainBody" class="body">
+        <div id="cloud1" class="cloud" style="background-position: -720px 100px;"></div>
+        <div id="cloud2" class="cloud" style="background-position: 0px 460px;"></div>
+    </div>
+
+    <form class="form-horizontal login" method="post" action="{{url('admin/login')}}">
         {{csrf_field()}}
         <div class="container-fluid">
             <div class="form-group">
@@ -64,7 +69,21 @@
         $(function () {
             $('.captcha-login').on('click', function () {
                 $(this).attr('src', "{{url('api/web/captcha/')}}/" + Math.random());
-            })
+            });
+            var p1 = -720.0;
+            var p2 = 0.0;
+            setInterval(function () {
+                if (p1 > 1000) {
+                    p1 = -720;
+                }
+                if (p2 > 1000) {
+                    p2 = -720;
+                }
+                p1 += 0.1;
+                p2 += 0.1;
+                $('#cloud1').css('background-position', p1 + 'px 100px');
+                $('#cloud2').css('background-position', p2 + 'px 460px');
+            }, 10);
         });
     </script>
 @endsection

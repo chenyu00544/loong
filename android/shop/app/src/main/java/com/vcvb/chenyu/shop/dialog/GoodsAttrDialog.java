@@ -37,6 +37,7 @@ import com.vcvb.chenyu.shop.tools.ToolUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 @SuppressLint("ValidFragment")
 public class GoodsAttrDialog extends DialogFragment {
@@ -271,7 +272,7 @@ public class GoodsAttrDialog extends DialogFragment {
                             outAttr.put("num", num);
                         }
                     }
-                    ((TextView) v.findViewById(R.id.textView181)).setText(num);
+                    ((TextView) v.findViewById(R.id.textView181)).setText(String.format(Locale.CANADA,"%d", num));
                     break;
                 case R.id.imageView84:
                     if (outAttr.get("num") != null && (int) outAttr.get("num") > 1) {
@@ -281,7 +282,7 @@ public class GoodsAttrDialog extends DialogFragment {
                         num = 1;
                         outAttr.put("num", 1);
                     }
-                    ((TextView) v.findViewById(R.id.textView181)).setText(num);
+                    ((TextView) v.findViewById(R.id.textView181)).setText(String.format(Locale.CANADA,"%d", num));
                     break;
             }
         }

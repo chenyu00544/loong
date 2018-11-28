@@ -31,7 +31,9 @@ import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -417,21 +419,41 @@ public class OrderListActivity extends BaseActivity {
     }
 
     // fixme 再次购买
-    public void buyAgain(){
+    public void buyAgain() {
         final OrderDetail orderDetail = orders.get(position);
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
-        mp.put("froms", "android");
         mp.put("order_id", orderDetail.getOrder_id_str());
         HttpUtils.getInstance().post(ConstantManager.Url.ADD_ORDER, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.println(json);
-                    }
-                });
+                if (json != null) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Integer code = json.getInt("code");
+                                if(code == 0){
+                                    try {
+                                        if (json.getInt("code") == 0) {
+                                            Intent intent = new Intent(context, OrderDetailsActivity.class);
+                                            JSONArray orderIds = json.getJSONObject("data").getJSONArray
+                                                    ("order");
+                                            intent.putExtra("order_id", StringUtils.join(orderIds, ","));
+                                            startActivity(intent);
+                                        } else {
+                                            ToastUtils.showShortToast(context, json.getString("msg"));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
             }
 
             @Override
@@ -446,6 +468,14 @@ public class OrderListActivity extends BaseActivity {
         });
     }
 
+    // fixme 立即支付
+    public void pay(){
+        OrderDetail orderDetail = orders.get(position);
+        Intent intent = new Intent(context, OrderDetailsActivity.class);
+        intent.putExtra("order_id", orderDetail.getOrder_id_str());
+        startActivity(intent);
+    }
+
     OrderListItem.OnClickListener orderListListener = new OrderListItem
             .OnClickListener() {
         @Override
@@ -453,7 +483,7 @@ public class OrderListActivity extends BaseActivity {
             position = pos;
             switch (view.getId()) {
                 case R.id.now_pay://立即支付
-                    System.out.println("立即支付");
+                    pay();
                     break;
                 case R.id.cancel_order://取消购买
                     confirmDialog.show();

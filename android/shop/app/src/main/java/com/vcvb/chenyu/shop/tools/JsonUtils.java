@@ -124,8 +124,11 @@ public class JsonUtils {
         //field.getType:获取属性声明时类型对象（返回class对象）
         switch (getType(field.getType())) {
             case 0:
-                System.out.println(obj.opt(field.getName()) == null);
-                return obj.opt(field.getName());
+                if(obj.isNull(field.getName())){
+                    return null;
+                }else{
+                    return obj.opt(field.getName());
+                }
             case 1:
                 return obj.optInt(field.getName());
             case 2:
