@@ -37,16 +37,11 @@ public class JsonUtils {
         if (type != null && (Boolean.TYPE.isAssignableFrom(type) || Boolean.class
                 .isAssignableFrom(type) || boolean.class.isAssignableFrom(type)))
             return 5;
-        if (type != null && type.isArray())
-            return 6;
-        if (type != null && Connection.class.isAssignableFrom(type))
-            return 7;
-        if (type != null && JSONArray.class.isAssignableFrom(type))
-            return 8;
-        if (type != null && List.class.isAssignableFrom(type))
-            return 9;
-        if (type != null && Map.class.isAssignableFrom(type))
-            return 10;
+        if (type != null && type.isArray()) return 6;
+        if (type != null && Connection.class.isAssignableFrom(type)) return 7;
+        if (type != null && JSONArray.class.isAssignableFrom(type)) return 8;
+        if (type != null && List.class.isAssignableFrom(type)) return 9;
+        if (type != null && Map.class.isAssignableFrom(type)) return 10;
         return 11;
     }
 
@@ -92,7 +87,8 @@ public class JsonUtils {
         return json.toString();
     }
 
-    public static <T> T fromJson(String JsonStr, Class<T> type) throws JSONException, NullPointerException, IllegalAccessException, InstantiationException {
+    public static <T> T fromJson(String JsonStr, Class<T> type) throws JSONException,
+            NullPointerException, IllegalAccessException, InstantiationException {
         if (JsonStr == null || JsonStr.equals("")) {
             throw new NullPointerException("JsonString can't be null");
         }
@@ -101,27 +97,34 @@ public class JsonUtils {
         JSONObject jsonObject = (JSONObject) new JSONTokener(JsonStr).nextValue();
         for (Field field : fields) {
             field.setAccessible(true);
-            field.set(data, JsonObjectToObject(jsonObject, field));
+            Object o = JsonObjectToObject(jsonObject, field);
+            if (o != null) {
+                field.set(data, o);
+            }
         }
         return data;
     }
 
-    public static <T> T fromJsonObject(JSONObject Json, Class<T> type) throws JSONException, NullPointerException, IllegalAccessException, InstantiationException {
+    public static <T> T fromJsonObject(JSONObject Json, Class<T> type) throws JSONException,
+            NullPointerException, IllegalAccessException, InstantiationException {
         T data = type.newInstance();
         Field[] fields = type.getDeclaredFields();
         JSONObject jsonObject = Json;
         for (Field field : fields) {
             field.setAccessible(true);
-            field.set(data, JsonObjectToObject(jsonObject, field));
+            Object o = JsonObjectToObject(jsonObject, field);
+            if (o != null) {
+                field.set(data, o);
+            }
         }
         return data;
     }
 
     public static Object JsonObjectToObject(JSONObject obj, Field field) throws JSONException {
         //field.getType:获取属性声明时类型对象（返回class对象）
-        switch (getType(field.getType()))
-        {
+        switch (getType(field.getType())) {
             case 0:
+                System.out.println(obj.opt(field.getName()) == null);
                 return obj.opt(field.getName());
             case 1:
                 return obj.optInt(field.getName());

@@ -346,7 +346,7 @@ public class OrderListActivity extends BaseActivity {
         return cells;
     }
 
-    //订单类型样式
+    // fixme 订单类型样式
     public void setTypeStyle(int type) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             TransitionManager.beginDelayedTransition(cly);
@@ -384,7 +384,7 @@ public class OrderListActivity extends BaseActivity {
         set.applyTo(cly);
     }
 
-    //取消订单
+    // fixme 取消订单
     public void cancelOrder() {
         final OrderDetail orderDetail = orders.get(position);
         HashMap<String, String> mp = new HashMap<>();
@@ -417,7 +417,6 @@ public class OrderListActivity extends BaseActivity {
     }
 
     // fixme 再次购买
-
     public void buyAgain(){
         final OrderDetail orderDetail = orders.get(position);
         HashMap<String, String> mp = new HashMap<>();
