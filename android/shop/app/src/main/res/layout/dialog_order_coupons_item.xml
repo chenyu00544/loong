@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pay"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/view72"
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_d"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView129"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/coupons_bg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/coupons_bg" />
+
+    <TextView
+        android:id="@+id/textView94"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="top"
+        android:textColor="@color/white"
+        android:textSize="70sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView129"
+        app:layout_constraintEnd_toEndOf="@+id/imageView129"
+        app:layout_constraintTop_toTopOf="@+id/imageView129"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView246"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/rmb"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/textView94"
+        app:layout_constraintTop_toTopOf="@+id/textView94" />
+
+    <TextView
+        android:id="@+id/textView247"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textSize="16sp"
+        android:text="@string/coupons"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/textView246"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView129"
+        app:layout_constraintTop_toTopOf="@+id/imageView129" />
+
+    <TextView
+        android:id="@+id/textView248"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView249"
+        app:layout_constraintEnd_toStartOf="@+id/textView246"
+        app:layout_constraintStart_toStartOf="@+id/textView247"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/textView249"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView129"
+        app:layout_constraintEnd_toEndOf="@+id/imageView129"
+        app:layout_constraintStart_toStartOf="@+id/textView248"
+        tools:ignore="SmallSp" />
+
+</android.support.constraint.ConstraintLayout>

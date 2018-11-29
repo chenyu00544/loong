@@ -24,9 +24,7 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsAddressItem;
-import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsNoAddressItem;
-import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
+import com.vcvb.chenyu.shop.adapter.item.dialog.OrderPayItem;
 import com.vcvb.chenyu.shop.javaBean.order.Pay;
 
 import java.util.ArrayList;
@@ -102,16 +100,10 @@ public class OrderPayDialog extends DialogFragment {
 
     protected List<Item> getItems(List<Pay> pay) {
         List<Item> cells = new ArrayList<>();
-        if (pay != null) {
-            for (int i = 0; i < pay.size(); i++) {
-                GoodsAddressItem goodsAddressItem = new GoodsAddressItem(pay.get(i), context);
-                goodsAddressItem.setOnItemClickListener(addresslistener);
-                cells.add(goodsAddressItem);
-            }
-        } else {
-            GoodsNoAddressItem goodsNoAddressItem = new GoodsNoAddressItem(null, context);
-            goodsNoAddressItem.setOnItemClickListener(noAddresslistener);
-            cells.add(goodsNoAddressItem);
+        for (int i = 0; i < pay.size(); i++) {
+            OrderPayItem orderPayItem = new OrderPayItem(pay.get(i), context);
+            orderPayItem.setOnItemClickListener(paylistener);
+            cells.add(orderPayItem);
         }
         return cells;
     }
@@ -120,17 +112,7 @@ public class OrderPayDialog extends DialogFragment {
         void onClicked(View view, int pos);
     }
 
-    GoodsNoAddressItem.OnClickListener noAddresslistener = new GoodsNoAddressItem.OnClickListener
-            () {
-        @Override
-        public void onClicked(View view, int pos) {
-            if (onClickListener != null) {
-                onClickListener.onClicked(view, pos);
-            }
-        }
-    };
-
-    GoodsAddressItem.OnClickListener addresslistener = new GoodsAddressItem.OnClickListener() {
+    OrderPayItem.OnClickListener paylistener = new OrderPayItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             if (onClickListener != null) {

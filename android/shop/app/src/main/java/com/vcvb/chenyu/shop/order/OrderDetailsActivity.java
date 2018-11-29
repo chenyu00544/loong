@@ -60,6 +60,8 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
 
     private String orderId = "";
     private Double pay_total = 0.0;
+    private Double coupons_money = 0.0;
+    private Double bonus_money = 0.0;
 
     private OrderAddressDialog orderAddressDialog;
     private OrderPayDialog orderPayDialog;
@@ -227,8 +229,7 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
             discount += Double.valueOf(orderDetails.get(i).getDiscount());
         }
         pay_total += goods_amount + shipping_fee + tax - discount;
-        String pay_total_str = "￥%.2f";
-        payTotalView.setText(String.format(Locale.CHINA, pay_total_str, pay_total));
+        payTotalView.setText(String.format(Locale.CHINA, "￥%.2f", pay_total));
         for (int i = 0; i < pays.size(); i++) {
             if (pay_code != null && !pay_code.equals("")) {
                 if (pays.get(i).getPay_code().equals(pay_code)) {
@@ -266,6 +267,16 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
         return cells;
     }
 
+    //fixme 合计
+    private void total() {
+        Double _pay_total = pay_total - coupons_money - bonus_money;
+        if (_pay_total < 0) {
+            _pay_total = 0.0;
+        }
+        payTotalView.setText(String.format(Locale.CHINA, "￥%.2f", _pay_total));
+        mAdapter.notifyDataSetChanged();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -292,11 +303,11 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
     OrderAddressItem.OnClickListener addressListener = new OrderAddressItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
-            if(view.getId() == R.id.textView91){
+            if (view.getId() == R.id.textView91) {
                 //前往添加地址
                 Intent intent = new Intent(OrderDetailsActivity.this, ModifyAddressActivity.class);
                 startActivityForResult(intent, ConstantManager.ResultStatus.ADD_ADDRESS_RESULT);
-            }else {
+            } else {
                 orderAddressDialog.show(getSupportFragmentManager(), "Address");
             }
         }
@@ -350,7 +361,15 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
             .OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
-            mAdapter.notifyDataSetChanged();
+            if (pays != null) {
+                for (int i = 0; i < pays.size(); i++) {
+                    pays.get(i).setDef(0);
+                    if (i == pos) {
+                        pays.get(i).setDef(1);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
             orderPayDialog.dismiss();
         }
     };
@@ -359,7 +378,16 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
             .OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
-            mAdapter.notifyDataSetChanged();
+            if (couponses != null) {
+                for (int i = 0; i < couponses.size(); i++) {
+                    couponses.get(i).setDef(0);
+                    if (i == pos) {
+                        couponses.get(i).setDef(1);
+                        coupons_money = Double.valueOf(couponses.get(i).getCou_money());
+                        total();
+                    }
+                }
+            }
             orderCouponsDialog.dismiss();
         }
     };
@@ -368,7 +396,16 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
             .OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
-            mAdapter.notifyDataSetChanged();
+            if (bonuses != null) {
+                for (int i = 0; i < bonuses.size(); i++) {
+                    bonuses.get(i).setDef(0);
+                    if (i == pos) {
+                        bonuses.get(i).setDef(1);
+                        bonus_money = Double.valueOf(bonuses.get(i).getType_money());
+                        total();
+                    }
+                }
+            }
             orderBonusDialog.dismiss();
         }
     };

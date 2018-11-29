@@ -24,9 +24,7 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsAddressItem;
-import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsNoAddressItem;
-import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
+import com.vcvb.chenyu.shop.adapter.item.dialog.OrderCouponsItem;
 import com.vcvb.chenyu.shop.javaBean.faat.Coupons;
 
 import java.util.ArrayList;
@@ -64,7 +62,7 @@ public class OrderCouponsDialog extends DialogFragment {
         v = inflater.inflate(R.layout.dialog_goods_faat, container);
         window = getDialog().getWindow();
         TextView tv = v.findViewById(R.id.textView230);
-        tv.setText(R.string.ship_to);
+        tv.setText(R.string.coupons);
         mRecyclerView = v.findViewById(R.id.faat_wrap);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -100,18 +98,12 @@ public class OrderCouponsDialog extends DialogFragment {
         }
     }
 
-    protected List<Item> getItems(List<AddressBean> address) {
+    protected List<Item> getItems(List<Coupons> coupons) {
         List<Item> cells = new ArrayList<>();
-        if (address != null) {
-            for (int i = 0; i < address.size(); i++) {
-                GoodsAddressItem goodsAddressItem = new GoodsAddressItem(address.get(i), context);
-                goodsAddressItem.setOnItemClickListener(addresslistener);
-                cells.add(goodsAddressItem);
-            }
-        } else {
-            GoodsNoAddressItem goodsNoAddressItem = new GoodsNoAddressItem(null, context);
-            goodsNoAddressItem.setOnItemClickListener(noAddresslistener);
-            cells.add(goodsNoAddressItem);
+        for (int i = 0; i < coupons.size(); i++) {
+            OrderCouponsItem orderCouponsItem = new OrderCouponsItem(coupons.get(i), context);
+            orderCouponsItem.setOnItemClickListener(couponslistener);
+            cells.add(orderCouponsItem);
         }
         return cells;
     }
@@ -120,17 +112,7 @@ public class OrderCouponsDialog extends DialogFragment {
         void onClicked(View view, int pos);
     }
 
-    GoodsNoAddressItem.OnClickListener noAddresslistener = new GoodsNoAddressItem.OnClickListener
-            () {
-        @Override
-        public void onClicked(View view, int pos) {
-            if (onClickListener != null) {
-                onClickListener.onClicked(view, pos);
-            }
-        }
-    };
-
-    GoodsAddressItem.OnClickListener addresslistener = new GoodsAddressItem.OnClickListener() {
+    OrderCouponsItem.OnClickListener couponslistener = new OrderCouponsItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             if (onClickListener != null) {

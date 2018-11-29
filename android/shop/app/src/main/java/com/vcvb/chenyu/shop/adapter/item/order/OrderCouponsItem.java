@@ -12,6 +12,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.faat.Coupons;
 
 import java.util.List;
+import java.util.Locale;
 
 public class OrderCouponsItem extends BaseItem<List<Coupons>> {
     public static final int TYPE = R.layout.order_details_coupons_item;
@@ -38,8 +39,8 @@ public class OrderCouponsItem extends BaseItem<List<Coupons>> {
         View v = holder.getItemView();
 
         for (int i = 0; i < mData.size(); i++) {
-            if(mData.get(i).getDef() == 1){
-                tv.setText(mData.get(i).getCou_money());
+            if (mData.get(i).getDef() == 1) {
+                tv.setText(String.format(Locale.CANADA, "-￥ %d", mData.get(i).getCou_money()));
             }
         }
         posMap.put(v.getId(), 1);

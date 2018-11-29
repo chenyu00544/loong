@@ -25,8 +25,6 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsAddressItem;
-import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsNoAddressItem;
-import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
 import com.vcvb.chenyu.shop.javaBean.faat.Bonus;
 
 import java.util.ArrayList;
@@ -100,18 +98,12 @@ public class OrderBonusDialog extends DialogFragment {
         }
     }
 
-    protected List<Item> getItems(List<AddressBean> address) {
+    protected List<Item> getItems(List<Bonus> bonus) {
         List<Item> cells = new ArrayList<>();
-        if (address != null) {
-            for (int i = 0; i < address.size(); i++) {
-                GoodsAddressItem goodsAddressItem = new GoodsAddressItem(address.get(i), context);
-                goodsAddressItem.setOnItemClickListener(addresslistener);
-                cells.add(goodsAddressItem);
-            }
-        } else {
-            GoodsNoAddressItem goodsNoAddressItem = new GoodsNoAddressItem(null, context);
-            goodsNoAddressItem.setOnItemClickListener(noAddresslistener);
-            cells.add(goodsNoAddressItem);
+        for (int i = 0; i < bonus.size(); i++) {
+//            GoodsAddressItem goodsAddressItem = new GoodsAddressItem(bonus.get(i), context);
+//            goodsAddressItem.setOnItemClickListener(addresslistener);
+//            cells.add(goodsAddressItem);
         }
         return cells;
     }
@@ -119,16 +111,6 @@ public class OrderBonusDialog extends DialogFragment {
     public interface OnClickListener {
         void onClicked(View view, int pos);
     }
-
-    GoodsNoAddressItem.OnClickListener noAddresslistener = new GoodsNoAddressItem.OnClickListener
-            () {
-        @Override
-        public void onClicked(View view, int pos) {
-            if (onClickListener != null) {
-                onClickListener.onClicked(view, pos);
-            }
-        }
-    };
 
     GoodsAddressItem.OnClickListener addresslistener = new GoodsAddressItem.OnClickListener() {
         @Override

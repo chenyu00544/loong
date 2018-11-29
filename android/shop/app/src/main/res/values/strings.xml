@@ -79,6 +79,7 @@
     <string name="goods_name">柠檬</string>
     <string name="goods_price">￥00.0</string>
     <string name="goods_market">￥100.0</string>
+    <string name="rmb">￥</string>
     <string name="discount">优惠￥0.0</string>
     <string name="goods_num">×1</string>
     <string name="goods_nums">1</string>

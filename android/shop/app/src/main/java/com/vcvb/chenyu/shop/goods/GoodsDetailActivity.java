@@ -438,7 +438,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         return cells;
     }
 
-    //添加到购物车
+    //fixme 添加到购物车
     public void addCart(HashMap<String, Object> attr) {
         List<Integer> goods_attr_ids_bak = (List<Integer>) attr.get("goods_attr_ids");
         HashMap<String, String> mp = new HashMap<>();
@@ -490,7 +490,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         });
     }
 
-    //收藏
+    //fixme 收藏
     public void collectionGoods() {
         if (token == null || token.equals("")) {
             showLoginDialog();
@@ -541,7 +541,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
     }
 
-    //显示登录框
+    //fixme 显示登录框
     public void showLoginDialog() {
         loginDialog = new LoginDialog(context);
         loginDialog.show();
@@ -631,7 +631,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         });
     }
 
-    //检查账号是否已认证
+    //fixme 检查账号是否已认证
     public void checkUserForReal() {
         if (is_real != null && is_real.equals("0")) {
             HashMap<String, String> _mp = new HashMap<>();
@@ -663,7 +663,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
     }
 
-    //生成订单
+    //fixme 生成订单
     public void addOrder(HashMap<String, Object> attr) {
         loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
