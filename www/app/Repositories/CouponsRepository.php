@@ -50,27 +50,26 @@ class CouponsRepository implements CouponsRepositoryInterface
     {
         $where['cou_id'] = $id;
         $re = $this->couponsModel->getCoupons($where);
+        $re->cou_goods = explode(',', $re->cou_goods);
+        $re->cou_cate = explode(',', $re->cou_cate);
+        $re->cou_ok_user = explode(',', $re->cou_ok_user);
+        $re->cou_ok_goods = explode(',', $re->cou_ok_goods);
+        $re->cou_ok_cate = explode(',', $re->cou_ok_cate);
         if (!empty($re->cou_goods)) {
-            $cou_goods_arr = explode(',', $re->cou_goods);
-            $re->cou_goods = $this->goodsModel->getGoodsesByIn($cou_goods_arr);
+            $re->cou_goods = $this->goodsModel->getGoodsesByIn($re->cou_goods);
         }
 
         if (!empty($re->cou_cate)) {
-            $cou_cate_arr = explode(',', $re->cou_cate);
-            $re->cou_cate = $this->categoryModel->getComCatesByIn($cou_cate_arr);
+            $re->cou_cate = $this->categoryModel->getComCatesByIn($re->cou_cate);
         }
         if (!empty($re->cou_ok_user)) {
-            $re->cou_ok_user = explode(',', $re->cou_ok_user);
-        }
 
+        }
         if (!empty($re->cou_ok_goods)) {
-            $cou_ok_goods_arr = explode(',', $re->cou_ok_goods);
-            $re->cou_ok_goods = $this->goodsModel->getGoodsesByIn($cou_ok_goods_arr);
+            $re->cou_ok_goods = $this->goodsModel->getGoodsesByIn($re->cou_ok_goods);
         }
-
         if (!empty($re->cou_ok_cate)) {
-            $cou_ok_cate_arr = explode(',', $re->cou_ok_cate);
-            $re->cou_ok_cate = $this->categoryModel->getComCatesByIn($cou_ok_cate_arr);
+            $re->cou_ok_cate = $this->categoryModel->getComCatesByIn($re->cou_ok_cate);
         }
         return $re;
     }

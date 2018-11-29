@@ -26,6 +26,7 @@ public interface ConstantManager {
 
     interface ResultStatus {
         public Integer ADDRESSRESULT = 1002;
+        public Integer ADD_ADDRESS_RESULT = 1003;
     }
 
     interface PhotoAlbum {

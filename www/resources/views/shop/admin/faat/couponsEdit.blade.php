@@ -86,7 +86,7 @@
                             <div class="col-sm-1">
                                 <input type="text" name="cou_user_num" class="form-control input-sm"
                                        value="{{$coupons->cou_user_num}}"
-                                       placeholder="每人限领" autocomplete="off" readonly>
+                                       placeholder="每人限领" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
@@ -94,22 +94,22 @@
                             <div class="col-sm-4">
                                 <select name="act_range" class="form-control select input-sm wd120">
                                     <option value="0"
-                                            @if(empty($coupons->cou_goods) && empty($coupons->cou_cate)) selected @endif>
+                                            @if(count($coupons->cou_goods) ==0 && count($coupons->cou_cate) ==0) selected @endif>
                                         全部商品
                                     </option>
                                     <option value="1"
-                                            @if(empty($coupons->cou_goods) && !empty($coupons->cou_cate)) selected @endif>
+                                            @if(count($coupons->cou_cate)) selected @endif>
                                         指定分类
                                     </option>
                                     <option value="3"
-                                            @if(!empty($coupons->cou_goods) && empty($coupons->cou_cate)) selected @endif>
+                                            @if(count($coupons->cou_goods)) selected @endif>
                                         指定商品
                                     </option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group rang-ext-val"
-                             style="@if(empty($coupons->cou_goods) && empty($coupons->cou_cate)) display: none; @endif">
+                             style="@if(count($coupons->cou_cate)==0 && count($coupons->cou_goods)==0) display: none; @endif">
                             <label class="col-sm-4 control-label"></label>
                             <div class="col-sm-7">
                                 <div class="checkbox bg-eee pad-bt-10 rang-ext-val-list">
@@ -134,7 +134,7 @@
                             </div>
                         </div>
                         <div class="form-group rang-ext"
-                             style="@if(empty($coupons->cou_goods) && empty($coupons->cou_cate)) display: none; @endif">
+                             style="@if(count($coupons->cou_cate)==0 && count($coupons->cou_goods)==0) display: none; @endif">
                             <label class="col-sm-4 control-label">搜索加入优惠范围：</label>
                             <div class="col-sm-8">
                                 <input type="text" class="keyword-1 form-control wd-120 input-sm fl" placeholder="关键字">
@@ -177,22 +177,22 @@
                             <div class="col-sm-4">
                                 <select name="act_type" class="form-control select input-sm wd120 fl">
                                     <option value="0"
-                                            @if(empty($coupons->cou_ok_goods) && empty($coupons->cou_ok_cate)) selected @endif>
+                                            @if(count($coupons->cou_ok_goods)==0 && count($coupons->cou_ok_cate)==0) selected @endif>
                                         全部商品
                                     </option>
                                     <option value="1"
-                                            @if(empty($coupons->cou_ok_goods) && !empty($coupons->cou_ok_cate)) selected @endif>
+                                            @if(count($coupons->cou_ok_cate)) selected @endif>
                                         指定分类
                                     </option>
                                     <option value="3"
-                                            @if(!empty($coupons->cou_ok_goods) && empty($coupons->cou_ok_cate)) selected @endif>
+                                            @if(count($coupons->cou_ok_goods)) selected @endif>
                                         指定商品
                                     </option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group cou-goods-s"
-                             style="@if(empty($coupons->cou_ok_goods) && empty($coupons->cou_ok_cate)) display: none; @endif">
+                             style="@if(count($coupons->cou_ok_goods)==0 && count($coupons->cou_ok_cate)==0) display: none; @endif">
                             <label class="col-sm-4 control-label">搜索加入优惠范围：</label>
                             <div class="col-sm-8">
                                 <input type="text" class="keyword-2 form-control wd-120 input-sm fl" placeholder="关键字">
@@ -207,7 +207,8 @@
                                    style="padding: 4px 10px;">添加</a>
                             </div>
                         </div>
-                        <div class="form-group cou-goods-gift-val" style="@if(empty($coupons->cou_ok_goods) && empty($coupons->cou_ok_cate)) display: none; @endif">
+                        <div class="form-group cou-goods-gift-val"
+                             style="@if(count($coupons->cou_ok_goods)==0 && count($coupons->cou_ok_cate)==0) display: none; @endif">
                             <label class="col-sm-4 control-label"></label>
                             <div class="col-sm-7">
                                 <div class="checkbox bg-eee pad-bt-10 cou-gift-val-list">

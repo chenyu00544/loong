@@ -79,7 +79,7 @@
                             <label class="col-sm-4 control-label">每人限领：</label>
                             <div class="col-sm-1">
                                 <input type="text" name="cou_user_num" class="form-control input-sm" value="1"
-                                       placeholder="每人限领" autocomplete="off" readonly>
+                                       placeholder="每人限领" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">

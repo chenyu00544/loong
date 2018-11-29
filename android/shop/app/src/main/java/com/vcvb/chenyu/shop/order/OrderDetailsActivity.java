@@ -13,16 +13,25 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsShipItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAddressItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderBonusItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderCouponsItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderIdItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderPayTypeItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderTotalItem;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.dialog.OrderAddressDialog;
+import com.vcvb.chenyu.shop.dialog.OrderBonusDialog;
+import com.vcvb.chenyu.shop.dialog.OrderCouponsDialog;
+import com.vcvb.chenyu.shop.dialog.OrderPayDialog;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
+import com.vcvb.chenyu.shop.javaBean.faat.Bonus;
+import com.vcvb.chenyu.shop.javaBean.faat.Coupons;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.javaBean.order.OrderGoods;
 import com.vcvb.chenyu.shop.javaBean.order.Pay;
+import com.vcvb.chenyu.shop.mycenter.ModifyAddressActivity;
 import com.vcvb.chenyu.shop.pay.PaySuccessActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
@@ -43,12 +52,19 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
 
     private List<OrderDetail> orderDetails = new ArrayList<>();
     private List<Pay> pays = new ArrayList<>();
+    private List<Bonus> bonuses = new ArrayList<>();
+    private List<Coupons> couponses = new ArrayList<>();
     private List<AddressBean> addresses = new ArrayList<>();
 
     private TextView payTotalView;
 
     private String orderId = "";
     private Double pay_total = 0.0;
+
+    private OrderAddressDialog orderAddressDialog;
+    private OrderPayDialog orderPayDialog;
+    private OrderCouponsDialog orderCouponsDialog;
+    private OrderBonusDialog orderBonusDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +168,20 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
                         pays.add(pay);
                     }
 
+                    JSONArray bonusJSONArray = json.getJSONObject("data").getJSONArray("bonus");
+                    for (int i = 0; i < bonusJSONArray.length(); i++) {
+                        JSONObject object = (JSONObject) bonusJSONArray.get(i);
+                        Bonus bonus = JsonUtils.fromJsonObject(object, Bonus.class);
+                        bonuses.add(bonus);
+                    }
+
+                    JSONArray couponsJSONArray = json.getJSONObject("data").getJSONArray("coupons");
+                    for (int i = 0; i < couponsJSONArray.length(); i++) {
+                        JSONObject object = (JSONObject) couponsJSONArray.get(i);
+                        Coupons coupons = JsonUtils.fromJsonObject(object, Coupons.class);
+                        couponses.add(coupons);
+                    }
+
                     mAdapter.addAll(getItems());
                 }
             } catch (JSONException e) {
@@ -171,19 +201,18 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
 
     protected List<Item> getItems() {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < addresses.size(); i++) {
-            if (addresses.get(i).getDef() == 1) {
-                OrderAddressItem orderAddressItem = new OrderAddressItem(addresses.get(i), context);
-                orderAddressItem.setOnItemClickListener(addressListener);
-                cells.add(orderAddressItem);
-            }
-        }
+        orderAddressDialog = new OrderAddressDialog(addresses);
+        orderAddressDialog.setOnItemClickListener(addressDialogListener);
+        OrderAddressItem orderAddressItem = new OrderAddressItem(addresses, context);
+        orderAddressItem.setOnItemClickListener(addressListener);
+        cells.add(orderAddressItem);
 
         Double goods_amount = 0.0;
         Double shipping_fee = 0.0;
         Double tax = 0.0;
         Double discount = 0.0;
         pay_total = 0.0;
+
         for (int i = 0; i < orderDetails.size(); i++) {
             OrderIdItem orderIdItem = new OrderIdItem(orderDetails.get(i), context);
             cells.add(orderIdItem);
@@ -197,7 +226,7 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
             tax += Double.valueOf(orderDetails.get(i).getTax());
             discount += Double.valueOf(orderDetails.get(i).getDiscount());
         }
-        pay_total += goods_amount+shipping_fee+tax-discount;
+        pay_total += goods_amount + shipping_fee + tax - discount;
         String pay_total_str = "￥%.2f";
         payTotalView.setText(String.format(Locale.CHINA, pay_total_str, pay_total));
         for (int i = 0; i < pays.size(); i++) {
@@ -210,9 +239,28 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
                 pays.get(0).setDef(1);
             }
         }
+
+        orderPayDialog = new OrderPayDialog(pays);
+        orderPayDialog.setOnItemClickListener(payDialogListener);
         OrderPayTypeItem orderPayTypeItem = new OrderPayTypeItem(pays, context);
         orderPayTypeItem.setOnItemClickListener(payListener);
         cells.add(orderPayTypeItem);
+
+        if (couponses.size() > 0) {
+            orderCouponsDialog = new OrderCouponsDialog(couponses);
+            orderCouponsDialog.setOnItemClickListener(couponsDialogListener);
+            OrderCouponsItem orderCouponsItem = new OrderCouponsItem(couponses, context);
+            orderCouponsItem.setOnItemClickListener(couponsListener);
+            cells.add(orderCouponsItem);
+        }
+
+        if (bonuses.size() > 0) {
+            orderBonusDialog = new OrderBonusDialog(bonuses);
+            orderBonusDialog.setOnItemClickListener(bonusDialogListener);
+            OrderBonusItem orderBonusItem = new OrderBonusItem(bonuses, context);
+            orderBonusItem.setOnItemClickListener(bonusListener);
+            cells.add(orderBonusItem);
+        }
 
         cells.add(new OrderTotalItem(orderDetails, context));
         return cells;
@@ -241,17 +289,87 @@ public class OrderDetailsActivity extends BaseRecyclerViewActivity {
         }
     };
 
-    OrderPayTypeItem.OnClickListener payListener = new GoodsShipItem.OnClickListener() {
-        @Override
-        public void onClicked(View view, int pos) {
-            System.out.println(112);
-        }
-    };
-
     OrderAddressItem.OnClickListener addressListener = new OrderAddressItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
-            System.out.println(12);
+            if(view.getId() == R.id.textView91){
+                //前往添加地址
+                Intent intent = new Intent(OrderDetailsActivity.this, ModifyAddressActivity.class);
+                startActivityForResult(intent, ConstantManager.ResultStatus.ADD_ADDRESS_RESULT);
+            }else {
+                orderAddressDialog.show(getSupportFragmentManager(), "Address");
+            }
+        }
+    };
+
+    OrderPayTypeItem.OnClickListener payListener = new GoodsShipItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            orderPayDialog.show(getSupportFragmentManager(), "Pay");
+        }
+    };
+
+    OrderCouponsItem.OnClickListener couponsListener = new OrderAddressItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            orderCouponsDialog.show(getSupportFragmentManager(), "Coupons");
+        }
+    };
+
+    OrderBonusItem.OnClickListener bonusListener = new OrderAddressItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            orderBonusDialog.show(getSupportFragmentManager(), "Bonus");
+        }
+    };
+
+    OrderAddressDialog.OnClickListener addressDialogListener = new OrderAddressDialog
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            //前往添加地址
+            if (pos == -1) {
+                Intent intent = new Intent(OrderDetailsActivity.this, ModifyAddressActivity.class);
+                startActivityForResult(intent, ConstantManager.ResultStatus.ADDRESSRESULT);
+            } else {
+                if (addresses != null) {
+                    for (int i = 0; i < addresses.size(); i++) {
+                        addresses.get(i).setDef(0);
+                        if (i == pos) {
+                            addresses.get(i).setDef(1);
+                        }
+                    }
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+            orderAddressDialog.dismiss();
+        }
+    };
+
+    OrderPayDialog.OnClickListener payDialogListener = new OrderPayDialog
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            mAdapter.notifyDataSetChanged();
+            orderPayDialog.dismiss();
+        }
+    };
+
+    OrderCouponsDialog.OnClickListener couponsDialogListener = new OrderCouponsDialog
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            mAdapter.notifyDataSetChanged();
+            orderCouponsDialog.dismiss();
+        }
+    };
+
+    OrderBonusDialog.OnClickListener bonusDialogListener = new OrderBonusDialog
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            mAdapter.notifyDataSetChanged();
+            orderBonusDialog.dismiss();
         }
     };
 }

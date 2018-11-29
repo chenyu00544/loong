@@ -220,6 +220,9 @@
     <string name="back_home">返回首页</string>
     <string name="you_like">猜你喜欢</string>
     <string name="message_center">消息中心</string>
+    <string name="coupons">优惠券</string>
+    <string name="bonus">红包</string>
+    <string name="select">选择</string>
 
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>

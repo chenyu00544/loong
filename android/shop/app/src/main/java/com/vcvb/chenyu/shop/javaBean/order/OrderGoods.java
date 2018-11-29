@@ -42,6 +42,8 @@ public class OrderGoods {
 
     private Integer current_time;
 
+    private Integer bonus_type_id;
+
     public Integer getRec_id() {
         return rec_id;
     }
@@ -288,5 +290,13 @@ public class OrderGoods {
 
     public void setCurrent_time(Integer current_time) {
         this.current_time = current_time;
+    }
+
+    public Integer getBonus_type_id() {
+        return bonus_type_id;
+    }
+
+    public void setBonus_type_id(Integer bonus_type_id) {
+        this.bonus_type_id = bonus_type_id;
     }
 }

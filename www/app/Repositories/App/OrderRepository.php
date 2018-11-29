@@ -12,6 +12,8 @@ use App\Contracts\OrderRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
+use App\Http\Models\App\BonusUserModel;
+use App\Http\Models\App\CouponsUserModel;
 use App\Http\Models\App\FavourableGoodsModel;
 use App\Http\Models\App\GoodsModel;
 use App\Http\Models\App\OrderGoodsModel;
@@ -32,6 +34,8 @@ class OrderRepository implements OrderRepositoryInterface
     private $transportModel;
     private $paymentModel;
     private $productsModel;
+    private $bonusUserModel;
+    private $couponsUserModel;
 
     public function __construct(
         OrderInfoModel $orderInfoModel,
@@ -41,7 +45,9 @@ class OrderRepository implements OrderRepositoryInterface
         UsersModel $usersModel,
         TransportModel $transportModel,
         PaymentModel $paymentModel,
-        ProductsModel $productsModel
+        ProductsModel $productsModel,
+        BonusUserModel $bonusUserModel,
+        CouponsUserModel $couponsUserModel
     )
     {
         $this->orderInfoModel = $orderInfoModel;
@@ -52,6 +58,8 @@ class OrderRepository implements OrderRepositoryInterface
         $this->transportModel = $transportModel;
         $this->paymentModel = $paymentModel;
         $this->productsModel = $productsModel;
+        $this->bonusUserModel = $bonusUserModel;
+        $this->couponsUserModel = $couponsUserModel;
     }
 
     public function getOrders($data, $uid)
@@ -151,13 +159,12 @@ class OrderRepository implements OrderRepositoryInterface
         $where['user_id'] = $uid;
         $order_ids = explode(',', $data['order_id']);
 
-        //付款方式
+        // fixme 付款方式
         $pays = $this->paymentModel->getPayments(['enabled' => 1], ['pay_id', 'pay_code', 'pay_name', 'pay_fee']);
         $return['pays'] = $pays;
 
-        //用户地址
-        $uwhere['user_id'] = $uid;
-        $user = $this->usersModel->getUserByAddress($uwhere, ['user_id', 'address_id']);
+        // fixme 用户地址
+        $user = $this->usersModel->getUserByAddress($where, ['user_id', 'address_id']);
         $addresses = [];
         if ($user) {
             foreach ($user->addresses as $address) {
@@ -174,6 +181,39 @@ class OrderRepository implements OrderRepositoryInterface
         }
         $return['address'] = $addresses;
 
+        // fixme 优惠券和红包
+        $cb = $this->usersModel->getUserByCB($where, ['user_id']);
+        $coupons = [];
+        foreach ($cb->CouponsUser as $k => $cu) {
+            if (!empty($cu->Coupons)) {
+                $arr = $cu->Coupons->toArray();
+                foreach ($arr as $key => $value) {
+                    $cu->$key = $value;
+                }
+                $cu->cou_start_time_format = date(RedisCache::get('shop_config')['time_format'], $cu->cou_start_time);
+                $cu->cou_end_time_format = date(RedisCache::get('shop_config')['time_format'], $cu->cou_end_time);
+                unset($cu->Coupons);
+                $coupons[] = $cu;
+            }
+        }
+        $return['coupons'] = $coupons;
+
+        $bonus = [];
+        foreach ($cb->BonusUser as $k => $bu) {
+            if (!empty($bu->Bonus)) {
+                $arr = $bu->Bonus->toArray();
+                foreach ($arr as $key => $value) {
+                    $bu->$key = $value;
+                }
+                $bu->use_start_date_format = date(RedisCache::get('shop_config')['time_format'], $bu->use_start_date);
+                $bu->use_end_date_format = date(RedisCache::get('shop_config')['time_format'], $bu->use_end_date);
+                unset($bu->Bonus);
+                $bonus[] = $bu;
+            }
+        }
+        $return['bonus'] = $bonus;
+
+        // fixme 订单详情
         $column = ['*'];
         $res = $this->orderInfoModel->getOrder($where, $column, $order_ids);
         foreach ($res as $re) {
@@ -194,6 +234,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goods->promote_price_format = Common::priceFormat($order_goods->Goods->promote_price);
                 $order_goods->is_on_sale = $order_goods->Goods->is_on_sale;
                 $order_goods->is_delete = $order_goods->Goods->is_delete;
+                $order_goods->bonus_type_id = $order_goods->Goods->bonus_type_id;
                 $order_goods->current_time = time();
                 unset($order_goods->Goods);
             }
@@ -453,13 +494,13 @@ class OrderRepository implements OrderRepositoryInterface
             $where['order_id'] = $data['order_id'];
             $column = ['*'];
             $order = $this->orderInfoModel->getOrder($where, $column);
-            if($order->count()== 0){
+            if ($order->count() == 0) {
                 return false;
             }
             $wherein = [];
             $goods_num = [];
             $goods_attr_ids = [];
-            foreach ($order[0]->orderGoods as $o_goods){
+            foreach ($order[0]->orderGoods as $o_goods) {
                 $wherein[] = $o_goods->goods_id;
                 $goods_num[$o_goods->goods_id] = $o_goods->o_goods_number;
                 $goods_attr_ids[$o_goods->goods_id] = $o_goods->goods_attr_id;
@@ -477,7 +518,7 @@ class OrderRepository implements OrderRepositoryInterface
                 'pinyin_keyword', 'goods_brief'
             ];
 
-            if(count($wherein) == 0){
+            if (count($wherein) == 0) {
                 return false;
             }
 
@@ -610,7 +651,7 @@ class OrderRepository implements OrderRepositoryInterface
                 //快递
                 if ($goods_detail->freight == 2) {
                     $ship = $this->transportModel->getTransportByShip(['tid' => $goods_detail->tid]);
-                    if(!empty($ship)){
+                    if (!empty($ship)) {
                         $order_goods['freight'] = $goods_detail->freight;
                         $order_goods['tid'] = $goods_detail->tid;
                         foreach ($ship->t_ext as $t_ext) {
@@ -620,7 +661,7 @@ class OrderRepository implements OrderRepositoryInterface
                                 $shipping_fee[$goods_detail->user_id] = $t_ext->sprice;
                             }
                         }
-                    }else{
+                    } else {
                         $order_goods['freight'] = 0;
                         $order_goods['tid'] = 0;
                         $order_goods['shipping_fee'] = 0;

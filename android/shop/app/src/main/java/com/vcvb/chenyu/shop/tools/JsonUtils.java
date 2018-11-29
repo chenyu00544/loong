@@ -113,9 +113,7 @@ public class JsonUtils {
         for (Field field : fields) {
             field.setAccessible(true);
             Object o = JsonObjectToObject(jsonObject, field);
-            if (o != null) {
-                field.set(data, o);
-            }
+            field.set(data, o);
         }
         return data;
     }

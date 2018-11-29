@@ -29,6 +29,16 @@ class UsersModel extends Model
         return $this->hasOne('App\Http\Models\App\UsersRealModel', 'user_id', 'user_id');
     }
 
+    public function CouponsUser()
+    {
+        return $this->hasMany('App\Http\Models\App\CouponsUserModel', 'user_id', 'user_id');
+    }
+
+    public function BonusUser()
+    {
+        return $this->hasMany('App\Http\Models\App\BonusUserModel', 'user_id', 'user_id');
+    }
+
     public function getUserByAddress($where, $column = ['*'])
     {
         return $this->select($column)
@@ -55,6 +65,23 @@ class UsersModel extends Model
             ->orWhere(['email' => $name])
             ->orWhere(['mobile_phone' => $name])
             ->with(['real'])
+            ->first();
+    }
+
+    public function getUserByCB($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->with(['CouponsUser' => function ($query) {
+                $query->with(['Coupons' => function ($query) {
+                    $query->select(['cou_id','cou_name','cou_man','cou_money','cou_goods','cou_cate','cou_start_time','cou_end_time','cou_title'])->where([['cou_start_time', '<', time()], ['cou_end_time', '>', time()]]);
+                }])->where(['is_use' => 0, 'order_id' => 0]);
+            }])
+            ->with(['BonusUser' => function ($query) {
+                $query->with(['Bonus' => function ($query) {
+                    $query->select(['bonus_id','type_name','type_money','min_goods_amount','usebonus_type','use_start_date','use_end_date'])->where([['use_start_date', '<', time()], ['use_end_date', '>', time()]]);
+                }])->where(['order_id' => 0, 'is_use' => 0]);
+            }])
             ->first();
     }
 
