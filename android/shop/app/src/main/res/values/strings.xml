@@ -222,8 +222,13 @@
     <string name="you_like">猜你喜欢</string>
     <string name="message_center">消息中心</string>
     <string name="coupons">优惠券</string>
+    <string name="yes_coupons">可用优惠券</string>
+    <string name="no_coupons">不可用优惠券</string>
+    <string name="no_use_coupons">没有可用优惠券</string>
     <string name="bonus">红包</string>
     <string name="select">选择</string>
+    <string name="no_partake">不参与</string>
+
 
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>

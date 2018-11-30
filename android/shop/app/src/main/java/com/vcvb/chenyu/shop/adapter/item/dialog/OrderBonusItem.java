@@ -13,14 +13,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.order.Pay;
+import com.vcvb.chenyu.shop.javaBean.faat.Bonus;
 
 import java.util.Locale;
 
-public class OrderBonusItem extends BaseItem<Pay> {
-    public static final int TYPE = R.layout.dialog_order_pay_item;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-    public OrderBonusItem(Pay bean, Context c) {
+public class OrderBonusItem extends BaseItem<Bonus> {
+    public static final int TYPE = R.layout.dialog_order_bonus_item;
+
+    public OrderBonusItem(Bonus bean, Context c) {
         super(bean, c);
     }
 
@@ -39,23 +41,24 @@ public class OrderBonusItem extends BaseItem<Pay> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         View v = holder.getItemView();
-        ImageView iv = holder.get(R.id.imageView129);
-        TextView tv1 = holder.get(R.id.textView92);
-        TextView tv2 = holder.get(R.id.textView93);
-
-        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.AUTOMATIC).override(120, 120);
-        tv1.setText(mData.getPay_name());
-        if (mData.getPay_code().equals("alipay")) {
-            Glide.with(context).load(R.drawable.alipay).apply(requestOptions).into(iv);
-        } else if (mData.getPay_code().equals("wxpay")) {
-            Glide.with(context).load(R.drawable.wechat).apply(requestOptions).into(iv);
-        } else {
-            tv1.setText(R.string.alipay);
-            Glide.with(context).load(R.drawable.alipay).apply(requestOptions).into(iv);
-        }
-        tv2.setText(String.format(Locale.CANADA, "费用 %d", mData.getPay_fee()));
-        posMap.put(v.getId(), position);
+        posMap.put(v.getId(), mData.getBu_id());
         v.setOnClickListener(listener);
+
+        ImageView iv = holder.get(R.id.imageView130);
+        RoundedCornersTransformation roundedCorners = new RoundedCornersTransformation(12, 0,
+                RoundedCornersTransformation.CornerType.ALL);
+        RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true);
+        Glide.with(context).load(R.drawable.bonus_bg).apply(requestOptions).into(iv);
+
+        TextView tv1 = holder.get(R.id.textView254);
+        tv1.setText(String.format(Locale.CHINA, "%.0f", Double.valueOf(mData.getType_money())));
+
+        TextView tv2 = holder.get(R.id.textView255);
+        tv2.setText(String.format(Locale.CHINA, "%s", mData.getType_name()));
+
+        TextView tv3 = holder.get(R.id.textView256);
+        tv3.setText(String.format(Locale.CHINA, "使用日期:%s-%s", mData.getUse_start_date_format(),
+                mData.getUse_end_date_format()));
     }
 }

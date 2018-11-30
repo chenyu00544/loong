@@ -53,7 +53,7 @@ public class SearchServiceItem extends BaseItem<FilterBean> {
             textView.setMaxEms(8);
             textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8),
                     ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
-            textView.setBackgroundResource(R.drawable.shape_6_grad_d);
+            textView.setBackgroundResource(R.drawable.shape_6_gray_d);
             fly.addView(textView);
         }
     }

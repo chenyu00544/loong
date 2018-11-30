@@ -6,52 +6,87 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <View
-        android:id="@+id/view72"
-        android:layout_width="wrap_content"
-        android:layout_height="0.5dp"
-        android:background="@color/gray_d"
+    <ImageView
+        android:id="@+id/imageView130"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageView129"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:src="@drawable/alipay"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/alipay" />
+    <TextView
+        android:id="@+id/textView250"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/rmb"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/textView254"
+        app:layout_constraintEnd_toStartOf="@+id/textView254"
+        app:layout_constraintTop_toTopOf="@+id/textView254"
+        app:layout_constraintVertical_bias="0.13" />
 
     <TextView
-        android:id="@+id/textView92"
+        android:id="@+id/textView254"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:text=""
+        android:textSize="60sp"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageView130"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView255"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="4dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView129"
-        app:layout_constraintEnd_toStartOf="@+id/textView93"
-        app:layout_constraintStart_toEndOf="@+id/imageView129"
-        app:layout_constraintTop_toTopOf="@+id/imageView129" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/view85"
+        app:layout_constraintEnd_toEndOf="@+id/imageView130"
+        app:layout_constraintStart_toEndOf="@+id/textView254"
+        app:layout_constraintTop_toTopOf="@+id/textView254" />
 
     <TextView
-        android:id="@+id/textView93"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView256"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView129"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView129" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:maxLines="2"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/textView254"
+        app:layout_constraintEnd_toEndOf="@+id/imageView130"
+        app:layout_constraintStart_toEndOf="@+id/textView254"
+        app:layout_constraintTop_toBottomOf="@+id/view85" />
 
+    <View
+        android:id="@+id/view85"
+        android:layout_width="0.5dp"
+        android:layout_height="0.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

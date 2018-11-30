@@ -21,6 +21,7 @@ public class Coupons extends BaseBean {
     private String cou_title;
     private String cou_start_time_format;
     private String cou_end_time_format;
+    private boolean enabled = false;
 
     public Integer getDef() {
         return def;
@@ -164,5 +165,13 @@ public class Coupons extends BaseBean {
 
     public void setCou_end_time_format(String cou_end_time_format) {
         this.cou_end_time_format = cou_end_time_format;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

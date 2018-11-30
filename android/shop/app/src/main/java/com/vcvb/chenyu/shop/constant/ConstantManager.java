@@ -109,26 +109,26 @@ public interface ConstantManager {
 
         public String GOODSDETAIL = URIHOST + "app/goods/detail";
 
-        //购物车操作
+        //fixme 购物车操作
         public String CART_LIST = URIHOST + "app/cart/index";
         public String ADD_CART = URIHOST + "app/cart/add";
         public String SET_CART = URIHOST + "app/cart/set";
         public String DEL_CART = URIHOST + "app/cart/del";
 
-        //用户账号操作
+        //fixme 用户账号操作
         public String LOGIN = URIHOST + "app/login/index";
         public String REGISTER = URIHOST + "app/login/reg";
         public String GET_USER_INFO = URIHOST + "app/user/index";
         public String USER_REAL = URIHOST + "app/user/real";
         public String SET_USER_REAL = URIHOST + "app/user/real/set";
 
-        //收藏操作
+        //fixme 收藏操作
         public String ADDCOLLECTGOODS = URIHOST + "app/collect/goods/add";
         public String COLLECTGOODSES = URIHOST + "app/collect/goodses";
         public String ADDCOLLECTBRAND = URIHOST + "app/collect/brand/add";
         public String ADDCOLLECTSTORE = URIHOST + "app/collect/store/add";
 
-        //用户地址操作
+        //fixme 用户地址操作
         public String USERADDRESSES = URIHOST + "app/user/addresses";
         public String GETADDRESS = URIHOST + "app/user/address/get";
         public String ADDADDRESS = URIHOST + "app/user/address/add";
@@ -136,13 +136,18 @@ public interface ConstantManager {
         public String DELADDRESS = URIHOST + "app/user/address/del";
         public String SETDEFADDRESS = URIHOST + "app/user/address/setdef";
 
-        //用户数据操作
+        //fixme 用户数据操作
         public String USER_INFO = URIHOST + "app/user/index";
 
-        //订单操作
+        //fixme 订单操作
         public String ORDERS = URIHOST + "app/order/index";
         public String GET_ORDER = URIHOST + "app/order/get";
         public String ADD_ORDER = URIHOST + "app/order/add";
         public String CANCEL_ORDER = URIHOST + "app/order/cancel";
+
+        //fixme 付款地址
+        public String ALI_PAY = URIHOST + "app/pay/alipay";
+        public String WX_PAY = URIHOST + "app/pay/wxpay";
+        public String UNION_PAY = URIHOST + "app/pay/unionpay";
     }
 }

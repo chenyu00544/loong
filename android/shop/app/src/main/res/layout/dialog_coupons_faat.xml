@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coupons_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:maxHeight="450dp"
+    android:minHeight="350dp">
+
+    <TextView
+        android:id="@+id/textView230"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/faat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView117"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView230"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView230"
+        app:srcCompat="@drawable/icon_close" />
+
+
+    <View
+        android:id="@+id/view82"
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/gray_d"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView230" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/coupons_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view82">
+
+        <TextView
+            android:id="@+id/textView251"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/yes_coupons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView252"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:text="@string/no_coupons"
+            app:layout_constraintBottom_toBottomOf="@+id/textView251"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView251" />
+
+        <View
+            android:id="@+id/view83"
+            android:layout_width="80dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/colorBack_morandi"
+            app:layout_constraintEnd_toEndOf="@+id/textView251"
+            app:layout_constraintStart_toStartOf="@+id/textView251"
+            app:layout_constraintTop_toBottomOf="@+id/textView251" />
+
+        <View
+            android:id="@+id/view84"
+            android:layout_width="wrap_content"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/gray_d"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view83" />
+    </android.support.constraint.ConstraintLayout>
+
+    <com.daimajia.swipe.SwipeLayout
+        android:id="@+id/coupons_wrap"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coupons_header">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/coupons_no_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            tools:ignore="RtlHardcoded" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/coupons_yes_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.daimajia.swipe.SwipeLayout>
+</android.support.constraint.ConstraintLayout>

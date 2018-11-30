@@ -25,6 +25,7 @@ class PayController extends CommonController
 
     public function aliPay(Request $request)
     {
+        return $request->all();
         $uid = Verifiable::authorization($request);
         if($uid != ''){
             $data = $this->payRepository->aliPay($request->all(), $uid);

@@ -3,18 +3,17 @@ package com.vcvb.chenyu.shop.adapter.item.dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.goods.GoodsDescription;
+import com.vcvb.chenyu.shop.javaBean.faat.Coupons;
 
-public class GoodsExplainItem extends BaseItem<GoodsDescription> {
-    public static final int TYPE = R.layout.dialog_explain_item;
+public class OrderCouponsNoUseItem extends BaseItem<Coupons> {
+    public static final int TYPE = R.layout.dialog_order_coupons_no_use_item;
 
-    public GoodsExplainItem(GoodsDescription beans, Context c) {
-        super(beans, c);
+    public OrderCouponsNoUseItem(Coupons bean, Context c) {
+        super(bean, c);
     }
 
     @Override
@@ -31,9 +30,5 @@ public class GoodsExplainItem extends BaseItem<GoodsDescription> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView tv1 = holder.getTextView(R.id.textView21);
-        TextView tv2 = holder.getTextView(R.id.textView236);
-        tv1.setText(mData.getTitle());
-        tv2.setText(mData.getDescription());
     }
 }

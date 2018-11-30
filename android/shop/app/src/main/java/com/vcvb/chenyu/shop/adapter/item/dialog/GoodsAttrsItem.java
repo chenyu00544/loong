@@ -71,7 +71,7 @@ public class GoodsAttrsItem extends BaseItem<List<GoodsAttr>> {
                 tv1.setBackgroundResource(R.drawable.shape_6_red);
                 tv1.setTextColor(context.getResources().getColor(R.color.white));
             } else {
-                tv1.setBackgroundResource(R.drawable.shape_6_grad_d);
+                tv1.setBackgroundResource(R.drawable.shape_6_gray_d);
                 tv1.setTextColor(context.getResources().getColor(R.color.black));
             }
             tv1.setOnClickListener(listener);
@@ -93,7 +93,7 @@ public class GoodsAttrsItem extends BaseItem<List<GoodsAttr>> {
                 TextView tv = fl1.findViewById(mData.get(i).getButtonId());
                 mData.get(i).setIsSelect(false);
                 tv.setTextColor(context.getResources().getColor(R.color.black));
-                tv.setBackgroundResource(R.drawable.shape_6_grad_d);
+                tv.setBackgroundResource(R.drawable.shape_6_gray_d);
                 if (tv.getId() == view.getId()) {
                     mData.get(i).setIsSelect(true);
                     tv.setTextColor(context.getResources().getColor(R.color.white));

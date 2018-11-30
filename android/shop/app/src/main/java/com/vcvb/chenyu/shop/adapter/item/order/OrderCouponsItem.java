@@ -37,11 +37,15 @@ public class OrderCouponsItem extends BaseItem<List<Coupons>> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.get(R.id.textView196);
         View v = holder.getItemView();
-
+        boolean b = true;
         for (int i = 0; i < mData.size(); i++) {
             if (mData.get(i).getDef() == 1) {
+                b = false;
                 tv.setText(String.format(Locale.CANADA, "-￥ %d", mData.get(i).getCou_money()));
             }
+        }
+        if(b){
+            tv.setText(R.string.select);
         }
         posMap.put(v.getId(), 1);
         v.setOnClickListener(listener);

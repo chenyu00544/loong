@@ -17,12 +17,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:scaleType="fitXY"
-        android:src="@drawable/coupons_bg"
+        android:background="@drawable/shape_6_gray_d"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/coupons_bg" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/textView94"

@@ -12,6 +12,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.faat.Bonus;
 
 import java.util.List;
+import java.util.Locale;
 
 public class OrderBonusItem extends BaseItem<List<Bonus>> {
     public static final int TYPE = R.layout.order_details_bonus_item;
@@ -36,10 +37,15 @@ public class OrderBonusItem extends BaseItem<List<Bonus>> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.get(R.id.textView196);
         View v = holder.getItemView();
+        boolean b = true;
         for (int i = 0; i < mData.size(); i++) {
-            if(mData.get(i).getDef() == 1){
-                tv.setText(mData.get(i).getType_money());
+            if (mData.get(i).getDef() == 1) {
+                b = false;
+                tv.setText(String.format(Locale.CANADA, "-￥ %s", mData.get(i).getType_money()));
             }
+        }
+        if(b){
+            tv.setText(R.string.select);
         }
         posMap.put(v.getId(), 1);
         v.setOnClickListener(listener);

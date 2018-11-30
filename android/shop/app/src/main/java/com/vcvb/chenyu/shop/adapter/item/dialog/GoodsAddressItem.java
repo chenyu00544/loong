@@ -12,7 +12,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
 
 public class GoodsAddressItem extends BaseItem<AddressBean> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.dialog_goods_address_item;
 
     public GoodsAddressItem(AddressBean bean, Context c) {
         super(bean, c);
@@ -26,7 +26,7 @@ public class GoodsAddressItem extends BaseItem<AddressBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dialog_goods_address_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 

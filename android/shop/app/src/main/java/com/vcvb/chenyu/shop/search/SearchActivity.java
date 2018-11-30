@@ -109,7 +109,7 @@ public class SearchActivity extends BaseActivity {
             textView.setMaxEms(8);
             textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8),
                     ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
-            textView.setBackgroundResource(R.drawable.shape_6_grad_d);
+            textView.setBackgroundResource(R.drawable.shape_6_gray_d);
             textView.setTag(bean.getTitle());
             textView.setOnClickListener(listener);
             flowLayout1.addView(textView);
@@ -129,7 +129,7 @@ public class SearchActivity extends BaseActivity {
             textView.setMaxEms(8);
             textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8),
                     ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
-            textView.setBackgroundResource(R.drawable.shape_6_grad_d);
+            textView.setBackgroundResource(R.drawable.shape_6_gray_d);
             textView.setTag(bean.getTitle());
             textView.setOnClickListener(listener);
             flowLayout2.addView(textView);
@@ -212,7 +212,7 @@ public class SearchActivity extends BaseActivity {
                     textView.setMaxEms(8);
                     textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context,
                             8), ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
-                    textView.setBackgroundResource(R.drawable.shape_6_grad_d);
+                    textView.setBackgroundResource(R.drawable.shape_6_gray_d);
                     flowLayout1.addView(textView);
                     break;
                 default:

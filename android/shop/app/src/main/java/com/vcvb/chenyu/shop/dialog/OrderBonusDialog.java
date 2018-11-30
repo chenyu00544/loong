@@ -24,7 +24,8 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsAddressItem;
+import com.vcvb.chenyu.shop.adapter.item.dialog.CancelItem;
+import com.vcvb.chenyu.shop.adapter.item.dialog.OrderBonusItem;
 import com.vcvb.chenyu.shop.javaBean.faat.Bonus;
 
 import java.util.ArrayList;
@@ -59,10 +60,10 @@ public class OrderBonusDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.dialog_goods_faat, container);
+        v = inflater.inflate(R.layout.dialog_bonus_faat, container);
         window = getDialog().getWindow();
         TextView tv = v.findViewById(R.id.textView230);
-        tv.setText(R.string.ship_to);
+        tv.setText(R.string.bonus);
         mRecyclerView = v.findViewById(R.id.faat_wrap);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -101,18 +102,27 @@ public class OrderBonusDialog extends DialogFragment {
     protected List<Item> getItems(List<Bonus> bonus) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < bonus.size(); i++) {
-//            GoodsAddressItem goodsAddressItem = new GoodsAddressItem(bonus.get(i), context);
-//            goodsAddressItem.setOnItemClickListener(addresslistener);
-//            cells.add(goodsAddressItem);
+            if (i == 0) {
+                CancelItem cancelItem = new CancelItem(null, context);
+                cancelItem.setOnItemClickListener(cancellistener);
+                cells.add(cancelItem);
+            }
+            OrderBonusItem orderBonusItem = new OrderBonusItem(bonus.get(i), context);
+            orderBonusItem.setOnItemClickListener(addresslistener);
+            cells.add(orderBonusItem);
         }
         return cells;
+    }
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        onClickListener = listener;
     }
 
     public interface OnClickListener {
         void onClicked(View view, int pos);
     }
 
-    GoodsAddressItem.OnClickListener addresslistener = new GoodsAddressItem.OnClickListener() {
+    OrderBonusItem.OnClickListener addresslistener = new OrderBonusItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             if (onClickListener != null) {
@@ -121,9 +131,14 @@ public class OrderBonusDialog extends DialogFragment {
         }
     };
 
-    public void setOnItemClickListener(OnClickListener listener) {
-        onClickListener = listener;
-    }
+    CancelItem.OnClickListener cancellistener = new CancelItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            if (onClickListener != null) {
+                onClickListener.onClicked(view, pos);
+            }
+        }
+    };
 
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
