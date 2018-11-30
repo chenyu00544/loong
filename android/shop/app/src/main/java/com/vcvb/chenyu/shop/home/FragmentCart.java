@@ -140,12 +140,48 @@ public class FragmentCart extends BaseFragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "toPay", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, GoodsDetailActivity.class);
-                startActivity(intent);
+                List<Integer> rec_ids = new ArrayList<>();
+                for (int i = 0; i < carts.size(); i++) {
+                    if (carts.get(i).getIsType() != 2) {
+                        if (carts.get(i).isCheckOnce()) {
+                            rec_ids.add(carts.get(i).getGoods().getRec_id());
+                        }
+                    }
+                }
+                if (rec_ids.size() > 0) {
+                    HashMap<String, String> mp = new HashMap<>();
+                    mp.put("token", token);
+                    mp.put("rec_ids", StringUtils.join(rec_ids, ","));
+                    HttpUtils.getInstance().post(ConstantManager.Url.ADD_ORDER, mp, new HttpUtils
+                            .NetCall() {
+
+                        @Override
+                        public void success(Call call, JSONObject json) throws IOException {
+                            System.out.println(json);
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+//                                    Intent intent = new Intent(context, OrderDetailsActivity.class);
+//                                    startActivity(intent);
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void failed(Call call, IOException e) {
+
+                        }
+                    });
+                }
+
             }
         });
 
-        editView.setOnClickListener(new View.OnClickListener() {
+        editView.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 if (editView.getText() == context.getString(R.string.edit)) {
@@ -159,7 +195,9 @@ public class FragmentCart extends BaseFragment {
             }
         });
 
-        selectAllCB.setOnClickListener(new View.OnClickListener() {
+        selectAllCB.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 boolean bool;
@@ -181,7 +219,9 @@ public class FragmentCart extends BaseFragment {
             }
         });
 
-        del.setOnClickListener(new View.OnClickListener() {
+        del.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 List<Integer> _cartIds = new ArrayList<>();
@@ -209,7 +249,6 @@ public class FragmentCart extends BaseFragment {
                         }
                     }
                 }
-                System.out.println(_cartIds);
                 mAdapter.clear();
                 mAdapter.addAll(getItems(carts));
                 editView.setText(R.string.edit);
@@ -225,19 +264,21 @@ public class FragmentCart extends BaseFragment {
         });
 
         //长按
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemLongClickListener(new CYCItemClickSupport.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClicked(RecyclerView recyclerView, View itemView, int
-                    position) {
-                clearLong();
-                carts.get(position).setLong(true);
-                mAdapter.notifyDataSetChanged();
-                return true;
-            }
-        });
+        CYCItemClickSupport.addTo(mRecyclerView).
+
+                setOnItemLongClickListener(new CYCItemClickSupport.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClicked(RecyclerView recyclerView, View itemView, int
+                            position) {
+                        clearLong();
+                        carts.get(position).setLong(true);
+                        mAdapter.notifyDataSetChanged();
+                        return true;
+                    }
+                });
     }
 
-    //数据获取操作
+    //fixme 数据获取操作
     public void getCartData(final boolean bool) {
         if (bool) {
             loadingDialog.show();
@@ -249,29 +290,33 @@ public class FragmentCart extends BaseFragment {
         HttpUtils.getInstance().post(ConstantManager.Url.CART_LIST, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshLayout.finishRefresh();
-                        if (bool) {
-                            loadingDialog.dismiss();
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshLayout.finishRefresh();
+                            if (bool) {
+                                loadingDialog.dismiss();
+                            }
+                            bindData(json);
                         }
-                        bindData(json);
-                    }
-                });
+                    });
+                }
             }
 
             @Override
             public void failed(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshLayout.finishRefresh();
-                        if (bool) {
-                            loadingDialog.dismiss();
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshLayout.finishRefresh();
+                            if (bool) {
+                                loadingDialog.dismiss();
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         });
     }
@@ -316,10 +361,11 @@ public class FragmentCart extends BaseFragment {
         } else {
             hideOrShowPayBottom(false);
         }
+        setTotal();
         mAdapter.addAll(getItems(carts));
     }
 
-    //显示隐藏结算栏
+    //fixme 显示隐藏结算栏
     public void hideOrShowPayBottom(boolean b) {
         View payFoot = view.findViewById(R.id.pay_foot);
         CheckBox cb = view.findViewById(R.id.checkBox4);
@@ -367,7 +413,7 @@ public class FragmentCart extends BaseFragment {
         return cells;
     }
 
-    //清理长按显示状态
+    //fixme 清理长按显示状态
     public void clearLong() {
         for (int i = 0; i < carts.size(); i++) {
             if (carts.get(i).isLong()) {
@@ -376,7 +422,7 @@ public class FragmentCart extends BaseFragment {
         }
     }
 
-    //设置订单总金额
+    //fixme 设置订单总金额
     public void setTotal() {
         double total = 0;
         double totalTax = 0;
@@ -407,7 +453,7 @@ public class FragmentCart extends BaseFragment {
         totalTaxView.setText(String.format(Locale.CHINA, "包含税费￥%.2f", totalTax));
     }
 
-    //增加减少商品数量同步服务器
+    //fixme 增加减少商品数量同步服务器
     public void modifyCartNum(Integer rec_id, Integer num) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("rec_id", String.valueOf(rec_id));
@@ -425,7 +471,7 @@ public class FragmentCart extends BaseFragment {
         });
     }
 
-    //删除购物车商品
+    //fixme 删除购物车商品
     public void delCartGoods(List<Integer> rec_ids) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("rec_ids", StringUtils.join(rec_ids, ","));
@@ -442,11 +488,12 @@ public class FragmentCart extends BaseFragment {
         });
     }
 
-    //收藏购物车商品
+    //fixme 收藏购物车商品
     public void collectCartGoods(List<Integer> goods_ids) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("goods_id", StringUtils.join(goods_ids, ","));
-        HttpUtils.getInstance().post(ConstantManager.Url.ADDCOLLECTGOODS, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.ADDCOLLECTGOODS, mp, new HttpUtils
+                .NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
                 System.out.println(json);
@@ -459,7 +506,7 @@ public class FragmentCart extends BaseFragment {
         });
     }
 
-    //设置选中状态
+    //fixme 设置选中状态
     public void setCheckStatus() {
         boolean b = false;
         for (int i = carts.size() - 1; i >= 0; i--) {

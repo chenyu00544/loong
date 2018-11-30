@@ -23,9 +23,8 @@ class PayController extends CommonController
 
     }
 
-    public function aliPay(Request $request)
+    public function aliPayApp(Request $request)
     {
-        return $request->all();
         $uid = Verifiable::authorization($request);
         if($uid != ''){
             $data = $this->payRepository->aliPay($request->all(), $uid);
@@ -38,7 +37,7 @@ class PayController extends CommonController
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
 
-    public function wxPay(Request $request)
+    public function wxPayApp(Request $request)
     {
         $uid = Verifiable::authorization($request);
         if($uid != ''){

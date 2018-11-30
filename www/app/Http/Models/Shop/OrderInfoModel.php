@@ -60,7 +60,9 @@ class OrderInfoModel extends Model
             $m->where(function ($query) use ($search) {
                 if (!empty($search['keywords'])) {
 //                    $query->orWhere('order_goods.goods_name', 'like', '%'.$search['keywords'].'%');
-                    $query->orWhere('goods_sn', 'like', '%' . $search['keywords'] . '%');
+                    $query->orWhere('order_sn', 'like', '%' . $search['keywords'] . '%');
+                    $query->orWhere('consignee', 'like', '%' . $search['keywords'] . '%');
+                    $query->orWhere('mobile', 'like', '%' . $search['keywords'] . '%');
                 }
             });
         }
@@ -84,11 +86,8 @@ class OrderInfoModel extends Model
 
     public function setOrderInfo($where = [], $data, $whereIn = [])
     {
-        $m = $this;
-        if(!empty($where)){
-            $m->where($where);
-        }
-        if (!empty($whereIn)) {
+        $m = $this->where($where);
+        if (count($whereIn) > 0) {
             $m->whereIn('order_id', $whereIn);
         }
         return $m->update($data);

@@ -105,13 +105,13 @@ class CommonController extends Controller
 
     public function getTable($table, $id, $bit = 5, $seed = 20)
     {
-        //分表 场景在高并发性
+        //fixme 分表 场景在高并发性
         return $table . '_' . sprintf('%0' . $bit . 'd', ($id >> $seed));
     }
 
     public function setConfCache()
     {
-        //商城设置
+        //fixme 商城设置
         if (!RedisCache::get('shop_config')) {
             $m = (new ShopConfigModel);
             $conf = $m->getConf();
@@ -122,7 +122,7 @@ class CommonController extends Controller
             RedisCache::set('shop_config', $_conf);
         }
 
-        //商品设置
+        //fixme 商品设置
         if (!RedisCache::get('goods_config')) {
             $m = (new ShopConfigModel);
             $conf = $m->getGroupsConfig(['shop_group' => 'goods']);
@@ -133,7 +133,7 @@ class CommonController extends Controller
             RedisCache::set('goods_config', $_conf);
         }
 
-        //店铺设置
+        //fixme 店铺设置
         if (!RedisCache::get('store_config')) {
             $m = (new ShopConfigModel);
             $conf = $m->getGroupsConfig(['shop_group' => 'seller']);
@@ -144,7 +144,7 @@ class CommonController extends Controller
             RedisCache::set('store_config', $_conf);
         }
 
-        //公众号设置
+        //fixme 公众号设置
         if (!RedisCache::get('wechat_config')) {
             $m = (new WechatModel);
             $conf = $m->getWechat(['ru_id' => 0]);
@@ -155,7 +155,7 @@ class CommonController extends Controller
             RedisCache::set('wechat_config', $_conf);
         }
 
-        //支付宝支付设置
+        //fixme 支付宝支付设置
         if (!RedisCache::get('alipay_config')) {
             $m = (new PaymentModel);
             $conf = $m->getPayment(['pay_code' => 'alipay']);
@@ -170,7 +170,7 @@ class CommonController extends Controller
             RedisCache::set('alipay_config', $_conf);
         }
 
-        //微信支付设置
+        //fixme 微信支付设置
         if (!RedisCache::get('wxpay_config')) {
             $m = (new PaymentModel);
             $conf = $m->getPayment(['pay_code' => 'wxpay']);
@@ -185,7 +185,7 @@ class CommonController extends Controller
             RedisCache::set('wxpay_config', $_conf);
         }
 
-        //短信设置
+        //fixme 短信设置
         if (!RedisCache::get('sms_config')) {
             $m = (new ShopConfigModel);
             $conf = $m->getGroupsConfig(['shop_group' => 'sms']);
@@ -196,7 +196,7 @@ class CommonController extends Controller
             RedisCache::set('sms_config', $_conf);
         }
 
-        //阿里云OSS配置
+        //fixme 阿里云OSS配置
         if (!RedisCache::get('oss_config')) {
             $m = (new AliossConfigureModel);
             $conf = $m->getAlioss(['is_use' => 1]);
@@ -207,7 +207,7 @@ class CommonController extends Controller
             RedisCache::set('oss_config', $_conf);
         }
 
-        //快递鸟配置
+        //fixme 快递鸟配置
         if (!RedisCache::get('kdniao_config')) {
             $m = (new ShopConfigModel);
             $conf = $m->getGroupsConfig(['shop_group' => 'tp_api']);
@@ -218,7 +218,7 @@ class CommonController extends Controller
             RedisCache::set('kdniao_config', $_conf);
         }
 
-        //短信类型
+        //fixme 短信类型
         if (!RedisCache::get('sms_type')) {
             $m = (new AlismsConfigureModel);
             $conf = $m->getAlismses();
@@ -229,7 +229,7 @@ class CommonController extends Controller
             RedisCache::set('sms_type', $_conf);
         }
 
-        //邮件配置
+        //fixme 邮件配置
         if (!RedisCache::get('smtp_config')) {
             $m = (new EmailConfigureModel);
             $conf = $m->getEmailConfigure();
@@ -240,7 +240,7 @@ class CommonController extends Controller
             RedisCache::set('smtp_config', $_conf);
         }
 
-        //定时任务配置
+        //fixme 定时任务配置
         if (!RedisCache::get('cron_config')) {
             $m = (new CronsModel);
             $crons = $m->getCrons();

@@ -22,7 +22,7 @@
                             <dd class="s-time">{{date('Y-m-d H:i:s', $order->pay_time)}}</dd>
                         @endif
                     </dl>
-                    <dl class="@if($order->shipping_status == 1) cur @endif">
+                    <dl class="@if($order->shipping_time > 0) cur @endif">
                         <dt class="cursor">3</dt>
                         <dd class="s-text">商家发货</dd>
                         @if(!empty($order->shipping_time))

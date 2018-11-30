@@ -125,7 +125,7 @@
             android:theme="@style/noAnimationTheme" />
 
         <activity
-            android:name=".mycenter.CartActivity"
+            android:name=".goods.CartActivity"
             android:label="@string/cart"
             android:theme="@style/AppTheme" />
 

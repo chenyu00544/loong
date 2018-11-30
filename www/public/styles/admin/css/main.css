@@ -391,6 +391,7 @@ textarea{
 .admin-header {
     min-width: 1280px;
     height: 48px;
+    z-index: 999;
 }
 
 .admin-logo {

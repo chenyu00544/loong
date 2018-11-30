@@ -87,36 +87,36 @@ class OrderRepository implements OrderRepositoryInterface
                 case '0':
                     break;
                 case '1':
-                    $where[] = ['order_status', '=', Config::get('define.OS_UNCONFIRMED')];
+                    $where[] = ['order_status', '=', OS_UNCONFIRMED];
                     break;
                 case '2':
-                    $where[] = ['pay_status', '=', Config::get('define.PS_UNPAYED')];
-                    $where[] = ['order_status', '=', Config::get('define.OS_CONFIRMED')];
+                    $where[] = ['pay_status', '=', PS_UNPAYED];
+                    $where[] = ['order_status', '=', OS_CONFIRMED];
                     break;
                 case '3':
-                    $where[] = ['pay_status', '=', Config::get('define.PS_PAYED')];
-                    $where[] = ['order_status', '=', Config::get('define.OS_CONFIRMED')];
-                    $orWhere = [['shipping_status' => Config::get('define.SS_UNSHIPPED')], ['shipping_status' => Config::get('define.SS_PREPARING')]];
+                    $where[] = ['pay_status', '=', PS_PAYED];
+                    $where[] = ['order_status', '=', OS_CONFIRMED];
+                    $orWhere = [['shipping_status' => SS_UNSHIPPED], ['shipping_status' => SS_PREPARING]];
                     break;
                 case '4':
-                    $where[] = ['shipping_status', '=', Config::get('define.SS_SHIPPED')];
+                    $where[] = ['shipping_status', '=', SS_SHIPPED];
                     break;
                 case '5':
-                    $where[] = ['shipping_status', '=', Config::get('define.SS_RECEIVED')];
+                    $where[] = ['shipping_status', '=', SS_RECEIVED];
                     break;
                 case '6':
-                    $where[] = ['pay_status', '=', Config::get('define.PS_PAYING')];
+                    $where[] = ['pay_status', '=', PS_PAYING];
                     break;
                 case '7':
-                    $where[] = ['order_status', '=', Config::get('define.OS_CANCELED')];
+                    $where[] = ['order_status', '=', OS_CANCELED];
                     break;
                 case '8':
-                    $where[] = ['order_status', '=', Config::get('define.OS_INVALID')];
+                    $where[] = ['order_status', '=', OS_INVALID];
                     break;
                 case '9':
-                    $where[] = ['order_status', '=', Config::get('define.OS_RETURNED')];
-                    $where[] = ['pay_status', '=', Config::get('define.PS_PAYED')];
-                    $orWhere = [['shipping_status' => Config::get('define.SS_UNSHIPPED')], ['shipping_status' => Config::get('define.SS_PREPARING')]];
+                    $where[] = ['order_status', '=', OS_RETURNED];
+                    $where[] = ['pay_status', '=', PS_PAYED];
+                    $orWhere = [['shipping_status' => SS_UNSHIPPED], ['shipping_status' => SS_PREPARING]];
                     break;
                 default:
                     break;
@@ -246,16 +246,16 @@ class OrderRepository implements OrderRepositoryInterface
     public function getSearchNav($seller)
     {
         $allOrder = $this->orderInfoModel->countOrder([], [], $seller);
-        $statusOrder = $this->orderInfoModel->countOrder(['order_status' => Config::get('define.OS_UNCONFIRMED')], [], $seller);
-        $statusOrder_2 = $this->orderInfoModel->countOrder(['order_status' => Config::get('define.OS_CANCELED')], [], $seller);
-        $statusOrder_3 = $this->orderInfoModel->countOrder(['order_status' => Config::get('define.OS_INVALID')], [], $seller);
-        $payOrder = $this->orderInfoModel->countOrder(['pay_status' => Config::get('define.PS_UNPAYED'), 'order_status' => Config::get('define.OS_CONFIRMED')], [], $seller);
-        $payOrder_1 = $this->orderInfoModel->countOrder(['pay_status' => Config::get('define.PS_PAYING')], [], $seller);
+        $statusOrder = $this->orderInfoModel->countOrder(['order_status' => OS_UNCONFIRMED], [], $seller);
+        $statusOrder_2 = $this->orderInfoModel->countOrder(['order_status' => OS_CANCELED], [], $seller);
+        $statusOrder_3 = $this->orderInfoModel->countOrder(['order_status' => OS_INVALID], [], $seller);
+        $payOrder = $this->orderInfoModel->countOrder(['pay_status' => PS_UNPAYED, 'order_status' => OS_CONFIRMED], [], $seller);
+        $payOrder_1 = $this->orderInfoModel->countOrder(['pay_status' => PS_PAYING], [], $seller);
 //        $payOrder_2 = $this->orderInfoModel->countOrder(['pay_status' => Config::get('define.PS_PAYED')],[],$seller);
-        $shippingOrder = $this->orderInfoModel->countOrder(['pay_status' => Config::get('define.PS_PAYED'), 'order_status' => Config::get('define.OS_CONFIRMED')], [['shipping_status' => Config::get('define.SS_UNSHIPPED')], ['shipping_status' => Config::get('define.SS_PREPARING')]], $seller);
-        $shippingOrder_1 = $this->orderInfoModel->countOrder(['shipping_status' => Config::get('define.SS_SHIPPED')], [], $seller);
-        $shippingOrder_2 = $this->orderInfoModel->countOrder(['shipping_status' => Config::get('define.SS_RECEIVED')], [], $seller);
-        $returnOrder = $this->orderInfoModel->countOrder(['order_status' => Config::get('define.OS_RETURNED'), 'pay_status' => Config::get('define.PS_PAYED')], [['shipping_status' => Config::get('define.SS_UNSHIPPED')], ['shipping_status' => Config::get('define.SS_PREPARING')]], $seller);
+        $shippingOrder = $this->orderInfoModel->countOrder(['pay_status' => PS_PAYED, 'order_status' => OS_CONFIRMED], [['shipping_status' => SS_UNSHIPPED], ['shipping_status' => SS_PREPARING]], $seller);
+        $shippingOrder_1 = $this->orderInfoModel->countOrder(['shipping_status' => SS_SHIPPED], [], $seller);
+        $shippingOrder_2 = $this->orderInfoModel->countOrder(['shipping_status' => SS_RECEIVED], [], $seller);
+        $returnOrder = $this->orderInfoModel->countOrder(['order_status' => OS_RETURNED, 'pay_status' => PS_PAYED], [['shipping_status' => SS_UNSHIPPED], ['shipping_status' => SS_PREPARING]], $seller);
 
         $req = [
             ['navType' => '0', 'title' => '全部订单', 'count' => $allOrder],
@@ -283,21 +283,21 @@ class OrderRepository implements OrderRepositoryInterface
         if (!empty($data['type'])) {
             switch ($data['type']) {
                 case 'confirm':
-                    $updata['order_status'] = Config::get('define.OS_CONFIRMED');
+                    $updata['order_status'] = OS_CONFIRMED;
                     $whereIn = $data['ids'];
                     break;
                 case 'invalid':
-                    $updata['order_status'] = Config::get('define.OS_INVALID');
+                    $updata['order_status'] = OS_INVALID;
                     $where['pay_status'] = 0;
                     $whereIn = $data['ids'];
                     break;
                 case 'cancel':
-                    $updata['order_status'] = Config::get('define.OS_CANCELED');
+                    $updata['order_status'] = OS_CANCELED;
                     $where['pay_status'] = 0;
                     $whereIn = $data['ids'];
                     break;
                 case 'remove':
-                    $updata['order_status'] = Config::get('define.OS_CANCELED');
+                    $updata['order_status'] = OS_CANCELED;
                     $where['pay_status'] = 0;
                     $whereOr = ['order_status' => 0, 'order_status' => 3, 'order_status' => 2];
                     $whereIn = $data['ids'];
@@ -358,19 +358,19 @@ class OrderRepository implements OrderRepositoryInterface
                 case 'operation':
                     switch ($data['value']) {
                         case 'sure':
-                            $updata['order_status'] = Config::get('define.OS_CONFIRMED');
+                            $updata['order_status'] = OS_CONFIRMED;
                             break;
                         case 'pay':
                             $order = $this->orderInfoModel->getOrderInfo($where);
-                            $updata['pay_status'] = Config::get('define.PS_PAYED');
-                            $updata['order_status'] = Config::get('define.OS_CONFIRMED');
+                            $updata['pay_status'] = PS_PAYED;
+                            $updata['order_status'] = OS_CONFIRMED;
                             $updata['money_paid'] = $this->orderAmount($order);
                             $updata['order_amount'] = 0;
                             $updata['pay_time'] = time();
                             break;
                         case 'no_pay':
                             $order = $this->orderInfoModel->getOrderInfo($where);
-                            $updata['pay_status'] = Config::get('define.PS_UNPAYED');
+                            $updata['pay_status'] = PS_UNPAYED;
                             $updata['money_paid'] = 0;
                             $updata['order_amount'] = $this->orderAmount($order);
                             $return_money = $order->money_paid - $order->tax;
@@ -416,28 +416,28 @@ class OrderRepository implements OrderRepositoryInterface
                             }
                             break;
                         case 'prepare':
-                            $updata['shipping_status'] = Config::get('define.SS_PREPARING');
+                            $updata['shipping_status'] = SS_PREPARING;
                             break;
                         case 'ship':
-                            $updata['shipping_status'] = Config::get('define.SS_SHIPPED_ING');
+                            $updata['shipping_status'] = SS_SHIPPED_ING;
                             break;
                         case 'to_delivery':
-                            $updata['shipping_status'] = Config::get('define.SS_SHIPPED');
+                            $updata['shipping_status'] = SS_SHIPPED;
                             break;
                         case 'unship':
-                            $updata['shipping_status'] = Config::get('define.SS_UNSHIPPED');
+                            $updata['shipping_status'] = SS_UNSHIPPED;
                             break;
                         case 'receive':
-                            $updata['shipping_status'] = Config::get('define.SS_RECEIVED');
+                            $updata['shipping_status'] = SS_RECEIVED;
                             break;
                         case 'return':
-                            $updata['order_status'] = Config::get('define.OS_RETURNED');
+                            $updata['order_status'] = OS_RETURNED;
                             break;
                         case 'cancel':
-                            $updata['order_status'] = Config::get('define.OS_CANCELED');
+                            $updata['order_status'] = OS_CANCELED;
                             break;
                         case 'invalid':
-                            $updata['order_status'] = Config::get('define.OS_INVALID');
+                            $updata['order_status'] = OS_INVALID;
                             break;
                         case 'delete':
                             $order = $this->orderInfoModel->getOrderInfo($where);
@@ -501,7 +501,7 @@ class OrderRepository implements OrderRepositoryInterface
             case 'operation':
                 if ($data['value'] == 'agree_apply') {//同意申请
                     $updata['agree_apply'] = 1;
-                    $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['order_status' => Config::get('define.OS_RETURNED')]);
+                    $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['order_status' => OS_RETURNED]);
                 } elseif ($data['value'] == 'receive_goods') {//收到退换货商品
                     $updata['return_status'] = 1;
                 } elseif ($data['value'] == 'refuse_apply') {//拒绝申请
@@ -534,14 +534,14 @@ class OrderRepository implements OrderRepositoryInterface
                     $re = $this->orderReturnModel->setOrderReturn($where, $updata);
                     if ($re && $res) {
                         DB::commit();
-                        $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['pay_status' => Config::get('define.PS_REFOUND')]);
+                        $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['pay_status' => PS_REFOUND]);
                         $req = ['code' => 1, 'msg' => '操作成功'];
                     } else {
                         DB::rollBack();
                     }
                     return $req;
                 } else {
-                    $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['pay_status' => Config::get('define.PS_REFOUND')]);
+                    $this->orderInfoModel->setOrderInfo(['order_id' => $rorder->order_id], ['pay_status' => PS_REFOUND]);
                 }
                 break;
             default:

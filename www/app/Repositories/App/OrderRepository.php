@@ -13,6 +13,7 @@ use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\App\BonusUserModel;
+use App\Http\Models\App\CartModel;
 use App\Http\Models\App\CouponsUserModel;
 use App\Http\Models\App\FavourableGoodsModel;
 use App\Http\Models\App\GoodsModel;
@@ -36,6 +37,7 @@ class OrderRepository implements OrderRepositoryInterface
     private $productsModel;
     private $bonusUserModel;
     private $couponsUserModel;
+    private $cartModel;
 
     public function __construct(
         OrderInfoModel $orderInfoModel,
@@ -47,7 +49,8 @@ class OrderRepository implements OrderRepositoryInterface
         PaymentModel $paymentModel,
         ProductsModel $productsModel,
         BonusUserModel $bonusUserModel,
-        CouponsUserModel $couponsUserModel
+        CouponsUserModel $couponsUserModel,
+        CartModel $cartModel
     )
     {
         $this->orderInfoModel = $orderInfoModel;
@@ -60,6 +63,7 @@ class OrderRepository implements OrderRepositoryInterface
         $this->productsModel = $productsModel;
         $this->bonusUserModel = $bonusUserModel;
         $this->couponsUserModel = $couponsUserModel;
+        $this->cartModel = $cartModel;
     }
 
     public function getOrders($data, $uid)
@@ -489,7 +493,8 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
             return $return;
-        } // fixme 订单再次购买
+        }
+        // fixme 订单再次购买
         elseif (!empty($data['order_id'])) {
             $where['order_id'] = $data['order_id'];
             $column = ['*'];
@@ -712,9 +717,10 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
             return $return;
-        } // fixme 购物车结算购买
-        elseif (!empty($data['cart_ids'])) {
-            $f = 0;
+        }
+        // fixme 购物车结算购买
+        elseif (!empty($data['rec_ids'])) {
+            
         }
     }
 }

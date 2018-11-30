@@ -54,7 +54,9 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('order/add', 'OrderController@addOrder');
     Route::post('order/cancel', 'OrderController@cancelOrder');
 
-    Route::post('pay/alipay', 'PayController@aliPay');
-    Route::post('pay/wxpay', 'PayController@wxPay');
+    Route::post('pay/alipay', 'PayController@aliPayApp');
+    Route::post('pay/alipay/async/notify', 'PayController@asyncAliNotify');
+    Route::post('pay/wxpay', 'PayController@wxPayApp');
+    Route::post('pay/wxpay/async/notify', 'PayController@asyncWxNotify');
     Route::post('pay/unionpay', 'PayController@unionPay');
 });

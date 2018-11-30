@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.mycenter;
+package com.vcvb.chenyu.shop.goods;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +27,6 @@ import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.CartItemDecoration;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.store.Shop;

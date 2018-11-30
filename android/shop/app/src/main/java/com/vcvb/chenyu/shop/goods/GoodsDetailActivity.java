@@ -46,7 +46,6 @@ import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.login.RegisterActivity;
 import com.vcvb.chenyu.shop.mycenter.AddressActivity;
-import com.vcvb.chenyu.shop.mycenter.CartActivity;
 import com.vcvb.chenyu.shop.mycenter.ModifyAddressActivity;
 import com.vcvb.chenyu.shop.mycenter.userinfo.UserRealNameActivity;
 import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
