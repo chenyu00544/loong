@@ -11,6 +11,9 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -18,15 +21,18 @@ import com.vcvb.chenyu.shop.adapter.item.browse.BrowseErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseTitleItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
-import com.vcvb.chenyu.shop.adapter.itemdecoration.BrowseItemDecoration;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
-import com.vcvb.chenyu.shop.image.Images;
+import com.vcvb.chenyu.shop.javaBean.browse.Browse;
 import com.vcvb.chenyu.shop.javaBean.collection.CollectionBean;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -37,7 +43,7 @@ import java.util.List;
 import okhttp3.Call;
 
 public class BrowseActivity extends BaseRecyclerViewActivity {
-    private List<CollectionBean> collections = new ArrayList<>();
+    private List<Browse> browses = new ArrayList<>();
     public LoadingDialog loadingDialog;
     private TextView edit;
     private View bottom;
@@ -47,6 +53,10 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     private ConstraintSet set;
     private ConstraintLayout cly;
 
+    private Integer page = 1;
+
+    private RefreshLayout refreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +64,7 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
         context = this;
         changeStatusBarTextColor(true);
         set = new ConstraintSet();
-        cly = (ConstraintLayout) findViewById(R.id.browse);
+        cly = findViewById(R.id.browse);
         set.clone(cly);
         setNavBack();
         initView();
@@ -75,9 +85,9 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
             });
         }
 
-        TextView title = (TextView) findViewById(R.id.textView123);
+        TextView title = findViewById(R.id.textView123);
         title.setText(R.string.browse);
-        edit = (TextView) findViewById(R.id.textView122);
+        edit = findViewById(R.id.textView122);
         edit.setText(R.string.edit);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,43 +106,47 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     @Override
     public void initView() {
         super.initView();
-        mRecyclerView = (RecyclerView) findViewById(R.id.browse_list);
+        mRecyclerView = findViewById(R.id.content);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
         bottom = findViewById(R.id.view38);
-        cb = (CheckBox) findViewById(R.id.checkBox);
-        delete = (TextView) findViewById(R.id.textView130);
+        cb = findViewById(R.id.checkBox);
+        delete = findViewById(R.id.textView130);
     }
 
     @Override
     public void getData(final boolean b) {
+        page = 1;
         super.getData(b);
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
         }
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("page", page + "");
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.BROWSE_GOODS, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (b) {
-                            loadingDialog.dismiss();
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (json != null) {
+                    try {
+                        Integer code = json.getInt("code");
+                        if (code == 0) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (b) {
+                                        loadingDialog.dismiss();
+                                    }
+                                    bindViewData(json);
+                                }
+                            });
                         }
-
-                        if (collections.size() != 0) {
-//                            setHaveDataByView();
-                        } else {
-//                            setNoDateByView();
-                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
+                }
             }
 
             @Override
@@ -143,39 +157,93 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-//                        setNoDateByView();
                     }
                 });
             }
         });
+    }
 
-        collections.clear();
-//        CollectionBean bean = new CollectionBean();
-//        bean.setIsType(-1);
-//        bean.setGoodsName("s");
-//        collections.add(bean);
-        for (int i = 0; i < 5; i++) {
-            CollectionBean bean = new CollectionBean();
-            bean.setIsType(2);
-            bean.setDate("1999-10-1" + i);
-            collections.add(bean);
-            for (int j = 0; j < 5; j++) {
-                bean = new CollectionBean();
-                bean.setIsType(1);
-                bean.setGoodsName("setGoodsName" + j);
-                bean.setPic(Images.imageUrls[j + i]);
-                collections.add(bean);
+    public void initRefresh() {
+        refreshLayout = findViewById(R.id.browse_list);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                getData(false);
+                refreshLayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                loadmore();
+                refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
+            }
+        });
+    }
+
+    public void bindViewData(JSONObject json) {
+        browses.clear();
+        mAdapter.clear();
+        if (json != null) {
+            try {
+                Integer code = json.getInt("code");
+                if (code == 0) {
+                    JSONArray arr = json.getJSONArray("data");
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject object = (JSONObject) arr.get(i);
+                        Browse bean = JsonUtils.fromJsonObject(object, Browse.class);
+                        bean.setData(object);
+                        browses.add(bean);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
             }
         }
-        mAdapter.addAll(getItems(collections));
-        BrowseItemDecoration browseItemDecoration = new BrowseItemDecoration(context, collections);
-        mRecyclerView.addItemDecoration(browseItemDecoration);
+        mAdapter.addAll(getItems(browses));
+    }
+
+    public void loadmore() {
+        HashMap<String, String> mp = new HashMap<>();
+        page += 1;
+        mp.put("token", token);
+        mp.put("page", page + "");
+        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindViewMoreData(json);
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
+    }
+
+    public void bindViewMoreData(JSONObject json) {
+        if (json != null) {
+
+        }
     }
 
     @Override
     public void initListener() {
         super.initListener();
-
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,9 +253,9 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
                 } else {
                     bool = false;
                 }
-                for (int i = 0; i < collections.size(); i++) {
-                    collections.get(i).setIsSelect(bool);
-                    collections.get(i).setIsSelectAll(bool);
+                for (int i = 0; i < browses.size(); i++) {
+//                    collections.get(i).setIsSelect(bool);
+//                    collections.get(i).setIsSelectAll(bool);
                 }
                 mAdapter.notifyDataSetChanged();
             }
@@ -213,33 +281,33 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
             @Override
             public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 mAdapter.notifyDataSetChanged();
-                if (collections.get(position).getIsType() == 1) {
-                    int ppos = position;
-                    int npos = position;
-                    boolean tbool = false;
-                    if (collections.get(position).getIsSelect() == true) {
-                        collections.get(position).setIsSelect(false);
-                        tbool = false;
-                    } else {
-                        collections.get(position).setIsSelect(true);
-                        tbool = true;
-                    }
-                    npos += 1;
-                    while (collections.get(npos).getIsType() == 1) {
-                        if (collections.get(npos).getIsSelect() == false) {
-                            tbool = false;
-                        }
-                        npos += 1;
-                    }
-                    ppos -= 1;
-                    while (collections.get(ppos).getIsType() == 1) {
-                        if (collections.get(ppos).getIsSelect() == false) {
-                            tbool = false;
-                        }
-                        ppos -= 1;
-                    }
-                    collections.get(ppos).setIsSelectAll(tbool);
-                }
+//                if (collections.get(position).getIsType() == 1) {
+//                    int ppos = position;
+//                    int npos = position;
+//                    boolean tbool = false;
+//                    if (collections.get(position).getIsSelect() == true) {
+//                        collections.get(position).setIsSelect(false);
+//                        tbool = false;
+//                    } else {
+//                        collections.get(position).setIsSelect(true);
+//                        tbool = true;
+//                    }
+//                    npos += 1;
+//                    while (collections.get(npos).getIsType() == 1) {
+//                        if (collections.get(npos).getIsSelect() == false) {
+//                            tbool = false;
+//                        }
+//                        npos += 1;
+//                    }
+//                    ppos -= 1;
+//                    while (collections.get(ppos).getIsType() == 1) {
+//                        if (collections.get(ppos).getIsSelect() == false) {
+//                            tbool = false;
+//                        }
+//                        ppos -= 1;
+//                    }
+//                    collections.get(ppos).setIsSelectAll(tbool);
+//                }
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -247,22 +315,22 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
         CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.checkBox7).setOnChildClickListener1(new CYCItemClickSupport.OnChildItemClickListener1() {
             @Override
             public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                if (collections.get(position).getIsType() == 2) {
-                    int npos = position;
-                    boolean tbool = false;
-                    if (collections.get(position).getIsSelectAll() == true) {
-                        collections.get(position).setIsSelectAll(false);
-                        tbool = false;
-                    } else {
-                        collections.get(position).setIsSelectAll(true);
-                        tbool = true;
-                    }
-                    npos += 1;
-                    while (collections.get(npos).getIsType() == 1) {
-                        collections.get(npos).setIsSelect(tbool);
-                        npos += 1;
-                    }
-                }
+//                if (collections.get(position).getIsType() == 2) {
+//                    int npos = position;
+//                    boolean tbool = false;
+//                    if (collections.get(position).getIsSelectAll() == true) {
+//                        collections.get(position).setIsSelectAll(false);
+//                        tbool = false;
+//                    } else {
+//                        collections.get(position).setIsSelectAll(true);
+//                        tbool = true;
+//                    }
+//                    npos += 1;
+//                    while (collections.get(npos).getIsType() == 1) {
+//                        collections.get(npos).setIsSelect(tbool);
+//                        npos += 1;
+//                    }
+//                }
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -279,59 +347,59 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
 
     }
 
-    protected List<Item> getItems(List<CollectionBean> list) {
+    protected List<Item> getItems(List<Browse> list) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case -1:
-                    cells.add(new BrowseErrorItem(list.get(i), context));
-                    break;
-                case 1:
-                    cells.add(new BrowseItem(list.get(i), context));
-                    break;
-                case 2:
+        Integer group = 0;
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if(!list.get(i).getGroup().equals(group)){
                     cells.add(new BrowseTitleItem(list.get(i), context));
-                    break;
+                    group = list.get(i).getGroup();
+                }
+                cells.add(new BrowseItem(list.get(i), context));
             }
+        } else {
+            cells.add(new BrowseErrorItem(null, context));
         }
         return cells;
     }
 
-    public synchronized void deleteItems(){
+    public synchronized void deleteItems() {
         List<CollectionBean> collections_bak = new ArrayList<>();
-        for (int i = 0; i < collections.size(); i++) {
-            synchronized (this){
-                if (collections.get(i).getIsType() == 1) {
-                    if (collections.get(i).getIsSelect() == true) {
-                        collections_bak.add(collections.get(i));
-                    }
-                } else if (collections.get(i).getIsType() == 2) {
-                    if (collections.get(i).getIsSelectAll() == true) {
-                        collections_bak.add(collections.get(i));
-                    }
-                }
+        for (int i = 0; i < browses.size(); i++) {
+            synchronized (this) {
+//                if (collections.get(i).getIsType() == 1) {
+//                    if (collections.get(i).getIsSelect() == true) {
+//                        collections_bak.add(collections.get(i));
+//                    }
+//                } else if (collections.get(i).getIsType() == 2) {
+//                    if (collections.get(i).getIsSelectAll() == true) {
+//                        collections_bak.add(collections.get(i));
+//                    }
+//                }
             }
         }
-        collections.removeAll(collections_bak);
+        browses.removeAll(collections_bak);
         mAdapter.clear();
-        mAdapter.addAll(getItems(collections));
+        mAdapter.addAll(getItems(browses));
         over();
         mAdapter.notifyDataSetChanged();
     }
 
-    public void edit(){
+    public void edit() {
         edit.setText(R.string.over);
         set.constrainHeight(bottom.getId(), ToolUtils.dip2px(context, 50));
-        for (int i = 0; i < collections.size(); i++) {
-            collections.get(i).setIsLong(true);
+        for (int i = 0; i < browses.size(); i++) {
+//            collections.get(i).setIsLong(true);
         }
         set.applyTo(cly);
     }
-    public void over(){
+
+    public void over() {
         edit.setText(R.string.edit);
         set.constrainHeight(bottom.getId(), ToolUtils.dip2px(context, 0));
-        for (int i = 0; i < collections.size(); i++) {
-            collections.get(i).setIsLong(false);
+        for (int i = 0; i < browses.size(); i++) {
+//            collections.get(i).setIsLong(false);
         }
         set.applyTo(cly);
     }

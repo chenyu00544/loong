@@ -27,6 +27,8 @@ public interface ConstantManager {
     interface ResultStatus {
         public Integer ADDRESSRESULT = 1002;
         public Integer ADD_ADDRESS_RESULT = 1003;
+        public Integer ADD_ORDER_RESULT = 1004;
+        public Integer COLLECT_RESULT = 1005;
     }
 
     interface PhotoAlbum {
@@ -123,10 +125,13 @@ public interface ConstantManager {
         public String SET_USER_REAL = URIHOST + "app/user/real/set";
 
         //fixme 收藏操作
-        public String ADDCOLLECTGOODS = URIHOST + "app/collect/goods/add";
-        public String COLLECTGOODSES = URIHOST + "app/collect/goodses";
-        public String ADDCOLLECTBRAND = URIHOST + "app/collect/brand/add";
-        public String ADDCOLLECTSTORE = URIHOST + "app/collect/store/add";
+        public String COLLECT_GOODSES = URIHOST + "app/collect/goodses";
+        public String ADD_COLLECT_GOODS = URIHOST + "app/collect/goods/add";
+        public String ADD_COLLECT_GOODS_CART = URIHOST + "app/collect/goods/cart";
+        public String ADD_COLLECT_BRAND = URIHOST + "app/collect/brand/add";
+        public String ADD_COLLECT_STORE = URIHOST + "app/collect/store/add";
+        public String BROWSE_GOODS = URIHOST + "app/collect/browse";
+        public String SET_BROWSE_GOODS = URIHOST + "app/collect/browse/set";
 
         //fixme 用户地址操作
         public String USERADDRESSES = URIHOST + "app/user/addresses";

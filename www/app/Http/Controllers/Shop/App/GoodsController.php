@@ -33,7 +33,11 @@ class GoodsController extends CommonController
             return ['code' => 9, 'msg' => '商品ID不为空', 'data' => []];
         }
         $data = $this->goodsRepository->getGoodsDetail($goods_id, $user_id);
-        $rep = ['code' => 1, 'msg' => '', 'data' => $data];
+        if($data){
+            $rep = ['code' => 0, 'msg' => '', 'data' => $data];
+        }else{
+            $rep = ['code' => 1, 'msg' => '', 'data' => $data];
+        }
         return $rep;
     }
 }

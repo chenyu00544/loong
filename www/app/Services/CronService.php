@@ -31,8 +31,8 @@ class CronService
         }
         $time = time();
         $where = [
-            ['shipping_status', '=', 1],
-            ['shipping_time', '<', $time.'-`auto_delivery_time`*86400']
+            ['shipping_status', '=', SS_SHIPPED],
+            ['shipping_time', '<', $time-RedisCache::get('shop_config')['auto_delivery_time']*86400]
         ];
         $orders = self::$orderInfoModel->getOrderInfos($where, ['*'], $limit);
         $whereIn = [];
@@ -40,7 +40,7 @@ class CronService
             $whereIn[] = $order->order_id;
         }
         if(count($whereIn)>0){
-            $updata['shipping_status'] = 2;
+            $updata['shipping_status'] = SS_RECEIVED;
             $updata['confirm_take_time'] = $time;
             self::$orderInfoModel->setOrderInfo([], $updata, $whereIn);
         }

@@ -38,7 +38,7 @@ class CartModel extends Model
         return $this->where($where)->count();
     }
 
-    public function getCarts($where, $column = ['*'], $whereIn = [])
+    public function getCartsByGoods($where, $column = ['*'], $whereIn = [])
     {
         $m = $this->select($column)
             ->with(['goods' => function ($query) {
@@ -59,6 +59,17 @@ class CartModel extends Model
             ->orderBy('add_time', 'DESC')
             ->get();
 
+    }
+
+    public function getCarts($where, $column = ['*'], $whereIn = [])
+    {
+        $m = $this->select($column);
+        if (!empty($whereIn)) {
+            $m->whereIn('rec_id', $whereIn);
+        }
+        return $m->where($where)
+            ->orderBy('add_time', 'DESC')
+            ->get();
     }
 
     public function setCart($where, $data)

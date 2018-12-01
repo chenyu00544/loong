@@ -70,6 +70,7 @@ class GoodsModel extends Model
                 $query->where(['price_type' => 1]);
             }])
             ->where($where)
+            ->where('review_status','>=',3)
             ->orderBy('sort_order', 'DESC')
             ->orderBy('add_time', 'DESC')
             ->offset(($page - 1) * $size)->limit($size)
@@ -108,6 +109,7 @@ class GoodsModel extends Model
             ->with(['brand' => function ($query) {
             }])
             ->where($where)
+            ->where('review_status','>=',3)
             ->first();
     }
 

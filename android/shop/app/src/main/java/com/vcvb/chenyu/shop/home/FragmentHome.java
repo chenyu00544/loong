@@ -234,8 +234,8 @@ public class FragmentHome extends BaseFragment {
         if (locationData != null) {
             Map<String, String> user = new HashMap<>();
             try {
-                user.put("region_id", String.valueOf(locationData.getJSONObject("data")
-                        .getString("region_id")));
+                user.put("region_id", String.valueOf(locationData.getJSONObject("data").getString
+                        ("region_id")));
                 user.put("region_name", String.valueOf(locationData.getJSONObject("data")
                         .getString("region_name")));
                 user.put("formatted_address", String.valueOf(locationData.getJSONObject("data")
@@ -258,33 +258,37 @@ public class FragmentHome extends BaseFragment {
             public void success(Call call, JSONObject json) throws IOException {
                 if (json != null) {
                     data = json;
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (bool) {
+                                    loadingDialog.dismiss();
+                                } else if (refreshLayout != null) {
+                                    refreshLayout.finishRefresh();
+                                }
+                                bindData();
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                if (getActivity() != null) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             if (bool) {
                                 loadingDialog.dismiss();
                             } else if (refreshLayout != null) {
-                                refreshLayout.finishRefresh();
+                                refreshLayout.finishRefresh(false);
                             }
-                            bindData();
+                            Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
-            }
-
-            @Override
-            public void failed(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (bool) {
-                            loadingDialog.dismiss();
-                        } else if (refreshLayout != null) {
-                            refreshLayout.finishRefresh(false);
-                        }
-                        Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
     }
@@ -297,25 +301,29 @@ public class FragmentHome extends BaseFragment {
             public void success(Call call, JSONObject json) throws IOException {
                 if (json != null) {
                     loadMoreData = json;
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            refreshLayout.finishLoadMore();
-                            bindLoadMoreData();
-                        }
-                    });
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshLayout.finishLoadMore();
+                                bindLoadMoreData();
+                            }
+                        });
+                    }
                 }
             }
 
             @Override
             public void failed(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshLayout.finishLoadMore(false);
-                        Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshLayout.finishLoadMore(false);
+                            Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }

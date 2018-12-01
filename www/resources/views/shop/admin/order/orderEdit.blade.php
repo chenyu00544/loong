@@ -117,11 +117,8 @@
                                     <dd>@if($order->invoice_no) {{$order->invoice_no}} @else 未发货 @endif</dd>
                                 </dl>
                                 <dl>
-                                    <dt>自动确认收货时间：</dt>
-                                    <dd><input type="text" name="auto_delivery_time"
-                                               class="form-control input-sm wdh40 fl mar-top-5 hg25"
-                                               value="{{$order->auto_delivery_time}}"> <span class="fl">天</span>
-                                    </dd>
+                                    <dt></dt>
+                                    <dd></dd>
                                     <dt></dt>
                                     <dd></dd>
                                 </dl>
@@ -445,18 +442,6 @@
                     _token: '{{csrf_token()}}'
                 }, function (data) {
                     $(that).parent().html(invoice_no);
-                });
-            });
-
-            $('input[name=auto_delivery_time]').on('change', function () {
-                var auto_delivery_time = $(this).val();
-                var order_id = $('input[name=order_id]').val();
-                $.post("{{url('admin/order/change')}}", {
-                    id: order_id,
-                    type: 'auto_delivery_time',
-                    auto_delivery_time: auto_delivery_time,
-                    _token: '{{csrf_token()}}'
-                }, function (data) {
                 });
             });
 

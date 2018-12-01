@@ -31,6 +31,7 @@ import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.TimeUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -336,6 +337,15 @@ public class OrderListActivity extends BaseActivity {
 
     protected List<Item> getItems(List<OrderDetail> orderList) {
         List<Item> cells = new ArrayList<>();
+        TimeUtils.startCountdown(new TimeUtils.CallBack() {
+            @Override
+            public void time() {
+                for (int i = 0; i < orders.size(); i++) {
+                    orders.get(i).setCurrent_time(orders.get(i)
+                            .getCurrent_time() + 1);
+                }
+            }
+        });
         if (orders.size() > 0) {
             for (int i = 0; i < orderList.size(); i++) {
                 OrderListItem orderListItem = new OrderListItem(orderList.get(i), context);
@@ -433,16 +443,19 @@ public class OrderListActivity extends BaseActivity {
                         public void run() {
                             try {
                                 Integer code = json.getInt("code");
-                                if(code == 0){
+                                if (code == 0) {
                                     try {
                                         if (json.getInt("code") == 0) {
-                                            Intent intent = new Intent(context, OrderDetailsActivity.class);
-                                            JSONArray orderIds = json.getJSONObject("data").getJSONArray
-                                                    ("order");
-                                            intent.putExtra("order_id", StringUtils.join(orderIds, ","));
+                                            Intent intent = new Intent(context,
+                                                    OrderDetailsActivity.class);
+                                            JSONArray orderIds = json.getJSONObject("data")
+                                                    .getJSONArray("order");
+                                            intent.putExtra("order_id", StringUtils.join
+                                                    (orderIds, ","));
                                             startActivity(intent);
                                         } else {
-                                            ToastUtils.showShortToast(context, json.getString("msg"));
+                                            ToastUtils.showShortToast(context, json.getString
+                                                    ("msg"));
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -469,15 +482,14 @@ public class OrderListActivity extends BaseActivity {
     }
 
     // fixme 立即支付
-    public void pay(){
+    public void pay() {
         OrderDetail orderDetail = orders.get(position);
         Intent intent = new Intent(context, OrderDetailsActivity.class);
         intent.putExtra("order_id", orderDetail.getOrder_id_str());
         startActivity(intent);
     }
 
-    OrderListItem.OnClickListener orderListListener = new OrderListItem
-            .OnClickListener() {
+    OrderListItem.OnClickListener orderListListener = new OrderListItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             position = pos;

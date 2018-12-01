@@ -236,6 +236,7 @@ class CronsRepository implements CronsRepositoryInterface
         return $mirtime[0] + 86400;
     }
 
+    //执行任务
     public function task($cron)
     {
         switch ($cron->alow_files) {

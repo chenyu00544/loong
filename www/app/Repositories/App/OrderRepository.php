@@ -281,7 +281,7 @@ class OrderRepository implements OrderRepositoryInterface
         }
 
         // fixme 终端来源
-        $froms = empty($data['froms']) ? '' : trim($data['froms']);
+        $froms = empty($data['froms']) ? 'app' : trim($data['froms']);
 
         // fixme 直接购买
         if (!empty($data['goods_id'])) {
@@ -720,7 +720,225 @@ class OrderRepository implements OrderRepositoryInterface
         }
         // fixme 购物车结算购买
         elseif (!empty($data['rec_ids'])) {
-            
+            $rec_ids = explode(',', $data['rec_ids']);
+
+            $goods_ids = [];
+            $goods_attr_ids_arr = [];
+            $goods_attr_arr = [];
+            $goods_num = [];
+            $carts = $this->cartModel->getCarts([], ['*'], $rec_ids);
+            foreach ($carts as $cart) {
+                $goods_ids[] = $cart->goods_id;
+                $goods_attr_ids_arr[] = $cart->goods_attr_id;
+                $goods_attr_arr[] = $cart->goods_attr;
+                $goods_num[] = $cart->goods_number;
+            }
+
+            $wherein = $goods_ids;
+            $where['is_on_sale'] = 1;
+            $where['is_delete'] = 0;
+            $where['review_status'] = 3;
+            $column = [
+                'goods_id', 'cat_id', 'user_id', 'goods_name', 'goods_sn', 'brand_id', 'freight',
+                'goods_number', 'shop_price', 'market_price', 'promote_price', 'promote_start_date', 'promote_end_date',
+                'goods_desc', 'goods_id', 'goods_thumb', 'original_img', 'goods_img', 'is_on_sale',
+                'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume', 'is_fullcut',
+                'goods_type', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num', 'review_status',
+                'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
+                'pinyin_keyword', 'goods_brief'
+            ];
+            $goodses = $this->goodsModel->getGoodsByOrder($where, $column, $wherein);
+            $goodses_arr = [];
+            foreach ($goodses as $goods) {
+                $goodses_arr[$goods->goods_id] = $goods;
+            }
+
+            $goods_amount = [];  //商品总金额
+            $discount = [];      //折扣金额
+            $tax = [];           //税费
+            $shipping_fee = []; //快递费用
+            $order_goodses = [];
+
+            foreach ($goods_ids as $key => $goods_id) {
+                $goods_detail = $goodses_arr[$goods_id];
+                $goods_attr_ids = empty($goods_attr_ids_arr[$key])?[]:explode(',', $goods_attr_ids_arr[$key]);
+
+                $num = $goods_num[$key];
+                if (empty($order[$goods_detail->user_id]['order_id'])) {
+                    $goods_amount[$goods_detail->user_id] = 0;
+                    $discount[$goods_detail->user_id] = 0;
+                    $tax[$goods_detail->user_id] = 0;
+                    $order[$goods_detail->user_id] = [
+                        'order_id' => RedisCache::incrby("order_id"),
+                        'order_sn' => date(VCVB_SNDATE, time()) . rand(100000, 999999),
+                        'user_id' => $uid,
+                        'order_status' => OS_UNCONFIRMED,
+                        'pay_status' => PS_UNPAYED,
+                        'shipping_status' => SS_UNSHIPPED,
+                        'postscript' => !empty($data['postmsg']) ? @trim($data['postmsg']) : '',    //用户留言
+                        'consignee' => $user->default_address->consignee,
+                        'country' => $user->default_address->country,
+                        'province' => $user->default_address->province,
+                        'city' => $user->default_address->city,
+                        'district' => $user->default_address->district,
+                        'address' => $user->default_address->address,
+                        'mobile' => $user->default_address->mobile,
+                        'zipcode' => $user->default_address->zipcode,
+                        'email' => $user->default_address->email,
+                        'best_time' => $user->default_address->best_time,
+                        'sign_building' => $user->default_address->sign_building,
+                        'ru_id' => $goods_detail->user_id,
+                    ];
+                }
+
+
+                $order_goods['rec_id'] = RedisCache::incrby("order_goods_id");
+                $order_goods['user_id'] = $uid;
+                $order_goods['order_id'] = $order[$goods_detail->user_id]['order_id'];
+                $order_goods['goods_name'] = $goods_detail->goods_name;
+                $order_goods['goods_id'] = $goods_detail->goods_id;
+                $order_goods['goods_sn'] = $goods_detail->goods_sn;
+                $order_goods['o_goods_number'] = $num;
+                $order_goods['market_price'] = $goods_detail->market_price;
+                $order_goods['goods_price'] = $goods_detail->shop_price;
+                $order_goods['ru_id'] = $goods_detail->user_id;
+                $order_goods['is_real'] = empty($goods_detail->is_real) ? 1 : 0;
+                $order_goods['extension_code'] = '';
+                $shop_price = $goods_detail->shop_price;
+                $g_amount = $shop_price * $num;
+
+                //本身商品的促销活动
+                if ($goods_detail->is_promote == 1 && $goods_detail->promote_start_date < $time && $goods_detail->promote_end_date > $time) {
+                    $g_amount = $goods_detail->promote_price * $num;
+                }
+
+                //本身商品的阶梯价格
+                if ($goods_detail->is_volume == 1) {
+                    $gvp_k = -1;
+                    foreach ($goods_detail->gvp as $key => $gvp) {
+                        if ($num >= $gvp->volume_number) {
+                            $gvp_k = $key;
+                        }
+                    }
+                    if ($gvp_k >= 0) {
+                        $v_amount = $goods_detail->gvp[$gvp_k]->volume_price * $num;
+                        if ($g_amount > $v_amount) {
+                            $g_amount = $v_amount;
+                        }
+                    }
+                }
+
+                $goods_amount[$goods_detail->user_id] += $g_amount;
+
+                //大型活动
+                if(empty($faat[$goods_detail->user_id])){
+                    $faat[$goods_detail->user_id] = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
+                }else{
+                    $goods_detail->faat_act_id = $faat[$goods_detail->user_id]->act_id;
+                    $goods_detail->faat_act_type = $faat[$goods_detail->user_id]->act_type;
+                    $goods_detail->faat_act_type_ext = $faat[$goods_detail->user_id]->act_type_ext;
+                    $goods_detail->faat_min_amount = $faat[$goods_detail->user_id]->min_amount;
+                    if ($goods_amount[$goods_detail->user_id] > $faat[$goods_detail->user_id]->min_amoun) {
+                        if ($faat[$goods_detail->user_id]->act_type == 1) {
+                            $discount[$goods_detail->user_id] += $faat[$goods_detail->user_id]->act_type_ext;
+                        } elseif ($faat[$goods_detail->user_id]->act_type == 2) {
+                            $discount[$goods_detail->user_id] += $goods_amount[$goods_detail->user_id] * (1 - $faat[$goods_detail->user_id]->act_type_ext);
+                        }
+                    }
+                }
+
+                //本身商品的满减活动
+                if ($goods_detail->is_fullcut == 1) {
+                    $fullcut_k = -1;
+                    foreach ($goods_detail->fullcut as $key => $fullcut) {
+                        if ($goods_amount[$goods_detail->user_id] >= $fullcut->cfull) {
+                            $fullcut_k = $key;
+                        }
+                    }
+                    if ($fullcut_k >= 0) {
+                        $discount[$goods_detail->user_id] += $goods_detail->fullcut[$fullcut_k]->creduce;
+                    }
+                }
+
+
+                //商品扩展信息
+                if (!empty($goods_detail->goodsext)) {
+                    $order_goods['is_reality'] = $goods_detail->goodsext->is_reality;
+                    $order_goods['is_return'] = $goods_detail->goodsext->is_return;
+                    $order_goods['is_fast'] = $goods_detail->goodsext->is_fast;
+                }
+
+                //商品规格
+                if (count($goods_attr_ids) > 0) {
+                    $pwhere['goods_id'] = $goods_id;
+                    $product = $this->productsModel->getProdcutAndAttr($goods_attr_ids, ['*'], $pwhere);
+                    $goods_attr = [];
+                    foreach ($product->attrs as $attr) {
+                        $goods_attr[] = $attr->attr_value;
+                    }
+                    $order_goods['product_id'] = $product->product_id;
+                    $order_goods['goods_attr'] = implode(',', $goods_attr);
+                    $order_goods['goods_attr_id'] = $product->goods_attr;
+                    $order_goods['product_sn'] = $product->product_sn;
+                }
+
+                //快递
+                if ($goods_detail->freight == 2) {
+                    $ship = $this->transportModel->getTransportByShip(['tid' => $goods_detail->tid]);
+                    $order_goods['freight'] = $goods_detail->freight;
+                    $order_goods['tid'] = $goods_detail->tid;
+                    foreach ($ship->t_ext as $t_ext) {
+                        $area_ids = explode(',', $t_ext->area_id);
+                        if (in_array($order[$goods_detail->user_id]['city'], $area_ids)) {
+                            $order_goods['shipping_fee'] = $t_ext->sprice;
+                            $shipping_fee[$goods_detail->user_id] = $t_ext->sprice;
+                        }
+                    }
+                } else {
+                    $order_goods['tid'] = 0;
+                    $order_goods['freight'] = $goods_detail->freight;
+                    $order_goods['shipping_fee'] = $goods_detail->shipping_fee;
+                    $shipping_fee[$goods_detail->user_id] = $goods_detail->shipping_fee;
+                }
+
+                $this->orderGoodsModel->addOrderGoods($order_goods);
+
+                //商品属性整理
+                $goods_detail->gattr;
+                $multi_attr = [];
+                foreach ($goods_detail->gattr as $akey => $gattr) {
+                    $gattr->attr_name = $gattr->attr->attr_name;
+                    if (in_array($gattr->goods_attr_id, $goods_attr_ids)) {
+                        $multi_attr[] = $gattr;
+                    }
+                    if ($gattr->attr->attr_group == 1 && $gattr->attr->attr_name == '税率') {
+                        $goods_detail->tax = $gattr->attr_value;
+                        $tax[$goods_detail->user_id] += $goods_amount[$goods_detail->user_id] * ($gattr->attr_value / 100);
+                    }
+                }
+                $goods_detail->multi_attr = $multi_attr;
+                unset($goods_detail->gattr);
+                $order_goodses[$goods_detail->user_id][] = $goods_detail;
+
+                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
+
+                $order[$goods_detail->user_id]['referer'] = '本站';
+                $order[$goods_detail->user_id]['froms'] = $froms;
+                $order[$goods_detail->user_id]['add_time'] = $time;
+                $order[$goods_detail->user_id]['is_update_sale'] = 0;
+            }
+            foreach ($order as $key => $o) {
+                $re = $this->orderInfoModel->addOrder($o);
+                if ($re) {
+                    $return['order'][] = $o['order_id'];
+                    $this->cartModel->delCarts($rec_ids);
+                }
+            }
+            return $return;
         }
     }
 }

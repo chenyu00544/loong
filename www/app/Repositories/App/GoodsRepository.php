@@ -12,6 +12,7 @@ use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
+use App\Http\Models\App\BrowseGoodsModel;
 use App\Http\Models\App\CartModel;
 use App\Http\Models\App\CollectGoodsModel;
 use App\Http\Models\App\CommentExtModel;
@@ -37,6 +38,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $favourableGoodsModel;
     private $productsModel;
     private $collectGoodsModel;
+    private $browseGoodsModel;
 
     public function __construct(
         GoodsModel $goodsModel,
@@ -49,7 +51,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         CartModel $cartModel,
         FavourableGoodsModel $favourableGoodsModel,
         ProductsModel $productsModel,
-        CollectGoodsModel $collectGoodsModel
+        CollectGoodsModel $collectGoodsModel,
+        BrowseGoodsModel $browseGoodsModel
     )
     {
         $this->goodsModel = $goodsModel;
@@ -63,6 +66,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->favourableGoodsModel = $favourableGoodsModel;
         $this->productsModel = $productsModel;
         $this->collectGoodsModel = $collectGoodsModel;
+        $this->browseGoodsModel = $browseGoodsModel;
     }
 
     public function getBestGoods($page = 1)
@@ -87,10 +91,21 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function getGoodsDetail($goods_id, $user_id = 0)
     {
+        //添加浏览足迹
+        if ($user_id > 0 && $this->browseGoodsModel->countBrowseGoods(['user_id' => $user_id, 'goods_id' => $goods_id]) == 0) {
+            $browse_data = [
+                'browse_id' => RedisCache::incrby("browse_id"),
+                'user_id' => $user_id,
+                'add_time' => time(),
+                'goods_id' => $goods_id,
+                'is_attention' => 1,
+            ];
+            $this->browseGoodsModel->addBrowseGoods($browse_data);
+        }
+
         $where['goods_id'] = $goods_id;
         $where['is_on_sale'] = 1;
         $where['is_delete'] = 0;
-        $where['review_status'] = 3;
         $column = [
             'goods_id', 'cat_id', 'user_id', 'goods_name', 'goods_sn', 'brand_id', 'freight',
             'goods_number', 'shop_price', 'market_price', 'promote_price', 'promote_start_date', 'promote_end_date',
@@ -258,7 +273,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         if (!empty($request['rec_ids'])) {
             $rec_ids = explode(',', $request['rec_ids']);
         }
-        $res = $this->cartModel->getCarts($where, $column, $rec_ids);
+        $res = $this->cartModel->getCartsByGoods($where, $column, $rec_ids);
 
         $data = [];
         foreach ($res as $k => $re) {

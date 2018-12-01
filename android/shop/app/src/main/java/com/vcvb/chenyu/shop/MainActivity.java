@@ -200,6 +200,7 @@ public class MainActivity extends BaseActivity {
         fragmentTransaction.commit();
     }
 
+    //fixme 隐藏所有选项页面
     private void hideFragment(FragmentTransaction fragmentTransaction) {
         if (fragmentHome != null) {
             fragmentTransaction.hide(fragmentHome);
@@ -218,6 +219,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    //fixme 显示登录窗口
     public void showLoginDialog() {
         LoginDialog.getInstance(this).setOnDialogClickListener(new LoginDialog
                 .OnDialogClickListener() {
