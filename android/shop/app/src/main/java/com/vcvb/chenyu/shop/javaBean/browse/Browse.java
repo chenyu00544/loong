@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 public class Browse {
     private Integer browse_id;
-    private Integer group;
+    private String group;
     private String user_id;
     private Integer add_time;
     private String add_time_format;
@@ -17,11 +17,11 @@ public class Browse {
     private boolean isSelectAll = false;
     private Goods goods;
 
-    public Integer getGroup() {
+    public String getGroup() {
         return group;
     }
 
-    public void setGroup(Integer group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 

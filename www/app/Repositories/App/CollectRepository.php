@@ -9,6 +9,7 @@
 namespace App\Repositories\App;
 
 use App\Contracts\CollectRepositoryInterface;
+use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\App\BrowseGoodsModel;
@@ -160,28 +161,20 @@ class CollectRepository implements CollectRepositoryInterface
         $where['is_attention'] = 1;
         $page = $data['page'];
         $res = $this->browseGoodsModel->getBrowseGoodses($where, $page);
-        $time = strtotime(date('Y-m-d', time()));
         foreach ($res as $re) {
-            if($re->add_time > $time){
-                $re->group = 1;
-            }elseif($re->add_time > $time-1*86400){
-                $re->group = 2;
-            }elseif($re->add_time > $time-2*86400){
-                $re->group = 3;
-            }elseif($re->add_time > $time-3*86400){
-                $re->group = 4;
-            }elseif($re->add_time > $time-4*86400){
-                $re->group = 5;
-            }elseif($re->add_time > $time-5*86400){
-                $re->group = 6;
-            }elseif($re->add_time > $time-6*86400){
-                $re->group = 7;
-            }elseif($re->add_time > $time-6*86400){
-                $re->group = 7;
+            $d_time = strtotime(date('Y-m-d', time()));
+            if ($re->add_time > $d_time - 7 * 86400) {
+                $re->group = date('Y-m-d', $re->add_time);
+            } else {
+                $re->group = date('Y-m', $re->add_time);
             }
+
             $re->add_time_format = date('Y-m-d', $re->add_time);
             $re->goods->current_time = time();
             $re->goods->original_img = FileHandle::getImgByOssUrl($re->goods->original_img);
+            $re->goods->shop_price_format = Common::priceFormat($re->goods->shop_price);
+            $re->goods->market_price_format = Common::priceFormat($re->goods->market_price);
+            $re->goods->promote_price_format = Common::priceFormat($re->goods->promote_price);
         }
         return $res;
     }

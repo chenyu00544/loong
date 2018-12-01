@@ -343,13 +343,11 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
 
             }
         });
-
-
     }
 
     protected List<Item> getItems(List<Browse> list) {
         List<Item> cells = new ArrayList<>();
-        Integer group = 0;
+        String group = "";
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 if(!list.get(i).getGroup().equals(group)){
@@ -403,4 +401,11 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
         }
         set.applyTo(cly);
     }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -43,7 +44,9 @@ public class CollectionItem extends BaseItem<CollectionBean> {
         TextView tv = holder.get(R.id.textView114);
         tv.setText(mData.getGoods().getGoods_name());
         ImageView iv = holder.get(R.id.imageView47);
-        Glide.with(context).load(mData.getGoods().getOriginal_img()).into(iv);
+        RequestOptions requestOptions = RequestOptions.centerCropTransform().placeholder(R
+                .drawable.icon_no_pic).dontAnimate();
+        Glide.with(context).load(mData.getGoods().getOriginal_img()).apply(requestOptions).into(iv);
 
         TextView tv1 = holder.get(R.id.textView115);
         if (mData.getGoods().getIs_promote().equals("1") && mData.getGoods().getPromote_end_date
