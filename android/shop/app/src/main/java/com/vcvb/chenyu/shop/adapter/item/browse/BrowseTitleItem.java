@@ -41,7 +41,7 @@ public class BrowseTitleItem extends BaseItem<Browse> {
         ConstraintSet set = new ConstraintSet();
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         set.clone(cly);
-        if (mData.isLong()) {
+        if (!mData.isLong()) {
             set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 0));
             set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 0));
         } else {
@@ -50,10 +50,8 @@ public class BrowseTitleItem extends BaseItem<Browse> {
         }
         set.applyTo(cly);
 
-        if(mData.isSelectAll()){
-            cb.setChecked(true);
-        }else{
-            cb.setChecked(false);
-        }
+        cb.setChecked(mData.isSelectAll());
+        posMap.put(cb.getId(), position);
+        cb.setOnClickListener(listener);
     }
 }

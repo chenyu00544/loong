@@ -618,9 +618,6 @@ public class FragmentCart extends BaseFragment {
                         } else if (carts.get(pos).getShop() != null && carts.get(pos).getIsType()
                                 == 2) {
                             System.out.println("Brand");
-//                        Intent intent = new Intent(context, GoodsDetailActivity.class);
-//                        intent.putExtra("id", carts.get(position).getShop().getRu_id());
-//                        context.startActivity(intent);
                         }
                     }
                     break;

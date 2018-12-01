@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -20,12 +19,10 @@ import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseTitleItem;
-import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.browse.Browse;
-import com.vcvb.chenyu.shop.javaBean.collection.CollectionBean;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
@@ -244,105 +241,8 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     @Override
     public void initListener() {
         super.initListener();
-        cb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean bool;
-                if (cb.isChecked() == true) {
-                    bool = true;
-                } else {
-                    bool = false;
-                }
-                for (int i = 0; i < browses.size(); i++) {
-//                    collections.get(i).setIsSelect(bool);
-//                    collections.get(i).setIsSelectAll(bool);
-                }
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteItems();
-            }
-        });
-
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                Intent intent = new Intent(BrowseActivity.this, GoodsDetailActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.checkBox6).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                mAdapter.notifyDataSetChanged();
-//                if (collections.get(position).getIsType() == 1) {
-//                    int ppos = position;
-//                    int npos = position;
-//                    boolean tbool = false;
-//                    if (collections.get(position).getIsSelect() == true) {
-//                        collections.get(position).setIsSelect(false);
-//                        tbool = false;
-//                    } else {
-//                        collections.get(position).setIsSelect(true);
-//                        tbool = true;
-//                    }
-//                    npos += 1;
-//                    while (collections.get(npos).getIsType() == 1) {
-//                        if (collections.get(npos).getIsSelect() == false) {
-//                            tbool = false;
-//                        }
-//                        npos += 1;
-//                    }
-//                    ppos -= 1;
-//                    while (collections.get(ppos).getIsType() == 1) {
-//                        if (collections.get(ppos).getIsSelect() == false) {
-//                            tbool = false;
-//                        }
-//                        ppos -= 1;
-//                    }
-//                    collections.get(ppos).setIsSelectAll(tbool);
-//                }
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.checkBox7).setOnChildClickListener1(new CYCItemClickSupport.OnChildItemClickListener1() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-//                if (collections.get(position).getIsType() == 2) {
-//                    int npos = position;
-//                    boolean tbool = false;
-//                    if (collections.get(position).getIsSelectAll() == true) {
-//                        collections.get(position).setIsSelectAll(false);
-//                        tbool = false;
-//                    } else {
-//                        collections.get(position).setIsSelectAll(true);
-//                        tbool = true;
-//                    }
-//                    npos += 1;
-//                    while (collections.get(npos).getIsType() == 1) {
-//                        collections.get(npos).setIsSelect(tbool);
-//                        npos += 1;
-//                    }
-//                }
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        //找相似
-        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.textView133).setOnChildClickListener2
-                (new CYCItemClickSupport.OnChildItemClickListener2() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-
-            }
-        });
+        cb.setOnClickListener(onClickListener);
+        delete.setOnClickListener(onClickListener);
     }
 
     protected List<Item> getItems(List<Browse> list) {
@@ -350,11 +250,16 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
         String group = "";
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                if(!list.get(i).getGroup().equals(group)){
-                    cells.add(new BrowseTitleItem(list.get(i), context));
+                if (!list.get(i).getGroup().equals(group)) {
+                    BrowseTitleItem browseTitleItem = new BrowseTitleItem(list.get(i), context);
+                    browseTitleItem.setOnItemClickListener(browseTitleListener);
+                    cells.add(browseTitleItem);
                     group = list.get(i).getGroup();
                 }
-                cells.add(new BrowseItem(list.get(i), context));
+
+                BrowseItem browseItem = new BrowseItem(list.get(i), context);
+                browseItem.setOnItemClickListener(browseListener);
+                cells.add(browseItem);
             }
         } else {
             cells.add(new BrowseErrorItem(null, context));
@@ -363,32 +268,33 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     }
 
     public synchronized void deleteItems() {
-        List<CollectionBean> collections_bak = new ArrayList<>();
-        for (int i = 0; i < browses.size(); i++) {
-            synchronized (this) {
-//                if (collections.get(i).getIsType() == 1) {
-//                    if (collections.get(i).getIsSelect() == true) {
-//                        collections_bak.add(collections.get(i));
+//        List<Browse> collections_bak = new ArrayList<>();
+//        String group = "";
+//        for (int i = 0; i < browses.size(); i++) {
+//            synchronized (this) {
+//                if (browses.get(i).getIsType() == 1) {
+//                    if (browses.get(i).isSelect()) {
+//                        collections_bak.add(browses.get(i));
 //                    }
-//                } else if (collections.get(i).getIsType() == 2) {
-//                    if (collections.get(i).getIsSelectAll() == true) {
-//                        collections_bak.add(collections.get(i));
+//                } else if (browses.get(i).getIsType() == 2) {
+//                    if (browses.get(i).isSelectAll()) {
+//                        collections_bak.add(browses.get(i));
 //                    }
 //                }
-            }
-        }
-        browses.removeAll(collections_bak);
-        mAdapter.clear();
-        mAdapter.addAll(getItems(browses));
-        over();
-        mAdapter.notifyDataSetChanged();
+//            }
+//        }
+//        browses.removeAll(collections_bak);
+//        mAdapter.clear();
+//        mAdapter.addAll(getItems(browses));
+//        over();
+//        mAdapter.notifyDataSetChanged();
     }
 
     public void edit() {
         edit.setText(R.string.over);
         set.constrainHeight(bottom.getId(), ToolUtils.dip2px(context, 50));
         for (int i = 0; i < browses.size(); i++) {
-//            collections.get(i).setIsLong(true);
+            browses.get(i).setLong(true);
         }
         set.applyTo(cly);
     }
@@ -397,7 +303,7 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
         edit.setText(R.string.edit);
         set.constrainHeight(bottom.getId(), ToolUtils.dip2px(context, 0));
         for (int i = 0; i < browses.size(); i++) {
-//            collections.get(i).setIsLong(false);
+            browses.get(i).setLong(false);
         }
         set.applyTo(cly);
     }
@@ -405,7 +311,53 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.checkBox:
+                    boolean bool;
+                    if (cb.isChecked()) {
+                        bool = true;
+                    } else {
+                        bool = false;
+                    }
+                    for (int i = 0; i < browses.size(); i++) {
+                        browses.get(i).setSelect(bool);
+                        browses.get(i).setSelectAll(bool);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.textView130:
+                    deleteItems();
+                    break;
+            }
+        }
+    };
 
+    BrowseTitleItem.OnClickListener browseTitleListener = new BrowseTitleItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            switch (view.getId()) {
+                case R.id.checkBox7://全选
+                    browses.get(pos).setSelectAll(true);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
+
+    BrowseItem.OnClickListener browseListener = new BrowseItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            switch (view.getId()) {
+                case R.id.checkBox6://单选
+                    mAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.imageView58:
+                    Intent intent = new Intent(BrowseActivity.this, GoodsDetailActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.textView133://找相似
+                    break;
+            }
         }
     };
 }

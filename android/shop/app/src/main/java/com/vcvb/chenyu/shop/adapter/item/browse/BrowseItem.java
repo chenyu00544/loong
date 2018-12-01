@@ -40,10 +40,11 @@ public class BrowseItem extends BaseItem<Browse> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView goodsName = holder.getTextView(R.id.textView134);
         TextView tip = holder.getTextView(R.id.textView136);
-        TextView goodsPrice = holder.getTextView(R.id.textView134);
+        TextView goodsPrice = holder.getTextView(R.id.textView135);
         CheckBox cb = (CheckBox) holder.getView(R.id.checkBox6);
         ImageView iv = holder.getImageView(R.id.imageView58);
 
+        tip.setAlpha(0);
         goodsName.setText(mData.getGoods().getGoods_name());
         goodsPrice.setText(mData.getGoods().getShop_price_format());
         RequestOptions requestOptions = RequestOptions.centerCropTransform().placeholder(R
@@ -53,7 +54,7 @@ public class BrowseItem extends BaseItem<Browse> {
         ConstraintSet set = new ConstraintSet();
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         set.clone(cly);
-        if (mData.isLong()) {
+        if (!mData.isLong()) {
             set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 0));
             set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 0));
         } else {
@@ -62,10 +63,8 @@ public class BrowseItem extends BaseItem<Browse> {
         }
         set.applyTo(cly);
 
-        if(mData.isSelect()){
-            cb.setChecked(true);
-        }else{
-            cb.setChecked(false);
-        }
+        cb.setChecked(mData.isSelect());
+        posMap.put(cb.getId(), position);
+        cb.setOnClickListener(listener);
     }
 }
