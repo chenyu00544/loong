@@ -97,7 +97,13 @@ public class GoodsAttrDialog extends DialogFragment {
             goodsPrice.setText(goodsDetail.getShop_price_format());
         }
         tax = v.findViewById(R.id.textView16);
-        String str = "税率" + goodsDetail.getGoodsTexAttr().getAttr_value() + "%";
+        String tax_fee = "";
+        if(goodsDetail.getGoodsTexAttr() == null){
+            tax_fee = "0";
+        }else{
+            tax_fee = goodsDetail.getGoodsTexAttr().getAttr_value();
+        }
+        String str = "税率" + tax_fee + "%";
         tax.setText(str);
 
         multiAttrs = goodsDetail.getMultiAttrs();

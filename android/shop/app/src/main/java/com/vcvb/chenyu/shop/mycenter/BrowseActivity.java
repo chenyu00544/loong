@@ -185,9 +185,16 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
             try {
                 Integer code = json.getInt("code");
                 if (code == 0) {
+                    String group = "";
                     JSONArray arr = json.getJSONArray("data");
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject object = (JSONObject) arr.get(i);
+                        if (!object.getString("group").equals(group)) {
+                            group = object.getString("group");
+                            Browse bean = new Browse();
+                            bean.setAdd_time_format(object.getString("add_time_format"));
+                            browses.add(bean);
+                        }
                         Browse bean = JsonUtils.fromJsonObject(object, Browse.class);
                         bean.setData(object);
                         browses.add(bean);
@@ -247,19 +254,17 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
 
     protected List<Item> getItems(List<Browse> list) {
         List<Item> cells = new ArrayList<>();
-        String group = "";
         if (list.size() > 0) {
             for (int i = 0; i < list.size(); i++) {
-                if (!list.get(i).getGroup().equals(group)) {
+                if (list.get(i).getGoods() == null) {
                     BrowseTitleItem browseTitleItem = new BrowseTitleItem(list.get(i), context);
                     browseTitleItem.setOnItemClickListener(browseTitleListener);
                     cells.add(browseTitleItem);
-                    group = list.get(i).getGroup();
+                } else {
+                    BrowseItem browseItem = new BrowseItem(list.get(i), context);
+                    browseItem.setOnItemClickListener(browseListener);
+                    cells.add(browseItem);
                 }
-
-                BrowseItem browseItem = new BrowseItem(list.get(i), context);
-                browseItem.setOnItemClickListener(browseListener);
-                cells.add(browseItem);
             }
         } else {
             cells.add(new BrowseErrorItem(null, context));
@@ -337,7 +342,20 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
         public void onClicked(View view, int pos) {
             switch (view.getId()) {
                 case R.id.checkBox7://全选
-                    browses.get(pos).setSelectAll(true);
+                    int npos = pos;
+                    boolean tbool = false;
+                    if (browses.get(pos).isSelectAll()) {
+                        browses.get(pos).setSelectAll(false);
+                        tbool = false;
+                    } else {
+                        browses.get(pos).setSelectAll(true);
+                        tbool = true;
+                    }
+                    npos += 1;
+                    while (npos < browses.size() && browses.get(npos).getGoods() != null) {
+                        browses.get(npos).setSelect(tbool);
+                        npos += 1;
+                    }
                     mAdapter.notifyDataSetChanged();
                     break;
             }
@@ -349,6 +367,11 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
         public void onClicked(View view, int pos) {
             switch (view.getId()) {
                 case R.id.checkBox6://单选
+                    if (browses.get(pos).isSelect()) {
+                        browses.get(pos).setSelect(false);
+                    } else {
+                        browses.get(pos).setSelect(true);
+                    }
                     mAdapter.notifyDataSetChanged();
                     break;
                 case R.id.imageView58:
