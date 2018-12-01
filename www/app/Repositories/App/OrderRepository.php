@@ -720,7 +720,7 @@ class OrderRepository implements OrderRepositoryInterface
         }
         // fixme 购物车结算购买
         elseif (!empty($data['rec_ids'])) {
-            
+
         }
     }
 }
