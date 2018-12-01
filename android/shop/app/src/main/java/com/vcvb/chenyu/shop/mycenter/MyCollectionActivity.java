@@ -78,10 +78,10 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
 
         LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(ToolUtils.dip2px
                 (context, 60), LinearLayout.LayoutParams.WRAP_CONTENT);
-        LinearLayout nav_other = (LinearLayout) findViewById(R.id.nav_other);
+        LinearLayout nav_other = findViewById(R.id.nav_other);
         nav_other.setLayoutParams(layoutParams2);
         nav_other.setAlpha(1);
-        ImageView iv1 = (ImageView) findViewById(R.id.collection);
+        ImageView iv1 = findViewById(R.id.collection);
         nav_other.removeView(iv1);
 
         final PopWin popWindow = new PopWin(MyCollectionActivity.this, ToolUtils.dip2px(context,
@@ -120,6 +120,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
+                getData(false);
                 refreshLayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
             }
         });
@@ -133,6 +134,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
     }
 
     public void getData(final boolean b) {
+        page = 1;
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
@@ -140,7 +142,8 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
         mp.put("page", page + "");
-        HttpUtils.getInstance().post(ConstantManager.Url.COLLECTGOODSES, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.COLLECT_GOODSES, mp, new HttpUtils
+                .NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
@@ -208,6 +211,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
                         JSONObject object = (JSONObject) arr.get(i);
                         CollectionBean bean = JsonUtils.fromJsonObject(object, CollectionBean
                                 .class);
+                        bean.setData(object);
                         collections.add(bean);
                     }
                 }
@@ -228,74 +232,55 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         }
     }
 
-    protected List<Item> getItems(List<CollectionBean> list)
-    {
+    protected List<Item> getItems(List<CollectionBean> list) {
         List<Item> cells = new ArrayList<>();
         if (list == null || list.size() == 0) {
             cells.add(new CollectionErrorItem(null, context));
-        }else{
+        } else {
             for (int i = 0; i < list.size(); i++) {
-                cells.add(new CollectionItem(list.get(i), context));
+                CollectionItem collectionItem = new CollectionItem(list.get(i), context);
+                collectionItem.setOnItemClickListener(collectionListener);
+                cells.add(collectionItem);
             }
         }
         return cells;
     }
-    public void initListener() {
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(position);
-                clearLong();
-                Intent intent = new Intent(MyCollectionActivity.this, GoodsDetailActivity.class);
-                startActivity(intent);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
 
+    public void initListener() {
         CYCItemClickSupport.addTo(mRecyclerView).setOnItemLongClickListener(new CYCItemClickSupport.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClicked(RecyclerView recyclerView, View itemView, int
                     position) {
                 clearLong();
-                collections.get(position).setIsLong(true);
-                System.out.println(2);
+                collections.get(position).setLong(true);
                 mAdapter.notifyDataSetChanged();
                 return true;
             }
         });
+    }
 
-        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.textView113).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
-
+    //取消收藏
+    public void cancelCollect(final Integer pos){
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("goods_id", collections.get(pos).getGoods().getGoods_id() + "");
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS, mp, new HttpUtils
+                .NetCall() {
             @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                System.out.println(1);
-                clearLong();
-                mAdapter.notifyDataSetChanged();
+            public void success(Call call, JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        collections.remove(pos);
+                        mAdapter.remove(pos);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
             }
-        });
-
-        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView48).setOnChildClickListener1
-                (new CYCItemClickSupport.OnChildItemClickListener1() {
 
             @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                clearLong();
-                System.out.println(2);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+            public void failed(Call call, IOException e) {
 
-        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.textView119).setOnChildClickListener2
-                (new CYCItemClickSupport.OnChildItemClickListener2() {
-
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                clearLong();
-                System.out.println(3);
-                collections.remove(position);
-                mAdapter.remove(position);
-                mAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -303,9 +288,36 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
     //清理长按显示状态
     public void clearLong() {
         for (int i = 0; i < collections.size(); i++) {
-            if (collections.get(i).getIsLong() == true) {
-                collections.get(i).setIsLong(false);
+            if (collections.get(i).isLong()) {
+                collections.get(i).setLong(false);
             }
         }
     }
+
+    CollectionItem.OnClickListener collectionListener = new CollectionItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            clearLong();
+            switch (view.getId()) {
+                case R.id.textView113:
+                    //找相似
+                    break;
+                case R.id.imageView48:
+                case R.id.imageView47:
+                    //商品详情
+                    Intent intent = new Intent(MyCollectionActivity.this, GoodsDetailActivity
+                            .class);
+                    intent.putExtra("id", collections.get(pos).getGoods().getGoods_id());
+                    startActivity(intent);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.view32:
+                    break;
+                case R.id.textView119:
+                    //取消收藏
+                    cancelCollect(pos);
+                    break;
+            }
+        }
+    };
 }

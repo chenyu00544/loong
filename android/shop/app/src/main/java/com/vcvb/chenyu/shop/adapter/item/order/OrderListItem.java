@@ -23,6 +23,8 @@ import com.vcvb.chenyu.shop.tools.ToolUtils;
 import java.util.List;
 import java.util.Locale;
 
+import cn.iwgang.countdownview.CountdownView;
+
 public class OrderListItem extends BaseItem<OrderDetail> {
     public static final int TYPE = R.layout.order_content_have_data_list_item;
 
@@ -48,18 +50,15 @@ public class OrderListItem extends BaseItem<OrderDetail> {
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
         View wrap = holder.get(R.id.order_wrap);
-        cly.removeAllViews();
 
+        cly.removeAllViews();
         View header = LayoutInflater.from(context).inflate(R.layout
                 .order_content_have_data_header_item, null);
         cly.addView(header);
         set.constrainHeight(header.getId(), ToolUtils.dip2px(context, 40));
-        set.connect(header.getId(), ConstraintSet.TOP, wrap.getId(), ConstraintSet
-                .TOP, 0);
-        set.connect(header.getId(), ConstraintSet.LEFT, wrap.getId(), ConstraintSet
-                .LEFT, 0);
-        set.connect(header.getId(), ConstraintSet.RIGHT, wrap.getId(), ConstraintSet
-                .RIGHT, 0);
+        set.connect(header.getId(), ConstraintSet.TOP, wrap.getId(), ConstraintSet.TOP, 0);
+        set.connect(header.getId(), ConstraintSet.LEFT, wrap.getId(), ConstraintSet.LEFT, 0);
+        set.connect(header.getId(), ConstraintSet.RIGHT, wrap.getId(), ConstraintSet.RIGHT, 0);
 
         TextView orderSn = header.findViewById(R.id.textView193);
         orderSn.setText(mData.getOrder_sn());
@@ -70,19 +69,15 @@ public class OrderListItem extends BaseItem<OrderDetail> {
 
         List<OrderGoods> orderGoodsList = mData.getOrderGoodses();
         for (int i = 0; i < orderGoodsList.size(); i++) {
-            View og = LayoutInflater.from(context).inflate(R.layout
-                    .order_content_have_data_item, null);
+            View og = LayoutInflater.from(context).inflate(R.layout.order_content_have_data_item,
+                    null);
             og.setId(IdsUtils.generateViewId());
             set.constrainHeight(og.getId(), ToolUtils.dip2px(context, 100));
-            set.connect(og.getId(), ConstraintSet.TOP, view_id, ConstraintSet
-                    .BOTTOM, 0);
-            set.connect(og.getId(), ConstraintSet.LEFT, wrap.getId(), ConstraintSet
-                    .LEFT, 0);
-            set.connect(og.getId(), ConstraintSet.RIGHT, wrap.getId(), ConstraintSet
-                    .RIGHT, 0);
+            set.connect(og.getId(), ConstraintSet.TOP, view_id, ConstraintSet.BOTTOM, 0);
+            set.connect(og.getId(), ConstraintSet.LEFT, wrap.getId(), ConstraintSet.LEFT, 0);
+            set.connect(og.getId(), ConstraintSet.RIGHT, wrap.getId(), ConstraintSet.RIGHT, 0);
             view_id = og.getId();
             cly.addView(og);
-
 
             ImageView iv = og.findViewById(R.id.imageView41);
             RequestOptions requestOptions = RequestOptions.centerCropTransform().placeholder(R
@@ -97,8 +92,7 @@ public class OrderListItem extends BaseItem<OrderDetail> {
             TextView faat = og.findViewById(R.id.textView89);
             TextView shop_price = og.findViewById(R.id.textView87);
             if (orderGoodsList.get(i).getIs_promote() == 1 && mData.getCurrent_time() <
-                    orderGoodsList.get(i).getPromote_end_date
-                            ()) {
+                    orderGoodsList.get(i).getPromote_end_date()) {
                 faat.setText("促销");
                 faat.setAlpha(1);
                 shop_price.setText(orderGoodsList.get(i).getPromote_price_format());
@@ -144,6 +138,22 @@ public class OrderListItem extends BaseItem<OrderDetail> {
         } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 1) {
             foot = LayoutInflater.from(context).inflate(R.layout
                     .order_content_have_data_buttom3_item, null);
+            CountdownView cdv = foot.findViewById(R.id.countdownView);
+            CountdownView cdv1 = foot.findViewById(R.id.countdownView1);
+            Integer countDown = mData.getAuto_delivery_time() * 86400 - (mData.getCurrent_time()
+                    - mData.getShipping_time());
+            Long current_time = countDown.longValue() * 1000;
+            if (countDown / 86400 > 2) {
+                cdv.setAlpha(1);
+                cdv1.setAlpha(0);
+            } else {
+                cdv.setAlpha(0);
+                cdv1.setAlpha(1);
+            }
+            //毫秒数
+            cdv.start(current_time);
+            cdv1.start(current_time);
+
             TextView after_sale = foot.findViewById(R.id.after_sale);
             posMap.put(after_sale.getId(), position);
             after_sale.setOnClickListener(listener);
@@ -175,14 +185,10 @@ public class OrderListItem extends BaseItem<OrderDetail> {
 
         cly.addView(foot);
         set.constrainHeight(foot.getId(), ToolUtils.dip2px(context, 45));
-        set.connect(foot.getId(), ConstraintSet.TOP, view_id, ConstraintSet
-                .BOTTOM, 0);
-        set.connect(foot.getId(), ConstraintSet.LEFT, wrap.getId(), ConstraintSet
-                .LEFT, 0);
-        set.connect(foot.getId(), ConstraintSet.RIGHT, wrap.getId(), ConstraintSet
-                .RIGHT, 0);
-        set.connect(foot.getId(), ConstraintSet.BOTTOM, wrap.getId(), ConstraintSet
-                .BOTTOM, 0);
+        set.connect(foot.getId(), ConstraintSet.TOP, view_id, ConstraintSet.BOTTOM, 0);
+        set.connect(foot.getId(), ConstraintSet.LEFT, wrap.getId(), ConstraintSet.LEFT, 0);
+        set.connect(foot.getId(), ConstraintSet.RIGHT, wrap.getId(), ConstraintSet.RIGHT, 0);
+        set.connect(foot.getId(), ConstraintSet.BOTTOM, wrap.getId(), ConstraintSet.BOTTOM, 0);
         set.applyTo(cly);
     }
 }

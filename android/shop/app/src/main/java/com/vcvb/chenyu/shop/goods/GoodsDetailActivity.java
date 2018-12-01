@@ -497,7 +497,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             HashMap<String, String> mp = new HashMap<>();
             mp.put("goods_id", goods_id + "");
             mp.put("token", token);
-            HttpUtils.getInstance().post(ConstantManager.Url.ADDCOLLECTGOODS, mp, new HttpUtils
+            HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS, mp, new HttpUtils
                     .NetCall() {
                 @Override
                 public void success(Call call, JSONObject json) throws IOException {
@@ -716,7 +716,6 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     @Override
     protected void onResume() {
-        getData(false);
         checkUserForReal();
         super.onResume();
     }

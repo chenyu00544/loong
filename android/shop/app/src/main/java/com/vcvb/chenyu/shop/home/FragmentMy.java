@@ -79,22 +79,26 @@ public class FragmentMy extends BaseFragment {
             HttpUtils.getInstance().post(ConstantManager.Url.USER_INFO, mp, new HttpUtils.NetCall() {
                 @Override
                 public void success(Call call, final JSONObject json) throws IOException {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            bindViewData(json);
-                        }
-                    });
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                bindViewData(json);
+                            }
+                        });
+                    }
                 }
 
                 @Override
                 public void failed(Call call, IOException e) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastUtils.showShortToast(context, "网络错误");
-                        }
-                    });
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showShortToast(context, "网络错误");
+                            }
+                        });
+                    }
                 }
             });
         }

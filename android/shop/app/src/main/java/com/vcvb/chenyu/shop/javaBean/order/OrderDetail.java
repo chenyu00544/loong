@@ -17,8 +17,10 @@ public class OrderDetail {
     private Integer order_status;
     private Integer pay_status;
     private Integer shipping_status;
+    private Integer shipping_time;
     private Integer add_time;
     private Integer current_time;
+    private Integer auto_delivery_time;
     private String shipping_fee;
     private String goods_amount;
     private String insure_fee;
@@ -32,6 +34,21 @@ public class OrderDetail {
     private String add_time_date;
     private List<OrderGoods> orderGoodses;
 
+    public Integer getAuto_delivery_time() {
+        return auto_delivery_time;
+    }
+
+    public void setAuto_delivery_time(Integer auto_delivery_time) {
+        this.auto_delivery_time = auto_delivery_time;
+    }
+
+    public Integer getShipping_time() {
+        return shipping_time;
+    }
+
+    public void setShipping_time(Integer shipping_time) {
+        this.shipping_time = shipping_time;
+    }
 
     public String getOrder_id_str() {
         return order_id_str;

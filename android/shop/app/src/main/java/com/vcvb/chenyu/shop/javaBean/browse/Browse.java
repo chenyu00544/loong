@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.javaBean.collection;
+package com.vcvb.chenyu.shop.javaBean.browse;
 
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
@@ -6,8 +6,9 @@ import com.vcvb.chenyu.shop.tools.JsonUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CollectionBean {
-    private Integer rec_id;
+public class Browse {
+    private Integer browse_id;
+    private Integer group;
     private String user_id;
     private Integer add_time;
     private String add_time_format;
@@ -16,12 +17,28 @@ public class CollectionBean {
     private boolean isSelectAll = false;
     private Goods goods;
 
-    public Integer getRec_id() {
-        return rec_id;
+    public Integer getGroup() {
+        return group;
     }
 
-    public void setRec_id(Integer rec_id) {
-        this.rec_id = rec_id;
+    public void setGroup(Integer group) {
+        this.group = group;
+    }
+
+    public Integer getRec_id() {
+        return browse_id;
+    }
+
+    public void setRec_id(Integer browse_id) {
+        this.browse_id = browse_id;
+    }
+
+    public Integer getBrowse_id() {
+        return browse_id;
+    }
+
+    public void setBrowse_id(Integer browse_id) {
+        this.browse_id = browse_id;
     }
 
     public String getUser_id() {

@@ -34,10 +34,12 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('login/deviceid', 'LoginController@getDeviceId');
 
     Route::post('collect/goods/add', 'CollectController@collectGoods');
+    Route::post('collect/goods/cart', 'CollectController@collectGoodsToCart');
     Route::post('collect/goodses', 'CollectController@colloectsByGoods');
-    Route::post('collect/cartgoods', 'CollectController@collectCartGoods');
     Route::post('collect/brand/add', 'CollectController@collectBrand');
     Route::post('collect/store/add', 'CollectController@collectStore');
+    Route::post('collect/browse', 'CollectController@browseByGoods');
+    Route::post('collect/browse/set', 'CollectController@setBowse');
 
     Route::post('user/index', 'UserController@index');
     Route::post('user/addresses', 'UserController@addresses');

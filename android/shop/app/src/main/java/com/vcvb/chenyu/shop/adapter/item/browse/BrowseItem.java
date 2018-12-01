@@ -1,25 +1,21 @@
 package com.vcvb.chenyu.shop.adapter.item.browse;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.collection.CollectionBean;
-import com.vcvb.chenyu.shop.tools.ToolUtils;
+import com.vcvb.chenyu.shop.javaBean.browse.Browse;
 
-public class BrowseItem extends BaseItem<CollectionBean> {
+public class BrowseItem extends BaseItem<Browse> {
     public static final int TYPE = 1;
 
-    public BrowseItem(CollectionBean bean, Context c) {
+    public BrowseItem(Browse bean, Context c) {
         super(bean, c);
     }
 
@@ -43,27 +39,25 @@ public class BrowseItem extends BaseItem<CollectionBean> {
         CheckBox cb = (CheckBox) holder.getView(R.id.checkBox6);
         ImageView iv = holder.getImageView(R.id.imageView58);
 
-        goodsName.setText(mData.getGoodsName());
-        Glide.with(context).load(mData.getPic())
-//                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(iv);
-
-        ConstraintSet set = new ConstraintSet();
-        ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
-        set.clone(cly);
-        if (mData.getIsLong() == false) {
-            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 0));
-            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 0));
-        } else {
-            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 30));
-            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 30));
-        }
-        set.applyTo(cly);
-
-        if(mData.getIsSelect() == true){
-            cb.setChecked(true);
-        }else{
-            cb.setChecked(false);
-        }
+//        goodsName.setText(mData.getGoodsName());
+//        Glide.with(context).load(mData.getPic()).into(iv);
+//
+//        ConstraintSet set = new ConstraintSet();
+//        ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
+//        set.clone(cly);
+//        if (mData.getIsLong() == false) {
+//            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 0));
+//            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 0));
+//        } else {
+//            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 30));
+//            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 30));
+//        }
+//        set.applyTo(cly);
+//
+//        if(mData.getIsSelect() == true){
+//            cb.setChecked(true);
+//        }else{
+//            cb.setChecked(false);
+//        }
     }
 }
