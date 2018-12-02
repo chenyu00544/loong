@@ -27,9 +27,12 @@ class FavourableGoodsModel extends Model
                 $query->orWhere('terminal_type', 'all')->orWhere('terminal_type', 'app');
             })
             ->orderBy('sort_order', 'DESC')->limit(1);
-        foreach ($wheres as $where) {
-            $m->orWhere($where);
-        }
+        $m->where(function ($query) use ($wheres){
+            foreach ($wheres as $where) {
+                $query->orWhere($where);
+            }
+        });
+
         return $m->first();
     }
 }

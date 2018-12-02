@@ -161,13 +161,15 @@ class CollectRepository implements CollectRepositoryInterface
         $where['is_attention'] = 1;
         $page = $data['page'];
         $res = $this->browseGoodsModel->getBrowseGoodses($where, $page);
+        $return = [];
         foreach ($res as $re) {
             $d_time = strtotime(date('Y-m-d', time()));
             if ($re->add_time > $d_time - 7 * 86400) {
-                $re->group = date('Y-m-d', $re->add_time);
+                $group = date('Y-m-d', $re->add_time);
             } else {
-                $re->group = date('Y-m', $re->add_time);
+                $group = date('Y-m', $re->add_time);
             }
+            $return[$group]['group'] = $group;
 
             $re->add_time_format = date('Y-m-d', $re->add_time);
             $re->goods->current_time = time();
@@ -175,8 +177,10 @@ class CollectRepository implements CollectRepositoryInterface
             $re->goods->shop_price_format = Common::priceFormat($re->goods->shop_price);
             $re->goods->market_price_format = Common::priceFormat($re->goods->market_price);
             $re->goods->promote_price_format = Common::priceFormat($re->goods->promote_price);
+            $return[$group]['browse'][] = $re;
         }
-        return $res;
+        sort($return);
+        return $return;
     }
 
     public function setBowse($request, $uid)

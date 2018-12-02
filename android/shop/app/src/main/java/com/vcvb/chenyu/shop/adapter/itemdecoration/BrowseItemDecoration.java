@@ -15,9 +15,12 @@ public class BrowseItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
     private List<Browse> mList;
 
-    public BrowseItemDecoration(Context context, List<Browse> list) {
+    public BrowseItemDecoration(Context context) {
         super();
         mContext = context;
+    }
+
+    public void setData(List<Browse> list) {
         mList = list;
     }
 
@@ -26,15 +29,17 @@ public class BrowseItemDecoration extends RecyclerView.ItemDecoration {
                                RecyclerView parent, RecyclerView.State state) {
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
             int position = parent.getChildAdapterPosition(view);
-            Browse bean = mList.get(position);
-            if(bean != null){
-//                if (bean.getIsType() == 2) {
-//                    outRect.set(0, 16, 0, 0);
-//                }else{
-//                    outRect.set(0, 0, 0, 0);
-//                }
-            }else {
-                outRect.set(0, 0, 0, 16);
+            if (mList != null && mList.size() > position) {
+                Browse bean = mList.get(position);
+                if (bean != null) {
+                    if (bean.getGoods() == null) {
+                        outRect.set(0, 16, 0, 0);
+                    } else {
+                        outRect.set(0, 0, 0, 0);
+                    }
+                } else {
+                    outRect.set(0, 0, 0, 16);
+                }
             }
         } else if (parent.getLayoutManager() instanceof LinearLayoutManager) {
             outRect.set(0, 0, 0, 0);

@@ -6,7 +6,7 @@ import com.vcvb.chenyu.shop.tools.JsonUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Browse {
+public class Browse{
     private Integer browse_id;
     private String group;
     private String user_id;

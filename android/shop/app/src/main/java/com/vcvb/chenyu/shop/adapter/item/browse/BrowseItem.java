@@ -1,26 +1,23 @@
 package com.vcvb.chenyu.shop.adapter.item.browse;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.base.BaseItem;
-import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
+import com.vcvb.chenyu.shop.adapter.b.BaseItem;
 import com.vcvb.chenyu.shop.javaBean.browse.Browse;
-import com.vcvb.chenyu.shop.tools.ToolUtils;
+import com.vcvb.chenyu.shop.javaBean.browse.GroupBrowse;
 
-public class BrowseItem extends BaseItem<Browse> {
+public class BrowseItem extends BaseItem<GroupBrowse> {
     public static final int TYPE = R.layout.browse_item;
 
-    public BrowseItem(Browse bean, Context c) {
+    public BrowseItem(GroupBrowse bean, Context c) {
         super(bean, c);
     }
 
@@ -30,41 +27,47 @@ public class BrowseItem extends BaseItem<Browse> {
     }
 
     @Override
-    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(TYPE, null));
-        return base;
+    public BaseViewHolder onCreateViewHolder(int viewType) {
+        return new BaseViewHolder(LayoutInflater.from(context).inflate(TYPE, null));
     }
 
     @Override
-    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView goodsName = holder.getTextView(R.id.textView134);
-        TextView tip = holder.getTextView(R.id.textView136);
-        TextView goodsPrice = holder.getTextView(R.id.textView135);
-        CheckBox cb = (CheckBox) holder.getView(R.id.checkBox6);
-        ImageView iv = holder.getImageView(R.id.imageView58);
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        Browse bean = (Browse) mData.getObjs().get(position);
+        TextView goodsName = holder.get(R.id.textView134);
+        TextView tip = holder.get(R.id.textView136);
+        TextView goodsPrice = holder.get(R.id.textView135);
+        CheckBox cb = holder.get(R.id.checkBox6);
+        ImageView iv = holder.get(R.id.imageView58);
 
         tip.setAlpha(0);
-        goodsName.setText(mData.getGoods().getGoods_name());
-        goodsPrice.setText(mData.getGoods().getShop_price_format());
+        goodsName.setText(bean.getGoods().getGoods_name());
+        goodsPrice.setText(bean.getGoods().getShop_price_format());
         RequestOptions requestOptions = RequestOptions.centerCropTransform().placeholder(R
                 .drawable.icon_no_pic).dontAnimate();
-        Glide.with(context).load(mData.getGoods().getOriginal_img()).apply(requestOptions).into(iv);
-
-        ConstraintSet set = new ConstraintSet();
-        ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
-        set.clone(cly);
-        if (!mData.isLong()) {
-            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 0));
-            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 0));
-        } else {
-            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 30));
-            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 30));
-        }
-        set.applyTo(cly);
-
-        cb.setChecked(mData.isSelect());
-        posMap.put(cb.getId(), position);
-        cb.setOnClickListener(listener);
+        Glide.with(context).load(bean.getGoods().getOriginal_img()).apply(requestOptions).into(iv);
+//
+//        ConstraintSet set = new ConstraintSet();
+//        ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
+//        set.clone(cly);
+//        if (!mData.isLong()) {
+//            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 0));
+//            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 0));
+//        } else {
+//            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 30));
+//            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 30));
+//        }
+//        set.applyTo(cly);
+//
+//        cb.setChecked(mData.isSelect());
+//        posMap.put(cb.getId(), position);
+//        cb.setOnClickListener(listener);
+//
+//        posMap.put(iv.getId(), position);
+//        iv.setOnClickListener(listener);
+//
+//        TextView tv = holder.get(R.id.textView133);
+//        posMap.put(tv.getId(), position);
+//        tv.setOnClickListener(listener);
     }
 }

@@ -152,6 +152,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
                         if (b) {
                             loadingDialog.dismiss();
                         }
+                        refreshLayout.finishRefresh();
                         bindViewData(json);
                     }
                 });
@@ -165,34 +166,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-                    }
-                });
-            }
-        });
-    }
-
-    public void loadmore() {
-        HashMap<String, String> mp = new HashMap<>();
-        page += 1;
-        mp.put("token", token);
-        mp.put("page", page + "");
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, final JSONObject json) throws IOException {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        bindViewMoreData(json);
-                    }
-                });
-            }
-
-            @Override
-            public void failed(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
+                        refreshLayout.finishRefresh();
                     }
                 });
             }
@@ -224,6 +198,36 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
             }
         }
         mAdapter.addAll(getItems(collections));
+    }
+
+    public void loadmore() {
+        HashMap<String, String> mp = new HashMap<>();
+        page += 1;
+        mp.put("token", token);
+        mp.put("page", page + "");
+        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishLoadMore();
+                        bindViewMoreData(json);
+
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishLoadMore();
+                    }
+                });
+            }
+        });
     }
 
     public void bindViewMoreData(JSONObject json) {

@@ -4,20 +4,18 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.base.BaseItem;
-import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.browse.Browse;
-import com.vcvb.chenyu.shop.tools.ToolUtils;
+import com.vcvb.chenyu.shop.adapter.b.BaseItem;
+import com.vcvb.chenyu.shop.javaBean.browse.GroupBrowse;
 
-public class BrowseTitleItem extends BaseItem<Browse> {
+public class BrowseTitleItem extends BaseItem<GroupBrowse> {
     public static final int TYPE = R.layout.browse_title_item;
 
-    public BrowseTitleItem(Browse bean, Context c) {
+    public BrowseTitleItem(GroupBrowse bean, Context c) {
         super(bean, c);
     }
 
@@ -27,31 +25,29 @@ public class BrowseTitleItem extends BaseItem<Browse> {
     }
 
     @Override
-    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(TYPE, null));
-        return base;
+    public BaseViewHolder onCreateViewHolder(int viewType) {
+        return new BaseViewHolder(LayoutInflater.from(context).inflate(TYPE, null));
     }
 
     @Override
-    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView title = holder.getTextView(R.id.textView132);
-        title.setText(mData.getAdd_time_format());
-        CheckBox cb = (CheckBox) holder.getView(R.id.checkBox7);
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        TextView title = holder.get(R.id.textView132);
+        title.setText((String) mData.getHeader());
+        CheckBox cb = holder.get(R.id.checkBox7);
         ConstraintSet set = new ConstraintSet();
-        ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
+        ConstraintLayout cly = holder.get(R.id.group_header);
         set.clone(cly);
-        if (!mData.isLong()) {
-            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 0));
-            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 0));
-        } else {
-            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 33));
-            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 33));
-        }
-        set.applyTo(cly);
-
-        cb.setChecked(mData.isSelectAll());
-        posMap.put(cb.getId(), position);
-        cb.setOnClickListener(listener);
+//        if (!mData.isLong()) {
+//            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 0));
+//            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 0));
+//        } else {
+//            set.constrainWidth(cb.getId(), ToolUtils.dip2px(context, 33));
+//            set.constrainHeight(cb.getId(), ToolUtils.dip2px(context, 33));
+//        }
+//        set.applyTo(cly);
+//
+//        cb.setChecked(mData.isSelectAll());
+//        posMap.put(cb.getId(), position);
+//        cb.setOnClickListener(listener);
     }
 }

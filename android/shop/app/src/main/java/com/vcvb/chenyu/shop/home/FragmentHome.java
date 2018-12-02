@@ -84,7 +84,7 @@ public class FragmentHome extends BaseFragment {
     private RefreshLayout refreshLayout;
     private ImageView upwardView;
     private int pos;
-    private int page = 2;
+    private int page = 1;
 
     @Nullable
     @Override
@@ -251,8 +251,9 @@ public class FragmentHome extends BaseFragment {
         if (bool) {
             loadingDialog.show();
         }
+        page = 1;
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("page", "1");
+        mp.put("page", page + "");
         HttpUtils.getInstance().post(ConstantManager.Url.HOME, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
@@ -294,6 +295,7 @@ public class FragmentHome extends BaseFragment {
     }
 
     public void loadmore() {
+        page += 1;
         HashMap<String, String> mp = new HashMap<>();
         mp.put("page", page + "");
         HttpUtils.getInstance().post(ConstantManager.Url.HOMELOADMORE, mp, new HttpUtils.NetCall() {
@@ -357,7 +359,6 @@ public class FragmentHome extends BaseFragment {
     }
 
     public void bindLoadMoreData() {
-        page += 1;
         if (loadMoreData != null) {
             try {
                 HomeBean homeBean = new HomeBean();

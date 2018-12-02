@@ -2,15 +2,14 @@ package com.vcvb.chenyu.shop.adapter.item.browse;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.base.BaseItem;
-import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
+import com.vcvb.chenyu.shop.adapter.b.BaseItem;
 import com.vcvb.chenyu.shop.javaBean.collection.CollectionBean;
 
 public class BrowseErrorItem extends BaseItem<CollectionBean> {
-    public static final int TYPE = -1;
+    public static final int TYPE = R.layout.browse_nodata_item;
 
     public BrowseErrorItem(CollectionBean bean, Context c) {
         super(bean, c);
@@ -22,15 +21,12 @@ public class BrowseErrorItem extends BaseItem<CollectionBean> {
     }
 
     @Override
-    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout
-                        .browse_nodata_item, null));
-        return base;
+    public BaseViewHolder onCreateViewHolder(int viewType) {
+        return new BaseViewHolder(LayoutInflater.from(context).inflate(TYPE, null));
     }
 
     @Override
-    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
 
     }
 }
