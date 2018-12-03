@@ -102,7 +102,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             ];
             $this->browseGoodsModel->addBrowseGoods($browse_data);
         } else {
-            $this->browseGoodsModel->setBrowseGoods(['user_id' => $user_id, 'goods_id' => $goods_id], ['add_time' => time()]);
+            $this->browseGoodsModel->setBrowseGoods(['user_id' => $user_id, 'goods_id' => $goods_id], ['add_time' => time(), 'is_attention' => 1]);
         }
 
         $where['goods_id'] = $goods_id;

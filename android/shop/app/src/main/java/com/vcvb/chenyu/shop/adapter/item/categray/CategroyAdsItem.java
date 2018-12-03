@@ -30,7 +30,7 @@ public class CategroyAdsItem extends BaseItem<CategroyGroup> {
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         CategroyBean bean = (CategroyBean) mData.getObjs().get(position);
         ImageView iv = holder.get(R.id.imageView126);
 //        Glide.with(context).load(bean.getPic()).into(iv);

@@ -26,7 +26,7 @@ public class BrowseErrorItem extends BaseItem<CollectionBean> {
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
 
     }
 }

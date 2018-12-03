@@ -12,8 +12,11 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     private List<T> mGroups;
 
-    public GroupedListAdapter(Context context, List<T> groups) {
+    public GroupedListAdapter(Context context) {
         super(context);
+    }
+
+    public void setData(List<T> groups) {
         mGroups = groups;
     }
 
@@ -77,16 +80,17 @@ public class GroupedListAdapter<T extends BaseBean> extends GroupedRecyclerViewA
 
     @Override
     public void onBindHeaderViewHolder(BaseViewHolder holder, int groupPosition) {
-        mGroups.get(groupPosition).getMheader().onBindViewHolder(holder, groupPosition);
+        mGroups.get(groupPosition).getMheader().onBindViewHolder(holder, groupPosition, 0);
     }
 
     @Override
     public void onBindFooterViewHolder(BaseViewHolder holder, int groupPosition) {
-
+        mGroups.get(groupPosition).getMfooter().onBindViewHolder(holder, groupPosition, 0);
     }
 
     @Override
     public void onBindChildViewHolder(BaseViewHolder holder, int groupPosition, int childPosition) {
-        mGroups.get(groupPosition).getItemList().get(childPosition).onBindViewHolder(holder, childPosition);
+        mGroups.get(groupPosition).getItemList().get(childPosition).onBindViewHolder(holder,
+                groupPosition, childPosition);
     }
 }

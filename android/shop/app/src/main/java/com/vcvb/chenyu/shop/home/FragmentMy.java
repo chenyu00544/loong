@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.vcvb.chenyu.shop.BaseFragment;
+import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
@@ -72,7 +72,6 @@ public class FragmentMy extends BaseFragment {
 
     @Override
     public void getData() {
-        checkLogin();
         if (token != null && !token.equals("")) {
             HashMap<String, String> mp = new HashMap<>();
             mp.put("token", token);
@@ -84,6 +83,7 @@ public class FragmentMy extends BaseFragment {
                             @Override
                             public void run() {
                                 bindViewData(json);
+                                checkLogin();
                             }
                         });
                     }
@@ -95,6 +95,7 @@ public class FragmentMy extends BaseFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                checkLogin();
                                 ToastUtils.showShortToast(context, "网络错误");
                             }
                         });
@@ -369,7 +370,6 @@ public class FragmentMy extends BaseFragment {
 
     //检查是否已经登录
     public void checkLogin() {
-        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         Map<String, ?> mp = UserInfoUtils.getInstance(context).getUserInfo();
         ImageView iv = view.findViewById(R.id.imageView15);
         TextView tv = view.findViewById(R.id.textView30);

@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
 import com.vcvb.chenyu.shop.tools.CountDownTimeUtils;

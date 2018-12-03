@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop;
+package com.vcvb.chenyu.shop.base;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.jude.swipbackhelper.SwipeListener;
+import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 

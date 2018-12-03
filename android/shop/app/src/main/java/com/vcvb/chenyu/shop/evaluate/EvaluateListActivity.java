@@ -2,7 +2,7 @@ package com.vcvb.chenyu.shop.evaluate;
 
 import android.os.Bundle;
 
-import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 
 public class EvaluateListActivity extends BaseActivity {
     @Override

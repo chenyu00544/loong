@@ -13,8 +13,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.base.BaseActivity;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import okhttp3.Call;
 
 public class UserNickActivity extends BaseActivity {
     private TextView save;
@@ -35,7 +47,7 @@ public class UserNickActivity extends BaseActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -45,26 +57,27 @@ public class UserNickActivity extends BaseActivity {
             });
         }
 
-        TextView titleView = (TextView) findViewById(R.id.textView123);
+        TextView titleView = findViewById(R.id.textView123);
         titleView.setText(R.string.nick_title);
         titleView.setTextColor(Color.parseColor("#000000"));
         titleView.setTextSize(18);
         titleView.setSingleLine();
 
-        save = (TextView) findViewById(R.id.textView122);
+        save = findViewById(R.id.textView122);
         save.setText(R.string.save);
     }
 
     @Override
     public void initView() {
         super.initView();
-        nickEdit = (EditText) findViewById(R.id.editText8);
-        clear = (ImageView) findViewById(R.id.imageView63);
+        nickEdit = findViewById(R.id.editText8);
+        clear = findViewById(R.id.imageView63);
 
         nickEdit.setFocusable(true);
         nickEdit.setFocusableInTouchMode(true);
         nickEdit.requestFocus();
-        InputMethodManager imm = (InputMethodManager) nickEdit.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) nickEdit.getContext().getSystemService
+                (Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(nickEdit, 0);
 
         nickEdit.addTextChangedListener(new TextWatcher() {
@@ -80,7 +93,7 @@ public class UserNickActivity extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if(!TextUtils.isEmpty(nickEdit.getText()) ){
+                if (!TextUtils.isEmpty(nickEdit.getText())) {
                     isSave = true;
                     nickname = String.valueOf(nickEdit.getText());
                 }
@@ -100,11 +113,52 @@ public class UserNickActivity extends BaseActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isSave){
-                    Intent intent = new Intent();
-                    intent.putExtra("nickname", nickname);
-                    setResult(RESULT_OK, intent);
-                    UserNickActivity.this.finish();
+                if (isSave) {
+                    HashMap<String, String> mp = new HashMap<>();
+                    mp.put("token", token);
+                    mp.put("nickname", nickname);
+                    HttpUtils.getInstance().post(ConstantManager.Url.SET_USER_INFO, mp, new HttpUtils
+                            .NetCall() {
+                        @Override
+                        public void success(Call call, JSONObject json) throws IOException {
+
+                            if (json != null) {
+                                try {
+                                    Integer code = json.getInt("code");
+                                    if (code == 0) {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent intent = new Intent();
+                                                intent.putExtra("nickname", nickname);
+                                                HashMap<String, String> mp = new HashMap<>();
+                                                mp.put("nickname", nickname);
+                                                UserInfoUtils.getInstance(context).setUserInfo(mp);
+                                                setResult(RESULT_OK, intent);
+                                                UserNickActivity.this.finish();
+                                            }
+                                        });
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtils.showShortToast(context, "网络错误");
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void failed(Call call, IOException e) {
+                            ToastUtils.showShortToast(context, "网络错误");
+                        }
+                    });
+                } else {
+                    ToastUtils.showShortToast(context, "昵称不能为空");
                 }
             }
         });

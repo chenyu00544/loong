@@ -33,16 +33,16 @@ public class BrandBannerItem extends BaseItem<Banner> {
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         int width = ToolUtils.getWindowsWidth(context);
         View v = holder.get(R.id.banner);
         ImageView iv = holder.get(R.id.imageView122);
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width, width * mData
-                .getHeight() / mData.getWidth());
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width, width *
+                mData.getHeight() / mData.getWidth());
         v.setLayoutParams(params);
-        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy(DiskCacheStrategy
-                .AUTOMATIC).skipMemoryCache(true).override
-                (width, width * mData.getHeight() / mData.getWidth());
+        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy
+                (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override(width, width * mData
+                .getHeight() / mData.getWidth());
         Glide.with(context).load(mData.getBackGroundPic()).apply(requestOptions).into(iv);
     }
 }

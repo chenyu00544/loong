@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
-import com.vcvb.chenyu.shop.BaseFragment;
+import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
@@ -110,7 +110,8 @@ public class FragmentCategory extends BaseFragment {
         }
 
 
-        groupedListAdapter = new GroupedListAdapter(context, getGroupItems());
+        groupedListAdapter = new GroupedListAdapter(context);
+        groupedListAdapter.setData(getGroupItems());
         subRecyclerView.setAdapter(groupedListAdapter);
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, groupedListAdapter) {
 

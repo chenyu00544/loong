@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealCardItem;
@@ -88,7 +88,7 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
     @Override
     public void initView() {
         super.initView();
-        mRecyclerView = (RecyclerView) findViewById(R.id.user_list);
+        mRecyclerView = findViewById(R.id.user_list);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -189,33 +189,30 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
         //身份证反面，前往相册选图
         CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView69).setOnChildClickListener1
                 (new CYCItemClickSupport.OnChildItemClickListener1() {
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        goToAlbum(2);
-                    }
-                });
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                goToAlbum(2);
+            }
+        });
 
         //删除身份证正面
         CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView73).setOnChildClickListener2
                 (new CYCItemClickSupport.OnChildItemClickListener2() {
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        real.setFront_of_id_card(null);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                real.setFront_of_id_card(null);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
         //删除身份证反面
         CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView72).setOnChildClickListener3
                 (new CYCItemClickSupport.OnChildItemClickListener3() {
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int
-                            position) {
-                        real.setReverse_of_id_card(null);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                real.setReverse_of_id_card(null);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,45 +221,45 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                 loadingDialog.show();
                 //保存实名认证
                 mp.put("token", token);
-                HttpUtils.getInstance().postImage(ConstantManager.Url.SET_USER_REAL, mp, files, new
-                        HttpUtils.NetCall() {
-                            @Override
-                            public void success(Call call, JSONObject json) throws IOException {
-                                try {
-                                    if (json.getInt("code") == 0) {
-                                        Integer review_status = json.getJSONObject("data").getInt
-                                                ("review_status");
-                                        real.setReview_status(review_status);
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                mAdapter.notifyDataSetChanged();
-                                            }
-                                        });
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                HttpUtils.getInstance().postImage(ConstantManager.Url.SET_USER_REAL, mp, files,
+                        new HttpUtils.NetCall() {
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        try {
+                            if (json.getInt("code") == 0) {
+                                Integer review_status = json.getJSONObject("data").getInt
+                                        ("review_status");
+                                real.setReview_status(review_status);
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        loadingDialog.dismiss();
+                                        mAdapter.notifyDataSetChanged();
                                     }
                                 });
                             }
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void failed(Call call, IOException e) {
-                                System.out.println(e.getMessage());
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        loadingDialog.dismiss();
-                                        ToastUtils.showShortToast(context, "错误");
-                                    }
-                                });
+                            public void run() {
+                                loadingDialog.dismiss();
                             }
                         });
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        System.out.println(e.getMessage());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.dismiss();
+                                ToastUtils.showShortToast(context, "错误");
+                            }
+                        });
+                    }
+                });
             }
         });
 

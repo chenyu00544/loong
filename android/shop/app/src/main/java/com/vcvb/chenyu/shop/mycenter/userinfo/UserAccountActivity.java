@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;

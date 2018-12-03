@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
-import com.vcvb.chenyu.shop.BaseRecyclerViewFragment;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
@@ -47,8 +47,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.brand_fragment, container, false);
         initView();
@@ -127,8 +127,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             for (int j = 0; j < 20; j++) {
                 Goods goods = new Goods();
                 goods.setGoods_name("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
-                goods.setOriginal_img("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + "" +
-                        ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
+                goods.setOriginal_img("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + ""
+                        + ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
                 goodses.add(goods);
             }
         }
@@ -137,12 +137,13 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         brand1.setGroup(1);
         brands.add(brand1);
 
-        adapter = new GroupedListAdapter(context, getItems(brands));
+        adapter = new GroupedListAdapter(context);
+        adapter.setData(getItems(brands));
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, adapter) {
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (brands.get(groupPosition).getItemList().get(childPosition).getItemType() == R.layout
-                        .faat_banner_item) {
+                if (brands.get(groupPosition).getItemList().get(childPosition).getItemType() == R
+                        .layout.faat_banner_item) {
                     return 3;
                 }
                 return super.getChildSpanSize(groupPosition, childPosition);
@@ -165,12 +166,12 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             if (brands.get(i).getObjs() != null) {
                 for (int j = 0; j < brands.get(i).getObjs().size(); j++) {
                     if (brands.get(i).getObjs().get(j) instanceof Goods) {
-                        BrandGoodsItem brandGoodsItem = new BrandGoodsItem((Goods) brands.get(i).getObjs().get(j),
-                                context);
+                        BrandGoodsItem brandGoodsItem = new BrandGoodsItem((Goods) brands.get(i)
+                                .getObjs().get(j), context);
                         items.add(brandGoodsItem);
                     } else {
-                        BrandBannerItem brandBannerItem = new BrandBannerItem((Banner) brands.get(i).getObjs().get(j)
-                                , context);
+                        BrandBannerItem brandBannerItem = new BrandBannerItem((Banner) brands.get
+                                (i).getObjs().get(j), context);
                         items.add(brandBannerItem);
                     }
                 }
@@ -209,7 +210,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                 p += 1;
             }
             if (banner != null) {
-                ((List<FaatNav>) brands.get(i).getHeader()).get(banner.getNavPos()).setIsSelect(true);
+                ((List<FaatNav>) brands.get(i).getHeader()).get(banner.getNavPos()).setIsSelect
+                        (true);
                 break;
             }
         }
@@ -250,8 +252,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         // 第一个可见位置
         int firstItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(0));
         // 最后一个可见位置
-        int lastItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(mRecyclerView.getChildCount() -
-                1));
+        int lastItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt
+                (mRecyclerView.getChildCount() - 1));
 
         if (position < firstItem) {
             //跳转位置在第一个可见位置之前

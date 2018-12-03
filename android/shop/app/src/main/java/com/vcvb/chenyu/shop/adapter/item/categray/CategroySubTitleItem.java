@@ -28,7 +28,7 @@ public class CategroySubTitleItem extends BaseItem<CategroyGroup>{
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         TextView tv = holder.get(R.id.textView100);
         CategroyBean bean = (CategroyBean) mData.getHeader();
         tv.setText(bean.getCateName());

@@ -26,7 +26,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.BaseFragment;
+import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;

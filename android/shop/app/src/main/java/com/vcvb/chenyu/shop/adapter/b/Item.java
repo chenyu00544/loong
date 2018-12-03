@@ -14,6 +14,7 @@ public interface Item {
      * @return
      */
     public int getItemType();
+
     /**
      * 创建ViewHolder
      *
@@ -28,5 +29,5 @@ public interface Item {
      * @param holder
      * @param position
      */
-    public void onBindViewHolder(BaseViewHolder holder, int position);
+    public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position);
 }

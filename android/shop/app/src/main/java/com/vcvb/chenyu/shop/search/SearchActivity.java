@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
-import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.search.KeyWords;

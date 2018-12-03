@@ -17,7 +17,7 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
-import com.vcvb.chenyu.shop.BaseActivity;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;

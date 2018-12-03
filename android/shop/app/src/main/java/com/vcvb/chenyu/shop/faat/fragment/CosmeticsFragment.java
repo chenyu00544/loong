@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
-import com.vcvb.chenyu.shop.BaseRecyclerViewFragment;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
@@ -138,7 +138,8 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         brand1.setGroup(1);
         faats.add(brand1);
 
-        adapter = new GroupedListAdapter(context, getItems(faats));
+        adapter = new GroupedListAdapter(context);
+        adapter.setData(getItems(faats));
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, adapter) {
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {

@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop;
+package com.vcvb.chenyu.shop.base;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;

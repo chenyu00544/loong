@@ -118,4 +118,18 @@ class UserController extends CommonController
         }
         return ['code' => 1, 'msg' => '未登陆', 'data' => []];
     }
+
+    public function setUser(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $re = $this->usersRepository->setUserInfo($request->all(), $uid);
+            if ($re) {
+                return ['code' => 0, 'msg' => '', 'data' => $re];
+            }else {
+                return ['code' => 1, 'msg' => '', 'data' => []];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登陆', 'data' => []];
+    }
 }

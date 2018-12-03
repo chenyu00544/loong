@@ -1,9 +1,9 @@
 package com.vcvb.chenyu.shop.mycenter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -13,21 +13,23 @@ import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseItem;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseTitleItem;
-import com.vcvb.chenyu.shop.adapter.itemdecoration.BrowseItemDecoration;
+import com.vcvb.chenyu.shop.base.BaseGroupRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.browse.Browse;
 import com.vcvb.chenyu.shop.javaBean.browse.GroupBrowse;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,9 +41,8 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class BrowseActivity extends BaseRecyclerViewActivity {
+public class BrowseActivity extends BaseGroupRecyclerViewActivity {
     private List<GroupBrowse> groupBrowses = new ArrayList<>();
-    public LoadingDialog loadingDialog;
     private TextView edit;
     private View bottom;
     private CheckBox cb;
@@ -53,11 +54,6 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     private Integer page = 1;
 
     private RefreshLayout refreshLayout;
-    private BrowseItemDecoration browseItemDecoration;
-    private String group = "";
-
-    private GroupedListAdapter groupedListAdapter;
-    private GroupedGridLayoutManager groupedGridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,21 +95,17 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
                 } else {
                     over();
                 }
-                mAdapter.notifyDataSetChanged();
+                groupedListAdapter.notifyDataChanged();
             }
         });
-
     }
 
     @Override
     public void initView() {
         super.initView();
         mRecyclerView = findViewById(R.id.content);
-        mLayoutManager = new GridLayoutManager(context, 1);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        browseItemDecoration = new BrowseItemDecoration(context);
-        mRecyclerView.addItemDecoration(browseItemDecoration);
-        mRecyclerView.setAdapter(mAdapter);
+        groupedListAdapter = new GroupedListAdapter(context);
+        mRecyclerView.setAdapter(groupedListAdapter);
         bottom = findViewById(R.id.view38);
         cb = findViewById(R.id.checkBox);
         delete = findViewById(R.id.textView130);
@@ -122,8 +114,8 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     @Override
     public void initListener() {
         super.initListener();
-//        cb.setOnClickListener(onClickListener);
-//        delete.setOnClickListener(onClickListener);
+        cb.setOnClickListener(onClickListener);
+        delete.setOnClickListener(onClickListener);
     }
 
     public void initRefresh() {
@@ -148,7 +140,6 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     public void getData(final boolean b) {
         over();
         page = 1;
-        group = "";
         super.getData(b);
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
@@ -198,7 +189,9 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
 
     public void bindViewData(JSONObject json) {
         groupBrowses.clear();
-        mAdapter.clear();
+        if (groupedListAdapter != null) {
+            groupedListAdapter.notifyDataRemoved();
+        }
         if (json != null) {
             try {
                 Integer code = json.getInt("code");
@@ -207,12 +200,13 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
                     for (int i = 0; i < arr.length(); i++) {
                         GroupBrowse groupBrowse = new GroupBrowse();
                         JSONObject object = (JSONObject) arr.get(i);
-                        Object header = object.getString("group");
+                        Browse header = new Browse();
+                        header.setGroup(object.getString("group"));
                         groupBrowse.setHeader(header);
                         JSONArray browseJSONArray = object.getJSONArray("browse");
                         List<Object> browses = new ArrayList<>();
                         for (int j = 0; j < browseJSONArray.length(); j++) {
-                            JSONObject jsonObject = (JSONObject) browseJSONArray.get(i);
+                            JSONObject jsonObject = (JSONObject) browseJSONArray.get(j);
                             Browse bean = JsonUtils.fromJsonObject(jsonObject, Browse.class);
                             bean.setData(jsonObject);
                             browses.add(bean);
@@ -229,134 +223,124 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
                 e.printStackTrace();
             }
         }
-        groupedListAdapter = new GroupedListAdapter(context, getGroupItems());
-        mRecyclerView.setAdapter(groupedListAdapter);
+        groupedListAdapter.setData(getGroupItems(groupBrowses));
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 1, groupedListAdapter) {
 
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (groupBrowses.get(groupPosition).getItemList().get(childPosition)
-                        .getItemType() == R.layout.categroy_ads_item) {
+                if (groupBrowses.get(groupPosition).getItemList().get(childPosition).getItemType
+                        () == R.layout.categroy_ads_item) {
                     return 3;
-                }else{
+                } else {
                     return super.getChildSpanSize(groupPosition, childPosition);
                 }
             }
         };
         mRecyclerView.setLayoutManager(groupedGridLayoutManager);
-//        browseItemDecoration.setData(browses);
-//        mAdapter.addAll(getItems(browses));
     }
 
     public void loadmore() {
-//        over();
-//        page += 1;
-//        HashMap<String, String> mp = new HashMap<>();
-//        mp.put("token", token);
-//        mp.put("page", page + "");
-//        HttpUtils.getInstance().post(ConstantManager.Url.BROWSE_GOODS, mp, new HttpUtils.NetCall() {
-//            @Override
-//            public void success(Call call, final JSONObject json) throws IOException {
-//                if (json != null) {
-//                    try {
-//                        Integer code = json.getInt("code");
-//                        if (code == 0) {
-//                            runOnUiThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    refreshLayout.finishLoadMore();
-//                                    bindViewMoreData(json);
-//                                }
-//                            });
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void failed(Call call, IOException e) {
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        refreshLayout.finishLoadMore();
-//                    }
-//                });
-//            }
-//        });
+        over();
+        page += 1;
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("page", page + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.BROWSE_GOODS, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (json != null) {
+                    try {
+                        Integer code = json.getInt("code");
+                        if (code == 0) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refreshLayout.finishLoadMore();
+                                    bindViewMoreData(json);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishLoadMore();
+                    }
+                });
+            }
+        });
     }
 
     public void bindViewMoreData(JSONObject json) {
-//        int index = browses.size();
-//        List<Browse> _browses = new ArrayList<>();
-//        try {
-//            Integer code = json.getInt("code");
-//            if (code == 0) {
-//                JSONArray arr = json.getJSONArray("data");
-//                for (int i = 0; i < arr.length(); i++) {
-//                    JSONObject object = (JSONObject) arr.get(i);
-//                    if (!object.getString("group").equals(group)) {
-//                        group = object.getString("group");
-//                        Browse bean = new Browse();
-//                        bean.setAdd_time_format(object.getString("add_time_format"));
-//                        _browses.add(bean);
-//                    }
-//                    Browse bean = JsonUtils.fromJsonObject(object, Browse.class);
-//                    bean.setData(object);
-//                    _browses.add(bean);
-//                }
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        }
-//        browses.addAll(_browses);
-//        browseItemDecoration.setData(browses);
-//        mAdapter.addAll(index, getItems(_browses));
-//        mAdapter.notifyItemRangeChanged(index, _browses.size());
+        groupedListAdapter.notifyDataChanged();
+        int index = groupBrowses.size();
+        List<Browse> _browses = new ArrayList<>();
+        try {
+            Integer code = json.getInt("code");
+            if (code == 0) {
+                JSONArray arr = json.getJSONArray("data");
+                for (int i = 0; i < arr.length(); i++) {
+                    JSONObject object = (JSONObject) arr.get(i);
+                    if (((Browse) groupBrowses.get(index - 1).getHeader()).getGroup().equals
+                            (object.getString("group"))) {
+                        JSONArray browseJSONArray = object.getJSONArray("browse");
+                        for (int j = 0; j < browseJSONArray.length(); j++) {
+                            JSONObject jsonObject = (JSONObject) browseJSONArray.get(j);
+                            Browse bean = JsonUtils.fromJsonObject(jsonObject, Browse.class);
+                            bean.setData(jsonObject);
+                            groupBrowses.get(index - 1).getObjs().add(bean);
+                        }
+                    } else {
+                        GroupBrowse groupBrowse = new GroupBrowse();
+                        Browse header = new Browse();
+                        header.setGroup(object.getString("group"));
+                        groupBrowse.setHeader(header);
+                        JSONArray browseJSONArray = object.getJSONArray("browse");
+                        List<Object> browses = new ArrayList<>();
+                        for (int j = 0; j < browseJSONArray.length(); j++) {
+                            JSONObject jsonObject = (JSONObject) browseJSONArray.get(j);
+                            Browse bean = JsonUtils.fromJsonObject(jsonObject, Browse.class);
+                            bean.setData(jsonObject);
+                            browses.add(bean);
+                        }
+                        groupBrowse.setObjs(browses);
+                        groupBrowses.add(groupBrowse);
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        groupedListAdapter.setData(getGroupItems(groupBrowses));
+        groupedListAdapter.notifyDataChanged();
     }
 
-//    protected List<Item> getItems(List<Browse> list) {
-//        List<Item> cells = new ArrayList<>();
-//        if (browses.size() > 0) {
-//            for (int i = 0; i < list.size(); i++) {
-//                if (list.get(i).getGoods() == null) {
-//                    BrowseTitleItem browseTitleItem = new BrowseTitleItem(list.get(i), context);
-//                    browseTitleItem.setOnItemClickListener(browseTitleListener);
-//                    cells.add(browseTitleItem);
-//                } else {
-//                    BrowseItem browseItem = new BrowseItem(list.get(i), context);
-//                    browseItem.setOnItemClickListener(browseListener);
-//                    cells.add(browseItem);
-//                }
-//            }
-//        } else {
-//            cells.add(new BrowseErrorItem(null, context));
-//        }
-//        return cells;
-//    }
-
-    protected List<GroupBrowse> getGroupItems() {
+    protected List<GroupBrowse> getGroupItems(List<GroupBrowse> browses) {
         if (groupBrowses.size() > 0) {
             for (int i = 0; i < groupBrowses.size(); i++) {
-                if (groupBrowses.get(i).getHeader() != null) {
-                    BrowseTitleItem browseTitleItem = new BrowseTitleItem(groupBrowses.get(i),
-                            context);
-//                browseTitleItem.setOnItemClickListener(browseTitleListener);
-                    groupBrowses.get(i).setMheader(browseTitleItem);
-                }
+                BrowseTitleItem browseTitleItem = new BrowseTitleItem(groupBrowses.get(i), context);
+                browseTitleItem.setSubOnItemClickListener(browseTitleListener);
+                groupBrowses.get(i).setMheader(browseTitleItem);
                 List<Item> items = new ArrayList<>();
                 for (int j = 0; j < groupBrowses.get(i).getObjs().size(); j++) {
                     BrowseItem browseItem = new BrowseItem(groupBrowses.get(i), context);
+                    browseItem.setSubOnItemClickListener(browseListener);
                     items.add(browseItem);
                 }
                 groupBrowses.get(i).setItemList(items);
             }
-        }else{
+        } else {
             List<Item> items = new ArrayList<>();
             BrowseErrorItem browseErrorItem = new BrowseErrorItem(null, context);
             items.add(browseErrorItem);
@@ -365,119 +349,155 @@ public class BrowseActivity extends BaseRecyclerViewActivity {
     }
 
     public synchronized void deleteItems() {
-//        List<Browse> collections_bak = new ArrayList<>();
-//        for (int i = 0; i < browses.size(); i++) {
-//            synchronized (this) {
-//                if (browses.get(i).getGoods() != null) {
-//                    if (browses.get(i).isSelect()) {
-//                        collections_bak.add(browses.get(i));
-//                    }
-//                } else if (browses.get(i).getGoods() == null) {
-//                    if (browses.get(i).isSelectAll()) {
-//                        collections_bak.add(browses.get(i));
-//                    }
-//                }
-//            }
-//        }
-//        browses.removeAll(collections_bak);
-//        mAdapter.clear();
-//        browseItemDecoration.setData(browses);
-//        mAdapter.addAll(getItems(browses));
-//        over();
-//        mAdapter.notifyDataSetChanged();
+        List<String> browseIds = new ArrayList<>();
+        List<GroupBrowse> _groupBrowses = new ArrayList<>();
+        for (int i = 0; i < groupBrowses.size(); i++) {
+            synchronized (this) {
+                if (((Browse) groupBrowses.get(i).getHeader()).isSelectAll()) {
+                    _groupBrowses.add(groupBrowses.get(i));
+                }
+                List<Object> objects = new ArrayList<>();
+                for (int j = 0; j < groupBrowses.get(i).getObjs().size(); j++) {
+                    if (((Browse) groupBrowses.get(i).getObjs().get(j)).isSelect()) {
+                        String browse_id_str = ((Browse) groupBrowses.get(i).getObjs().get
+                                (j)).getBrowse_id_str();
+                        browseIds.add(browse_id_str);
+                        objects.add(groupBrowses.get(i).getObjs().get(j));
+                    }
+                }
+                groupBrowses.get(i).getObjs().removeAll(objects);
+            }
+        }
+        groupBrowses.removeAll(_groupBrowses);
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("browse_ids", StringUtils.join(browseIds, ","));
+        HttpUtils.getInstance().post(ConstantManager.Url.SET_BROWSE_GOODS, mp, new HttpUtils
+                .NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+
+            }
+        });
+        groupedListAdapter.notifyDataChanged();
+        over();
     }
 
     public void edit() {
-//        edit.setText(R.string.over);
-//        set.constrainHeight(bottom.getId(), ToolUtils.dip2px(context, 50));
-//        for (int i = 0; i < browses.size(); i++) {
-//            browses.get(i).setLong(true);
-//        }
-//        set.applyTo(cly);
+        edit.setText(R.string.over);
+        set.constrainHeight(bottom.getId(), ToolUtils.dip2px(context, 50));
+        for (int i = 0; i < groupBrowses.size(); i++) {
+            ((Browse) groupBrowses.get(i).getHeader()).setLong(true);
+            ((Browse) groupBrowses.get(i).getHeader()).setSelectAll(false);
+            for (int j = 0; j < groupBrowses.get(i).getObjs().size(); j++) {
+                ((Browse) groupBrowses.get(i).getObjs().get(j)).setLong(true);
+                ((Browse) groupBrowses.get(i).getObjs().get(j)).setSelect(false);
+            }
+        }
+        set.applyTo(cly);
     }
 
     public void over() {
-//        edit.setText(R.string.edit);
-//        set.constrainHeight(bottom.getId(), ToolUtils.dip2px(context, 0));
-//        for (int i = 0; i < browses.size(); i++) {
-//            browses.get(i).setLong(false);
-//        }
-//        set.applyTo(cly);
+        edit.setText(R.string.edit);
+        set.constrainHeight(bottom.getId(), ToolUtils.dip2px(context, 0));
+        for (int i = 0; i < groupBrowses.size(); i++) {
+            ((Browse) groupBrowses.get(i).getHeader()).setLong(false);
+            ((Browse) groupBrowses.get(i).getHeader()).setSelectAll(false);
+            for (int j = 0; j < groupBrowses.get(i).getObjs().size(); j++) {
+                ((Browse) groupBrowses.get(i).getObjs().get(j)).setLong(false);
+                ((Browse) groupBrowses.get(i).getObjs().get(j)).setSelect(false);
+            }
+        }
+        set.applyTo(cly);
     }
 
-//    View.OnClickListener onClickListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            switch (v.getId()) {
-//                case R.id.checkBox:
-//                    boolean bool;
-//                    if (cb.isChecked()) {
-//                        bool = true;
-//                    } else {
-//                        bool = false;
-//                    }
-//                    for (int i = 0; i < browses.size(); i++) {
-//                        if (browses.get(i).getGoods() != null) {
-//                            browses.get(i).setSelect(bool);
-//                        } else {
-//                            browses.get(i).setSelectAll(bool);
-//                        }
-//                    }
-//                    mAdapter.notifyDataSetChanged();
-//                    break;
-//                case R.id.textView130:
-//                    deleteItems();
-//                    break;
-//            }
-//        }
-//    };
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.checkBox:
+                    //底栏全选
+                    boolean bool;
+                    if (cb.isChecked()) {
+                        bool = true;
+                    } else {
+                        bool = false;
+                    }
+                    for (int i = 0; i < groupBrowses.size(); i++) {
+                        ((Browse) groupBrowses.get(i).getHeader()).setSelectAll(bool);
+                        for (int j = 0; j < groupBrowses.get(i).getObjs().size(); j++) {
+                            ((Browse) groupBrowses.get(i).getObjs().get(j)).setSelect(bool);
+                        }
+                    }
+                    groupedListAdapter.notifyDataChanged();
+                    break;
+                case R.id.textView130:
+                    //底栏删除
+                    deleteItems();
+                    break;
+            }
+        }
+    };
 
-//    BrowseTitleItem.OnItemClickListener browseTitleListener = new BrowseTitleItem.OnItemClickListener() {
-//
-//        @Override
-//        public void clicked(int group, int pos) {
-//            switch (view.getId()) {
-//                case R.id.checkBox7://分组全选
-//                    int npos = pos;
-//                    boolean tbool = false;
-//                    if (browses.get(pos).isSelectAll()) {
-//                        browses.get(pos).setSelectAll(false);
-//                        tbool = false;
-//                    } else {
-//                        browses.get(pos).setSelectAll(true);
-//                        tbool = true;
-//                    }
-//                    npos += 1;
-//                    while (npos < browses.size() && browses.get(npos).getGoods() != null) {
-//                        browses.get(npos).setSelect(tbool);
-//                        npos += 1;
-//                    }
-//                    mAdapter.notifyDataSetChanged();
-//                    break;
-//            }
-//        }
-//    };
-//
-//    BrowseItem.OnClickListener browseListener = new BrowseItem.OnClickListener() {
-//        @Override
-//        public void onClicked(View view, int pos) {
-//            switch (view.getId()) {
-//                case R.id.checkBox6://单选
-//                    if (browses.get(pos).isSelect()) {
-//                        browses.get(pos).setSelect(false);
-//                    } else {
-//                        browses.get(pos).setSelect(true);
-//                    }
-//                    mAdapter.notifyDataSetChanged();
-//                    break;
-//                case R.id.imageView58:
-//                    Intent intent = new Intent(BrowseActivity.this, GoodsDetailActivity.class);
-//                    intent.putExtra("id", browses.get(pos).getGoods().getGoods_id());
-//                    startActivity(intent);
-//                    break;
-//                case R.id.textView133://找相似
-//                    break;
-//            }
-//        }
-//    };
+    BrowseTitleItem.OnSubItemClickListener browseTitleListener = new BrowseTitleItem
+            .OnSubItemClickListener() {
+        @Override
+        public void clicked(int group, int pos, View v) {
+            switch (v.getId()) {
+                case R.id.checkBox7://分组全选
+                    boolean tbool = false;
+                    if (((Browse) groupBrowses.get(group).getHeader()).isSelectAll()) {
+                        ((Browse) groupBrowses.get(group).getHeader()).setSelectAll(false);
+                        tbool = false;
+                    } else {
+                        ((Browse) groupBrowses.get(group).getHeader()).setSelectAll(true);
+                        tbool = true;
+                    }
+
+                    for (int i = 0; i < groupBrowses.get(group).getObjs().size(); i++) {
+                        ((Browse) groupBrowses.get(group).getObjs().get(i)).setSelect(tbool);
+                    }
+
+                    groupedListAdapter.notifyDataChanged();
+                    break;
+            }
+        }
+    };
+
+    BrowseItem.OnSubItemClickListener browseListener = new BrowseItem.OnSubItemClickListener() {
+        @Override
+        public void clicked(int group, int pos, View v) {
+            switch (v.getId()) {
+                case R.id.checkBox6://单选
+                    if (((Browse) groupBrowses.get(group).getObjs().get(pos)).isSelect()) {
+                        ((Browse) groupBrowses.get(group).getObjs().get(pos)).setSelect(false);
+                    } else {
+                        ((Browse) groupBrowses.get(group).getObjs().get(pos)).setSelect(true);
+                    }
+                    for (int i = 0; i < groupBrowses.size(); i++) {
+                        ((Browse) groupBrowses.get(i).getHeader()).setSelectAll(true);
+                        for (int j = 0; j < groupBrowses.get(i).getObjs().size(); j++) {
+                            if (!((Browse) groupBrowses.get(i).getObjs().get(j)).isSelect()) {
+                                ((Browse) groupBrowses.get(i).getHeader()).setSelectAll(false);
+                            }
+                        }
+                    }
+                    groupedListAdapter.notifyDataChanged();
+                    break;
+                case R.id.imageView58:
+                    Intent intent = new Intent(BrowseActivity.this, GoodsDetailActivity.class);
+                    intent.putExtra("id", ((Browse) groupBrowses.get(group).getObjs().get(pos))
+                            .getGoods().getGoods_id());
+                    startActivity(intent);
+                    break;
+                case R.id.textView133://找相似
+                    break;
+            }
+        }
+    };
 }

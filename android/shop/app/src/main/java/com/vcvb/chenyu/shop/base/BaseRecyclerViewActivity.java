@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop;
+package com.vcvb.chenyu.shop.base;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
+import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 

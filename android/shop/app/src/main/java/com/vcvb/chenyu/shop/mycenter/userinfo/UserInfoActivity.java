@@ -12,20 +12,27 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.user.UserAccountItem;
+import com.vcvb.chenyu.shop.adapter.item.user.UserItem;
+import com.vcvb.chenyu.shop.adapter.item.user.UserLogoItem;
+import com.vcvb.chenyu.shop.adapter.item.user.UserRealItem;
+import com.vcvb.chenyu.shop.adapter.item.user.UserSexItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.SexDialog;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
-import com.vcvb.chenyu.shop.staticdata.Users;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,13 +45,14 @@ import permissions.dispatcher.RuntimePermissions;
 @RuntimePermissions
 public class UserInfoActivity extends BaseRecyclerViewActivity {
 
-    private List<UserInfoBean> users = new ArrayList<>();
+    private UserInfoBean user = new UserInfoBean();
 
     public LoadingDialog loadingDialog;
 
     private SexDialog sexDialog;
 
     private int pos = 0;
+    private List<File> files = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +69,7 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -71,13 +79,13 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
             });
         }
 
-        TextView titleView = (TextView) findViewById(R.id.textView123);
+        TextView titleView = findViewById(R.id.textView123);
         titleView.setText(R.string.personal_center);
         titleView.setTextColor(Color.parseColor("#000000"));
         titleView.setTextSize(18);
         titleView.setSingleLine();
 
-        TextView add = (TextView) findViewById(R.id.textView122);
+        TextView add = findViewById(R.id.textView122);
         add.setAlpha(0);
     }
 
@@ -85,7 +93,7 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
     public void initView() {
         super.initView();
         sexDialog = new SexDialog(context);
-        mRecyclerView = (RecyclerView) findViewById(R.id.user_list);
+        mRecyclerView = findViewById(R.id.user_list);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -99,24 +107,17 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
             loadingDialog.show();
         }
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.USER_INFO, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
+            public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-
-                        if (users.size() != 0) {
-//                            setHaveDataByView();
-                        } else {
-//                            setNoDateByView();
-                        }
+                        bindViewData(json);
                     }
                 });
             }
@@ -129,21 +130,31 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-//                        setNoDateByView();
+                        ToastUtils.showShortToast(context, "网络错误！");
                     }
                 });
             }
         });
+    }
 
-        users.clear();
-        for (int i = 0; i < Users.users.size(); i++) {
-            UserInfoBean bean = new UserInfoBean();
-//            bean.setIsType(Users.users.get(i).get("type"));
-//            bean.setTitle(Users.users.get(i).get("title"));
-//            bean.setSubTitle(Users.users.get(i).get("subtitle"));
-            users.add(bean);
+    public void bindViewData(JSONObject json) {
+        if (json != null) {
+            try {
+                Integer code = json.getInt("code");
+                if(code == 0){
+                    JSONObject object = json.getJSONObject("data");
+                    user = JsonUtils.fromJsonObject(object, UserInfoBean.class);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            }
+
         }
-        mAdapter.addAll(getItems(users));
+        mAdapter.addAll(getItems(user));
     }
 
     @Override
@@ -181,18 +192,13 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
         });
     }
 
-    protected List<Item> getItems(List<UserInfoBean> list) {
+    protected List<Item> getItems(UserInfoBean bean) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-//            switch (list.get(i).getIsType()) {
-//                case 1:
-//                    cells.add(new UserItem(list.get(i), context));
-//                    break;
-//                case 2:
-//                    cells.add(new UserLogoItem(list.get(i), context));
-//                    break;
-//            }
-        }
+        cells.add(new UserLogoItem(bean, context));
+        cells.add(new UserItem(bean, context));
+        cells.add(new UserSexItem(bean, context));
+        cells.add(new UserAccountItem(bean, context));
+        cells.add(new UserRealItem(bean, context));
         return cells;
     }
 
@@ -214,12 +220,12 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
                 startActivityForResult(intent, ConstantManager.User.NICKNAME);
                 break;
             case 2:
-//                if(users.get(pos).getSubTitle() == R.string.man){
-//                    sexDialog.setTick(true);
-//                }else if(users.get(pos).getSubTitle() == R.string.woman){
-//                    sexDialog.setTick(false);
-//                }
                 sexDialog.show();
+                if(user.getSex() == 1){
+                    sexDialog.setTick(true);
+                }else{
+                    sexDialog.setTick(false);
+                }
                 break;
             case 3:
                 Intent intent2 = new Intent(UserInfoActivity.this, UserAccountActivity.class);
@@ -235,7 +241,7 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
     }
 
     //上传头像
-    public void uploadHeaderLogo(){
+    public void uploadHeaderLogo() {
         mAdapter.notifyDataSetChanged();
     }
 
@@ -248,17 +254,18 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST:
                     Uri imageUri = data.getParcelableExtra("uri");
                     System.out.println(imageUri);
-//                    users.get(pos).setImgPath(imageUri.toString());
+                    files.add(new File(ConstantManager.ImgPath.PATH, "IMAGE_CROP_NAME.jpg"));
+                    user.setLogo(imageUri.toString());
                     uploadHeaderLogo();
                     break;
                 case ConstantManager.User.NICKNAME:
                     String nickname = data.getStringExtra("nickname");
-//                    users.get(pos).setName(nickname);
+                    user.setNick_name(nickname);
                     mAdapter.notifyDataSetChanged();
                     break;
             }

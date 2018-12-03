@@ -32,7 +32,7 @@ public class BrandGoodsItem extends BaseItem<Goods> {
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         int width = ToolUtils.getWindowsWidth(context);
         View item = holder.get(R.id.goods_item);
         ImageView iv = holder.get(R.id.imageView124);

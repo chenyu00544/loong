@@ -39,7 +39,7 @@ public class BrandNavItem extends BaseItem<Brand> {
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         navView = holder.get(R.id.navs_wrap);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -64,8 +64,8 @@ public class BrandNavItem extends BaseItem<Brand> {
     public List<Item> getNavItems(Brand bean) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < ((List<FaatNav>) bean.getHeader()).size(); i++) {
-            FaatSubNavItem faatSubNavItem = new FaatSubNavItem(((List<FaatNav>) bean.getHeader()).get(i), context, (
-                    (List<FaatNav>) bean.getHeader()).size());
+            FaatSubNavItem faatSubNavItem = new FaatSubNavItem(((List<FaatNav>) bean.getHeader())
+                    .get(i), context, ((List<FaatNav>) bean.getHeader()).size());
             faatSubNavItem.setOnItemClickListener(listener);
             cells.add(faatSubNavItem);
         }
@@ -79,7 +79,7 @@ public class BrandNavItem extends BaseItem<Brand> {
         } else if (pos > navs.size() - 3 && pos < navs.size() - 1) {
             navView.scrollToPosition(navs.size() - 1);
         } else {
-            navView.scrollToPosition(pos-2);
+            navView.scrollToPosition(pos - 2);
         }
     }
 

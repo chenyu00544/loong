@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop;
+package com.vcvb.chenyu.shop.base;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 

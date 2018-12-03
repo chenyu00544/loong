@@ -170,7 +170,7 @@ class CollectRepository implements CollectRepositoryInterface
                 $group = date('Y-m', $re->add_time);
             }
             $return[$group]['group'] = $group;
-
+            $re->browse_id_str = $re->browse_id.'';
             $re->add_time_format = date('Y-m-d', $re->add_time);
             $re->goods->current_time = time();
             $re->goods->original_img = FileHandle::getImgByOssUrl($re->goods->original_img);
@@ -179,14 +179,17 @@ class CollectRepository implements CollectRepositoryInterface
             $re->goods->promote_price_format = Common::priceFormat($re->goods->promote_price);
             $return[$group]['browse'][] = $re;
         }
-        sort($return);
-        return $return;
+        $req = [];
+        foreach ($return as $r){
+            $req[] = $r;
+        }
+        return $req;
     }
 
     public function setBowse($request, $uid)
     {
         $where['user_id'] = $uid;
-        $browse_ids = explode(',', $request['browse_ids ']);
+        $browse_ids = explode(',', $request['browse_ids']);
         $updata = [
             'is_attention' => 0
         ];

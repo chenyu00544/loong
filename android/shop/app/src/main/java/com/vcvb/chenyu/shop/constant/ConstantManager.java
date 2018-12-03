@@ -143,6 +143,7 @@ public interface ConstantManager {
 
         //fixme 用户数据操作
         public String USER_INFO = URIHOST + "app/user/index";
+        public String SET_USER_INFO = URIHOST + "app/user/set";
 
         //fixme 订单操作
         public String ORDERS = URIHOST + "app/order/index";

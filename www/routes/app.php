@@ -42,6 +42,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('collect/browse/set', 'CollectController@setBowse');
 
     Route::post('user/index', 'UserController@index');
+    Route::post('user/set', 'UserController@setUser');
     Route::post('user/addresses', 'UserController@addresses');
     Route::post('user/address/get', 'UserController@getAddress');
     Route::post('user/address/setdef', 'UserController@setDefaultAddress');

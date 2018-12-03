@@ -11,7 +11,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 
 public class UserItem extends BaseItem<UserInfoBean> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.user_item;
 
     public UserItem(UserInfoBean bean, Context c) {
         super(bean, c);
@@ -25,7 +25,7 @@ public class UserItem extends BaseItem<UserInfoBean> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.user_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 
@@ -33,11 +33,11 @@ public class UserItem extends BaseItem<UserInfoBean> {
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView137);
         TextView tv2 = holder.getTextView(R.id.textView138);
-//        tv.setText(mData.getTitle());
-//        if (mData.getName() != null) {
-//            tv2.setText(mData.getName());
-//        }else{
-//            tv2.setText(mData.getSubTitle());
-//        }
+        tv.setText(R.string.nick_title);
+        if (mData.getNick_name() != null) {
+            tv2.setText(mData.getNick_name());
+        }else{
+            tv2.setText(R.string.nick_subtitle);
+        }
     }
 }

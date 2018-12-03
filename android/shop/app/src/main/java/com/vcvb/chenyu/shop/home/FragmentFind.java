@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.vcvb.chenyu.shop.BaseFragment;
+import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 
 public class FragmentFind extends BaseFragment {

@@ -7,7 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Browse{
-    private Integer browse_id;
+//    private Integer browse_id;
+    private String browse_id_str;
     private String group;
     private String user_id;
     private Integer add_time;
@@ -25,20 +26,12 @@ public class Browse{
         this.group = group;
     }
 
-    public Integer getRec_id() {
-        return browse_id;
+    public String getBrowse_id_str() {
+        return browse_id_str;
     }
 
-    public void setRec_id(Integer browse_id) {
-        this.browse_id = browse_id;
-    }
-
-    public Integer getBrowse_id() {
-        return browse_id;
-    }
-
-    public void setBrowse_id(Integer browse_id) {
-        this.browse_id = browse_id;
+    public void setBrowse_id_str(String browse_id_str) {
+        this.browse_id_str = browse_id_str;
     }
 
     public String getUser_id() {

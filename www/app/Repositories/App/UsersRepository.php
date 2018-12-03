@@ -275,4 +275,16 @@ class UsersRepository implements UsersRepositoryInterface
         }
         return ['review_status' => 3];
     }
+
+    public function setUserInfo($data, $uid)
+    {
+        $where['user_id'] = $uid;
+        if(!empty($data['nickname'])){
+            $updata['nick_name'] = $data['nickname'];
+        }elseif(!empty($data['sex'])){
+            $updata['sex'] = $data['sex'];
+        }
+        $re = $this->usersModel->setUsers($where, $updata);
+        return $re;
+    }
 }

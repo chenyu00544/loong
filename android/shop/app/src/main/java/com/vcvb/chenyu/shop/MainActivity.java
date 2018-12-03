@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
 import com.vcvb.chenyu.shop.dialog.LoginDialog;
