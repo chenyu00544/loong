@@ -13,13 +13,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealCardItem;
 import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealItem;
 import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealWhyItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.user.UserReal;
@@ -27,6 +27,7 @@ import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,6 +96,55 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
     }
 
     @Override
+    public void initListener() {
+        super.initListener();
+
+        //身份证正面，前往相册选图
+        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.imageView68).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                goToAlbum(1);
+            }
+        });
+
+        //身份证反面，前往相册选图
+        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView69).setOnChildClickListener1
+                (new CYCItemClickSupport.OnChildItemClickListener1() {
+                    @Override
+                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                        goToAlbum(2);
+                    }
+                });
+
+        //删除身份证正面
+        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView73).setOnChildClickListener2
+                (new CYCItemClickSupport.OnChildItemClickListener2() {
+                    @Override
+                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                        real.setFront_of_id_card(null);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+        //删除身份证反面
+        CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView72).setOnChildClickListener3
+                (new CYCItemClickSupport.OnChildItemClickListener3() {
+                    @Override
+                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                        real.setReverse_of_id_card(null);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                });
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveData();
+            }
+        });
+
+    }
+
+    @Override
     public void getData(final boolean b) {
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
@@ -157,78 +207,22 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
         }
     }
 
-    //相册权限
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showPhotoAlbum() {
-        Intent intent = new Intent(UserRealNameActivity.this, UserLogoActivity.class);
-        if (pos == 1) {
-            intent.putExtra("card_uri", "CARD_IMG_FRONT.jpg");
-        } else {
-            intent.putExtra("card_uri", "CARD_IMG_BACK.jpg");
-        }
-        startActivityForResult(intent, ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST);
-    }
-
-    public void goToAlbum(int type) {
-        pos = type;
-        UserRealNameActivityPermissionsDispatcher.showPhotoAlbumWithCheck(this);
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-
-        //身份证正面，前往相册选图
-        CYCItemClickSupport.BuildTo(mRecyclerView, R.id.imageView68).setOnChildClickListener(new CYCItemClickSupport.OnChildItemClickListener() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                goToAlbum(1);
-            }
-        });
-
-        //身份证反面，前往相册选图
-        CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView69).setOnChildClickListener1
-                (new CYCItemClickSupport.OnChildItemClickListener1() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                goToAlbum(2);
-            }
-        });
-
-        //删除身份证正面
-        CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView73).setOnChildClickListener2
-                (new CYCItemClickSupport.OnChildItemClickListener2() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                real.setFront_of_id_card(null);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-        //删除身份证反面
-        CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView72).setOnChildClickListener3
-                (new CYCItemClickSupport.OnChildItemClickListener3() {
-            @Override
-            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                real.setReverse_of_id_card(null);
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
-                loadingDialog.show();
-                //保存实名认证
-                mp.put("token", token);
-                HttpUtils.getInstance().postImage(ConstantManager.Url.SET_USER_REAL, mp, files,
-                        new HttpUtils.NetCall() {
+    public void saveData(){
+        loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
+        loadingDialog.show();
+        //保存实名认证
+        mp.put("token", token);
+        HttpUtils.getInstance().postImage(ConstantManager.Url.SET_USER_REAL, mp, files,
+                new HttpUtils.NetCall() {
                     @Override
                     public void success(Call call, JSONObject json) throws IOException {
                         try {
                             if (json.getInt("code") == 0) {
                                 Integer review_status = json.getJSONObject("data").getInt
                                         ("review_status");
+                                HashMap<String, String> mp = new HashMap<>();
+                                mp.put("is_real", review_status+"");
+                                UserInfoUtils.getInstance(context).setUserInfo(mp);
                                 real.setReview_status(review_status);
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -260,9 +254,23 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                         });
                     }
                 });
-            }
-        });
+    }
 
+    //相册权限
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showPhotoAlbum() {
+        Intent intent = new Intent(UserRealNameActivity.this, UserLogoActivity.class);
+        if (pos == 1) {
+            intent.putExtra("card_uri", "CARD_IMG_FRONT.jpg");
+        } else {
+            intent.putExtra("card_uri", "CARD_IMG_BACK.jpg");
+        }
+        startActivityForResult(intent, ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST);
+    }
+
+    public void goToAlbum(int type) {
+        pos = type;
+        UserRealNameActivityPermissionsDispatcher.showPhotoAlbumWithCheck(this);
     }
 
     protected List<Item> getItems(UserReal real) {

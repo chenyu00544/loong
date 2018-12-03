@@ -121,6 +121,7 @@ public interface ConstantManager {
         public String LOGIN = URIHOST + "app/login/index";
         public String REGISTER = URIHOST + "app/login/reg";
         public String GET_USER_INFO = URIHOST + "app/user/index";
+        public String SET_USER_INFO = URIHOST + "app/user/set";
         public String USER_REAL = URIHOST + "app/user/real";
         public String SET_USER_REAL = URIHOST + "app/user/real/set";
 
@@ -140,10 +141,6 @@ public interface ConstantManager {
         public String SETADDRESS = URIHOST + "app/user/address/set"; //添加和设置合并 这个暂时无用
         public String DELADDRESS = URIHOST + "app/user/address/del";
         public String SETDEFADDRESS = URIHOST + "app/user/address/setdef";
-
-        //fixme 用户数据操作
-        public String USER_INFO = URIHOST + "app/user/index";
-        public String SET_USER_INFO = URIHOST + "app/user/set";
 
         //fixme 订单操作
         public String ORDERS = URIHOST + "app/order/index";

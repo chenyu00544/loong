@@ -283,6 +283,15 @@ class UsersRepository implements UsersRepositoryInterface
             $updata['nick_name'] = $data['nickname'];
         }elseif(!empty($data['sex'])){
             $updata['sex'] = $data['sex'];
+        }elseif(!empty($data['file_0'])){
+            $path = 'user_logo';
+            if ($data['file_0']->isValid()) {
+                $uri = FileHandle::upLoadImage($data['file_0'], $path);
+                $updata['logo'] = $uri;
+                if(!empty($data['logo']) && strpos($uri, 'http') === false){
+                    FileHandle::deleteFile($data['logo']);
+                }
+            }
         }
         $re = $this->usersModel->setUsers($where, $updata);
         return $re;

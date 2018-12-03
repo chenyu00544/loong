@@ -183,7 +183,7 @@ public class HttpUtils {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (files != null && files.size() > 0) {
             for (int i = 0; i < files.size(); i++) {
-                if (!files.get(i).equals("")) {
+                if (files.get(i) != null) {
                     String filename = files.get(i).getName();
                     builder.addFormDataPart("file_" + i, filename, RequestBody.create(MediaType
                             .parse("image/*"), files.get(i)));

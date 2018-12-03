@@ -8,15 +8,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.user.useraccount.UserAccountItem;
+import com.vcvb.chenyu.shop.adapter.item.user.useraccount.UserAccountTitleItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 import com.vcvb.chenyu.shop.staticdata.Users;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
 
 import org.json.JSONObject;
 
@@ -45,7 +47,7 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -55,13 +57,13 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
             });
         }
 
-        TextView titleView = (TextView) findViewById(R.id.textView123);
+        TextView titleView = findViewById(R.id.textView123);
         titleView.setText(R.string.account_title);
         titleView.setTextColor(Color.parseColor("#000000"));
         titleView.setTextSize(18);
         titleView.setSingleLine();
 
-        TextView add = (TextView) findViewById(R.id.textView122);
+        TextView add = findViewById(R.id.textView122);
         add.setAlpha(0);
     }
 
@@ -73,10 +75,8 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
             loadingDialog.show();
         }
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
@@ -84,12 +84,6 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
                     public void run() {
                         if (b) {
                             loadingDialog.dismiss();
-                        }
-
-                        if (users.size() != 0) {
-//                            setHaveDataByView();
-                        } else {
-//                            setNoDateByView();
                         }
                     }
                 });
@@ -103,7 +97,6 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
                         if (b) {
                             loadingDialog.dismiss();
                         }
-//                        setNoDateByView();
                     }
                 });
             }
@@ -130,7 +123,7 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
     @Override
     public void initView() {
         super.initView();
-        mRecyclerView = (RecyclerView) findViewById(R.id.user_list);
+        mRecyclerView = findViewById(R.id.user_list);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -149,16 +142,8 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
 
     protected List<Item> getItems(List<UserInfoBean> list) {
         List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-//            switch (list.get(i).getIsType()) {
-//                case 1:
-//                    cells.add(new UserAccountItem(list.get(i), context));
-//                    break;
-//                case 2:
-//                    cells.add(new UserAccountTitleItem(list.get(i), context));
-//                    break;
-//            }
-        }
+        cells.add(new UserAccountTitleItem(UserInfoBean, context));
+        cells.add(new UserAccountItem(UserInfoBean, context));
         return cells;
     }
 

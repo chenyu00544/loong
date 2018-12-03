@@ -108,7 +108,8 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
         }
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
-        HttpUtils.getInstance().post(ConstantManager.Url.USER_INFO, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, mp, new HttpUtils.NetCall
+                () {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
@@ -141,7 +142,7 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
         if (json != null) {
             try {
                 Integer code = json.getInt("code");
-                if(code == 0){
+                if (code == 0) {
                     JSONObject object = json.getJSONObject("data");
                     user = JsonUtils.fromJsonObject(object, UserInfoBean.class);
                 }
@@ -168,28 +169,7 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
                 goToSetUserActivity(position);
             }
         });
-        sexDialog.setOnDialogClickListener(new SexDialog.OnDialogClickListener() {
-            @Override
-            public void onManClickListener() {
-                sexDialog.setTick(true);
-//                users.get(pos).setSubTitle(R.string.man);
-                mAdapter.notifyDataSetChanged();
-                sexDialog.dismiss();
-            }
-
-            @Override
-            public void onWomanClickListener() {
-                sexDialog.setTick(false);
-//                users.get(pos).setSubTitle(R.string.woman);
-                mAdapter.notifyDataSetChanged();
-                sexDialog.dismiss();
-            }
-
-            @Override
-            public void onCancelClickListener() {
-                sexDialog.dismiss();
-            }
-        });
+        sexDialog.setOnDialogClickListener(sexListener);
     }
 
     protected List<Item> getItems(UserInfoBean bean) {
@@ -221,9 +201,9 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
                 break;
             case 2:
                 sexDialog.show();
-                if(user.getSex() == 1){
+                if (user.getSex() == 1) {
                     sexDialog.setTick(true);
-                }else{
+                } else {
                     sexDialog.setTick(false);
                 }
                 break;
@@ -241,8 +221,69 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
     }
 
     //上传头像
-    public void uploadHeaderLogo() {
+    public void uploadHeaderLogo(Uri imageUri) {
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("logo", user.getLogo());
+        user.setLogo(imageUri.toString());
+        HttpUtils.getInstance().postImage(ConstantManager.Url.SET_USER_INFO, mp, files,
+                new HttpUtils.NetCall() {
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        if (json != null) {
+                            try {
+                                if (json.getInt("code") == 0) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mAdapter.notifyDataSetChanged();
+                                        }
+                                    });
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.dismiss();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        System.out.println(e.getMessage());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.dismiss();
+                                ToastUtils.showShortToast(context, "错误");
+                            }
+                        });
+                    }
+                });
+    }
+
+    //上传性别
+    public void setSex(Integer sex) {
+        user.setSex(sex);
         mAdapter.notifyDataSetChanged();
+        sexDialog.dismiss();
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("sex", sex + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.SET_USER_INFO, mp,
+                new HttpUtils.NetCall() {
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+                    }
+                });
     }
 
     @Override
@@ -260,8 +301,7 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
                     Uri imageUri = data.getParcelableExtra("uri");
                     System.out.println(imageUri);
                     files.add(new File(ConstantManager.ImgPath.PATH, "IMAGE_CROP_NAME.jpg"));
-                    user.setLogo(imageUri.toString());
-                    uploadHeaderLogo();
+                    uploadHeaderLogo(imageUri);
                     break;
                 case ConstantManager.User.NICKNAME:
                     String nickname = data.getStringExtra("nickname");
@@ -271,4 +311,23 @@ public class UserInfoActivity extends BaseRecyclerViewActivity {
             }
         }
     }
+
+    SexDialog.OnDialogClickListener sexListener = new SexDialog.OnDialogClickListener() {
+        @Override
+        public void onManClickListener() {
+            sexDialog.setTick(true);
+            setSex(1);
+        }
+
+        @Override
+        public void onWomanClickListener() {
+            sexDialog.setTick(false);
+            setSex(2);
+        }
+
+        @Override
+        public void onCancelClickListener() {
+            sexDialog.dismiss();
+        }
+    };
 }

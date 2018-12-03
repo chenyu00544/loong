@@ -47,7 +47,7 @@ public class FragmentMy extends BaseFragment {
     ViewGroup container;
     private Receiver receiver;
     private ConfirmDialog confirmDialog;
-    private UserInfoBean userInfoBean;
+    private UserInfoBean userInfoBean = new UserInfoBean();
 
     @Nullable
     @Override
@@ -75,7 +75,7 @@ public class FragmentMy extends BaseFragment {
         if (token != null && !token.equals("")) {
             HashMap<String, String> mp = new HashMap<>();
             mp.put("token", token);
-            HttpUtils.getInstance().post(ConstantManager.Url.USER_INFO, mp, new HttpUtils.NetCall() {
+            HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, mp, new HttpUtils.NetCall() {
                 @Override
                 public void success(Call call, final JSONObject json) throws IOException {
                     if (getActivity() != null) {
@@ -200,6 +200,7 @@ public class FragmentMy extends BaseFragment {
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()) {
                     case "UserInfoCall":
+                        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
                         getData();
                         break;
                 }
@@ -407,6 +408,7 @@ public class FragmentMy extends BaseFragment {
     //确定退出登录
     public void logoutBySure() {
         UserInfoUtils.getInstance(context).clear();
+        token = "";
         userInfoBean.setUser_money("0");
         userInfoBean.setBonus_money("0");
         userInfoBean.setPay_points("0");
