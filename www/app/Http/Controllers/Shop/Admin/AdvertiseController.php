@@ -11,19 +11,23 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
 use App\Repositories\AdRepository;
+use App\Repositories\ComCateRepository;
 use Illuminate\Http\Request;
 
 class AdvertiseController extends CommonController
 {
     private $adRepository;
+    private $comCateRepository;
 
     public function __construct(
-        AdRepository $adRepository
+        AdRepository $adRepository,
+        ComCateRepository $comCateRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('ad_list');
         $this->adRepository = $adRepository;
+        $this->comCateRepository = $comCateRepository;
     }
 
     /**
@@ -57,8 +61,9 @@ class AdvertiseController extends CommonController
     {
         $type = $id;
         $adsposes = $this->adRepository->getAdPoses($id);
+        $cates = $this->comCateRepository->getComCates();
         $now_date = $this->now_date;
-        return view('shop.admin.ads.adsAdd', compact('adsposes', 'now_date', 'type'));
+        return view('shop.admin.ads.adsAdd', compact('adsposes', 'now_date', 'cates', 'type'));
     }
 
     public function adEdit($id, $ad_type)
@@ -66,7 +71,9 @@ class AdvertiseController extends CommonController
         $type = $ad_type;
         $adsposes = $this->adRepository->getAdPoses($type);
         $adInfo = $this->adRepository->getAd($id);
-        return view('shop.admin.ads.adsEdit', compact('adsposes', 'type', 'adInfo'));
+        $cates = $this->comCateRepository->getComCates();
+        $parentCates = $this->comCateRepository->getParentCate($adInfo->cate_id);
+        return view('shop.admin.ads.adsEdit', compact('adsposes', 'type', 'cates', 'parentCates', 'adInfo'));
     }
 
     /**

@@ -53,6 +53,28 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">上级分类：</label>
+                            <div class="col-sm-8 pre-cate-sel"
+                                 style="@if(count($parentCates) > 0)display: block; @else display: none; @endif">
+                                @foreach($parentCates as $val)
+                                    @if($loop->index != 0)　>　@endif<span>{{$val['cat_name']}}</span>
+                                @endforeach
+                                <a href="javascript:;" class="btn btn-warning btn-reset btn-sm">重置</a>
+                                <input type="hidden" name="parent_id" value="{{$adInfo->cate_id}}">
+                            </div>
+                            <div class="col-sm-8 pre-cate" style="@if(count($parentCates) > 0)display: none;@endif">
+                                <div class="cate-option fl">
+                                    <select class="form-control select"
+                                            onchange="setNextCate(this)" data-parent="0">
+                                        <option value="0">顶级分类</option>
+                                        @foreach($cates as $cat)
+                                            <option value="{{$cat->id}}">{{$cat->cat_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>起止日期：</label>
                             <div class="col-sm-4">
                                 <input type="text" style="width: 300px" name="start_end_time"
@@ -168,6 +190,13 @@
     <script>
         $(function () {
             $('.nyroModal').nyroModal();
+
+            $('.btn-reset').click(function () {
+                $('.pre-cate-sel').hide();
+                $('.pre-cate').show();
+                $('input[name="c_id"]').val(0);
+            });
+
             var optionSet = {
                 timePicker: true,
                 timePickerIncrement: 1,
@@ -217,7 +246,37 @@
                 $('.num_id').val(id);
                 $('input[name=ad_name]').val(ad_name + '_' + id);
             });
+
+            $('select[name=position_id]').change(function () {
+                if($(this).val() == 358){
+                    $('.cate').show();
+                }else{
+                    $('.cate').hide();
+                }
+            });
         });
+
+        function setNextCate(that) {
+            var id = $(that).val();
+            var parent = $(that).data('parent');
+            $('input[name="parent_id"]').val(id);
+            if (id > 0 && parent == 0) {
+                var html = '';
+                $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
+                    if (data.code == 1) {
+                        html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
+                        $.each(data.data, function (k, v) {
+                            html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
+                        })
+                        html += '</select></div>';
+                        $(that).parent().nextAll().remove();
+                        $('.pre-cate').append(html);
+                    } else {
+                        $(that).parent().nextAll().remove();
+                    }
+                })
+            }
+        }
     </script>
 @endsection
 @endsection

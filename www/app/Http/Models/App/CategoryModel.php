@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -17,96 +18,32 @@ class CategoryModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getComCates($id = 0, $column = ['*'])
+    public function subCate()
+    {
+        return $this->hasMany('App\Http\Models\App\CategoryModel', 'parent_id', 'id');
+    }
+
+    public function ads()
+    {
+        return $this->hasOne('App\Http\Models\App\AdModel', 'cate_id', 'id');
+    }
+
+    public function getComCates($where, $column = ['*'])
     {
         return $this->select($column)
-            ->where('parent_id', $id)
-            ->orderBy('sort_order', 'asc')
+            ->with(['subCate' => function ($query) {
+                $query->select(['id', 'cat_name', 'parent_id', 'sort_order', 'cat_alias_name', 'touch_icon', 'is_show'])
+                    ->with(['ads' => function ($query) {
+                        $query->select(['ad_id', 'ad_link', 'ad_code', 'cate_id', 'enabled', 'start_time', 'end_time'])->where([['enabled', '=', 1], ['start_time', '<', time()], ['end_time', '>', time()]]);
+                    }])
+                    ->with(['subCate' => function ($query) {
+                        $query->select(['id', 'cat_name', 'parent_id', 'sort_order', 'cat_alias_name', 'touch_icon', 'is_show'])
+                            ->where(['is_show' => 1]);
+                    }])
+                    ->where(['is_show' => 1]);
+            }])
+            ->where($where)
+            ->orderBy('sort_order', 'DESC')
             ->get();
-    }
-
-    public function getSubComCates($pids = [0], $ids = [])
-    {
-        $res = $this->select('id')->whereIn('parent_id', $pids)->get();
-        $arr = [];
-        if ($res->count() > 0) {
-            foreach ($res as $re) {
-                $arr[] = $re->id;
-            }
-            $ids = array_merge($ids, $arr);
-            return $this->getSubComCates($arr, $ids);
-        }
-        return $ids;
-    }
-
-    public function getComCate($id)
-    {
-        return $this->where('id', $id)
-            ->first();
-    }
-
-    public function getComCatesByIn($in, $columns = ['*'])
-    {
-        return $this->select($columns)
-            ->whereIn('id', $in)
-            ->orderBy('sort_order', 'asc')
-            ->get();
-    }
-
-    public function searchComCates($search, $column = ['*'])
-    {
-        $m = $this->select($column);
-        foreach ($search as $key => $value) {
-            $m->orWhere($key, 'like', '%' . $value . '%');
-        }
-        return $m->get();
-    }
-
-    public function getComParentCate($id, $cates = [])
-    {
-        $rep = $this->where('id', $id)->first();
-        $cates[] = $rep;
-        if ($rep->parent_id != 0) {
-            return $this->getComParentCate($rep->parent_id, $cates);
-        } else {
-            return $cates;
-        }
-    }
-
-    public function setComCate($where, $data)
-    {
-        return $this->where($where)
-            ->update($data);
-    }
-
-    public function upDateCate($data, $id)
-    {
-        return $this->where('id', $id)
-            ->update($data);
-    }
-
-    public function getRank($data, $index = 0, $ranks = ['二级', '三级', '四级', '五级', '六级', '七级', '八级', '九级', '十级'])
-    {
-        if ($data->parent_id == 0) {
-            return [$ranks[$index], $index];
-        }
-        $i = $index + 1;
-        $re = $this->getComCate($data->parent_id);
-        if ($re) {
-            return $this->getRank($re, $i);
-        } else {
-            return [$ranks[$i], $i];
-        }
-    }
-
-    public function addCate($data)
-    {
-        return $this->create($data);
-    }
-
-    public function deleteCate($where)
-    {
-        return $this->where($where)
-            ->delete();
     }
 }

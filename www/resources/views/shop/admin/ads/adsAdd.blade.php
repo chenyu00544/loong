@@ -49,6 +49,21 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group cate" style="display: none;">
+                            <label class="col-sm-4 control-label">上级分类：</label>
+                            <input type="hidden" name="parent_id" value="">
+                            <div class="col-sm-8 pre-cate">
+                                <div class="cate-option fl">
+                                    <select class="form-control select"
+                                            onchange="setNextCate(this)" data-parent="0">
+                                        <option value="0">顶级分类</option>
+                                        @foreach($cates as $cate)
+                                            <option value="{{$cate->id}}">{{$cate->cat_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>起止日期：</label>
                             <div class="col-sm-4">
@@ -200,6 +215,7 @@
                 $('.num_id').val(id);
                 $('input[name=ad_name]').val(ad_name+'_'+id);
             });
+
             $('.num_add').on('click', function () {
                 var ad_name = $('input[name=ad_name]').data('name');
                 var id = parseInt($('.num_id').val());
@@ -207,7 +223,37 @@
                 $('.num_id').val(id);
                 $('input[name=ad_name]').val(ad_name+'_'+id);
             });
+
+            $('select[name=position_id]').change(function () {
+                if($(this).val() == 358){
+                    $('.cate').show();
+                }else{
+                    $('.cate').hide();
+                }
+            });
         });
+
+        function setNextCate(that) {
+            var id = $(that).val();
+            var parent = $(that).data('parent');
+            $('input[name="parent_id"]').val(id);
+            if (id > 0 && parent == 0) {
+                var html = '';
+                $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
+                    if (data.code == 1) {
+                        html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
+                        $.each(data.data, function (k, v) {
+                            html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
+                        })
+                        html += '</select></div>';
+                        $(that).parent().nextAll().remove();
+                        $('.pre-cate').append(html);
+                    } else {
+                        $(that).parent().nextAll().remove();
+                    }
+                })
+            }
+        }
     </script>
 @endsection
 @endsection

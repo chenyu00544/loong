@@ -19,6 +19,11 @@ class CategoryController extends CommonController
 
     public function index(Request $request)
     {
-
+        $res = $this->categoryRepository->getCates();
+        if ($res) {
+            return ['code' => 0, 'msg' => '', 'data' => $res];
+        } else {
+            return ['code' => 1, 'msg' => '', 'data' => ''];
+        }
     }
 }

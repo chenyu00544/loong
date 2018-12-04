@@ -189,9 +189,6 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
 
     public void bindViewData(JSONObject json) {
         groupBrowses.clear();
-        if (groupedListAdapter != null) {
-            groupedListAdapter.notifyDataRemoved();
-        }
         if (json != null) {
             try {
                 Integer code = json.getInt("code");
@@ -222,6 +219,9 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
             } catch (InstantiationException e) {
                 e.printStackTrace();
             }
+        }
+        if (groupedListAdapter != null) {
+            groupedListAdapter.notifyDataRemoved();
         }
         groupedListAdapter.setData(getGroupItems(groupBrowses));
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 1, groupedListAdapter) {

@@ -88,6 +88,8 @@ class AdRepository implements AdRepositoryInterface
                 $uri = 'ad' . DIRECTORY_SEPARATOR . $type;
                 $imgPath = FileHandle::upLoadImage($value, $uri);
                 $updata['ad_code'] = $imgPath;
+            } elseif ($key == 'parent_id') {
+                $updata['cate_id'] = $value;
             } else {
                 $updata[$key] = $value;
             }
@@ -113,6 +115,8 @@ class AdRepository implements AdRepositoryInterface
                 if ($data['ad_url'] != '') {
                     FileHandle::deleteFile($data['ad_url']);
                 }
+            } elseif ($key == 'parent_id') {
+                $updata['cate_id'] = $value;
             } else {
                 $updata[$key] = $value;
             }
