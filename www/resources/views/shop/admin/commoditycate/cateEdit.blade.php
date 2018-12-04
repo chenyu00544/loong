@@ -17,7 +17,7 @@
             <div class="fromlist clearfix">
                 <div class="main-info">
                     <form name="conf" action="{{url('admin/comcate/'.$cate->id)}}" method="post"
-                          class="form-horizontal">
+                          class="form-horizontal" enctype="multipart/form-data">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
 
@@ -56,6 +56,20 @@
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">手机小图片：</label>
+                            <div class="col-sm-4">
+                                <input type="file" name="touch_icon_img" value="" class="fl">
+                                <input type="hidden" name="touch_icon" value="{{$cate->touch_icon}}" class="fl">
+                                <span class="img-show fl">
+                                    <a href="{{$cate->touch_icon_img}}" target="_blank" class="nyroModal">
+                                        <i class="glyphicon glyphicon-picture top5"
+                                           data-tooltipimg="{{$cate->touch_icon_img}}" ectype="tooltip"
+                                           data-toggle="tooltip" title="tooltip"></i>
+                                    </a>
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -164,7 +178,8 @@
                             <div class="col-sm-4 control-label">&nbsp;</div>
                             <div class="">
                                 <input type="submit" value="　确定　" class="btn btn-danger">
-                                <a type="button" class="btn btn-default clearfix mar-left-20" href="javascript:history.go(-1)">返回</a>
+                                <a type="button" class="btn btn-default clearfix mar-left-20"
+                                   href="javascript:history.go(-1)">返回</a>
                             </div>
                         </div>
                     </form>
@@ -178,6 +193,8 @@
 @section('script')
     <script>
         $(function () {
+            $('.nyroModal').nyroModal();
+
             $('.btn-reset').click(function () {
                 $('.pre-cate-sel').hide();
                 $('.pre-cate').show();
@@ -189,7 +206,7 @@
             var id = $(that).val();
             var parent = $(that).data('parent');
             $('input[name="parent_id"]').val(id);
-            if(id > 0 && parent == 0){
+            if (id > 0 && parent == 0) {
                 var html = '';
                 $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
                     if (data.code == 1) {
@@ -200,7 +217,7 @@
                         html += '</select></div>';
                         $(that).parent().nextAll().remove();
                         $('.pre-cate').append(html);
-                    }else{
+                    } else {
                         $(that).parent().nextAll().remove();
                     }
                 })

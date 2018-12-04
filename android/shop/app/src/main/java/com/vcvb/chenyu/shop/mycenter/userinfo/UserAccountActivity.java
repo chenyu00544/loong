@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.mycenter.userinfo;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,9 +18,10 @@ import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
-import com.vcvb.chenyu.shop.staticdata.Users;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -31,7 +33,7 @@ import okhttp3.Call;
 
 public class UserAccountActivity extends BaseRecyclerViewActivity {
 
-    private List<UserInfoBean> users = new ArrayList<>();
+    private UserInfoBean user = new UserInfoBean();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,27 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
     }
 
     @Override
+    public void initView() {
+        super.initView();
+        mRecyclerView = findViewById(R.id.user_list);
+        mLayoutManager = new GridLayoutManager(context, 1);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+
+            }
+        });
+    }
+
+    @Override
     public void getData(final boolean b) {
         super.getData(b);
         if (b) {
@@ -76,15 +99,17 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
         }
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
-        HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, mp, new HttpUtils.NetCall
+                () {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
+            public void success(Call call, final JSONObject json) throws IOException {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (b) {
                             loadingDialog.dismiss();
                         }
+                        bindViewData(json);
                     }
                 });
             }
@@ -101,50 +126,73 @@ public class UserAccountActivity extends BaseRecyclerViewActivity {
                 });
             }
         });
-
-        users.clear();
-        for (int i = 0; i < Users.accounts.size(); i++) {
-            UserInfoBean bean = new UserInfoBean();
-//            bean.setIsType(Users.accounts.get(i).get("type"));
-//            bean.setTitle(Users.accounts.get(i).get("title"));
-//            bean.setSubTitle(Users.accounts.get(i).get("subtitle"));
-//            if(false){
-//                bean.setIcon(Users.accounts.get(i).get("icon_a"));
-//            }else{
-//                bean.setIcon(Users.accounts.get(i).get("icon"));
-//            }
-//            bean.setIsBind(false);
-//            bean.setName("sdaf"+i);
-            users.add(bean);
-        }
-        mAdapter.addAll(getItems(users));
     }
 
-    @Override
-    public void initView() {
-        super.initView();
-        mRecyclerView = findViewById(R.id.user_list);
-        mLayoutManager = new GridLayoutManager(context, 1);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void initListener() {
-        super.initListener();
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-
+    public void bindViewData(JSONObject json) {
+        if (json != null) {
+            try {
+                Integer code = json.getInt("code");
+                if (code == 0) {
+                    JSONObject object = json.getJSONObject("data");
+                    user = JsonUtils.fromJsonObject(object, UserInfoBean.class);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
             }
-        });
+
+        }
+        mAdapter.addAll(getItems(user));
     }
 
-    protected List<Item> getItems(List<UserInfoBean> list) {
+    protected List<Item> getItems(UserInfoBean bean) {
         List<Item> cells = new ArrayList<>();
-        cells.add(new UserAccountTitleItem(UserInfoBean, context));
-        cells.add(new UserAccountItem(UserInfoBean, context));
+        cells.add(new UserAccountTitleItem(bean, context, 1));
+        UserAccountItem userAccountItem1 = new UserAccountItem(bean, context, 1);
+        userAccountItem1.setOnItemClickListener(accountListener);
+        cells.add(userAccountItem1);
+        cells.add(new UserAccountTitleItem(bean, context, 2));
+        UserAccountItem userAccountItem2 = new UserAccountItem(bean, context, 2);
+        userAccountItem2.setOnItemClickListener(accountListener);
+        cells.add(userAccountItem2);
+        cells.add(new UserAccountTitleItem(bean, context, 3));
+        UserAccountItem userAccountItem3 = new UserAccountItem(bean, context, 3);
+        userAccountItem3.setOnItemClickListener(accountListener);
+        cells.add(userAccountItem3);
+        cells.add(new UserAccountItem(bean, context, 4));
         return cells;
     }
 
+    UserAccountItem.OnClickListener accountListener = new UserAccountItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            switch (pos) {
+                case 1:
+                    Intent intent = new Intent(UserAccountActivity.this, BindPhoneActivity.class);
+                    startActivityForResult(intent, ConstantManager.ResultStatus.PHONE);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case ConstantManager.ResultStatus.PHONE:
+                    String phone = data.getStringExtra("phone");
+                    user.setMobile_phone(phone);
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    }
 }

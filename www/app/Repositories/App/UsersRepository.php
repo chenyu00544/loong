@@ -81,7 +81,7 @@ class UsersRepository implements UsersRepositoryInterface
     public function getUserInfo($uid)
     {
         $column = ['user_id', 'email', 'is_email', 'nick_name', 'sex', 'birthday', 'user_money', 'frozen_money', 'bonus_money', 'pay_points',
-            'rank_points', 'address_id', 'user_rank', 'mobile_phone', 'is_phone', 'credit_line', 'logo'];
+            'rank_points', 'address_id', 'user_rank', 'mobile_phone', 'is_phone', 'credit_line', 'logo', 'qq', 'union_id'];
         $user = $this->usersModel->getUser($uid, $column);
         $user->is_real = '0';
         $user->logo = FileHandle::getImgByOssUrl($user->logo);
@@ -145,6 +145,37 @@ class UsersRepository implements UsersRepositoryInterface
         $user->order_return_count = $order_return_count;
 
         return $user;
+    }
+
+    public function setUserInfo($data, $uid)
+    {
+        $where['user_id'] = $uid;
+        if (!empty($data['nickname'])) {
+            $updata['nick_name'] = $data['nickname'];
+        } elseif (!empty($data['sex'])) {
+            $updata['sex'] = $data['sex'];
+        } elseif (!empty($data['file_0'])) {
+            $path = 'user_logo';
+            if ($data['file_0']->isValid()) {
+                $uri = FileHandle::upLoadImage($data['file_0'], $path);
+                $updata['logo'] = $uri;
+                if (!empty($data['logo']) && strpos($uri, 'http') === false) {
+                    FileHandle::deleteFile($data['logo']);
+                }
+            }
+        } elseif (!empty($data['phone']) && !empty($data['qrcode'])) {
+            if ($data['qrcode'] == RedisCache::get('code_' . $data['phone'])) {
+                $updata['mobile_phone'] = $data['phone'];
+            } else {
+                return '验证码错误';
+            }
+        }
+        $re = $this->usersModel->setUsers($where, $updata);
+        if ($re) {
+            return 0;
+        } else {
+            return '设置失败';
+        }
     }
 
     public function userAddresses($uid)
@@ -274,26 +305,5 @@ class UsersRepository implements UsersRepositoryInterface
             $req = $this->usersRealModel->addUsersReal($updata);
         }
         return ['review_status' => 3];
-    }
-
-    public function setUserInfo($data, $uid)
-    {
-        $where['user_id'] = $uid;
-        if(!empty($data['nickname'])){
-            $updata['nick_name'] = $data['nickname'];
-        }elseif(!empty($data['sex'])){
-            $updata['sex'] = $data['sex'];
-        }elseif(!empty($data['file_0'])){
-            $path = 'user_logo';
-            if ($data['file_0']->isValid()) {
-                $uri = FileHandle::upLoadImage($data['file_0'], $path);
-                $updata['logo'] = $uri;
-                if(!empty($data['logo']) && strpos($uri, 'http') === false){
-                    FileHandle::deleteFile($data['logo']);
-                }
-            }
-        }
-        $re = $this->usersModel->setUsers($where, $updata);
-        return $re;
     }
 }

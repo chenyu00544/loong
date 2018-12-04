@@ -124,10 +124,10 @@ class UserController extends CommonController
         $uid = Verifiable::authorization($request);
         if ($uid != '') {
             $re = $this->usersRepository->setUserInfo($request->all(), $uid);
-            if ($re) {
+            if (!is_string($re)) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
             }else {
-                return ['code' => 1, 'msg' => '', 'data' => []];
+                return ['code' => 1, 'msg' => $re, 'data' => []];
             }
         }
         return ['code' => 1, 'msg' => '未登陆', 'data' => []];

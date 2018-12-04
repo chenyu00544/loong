@@ -25,10 +25,11 @@ public interface ConstantManager {
     }
 
     interface ResultStatus {
-        public Integer ADDRESSRESULT = 1002;
-        public Integer ADD_ADDRESS_RESULT = 1003;
-        public Integer ADD_ORDER_RESULT = 1004;
-        public Integer COLLECT_RESULT = 1005;
+        public int ADDRESSRESULT = 1002;
+        public int ADD_ADDRESS_RESULT = 1003;
+        public int ADD_ORDER_RESULT = 1004;
+        public int COLLECT_RESULT = 1005;
+        public int PHONE = 1006;
     }
 
     interface PhotoAlbum {
@@ -105,6 +106,7 @@ public interface ConstantManager {
         public String GETGEO = URIHOST + "region/geo/coder";
         public String GETDEVICEID = URIHOST + "app/login/deviceid"; //获取未登录UID
         public String ALLREGION = URIHOST + "region/all/format"; //获取地址数据包
+        public String SEND_SMS = URIHOST + "app/sms/send"; //发送验证码
 
         public String HOME = URIHOST + "app/index";
         public String HOMELOADMORE = URIHOST + "app/index/loadmore";
@@ -152,5 +154,8 @@ public interface ConstantManager {
         public String ALI_PAY = URIHOST + "app/pay/alipay";
         public String WX_PAY = URIHOST + "app/pay/wxpay";
         public String UNION_PAY = URIHOST + "app/pay/unionpay";
+
+        //fixme 分类
+        public String CATEGORY = URIHOST + "app/category/index";
     }
 }

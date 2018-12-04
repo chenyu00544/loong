@@ -24,6 +24,8 @@ public class UserInfoBean {
     private String mobile_phone;
     private String credit_line;
     private String logo;
+    private String qq;
+    private String union_id;
 
     public Integer getUser_id() {
         return user_id;
@@ -199,5 +201,21 @@ public class UserInfoBean {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getUnion_id() {
+        return union_id;
+    }
+
+    public void setUnion_id(String union_id) {
+        this.union_id = union_id;
     }
 }

@@ -16,7 +16,7 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/comcate')}}" method="post" class="form-horizontal">
+                    <form name="conf" action="{{url('admin/comcate')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
                         {{csrf_field()}}
                         <div class="form-group">
                             <label class="col-sm-4 control-label">分类名称：</label>
@@ -45,6 +45,12 @@
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">手机小图片：</label>
+                            <div class="col-sm-4">
+                                <input type="file" name="touch_icon_img" value="" class="fl">
                             </div>
                         </div>
                         <div class="form-group">

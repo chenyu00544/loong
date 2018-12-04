@@ -12,9 +12,11 @@ import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 
 public class UserAccountTitleItem extends BaseItem<UserInfoBean> {
     public static final int TYPE = R.layout.user_account_title_item;
+    public Integer type;
 
-    public UserAccountTitleItem(UserInfoBean bean, Context c) {
+    public UserAccountTitleItem(UserInfoBean bean, Context c, Integer type) {
         super(bean, c);
+        this.type = type;
     }
 
     @Override
@@ -32,6 +34,16 @@ public class UserAccountTitleItem extends BaseItem<UserInfoBean> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView143);
-//        tv.setText(mData.getTitle());
+        switch (type){
+            case 1:
+                tv.setText(R.string.phone_account);
+                break;
+            case 2:
+                tv.setText(R.string.wechat);
+                break;
+            case 3:
+                tv.setText(R.string.account_subtitle);
+                break;
+        }
     }
 }

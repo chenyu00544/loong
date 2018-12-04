@@ -62,4 +62,6 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('pay/wxpay', 'PayController@wxPayApp');
     Route::post('pay/wxpay/async/notify', 'PayController@asyncWxNotify');
     Route::post('pay/unionpay', 'PayController@unionPay');
+
+    Route::post('category/index', 'CategoryController@index');
 });

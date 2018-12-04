@@ -9,6 +9,7 @@
 namespace App\Repositories;
 
 use App\Contracts\ComCateRepositoryInterface;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\CategoryModel;
 
 class ComCateRepository implements ComCateRepositoryInterface
@@ -28,21 +29,35 @@ class ComCateRepository implements ComCateRepositoryInterface
 
     public function getComCate($id)
     {
-        return $this->categoryModel->getComCate($id);
+        $re = $this->categoryModel->getComCate($id);
+        $re->touch_icon_img = FileHandle::getImgByOssUrl($re->touch_icon);
+        return $re;
     }
 
     public function addCate($data)
     {
         $updata = [];
         foreach ($data as $key => $val) {
-            $updata[$key] = $val ? $val : 0;
+            if($key == "touch_icon_img"){
+                $path = 'category';
+                $updata['touch_icon'] = FileHandle::upLoadImage($data['touch_icon_img'], $path);
+            }else{
+                $updata[$key] = $val ? $val : 0;
+            }
         }
-
         return $this->categoryModel->addCate($updata);
     }
 
     public function upDateCate($data, $id)
     {
+        if (!empty($data['touch_icon_img'])) {
+            $path = 'category';
+            if (!empty($data['touch_icon'])) {
+                FileHandle::deleteFile($data['touch_icon']);
+            }
+            $data['touch_icon'] = FileHandle::upLoadImage($data['touch_icon_img'], $path);
+            unset($data['touch_icon_img']);
+        }
         return $this->categoryModel->upDateCate($data, $id);
     }
 
@@ -50,13 +65,13 @@ class ComCateRepository implements ComCateRepositoryInterface
     {
         $PCates = $parentCates;
         $re = $this->categoryModel->getComCate($id);
-        if($re){
+        if ($re) {
             $PCates[] = $re;
         }
 
-        if($re && $re->parent_id != 0){
+        if ($re && $re->parent_id != 0) {
             return $this->getParentCate($re->parent_id, $PCates);
-        }else{
+        } else {
             krsort($PCates);
             return $PCates;
         }
@@ -66,12 +81,12 @@ class ComCateRepository implements ComCateRepositoryInterface
     {
         $c_list = $this->getParentCate($id);
         $cate = [];
-        foreach ($c_list as $value){
+        foreach ($c_list as $value) {
             $re = $this->categoryModel->getComCates($value->parent_id);
-            foreach ($re as $k => $val){
-                if($val->id == $value->id){
+            foreach ($re as $k => $val) {
+                if ($val->id == $value->id) {
                     $re[$k]->select = 1;
-                }else{
+                } else {
                     $re[$k]->select = 0;
                 }
             }

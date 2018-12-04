@@ -137,7 +137,7 @@ public class LoginDialog extends Dialog {
     }
 
     private void initloginView() {
-        this.setContentView(R.layout.login_dialog);
+        this.setContentView(R.layout.dialog_login);
         phoneView = this.findViewById(R.id.view11);
         emailView = this.findViewById(R.id.view12);
         registerView = this.findViewById(R.id.textView58);
@@ -145,7 +145,7 @@ public class LoginDialog extends Dialog {
     }
 
     public void phoneLogin() {
-        this.setContentView(R.layout.login_phone_dialog);
+        this.setContentView(R.layout.dialog_login_phone);
         backView = this.findViewById(R.id.textView50);
         phoneEdit = this.findViewById(R.id.editText);
         phonePassEdit = this.findViewById(R.id.editText2);
@@ -255,7 +255,7 @@ public class LoginDialog extends Dialog {
     }
 
     public void emailLogin() {
-        this.setContentView(R.layout.login_email_dialog);
+        this.setContentView(R.layout.dialog_login_email);
         backView = this.findViewById(R.id.textView65);
         emailEdit = this.findViewById(R.id.editText3);
         emailPassEdit = this.findViewById(R.id.editText4);

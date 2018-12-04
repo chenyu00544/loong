@@ -169,13 +169,17 @@
     <string name="woman">女</string>
 
     <string name="phone_account">手机账号</string>
+    <string name="phone_bind">绑定手机账号</string>
     <string name="email_account">邮箱账号</string>
     <string name="wechat">微信</string>
     <string name="qq">QQ</string>
     <string name="bind">已绑定</string>
     <string name="no_bind">未绑定</string>
+    <string name="now_bind">立即绑定</string>
+
     <string name="change_phone">更换手机号</string>
     <string name="main_account">我的主账号</string>
+    <string name="reminder1">依 《网络安全法》 相关要求以及为了您的账号安全，请您绑定手机号</string>
 
     <string name="card_info">身份信息(必填)</string>
     <string name="card_name">您的真实姓名</string>

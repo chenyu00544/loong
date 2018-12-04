@@ -108,4 +108,14 @@
         app:layout_constraintStart_toStartOf="@+id/textView134"
         app:layout_constraintTop_toBottomOf="@+id/textView134"
         tools:ignore="SmallSp" />
+
+    <View
+        android:id="@+id/view87"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_f5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView133"
+        app:layout_constraintStart_toStartOf="@+id/imageView58" />
+
 </android.support.constraint.ConstraintLayout>

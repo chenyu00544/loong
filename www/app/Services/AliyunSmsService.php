@@ -36,6 +36,10 @@ class AliyunSmsService
         return self::$smsClient;
     }
 
+    /**
+     * fixme $type = sms_signin  验证码
+     */
+
     public static function sendSms($phone_number, $param = [], $type = 'sms_signin')
     {
         if (self::$smsClient) {
@@ -58,7 +62,7 @@ class AliyunSmsService
                             return 0;
                         }
                         $code = Common::randNum(6);
-                        RedisCache::setex('code_' . $phone_number, 5);
+                        RedisCache::setex('code_' . $phone_number, $code, 5);
                         $templateParam[$value] = $code;
                         break;
                     case 'product': // fixme 商品名称,对应${product}
