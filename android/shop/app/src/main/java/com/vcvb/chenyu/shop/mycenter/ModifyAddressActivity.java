@@ -17,8 +17,8 @@ import com.bigkoo.pickerview.builder.OptionsPickerBuilder;
 import com.bigkoo.pickerview.listener.OnOptionsSelectChangeListener;
 import com.bigkoo.pickerview.listener.OnOptionsSelectListener;
 import com.bigkoo.pickerview.view.OptionsPickerView;
-import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.address.AddressBean;
 import com.vcvb.chenyu.shop.javaBean.address.City;
@@ -28,7 +28,6 @@ import com.vcvb.chenyu.shop.javaBean.address.Province;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
-import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +62,6 @@ public class ModifyAddressActivity extends BaseActivity {
         setContentView(R.layout.address_add);
         context = this;
         changeStatusBarTextColor(true);
-        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
         Intent intent = getIntent();
         intent.getIntExtra("type", 1);

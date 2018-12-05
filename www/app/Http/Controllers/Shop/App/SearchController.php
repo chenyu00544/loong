@@ -27,4 +27,14 @@ class SearchController extends CommonController
             return ['code' => 1, 'msg' => '', 'data' => []];
         }
     }
+
+    public function getSearchKeywords()
+    {
+        $res = $this->goodsRepository->getSearchByKeywords();
+        if($res){
+            return ['code' => 0, 'msg' => '', 'data' => $res];
+        }else{
+            return ['code' => 1, 'msg' => '', 'data' => []];
+        }
+    }
 }

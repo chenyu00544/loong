@@ -208,6 +208,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
 
     public void bindViewData(JSONObject json) {
         goodses.clear();
+        mAdapter.clear();
         try {
             JSONArray jsonArray = json.getJSONArray("data");
             for (int i = 0; i < jsonArray.length(); i++){
@@ -264,6 +265,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                     cateId = data.getIntExtra("cate", 0);
                     if (cateId == 0 && keywords != null && keywords != "") {
                         searchKey.setText(keywords);
+                        getData(false);
                     } else {
                         searchKey.setText(R.string.search);
                     }

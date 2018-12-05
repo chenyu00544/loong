@@ -11,9 +11,11 @@ namespace App\Repositories\App;
 use App\Contracts\GoodsRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
+use App\Facades\Pinyin;
 use App\Facades\RedisCache;
 use App\Http\Models\App\BrowseGoodsModel;
 use App\Http\Models\App\CartModel;
+use App\Http\Models\App\CateKeywordModel;
 use App\Http\Models\App\CollectGoodsModel;
 use App\Http\Models\App\CommentExtModel;
 use App\Http\Models\App\CommentLabelModel;
@@ -22,6 +24,7 @@ use App\Http\Models\App\FavourableGoodsModel;
 use App\Http\Models\App\GoodsDescriptionModel;
 use App\Http\Models\App\GoodsModel;
 use App\Http\Models\App\ProductsModel;
+use App\Http\Models\App\SearchKeywordModel;
 use App\Http\Models\App\TransportModel;
 use App\Http\Models\App\UsersModel;
 
@@ -39,6 +42,8 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $productsModel;
     private $collectGoodsModel;
     private $browseGoodsModel;
+    private $searchKeywordModel;
+    private $cateKeywordModel;
 
     public function __construct(
         GoodsModel $goodsModel,
@@ -52,7 +57,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         FavourableGoodsModel $favourableGoodsModel,
         ProductsModel $productsModel,
         CollectGoodsModel $collectGoodsModel,
-        BrowseGoodsModel $browseGoodsModel
+        BrowseGoodsModel $browseGoodsModel,
+        SearchKeywordModel $searchKeywordModel,
+        CateKeywordModel $cateKeywordModel
     )
     {
         $this->goodsModel = $goodsModel;
@@ -67,6 +74,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->productsModel = $productsModel;
         $this->collectGoodsModel = $collectGoodsModel;
         $this->browseGoodsModel = $browseGoodsModel;
+        $this->searchKeywordModel = $searchKeywordModel;
+        $this->cateKeywordModel = $cateKeywordModel;
     }
 
     public function getBestGoods($page = 1)
@@ -273,9 +282,27 @@ class GoodsRepository implements GoodsRepositoryInterface
         $keywords = [];
         if (!empty($request['keywords'])) {
             $keywords = Common::scws($request['keywords']);
+            $kwhere['keyword'] = $request['keywords'];
+            $re = $this->searchKeywordModel->incrementKeyword($kwhere);
+            if (empty($re)) {
+                $kupdata = [
+                    'keyword' => $request['keywords'],
+                    'pinyin' => Pinyin::Pinyin($request['keywords'], 'UTF8'),
+                    'addtime' => time(),
+                ];
+                $this->searchKeywordModel->addKeyword($kupdata);
+            }
         }
         if (!empty($request['cate_id'])) {
             $where[] = ['cat_id', '=', $request['cate_id']];
+            $cwhere = ['cate_id' => $request['cate_id']];
+            $re = $this->cateKeywordModel->incrementKeyword($cwhere);
+            if (empty($re)) {
+                $cupdata = [
+                    'cate_id' => $request['cate_id'],
+                ];
+                $this->cateKeywordModel->addKeyword($cupdata);
+            }
         }
 
         $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, 1, $column);
@@ -285,6 +312,13 @@ class GoodsRepository implements GoodsRepositoryInterface
             $re->original_img = FileHandle::getImgByOssUrl($re->original_img);
         }
         return $res;
+    }
+
+    public function getSearchByKeywords()
+    {
+        $re['keyword'] = $this->searchKeywordModel->getKeywords([], ['keyword', 'count']);
+        $re['cate'] = $this->cateKeywordModel->getKeywords([], ['cate_id', 'cate_name']);
+        return $re;
     }
 
     public function cartList($request, $uid)

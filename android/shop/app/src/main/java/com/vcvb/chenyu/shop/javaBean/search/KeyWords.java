@@ -1,8 +1,14 @@
 package com.vcvb.chenyu.shop.javaBean.search;
 
+import xiaofei.library.datastorage.annotation.ClassId;
+import xiaofei.library.datastorage.annotation.ObjectId;
+
+@ClassId("KeyWords")
 public class KeyWords {
-    private int tag;
+
+    @ObjectId
     private String title;
+    private int tag;
     private int cateId;
 
     public int getTag() {

@@ -13,15 +13,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
-import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.search.KeyWords;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.IdsUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import xiaofei.library.datastorage.DataStorageFactory;
+import xiaofei.library.datastorage.IDataStorage;
 
 public class SearchActivity extends BaseActivity {
 
@@ -36,12 +47,15 @@ public class SearchActivity extends BaseActivity {
     private ImageView trashV;
     private int isFrom;
 
+    IDataStorage dataStorage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
         context = this;
         changeStatusBarTextColor(true);
+        dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
         setNavBack();
         initView();
         getData(true);
@@ -94,70 +108,151 @@ public class SearchActivity extends BaseActivity {
     @Override
     public void getData(boolean b) {
         super.getData(b);
-        for (int i = 0; i < 8; i++) {
-            KeyWords bean = new KeyWords();
-            bean.setTitle("常用" + i);
-            searchs.add(bean);
+        initSearchView();
+
+        HttpUtils.getInstance().post(ConstantManager.Url.SEARCH_KEYWORDS, null, new HttpUtils
+                .NetCall() {
+
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (json != null) {
+                    try {
+                        if (json.getInt("code") == 0) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    bindData(json);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+
+            }
+        });
+    }
+
+    //添加最近搜索
+    public void initSearchView() {
+        flowLayout1.removeAllViews();
+        searchs = dataStorage.loadAll(KeyWords.class);
+        if (searchs != null && searchs.size() > 0) {
+            for (int i = 0; i < searchs.size(); i++) {
+                TextView textView = new TextView(context);
+                textView.setText(searchs.get(i).getTitle());
+                textView.setId(IdsUtils.generateViewId());
+                textView.setTextColor(context.getResources().getColor(R.color.black));
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                textView.setLines(1);
+                textView.setMaxEms(8);
+                textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8),
+                        ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
+                textView.setBackgroundResource(R.drawable.shape_6_gray_d);
+                textView.setTag(searchs.get(i).getTitle());
+                textView.setOnClickListener(listener);
+                flowLayout1.addView(textView);
+            }
+        } else {
             TextView textView = new TextView(context);
-            textView.setText(bean.getTitle());
-            textView.setId(IdsUtils.generateViewId());
+            textView.setText(R.string.now_search_history);
             textView.setTextColor(context.getResources().getColor(R.color.black));
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             textView.setEllipsize(TextUtils.TruncateAt.END);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setLines(1);
             textView.setMaxEms(8);
-            textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8),
-                    ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
+            textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context,
+                    8), ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
             textView.setBackgroundResource(R.drawable.shape_6_gray_d);
-            textView.setTag(bean.getTitle());
-            textView.setOnClickListener(listener);
             flowLayout1.addView(textView);
         }
-        for (int i = 0; i < 8; i++) {
-            KeyWords bean = new KeyWords();
-            bean.setTitle("分类" + i);
-            keys.add(bean);
-            TextView textView = new TextView(context);
-            textView.setText(bean.getTitle());
-            textView.setId(IdsUtils.generateViewId());
-            textView.setTextColor(context.getResources().getColor(R.color.black));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            textView.setEllipsize(TextUtils.TruncateAt.END);
-            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-            textView.setLines(1);
-            textView.setMaxEms(8);
-            textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8),
-                    ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
-            textView.setBackgroundResource(R.drawable.shape_6_gray_d);
-            textView.setTag(bean.getTitle());
-            textView.setOnClickListener(listener);
-            flowLayout2.addView(textView);
+    }
+
+    //热门搜索
+    public void bindData(JSONObject json) {
+        try {
+            JSONObject data = json.getJSONObject("data");
+
+            JSONArray keyJsonArray = data.getJSONArray("keyword");
+            for (int i = 0; i < keyJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) keyJsonArray.get(i);
+                KeyWords keyWords = new KeyWords();
+                keyWords.setTitle(object.getString("keyword"));
+                keys.add(keyWords);
+                TextView textView = new TextView(context);
+                textView.setText(keyWords.getTitle());
+                textView.setId(IdsUtils.generateViewId());
+                textView.setTextColor(context.getResources().getColor(R.color.black));
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setGravity(Gravity.CENTER_HORIZONTAL);
+                textView.setLines(1);
+                textView.setMaxEms(8);
+                textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8),
+                        ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
+                textView.setBackgroundResource(R.drawable.shape_6_gray_d);
+                textView.setTag(keyWords.getTitle());
+                textView.setOnClickListener(listener);
+                flowLayout2.addView(textView);
+            }
+
+            JSONArray cateJsonArray = data.getJSONArray("cate");
+            for (int i = 0; i < cateJsonArray.length(); i++) {
+                JSONObject object = (JSONObject) keyJsonArray.get(i);
+                KeyWords keyWords = new KeyWords();
+                keyWords.setTitle(object.getString("cate_name"));
+                keyWords.setCateId(object.getInt("cate_id"));
+                cates.add(keyWords);
+                TextView textView = new TextView(context);
+                textView.setText(keyWords.getTitle());
+                ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ToolUtils.dip2px
+                        (context, 50), ToolUtils.dip2px(context, 50));
+                textView.setLayoutParams(lp);
+                textView.setId(IdsUtils.generateViewId());
+                textView.setTextColor(context.getResources().getColor(R.color.black));
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                textView.setEllipsize(TextUtils.TruncateAt.END);
+                textView.setGravity(Gravity.CENTER);
+                textView.setSingleLine(false);
+                textView.setLines(2);
+                textView.setMaxEms(8);
+                textView.setPadding(ToolUtils.dip2px(context, 10), ToolUtils.dip2px(context, 10),
+                        ToolUtils.dip2px(context, 10), ToolUtils.dip2px(context, 10));
+                textView.setBackgroundResource(R.drawable.shape_60_gray_d);
+                textView.setOnClickListener(listener);
+                textView.setTag(keyWords.getCateId());
+                flowLayout3.addView(textView);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        for (int i = 0; i < 8; i++) {
-            KeyWords bean = new KeyWords();
-            bean.setTitle("常用分类");
-            bean.setCateId(i);
-            cates.add(bean);
-            TextView textView = new TextView(context);
-            textView.setText(bean.getTitle());
-            ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ToolUtils.dip2px
-                    (context, 50), ToolUtils.dip2px(context, 50));
-            textView.setLayoutParams(lp);
-            textView.setId(IdsUtils.generateViewId());
-            textView.setTextColor(context.getResources().getColor(R.color.black));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            textView.setEllipsize(TextUtils.TruncateAt.END);
-            textView.setGravity(Gravity.CENTER);
-            textView.setSingleLine(false);
-            textView.setLines(2);
-            textView.setMaxEms(8);
-            textView.setPadding(ToolUtils.dip2px(context, 10), ToolUtils.dip2px(context, 10),
-                    ToolUtils.dip2px(context, 10), ToolUtils.dip2px(context, 10));
-            textView.setBackgroundResource(R.drawable.shape_60_gray_d);
-            textView.setOnClickListener(listener);
-            textView.setTag(bean.getCateId());
-            flowLayout3.addView(textView);
+
+    }
+
+    //更新最近搜索的数据
+    public void updateSearchKeywords(String str) {
+        KeyWords bean = new KeyWords();
+        bean.setTitle(str);
+        boolean b = true;
+        for (int i = 0; i < searchs.size(); i++) {
+            if (search.getText().toString().equals(searchs.get(i).getTitle())) {
+                b = false;
+            }
+        }
+        if (b) {
+            if (searchs.size() >= 10) {
+                searchs.remove(searchs.size() - 1);
+            }
+            searchs.add(0, bean);
+            dataStorage.storeOrUpdate(searchs);
         }
     }
 
@@ -183,37 +278,29 @@ public class SearchActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.textView153:
-                    //输入搜索
+                    //搜索
                     if (!TextUtils.isEmpty(search.getText())) {
+                        updateSearchKeywords(search.getText().toString());
                         Intent intent;
                         if (isFrom == ConstantManager.IsFrom.FROM_HOME) {
                             intent = new Intent(SearchActivity.this, SearchInfoActivity.class);
-                            intent.putExtra("keywords", String.valueOf(search.getText()));
+                            intent.putExtra("keywords", search.getText().toString());
                             startActivity(intent);
                             finish();
                         } else if (isFrom == ConstantManager.IsFrom.FROM_SEARCHINFO) {
                             intent = new Intent();
-                            intent.putExtra("keywords", String.valueOf(search.getText()));
+                            intent.putExtra("keywords", search.getText().toString());
                             setResult(RESULT_OK, intent);
                             finish();
                         }
                         overridePendingTransition(0, 0);
+                    } else {
+                        ToastUtils.showShortToast(context, "请输入关键字");
                     }
                     break;
                 case R.id.imageView81:
-                    flowLayout1.removeAllViews();
-                    TextView textView = new TextView(context);
-                    textView.setText(R.string.now_search_history);
-                    textView.setTextColor(context.getResources().getColor(R.color.black));
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-                    textView.setEllipsize(TextUtils.TruncateAt.END);
-                    textView.setGravity(Gravity.CENTER_HORIZONTAL);
-                    textView.setLines(1);
-                    textView.setMaxEms(8);
-                    textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context,
-                            8), ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
-                    textView.setBackgroundResource(R.drawable.shape_6_gray_d);
-                    flowLayout1.addView(textView);
+                    dataStorage.deleteAll(KeyWords.class);
+                    initSearchView();
                     break;
                 default:
                     //常用设置
