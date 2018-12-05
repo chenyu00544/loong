@@ -25,7 +25,7 @@ class CategoryModel extends Model
 
     public function ads()
     {
-        return $this->hasOne('App\Http\Models\App\AdModel', 'cate_id', 'id');
+        return $this->hasMany('App\Http\Models\App\AdModel', 'cate_id', 'id');
     }
 
     public function getComCates($where, $column = ['*'])

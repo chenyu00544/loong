@@ -118,6 +118,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             'pinyin_keyword', 'goods_brief'
         ];
         $goods_detail = $this->goodsModel->getGoodsAndExt($where, $column);
+        $this->goodsModel->getGoodsAndExt($where, 'click_count');
         if ($goods_detail) {
             $mobile_descs = unserialize($goods_detail->desc_mobile);
             $goods_detail->mobile_descs = $mobile_descs;
@@ -259,6 +260,31 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->single_attr = $single_attr;
         }
         return $goods_detail;
+    }
+
+    public function getSearchByGoods($request)
+    {
+        $column = ['goods_id', 'cat_id', 'goods_name', 'brand_id', 'market_price', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_thumb', 'goods_img', 'original_img', 'is_on_sale', 'is_delete', 'review_status', 'add_time', 'sort_order', 'pinyin_keyword', 'sales_volume'];
+        $where = [
+            ['is_on_sale', '=', '1'],
+            ['is_delete', '=', '0'],
+            ['review_status', '>=', '3']
+        ];
+        $keywords = [];
+        if (!empty($request['keywords'])) {
+            $keywords = Common::scws($request['keywords']);
+        }
+        if (!empty($request['cate_id'])) {
+            $where[] = ['cat_id', '=', $request['cate_id']];
+        }
+
+        $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, 1, $column);
+        foreach ($res as $re) {
+            $re->goods_thumb = FileHandle::getImgByOssUrl($re->goods_thumb);
+            $re->goods_img = FileHandle::getImgByOssUrl($re->goods_img);
+            $re->original_img = FileHandle::getImgByOssUrl($re->original_img);
+        }
+        return $res;
     }
 
     public function cartList($request, $uid)

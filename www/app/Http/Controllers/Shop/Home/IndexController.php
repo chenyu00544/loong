@@ -15,7 +15,8 @@ class IndexController extends CommonController
 
     public function index(Request $request)
     {
-        return view('shop.home.index.index');
+        echo phpinfo();
+//        return view('shop.home.index.index');
     }
 
     public function test(Request $request)

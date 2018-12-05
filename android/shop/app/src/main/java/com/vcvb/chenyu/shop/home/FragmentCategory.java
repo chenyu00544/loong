@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
@@ -22,13 +24,14 @@ import com.vcvb.chenyu.shop.adapter.item.categray.CategroyTitleItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.image.Images;
 import com.vcvb.chenyu.shop.javaBean.cate.Categroy;
-import com.vcvb.chenyu.shop.javaBean.cate.CategroyBean;
-import com.vcvb.chenyu.shop.javaBean.cate.CategroyGroup;
+import com.vcvb.chenyu.shop.javaBean.cate.SubCate;
+import com.vcvb.chenyu.shop.javaBean.cate.SubCategroy;
+import com.vcvb.chenyu.shop.javaBean.home.Ads;
 import com.vcvb.chenyu.shop.search.SearchInfoActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.UrlParse;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +40,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 
@@ -50,8 +54,7 @@ public class FragmentCategory extends BaseFragment {
     private GroupedGridLayoutManager groupedGridLayoutManager;
 
     private List<Categroy> categroys = new ArrayList<>();
-    private ArrayList<CategroyBean> list;
-    private List<CategroyGroup> categroyGroups;
+    private List<SubCategroy> subCategroys = new ArrayList<>();
 
     @Nullable
     @Override
@@ -75,21 +78,54 @@ public class FragmentCategory extends BaseFragment {
                 .OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                for (int i = 0; i < categroys.size(); i++) {
+                    categroys.get(i).setIs_current(false);
+                }
+                categroys.get(position).setIs_current(true);
+                simpleAdapter.notifyDataSetChanged();
+
+                groupedListAdapter.notifyDataRemoved();
+                groupedListAdapter.setData(getGroupItems(position));
+                groupedListAdapter.notifyDataChanged();
             }
         });
 
         subRecyclerView = view.findViewById(R.id.sub_categroy);
+        groupedListAdapter = new GroupedListAdapter(context);
+        subRecyclerView.setAdapter(groupedListAdapter);
+        groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, groupedListAdapter) {
+
+            @Override
+            public int getChildSpanSize(int groupPosition, int childPosition) {
+                if (subCategroys.get(groupPosition).getItemList().get
+                        (childPosition).getItemType() == R.layout.categroy_ads_item) {
+                    return 3;
+                } else {
+                    return super.getChildSpanSize(groupPosition, childPosition);
+                }
+            }
+        };
+        subRecyclerView.setLayoutManager(groupedGridLayoutManager);
+        groupedListAdapter.setOnHeaderClickListener(onHeaderClickListener);
+        groupedListAdapter.setOnChildClickListener(onChildClickListener);
         getData();
     }
 
     public void getData() {
         HttpUtils.getInstance().post(ConstantManager.Url.CATEGORY, null, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
+            public void success(Call call, final JSONObject json) throws IOException {
                 if (json != null) {
                     try {
                         if (json.getInt("code") == 0) {
-                            bindViewData(json);
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        bindViewData(json);
+                                    }
+                                });
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -102,62 +138,6 @@ public class FragmentCategory extends BaseFragment {
 
             }
         });
-
-        list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            CategroyBean bean = new CategroyBean();
-            bean.setIsType(2);
-            bean.setCateName("Cate" + i);
-            if (i == 0) {
-                bean.setIsCurrent(true);
-            }
-            list.add(bean);
-        }
-        categroyGroups = new ArrayList<>();
-        for (int j = 0; j < 5; j++) {
-            CategroyGroup categroyGroup = new CategroyGroup();
-            if (j == 0) {
-                List<Object> categroyBeans = new ArrayList<>();
-                CategroyBean subBean = new CategroyBean();
-                subBean.setPic(Images.imageUrls[0]);
-                subBean.setIsType(2);
-                categroyBeans.add(subBean);
-                categroyGroup.setObjs(categroyBeans);
-            } else {
-                CategroyBean bean = new CategroyBean();
-                bean.setIsType(3);
-                bean.setCateName("Cate" + j);
-                categroyGroup.setHeader(bean);
-                List<Object> categroyBeans = new ArrayList<>();
-                for (int k = 0; k < 5; k++) {
-                    CategroyBean subBean = new CategroyBean();
-                    subBean.setIsType(1);
-                    subBean.setCateName("Cate" + k);
-                    subBean.setPic(Images.imageUrls[k]);
-                    categroyBeans.add(subBean);
-                }
-                categroyGroup.setObjs(categroyBeans);
-            }
-            categroyGroups.add(categroyGroup);
-        }
-
-        groupedListAdapter = new GroupedListAdapter(context);
-        groupedListAdapter.setData(getGroupItems());
-        subRecyclerView.setAdapter(groupedListAdapter);
-        groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, groupedListAdapter) {
-
-            @Override
-            public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (categroyGroups.get(groupPosition).getItemList().get(childPosition)
-                        .getItemType() == R.layout.categroy_ads_item) {
-                    return 3;
-                } else {
-                    return super.getChildSpanSize(groupPosition, childPosition);
-                }
-            }
-        };
-        subRecyclerView.setLayoutManager(groupedGridLayoutManager);
-        simpleAdapter.addAll(getItems(list));
     }
 
     public void bindViewData(JSONObject json) {
@@ -167,8 +147,15 @@ public class FragmentCategory extends BaseFragment {
                 JSONObject object = (JSONObject) jsonArray.get(i);
                 Categroy categroy = JsonUtils.fromJsonObject(object, Categroy.class);
                 categroy.setData(object);
+                if (i == 0) {
+                    categroy.setIs_current(true);
+                }
                 categroys.add(categroy);
             }
+            simpleAdapter.addAll(getItems(categroys));
+
+            groupedListAdapter.setData(getGroupItems(0));
+            groupedListAdapter.notifyDataChanged();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -176,45 +163,76 @@ public class FragmentCategory extends BaseFragment {
         } catch (java.lang.InstantiationException e) {
             e.printStackTrace();
         }
+
     }
 
-    protected List<Item> getItems(List<CategroyBean> list) {
+    protected List<Item> getItems(List<Categroy> list) {
         List<Item> cells = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
-            switch (list.get(i).getIsType()) {
-                case 2:
-                    cells.add(new CategroyTitleItem(list.get(i), context));
-                    break;
-            }
+            cells.add(new CategroyTitleItem(list.get(i), context));
         }
         return cells;
     }
 
-    protected List<CategroyGroup> getGroupItems() {
-        for (int i = 0; i < categroyGroups.size(); i++) {
-            if (categroyGroups.get(i).getHeader() != null) {
-                CategroySubTitleItem subTitleItem = new CategroySubTitleItem(categroyGroups.get(i),
-                        context);
-                categroyGroups.get(i).setMheader(subTitleItem);
+    protected List<SubCategroy> getGroupItems(Integer index) {
+        subCategroys = categroys.get(index).getSubCategroys();
+        for (int i = 0; i < subCategroys.size(); i++) {
+            if (subCategroys.get(i).getHeader() != null) {
+                CategroySubTitleItem subTitleItem = new CategroySubTitleItem(subCategroys.get(i), context);
+                subCategroys.get(i).setMheader(subTitleItem);
             }
             List<com.vcvb.chenyu.shop.adapter.b.Item> items = new ArrayList<>();
-            for (int j = 0; j < categroyGroups.get(i).getObjs().size(); j++) {
-                if (((CategroyBean) categroyGroups.get(i).getObjs().get(j)).getIsType() == 1) {
-                    CategroyItem categroyItem = new CategroyItem(categroyGroups.get(i), context);
-                    items.add(categroyItem);
-                } else {
-                    CategroyAdsItem categroyAdsItem = new CategroyAdsItem(categroyGroups.get(i),
-                            context);
+            for (int j = 0; j < subCategroys.get(i).getObjs().size(); j++) {
+                if (subCategroys.get(i).getObjs().get(j) instanceof Ads) {
+                    CategroyAdsItem categroyAdsItem = new CategroyAdsItem(subCategroys.get(i), context);
                     items.add(categroyAdsItem);
+                } else {
+                    CategroyItem categroyItem = new CategroyItem(subCategroys.get(i), context);
+                    items.add(categroyItem);
                 }
             }
-            categroyGroups.get(i).setItemList(items);
+            subCategroys.get(i).setItemList(items);
         }
-        return categroyGroups;
+        return subCategroys;
     }
 
-    public void goToSearchInfoActivity() {
+    public void goToSearchInfoActivity(SubCate subCate) {
         Intent intent = new Intent(context, SearchInfoActivity.class);
-        startActivity(intent);
+        intent.putExtra("cate", subCate.getId());
+        context.startActivity(intent);
     }
+
+    GroupedRecyclerViewAdapter.OnChildClickListener onChildClickListener = new GroupedRecyclerViewAdapter.OnChildClickListener() {
+
+        @Override
+        public void onChildClick(GroupedRecyclerViewAdapter adapter, BaseViewHolder holder, int
+                groupPosition, int childPosition) {
+            if(subCategroys.get(groupPosition).getObjs().get(childPosition) instanceof Ads){
+                Ads ads = (Ads) subCategroys.get(groupPosition).getObjs().get(childPosition);
+                String uri = ads.getAd_link();
+                Class c = UrlParse.getUrlToClass(uri);
+                if (c != null) {
+                    Map<String, String> id = UrlParse.getUrlParams(uri);
+                    Intent intent = new Intent(context, c);
+                    intent.putExtra("id", Integer.valueOf(id.get("id")));
+                    context.startActivity(intent);
+                }
+            }else{
+                SubCate subCate = (SubCate) subCategroys.get(groupPosition).getObjs().get(childPosition);
+                goToSearchInfoActivity(subCate);
+            }
+
+        }
+    };
+
+    GroupedRecyclerViewAdapter.OnHeaderClickListener onHeaderClickListener = new GroupedRecyclerViewAdapter.OnHeaderClickListener() {
+
+
+        @Override
+        public void onHeaderClick(GroupedRecyclerViewAdapter adapter, BaseViewHolder holder, int
+                groupPosition) {
+            SubCate subCate = (SubCate) subCategroys.get(groupPosition).getHeader();
+            goToSearchInfoActivity(subCate);
+        }
+    };
 }

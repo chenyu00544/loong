@@ -11,6 +11,8 @@ namespace App\Services;
 
 class CommonService
 {
+    private static $so;
+
     //md5加密
     public static function md5Encrypt($pass, $salt)
     {
@@ -45,8 +47,8 @@ class CommonService
         preg_match_all($pattern, $str, $dir);
         $req = [];
         foreach ($dir as $val) {
-            foreach ($val as $k => $v){
-                $req[$k] = substr($v, 2,-1);
+            foreach ($val as $k => $v) {
+                $req[$k] = substr($v, 2, -1);
             }
         }
         return $req;
@@ -134,8 +136,35 @@ class CommonService
         return '￥' . $price;
     }
 
+    //关键字分词
+    public static function scws($key)
+    {
+        $regex = "/\/|\～|\，|\。|\！|\？|\“|\”|\【|\】|\『|\』|\：|\；|\《|\》|\’|\‘|\ |\·|\~|\!|\@|\#|\\$|\%|\^|\&|\*|\(|\)|\_|\+|\{|\}|\:|\<|\>|\?|\[|\]|\,|\.|\/|\;|\'|\`|\-|\=|\\\|\|/";
+        ini_get('scws.default.fpath');
+        if (!isset(self::$so)) {
+            self::$so = scws_new();
+            self::$so->set_charset('utf8');
+            self::$so->set_dict('/usr/local/scws/etc/dict.utf8.xdb');
+            self::$so->set_rule('/usr/local/scws/etc/rules.utf8.ini');
+        }
+        self::$so->send_text($key);
+        $keywords = [];
+        while ($tmp = self::$so->get_result()) {
+            foreach ($tmp as $t) {
+                if (!empty($t['word'])) {
+                    if (!preg_match($regex, $t['word']) && mb_strlen($t['word']) > 1) {
+                        $keywords[] = $t['word'];
+                    }
+                }
+            }
+        }
+        self::$so->close();
+        return $keywords;
+    }
+
+    //退换货理由
     public function causeName()
     {
-        return ['维修','退货','换货','仅退款'];
+        return ['维修', '退货', '换货', '仅退款'];
     }
 }

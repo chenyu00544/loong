@@ -10,6 +10,7 @@ namespace App\Repositories;
 
 use App\Contracts\ComCateRepositoryInterface;
 use App\Facades\FileHandle;
+use App\Facades\RedisCache;
 use App\Http\Models\Shop\CategoryModel;
 
 class ComCateRepository implements ComCateRepositoryInterface
@@ -45,6 +46,7 @@ class ComCateRepository implements ComCateRepositoryInterface
                 $updata[$key] = $val ? $val : 0;
             }
         }
+        RedisCache::del('category');
         return $this->categoryModel->addCate($updata);
     }
 
@@ -58,6 +60,7 @@ class ComCateRepository implements ComCateRepositoryInterface
             $data['touch_icon'] = FileHandle::upLoadImage($data['touch_icon_img'], $path);
             unset($data['touch_icon_img']);
         }
+        RedisCache::del('category');
         return $this->categoryModel->upDateCate($data, $id);
     }
 
@@ -119,6 +122,7 @@ class ComCateRepository implements ComCateRepositoryInterface
             $req['msg'] = '存在子类删除失败';
         } else {
             $re = $this->categoryModel->deleteCate($where);
+            RedisCache::del('category');
             if ($re) {
                 $req['code'] = 1;
                 $req['msg'] = '删除成功';
@@ -168,5 +172,7 @@ class ComCateRepository implements ComCateRepositoryInterface
 
         return $rep;
     }
+
+
 
 }

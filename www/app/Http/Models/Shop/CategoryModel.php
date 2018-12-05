@@ -21,7 +21,7 @@ class CategoryModel extends Model
     {
         return $this->select($column)
             ->where('parent_id', $id)
-            ->orderBy('sort_order', 'asc')
+            ->orderBy('sort_order', 'DESC')
             ->get();
     }
 
@@ -49,7 +49,7 @@ class CategoryModel extends Model
     {
         return $this->select($columns)
             ->whereIn('id', $in)
-            ->orderBy('sort_order', 'asc')
+            ->orderBy('sort_order', 'DESC')
             ->get();
     }
 

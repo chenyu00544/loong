@@ -157,5 +157,8 @@ public interface ConstantManager {
 
         //fixme 分类
         public String CATEGORY = URIHOST + "app/category/index";
+
+        //fixme 搜索
+        public String SEARCH = URIHOST + "app/search/index";
     }
 }

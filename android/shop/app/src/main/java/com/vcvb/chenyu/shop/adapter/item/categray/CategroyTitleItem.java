@@ -8,12 +8,12 @@ import android.widget.TextView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.cate.CategroyBean;
+import com.vcvb.chenyu.shop.javaBean.cate.Categroy;
 
-public class CategroyTitleItem extends BaseItem<CategroyBean>{
-    public static final int TYPE = 2;
+public class CategroyTitleItem extends BaseItem<Categroy> {
+    public static final int TYPE = R.layout.categroy_title_item;
 
-    public CategroyTitleItem(CategroyBean bean, Context c) {
+    public CategroyTitleItem(Categroy bean, Context c) {
         super(bean, c);
     }
 
@@ -24,17 +24,16 @@ public class CategroyTitleItem extends BaseItem<CategroyBean>{
 
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CYCBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
-                .categroy_title_item, null));
+        return new CYCBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(TYPE, null));
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView tv = holder.getTextView(R.id.textView100);
-        tv.setText(mData.getCateName());
-        if(mData.getIsCurrent() == true){
+        tv.setText(mData.getCat_alias_name());
+        if (mData.isIs_current()) {
             holder.getView(R.id.view29).setAlpha(1);
-        }else{
+        } else {
             holder.getView(R.id.view29).setAlpha(0);
         }
     }

@@ -7,13 +7,13 @@ import android.widget.ImageView;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.b.BaseItem;
-import com.vcvb.chenyu.shop.javaBean.cate.CategroyBean;
-import com.vcvb.chenyu.shop.javaBean.cate.CategroyGroup;
+import com.vcvb.chenyu.shop.javaBean.cate.SubCategroy;
+import com.vcvb.chenyu.shop.javaBean.home.Ads;
 
-public class CategroyAdsItem extends BaseItem<CategroyGroup> {
+public class CategroyAdsItem extends BaseItem<SubCategroy> {
     public static final int TYPE = R.layout.categroy_ads_item;
 
-    public CategroyAdsItem(CategroyGroup bean, Context c) {
+    public CategroyAdsItem(SubCategroy bean, Context c) {
         super(bean, c);
     }
 
@@ -31,7 +31,7 @@ public class CategroyAdsItem extends BaseItem<CategroyGroup> {
 
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
-        CategroyBean bean = (CategroyBean) mData.getObjs().get(position);
+        Ads bean = (Ads) mData.getObjs().get(position);
         ImageView iv = holder.get(R.id.imageView126);
 //        Glide.with(context).load(bean.getPic()).into(iv);
     }

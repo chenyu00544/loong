@@ -16,8 +16,8 @@ public class Categroy {
     private Integer sort_order;
     private String cat_alias_name;
     private String touch_icon;
-    private Ads ads;
-    private List<Categroy> categroys;
+    private boolean is_current = false;
+    private List<SubCategroy> subCategroys;
 
     public Integer getId() {
         return id;
@@ -59,33 +59,52 @@ public class Categroy {
         this.touch_icon = touch_icon;
     }
 
-    public Ads getAds() {
-        return ads;
+    public boolean isIs_current() {
+        return is_current;
     }
 
-    public void setAds(Ads ads) {
-        this.ads = ads;
+    public void setIs_current(boolean is_current) {
+        this.is_current = is_current;
     }
 
-    public List<Categroy> getCategroys() {
-        return categroys;
+    public List<SubCategroy> getSubCategroys() {
+        return subCategroys;
     }
 
-    public void setCategroys(List<Categroy> categroys) {
-        this.categroys = categroys;
+    public void setSubCategroys(List<SubCategroy> subCategroys) {
+        this.subCategroys = subCategroys;
     }
 
     public void setData(JSONObject json) {
         try {
             JSONArray jsonArray = json.getJSONArray("sub_cate");
-            List<Categroy> _cates = new ArrayList<>();
+            List<SubCategroy> _cates = new ArrayList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = (JSONObject) jsonArray.get(i);
-                Categroy categroy = JsonUtils.fromJsonObject(object, Categroy.class);
-                categroy.setData(object);
-                _cates.add(categroy);
+
+                SubCategroy subCategroy = new SubCategroy();
+                JSONObject titleObject = object.getJSONObject("title");
+                SubCate title = JsonUtils.fromJsonObject(titleObject, SubCate.class);
+                subCategroy.setHeader(title);
+
+                JSONArray subCateJSONArray = object.getJSONArray("sub_cate");
+                List<Object> objects = new ArrayList<>();
+                for (int j = 0; j < subCateJSONArray.length(); j++){
+                    JSONObject subCateObject = (JSONObject) subCateJSONArray.get(i);
+                    SubCate subCate = JsonUtils.fromJsonObject(subCateObject, SubCate.class);
+                    objects.add(subCate);
+                }
+
+                JSONArray adsJSONArray = object.getJSONArray("ads");
+                for (int j = 0; j < adsJSONArray.length(); j++){
+                    JSONObject adsObject = (JSONObject) adsJSONArray.get(i);
+                    Ads ads = JsonUtils.fromJsonObject(adsObject, Ads.class);
+                    objects.add(ads);
+                }
+                subCategroy.setObjs(objects);
+                _cates.add(subCategroy);
             }
-            this.setCategroys(_cates);
+            this.setSubCategroys(_cates);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -93,20 +112,5 @@ public class Categroy {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
-
-        try {
-            JSONObject object = json.getJSONObject("ads");
-            if(object != null){
-                Ads ads = JsonUtils.fromJsonObject(object, Ads.class);
-                this.setAds(ads);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-
     }
 }

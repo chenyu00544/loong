@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jude.swipbackhelper.SwipeBackHelper;
-import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -18,6 +17,7 @@ import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsHItem;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsVItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.SearchFilterDialog;
@@ -26,8 +26,10 @@ import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.search.FilterBean;
 import com.vcvb.chenyu.shop.javaBean.search.FilterList;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -57,7 +59,6 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     private int type = 0;
     private String keywords;
     private int cateId;
-    private int categroyId;
 
     private List<FilterBean> filterList = new ArrayList<>();
 
@@ -77,7 +78,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void setNavBack() {
-        ImageView nav_back = (ImageView) findViewById(R.id.imageView23);
+        ImageView nav_back = findViewById(R.id.imageView23);
         if (nav_back != null) {
             nav_back.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,14 +93,18 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         showType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mAdapter.clear();
                 if (isShow) {
                     isShow = false;
+                    mLayoutManager = new GridLayoutManager(context, 1);
                     Glide.with(context).load(R.drawable.icon_collection_list).into(showType);
                 } else {
                     isShow = true;
+                    mLayoutManager = new GridLayoutManager(context, 2);
                     Glide.with(context).load(R.drawable.icon_list).into(showType);
                 }
-                setData();
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mAdapter.addAll(getItems(goodses));
             }
         });
     }
@@ -107,13 +112,13 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     @Override
     public void initView() {
         super.initView();
-        searchKey = (TextView) findViewById(R.id.textView152);
-        comprehensive = (TextView) findViewById(R.id.textView155);
-        salesVolume = (TextView) findViewById(R.id.textView156);
-        price = (TextView) findViewById(R.id.textView154);
-        newProduct = (TextView) findViewById(R.id.textView158);
-        filter = (TextView) findViewById(R.id.textView157);
-        upDown = (ImageView) findViewById(R.id.imageView77);
+        searchKey = findViewById(R.id.textView152);
+        comprehensive = findViewById(R.id.textView155);
+        salesVolume = findViewById(R.id.textView156);
+        price = findViewById(R.id.textView154);
+        newProduct = findViewById(R.id.textView158);
+        filter = findViewById(R.id.textView157);
+        upDown = findViewById(R.id.imageView77);
 
         comprehensive.setOnClickListener(searchType);
         salesVolume.setOnClickListener(searchType);
@@ -131,32 +136,60 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     }
 
     @Override
+    public void initListener() {
+        super.initListener();
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                Intent intent = new Intent(SearchInfoActivity.this, GoodsDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+        searchKey.setOnClickListener(searchType);
+    }
+
+    public void getKeyWords() {
+        Intent intent = getIntent();
+        keywords = intent.getStringExtra("keywords");
+        cateId = intent.getIntExtra("cate", 0);
+        if (cateId == 0 && keywords != null && !keywords.equals("")) {
+            searchKey.setText(keywords);
+        } else {
+            searchKey.setText(R.string.search);
+        }
+    }
+
+    @Override
     public void getData(final boolean b) {
-        super.getData(b);
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
         }
 
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-//        mp.put("order_type", ""+type);
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("keywords", keywords);
+        mp.put("cate_id", cateId + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.SEARCH, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (b) {
-                            loadingDialog.dismiss();
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (json != null) {
+                    try {
+                        if (json.getInt("code") == 0) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (b) {
+                                        loadingDialog.dismiss();
+                                    }
+                                    bindViewData(json);
+                                }
+                            });
                         }
-
-                        if (goodses.size() != 0) {
-                        } else {
-                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
+                }
             }
 
             @Override
@@ -171,8 +204,26 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                 });
             }
         });
+    }
 
-        filterDialog = new SearchFilterDialog();
+    public void bindViewData(JSONObject json) {
+        goodses.clear();
+        try {
+            JSONArray jsonArray = json.getJSONArray("data");
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject object = (JSONObject) jsonArray.get(i);
+                Goods bean = JsonUtils.fromJsonObject(object, Goods.class);
+                goodses.add(bean);
+            }
+            mAdapter.addAll(getItems(goodses));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
         for (int i = 0; i < 5; i++) {
             FilterBean bean = new FilterBean();
             bean.setIsType(2);
@@ -186,26 +237,8 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
             bean.setList(list);
             filterList.add(bean);
         }
+        filterDialog = new SearchFilterDialog();
         filterDialog.setDate(filterList);
-
-        goodses.clear();
-        for (int i = 0; i < 10; i++) {
-            Goods bean = new Goods();
-            bean.setGoods_name("央视网" + i);
-            goodses.add(bean);
-        }
-        setData();
-    }
-
-    public void setData() {
-        mAdapter.clear();
-        if (isShow) {
-            mLayoutManager = new GridLayoutManager(context, 2);
-        } else {
-            mLayoutManager = new GridLayoutManager(context, 1);
-        }
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter.addAll(getItems(goodses));
     }
 
     protected List<Item> getItems(List<Goods> list) {
@@ -220,19 +253,6 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         return cells;
     }
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                Intent intent = new Intent(SearchInfoActivity.this, GoodsDetailActivity.class);
-                startActivity(intent);
-            }
-        });
-        searchKey.setOnClickListener(searchType);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -258,18 +278,6 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
 
     public void showFilterDialog() {
         filterDialog.show(getSupportFragmentManager(), "Dialog");
-    }
-
-    public void getKeyWords() {
-        Intent intent = getIntent();
-        keywords = intent.getStringExtra("keywords");
-        cateId = intent.getIntExtra("cate", 0);
-        categroyId = intent.getIntExtra("categroy", 0);
-        if (cateId == 0 && keywords != null && keywords != "") {
-            searchKey.setText(keywords);
-        } else {
-            searchKey.setText(R.string.search);
-        }
     }
 
     View.OnClickListener searchType = new View.OnClickListener() {

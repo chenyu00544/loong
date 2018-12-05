@@ -64,4 +64,6 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('pay/unionpay', 'PayController@unionPay');
 
     Route::post('category/index', 'CategoryController@index');
+
+    Route::post('search/index', 'SearchController@index');
 });

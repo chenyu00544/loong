@@ -9,6 +9,7 @@
 
 namespace App\Http\Models\App;
 
+use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 
 class GoodsModel extends Model
@@ -18,11 +19,13 @@ class GoodsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    //阶梯价格
     public function gvp()
     {
         return $this->hasMany('App\Http\Models\App\GoodsVolumePriceModel', 'goods_id', 'goods_id');
     }
 
+    //满减价格
     public function fullcut()
     {
         return $this->hasMany('App\Http\Models\App\GoodsFullCutModel', 'goods_id', 'goods_id');
@@ -70,7 +73,7 @@ class GoodsModel extends Model
                 $query->where(['price_type' => 1]);
             }])
             ->where($where)
-            ->where('review_status','>=',3)
+            ->where('review_status', '>=', 3)
             ->orderBy('sort_order', 'DESC')
             ->orderBy('add_time', 'DESC')
             ->offset(($page - 1) * $size)->limit($size)
@@ -109,7 +112,7 @@ class GoodsModel extends Model
             ->with(['brand' => function ($query) {
             }])
             ->where($where)
-            ->where('review_status','>=',3)
+            ->where('review_status', '>=', 3)
             ->first();
     }
 
@@ -133,5 +136,36 @@ class GoodsModel extends Model
             ->where($where)
             ->whereIn('goods_id', $whereIn)
             ->get();
+    }
+
+    public function getGoodsesBySearch($keywords = [], $where = [], $page = 1, $column = ['*'], $size = 10)
+    {
+        $m = $this->select($column)
+            ->with(['gvp' => function ($query) {
+                $query->where(['price_type' => 1]);
+            }])
+            ->where($where)
+            ->where('review_status', '>=', 3);
+        if (count($keywords) > 0) {
+            $m->where(function ($query) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    if (preg_match("/^[a-zA-Z\s]+$/", $keyword)) {
+                        $query->orWhere('pinyin_keyword', 'like', '%' . $keyword . '%');
+                    } else {
+                        $query->orWhere('goods_name', 'like', '%' . $keyword . '%');
+                    }
+                }
+            });
+        }
+        return $m->orderBy('sort_order', 'DESC')
+            ->orderBy('add_time', 'DESC')
+            ->offset(($page - 1) * $size)->limit($size)
+            ->get();
+    }
+
+    //自增
+    public function incrementGoodses($where, $column)
+    {
+        return $this->where($where)->increment($column, 1);
     }
 }
