@@ -138,7 +138,7 @@ class GoodsModel extends Model
             ->get();
     }
 
-    public function getGoodsesBySearch($keywords = [], $where = [], $page = 1, $column = ['*'], $wherein = [], $orderby = [], $size = 10)
+    public function getGoodsesBySearch($keywords = [], $where = [], $page = 1, $column = ['*'], $wherein = [], $orderby = [], $size = 20)
     {
         $m = $this->select($column)
             ->with(['gvp' => function ($query) {

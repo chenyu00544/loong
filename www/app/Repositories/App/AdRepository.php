@@ -30,7 +30,7 @@ class AdRepository implements AdRepositoryInterface
 
     public function getAdPositionAndAds()
     {
-        $where = [['ad_terminal' ,'=', 'app'], ['ad_type', '<>', 'cate_ads']];
+        $where = [['ad_terminal', '=', 'app'], ['ad_type', '<>', 'cate_ads']];
         $res = $this->adPositionModel->getPositionByAds($where, ['position_id', 'ad_type', 'ad_width', 'ad_height']);
         $ads = [];
         foreach ($res as $re) {
@@ -41,6 +41,7 @@ class AdRepository implements AdRepositoryInterface
             foreach ($re->ads as $ad) {
                 $adv['ad_code'] = FileHandle::getImgByOssUrl($ad->ad_code);
                 $adv['ad_link'] = $ad->ad_link;
+                $adv['ad_color'] = $ad->link_color;
                 $advs[] = $adv;
             }
             if (count($advs) > 0) {

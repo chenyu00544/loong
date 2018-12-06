@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -26,7 +27,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -44,9 +44,11 @@ import com.vcvb.chenyu.shop.adapter.item.home.HomeNavsItem;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeSlideItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.HomeItemDecoration;
+import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
 import com.vcvb.chenyu.shop.msg.MessageActivity;
 import com.vcvb.chenyu.shop.search.SearchActivity;
@@ -83,6 +85,7 @@ public class FragmentHome extends BaseFragment {
 
     private RefreshLayout refreshLayout;
     private ImageView upwardView;
+    private View slideBg;
     private int pos;
     private int page = 1;
 
@@ -137,6 +140,7 @@ public class FragmentHome extends BaseFragment {
 
     private void initView() {
         upwardView = view.findViewById(R.id.imageView116);
+        slideBg = view.findViewById(R.id.view88);
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(context).load(R.drawable.icon_upward).apply(requestOptions).into(upwardView);
         mRecyclerView = view.findViewById(R.id.recyclerView);
@@ -380,9 +384,20 @@ public class FragmentHome extends BaseFragment {
                 switch (bean.getAdses().get(i).getType()) {
                     case "slide":
                         //nav
+                        if (bean.getAdses().get(i) != null) {
+                            if (bean.getAdses().get(i).getAds() != null && bean.getAdses().get(i)
+                                    .getAds().size() > 0) {
+                                slideBg.setBackgroundColor(Color.parseColor(bean.getAdses().get
+                                        (i).getAds().get(0).getAd_color()));
+                            }
+                        } else {
+                            slideBg.setBackgroundResource(R.color.colorBack_morandi);
+                        }
                         HomeSlideItem homeSlideItem = new HomeSlideItem(bean.getAdses().get(i),
                                 context);
+
                         homeSlideItem.setOnItemClickListener(homeSlideItemListener);
+                        homeSlideItem.setOnPageChangeListener(onPageChangeListener);
                         cells.add(homeSlideItem);
                         break;
                     case "navigation":
@@ -486,6 +501,13 @@ public class FragmentHome extends BaseFragment {
         @Override
         public void onClicked(int pos) {
             goToActivityByAdsUri("slide", pos);
+        }
+    };
+    HomeSlideItem.OnPageChangeListener onPageChangeListener = new HomeSlideItem
+            .OnPageChangeListener() {
+        @Override
+        public void onPageChanged(int pos, Adses adses) {
+            slideBg.setBackgroundColor(Color.parseColor(adses.getAds().get(pos).getAd_color()));
         }
     };
     HomeNavsItem.OnClickListener homeNavsItemListener = new HomeNavsItem.OnClickListener() {

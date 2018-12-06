@@ -3,6 +3,7 @@ package com.vcvb.chenyu.shop.adapter.item.home;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class HomeSlideItem extends BaseItem<Adses> {
     public static final int TYPE = Integer.MAX_VALUE - 5;
     public OnClickListener onClickListener;
+    public OnPageChangeListener onPageChangeListener;
 
     public HomeSlideItem(Adses beans, Context c) {
         super(beans, c);
@@ -64,6 +66,7 @@ public class HomeSlideItem extends BaseItem<Adses> {
         set.constrainHeight(R.id.goods_slide, width * 1 / 2);
         set.applyTo(cly);
         banner.setOnBannerListener(listener);
+        banner.setOnPageChangeListener(pageListener);
     }
 
     public void setOnItemClickListener(OnClickListener listener) {
@@ -74,12 +77,39 @@ public class HomeSlideItem extends BaseItem<Adses> {
         void onClicked(int pos);
     }
 
+    public void setOnPageChangeListener(OnPageChangeListener listener) {
+        onPageChangeListener = listener;
+    }
+
+    public interface OnPageChangeListener {
+        void onPageChanged(int pos, Adses adses);
+    }
+
     OnBannerListener listener = new OnBannerListener() {
         @Override
         public void OnBannerClick(int position) {
             if (onClickListener != null) {
                 onClickListener.onClicked(position);
             }
+        }
+    };
+
+    private ViewPager.OnPageChangeListener pageListener = new ViewPager.OnPageChangeListener() {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (onPageChangeListener != null) {
+                onPageChangeListener.onPageChanged(position, mData);
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
         }
     };
 }
