@@ -90,14 +90,14 @@ public class Categroy {
                 JSONArray subCateJSONArray = object.getJSONArray("sub_cate");
                 List<Object> objects = new ArrayList<>();
                 for (int j = 0; j < subCateJSONArray.length(); j++){
-                    JSONObject subCateObject = (JSONObject) subCateJSONArray.get(i);
+                    JSONObject subCateObject = (JSONObject) subCateJSONArray.get(j);
                     SubCate subCate = JsonUtils.fromJsonObject(subCateObject, SubCate.class);
                     objects.add(subCate);
                 }
 
                 JSONArray adsJSONArray = object.getJSONArray("ads");
                 for (int j = 0; j < adsJSONArray.length(); j++){
-                    JSONObject adsObject = (JSONObject) adsJSONArray.get(i);
+                    JSONObject adsObject = (JSONObject) adsJSONArray.get(j);
                     Ads ads = JsonUtils.fromJsonObject(adsObject, Ads.class);
                     objects.add(ads);
                 }

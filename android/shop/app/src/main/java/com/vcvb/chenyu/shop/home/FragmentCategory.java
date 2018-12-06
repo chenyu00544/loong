@@ -199,6 +199,7 @@ public class FragmentCategory extends BaseFragment {
     public void goToSearchInfoActivity(SubCate subCate) {
         Intent intent = new Intent(context, SearchInfoActivity.class);
         intent.putExtra("cate", subCate.getId());
+        intent.putExtra("cate_name", subCate.getCat_alias_name());
         context.startActivity(intent);
     }
 

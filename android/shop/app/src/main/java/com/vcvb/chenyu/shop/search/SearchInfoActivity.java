@@ -2,6 +2,8 @@ package com.vcvb.chenyu.shop.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,9 +12,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jude.swipbackhelper.SwipeBackHelper;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.search.SearchErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsHItem;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsVItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
@@ -27,6 +32,7 @@ import com.vcvb.chenyu.shop.javaBean.search.FilterBean;
 import com.vcvb.chenyu.shop.javaBean.search.FilterList;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,19 +56,28 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     private TextView newProduct;
     private TextView filter;
     private ImageView upDown;
-    private int isUpDown = 0;
+    private ImageView volUpDown;
 
     private View search;
     private ImageView showType;
-    private boolean isShow = true;
 
-    private int type = 0;
+    private RefreshLayout refreshLayout;
+
     private String keywords;
     private int cateId;
+    private String cateName;
+    private HashMap<String, String> filterMp = new HashMap<>();
+    private Integer page = 1;
 
     private List<FilterBean> filterList = new ArrayList<>();
 
     private SearchFilterDialog filterDialog;
+
+    public RecyclerView filterRecyclerView;
+    public CYCSimpleAdapter filterAdapter = new CYCSimpleAdapter();
+    public GridLayoutManager filterLayoutManager;
+    public DrawerLayout drawerLayout;
+    private ConstraintLayout rightDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +89,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         initView();
         getKeyWords();
         getData(true);
+        initRefresh();
     }
 
     @Override
@@ -94,12 +110,17 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
             @Override
             public void onClick(View view) {
                 mAdapter.clear();
-                if (isShow) {
-                    isShow = false;
+                HashMap<String, String> mp = new HashMap<>();
+                if (is_show.equals("two_c")) {
+                    mp.put("is_show", "one_c");
+                    UserInfoUtils.getInstance(context).setUserInfo(mp);
+                    is_show = "one_c";
                     mLayoutManager = new GridLayoutManager(context, 1);
                     Glide.with(context).load(R.drawable.icon_collection_list).into(showType);
                 } else {
-                    isShow = true;
+                    mp.put("is_show", "two_c");
+                    UserInfoUtils.getInstance(context).setUserInfo(mp);
+                    is_show = "two_c";
                     mLayoutManager = new GridLayoutManager(context, 2);
                     Glide.with(context).load(R.drawable.icon_list).into(showType);
                 }
@@ -119,6 +140,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         newProduct = findViewById(R.id.textView158);
         filter = findViewById(R.id.textView157);
         upDown = findViewById(R.id.imageView77);
+        volUpDown = findViewById(R.id.imageView131);
 
         comprehensive.setOnClickListener(searchType);
         salesVolume.setOnClickListener(searchType);
@@ -127,11 +149,22 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         filter.setOnClickListener(searchType);
 
         mRecyclerView = findViewById(R.id.search_list);
-        mLayoutManager = new GridLayoutManager(context, 2);
+        if (is_show.equals("two_c")) {
+            mLayoutManager = new GridLayoutManager(context, 2);
+        } else {
+            mLayoutManager = new GridLayoutManager(context, 1);
+        }
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DefaultItemDecoration(context, 5));
-        mAdapter = new CYCSimpleAdapter();
         mRecyclerView.setAdapter(mAdapter);
+
+        filterRecyclerView = findViewById(R.id.filter_list);
+        filterLayoutManager = new GridLayoutManager(context, 1);
+        filterRecyclerView.setLayoutManager(filterLayoutManager);
+        filterRecyclerView.setAdapter(filterAdapter);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        rightDrawerLayout = findViewById(R.id.filter_wrap);
         initListener();
     }
 
@@ -143,16 +176,34 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
             @Override
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 Intent intent = new Intent(SearchInfoActivity.this, GoodsDetailActivity.class);
+                intent.putExtra("id", goodses.get(position).getGoods_id());
                 startActivity(intent);
             }
         });
         searchKey.setOnClickListener(searchType);
     }
 
+    public void initRefresh() {
+        refreshLayout = findViewById(R.id.refreshLayout);
+        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                loadmore();
+                refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
+            }
+        });
+    }
+
     public void getKeyWords() {
         Intent intent = getIntent();
         keywords = intent.getStringExtra("keywords");
+        cateName = intent.getStringExtra("cate_name");
         cateId = intent.getIntExtra("cate", 0);
+        filterMp.put("keywords", keywords);
+        filterMp.put("cate_name", cateName);
+        filterMp.put("cate_id", cateId + "");
+        filterMp.put("type", "1");
         if (cateId == 0 && keywords != null && !keywords.equals("")) {
             searchKey.setText(keywords);
         } else {
@@ -162,33 +213,31 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void getData(final boolean b) {
+        page = 1;
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
         }
-
-        HashMap<String, String> mp = new HashMap<>();
-        mp.put("keywords", keywords);
-        mp.put("cate_id", cateId + "");
-        HttpUtils.getInstance().post(ConstantManager.Url.SEARCH, mp, new HttpUtils.NetCall() {
+        filterMp.put("page", page + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.SEARCH, filterMp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 if (json != null) {
-                    try {
-                        if (json.getInt("code") == 0) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (json.getInt("code") == 0) {
                                     if (b) {
                                         loadingDialog.dismiss();
                                     }
                                     bindViewData(json);
                                 }
-                            });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    });
                 }
             }
 
@@ -211,7 +260,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         mAdapter.clear();
         try {
             JSONArray jsonArray = json.getJSONArray("data");
-            for (int i = 0; i < jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = (JSONObject) jsonArray.get(i);
                 Goods bean = JsonUtils.fromJsonObject(object, Goods.class);
                 goodses.add(bean);
@@ -242,18 +291,96 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         filterDialog.setDate(filterList);
     }
 
-    protected List<Item> getItems(List<Goods> list) {
-        List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-            if (isShow) {
-                cells.add(new SearchGoodsVItem(list.get(i), context));
-            } else {
-                cells.add(new SearchGoodsHItem(list.get(i), context));
+    public void loadmore() {
+        page += 1;
+        filterMp.put("page", page + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.SEARCH, filterMp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (json != null) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshLayout.finishLoadMore();
+                        }
+                    });
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (json.getInt("code") == 0) {
+                                    bindViewLoadMoreData(json);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
             }
-        }
-        return cells;
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.finishLoadMore();
+                    }
+                });
+            }
+        });
     }
 
+    public void bindViewLoadMoreData(JSONObject json) {
+        int index = goodses.size();
+        try {
+            List<Goods> _goodses = new ArrayList<>();
+            JSONArray jsonArray = json.getJSONArray("data");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject object = (JSONObject) jsonArray.get(i);
+                Goods bean = JsonUtils.fromJsonObject(object, Goods.class);
+                _goodses.add(bean);
+            }
+            mAdapter.addAll(index, getItems(_goodses));
+            mAdapter.notifyItemRangeChanged(index, _goodses.size());
+            goodses.addAll(_goodses);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected List<Item> getItems(List<Goods> list) {
+        List<Item> cells = new ArrayList<>();
+        if (goodses.size() > 0) {
+            if(page == 1){
+                if (is_show.equals("two_c")) {
+                    mLayoutManager = new GridLayoutManager(context, 2);
+                } else {
+                    mLayoutManager = new GridLayoutManager(context, 1);
+                }
+                mRecyclerView.setLayoutManager(mLayoutManager);
+            }
+            for (int i = 0; i < list.size(); i++) {
+                if (is_show.equals("two_c")) {
+                    cells.add(new SearchGoodsVItem(list.get(i), context));
+                } else {
+                    cells.add(new SearchGoodsHItem(list.get(i), context));
+                }
+            }
+        }else{
+            if(page == 1){
+                mLayoutManager = new GridLayoutManager(context, 1);
+                cells.add(new SearchErrorItem(null, context));
+                mRecyclerView.setLayoutManager(mLayoutManager);
+            }
+        }
+
+        return cells;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -263,23 +390,29 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                 case ConstantManager.IsFrom.FROM_SEARCHINFO:
                     keywords = data.getStringExtra("keywords");
                     cateId = data.getIntExtra("cate", 0);
+                    cateName = data.getStringExtra("cate_name");
+                    filterMp.put("keywords", keywords);
+                    filterMp.put("cate_name", cateName);
+                    filterMp.put("cate_id", cateId + "");
+                    filterMp.put("type", "1");
                     if (cateId == 0 && keywords != null && keywords != "") {
                         searchKey.setText(keywords);
-                        getData(false);
                     } else {
                         searchKey.setText(R.string.search);
                     }
+                    getData(false);
                     break;
             }
         }
     }
 
-    public void getSearchData() {
-
-    }
-
-    public void showFilterDialog() {
-        filterDialog.show(getSupportFragmentManager(), "Dialog");
+    //右边菜单开关事件
+    public void openRightLayout() {
+        if (drawerLayout.isDrawerOpen(rightDrawerLayout)) {
+            drawerLayout.closeDrawer(rightDrawerLayout);
+        } else {
+            drawerLayout.openDrawer(rightDrawerLayout);
+        }
     }
 
     View.OnClickListener searchType = new View.OnClickListener() {
@@ -299,46 +432,63 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                     overridePendingTransition(0, 0);
                     break;
                 case R.id.textView155:
-                    type = 1;
-                    isUpDown = 0;
+                    filterMp.put("type", "1");
+                    filterMp.put("price_order", "0");
+                    filterMp.put("volume", "0");
                     comprehensive.setTextColor(context.getResources().getColor(R.color.red));
                     break;
                 case R.id.textView156:
-                    type = 2;
-                    isUpDown = 0;
+                    filterMp.put("type", "2");
+                    filterMp.put("price_order", "0");
+                    if (filterMp.get("volume") == null || filterMp.get("volume").equals("0")) {
+                        filterMp.put("volume", "1");
+                    } else if (filterMp.get("volume").equals("1")) {
+                        filterMp.put("volume", "2");
+                    } else if (filterMp.get("volume").equals("2")) {
+                        filterMp.put("volume", "1");
+                    }
                     salesVolume.setTextColor(context.getResources().getColor(R.color.red));
                     break;
                 case R.id.textView154:
-                    type = 3;
+                    filterMp.put("type", "3");
+                    filterMp.put("volume", "0");
                     price.setTextColor(context.getResources().getColor(R.color.red));
-                    if (isUpDown == 0) {
-                        isUpDown = 1;
-                    } else if (isUpDown == 1) {
-                        isUpDown = 2;
-                    } else if (isUpDown == 2) {
-                        isUpDown = 1;
+                    if (filterMp.get("price_order") == null || filterMp.get("price_order").equals
+                            ("0")) {
+                        filterMp.put("price_order", "1");
+                    } else if (filterMp.get("price_order").equals("1")) {
+                        filterMp.put("price_order", "2");
+                    } else if (filterMp.get("price_order").equals("2")) {
+                        filterMp.put("price_order", "1");
                     }
                     break;
                 case R.id.textView158:
-                    type = 4;
-                    isUpDown = 0;
+                    filterMp.put("type", "4");
+                    filterMp.put("price_order", "0");
+                    filterMp.put("volume", "0");
                     newProduct.setTextColor(context.getResources().getColor(R.color.red));
                     break;
                 case R.id.textView157:
-                    type = 5;
-                    isUpDown = 0;
-                    showFilterDialog();
+                    openRightLayout();
                     break;
             }
-            if (isUpDown == 0) {
+            if (filterMp.get("volume") == null || filterMp.get("volume").equals("0")) {
+                Glide.with(context).load(R.drawable.icon_up_down_gray).into(volUpDown);
+            } else if (filterMp.get("volume").equals("1")) {
+                Glide.with(context).load(R.drawable.icon_up).into(volUpDown);
+            } else if (filterMp.get("volume").equals("2")) {
+                Glide.with(context).load(R.drawable.icon_down).into(volUpDown);
+            }
+
+            if (filterMp.get("price_order") == null || filterMp.get("price_order").equals("0")) {
                 Glide.with(context).load(R.drawable.icon_up_down_gray).into(upDown);
-            } else if (isUpDown == 1) {
+            } else if (filterMp.get("price_order").equals("1")) {
                 Glide.with(context).load(R.drawable.icon_up).into(upDown);
-            } else if (isUpDown == 2) {
+            } else if (filterMp.get("price_order").equals("2")) {
                 Glide.with(context).load(R.drawable.icon_down).into(upDown);
             }
-            if (view.getId() != R.id.textView157) {
-                getSearchData();
+            if (view.getId() != R.id.textView157 && view.getId() != R.id.textView152) {
+                getData(false);
             }
         }
     };

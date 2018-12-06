@@ -19,6 +19,7 @@ public class BaseActivity extends AppCompatActivity {
     public String token;
     public String is_real;
     public String pay_code;
+    public String is_show = "two_c";
 
     public LinearLayout nav_bar;
     public LinearLayout nav_back;
@@ -57,6 +58,8 @@ public class BaseActivity extends AppCompatActivity {
         token = (String) UserInfoUtils.getInstance(this).getUserInfo().get("token");
         is_real = (String) UserInfoUtils.getInstance(this).getUserInfo().get("is_real");
         pay_code = (String) UserInfoUtils.getInstance(this).getUserInfo().get("pay_code");
+        is_show = UserInfoUtils.getInstance(this).getUserInfo().get("is_show") != null ? (String)
+                UserInfoUtils.getInstance(this).getUserInfo().get("is_show") : "two_c";
     }
 
     @Override

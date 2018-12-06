@@ -46,4 +46,12 @@ class CategoryModel extends Model
             ->orderBy('sort_order', 'DESC')
             ->get();
     }
+
+    //查询下级分类
+    public function getSubCates($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->get();
+    }
 }

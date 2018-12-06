@@ -206,7 +206,7 @@ public class SearchActivity extends BaseActivity {
 
             JSONArray cateJsonArray = data.getJSONArray("cate");
             for (int i = 0; i < cateJsonArray.length(); i++) {
-                JSONObject object = (JSONObject) keyJsonArray.get(i);
+                JSONObject object = (JSONObject) cateJsonArray.get(i);
                 KeyWords keyWords = new KeyWords();
                 keyWords.setTitle(object.getString("cate_name"));
                 keyWords.setCateId(object.getInt("cate_id"));
@@ -252,6 +252,7 @@ public class SearchActivity extends BaseActivity {
                 searchs.remove(searchs.size() - 1);
             }
             searchs.add(0, bean);
+            dataStorage.deleteAll(KeyWords.class);
             dataStorage.storeOrUpdate(searchs);
         }
     }
@@ -308,22 +309,30 @@ public class SearchActivity extends BaseActivity {
                         if (findViewById(view.getId()).getTag() != null) {
                             Intent intent;
                             if (isFrom == ConstantManager.IsFrom.FROM_HOME) {
-                                Object obj = findViewById(view.getId()).getTag();
+                                TextView textView = findViewById(view.getId());
+                                Object obj = textView.getTag();
+                                String text = textView.getText().toString();
                                 intent = new Intent(SearchActivity.this, SearchInfoActivity.class);
                                 if (obj instanceof Integer) {
                                     intent.putExtra("cate", (Integer) obj);
+                                    intent.putExtra("cate_name", text);
                                 } else {
                                     intent.putExtra("keywords", (String) obj);
+                                    updateSearchKeywords((String) obj);
                                 }
                                 startActivity(intent);
                                 finish();
                             } else if (isFrom == ConstantManager.IsFrom.FROM_SEARCHINFO) {
                                 intent = new Intent();
-                                Object obj = findViewById(view.getId()).getTag();
+                                TextView textView = findViewById(view.getId());
+                                Object obj = textView.getTag();
+                                String text = textView.getText().toString();
                                 if (obj instanceof Integer) {
                                     intent.putExtra("cate", (Integer) obj);
+                                    intent.putExtra("cate_name", text);
                                 } else {
                                     intent.putExtra("keywords", (String) obj);
+                                    updateSearchKeywords((String) obj);
                                 }
                                 setResult(RESULT_OK, intent);
                                 finish();

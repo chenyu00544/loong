@@ -23,6 +23,9 @@ public class Goods {
     private String volume_price;
     private String goods_attr;
     private String goods_attr_id;
+    private String goods_brief;
+    private String brand_name;
+    private String brand_logo;
     private Integer current_time;
     private Integer promote_start_date;
     private Integer promote_end_date;
@@ -262,5 +265,29 @@ public class Goods {
 
     public void setRec_id(Integer rec_id) {
         this.rec_id = rec_id;
+    }
+
+    public String getGoods_brief() {
+        return goods_brief;
+    }
+
+    public void setGoods_brief(String goods_brief) {
+        this.goods_brief = goods_brief;
+    }
+
+    public String getBrand_name() {
+        return brand_name;
+    }
+
+    public void setBrand_name(String brand_name) {
+        this.brand_name = brand_name;
+    }
+
+    public String getBrand_logo() {
+        return brand_logo;
+    }
+
+    public void setBrand_logo(String brand_logo) {
+        this.brand_logo = brand_logo;
     }
 }

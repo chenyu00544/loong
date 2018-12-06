@@ -138,11 +138,14 @@ class GoodsModel extends Model
             ->get();
     }
 
-    public function getGoodsesBySearch($keywords = [], $where = [], $page = 1, $column = ['*'], $size = 10)
+    public function getGoodsesBySearch($keywords = [], $where = [], $page = 1, $column = ['*'], $wherein = [], $orderby = [], $size = 10)
     {
         $m = $this->select($column)
             ->with(['gvp' => function ($query) {
                 $query->where(['price_type' => 1]);
+            }])
+            ->with(['brand' => function ($query) {
+                $query->select(['brand_name', 'id', 'brand_logo']);
             }])
             ->where($where)
             ->where('review_status', '>=', 3);
@@ -157,6 +160,17 @@ class GoodsModel extends Model
                 }
             });
         }
+
+        if (count($wherein) > 0) {
+            $m->whereIn('cat_id', $wherein);
+        }
+
+        if(count($orderby) > 0){
+            foreach ($orderby as $key => $value){
+                $m->orderBy($key, $value);
+            }
+        }
+
         return $m->orderBy('sort_order', 'DESC')
             ->orderBy('add_time', 'DESC')
             ->offset(($page - 1) * $size)->limit($size)

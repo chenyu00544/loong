@@ -15,6 +15,7 @@ use App\Facades\Pinyin;
 use App\Facades\RedisCache;
 use App\Http\Models\App\BrowseGoodsModel;
 use App\Http\Models\App\CartModel;
+use App\Http\Models\App\CategoryModel;
 use App\Http\Models\App\CateKeywordModel;
 use App\Http\Models\App\CollectGoodsModel;
 use App\Http\Models\App\CommentExtModel;
@@ -44,6 +45,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $browseGoodsModel;
     private $searchKeywordModel;
     private $cateKeywordModel;
+    private $categoryModel;
 
     public function __construct(
         GoodsModel $goodsModel,
@@ -59,7 +61,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         CollectGoodsModel $collectGoodsModel,
         BrowseGoodsModel $browseGoodsModel,
         SearchKeywordModel $searchKeywordModel,
-        CateKeywordModel $cateKeywordModel
+        CateKeywordModel $cateKeywordModel,
+        CategoryModel $categoryModel
     )
     {
         $this->goodsModel = $goodsModel;
@@ -76,6 +79,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->browseGoodsModel = $browseGoodsModel;
         $this->searchKeywordModel = $searchKeywordModel;
         $this->cateKeywordModel = $cateKeywordModel;
+        $this->categoryModel = $categoryModel;
     }
 
     public function getBestGoods($page = 1)
@@ -273,15 +277,20 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function getSearchByGoods($request)
     {
-        $column = ['goods_id', 'cat_id', 'goods_name', 'brand_id', 'market_price', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_thumb', 'goods_img', 'original_img', 'is_on_sale', 'is_delete', 'review_status', 'add_time', 'sort_order', 'pinyin_keyword', 'sales_volume'];
+        $column = ['goods_id', 'cat_id', 'goods_name', 'brand_id', 'market_price', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_thumb', 'goods_img', 'original_img', 'is_on_sale', 'is_delete', 'review_status', 'add_time', 'sort_order', 'pinyin_keyword', 'sales_volume', 'goods_brief', 'is_best', 'is_hot', 'is_new'];
         $where = [
             ['is_on_sale', '=', '1'],
             ['is_delete', '=', '0'],
             ['review_status', '>=', '3']
         ];
         $keywords = [];
+        $whereIn = [];
+        $page = empty($request['page']) ? 1 : $request['page'];
         if (!empty($request['keywords'])) {
             $keywords = Common::scws($request['keywords']);
+            if(!in_array($request['keywords'], $keywords)){
+                $keywords[] = $request['keywords'];
+            }
             $kwhere['keyword'] = $request['keywords'];
             $re = $this->searchKeywordModel->incrementKeyword($kwhere);
             if (empty($re)) {
@@ -293,23 +302,72 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $this->searchKeywordModel->addKeyword($kupdata);
             }
         }
-        if (!empty($request['cate_id'])) {
-            $where[] = ['cat_id', '=', $request['cate_id']];
-            $cwhere = ['cate_id' => $request['cate_id']];
+
+        if (!empty($request['cate_id']) && !empty($request['cate_name'])) {
+            $cate_id = $request['cate_id'];
+            $res = $this->categoryModel->getSubCates(['parent_id' => $cate_id], ['id', 'parent_id']);
+            $whereIn[] = $cate_id;
+            foreach ($res as $re) {
+                $whereIn[] = $re->id;
+            }
+            $cwhere = ['cate_id' => $cate_id];
             $re = $this->cateKeywordModel->incrementKeyword($cwhere);
+
             if (empty($re)) {
                 $cupdata = [
-                    'cate_id' => $request['cate_id'],
+                    'cate_id' => $cate_id,
+                    'cate_name' => $request['cate_name'],
                 ];
                 $this->cateKeywordModel->addKeyword($cupdata);
             }
         }
 
-        $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, 1, $column);
+        $orderby = [];
+        if (!empty($request['type'])) {
+            switch ($request['type']) {
+                case '1':
+                    $orderby['sort_order'] = 'DESC';
+                    $orderby['is_best'] = 'DESC';
+                    $orderby['is_hot'] = 'DESC';
+                    break;
+                case '2':
+                    if ($request['volume'] == 1) {
+                        $orderby['sales_volume'] = 'ASC';
+                    } else {
+                        $orderby['sales_volume'] = 'DESC';
+                    }
+                    break;
+                case '3':
+                    if ($request['price_order'] == 1) {
+                        $orderby['shop_price'] = 'ASC';
+                    } else {
+                        $orderby['shop_price'] = 'DESC';
+                    }
+                    break;
+                case '4':
+                    if ($request['price_order'] == 1) {
+                        $orderby['is_new'] = 'ASC';
+                    } else {
+                        $orderby['is_new'] = 'DESC';
+                    }
+                    break;
+            }
+        }
+
+        $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, $page, $column, $whereIn, $orderby);
         foreach ($res as $re) {
             $re->goods_thumb = FileHandle::getImgByOssUrl($re->goods_thumb);
             $re->goods_img = FileHandle::getImgByOssUrl($re->goods_img);
             $re->original_img = FileHandle::getImgByOssUrl($re->original_img);
+            $re->market_price_format = Common::priceFormat($re->market_price);
+            $re->shop_price_format = Common::priceFormat($re->shop_price);
+            $re->promote_price_format = Common::priceFormat($re->promote_price);
+            $re->current_time = time();
+            if (!empty($re->brand)) {
+                $re->brand_name = $re->brand->brand_name;
+                $re->brand_logo = FileHandle::getImgByOssUrl($re->brand->brand_logo);
+            }
+            unset($re->brand);
         }
         return $res;
     }

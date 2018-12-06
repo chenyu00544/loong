@@ -24,7 +24,11 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function getBrands($size = 10)
     {
-        return $this->brandModel->getBrands($size);
+        $res = $this->brandModel->getBrands($size);
+        foreach ($res as $re){
+            $re->brand_logo = FileHandle::getImgByOssUrl($re->brand_logo);
+        }
+        return $res;
     }
 
     public function getBrand($id)
