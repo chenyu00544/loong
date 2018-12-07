@@ -138,7 +138,7 @@ class GoodsModel extends Model
             ->get();
     }
 
-    public function getGoodsesBySearch($keywords = [], $where = [], $page = 1, $column = ['*'], $wherein = [], $orderby = [], $size = 20)
+    public function getGoodsesBySearch($keywords = [], $where = [], $page = 1, $wherein = [], $orderby = [], $column = ['*'], $size = 20)
     {
         $m = $this->select($column)
             ->with(['gvp' => function ($query) {
@@ -165,8 +165,8 @@ class GoodsModel extends Model
             $m->whereIn('cat_id', $wherein);
         }
 
-        if(count($orderby) > 0){
-            foreach ($orderby as $key => $value){
+        if (count($orderby) > 0) {
+            foreach ($orderby as $key => $value) {
                 $m->orderBy($key, $value);
             }
         }

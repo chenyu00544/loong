@@ -34,6 +34,9 @@ public class Goods {
     private Integer goods_number;
     private Integer tax;
     private Integer rec_id;
+    private Integer brand_id;
+    private Integer cat_id;
+    private Integer goods_type;
 
     public Integer getGoods_id() {
         return goods_id;
@@ -289,5 +292,29 @@ public class Goods {
 
     public void setBrand_logo(String brand_logo) {
         this.brand_logo = brand_logo;
+    }
+
+    public Integer getBrand_id() {
+        return brand_id;
+    }
+
+    public void setBrand_id(Integer brand_id) {
+        this.brand_id = brand_id;
+    }
+
+    public Integer getCat_id() {
+        return cat_id;
+    }
+
+    public void setCat_id(Integer cat_id) {
+        this.cat_id = cat_id;
+    }
+
+    public Integer getGoods_type() {
+        return goods_type;
+    }
+
+    public void setGoods_type(Integer goods_type) {
+        this.goods_type = goods_type;
     }
 }

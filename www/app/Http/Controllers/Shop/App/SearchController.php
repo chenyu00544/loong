@@ -37,4 +37,14 @@ class SearchController extends CommonController
             return ['code' => 1, 'msg' => '', 'data' => []];
         }
     }
+
+    public function getSearchFilter(Request $request)
+    {
+        $res = $this->goodsRepository->filterBySearch($request->all());
+        if($res){
+            return ['code' => 0, 'msg' => '', 'data' => $res];
+        }else{
+            return ['code' => 1, 'msg' => '', 'data' => []];
+        }
+    }
 }

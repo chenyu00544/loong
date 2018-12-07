@@ -28,6 +28,14 @@ class CategoryModel extends Model
         return $this->hasMany('App\Http\Models\App\AdModel', 'cate_id', 'id');
     }
 
+    public function getCates($where = [], $whereIn = [], $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->whereIn('id', $whereIn)
+            ->get();
+    }
+
     public function getComCates($where, $column = ['*'])
     {
         return $this->select($column)

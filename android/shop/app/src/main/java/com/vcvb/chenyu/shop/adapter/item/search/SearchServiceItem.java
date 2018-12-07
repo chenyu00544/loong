@@ -36,25 +36,6 @@ public class SearchServiceItem extends BaseItem<FilterBean> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        TextView tv = holder.getTextView(R.id.textView159);
-        tv.setText(mData.getTitle());
-        FlowLayout fly = (FlowLayout) holder.getView(R.id.wrap_hot);
-        fly.setChildSpacing(8);
-        fly.setRowSpacing(8);
-        fly.setChildSpacingForLastRow(8);
-        for (int i = 0; i < mData.getList().size(); i++) {
-            TextView textView = new TextView(context);
-            textView.setText(mData.getList().get(i).getTitle());
-            textView.setTextColor(context.getResources().getColor(R.color.black));
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            textView.setEllipsize(TextUtils.TruncateAt.END);
-            textView.setGravity(View.TEXT_ALIGNMENT_CENTER);
-            textView.setLines(1);
-            textView.setMaxEms(8);
-            textView.setPadding(ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8),
-                    ToolUtils.dip2px(context, 18), ToolUtils.dip2px(context, 8));
-            textView.setBackgroundResource(R.drawable.shape_6_gray_d);
-            fly.addView(textView);
-        }
+
     }
 }

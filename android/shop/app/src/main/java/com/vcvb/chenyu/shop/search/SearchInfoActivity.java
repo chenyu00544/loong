@@ -20,20 +20,24 @@ import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsHItem;
 import com.vcvb.chenyu.shop.adapter.item.search.SearchGoodsVItem;
+import com.vcvb.chenyu.shop.adapter.item.search.filter.FilterAttrItem;
+import com.vcvb.chenyu.shop.adapter.item.search.filter.FilterBrandItem;
+import com.vcvb.chenyu.shop.adapter.item.search.filter.FilterCateItem;
+import com.vcvb.chenyu.shop.adapter.item.search.filter.FilterItem;
+import com.vcvb.chenyu.shop.adapter.item.search.filter.FilterPriceItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.dialog.SearchFilterDialog;
 import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.search.FilterBean;
-import com.vcvb.chenyu.shop.javaBean.search.FilterList;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +62,9 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     private ImageView upDown;
     private ImageView volUpDown;
 
+    private TextView resetFilter;
+    private TextView sureFilter;
+
     private View search;
     private ImageView showType;
 
@@ -67,11 +74,10 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     private int cateId;
     private String cateName;
     private HashMap<String, String> filterMp = new HashMap<>();
+    private HashMap<String, String> filterAttrMp = new HashMap<>();
     private Integer page = 1;
 
     private List<FilterBean> filterList = new ArrayList<>();
-
-    private SearchFilterDialog filterDialog;
 
     public RecyclerView filterRecyclerView;
     public CYCSimpleAdapter filterAdapter = new CYCSimpleAdapter();
@@ -142,6 +148,9 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         upDown = findViewById(R.id.imageView77);
         volUpDown = findViewById(R.id.imageView131);
 
+        resetFilter = findViewById(R.id.textView260);
+        sureFilter = findViewById(R.id.textView261);
+
         comprehensive.setOnClickListener(searchType);
         salesVolume.setOnClickListener(searchType);
         price.setOnClickListener(searchType);
@@ -180,7 +189,10 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                 startActivity(intent);
             }
         });
-        searchKey.setOnClickListener(searchType);
+        search.setOnClickListener(searchType);
+
+        resetFilter.setOnClickListener(filterListener);
+        sureFilter.setOnClickListener(filterListener);
     }
 
     public void initRefresh() {
@@ -259,13 +271,23 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         goodses.clear();
         mAdapter.clear();
         try {
+            List<Integer> brandId = new ArrayList<>();
+            List<Integer> catId = new ArrayList<>();
+            List<Integer> goodsType = new ArrayList<>();
             JSONArray jsonArray = json.getJSONArray("data");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = (JSONObject) jsonArray.get(i);
                 Goods bean = JsonUtils.fromJsonObject(object, Goods.class);
+                brandId.add(bean.getBrand_id());
+                catId.add(bean.getCat_id());
+                goodsType.add(bean.getGoods_type());
                 goodses.add(bean);
             }
+            filterAttrMp.put("goods_type", StringUtils.join(goodsType, ","));
+            filterAttrMp.put("cat_id", StringUtils.join(catId, ","));
+            filterAttrMp.put("brand_id", StringUtils.join(brandId, ","));
             mAdapter.addAll(getItems(goodses));
+            getFilterData();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -273,22 +295,6 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
-
-        for (int i = 0; i < 5; i++) {
-            FilterBean bean = new FilterBean();
-            bean.setIsType(2);
-            bean.setTitle("每行" + i);
-            List<FilterList> list = new ArrayList<>();
-            for (int j = 0; j < 5; j++) {
-                FilterList bean2 = new FilterList();
-                bean2.setTitle("同学的实" + j);
-                list.add(bean2);
-            }
-            bean.setList(list);
-            filterList.add(bean);
-        }
-        filterDialog = new SearchFilterDialog();
-        filterDialog.setDate(filterList);
     }
 
     public void loadmore() {
@@ -353,10 +359,95 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         }
     }
 
+    public void getFilterData() {
+        HttpUtils.getInstance().post(ConstantManager.Url.SEARCH_FILTER, filterAttrMp, new
+                HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (json != null) {
+                    try {
+                        if (json.getInt("code") == 0) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    bindFilterViewData(json);
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+
+            }
+        });
+    }
+
+    public void bindFilterViewData(JSONObject json) {
+
+        try {
+            filterList.clear();
+            JSONObject object = json.getJSONObject("data");
+
+            JSONObject serverJSONObject = object.getJSONObject("server");
+            FilterBean server = JsonUtils.fromJsonObject(serverJSONObject, FilterBean.class);
+            server.setIsType(1);
+            server.setData(serverJSONObject);
+            filterList.add(server);
+
+            JSONObject priceJSONObject = object.getJSONObject("price");
+            FilterBean price = JsonUtils.fromJsonObject(priceJSONObject, FilterBean.class);
+            price.setIsType(2);
+            price.setPriceData(priceJSONObject);
+            filterList.add(price);
+
+            JSONObject brandJSONObject = object.getJSONObject("brand");
+            FilterBean brand = JsonUtils.fromJsonObject(brandJSONObject, FilterBean.class);
+            brand.setIsType(3);
+            brand.setData(brandJSONObject);
+            if (brand.getList().size() > 0) {
+                filterList.add(brand);
+            }
+
+            JSONObject cateJSONObject = object.getJSONObject("cate");
+            FilterBean cate = JsonUtils.fromJsonObject(cateJSONObject, FilterBean.class);
+            cate.setIsType(4);
+            cate.setData(cateJSONObject);
+            if (cate.getList().size() > 0) {
+                filterList.add(cate);
+            }
+
+            JSONArray attrJSONArray = object.getJSONArray("attr");
+            for (int i = 0; i < attrJSONArray.length(); i++) {
+                JSONObject jsonObject = (JSONObject) attrJSONArray.get(i);
+                FilterBean attr = JsonUtils.fromJsonObject(jsonObject, FilterBean.class);
+                attr.setIsType(5);
+                attr.setAttrData(jsonObject);
+                if (attr.getList().size() > 0) {
+                    filterList.add(attr);
+                }
+            }
+
+            filterAdapter.clear();
+            filterAdapter.addAll(getFilterItems(filterList));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     protected List<Item> getItems(List<Goods> list) {
         List<Item> cells = new ArrayList<>();
         if (goodses.size() > 0) {
-            if(page == 1){
+            if (page == 1) {
                 if (is_show.equals("two_c")) {
                     mLayoutManager = new GridLayoutManager(context, 2);
                 } else {
@@ -371,14 +462,51 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                     cells.add(new SearchGoodsHItem(list.get(i), context));
                 }
             }
-        }else{
-            if(page == 1){
+        } else {
+            if (page == 1) {
                 mLayoutManager = new GridLayoutManager(context, 1);
                 cells.add(new SearchErrorItem(null, context));
                 mRecyclerView.setLayoutManager(mLayoutManager);
             }
         }
 
+        return cells;
+    }
+
+    protected List<Item> getFilterItems(List<FilterBean> filterBeans) {
+        List<Item> cells = new ArrayList<>();
+        if (filterList.size() > 0) {
+            for (int i = 0; i < filterBeans.size(); i++) {
+                switch (filterBeans.get(i).getIsType()) {
+                    case 1:
+                        FilterItem filterItem = new FilterItem(filterBeans.get(i), context);
+                        filterItem.setOnItemClickListener(filterItemListener);
+                        cells.add(filterItem);
+                        break;
+                    case 2:
+                        FilterPriceItem filterPriceItem = new FilterPriceItem(filterBeans.get(i),
+                                context);
+                        filterPriceItem.setOnItemClickListener(filterPriceItemListener);
+                        cells.add(filterPriceItem);
+                        break;
+                    case 3:
+                        FilterBrandItem filterBrandItem = new FilterBrandItem(filterBeans.get(i),
+                                context);
+                        cells.add(filterBrandItem);
+                        break;
+                    case 4:
+                        FilterCateItem filterCateItem = new FilterCateItem(filterBeans.get(i),
+                                context);
+                        cells.add(filterCateItem);
+                        break;
+                    case 5:
+                        FilterAttrItem filterAttrItem = new FilterAttrItem(filterBeans.get(i),
+                                context);
+                        cells.add(filterAttrItem);
+                        break;
+                }
+            }
+        }
         return cells;
     }
 
@@ -415,6 +543,25 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         }
     }
 
+    View.OnClickListener filterListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.textView260:
+                    for (int i = 0; i < filterList.size(); i++) {
+                        for (int j = 0; j < filterList.get(i).getList().size(); j++) {
+                            filterList.get(i).getList().get(j).setIs_select(false);
+                        }
+                    }
+                    filterAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.textView261:
+                    openRightLayout();
+                    break;
+            }
+        }
+    };
+
     View.OnClickListener searchType = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -425,7 +572,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                 newProduct.setTextColor(context.getResources().getColor(R.color.black));
             }
             switch (view.getId()) {
-                case R.id.textView152:
+                case R.id.view43:
                     Intent intent = new Intent(SearchInfoActivity.this, SearchActivity.class);
                     intent.putExtra("isfrom", ConstantManager.IsFrom.FROM_SEARCHINFO);
                     startActivityForResult(intent, ConstantManager.IsFrom.FROM_SEARCHINFO);
@@ -487,8 +634,33 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
             } else if (filterMp.get("price_order").equals("2")) {
                 Glide.with(context).load(R.drawable.icon_down).into(upDown);
             }
-            if (view.getId() != R.id.textView157 && view.getId() != R.id.textView152) {
+            if (view.getId() != R.id.textView157 && view.getId() != R.id.view43) {
                 getData(false);
+            }
+        }
+    };
+
+    FilterItem.OnClickListener filterItemListener = new FilterItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, FilterBean filter, int pos) {
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < filter.getList().size(); i++) {
+                if(filter.getList().get(i).isIs_select()){
+                    list.add(filter.getList().get(i).getServer_id());
+                }
+            }
+            filterMp.put("server_id", StringUtils.join(list, ","));
+        }
+    };
+
+    FilterPriceItem.OnClickListener filterPriceItemListener = new FilterPriceItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, FilterBean filter, int pos) {
+            for (int i = 0; i < filter.getList().size(); i++) {
+                if(filter.getList().get(i).isIs_select()){
+                    filterMp.put("min_price", filter.getList().get(i).getMin());
+                    filterMp.put("max_price", filter.getList().get(i).getMax());
+                }
             }
         }
     };

@@ -21,6 +21,7 @@
     <string name="name">首先试一下默认的的效,布局文件如下activity_main_2.xml</string>
     <string name="skip">3 跳过</string>
     <string name="loading">数据操作中.....</string>
+    <string name="more">更多</string>
 
     <string name="login_reg">登录/注册</string>
     <string name="balance">余额</string>
@@ -139,6 +140,7 @@
 
     <string name="tip">提示</string>
     <string name="confirm">确定</string>
+    <string name="reset">重置</string>
     <string name="cancel">取消</string>
 
     <string name="logo_title">头像</string>

@@ -13,6 +13,8 @@ use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\Pinyin;
 use App\Facades\RedisCache;
+use App\Http\Models\App\AttributeModel;
+use App\Http\Models\App\BrandModel;
 use App\Http\Models\App\BrowseGoodsModel;
 use App\Http\Models\App\CartModel;
 use App\Http\Models\App\CategoryModel;
@@ -46,6 +48,8 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $searchKeywordModel;
     private $cateKeywordModel;
     private $categoryModel;
+    private $attributeModel;
+    private $brandModel;
 
     public function __construct(
         GoodsModel $goodsModel,
@@ -62,7 +66,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         BrowseGoodsModel $browseGoodsModel,
         SearchKeywordModel $searchKeywordModel,
         CateKeywordModel $cateKeywordModel,
-        CategoryModel $categoryModel
+        CategoryModel $categoryModel,
+        AttributeModel $attributeModel,
+        BrandModel $brandModel
     )
     {
         $this->goodsModel = $goodsModel;
@@ -80,6 +86,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->searchKeywordModel = $searchKeywordModel;
         $this->cateKeywordModel = $cateKeywordModel;
         $this->categoryModel = $categoryModel;
+        $this->attributeModel = $attributeModel;
+        $this->brandModel = $brandModel;
     }
 
     public function getBestGoods($page = 1)
@@ -277,7 +285,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function getSearchByGoods($request)
     {
-        $column = ['goods_id', 'cat_id', 'goods_name', 'brand_id', 'market_price', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_thumb', 'goods_img', 'original_img', 'is_on_sale', 'is_delete', 'review_status', 'add_time', 'sort_order', 'pinyin_keyword', 'sales_volume', 'goods_brief', 'is_best', 'is_hot', 'is_new'];
+        $column = ['goods_id', 'cat_id', 'goods_name', 'brand_id', 'market_price', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_thumb', 'goods_img', 'original_img', 'is_on_sale', 'is_delete', 'review_status', 'add_time', 'sort_order', 'pinyin_keyword', 'sales_volume', 'goods_brief', 'is_best', 'is_hot', 'is_new', 'cat_id', 'goods_type'];
         $where = [
             ['is_on_sale', '=', '1'],
             ['is_delete', '=', '0'],
@@ -288,7 +296,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $page = empty($request['page']) ? 1 : $request['page'];
         if (!empty($request['keywords'])) {
             $keywords = Common::scws($request['keywords']);
-            if(!in_array($request['keywords'], $keywords)){
+            if (!in_array($request['keywords'], $keywords)) {
                 $keywords[] = $request['keywords'];
             }
             $kwhere['keyword'] = $request['keywords'];
@@ -322,39 +330,42 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
         }
 
-        $orderby = [];
+        $orderBy = [];
         if (!empty($request['type'])) {
             switch ($request['type']) {
                 case '1':
-                    $orderby['sort_order'] = 'DESC';
-                    $orderby['is_best'] = 'DESC';
-                    $orderby['is_hot'] = 'DESC';
+                    $orderBy['sort_order'] = 'DESC';
+                    $orderBy['is_best'] = 'DESC';
+                    $orderBy['is_hot'] = 'DESC';
                     break;
                 case '2':
                     if ($request['volume'] == 1) {
-                        $orderby['sales_volume'] = 'ASC';
+                        $orderBy['sales_volume'] = 'ASC';
                     } else {
-                        $orderby['sales_volume'] = 'DESC';
+                        $orderBy['sales_volume'] = 'DESC';
                     }
                     break;
                 case '3':
                     if ($request['price_order'] == 1) {
-                        $orderby['shop_price'] = 'ASC';
+                        $orderBy['shop_price'] = 'ASC';
                     } else {
-                        $orderby['shop_price'] = 'DESC';
+                        $orderBy['shop_price'] = 'DESC';
                     }
                     break;
                 case '4':
                     if ($request['price_order'] == 1) {
-                        $orderby['is_new'] = 'ASC';
+                        $orderBy['is_new'] = 'ASC';
                     } else {
-                        $orderby['is_new'] = 'DESC';
+                        $orderBy['is_new'] = 'DESC';
                     }
                     break;
             }
         }
 
-        $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, $page, $column, $whereIn, $orderby);
+        $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, $page, $whereIn, $orderBy, $column);
+        $catId = [];
+        $goodsType = [];
+        $brandId = [];
         foreach ($res as $re) {
             $re->goods_thumb = FileHandle::getImgByOssUrl($re->goods_thumb);
             $re->goods_img = FileHandle::getImgByOssUrl($re->goods_img);
@@ -368,8 +379,64 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $re->brand_logo = FileHandle::getImgByOssUrl($re->brand->brand_logo);
             }
             unset($re->brand);
+            if ($re->cat_id > 0) {
+                $catId[] = $re->cat_id;
+            }
+
+            if ($re->brand_id > 0) {
+                $brandId[] = $re->brand_id;
+            }
+
+            if ($re->goods_type > 0) {
+                $goodsType[] = $re->goods_type;
+            }
         }
         return $res;
+    }
+
+    public function filterBySearch($request)
+    {
+        $return = [];
+        $return['server']['title'] = '柠檬服务';
+        $return['server']['values'] = [
+            ['server_id' => 1, 'server_name' => '促销'],
+            ['server_id' => 2, 'server_name' => '仅有现货'],
+            ['server_id' => 3, 'server_name' => '会员价']
+        ];
+        $return['price']['title'] = '价格';
+        $return['price']['price_range'] = [
+            ['min' => '0', 'max' => '100'],
+            ['min' => '100', 'max' => '200'],
+            ['min' => '200', 'max' => '300']
+        ];
+
+        if (!empty($request['goods_type'])) {
+            $goodsType = explode(',', $request['goods_type']);
+            $goodsType = array_filter($goodsType);
+            $goodsType = array_unique($goodsType);
+            $awhere['attr_group'] = 0;
+            $attrs = $this->attributeModel->getAttrs($awhere, $goodsType, ['attr_id', 'cat_id', 'attr_name', 'attr_values']);
+            foreach ($attrs as $attr) {
+                $attr->attr_values = explode("\r\n", $attr->attr_values);
+            }
+            $return['attr'] = $attrs;
+        }
+        if (!empty($request['cat_id'])) {
+            $catId = explode(',', $request['cat_id']);
+            $catId = array_filter($catId);
+            $catId = array_unique($catId);
+            $return['cate']['title'] = '分类';
+            $return['cate']['values'] = $this->categoryModel->getCates([], $catId, ['id', 'cat_name', 'cat_alias_name']);
+        }
+        if (!empty($request['brand_id'])) {
+            $brandId = explode(',', $request['brand_id']);
+            $brandId = array_filter($brandId);
+            $brandId = array_unique($brandId);
+            $return['brand']['title'] = '品牌';
+            $return['brand']['values'] = $this->brandModel->getBrands([], $brandId, ['id', 'brand_name']);
+        }
+
+        return $return;
     }
 
     public function getSearchByKeywords()

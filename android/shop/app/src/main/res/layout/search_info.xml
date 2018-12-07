@@ -6,17 +6,19 @@
     android:layout_height="match_parent">
 
     <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:id="@+id/drawer_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/search_wrap"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="384dp">
 
             <include
                 android:id="@+id/nav_header"
@@ -188,14 +190,52 @@
                 android:id="@+id/filter_list"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toTopOf="@+id/view89"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
             </android.support.v7.widget.RecyclerView>
 
-        </android.support.constraint.ConstraintLayout>
+            <View
+                android:id="@+id/view89"
+                android:layout_width="0.5dp"
+                android:layout_height="0.5dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView260"
+                app:layout_constraintEnd_toEndOf="@+id/filter_list"
+                app:layout_constraintStart_toStartOf="parent" />
 
+            <TextView
+                android:id="@+id/textView260"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:background="@drawable/tb_border"
+                android:gravity="center_vertical"
+                android:text="@string/reset"
+                android:textAlignment="center"
+                android:textColor="@color/black_29"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/view89"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/textView261"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:background="@color/colorBack_morandi"
+                android:gravity="center_vertical"
+                android:text="@string/confirm"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/filter_list"
+                app:layout_constraintStart_toEndOf="@+id/view89"
+                app:layout_constraintTop_toBottomOf="@+id/filter_list" />
+
+        </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.DrawerLayout>
+
 </android.support.constraint.ConstraintLayout>
