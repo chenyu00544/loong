@@ -16,10 +16,13 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
+import com.vcvb.chenyu.shop.javaBean.search.Filter;
 import com.vcvb.chenyu.shop.javaBean.search.FilterBean;
 import com.vcvb.chenyu.shop.tools.IdsUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class FilterPriceItem extends BaseItem<FilterBean> {
@@ -65,6 +68,10 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
         fl1.removeAllViews();
         String str = "%s - %s";
         for (int i = 0; i < mData.getList().size(); i++) {
+            if(!mData.getList().get(i).isIs_select()){
+                editText1.setText("");
+                editText2.setText("");
+            }
             TextView ftv = new TextView(context);
             ftv.setText(String.format(Locale.CHINA, str, mData.getList().get(i).getMin(), mData
                     .getList().get(i).getMin()));
@@ -76,8 +83,9 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
             ftv.setGravity(Gravity.CENTER_HORIZONTAL);
             ftv.setLines(1);
             ftv.setMaxEms(8);
-            ftv.setPadding(ToolUtils.dip2px(context, 16), ToolUtils.dip2px(context, 8), ToolUtils
-                    .dip2px(context, 16), ToolUtils.dip2px(context, 8));
+            ftv.setWidth(ToolUtils.dip2px(context, 88));
+            ftv.setPadding(ToolUtils.dip2px(context, 0), ToolUtils.dip2px(context, 8), ToolUtils
+                    .dip2px(context, 0), ToolUtils.dip2px(context, 8));
             fl1.addView(ftv);
             if (mData.getList().get(i).isIs_select()) {
                 ftv.setBackgroundResource(R.drawable.shape_6_red);
@@ -113,7 +121,14 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
         public void afterTextChanged(Editable editable) {
             if (!TextUtils.isEmpty(editText1.getText())) {
                 if (onClickListener != null) {
-                    onClickListener.onClicked(editText1, mData, pos);
+                    FilterBean filterBean = new FilterBean();
+                    Filter filter = new Filter();
+                    filter.setMin(editText1.getText().toString());
+                    filter.setIs_select(true);
+                    List<Filter> list = new ArrayList<>();
+                    list.add(filter);
+                    filterBean.setList(list);
+                    onClickListener.onClicked(editText1, filterBean, pos);
                 }
             }
         }
@@ -134,7 +149,14 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
         public void afterTextChanged(Editable editable) {
             if (!TextUtils.isEmpty(editText2.getText())) {
                 if (onClickListener != null) {
-                    onClickListener.onClicked(editText2, mData, pos);
+                    FilterBean filterBean = new FilterBean();
+                    Filter filter = new Filter();
+                    filter.setMax(editText2.getText().toString());
+                    filter.setIs_select(true);
+                    List<Filter> list = new ArrayList<>();
+                    list.add(filter);
+                    filterBean.setList(list);
+                    onClickListener.onClicked(editText2, filterBean, pos);
                 }
             }
         }

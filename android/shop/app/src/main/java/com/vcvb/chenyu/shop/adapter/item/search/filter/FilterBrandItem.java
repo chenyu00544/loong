@@ -21,6 +21,7 @@ public class FilterBrandItem extends BaseItem<FilterBean> {
     public static final int TYPE = R.layout.search_filter_item;
     private FlowLayout fl1;
     private OnClickListener onClickListener;
+    private TextView more;
     int pos;
 
     public FilterBrandItem(FilterBean bean, Context c) {
@@ -46,8 +47,8 @@ public class FilterBrandItem extends BaseItem<FilterBean> {
         TextView tv1 = holder.get(R.id.textView185);
         tv1.setText(mData.getTitle());
 
-        TextView tv2 = holder.get(R.id.textView262);
-        tv2.setText(R.string.more);
+        more = holder.get(R.id.textView262);
+        more.setText(R.string.more);
 
         fl1 = (FlowLayout) holder.getView(R.id.flowLayout);
         fl1.setChildSpacing(16);
@@ -65,8 +66,9 @@ public class FilterBrandItem extends BaseItem<FilterBean> {
             ftv.setGravity(Gravity.CENTER_HORIZONTAL);
             ftv.setLines(1);
             ftv.setMaxEms(8);
-            ftv.setPadding(ToolUtils.dip2px(context, 12), ToolUtils.dip2px(context, 8), ToolUtils
-                    .dip2px(context, 12), ToolUtils.dip2px(context, 8));
+            ftv.setWidth(ToolUtils.dip2px(context, 88));
+            ftv.setPadding(ToolUtils.dip2px(context, 0), ToolUtils.dip2px(context, 8), ToolUtils
+                    .dip2px(context, 0), ToolUtils.dip2px(context, 8));
             fl1.addView(ftv);
             if (mData.getList().get(i).isIs_select()) {
                 ftv.setBackgroundResource(R.drawable.shape_6_red);
@@ -90,16 +92,30 @@ public class FilterBrandItem extends BaseItem<FilterBean> {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            StringBuilder str = new StringBuilder();
             for (int i = 0; i < mData.getList().size(); i++) {
                 TextView tv = fl1.findViewById(mData.getList().get(i).getButtonId());
-                mData.getList().get(i).setIs_select(false);
-                tv.setTextColor(context.getResources().getColor(R.color.black));
-                tv.setBackgroundResource(R.drawable.shape_6_gray_d);
                 if (tv.getId() == view.getId()) {
-                    mData.getList().get(i).setIs_select(true);
-                    tv.setTextColor(context.getResources().getColor(R.color.white));
-                    tv.setBackgroundResource(R.drawable.shape_6_red);
+                    if (mData.getList().get(i).isIs_select()) {
+                        mData.getList().get(i).setIs_select(false);
+                        tv.setTextColor(context.getResources().getColor(R.color.black));
+                        tv.setBackgroundResource(R.drawable.shape_6_gray_d);
+                    } else {
+                        mData.getList().get(i).setIs_select(true);
+                        tv.setTextColor(context.getResources().getColor(R.color.white));
+                        tv.setBackgroundResource(R.drawable.shape_6_red);
+                    }
                 }
+                if (mData.getList().get(i).isIs_select()) {
+                    str.append(mData.getList().get(i).getBrand_name()).append(",");
+                }
+            }
+            if(str.toString().equals("")){
+                more.setText(R.string.more);
+                more.setTextColor(context.getResources().getColor(R.color.gray));
+            }else{
+                more.setText(str.toString().substring(0,str.toString().length()-1));
+                more.setTextColor(context.getResources().getColor(R.color.colorBack_morandi));
             }
             if (onClickListener != null) {
                 onClickListener.onClicked(view, mData, pos);

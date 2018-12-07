@@ -59,6 +59,7 @@ public class FragmentMy extends BaseFragment {
         this.container = container;
         initView();
         initListener();
+        checkLogin();
         return view;
     }
 

@@ -65,8 +65,9 @@ public class FilterItem extends BaseItem<FilterBean> {
             ftv.setGravity(Gravity.CENTER_HORIZONTAL);
             ftv.setLines(1);
             ftv.setMaxEms(8);
-            ftv.setPadding(ToolUtils.dip2px(context, 12), ToolUtils.dip2px(context, 8), ToolUtils
-                    .dip2px(context, 12), ToolUtils.dip2px(context, 8));
+            ftv.setWidth(ToolUtils.dip2px(context, 88));
+            ftv.setPadding(ToolUtils.dip2px(context, 0), ToolUtils.dip2px(context, 8), ToolUtils
+                    .dip2px(context, 0), ToolUtils.dip2px(context, 8));
             fl1.addView(ftv);
             if (mData.getList().get(i).isIs_select()) {
                 ftv.setBackgroundResource(R.drawable.shape_6_red);

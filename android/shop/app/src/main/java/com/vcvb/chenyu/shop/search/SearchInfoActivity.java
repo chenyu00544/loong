@@ -362,29 +362,29 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     public void getFilterData() {
         HttpUtils.getInstance().post(ConstantManager.Url.SEARCH_FILTER, filterAttrMp, new
                 HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, final JSONObject json) throws IOException {
-                if (json != null) {
-                    try {
-                        if (json.getInt("code") == 0) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    bindFilterViewData(json);
+                    @Override
+                    public void success(Call call, final JSONObject json) throws IOException {
+                        if (json != null) {
+                            try {
+                                if (json.getInt("code") == 0) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            bindFilterViewData(json);
+                                        }
+                                    });
                                 }
-                            });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            }
 
-            @Override
-            public void failed(Call call, IOException e) {
+                    @Override
+                    public void failed(Call call, IOException e) {
 
-            }
-        });
+                    }
+                });
     }
 
     public void bindFilterViewData(JSONObject json) {
@@ -492,16 +492,19 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                     case 3:
                         FilterBrandItem filterBrandItem = new FilterBrandItem(filterBeans.get(i),
                                 context);
+                        filterBrandItem.setOnItemClickListener(filterBrandItemListener);
                         cells.add(filterBrandItem);
                         break;
                     case 4:
                         FilterCateItem filterCateItem = new FilterCateItem(filterBeans.get(i),
                                 context);
+                        filterCateItem.setOnItemClickListener(filterCateItemListener);
                         cells.add(filterCateItem);
                         break;
                     case 5:
                         FilterAttrItem filterAttrItem = new FilterAttrItem(filterBeans.get(i),
                                 context);
+                        filterAttrItem.setOnItemClickListener(filterAttrItemListener);
                         cells.add(filterAttrItem);
                         break;
                 }
@@ -553,10 +556,12 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                             filterList.get(i).getList().get(j).setIs_select(false);
                         }
                     }
+                    filterMp.clear();
                     filterAdapter.notifyDataSetChanged();
                     break;
                 case R.id.textView261:
                     openRightLayout();
+                    System.out.println(filterMp);
                     break;
             }
         }
@@ -645,7 +650,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         public void onClicked(View view, FilterBean filter, int pos) {
             List<Integer> list = new ArrayList<>();
             for (int i = 0; i < filter.getList().size(); i++) {
-                if(filter.getList().get(i).isIs_select()){
+                if (filter.getList().get(i).isIs_select()) {
                     list.add(filter.getList().get(i).getServer_id());
                 }
             }
@@ -653,15 +658,59 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         }
     };
 
-    FilterPriceItem.OnClickListener filterPriceItemListener = new FilterPriceItem.OnClickListener() {
+    FilterPriceItem.OnClickListener filterPriceItemListener = new FilterPriceItem.OnClickListener
+            () {
         @Override
         public void onClicked(View view, FilterBean filter, int pos) {
             for (int i = 0; i < filter.getList().size(); i++) {
-                if(filter.getList().get(i).isIs_select()){
-                    filterMp.put("min_price", filter.getList().get(i).getMin());
-                    filterMp.put("max_price", filter.getList().get(i).getMax());
+                if (filter.getList().get(i).isIs_select()) {
+                    if (filter.getList().get(i).getMin() != null) {
+                        filterMp.put("min_price", filter.getList().get(i).getMin());
+                    }
+                    if (filter.getList().get(i).getMax() != null) {
+                        filterMp.put("max_price", filter.getList().get(i).getMax());
+                    }
                 }
             }
+        }
+    };
+
+    FilterBrandItem.OnClickListener filterBrandItemListener = new FilterBrandItem.OnClickListener(){
+        @Override
+        public void onClicked(View view, FilterBean filter, int pos) {
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < filter.getList().size(); i++) {
+                if (filter.getList().get(i).isIs_select()) {
+                    list.add(filter.getList().get(i).getId());
+                }
+            }
+            filterMp.put("brand_id", StringUtils.join(list, ","));
+        }
+    };
+
+    FilterCateItem.OnClickListener filterCateItemListener = new FilterCateItem.OnClickListener(){
+        @Override
+        public void onClicked(View view, FilterBean filter, int pos) {
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < filter.getList().size(); i++) {
+                if (filter.getList().get(i).isIs_select()) {
+                    list.add(filter.getList().get(i).getId());
+                }
+            }
+            filterMp.put("cate_id", StringUtils.join(list, ","));
+        }
+    };
+
+    FilterAttrItem.OnClickListener filterAttrItemListener = new FilterAttrItem.OnClickListener(){
+        @Override
+        public void onClicked(View view, FilterBean filter, int pos) {
+            List<String> list = new ArrayList<>();
+            for (int i = 0; i < filter.getList().size(); i++) {
+                if (filter.getList().get(i).isIs_select()) {
+                    list.add(filter.getList().get(i).getAttr_value());
+                }
+            }
+            filterMp.put("attrid_"+filter.getAttr_id(), StringUtils.join(list, ","));
         }
     };
 }
