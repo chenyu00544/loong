@@ -21,6 +21,8 @@ public class FilterBean {
 
     private String subTitle;
 
+    private boolean open = false;
+
     private List<Filter> list;
 
     public Integer getIsType() {
@@ -77,6 +79,14 @@ public class FilterBean {
 
     public void setList(List<Filter> list) {
         this.list = list;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
     }
 
     public void setData(JSONObject json) {

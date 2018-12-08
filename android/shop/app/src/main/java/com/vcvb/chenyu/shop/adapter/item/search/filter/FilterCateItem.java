@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
@@ -21,8 +22,9 @@ public class FilterCateItem extends BaseItem<FilterBean> {
     public static final int TYPE = R.layout.search_filter_item;
     private FlowLayout fl1;
     private OnClickListener onClickListener;
-    private TextView more;
-    int pos;
+    private TextView filter;
+    private int pos;
+    private int num;
 
     public FilterCateItem(FilterBean bean, Context c) {
         super(bean, c);
@@ -47,19 +49,37 @@ public class FilterCateItem extends BaseItem<FilterBean> {
         TextView tv1 = holder.get(R.id.textView185);
         tv1.setText(mData.getTitle());
 
-        more = holder.get(R.id.textView262);
-        more.setText(R.string.more);
+        ImageView iv = holder.get(R.id.imageView132);
+        TextView more = holder.get(R.id.textView262);
+        filter = holder.get(R.id.textView263);
 
         fl1 = (FlowLayout) holder.getView(R.id.flowLayout);
         fl1.setChildSpacing(16);
         fl1.setRowSpacing(16);
         fl1.setChildSpacingForLastRow(16);
         fl1.removeAllViews();
-        for (int i = 0; i < mData.getList().size(); i++) {
+
+        if (mData.getList().size() > 3) {
+            iv.setAlpha(1);
+            more.setText(R.string.more);
+            more.setOnClickListener(listener);
+            if (mData.isOpen()) {
+                iv.setBackgroundResource(R.drawable.icon_forward_down);
+                num = mData.getList().size();
+            } else {
+                iv.setBackgroundResource(R.drawable.icon_forward);
+                num = 3;
+            }
+        } else {
+            iv.setAlpha(0);
+            more.setText("");
+            num = mData.getList().size();
+        }
+        for (int i = 0; i < num; i++) {
             TextView ftv = new TextView(context);
-            if(mData.getList().get(i).getCat_alias_name() == null){
+            if (mData.getList().get(i).getCat_alias_name() == null) {
                 ftv.setText(mData.getList().get(i).getCat_name());
-            }else{
+            } else {
                 ftv.setText(mData.getList().get(i).getCat_alias_name());
             }
             int id = IdsUtils.generateViewId();
@@ -83,6 +103,24 @@ public class FilterCateItem extends BaseItem<FilterBean> {
             }
             ftv.setOnClickListener(listener);
         }
+
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < mData.getList().size(); i++) {
+            if (mData.getList().get(i).isIs_select()) {
+                if (mData.getList().get(i).getCat_alias_name() == null) {
+                    str.append(mData.getList().get(i).getCat_name()).append(",");
+                } else {
+                    str.append(mData.getList().get(i).getCat_alias_name()).append(",");
+                }
+            }
+        }
+        if (str.toString().equals("")) {
+            filter.setText("");
+            filter.setTextColor(context.getResources().getColor(R.color.gray));
+        } else {
+            filter.setText(str.toString().substring(0, str.toString().length() - 1));
+            filter.setTextColor(context.getResources().getColor(R.color.colorBack_morandi));
+        }
     }
 
     public interface OnClickListener {
@@ -96,34 +134,42 @@ public class FilterCateItem extends BaseItem<FilterBean> {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            StringBuilder str = new StringBuilder();
-            for (int i = 0; i < mData.getList().size(); i++) {
-                TextView tv = fl1.findViewById(mData.getList().get(i).getButtonId());
-                if (tv.getId() == view.getId()) {
-                    if(mData.getList().get(i).isIs_select()){
-                        mData.getList().get(i).setIs_select(false);
-                        tv.setTextColor(context.getResources().getColor(R.color.black));
-                        tv.setBackgroundResource(R.drawable.shape_6_gray_d);
-                    }else{
-                        mData.getList().get(i).setIs_select(true);
-                        tv.setTextColor(context.getResources().getColor(R.color.white));
-                        tv.setBackgroundResource(R.drawable.shape_6_red);
+            if (view.getId() == R.id.textView262) {
+                if (mData.isOpen()) {
+                    mData.setOpen(false);
+                } else {
+                    mData.setOpen(true);
+                }
+            } else {
+                StringBuilder str = new StringBuilder();
+                for (int i = 0; i < num; i++) {
+                    TextView tv = fl1.findViewById(mData.getList().get(i).getButtonId());
+                    if (tv.getId() == view.getId()) {
+                        if (mData.getList().get(i).isIs_select()) {
+                            mData.getList().get(i).setIs_select(false);
+                            tv.setTextColor(context.getResources().getColor(R.color.black));
+                            tv.setBackgroundResource(R.drawable.shape_6_gray_d);
+                        } else {
+                            mData.getList().get(i).setIs_select(true);
+                            tv.setTextColor(context.getResources().getColor(R.color.white));
+                            tv.setBackgroundResource(R.drawable.shape_6_red);
+                        }
+                    }
+                    if (mData.getList().get(i).isIs_select()) {
+                        if (mData.getList().get(i).getCat_alias_name() == null) {
+                            str.append(mData.getList().get(i).getCat_name()).append(",");
+                        } else {
+                            str.append(mData.getList().get(i).getCat_alias_name()).append(",");
+                        }
                     }
                 }
-                if (mData.getList().get(i).isIs_select()) {
-                    if(mData.getList().get(i).getCat_alias_name() == null){
-                        str.append(mData.getList().get(i).getCat_name()).append(",");
-                    }else{
-                        str.append(mData.getList().get(i).getCat_alias_name()).append(",");
-                    }
+                if (str.toString().equals("")) {
+                    filter.setText("");
+                    filter.setTextColor(context.getResources().getColor(R.color.gray));
+                } else {
+                    filter.setText(str.toString().substring(0, str.toString().length() - 1));
+                    filter.setTextColor(context.getResources().getColor(R.color.colorBack_morandi));
                 }
-            }
-            if(str.toString().equals("")){
-                more.setText(R.string.more);
-                more.setTextColor(context.getResources().getColor(R.color.gray));
-            }else{
-                more.setText(str.toString().substring(0,str.toString().length()-1));
-                more.setTextColor(context.getResources().getColor(R.color.colorBack_morandi));
             }
             if (onClickListener != null) {
                 onClickListener.onClicked(view, mData, pos);

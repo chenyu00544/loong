@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\App;
 
+use App\Facades\RedisCache;
 use App\Facades\Verifiable;
 use App\Repositories\App\GoodsRepository;
 use Illuminate\Http\Request;
@@ -30,8 +31,13 @@ class SearchController extends CommonController
 
     public function getSearchKeywords()
     {
+        $data = RedisCache::get('search_keywords');
+        if (!empty($data)) {
+            return $data;
+        }
         $res = $this->goodsRepository->getSearchByKeywords();
         if($res){
+            RedisCache::get('search_keywords', ['code' => 0, 'msg' => '', 'data' => $res], 60);
             return ['code' => 0, 'msg' => '', 'data' => $res];
         }else{
             return ['code' => 1, 'msg' => '', 'data' => []];

@@ -24,6 +24,7 @@ use App\Http\Models\App\CommentExtModel;
 use App\Http\Models\App\CommentLabelModel;
 use App\Http\Models\App\CommentModel;
 use App\Http\Models\App\FavourableGoodsModel;
+use App\Http\Models\App\GoodsAttrModel;
 use App\Http\Models\App\GoodsDescriptionModel;
 use App\Http\Models\App\GoodsModel;
 use App\Http\Models\App\ProductsModel;
@@ -34,6 +35,7 @@ use App\Http\Models\App\UsersModel;
 class GoodsRepository implements GoodsRepositoryInterface
 {
     private $goodsModel;
+    private $goodsAttrModel;
     private $transportModel;
     private $commentModel;
     private $commentLabelModel;
@@ -53,6 +55,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function __construct(
         GoodsModel $goodsModel,
+        GoodsAttrModel $goodsAttrModel,
         TransportModel $transportModel,
         CommentModel $commentModel,
         CommentLabelModel $commentLabelModel,
@@ -72,6 +75,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     )
     {
         $this->goodsModel = $goodsModel;
+        $this->goodsAttrModel = $goodsAttrModel;
         $this->transportModel = $transportModel;
         $this->commentModel = $commentModel;
         $this->commentLabelModel = $commentLabelModel;
@@ -285,7 +289,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function getSearchByGoods($request)
     {
-        $column = ['goods_id', 'cat_id', 'goods_name', 'brand_id', 'market_price', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_thumb', 'goods_img', 'original_img', 'is_on_sale', 'is_delete', 'review_status', 'add_time', 'sort_order', 'pinyin_keyword', 'sales_volume', 'goods_brief', 'is_best', 'is_hot', 'is_new', 'cat_id', 'goods_type'];
+        $column = ['goods_id', 'cat_id', 'goods_name', 'brand_id', 'market_price', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date', 'goods_thumb', 'goods_img', 'original_img', 'is_on_sale', 'is_delete', 'review_status', 'add_time', 'sort_order', 'pinyin_keyword', 'sales_volume', 'goods_brief', 'is_best', 'is_hot', 'is_new', 'cat_id', 'goods_type', 'pinyin_keyword'];
         $where = [
             ['is_on_sale', '=', '1'],
             ['is_delete', '=', '0'],
@@ -298,6 +302,9 @@ class GoodsRepository implements GoodsRepositoryInterface
             $keywords = Common::scws($request['keywords']);
             if (!in_array($request['keywords'], $keywords)) {
                 $keywords[] = $request['keywords'];
+            }
+            foreach ($keywords as $key => $keyword) {
+                $keywords[$key] = Pinyin::Pinyin($keyword, 'UTF8');
             }
             $kwhere['keyword'] = $request['keywords'];
             $re = $this->searchKeywordModel->incrementKeyword($kwhere);
@@ -314,9 +321,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         if (!empty($request['cate_id']) && !empty($request['cate_name'])) {
             $cate_id = $request['cate_id'];
             $res = $this->categoryModel->getSubCates(['parent_id' => $cate_id], ['id', 'parent_id']);
-            $whereIn[] = $cate_id;
+            $whereIn['cat_id'][] = $cate_id;
             foreach ($res as $re) {
-                $whereIn[] = $re->id;
+                $whereIn['cat_id'][] = $re->id;
             }
             $cwhere = ['cate_id' => $cate_id];
             $re = $this->cateKeywordModel->incrementKeyword($cwhere);
@@ -362,7 +369,60 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
         }
 
-        $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, $page, $whereIn, $orderBy, $column);
+        if (!empty($request['min_price'])) {
+            $where[] = ['shop_price', '>', $request['min_price']];
+        }
+
+        if (!empty($request['max_price'])) {
+            $where[] = ['shop_price', '<', $request['max_price']];
+        }
+
+        if (!empty($request['cate_id'])) {
+            $wherein['cat_id'][] = explode(',', $request['cate_id']);
+        }
+
+        if (!empty($request['brand_id'])) {
+            $wherein['brand_id'][] = explode(',', $request['brand_id']);
+        }
+
+        $whereOr = [];
+        if (!empty($request['server_id'])) {
+            switch ($request['server_id']) {
+                case 1:
+                    $whereOr[] = [
+                        ['is_promote', '=', '1'],
+                        ['promote_start_date', '<', time()],
+                        ['promote_end_date', '>', time()]
+                    ];
+                    $whereOr[] = [['is_volume', '=', '1']];
+                    $whereOr[] = [['is_fullcut', '=', '1']];
+                    break;
+                case 2:
+                    $where[] = [['goods_number', '>', '0']];
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+            }
+        }
+
+        $goods_ids = [];
+        foreach ($request as $attr => $val) {
+            $attr = explode('_', $attr);
+            if (!empty($attr[0]) && $attr[0] == 'attrid') {
+                $attr_val = explode(',', $val);
+                $re = $this->goodsAttrModel->getGoodsByFilter(['attr_id' => $attr[1], 'attr_value' => $attr_val], ['goods_id']);
+                $goods_ids[] = $re->toArray();
+            }
+        }
+        dd($goods_ids);
+
+        $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, $whereOr, $page, $whereIn, $orderBy, $column);
         $catId = [];
         $goodsType = [];
         $brandId = [];
@@ -401,7 +461,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $return['server']['values'] = [
             ['server_id' => 1, 'server_name' => '促销'],
             ['server_id' => 2, 'server_name' => '仅有现货'],
-            ['server_id' => 3, 'server_name' => '会员价']
+//            ['server_id' => 3, 'server_name' => '会员价']
         ];
         $return['price']['title'] = '价格';
         $return['price']['price_range'] = [

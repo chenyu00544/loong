@@ -59,7 +59,9 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
         editText1 = holder.get(R.id.editText19);
         editText2 = holder.get(R.id.editText20);
         editText1.addTextChangedListener(textWatcher1);
+        editText1.setOnFocusChangeListener(focusChangeListener1);
         editText2.addTextChangedListener(textWatcher2);
+        editText2.setOnFocusChangeListener(focusChangeListener2);
 
         fl1 = (FlowLayout) holder.getView(R.id.flowLayout);
         fl1.setChildSpacing(16);
@@ -74,7 +76,7 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
             }
             TextView ftv = new TextView(context);
             ftv.setText(String.format(Locale.CHINA, str, mData.getList().get(i).getMin(), mData
-                    .getList().get(i).getMin()));
+                    .getList().get(i).getMax()));
             int id = IdsUtils.generateViewId();
             mData.getList().get(i).setButtonId(id);
             ftv.setId(id);
@@ -109,7 +111,6 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
     private TextWatcher textWatcher1 = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
         }
 
         @Override
@@ -134,10 +135,24 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
         }
     };
 
+    private EditText.OnFocusChangeListener focusChangeListener1 = new EditText.OnFocusChangeListener(){
+
+        @Override
+        public void onFocusChange(View view, boolean b) {
+            if(b){
+                for (int i = 0; i < mData.getList().size(); i++) {
+                    TextView tv = fl1.findViewById(mData.getList().get(i).getButtonId());
+                    mData.getList().get(i).setIs_select(false);
+                    tv.setTextColor(context.getResources().getColor(R.color.black));
+                    tv.setBackgroundResource(R.drawable.shape_6_gray_d);
+                }
+            }
+        }
+    };
+
     private TextWatcher textWatcher2 = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
         }
 
         @Override
@@ -157,6 +172,21 @@ public class FilterPriceItem extends BaseItem<FilterBean> {
                     list.add(filter);
                     filterBean.setList(list);
                     onClickListener.onClicked(editText2, filterBean, pos);
+                }
+            }
+        }
+    };
+
+    private EditText.OnFocusChangeListener focusChangeListener2 = new EditText.OnFocusChangeListener(){
+
+        @Override
+        public void onFocusChange(View view, boolean b) {
+            if(b){
+                for (int i = 0; i < mData.getList().size(); i++) {
+                    TextView tv = fl1.findViewById(mData.getList().get(i).getButtonId());
+                    mData.getList().get(i).setIs_select(false);
+                    tv.setTextColor(context.getResources().getColor(R.color.black));
+                    tv.setBackgroundResource(R.drawable.shape_6_gray_d);
                 }
             }
         }

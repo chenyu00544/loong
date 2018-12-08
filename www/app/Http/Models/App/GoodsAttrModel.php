@@ -22,4 +22,12 @@ class GoodsAttrModel extends Model
     {
         return $this->hasOne('App\Http\Models\App\AttributeModel', 'attr_id', 'attr_id');
     }
+
+    public function getGoodsByFilter($filter, $column = ['*'])
+    {
+        $m = $this->select($column);
+        $m->where(['attr_id' => $filter['attr_id']]);
+        $m->whereIn('attr_value', $filter['attr_value']);
+        return $m->get();
+    }
 }

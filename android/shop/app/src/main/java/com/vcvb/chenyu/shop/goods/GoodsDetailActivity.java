@@ -139,6 +139,13 @@ public class GoodsDetailActivity extends GoodsActivity {
                             bindData();
                         }
                     });
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.dismiss();
+                        }
+                    });
                 }
             }
 

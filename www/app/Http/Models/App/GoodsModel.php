@@ -138,7 +138,7 @@ class GoodsModel extends Model
             ->get();
     }
 
-    public function getGoodsesBySearch($keywords = [], $where = [], $page = 1, $wherein = [], $orderby = [], $column = ['*'], $size = 20)
+    public function getGoodsesBySearch($keywords = [], $where = [], $whereOr = [], $page = 1, $wherein = [], $orderby = [], $column = ['*'], $size = 20)
     {
         $m = $this->select($column)
             ->with(['gvp' => function ($query) {
@@ -152,17 +152,23 @@ class GoodsModel extends Model
         if (count($keywords) > 0) {
             $m->where(function ($query) use ($keywords) {
                 foreach ($keywords as $keyword) {
-                    if (preg_match("/^[a-zA-Z\s]+$/", $keyword)) {
-                        $query->orWhere('pinyin_keyword', 'like', '%' . $keyword . '%');
-                    } else {
-                        $query->orWhere('goods_name', 'like', '%' . $keyword . '%');
-                    }
+                    $query->orWhere('pinyin_keyword', 'like', '%' . $keyword . '%');
+                }
+            });
+        }
+
+        if (count($whereOr) > 0) {
+            $m->where(function ($query) use ($whereOr) {
+                foreach ($whereOr as $or) {
+                    $query->orWhere($or);
                 }
             });
         }
 
         if (count($wherein) > 0) {
-            $m->whereIn('cat_id', $wherein);
+            foreach ($wherein as $k => $wn) {
+                $m->whereIn($k, $wherein);
+            }
         }
 
         if (count($orderby) > 0) {

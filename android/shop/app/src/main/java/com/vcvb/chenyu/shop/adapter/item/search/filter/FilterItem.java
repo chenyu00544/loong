@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
@@ -19,7 +18,7 @@ import com.vcvb.chenyu.shop.tools.IdsUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 public class FilterItem extends BaseItem<FilterBean> {
-    public static final int TYPE = R.layout.search_filter_item;
+    public static final int TYPE = R.layout.search_filter_server_item;
     private FlowLayout fl1;
     private OnClickListener onClickListener;
     int pos;
@@ -46,8 +45,6 @@ public class FilterItem extends BaseItem<FilterBean> {
 
         TextView tv1 = holder.get(R.id.textView185);
         tv1.setText(mData.getTitle());
-        ImageView iv = holder.get(R.id.imageView132);
-        iv.setAlpha(0);
 
         fl1 = (FlowLayout) holder.getView(R.id.flowLayout);
         fl1.setChildSpacing(16);

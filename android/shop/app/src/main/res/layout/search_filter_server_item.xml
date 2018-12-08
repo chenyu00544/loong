@@ -7,18 +7,15 @@
 
     <TextView
         android:id="@+id/textView185"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text=""
         android:textColor="@color/black_29"
         android:textSize="14sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView263"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,43 +36,18 @@
 
     <TextView
         android:id="@+id/textView262"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:paddingBottom="4dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="4dp"
+        android:gravity="end"
         android:text=""
         android:textAlignment="textEnd"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView185"
-        app:layout_constraintEnd_toStartOf="@+id/imageView132"
-        app:layout_constraintTop_toTopOf="@+id/textView185"
-        tools:ignore="RtlCompat" />
+        app:layout_constraintEnd_toEndOf="@+id/flowLayout"
+        app:layout_constraintStart_toEndOf="@+id/textView185"
+        app:layout_constraintTop_toTopOf="@+id/textView185" />
 
-    <ImageView
-        android:id="@+id/imageView132"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView185"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView185"/>
-
-    <TextView
-        android:id="@+id/textView263"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:text=""
-        android:textAlignment="textEnd"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView185"
-        app:layout_constraintEnd_toStartOf="@+id/textView262"
-        app:layout_constraintTop_toTopOf="@+id/textView185"
-        tools:ignore="RtlCompat" />
 </android.support.constraint.ConstraintLayout>

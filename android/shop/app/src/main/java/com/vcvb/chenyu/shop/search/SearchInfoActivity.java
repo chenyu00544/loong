@@ -551,6 +551,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.textView260:
+                    //fixme 重置
                     for (int i = 0; i < filterList.size(); i++) {
                         for (int j = 0; j < filterList.get(i).getList().size(); j++) {
                             filterList.get(i).getList().get(j).setIs_select(false);
@@ -560,8 +561,9 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                     filterAdapter.notifyDataSetChanged();
                     break;
                 case R.id.textView261:
+                    //fixme 确定
                     openRightLayout();
-                    System.out.println(filterMp);
+                    getData(false);
                     break;
             }
         }
@@ -678,39 +680,51 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     FilterBrandItem.OnClickListener filterBrandItemListener = new FilterBrandItem.OnClickListener(){
         @Override
         public void onClicked(View view, FilterBean filter, int pos) {
-            List<Integer> list = new ArrayList<>();
-            for (int i = 0; i < filter.getList().size(); i++) {
-                if (filter.getList().get(i).isIs_select()) {
-                    list.add(filter.getList().get(i).getId());
+            if(view.getId()== R.id.textView262){
+                filterAdapter.notifyItemChanged(pos);
+            }else{
+                List<Integer> list = new ArrayList<>();
+                for (int i = 0; i < filter.getList().size(); i++) {
+                    if (filter.getList().get(i).isIs_select()) {
+                        list.add(filter.getList().get(i).getId());
+                    }
                 }
+                filterMp.put("brand_id", StringUtils.join(list, ","));
             }
-            filterMp.put("brand_id", StringUtils.join(list, ","));
         }
     };
 
     FilterCateItem.OnClickListener filterCateItemListener = new FilterCateItem.OnClickListener(){
         @Override
         public void onClicked(View view, FilterBean filter, int pos) {
-            List<Integer> list = new ArrayList<>();
-            for (int i = 0; i < filter.getList().size(); i++) {
-                if (filter.getList().get(i).isIs_select()) {
-                    list.add(filter.getList().get(i).getId());
+            if(view.getId()== R.id.textView262){
+                filterAdapter.notifyItemChanged(pos);
+            }else{
+                List<Integer> list = new ArrayList<>();
+                for (int i = 0; i < filter.getList().size(); i++) {
+                    if (filter.getList().get(i).isIs_select()) {
+                        list.add(filter.getList().get(i).getId());
+                    }
                 }
+                filterMp.put("cate_id", StringUtils.join(list, ","));
             }
-            filterMp.put("cate_id", StringUtils.join(list, ","));
         }
     };
 
     FilterAttrItem.OnClickListener filterAttrItemListener = new FilterAttrItem.OnClickListener(){
         @Override
         public void onClicked(View view, FilterBean filter, int pos) {
-            List<String> list = new ArrayList<>();
-            for (int i = 0; i < filter.getList().size(); i++) {
-                if (filter.getList().get(i).isIs_select()) {
-                    list.add(filter.getList().get(i).getAttr_value());
+            if(view.getId()== R.id.textView262){
+                filterAdapter.notifyItemChanged(pos);
+            }else{
+                List<String> list = new ArrayList<>();
+                for (int i = 0; i < filter.getList().size(); i++) {
+                    if (filter.getList().get(i).isIs_select()) {
+                        list.add(filter.getList().get(i).getAttr_value());
+                    }
                 }
+                filterMp.put("attr_id"+filter.getAttr_id(), StringUtils.join(list, ","));
             }
-            filterMp.put("attrid_"+filter.getAttr_id(), StringUtils.join(list, ","));
         }
     };
 }
