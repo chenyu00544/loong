@@ -18,7 +18,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     });
     Route::any('index', 'IndexController@index');
     Route::post('index/loadmore', 'IndexController@loadmore');
-    Route::post('test', 'IndexController@test');
+    Route::any('test', 'IndexController@test');
 
     Route::post('goods/detail', 'GoodsController@detail');
 
@@ -66,6 +66,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('category/index', 'CategoryController@index');
 
     Route::post('search/index', 'SearchController@index');
-    Route::post('search/filter', 'SearchController@getSearchFilter');
+    Route::post('search/filter/by', 'SearchController@getFilterBySearch');
+    Route::post('search/filter/to', 'SearchController@getFilterToSearch');
     Route::post('search/keywords', 'SearchController@getSearchKeywords');
 });

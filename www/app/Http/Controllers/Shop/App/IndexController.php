@@ -6,6 +6,7 @@ use App\Facades\RedisCache;
 use App\Repositories\App\AdRepository;
 use App\Repositories\App\GoodsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends CommonController
 {
@@ -25,7 +26,6 @@ class IndexController extends CommonController
 
     public function index(Request $request)
     {
-
         $data = RedisCache::get('app_index_data');
         if (!empty($data)) {
             return $data;
@@ -48,6 +48,13 @@ class IndexController extends CommonController
 
     public function test(Request $request)
     {
-        echo RedisCache::get("test");
+        $re = DB::select(DB::Raw("SELECT a.* FROM ( SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 61 AND attr_value IN	('二层牛皮','超纤')
+    UNION ALL
+    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 62 AND attr_value IN	('人造皮革','皮')
+    UNION ALL
+    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 63 AND attr_value IN	('橡胶')
+    UNION ALL
+    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 70 AND attr_value IN	('有跟'))a GROUP BY a.goods_id HAVING COUNT(a.goods_id)>3"));
+        dd($re);
     }
 }

@@ -160,7 +160,8 @@ public interface ConstantManager {
 
         //fixme 搜索
         public String SEARCH = URIHOST + "app/search/index";
-        public String SEARCH_FILTER = URIHOST + "app/search/filter";
+        public String SEARCH_FILTER_BY = URIHOST + "app/search/filter/by";
+        public String SEARCH_FILTER_TO = URIHOST + "app/search/filter/to";
         public String SEARCH_KEYWORDS = URIHOST + "app/search/keywords";
     }
 }

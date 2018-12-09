@@ -360,7 +360,7 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     }
 
     public void getFilterData() {
-        HttpUtils.getInstance().post(ConstantManager.Url.SEARCH_FILTER, filterAttrMp, new
+        HttpUtils.getInstance().post(ConstantManager.Url.SEARCH_FILTER_BY, filterAttrMp, new
                 HttpUtils.NetCall() {
                     @Override
                     public void success(Call call, final JSONObject json) throws IOException {
@@ -723,7 +723,8 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                         list.add(filter.getList().get(i).getAttr_value());
                     }
                 }
-                filterMp.put("attr_id"+filter.getAttr_id(), StringUtils.join(list, ","));
+                filterMp.put("attrid_"+filter.getAttr_id(), StringUtils.join(list, ","));
+                System.out.println(filterMp);
             }
         }
     };

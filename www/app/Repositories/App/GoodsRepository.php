@@ -385,6 +385,10 @@ class GoodsRepository implements GoodsRepositoryInterface
             $wherein['brand_id'][] = explode(',', $request['brand_id']);
         }
 
+        if (!empty($request['goods_id'])) {
+            $wherein['goods_id'][] = explode(',', $request['goods_id']);
+        }
+
         $whereOr = [];
         if (!empty($request['server_id'])) {
             switch ($request['server_id']) {
@@ -410,17 +414,6 @@ class GoodsRepository implements GoodsRepositoryInterface
                     break;
             }
         }
-
-        $goods_ids = [];
-        foreach ($request as $attr => $val) {
-            $attr = explode('_', $attr);
-            if (!empty($attr[0]) && $attr[0] == 'attrid') {
-                $attr_val = explode(',', $val);
-                $re = $this->goodsAttrModel->getGoodsByFilter(['attr_id' => $attr[1], 'attr_value' => $attr_val], ['goods_id']);
-                $goods_ids[] = $re->toArray();
-            }
-        }
-        dd($goods_ids);
 
         $res = $this->goodsModel->getGoodsesBySearch($keywords, $where, $whereOr, $page, $whereIn, $orderBy, $column);
         $catId = [];
@@ -454,6 +447,75 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $res;
     }
 
+    //fixme 从筛选条件中获取搜索结果
+    public function filterToSearch($request)
+    {
+        $filter = [];
+        foreach ($request as $attr => $val) {
+            $attr = explode('_', $attr);
+            if (!empty($attr[0]) && $attr[0] == 'attrid' && !empty($val)) {
+                $filter[] = ['attrid' => $attr[1], 'attr_value' => explode(',', $val)];
+            }
+        }
+        $keywords = [];
+        if (!empty($request['keywords'])) {
+            $keywords = Common::scws($request['keywords']);
+            if (!in_array($request['keywords'], $keywords)) {
+                $keywords[] = $request['keywords'];
+            }
+            foreach ($keywords as $key => $keyword) {
+                $keywords[$key] = Pinyin::Pinyin($keyword, 'UTF8');
+            }
+        }
+
+        $where = [];
+        if (!empty($request['min_price'])) {
+            $where[] = 'shop_price>' . $request['min_price'];
+        }
+
+        if (!empty($request['max_price'])) {
+            $where[] = 'shop_price<' . $request['max_price'];
+        }
+
+        $wherein = [];
+        if (!empty($request['cate_id'])) {
+            $wherein['cat_id'] = $request['cate_id'];
+        }
+
+        if (!empty($request['brand_id'])) {
+            $wherein['brand_id'] = $request['brand_id'];
+        }
+
+        $whereOr = '';
+        if (!empty($request['server_id'])) {
+            switch ($request['server_id']) {
+                case 1:
+                    $whereOr = 'is_promote=' . '1' . ' AND ' . 'promote_start_date<' . time() . ' AND ' . 'promote_end_date>' . time() . ' OR is_volume=1 OR is_fullcut=1 AND';
+                    break;
+                case 2:
+                    $where[] = 'goods_number>' . '0';
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+            }
+        }
+
+        $res = $this->goodsAttrModel->getGoodsIdsByFilter($where, $wherein, $whereOr, $filter, $keywords, ['*']);
+        $goods_ids = [];
+        foreach ($res as $re) {
+            $goods_ids['goods_id'][] = $re->goods_id;
+        }
+        $goods_ids['goods_count'] = count($goods_ids['goods_id']);
+        return $goods_ids;
+    }
+
+    //fixme 从搜索结果中获取筛选条件
     public function filterBySearch($request)
     {
         $return = [];
@@ -499,6 +561,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $return;
     }
 
+    //fixme 获取常用搜索关键字
     public function getSearchByKeywords()
     {
         $re['keyword'] = $this->searchKeywordModel->getKeywords([], ['keyword', 'count']);

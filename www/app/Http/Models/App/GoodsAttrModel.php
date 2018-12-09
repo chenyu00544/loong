@@ -10,6 +10,8 @@
 namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class GoodsAttrModel extends Model
 {
@@ -23,11 +25,59 @@ class GoodsAttrModel extends Model
         return $this->hasOne('App\Http\Models\App\AttributeModel', 'attr_id', 'attr_id');
     }
 
-    public function getGoodsByFilter($filter, $column = ['*'])
+    public function getGoodsIdsByFilter($where, $wherein, $whereOr, $filter, $keywords, $column = ['*'])
     {
-        $m = $this->select($column);
-        $m->where(['attr_id' => $filter['attr_id']]);
-        $m->whereIn('attr_value', $filter['attr_value']);
-        return $m->get();
+        $prefix = Config::get('database.connections.mysql.prefix');
+
+        $like = '';
+        foreach ($keywords as $keyword) {
+            $like .= ' pinyin_keyword like "%' . $keyword . '%" OR';
+        }
+        if ($like != '') {
+            $like = ' ('.substr($like, 0, -2) . ')';
+        }
+
+        $fw = '';
+        foreach ($where as $w) {
+            $fw .= $w . ' AND ';
+        }
+
+        $fwi = '';
+        foreach ($wherein as $k => $wi) {
+            $fwi .= $k . ' in (' . $wi . ') AND ';
+        }
+
+        if (count($filter) > 1) {
+            $sql = "SELECT a.goods_id FROM ( ";
+            $n = 0;
+            foreach ($filter as $k => $ft) {
+                $attr_id = $ft['attrid'];
+                $attr_value = '';
+                foreach ($ft['attr_value'] as $attr_v) {
+                    $attr_value .= '"' . $attr_v . '",';
+                }
+                $attr_value = substr($attr_value, 0, -1);
+                if ($k < count($filter) - 1) {
+                    $sql .= "SELECT * FROM {$prefix}goods_attr WHERE attr_id = $attr_id AND attr_value IN ($attr_value) UNION ALL ";
+                } else {
+                    $sql .= "SELECT * FROM {$prefix}goods_attr WHERE attr_id = $attr_id AND attr_value IN ($attr_value)";
+                }
+                $n = $k;
+            }
+            $sql .= ")a JOIN {$prefix}goods AS g ON a.goods_id=g.goods_id WHERE $fw $fwi $whereOr $like GROUP BY a.goods_id HAVING COUNT(a.goods_id)>$n";
+        } else {
+            $sql = "";
+            foreach ($filter as $k => $ft) {
+                $attr_id = $ft['attrid'];
+                $attr_value = '';
+                foreach ($ft['attr_value'] as $attr_v) {
+                    $attr_value .= '"' . $attr_v . '",';
+                }
+                $attr_value = substr($attr_value, 0, -1);
+                $sql = "SELECT a.goods_id FROM {$prefix}goods_attr AS a JOIN {$prefix}goods AS g ON a.goods_id=g.goods_id WHERE $fw $fwi $whereOr attr_id = $attr_id AND attr_value IN ($attr_value) AND $like";
+            }
+        }
+        $re = DB::select(DB::Raw($sql));
+        return $re;
     }
 }
