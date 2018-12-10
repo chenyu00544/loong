@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.order;
+package com.vcvb.chenyu.shop.activity.order;
 
 import android.content.Context;
 import android.content.Intent;
@@ -314,6 +314,7 @@ public class OrderListActivity extends BaseActivity {
             try {
                 Integer code = json.getInt("code");
                 if (code == 0) {
+                    int index = orders.size();
                     List<OrderDetail> _orders = new ArrayList<>();
                     JSONArray orderJSONArray = json.getJSONArray("data");
                     for (int i = 0; i < orderJSONArray.length(); i++) {
@@ -322,8 +323,9 @@ public class OrderListActivity extends BaseActivity {
                                 .class);
                         orderDetail.setData(object);
                         _orders.add(orderDetail);
+                        orders.add(orderDetail);
                     }
-                    mAdapter.addAll(_orders.size(), getItems(_orders));
+                    mAdapter.addAll(index, getItems(_orders));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -403,6 +405,7 @@ public class OrderListActivity extends BaseActivity {
         mp.put("token", token);
         mp.put("order_status", "2");
         mp.put("order_id", orderDetail.getOrder_id_str());
+        System.out.println(orderDetail);
         HttpUtils.getInstance().post(ConstantManager.Url.CANCEL_ORDER, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {

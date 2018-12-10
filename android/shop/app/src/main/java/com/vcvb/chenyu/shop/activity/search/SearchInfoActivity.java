@@ -225,11 +225,15 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
     }
 
     public void initfilterMp(){
+        HashMap<String, String> _filterMp = new HashMap<>();
+        _filterMp.put("keywords", keywords);
+        _filterMp.put("cate_name", cateName);
+        _filterMp.put("cate_id", cateId + "");
+        _filterMp.put("type", filterMp.get("type"));
+        _filterMp.put("price_order", filterMp.get("price_order"));
+        _filterMp.put("volume", filterMp.get("volume"));
         filterMp.clear();
-        filterMp.put("keywords", keywords);
-        filterMp.put("cate_name", cateName);
-        filterMp.put("cate_id", cateId + "");
-        filterMp.put("type", "1");
+        filterMp = _filterMp;
     }
 
     @Override
@@ -599,7 +603,6 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
             }
         });
     }
-
 
     View.OnClickListener filterListener = new View.OnClickListener() {
         @Override

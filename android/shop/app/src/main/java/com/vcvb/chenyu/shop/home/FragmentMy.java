@@ -25,7 +25,7 @@ import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 import com.vcvb.chenyu.shop.activity.center.AddressActivity;
 import com.vcvb.chenyu.shop.activity.center.BrowseActivity;
 import com.vcvb.chenyu.shop.activity.center.MyCollectionActivity;
-import com.vcvb.chenyu.shop.order.OrderListActivity;
+import com.vcvb.chenyu.shop.activity.order.OrderListActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;

@@ -20,7 +20,7 @@ import com.vcvb.chenyu.shop.adapter.itemdecoration.PayItemDecoration;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
-import com.vcvb.chenyu.shop.order.OrderListActivity;
+import com.vcvb.chenyu.shop.activity.order.OrderListActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 

@@ -54,8 +54,11 @@ public class MainActivity extends BaseActivity {
     private Context context;
     private int index = 0;
     private String SAVED_INDEX = "SAVED_INDEX";
-    private String[] fragmentTag = new String[]{"home", "categroy", "find", "cart", "my"};
+//    private String[] fragmentTag = new String[]{"home", "categroy", "find", "cart", "my"};
+    private String[] fragmentTag = new String[]{"home", "categroy", "cart", "my"};
     private LoadingDialog2 loadingDialog2;
+
+    private String device_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +68,16 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         context = this;
         fragmentManager = getSupportFragmentManager();
+        device_id = (String) UserInfoUtils.getInstance(context).getUserInfo().get("device_id");
         getData();
         bottomInit();
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SAVED_INDEX, index);
             fragmentHome = (FragmentHome) fragmentManager.findFragmentByTag(fragmentTag[0]);
             fragmentCategory = (FragmentCategory) fragmentManager.findFragmentByTag(fragmentTag[1]);
-            fragmentFind = (FragmentFind) fragmentManager.findFragmentByTag(fragmentTag[2]);
-            fragmentCart = (FragmentCart) fragmentManager.findFragmentByTag(fragmentTag[3]);
-            fragmentMy = (FragmentMy) fragmentManager.findFragmentByTag(fragmentTag[4]);
+//            fragmentFind = (FragmentFind) fragmentManager.findFragmentByTag(fragmentTag[2]);
+            fragmentCart = (FragmentCart) fragmentManager.findFragmentByTag(fragmentTag[2]);
+            fragmentMy = (FragmentMy) fragmentManager.findFragmentByTag(fragmentTag[3]);
         }
         setClick(index);
     }
@@ -130,14 +134,14 @@ public class MainActivity extends BaseActivity {
                     case R.id.tab_category:
                         setClick(1);
                         break;
-                    case R.id.tab_find:
+//                    case R.id.tab_find:
+//                        setClick(2);
+//                        break;
+                    case R.id.tab_cart:
                         setClick(2);
                         break;
-                    case R.id.tab_cart:
-                        setClick(3);
-                        break;
                     case R.id.tab_my:
-                        setClick(4);
+                        setClick(3);
                         break;
                 }
             }
@@ -169,28 +173,28 @@ public class MainActivity extends BaseActivity {
                 }
                 changeStatusBarTextColor(false);
                 break;
+//            case 2:
+//                if (fragmentFind == null) {
+//                    fragmentFind = new FragmentFind();
+//                    fragmentTransaction.add(R.id.fragment_content, fragmentFind, fragmentTag[2]);
+//                } else {
+//                    fragmentTransaction.show(fragmentFind);
+//                }
+//                changeStatusBarTextColor(false);
+//                break;
             case 2:
-                if (fragmentFind == null) {
-                    fragmentFind = new FragmentFind();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentFind, fragmentTag[2]);
-                } else {
-                    fragmentTransaction.show(fragmentFind);
-                }
-                changeStatusBarTextColor(false);
-                break;
-            case 3:
                 if (fragmentCart == null) {
                     fragmentCart = new FragmentCart();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentCart, fragmentTag[3]);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentCart, fragmentTag[2]);
                 } else {
                     fragmentTransaction.show(fragmentCart);
                 }
                 changeStatusBarTextColor(false);
                 break;
-            case 4:
+            case 3:
                 if (fragmentMy == null) {
                     fragmentMy = new FragmentMy();
-                    fragmentTransaction.add(R.id.fragment_content, fragmentMy, fragmentTag[4]);
+                    fragmentTransaction.add(R.id.fragment_content, fragmentMy, fragmentTag[3]);
                 } else {
                     fragmentTransaction.show(fragmentMy);
                 }
@@ -257,6 +261,7 @@ public class MainActivity extends BaseActivity {
                 mp.put("username", user.get("username"));
                 mp.put("password", user.get("password"));
                 mp.put("qrtype", user.get("type"));
+                mp.put("device_id", device_id);
                 HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
                         () {
                     @Override
@@ -329,6 +334,7 @@ public class MainActivity extends BaseActivity {
                             HashMap<String, String> mp = new HashMap<>();
                             try {
                                 mp.put("device_id", json.getString("data"));
+                                device_id = json.getString("data");
                                 UserInfoUtils.getInstance(context).setUserInfo(mp);
                             } catch (JSONException e) {
                                 e.printStackTrace();

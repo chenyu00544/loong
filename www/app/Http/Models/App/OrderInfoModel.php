@@ -69,7 +69,8 @@ class OrderInfoModel extends Model
 
     public function countOrder($where, $orWhere=[])
     {
-        return $this->where($where)->where(function($query) use ($orWhere){
+        return $this->where($where)
+            ->where(function($query) use ($orWhere){
             foreach ($orWhere as $where){
                 $query->orWhere($where);
             }

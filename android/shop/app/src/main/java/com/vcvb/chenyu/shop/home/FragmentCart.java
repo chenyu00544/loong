@@ -36,7 +36,7 @@ import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.store.Shop;
 import com.vcvb.chenyu.shop.activity.center.MyCollectionActivity;
-import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
+import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;

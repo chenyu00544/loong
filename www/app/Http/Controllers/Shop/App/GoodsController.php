@@ -28,11 +28,12 @@ class GoodsController extends CommonController
     public function detail(Request $request)
     {
         $goods_id = !empty($request->get('goods_id')) ? $request->get('goods_id') : 0;
+        $device_id = !empty($request->get('device_id')) ? $request->get('device_id') : 0;
         $user_id = Verifiable::authorization($request);
         if(empty($goods_id)){
             return ['code' => 9, 'msg' => '商品ID不为空', 'data' => []];
         }
-        $data = $this->goodsRepository->getGoodsDetail($goods_id, $user_id);
+        $data = $this->goodsRepository->getGoodsDetail($goods_id, $user_id, $device_id);
         if($data){
             $rep = ['code' => 0, 'msg' => '', 'data' => $data];
         }else{

@@ -236,7 +236,7 @@ public class FragmentHome extends BaseFragment {
 
     public void setLocationInfo() {
         if (locationData != null) {
-            Map<String, String> user = new HashMap<>();
+            final Map<String, String> user = new HashMap<>();
             try {
                 user.put("region_id", String.valueOf(locationData.getJSONObject("data").getString
                         ("region_id")));
@@ -247,6 +247,15 @@ public class FragmentHome extends BaseFragment {
                 UserInfoUtils.getInstance(context).setUserInfo(user);
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            if(getActivity() != null){
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView location = view.findViewById(R.id.location_text);
+                        location.setText(user.get("region_name"));
+                    }
+                });
             }
         }
     }

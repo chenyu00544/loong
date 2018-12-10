@@ -48,7 +48,7 @@ import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.activity.login.RegisterActivity;
 import com.vcvb.chenyu.shop.activity.center.AddressActivity;
 import com.vcvb.chenyu.shop.activity.center.ModifyAddressActivity;
-import com.vcvb.chenyu.shop.order.OrderDetailsActivity;
+import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 import com.vcvb.chenyu.shop.popwin.PopWin;
@@ -74,6 +74,7 @@ import okhttp3.Call;
 public class GoodsDetailActivity extends GoodsActivity {
     private int goods_id;
     private JSONObject goodsJson;
+    private String device_id;
 
     int pos = 0;
     private View child1;
@@ -105,6 +106,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         changeStatusBarTextColor(true);
         goods_id = getIntent().getIntExtra("id", 0);
+        device_id = (String) UserInfoUtils.getInstance(context).getUserInfo().get("device_id");
         setNavBack();
         initView();
         initListener();
@@ -127,6 +129,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("goods_id", goods_id + "");
         mp.put("token", token);
+        mp.put("device_id", device_id);
         HttpUtils.getInstance().post(ConstantManager.Url.GOODSDETAIL, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
@@ -451,8 +454,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         loadingDialog.show();
         mp.put("goods_id", goods_id + "");
         mp.put("token", token);
-        mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
-                ("device_id"));
+        mp.put("device_id", device_id);
         mp.put("goods_attr_ids", StringUtils.join(goods_attr_ids_bak, ","));
         HttpUtils.getInstance().post(ConstantManager.Url.ADD_CART, mp, new HttpUtils.NetCall() {
             @Override
@@ -584,6 +586,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 mp.put("username", user.get("username"));
                 mp.put("password", user.get("password"));
                 mp.put("qrtype", user.get("type"));
+                mp.put("device_id", device_id);
                 HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
                         () {
                     @Override

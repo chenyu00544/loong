@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.order;
+package com.vcvb.chenyu.shop.activity.order;
 
 import android.content.Intent;
 import android.os.Bundle;

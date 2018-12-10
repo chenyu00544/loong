@@ -114,7 +114,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $goodses;
     }
 
-    public function getGoodsDetail($goods_id, $user_id = 0)
+    public function getGoodsDetail($goods_id, $user_id = 0, $device_id = '')
     {
         //添加浏览足迹
         if ($user_id > 0 && $this->browseGoodsModel->countBrowseGoods(['user_id' => $user_id, 'goods_id' => $goods_id]) == 0) {
@@ -154,7 +154,16 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->shop_price_format = Common::priceFormat($goods_detail->shop_price);
             $goods_detail->market_price_format = Common::priceFormat($goods_detail->market_price);
             $goods_detail->promote_price_format = Common::priceFormat($goods_detail->promote_price);
-            $goods_detail->count_cart = $this->cartModel->countCart(['user_id' => $user_id]);
+            if($user_id > 0){
+                $goods_detail->count_cart = $this->cartModel->countCart(['user_id' => $user_id]);
+            }else{
+                if($device_id != ''){
+                    $goods_detail->count_cart = $this->cartModel->countCart(['session_id' => $device_id]);
+                }else{
+                    $goods_detail->count_cart = 0;
+                }
+            }
+
 
             $goods_detail->collect = $this->collectGoodsModel->countCollectGoods(['goods_id' => $goods_id, 'user_id' => $user_id, 'is_attention' => 1]);
 

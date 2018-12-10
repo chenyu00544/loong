@@ -136,6 +136,7 @@
     <string name="user_name">收货人姓名（请使用真实姓名）</string>
     <string name="phone_num">手机号码</string>
     <string name="area">所在地区</string>
+    <string name="location">地区</string>
     <string name="address_info">街道、小区门牌等详细信息</string>
 
     <string name="tip">提示</string>

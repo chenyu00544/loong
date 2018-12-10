@@ -12,11 +12,13 @@ use App\Contracts\UsersRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
+use App\Http\Models\App\CartModel;
 use App\Http\Models\App\OrderInfoModel;
 use App\Http\Models\App\OrderReturnModel;
 use App\Http\Models\App\UserAddressModel;
 use App\Http\Models\App\UsersModel;
 use App\Http\Models\App\UsersRealModel;
+use Illuminate\Support\Facades\DB;
 
 class UsersRepository implements UsersRepositoryInterface
 {
@@ -25,13 +27,15 @@ class UsersRepository implements UsersRepositoryInterface
     private $usersRealModel;
     private $orderInfoModel;
     private $orderReturnModel;
+    private $cartModel;
 
     public function __construct(
         UsersModel $usersModel,
         UserAddressModel $userAddressModel,
         UsersRealModel $usersRealModel,
         OrderInfoModel $orderInfoModel,
-        OrderReturnModel $orderReturnModel
+        OrderReturnModel $orderReturnModel,
+        CartModel $cartModel
     )
     {
         $this->usersModel = $usersModel;
@@ -39,9 +43,10 @@ class UsersRepository implements UsersRepositoryInterface
         $this->usersRealModel = $usersRealModel;
         $this->orderInfoModel = $orderInfoModel;
         $this->orderReturnModel = $orderReturnModel;
+        $this->cartModel = $cartModel;
     }
 
-    public function login($username, $password, $type, $ip)
+    public function login($username, $password, $type, $ip, $device_id = '')
     {
         $req = ['code' => 1, 'msg' => '账号密码错误', 'data' => '', 'token' => ''];
         $column = ['user_id', 'email', 'user_name', 'nick_name', 'logo', 'password', 'salt', 'mobile_phone', 'user_money', 'visit_count'];
@@ -63,6 +68,7 @@ class UsersRepository implements UsersRepositoryInterface
                         'visit_count' => $user->visit_count + 1
                     ];
                     $this->usersModel->setUsers($where, $updata);
+                    $this->cartModel->setCart(['session_id' => $device_id], ['user_id' => $user->user_id]);
                 } else {
                     $req = ['code' => 1, 'msg' => '密码错误', 'data' => '', 'token' => ''];
                 }
@@ -94,15 +100,15 @@ class UsersRepository implements UsersRepositoryInterface
         }
 
         //待付款
-        $order_orwhere = [
-            [['order_status', '<>', OS_CANCELED]],
-            [['order_status', '<>', OS_INVALID]],
-        ];
+        $order_orwhere = [];
         $order_where = [
+            ['order_status', '<>', OS_CANCELED],
+            ['order_status', '<>', OS_INVALID],
             ['pay_status', '=', PS_UNPAYED],
             ['shipping_status', '=', SS_UNSHIPPED],
             ['user_id', '=', $uid],
         ];
+
         $order_unpayed_count = $this->orderInfoModel->countOrder($order_where, $order_orwhere);
         $user->order_unpayed_count = $order_unpayed_count;
 

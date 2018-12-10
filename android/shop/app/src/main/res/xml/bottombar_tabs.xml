@@ -8,10 +8,10 @@
         id="@+id/tab_category"
         icon="@drawable/icon_cate"
         title="@string/tab_2" />
-    <tab
-        id="@+id/tab_find"
-        icon="@drawable/icon_find"
-        title="@string/tab_3" />
+    <!--<tab-->
+        <!--id="@+id/tab_find"-->
+        <!--icon="@drawable/icon_find"-->
+        <!--title="@string/tab_3" />-->
     <tab
         id="@+id/tab_cart"
         icon="@drawable/icon_cart"
