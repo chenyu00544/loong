@@ -22,7 +22,7 @@ import com.vcvb.chenyu.shop.home.FragmentCategory;
 import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.home.FragmentHome;
 import com.vcvb.chenyu.shop.home.FragmentMy;
-import com.vcvb.chenyu.shop.login.RegisterActivity;
+import com.vcvb.chenyu.shop.activity.login.RegisterActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;

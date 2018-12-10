@@ -106,4 +106,28 @@
 
     </com.nex3z.flowlayout.FlowLayout>
 
+    <ImageView
+        android:id="@+id/imageView134"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView175"
+        app:layout_constraintEnd_toStartOf="@+id/textView264"
+        app:layout_constraintTop_toTopOf="@+id/textView175"
+        app:srcCompat="@drawable/icon_change" />
+
+    <TextView
+        android:id="@+id/textView264"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        android:gravity="center_vertical"
+        android:text="@string/change"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView175"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView175" />
+
 </android.support.constraint.ConstraintLayout>

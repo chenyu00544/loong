@@ -31,7 +31,7 @@ import com.vcvb.chenyu.shop.javaBean.faat.Coupons;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.javaBean.order.OrderGoods;
 import com.vcvb.chenyu.shop.javaBean.order.Pay;
-import com.vcvb.chenyu.shop.mycenter.ModifyAddressActivity;
+import com.vcvb.chenyu.shop.activity.center.ModifyAddressActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;

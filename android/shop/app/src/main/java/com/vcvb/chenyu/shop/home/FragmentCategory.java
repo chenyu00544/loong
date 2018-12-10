@@ -28,7 +28,7 @@ import com.vcvb.chenyu.shop.javaBean.cate.Categroy;
 import com.vcvb.chenyu.shop.javaBean.cate.SubCate;
 import com.vcvb.chenyu.shop.javaBean.cate.SubCategroy;
 import com.vcvb.chenyu.shop.javaBean.home.Ads;
-import com.vcvb.chenyu.shop.search.SearchInfoActivity;
+import com.vcvb.chenyu.shop.activity.search.SearchInfoActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.UrlParse;

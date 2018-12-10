@@ -2,10 +2,10 @@ package com.vcvb.chenyu.shop.tools;
 
 import android.net.Uri;
 
-import com.vcvb.chenyu.shop.faat.BrandListActivity;
-import com.vcvb.chenyu.shop.faat.FaatListActivity;
-import com.vcvb.chenyu.shop.goods.GoodsDetailActivity;
-import com.vcvb.chenyu.shop.search.SearchInfoActivity;
+import com.vcvb.chenyu.shop.activity.goods.faat.BrandListActivity;
+import com.vcvb.chenyu.shop.activity.goods.faat.FaatListActivity;
+import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
+import com.vcvb.chenyu.shop.activity.search.SearchInfoActivity;
 
 import java.net.URL;
 import java.net.URLDecoder;

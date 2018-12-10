@@ -54,12 +54,12 @@
             android:theme="@style/AppThemeMain" />
 
         <activity
-            android:name=".goods.GoodsDetailActivity"
+            android:name=".activity.goods.GoodsDetailActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".login.RegisterActivity"
+            android:name=".activity.login.RegisterActivity"
             android:label="@string/login"
             android:theme="@style/AppTheme" />
 
@@ -69,22 +69,22 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".mycenter.MyCollectionActivity"
+            android:name=".activity.center.MyCollectionActivity"
             android:label="@string/collection"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".mycenter.AddressActivity"
+            android:name=".activity.center.AddressActivity"
             android:label="@string/address"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".mycenter.ModifyAddressActivity"
+            android:name=".activity.center.ModifyAddressActivity"
             android:label="@string/add_address"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".mycenter.BrowseActivity"
+            android:name=".activity.center.BrowseActivity"
             android:label="@string/browse"
             android:theme="@style/AppTheme" />
 
@@ -99,12 +99,12 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".mycenter.userinfo.UserNickActivity"
+            android:name=".activity.center.userinfo.UserNickActivity"
             android:label="@string/nick_title"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".mycenter.userinfo.UserAccountActivity"
+            android:name=".activity.center.userinfo.UserAccountActivity"
             android:label="@string/account_title"
             android:theme="@style/AppTheme" />
 
@@ -114,21 +114,21 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".mycenter.userinfo.BindPhoneActivity"
+            android:name=".activity.center.userinfo.BindPhoneActivity"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".search.SearchInfoActivity"
+            android:name=".activity.search.SearchInfoActivity"
             android:label="@string/search"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".search.SearchActivity"
+            android:name=".activity.search.SearchActivity"
             android:label="@string/search"
             android:theme="@style/noAnimationTheme" />
 
         <activity
-            android:name=".goods.CartActivity"
+            android:name=".activity.goods.CartActivity"
             android:label="@string/cart"
             android:theme="@style/AppTheme" />
 
@@ -138,38 +138,38 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".pay.PaySuccessActivity"
+            android:name=".activity.pay.PaySuccessActivity"
             android:label="@string/pay"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".msg.MessageActivity"
+            android:name=".activity.msg.MessageActivity"
             android:label="@string/message_center"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".msg.MessageInfoActivity"
+            android:name=".activity.msg.MessageInfoActivity"
             android:label="@string/message_center"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".evaluate.QuestionsListActivity"
+            android:name=".activity.evaluate.QuestionsListActivity"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".evaluate.EvaluateListActivity"
+            android:name=".activity.evaluate.EvaluateListActivity"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".evaluate.AskListActivity"
+            android:name=".activity.evaluate.AskListActivity"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".faat.BrandListActivity"
+            android:name=".activity.goods.faat.BrandListActivity"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".faat.FaatListActivity"
+            android:name=".activity.goods.faat.FaatListActivity"
             android:theme="@style/AppTheme" />
 
         <!--<receiver android:name=".receiver.Receiver">-->

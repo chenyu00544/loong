@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -17,13 +18,13 @@ class SearchKeywordModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getKeywords($where, $column=['*'])
+    public function getKeywords($where, $column = ['*'], $page = 1)
     {
         return $this->select($column)
             ->where($where)
-            ->offset(0)
+            ->offset(($page - 1) * 10)
             ->limit(10)
-            ->orderBy('count','DESC')
+            ->orderBy('count', 'DESC')
             ->get();
     }
 
@@ -31,6 +32,11 @@ class SearchKeywordModel extends Model
     {
         return $this->where($where)
             ->increment('count', 1);
+    }
+
+    public function countKeywords($where = [])
+    {
+        return $this->where($where)->count();
     }
 
     public function addKeyword($data)

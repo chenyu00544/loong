@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Shop\App;
 
 use App\Facades\RedisCache;
-use App\Facades\Verifiable;
 use App\Repositories\App\GoodsRepository;
 use Illuminate\Http\Request;
 
@@ -59,6 +58,17 @@ class SearchController extends CommonController
     public function getFilterToSearch(Request $request)
     {
         $res = $this->goodsRepository->filterToSearch($request->all());
+        if($res){
+            return ['code' => 0, 'msg' => '', 'data' => $res];
+        }else{
+            return ['code' => 1, 'msg' => '', 'data' => []];
+        }
+    }
+
+    //fixme 换一换热门关键字
+    public function changeKeywords(Request $request)
+    {
+        $res = $this->goodsRepository->changeKeywords($request->all());
         if($res){
             return ['code' => 0, 'msg' => '', 'data' => $res];
         }else{

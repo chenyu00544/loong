@@ -293,7 +293,6 @@ class GoodsRepository implements GoodsRepositoryInterface
         $where = [
             ['is_on_sale', '=', '1'],
             ['is_delete', '=', '0'],
-            ['review_status', '>=', '3']
         ];
         $keywords = [];
         $whereIn = [];
@@ -369,24 +368,16 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
         }
 
-        if (!empty($request['min_price'])) {
-            $where[] = ['shop_price', '>', $request['min_price']];
-        }
-
-        if (!empty($request['max_price'])) {
-            $where[] = ['shop_price', '<', $request['max_price']];
-        }
-
-        if (!empty($request['cate_id'])) {
-            $wherein['cat_id'][] = explode(',', $request['cate_id']);
-        }
-
         if (!empty($request['brand_id'])) {
-            $wherein['brand_id'][] = explode(',', $request['brand_id']);
+            $whereIn['brand_id'] = explode(',', $request['brand_id']);
         }
 
-        if (!empty($request['goods_id'])) {
-            $wherein['goods_id'][] = explode(',', $request['goods_id']);
+        if (isset($request['goods_ids'])) {
+            if (!empty($request['goods_ids'])) {
+                $whereIn['goods_id'] = explode(',', $request['goods_ids']);
+            } else {
+                $whereIn['goods_id'] = [0];
+            }
         }
 
         $whereOr = [];
@@ -402,7 +393,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                     $whereOr[] = [['is_fullcut', '=', '1']];
                     break;
                 case 2:
-                    $where[] = [['goods_number', '>', '0']];
+                    $where[] = ['goods_number', '>', '0'];
                     break;
                 case 3:
                     break;
@@ -507,11 +498,14 @@ class GoodsRepository implements GoodsRepositoryInterface
         }
 
         $res = $this->goodsAttrModel->getGoodsIdsByFilter($where, $wherein, $whereOr, $filter, $keywords, ['*']);
-        $goods_ids = [];
+        $goods_ids['goods_id'] = [];
+        $goods_ids['goods_count'] = 0;
         foreach ($res as $re) {
             $goods_ids['goods_id'][] = $re->goods_id;
         }
-        $goods_ids['goods_count'] = count($goods_ids['goods_id']);
+        if (!empty($goods_ids['goods_id'])) {
+            $goods_ids['goods_count'] = count($goods_ids['goods_id']);
+        }
         return $goods_ids;
     }
 
@@ -567,6 +561,14 @@ class GoodsRepository implements GoodsRepositoryInterface
         $re['keyword'] = $this->searchKeywordModel->getKeywords([], ['keyword', 'count']);
         $re['cate'] = $this->cateKeywordModel->getKeywords([], ['cate_id', 'cate_name']);
         return $re;
+    }
+
+    public function changeKeywords($request)
+    {
+        $this->searchKeywordModel->getKeywords([], ['keyword', 'count']);
+        $count = $this->searchKeywordModel->countKeywords();
+        $page = rand(1, $count / 10);
+        return $this->searchKeywordModel->getKeywords([], ['keyword', 'count'], $page);
     }
 
     public function cartList($request, $uid)

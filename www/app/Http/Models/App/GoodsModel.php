@@ -9,7 +9,6 @@
 
 namespace App\Http\Models\App;
 
-use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 
 class GoodsModel extends Model
@@ -149,6 +148,7 @@ class GoodsModel extends Model
             }])
             ->where($where)
             ->where('review_status', '>=', 3);
+
         if (count($keywords) > 0) {
             $m->where(function ($query) use ($keywords) {
                 foreach ($keywords as $keyword) {
@@ -167,7 +167,7 @@ class GoodsModel extends Model
 
         if (count($wherein) > 0) {
             foreach ($wherein as $k => $wn) {
-                $m->whereIn($k, $wherein);
+                $m->whereIn($k, $wn);
             }
         }
 

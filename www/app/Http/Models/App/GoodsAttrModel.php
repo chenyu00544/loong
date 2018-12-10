@@ -65,7 +65,7 @@ class GoodsAttrModel extends Model
                 $n = $k;
             }
             $sql .= ")a JOIN {$prefix}goods AS g ON a.goods_id=g.goods_id WHERE $fw $fwi $whereOr $like GROUP BY a.goods_id HAVING COUNT(a.goods_id)>$n";
-        } else {
+        } else if(count($filter) == 1){
             $sql = "";
             foreach ($filter as $k => $ft) {
                 $attr_id = $ft['attrid'];
@@ -76,6 +76,8 @@ class GoodsAttrModel extends Model
                 $attr_value = substr($attr_value, 0, -1);
                 $sql = "SELECT a.goods_id FROM {$prefix}goods_attr AS a JOIN {$prefix}goods AS g ON a.goods_id=g.goods_id WHERE $fw $fwi $whereOr attr_id = $attr_id AND attr_value IN ($attr_value) AND $like";
             }
+        }else{
+            $sql = "SELECT goods_id FROM {$prefix}goods WHERE $fw $fwi $whereOr $like";
         }
         $re = DB::select(DB::Raw($sql));
         return $re;
