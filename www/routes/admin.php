@@ -272,4 +272,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('commentlabel', 'CommentLabelController');
 
     Route::resource('goodsdesc', 'GoodsDescriptionController');
+
+    Route::post('notify/change', 'NotifyController@change');
+    Route::resource('notify', 'NotifyController');
 });

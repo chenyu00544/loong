@@ -42,7 +42,7 @@ import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
 import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.activity.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.activity.evaluate.QuestionsListActivity;
-import com.vcvb.chenyu.shop.activity.goods.faat.BrandListActivity;
+import com.vcvb.chenyu.shop.activity.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.activity.login.RegisterActivity;

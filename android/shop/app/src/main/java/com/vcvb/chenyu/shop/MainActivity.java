@@ -10,19 +10,20 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.baidu.android.pushservice.PushConstants;
+import com.baidu.android.pushservice.PushManager;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.vcvb.chenyu.shop.activity.login.RegisterActivity;
 import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
 import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.home.FragmentCart;
 import com.vcvb.chenyu.shop.home.FragmentCategory;
-import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.home.FragmentHome;
 import com.vcvb.chenyu.shop.home.FragmentMy;
-import com.vcvb.chenyu.shop.activity.login.RegisterActivity;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
@@ -47,7 +48,7 @@ public class MainActivity extends BaseActivity {
     private FragmentTransaction fragmentTransaction;
     private FragmentHome fragmentHome;
     private FragmentCategory fragmentCategory;
-    private FragmentFind fragmentFind;
+//    private FragmentFind fragmentFind;
     private FragmentCart fragmentCart;
     private FragmentMy fragmentMy;
     private Receiver receiver;
@@ -63,6 +64,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "Ls0PDUQGi4wHvykwxKXmv03x");
+
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);//设置是否可滑动
 
         setContentView(R.layout.activity_main);
@@ -213,9 +216,9 @@ public class MainActivity extends BaseActivity {
         if (fragmentCategory != null) {
             fragmentTransaction.hide(fragmentCategory);
         }
-        if (fragmentFind != null) {
-            fragmentTransaction.hide(fragmentFind);
-        }
+//        if (fragmentFind != null) {
+//            fragmentTransaction.hide(fragmentFind);
+//        }
         if (fragmentCart != null) {
             fragmentTransaction.hide(fragmentCart);
         }

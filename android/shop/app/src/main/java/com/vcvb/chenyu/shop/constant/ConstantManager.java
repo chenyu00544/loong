@@ -164,5 +164,9 @@ public interface ConstantManager {
         public String SEARCH_FILTER_TO = URIHOST + "app/search/filter/to";
         public String SEARCH_KEYWORDS = URIHOST + "app/search/keywords";
         public String SEARCH_KEYWORDS_CHANGE = URIHOST + "app/search/keywords/change";
+
+        //fixme 通知
+        public String NOTIFY = URIHOST + "app/notify/index";
+        public String NOTIFY_GET = URIHOST + "app/notify/get";
     }
 }

@@ -70,4 +70,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('search/filter/to', 'SearchController@getFilterToSearch');
     Route::post('search/keywords', 'SearchController@getSearchKeywords');
     Route::post('search/keywords/change', 'SearchController@changeKeywords');
+
+    Route::post('notify/index', 'NotifyController@index');
+    Route::post('notify/get', 'NotifyController@getNotify');
 });

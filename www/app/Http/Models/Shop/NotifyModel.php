@@ -11,14 +11,14 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AlismsConfigureModel extends Model
+class NotifyModel extends Model
 {
-    protected $table = 'alisms_configure';
+    protected $table = 'notify';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getAlismsByPage($where = [], $column = ['*'], $size = 15)
+    public function getNotifiesByPage($where = [], $column = ['*'], $size = 15)
     {
         return $this->select($column)
             ->where($where)
@@ -26,32 +26,25 @@ class AlismsConfigureModel extends Model
             ->paginate($size);
     }
 
-    public function getAlismses($where = [], $column = ['*'])
-    {
-        return $this->select($column)
-            ->where($where)
-            ->get();
-    }
-
-    public function getAlisms($where = [], $column = ['*'])
+    public function getNotify($where, $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
             ->first();
     }
 
-    public function setAlisms($where, $data)
+    public function setNotify($where, $data)
     {
         return $this->where($where)
             ->update($data);
     }
 
-    public function addAlisms($data)
+    public function addNotify($data)
     {
         return $this->create($data);
     }
 
-    public function delAlisms($where)
+    public function delNotify($where)
     {
         return $this->where($where)
             ->delete();

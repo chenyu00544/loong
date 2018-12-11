@@ -247,7 +247,12 @@ return array(
         'ad_type' => array(
             'name' => '广告类型',
             'url' => 'admin/adstype',
+        ),
+        'notify' => array(
+            'name' => '移动通知',
+            'url' => 'admin/notify',
         )
+
     ),
     'users' => array(
         'members' => array(

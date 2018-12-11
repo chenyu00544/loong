@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.activity.goods.faat;
+package com.vcvb.chenyu.shop.activity.faat;
 
 import android.content.Intent;
 import android.os.Bundle;
