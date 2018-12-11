@@ -12,18 +12,27 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.base.BaseActivity;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
 import com.vcvb.chenyu.shop.tools.CountDownTimeUtils;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.Call;
 
 public class RegisterActivity extends BaseActivity {
     private Context context;
@@ -119,10 +128,27 @@ public class RegisterActivity extends BaseActivity {
                     if (m.matches()) {
                         CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
                         CountDownTimeUtils.startCountdown(qrCodeTv);
+
+                        //调用验证码接口
+                        HashMap<String, String> mp = new HashMap<>();
+                        mp.put("phone", phoneEdit.getText().toString());
+                        HttpUtils.getInstance().post(ConstantManager.Url.SEND_SMS, mp, new
+                                HttpUtils.NetCall() {
+                                    @Override
+                                    public void success(Call call, JSONObject json) throws IOException {
+
+                                    }
+
+                                    @Override
+                                    public void failed(Call call, IOException e) {
+
+                                    }
+                                });
+
                     } else {
                         ToastUtils.showShortToast(context, "输入的手机号码不正确");
                     }
-                    //调用验证码接口
+
                 }
             }
         });
@@ -130,7 +156,6 @@ public class RegisterActivity extends BaseActivity {
         registerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                is_register = true;
                 if (is_register) {
                     //注册后获取的数据
                     LoadingDialog2 loading = new LoadingDialog2(context, R.style.TransparentDialog);
@@ -163,6 +188,20 @@ public class RegisterActivity extends BaseActivity {
             }
         });
 
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!TextUtils.isEmpty(phoneEdit.getText()) && !TextUtils.isEmpty(qrCodeEdit
+                        .getText()) && !TextUtils.isEmpty(passEdit.getText()) && isChecked) {
+                    is_register = true;
+                    registerTv.setBackgroundResource(R.drawable.shape_button_active);
+                }else{
+                    is_register = false;
+                    registerTv.setBackgroundResource(R.drawable.shape_button_none);
+                }
+            }
+        });
+
         phoneEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -182,6 +221,7 @@ public class RegisterActivity extends BaseActivity {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
                 }else{
+                    is_register = false;
                     registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
             }
@@ -206,6 +246,7 @@ public class RegisterActivity extends BaseActivity {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
                 }else{
+                    is_register = false;
                     registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
             }
@@ -230,6 +271,7 @@ public class RegisterActivity extends BaseActivity {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
                 }else{
+                    is_register = false;
                     registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
             }

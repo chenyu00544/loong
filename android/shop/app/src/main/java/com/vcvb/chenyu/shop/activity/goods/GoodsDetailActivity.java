@@ -590,39 +590,43 @@ public class GoodsDetailActivity extends GoodsActivity {
                 HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
                         () {
                     @Override
-                    public void success(Call call, JSONObject json) throws IOException {
+                    public void success(Call call, final JSONObject json) throws IOException {
                         if (json != null) {
-                            try {
-                                if (json.getInt("code") == 0) {
-                                    JSONObject data = json.getJSONObject("data");
-                                    String username = data.getString("user_name");
-                                    String _token = json.getString("token");
-                                    String logo = data.getString("logo");
-                                    String nick_name = data.getString("nick_name");
-                                    String mobile_phone = data.getString("mobile_phone");
-                                    String user_money = data.getString("user_money");
-                                    String is_real = data.getString("is_real");
-                                    HashMap<String, String> u = new HashMap<>();
-                                    u.put("username", username);
-                                    u.put("token", _token);
-                                    u.put("logo", logo);
-                                    u.put("nickname", nick_name);
-                                    u.put("mobile_phone", mobile_phone);
-                                    u.put("user_money", user_money);
-                                    u.put("is_real", is_real);
-                                    UserInfoUtils.getInstance(context).setUserInfo(u);
-                                    token = _token;
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            loadingDialog2.dismiss();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loadingDialog2.dismiss();
+                                    try {
+                                        if (json.getInt("code") == 0) {
+                                            JSONObject data = json.getJSONObject("data");
+                                            String username = data.getString("user_name");
+                                            String _token = json.getString("token");
+                                            String logo = data.getString("logo");
+                                            String nick_name = data.getString("nick_name");
+                                            String mobile_phone = data.getString("mobile_phone");
+                                            String user_money = data.getString("user_money");
+                                            String is_real = data.getString("is_real");
+                                            HashMap<String, String> u = new HashMap<>();
+                                            u.put("username", username);
+                                            u.put("token", _token);
+                                            u.put("logo", logo);
+                                            u.put("nickname", nick_name);
+                                            u.put("mobile_phone", mobile_phone);
+                                            u.put("user_money", user_money);
+                                            u.put("is_real", is_real);
+                                            UserInfoUtils.getInstance(context).setUserInfo(u);
+                                            token = _token;
+
                                             loginDialog.dismiss();
+                                        } else {
+                                            ToastUtils.showShortToast(context, json.getString
+                                                    ("msg"));
                                         }
-                                    });
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            });
                         }
                     }
 

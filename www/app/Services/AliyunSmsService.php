@@ -62,7 +62,8 @@ class AliyunSmsService
                             return 0;
                         }
                         $code = Common::randNum(6);
-                        RedisCache::setex('code_' . $phone_number, $code, 5);
+
+                        RedisCache::setex('code_' . $phone_number, md5($code), 65);
                         $templateParam[$value] = $code;
                         break;
                     case 'product': // fixme 商品名称,对应${product}

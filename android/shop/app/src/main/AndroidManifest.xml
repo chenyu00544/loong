@@ -209,13 +209,6 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <receiver
-            android:name=".receiver.NotificationClickReceiver">
-            <intent-filter>
-                <action android:name="NotificationClick" />
-            </intent-filter>
-        </receiver>
-
 
         <!--baidu push service start -->
         <receiver
@@ -244,6 +237,7 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
             </intent-filter>
         </receiver>
+
         <!-- Push服务接收客户端发送的各种请求-->
         <receiver android:name="com.baidu.android.pushservice.RegistrationReceiver"
             android:process=":bdservice_v1" >

@@ -28,7 +28,7 @@ class LoginController extends CommonController
         }
         $username = $request->get('username');
         $password = $request->get('password');
-        $type = $request->get('type');
+        $type = $request->get('qrtype');
         $device_id = $request->get('device_id');
         $ip = $request->getClientIp();
         return $this->usersRepository->login($username, $password, $type, $ip, $device_id);
@@ -36,7 +36,10 @@ class LoginController extends CommonController
 
     public function register(Request $request)
     {
-
+        $ver = Verifiable::Validator($request->all(), ["username" => 'required', "password" => 'required']);
+        if (!$ver->passes()) {
+            return ['code' => 1, 'msg' => '账号密码错误', 'data' => ''];
+        }
     }
 
     public function getDeviceId(Request $request)

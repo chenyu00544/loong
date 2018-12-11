@@ -74,7 +74,11 @@ public class NotifyPushReceiver extends PushMessageReceiver {
                             builder.setSmallIcon(R.drawable.shop_logo);
                             builder.setWhen(System.currentTimeMillis());
                             builder.setDefaults(Notification.DEFAULT_ALL);
-
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                builder.setPriority(Notification.PRIORITY_DEFAULT);
+                            }
+                            builder.setOngoing(false);
+//                            builder.setAutoCancel(true);
                             String uri = object.getString("url");
                             Class c = UrlParse.getUrlToClass(uri);
                             if (c != null) {
@@ -84,10 +88,10 @@ public class NotifyPushReceiver extends PushMessageReceiver {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.setAction("NotificationClick");
                                 PendingIntent pendingIntent = PendingIntent.
-                                        getBroadcast(context, 0, intent, 0);
+                                        getActivity(context, 0, intent, 0);
                                 builder.setContentIntent(pendingIntent);
                             }
-//                            builder.setAutoCancel(true);
+
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                 notificationManager.notify(1001, builder.build());
                             }

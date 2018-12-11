@@ -48,14 +48,14 @@ public class MainActivity extends BaseActivity {
     private FragmentTransaction fragmentTransaction;
     private FragmentHome fragmentHome;
     private FragmentCategory fragmentCategory;
-//    private FragmentFind fragmentFind;
+    //    private FragmentFind fragmentFind;
     private FragmentCart fragmentCart;
     private FragmentMy fragmentMy;
     private Receiver receiver;
     private Context context;
     private int index = 0;
     private String SAVED_INDEX = "SAVED_INDEX";
-//    private String[] fragmentTag = new String[]{"home", "categroy", "find", "cart", "my"};
+    //    private String[] fragmentTag = new String[]{"home", "categroy", "find", "cart", "my"};
     private String[] fragmentTag = new String[]{"home", "categroy", "cart", "my"};
     private LoadingDialog2 loadingDialog2;
 
@@ -64,7 +64,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY, "Ls0PDUQGi4wHvykwxKXmv03x");
+        PushManager.startWork(getApplicationContext(), PushConstants.LOGIN_TYPE_API_KEY,
+                "Ls0PDUQGi4wHvykwxKXmv03x");
 
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);//设置是否可滑动
 
@@ -268,44 +269,46 @@ public class MainActivity extends BaseActivity {
                 HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
                         () {
                     @Override
-                    public void success(Call call, JSONObject json) throws IOException {
+                    public void success(Call call, final JSONObject json) throws IOException {
                         if (json != null) {
-                            try {
-                                if (json.getInt("code") == 0) {
-                                    JSONObject data = json.getJSONObject("data");
-                                    String username = data.getString("user_name");
-                                    String token = json.getString("token");
-                                    String logo = data.getString("logo");
-                                    String nick_name = data.getString("nick_name");
-                                    String mobile_phone = data.getString("mobile_phone");
-                                    String user_money = data.getString("user_money");
-                                    String is_real = data.getString("is_real");
-                                    HashMap<String, String> u = new HashMap<>();
-                                    u.put("username", username);
-                                    u.put("token", token);
-                                    u.put("logo", logo);
-                                    u.put("nickname", nick_name);
-                                    u.put("mobile_phone", mobile_phone);
-                                    u.put("user_money", user_money);
-                                    u.put("is_real", is_real);
-                                    UserInfoUtils.getInstance(context).setUserInfo(u);
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            LoadingDialog2.getInstance(context).dismiss();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LoadingDialog2.getInstance(context).dismiss();
+                                    try {
+                                        if (json.getInt("code") == 0) {
+                                            JSONObject data = json.getJSONObject("data");
+                                            String username = data.getString("user_name");
+                                            String token = json.getString("token");
+                                            String logo = data.getString("logo");
+                                            String nick_name = data.getString("nick_name");
+                                            String mobile_phone = data.getString("mobile_phone");
+                                            String user_money = data.getString("user_money");
+                                            String is_real = data.getString("is_real");
+                                            HashMap<String, String> u = new HashMap<>();
+                                            u.put("username", username);
+                                            u.put("token", token);
+                                            u.put("logo", logo);
+                                            u.put("nickname", nick_name);
+                                            u.put("mobile_phone", mobile_phone);
+                                            u.put("user_money", user_money);
+                                            u.put("is_real", is_real);
+                                            UserInfoUtils.getInstance(context).setUserInfo(u);
+
                                             Intent intent = new Intent();
                                             intent.setAction("UserInfoCall");
                                             LocalBroadcastManager.getInstance(context)
                                                     .sendBroadcast(intent);
                                             LoginDialog.getInstance(context).dismiss();
+                                        } else {
+                                            ToastUtils.showShortToast(context, json.getString
+                                                    ("msg"));
                                         }
-                                    });
-                                } else {
-                                    ToastUtils.showShortToast(context, json.getString("msg"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            });
                         }
                     }
 
@@ -325,7 +328,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void getData() {
-        if(token == null || token.equals("")){
+        if (token == null || token.equals("")) {
             if (UserInfoUtils.getInstance(context).getUserInfo().get("device_id") == null ||
                     UserInfoUtils.getInstance(context).getUserInfo().get("device_id").equals("")) {
                 HashMap<String, String> mp = new HashMap<>();
@@ -333,7 +336,7 @@ public class MainActivity extends BaseActivity {
                         .NetCall() {
                     @Override
                     public void success(Call call, JSONObject json) throws IOException {
-                        if(json != null){
+                        if (json != null) {
                             HashMap<String, String> mp = new HashMap<>();
                             try {
                                 mp.put("device_id", json.getString("data"));

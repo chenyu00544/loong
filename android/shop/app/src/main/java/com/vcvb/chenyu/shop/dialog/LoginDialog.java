@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Display;
@@ -16,13 +17,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.tools.CountDownTimeUtils;
+import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.Call;
 
 public class LoginDialog extends Dialog {
     private static LoginDialog loginDialog;
@@ -173,10 +181,29 @@ public class LoginDialog extends Dialog {
                         CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME,
                                 false);
                         CountDownTimeUtils.startCountdown(phoneQRCode);
+
+                        //调用验证码接口
+                        HashMap<String, String> mp = new HashMap<>();
+                        mp.put("phone", phoneEdit.getText().toString());
+                        HttpUtils.getInstance().post(ConstantManager.Url.SEND_SMS, mp, new
+                                HttpUtils.NetCall() {
+                            @Override
+                            public void success(Call call, JSONObject json) throws IOException {
+
+                            }
+
+                            @Override
+                            public void failed(Call call, IOException e) {
+
+                            }
+                        });
+
                     } else {
                         ToastUtils.showShortToast(getContext(), "输入的手机号码不正确");
                     }
-                    //调用验证码接口
+
+                } else {
+                    ToastUtils.showShortToast(getContext(), "请输入手机号码");
                 }
             }
         });
@@ -195,6 +222,7 @@ public class LoginDialog extends Dialog {
                     phoneQRCode.setAlpha(0);
                     phoneQRCode.setEnabled(false);
                     phonePassEdit.setHint(R.string.password);
+                    phonePassEdit.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     phoneLoginType.setText(R.string.qrcode_login);
                 } else {
                     //改为验证码登录
@@ -202,6 +230,7 @@ public class LoginDialog extends Dialog {
                     phoneQRCode.setAlpha(1);
                     phoneQRCode.setEnabled(true);
                     phonePassEdit.setHint(R.string.qrcode);
+                    phonePassEdit.setInputType(InputType.TYPE_NUMBER_VARIATION_PASSWORD);
                     phoneLoginType.setText(R.string.pass_login);
                 }
             }
@@ -330,7 +359,7 @@ public class LoginDialog extends Dialog {
                                 user.put("type", "0");
                             }
                             user.put("password", phonePassEdit.getText().toString());
-                            System.out.println(user);
+
                             onDialogClickListener.onLoginClickListener(user);
                         }
                     }

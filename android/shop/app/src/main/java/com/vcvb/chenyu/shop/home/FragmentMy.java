@@ -76,7 +76,8 @@ public class FragmentMy extends BaseFragment {
         if (token != null && !token.equals("")) {
             HashMap<String, String> mp = new HashMap<>();
             mp.put("token", token);
-            HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, mp, new HttpUtils.NetCall() {
+            HttpUtils.getInstance().post(ConstantManager.Url.GET_USER_INFO, mp, new HttpUtils
+                    .NetCall() {
                 @Override
                 public void success(Call call, final JSONObject json) throws IOException {
                     if (getActivity() != null) {
@@ -143,7 +144,7 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_unpayed.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_unpayed_count()));
-        }else{
+        } else {
             order_unpayed.setText("0");
             order_unpayed.setAlpha(0);
         }
@@ -153,7 +154,7 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_unship.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_unship_count()));
-        }else {
+        } else {
             order_unship.setText("0");
             order_unship.setAlpha(0);
         }
@@ -163,7 +164,7 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_shipped.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_shipped_count()));
-        }else {
+        } else {
             order_shipped.setText("0");
             order_shipped.setAlpha(0);
         }
@@ -173,7 +174,7 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_comment.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_comment_count()));
-        }else {
+        } else {
             order_comment.setText("0");
             order_comment.setAlpha(0);
         }
@@ -183,7 +184,7 @@ public class FragmentMy extends BaseFragment {
             String str = "%d";
             order_return.setText(String.format(Locale.CHINA, str, userInfoBean
                     .getOrder_return_count()));
-        }else {
+        } else {
             order_return.setText("0");
             order_return.setAlpha(0);
         }
@@ -199,11 +200,14 @@ public class FragmentMy extends BaseFragment {
         receiver = new Receiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case "UserInfoCall":
-                        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
-                        getData();
-                        break;
+                if (intent.getAction() != null) {
+                    switch (intent.getAction()) {
+                        case "UserInfoCall":
+                            token = (String) UserInfoUtils.getInstance(context).getUserInfo().get
+                                    ("token");
+                            getData();
+                            break;
+                    }
                 }
             }
         };

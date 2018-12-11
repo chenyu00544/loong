@@ -54,7 +54,28 @@ class UsersRepository implements UsersRepositoryInterface
         if ($user) {
             if ($type == 1) {
                 //验证码登录
-                $req = ['code' => 1, 'msg' => '验证码错误', 'data' => '', 'token' => ''];
+                $code = RedisCache::get('code_' . $username);
+                if ($code == md5($password)) {
+                    $req = ['code' => 0, 'msg' => '', 'data' => $user, 'token' => encrypt($user->user_id)];
+                    $where['user_id'] = $user->user_id;
+                    $updata = [
+                        'last_login' => time(),
+                        'last_time' => date(RedisCache::get('shop_config')['time_format'], time()),
+                        'last_ip' => $ip,
+                        'visit_count' => $user->visit_count + 1
+                    ];
+                    $this->usersModel->setUsers($where, $updata);
+                    $this->cartModel->setCart(['session_id' => $device_id], ['user_id' => $user->user_id]);
+                }else{
+                    $req = ['code' => 1, 'msg' => '验证码错误', 'data' => '', 'token' => ''];
+                }
+                $user->is_real = '0';
+                $user->logo = FileHandle::getImgByOssUrl($user->logo);
+                if (!empty($user->real)) {
+                    if ($user->real->review_status == 1) {
+                        $user->is_real = '1';
+                    }
+                }
             } else {
                 //密码登录
                 $pass = Common::md5Encrypt($password, $user->salt);
