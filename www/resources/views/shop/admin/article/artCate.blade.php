@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商品管理 - 商品分类列表</div>
+        <div class="title">文章分类 - 文章分类列表</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -11,7 +11,7 @@
                 </div>
                 <ul>
                     <li>标识<em>"*"</em>的选项为必填项，其余为选填项。</li>
-                    <li>商品相关信息设置，请谨慎填写信息。</li>
+                    <li>文章分类相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
             <div class="fromlist clearfix">
@@ -20,8 +20,8 @@
                         <a href="javascript:history.go(-1)"
                            class="btn btn-default btn-add btn-sm fl">　返回　</a>
                     @endif
-                    <a href="{{url('admin/comcate/create')}}"
-                       class="btn btn-success btn-add btn-sm fl">　添加　</a>
+                    <a href="{{url('admin/artcate/create')}}"
+                       class="btn btn-success btn-add btn-sm fl">　添加文章分类　</a>
                 </div>
 
                 <div class="main-info">
@@ -29,14 +29,12 @@
                         <thead>
                         <tr>
                             <th class="col-sm-1">级别({{$rank[0]}})</th>
-                            <th class="col-sm-2">分类名称</th>
-                            <th class="col-sm-1">利润(%)</th>
-                            <th class="col-sm-1">商品数量</th>
-                            <th class="col-sm-1">数量单位</th>
-                            <th class="col-sm-1">导航栏</th>
-                            <th class="col-sm-1">是否显示</th>
-                            <th class="col-sm-1">价格分级</th>
+                            <th class="col-sm-1">编号</th>
+                            <th class="col-sm-3">文章分类名称</th>
+                            <th class="col-sm-1">分类类型</th>
+                            <th class="col-sm-2">描述</th>
                             <th class="col-sm-1">排序</th>
+                            <th class="col-sm-1">显示在导航栏</th>
                             <th class="col-sm-3">操作</th>
                         </tr>
                         </thead>
@@ -49,48 +47,42 @@
                         @foreach($cates as $cate)
                             <tr>
                                 <td>
-                                    <a href="{{url('admin/comcate/'.$cate->id)}}" class="btn btn-primary btn-sm">下一级</a>
+                                    <a href="{{url('admin/artcate/'.$cate->cat_id)}}" class="btn btn-primary btn-sm">下一级</a>
                                 </td>
+                                <td>{{$cate->cat_id}}</td>
                                 <td>{{$cate->cat_name}}</td>
-                                <td><input class="form-control input-sm chang-cate" type="text"
-                                           data-cate="commission_rate" data-id="{{$cate->id}}"
-                                           value="{{$cate->commission_rate}}"></td>
-                                <td>0</td>
-                                <td><input class="form-control input-sm chang-cate" type="text"
-                                           data-cate="measure_unit" data-id="{{$cate->id}}"
-                                           value="{{$cate->measure_unit}}"></td>
+                                <td>
+                                    @if($cate->cat_type == 1)
+                                        普通分类
+                                    @elseif($cate->cat_type == 2)
+                                        系统分类
+                                    @elseif($cate->cat_type == 3)
+                                        网店信息
+                                    @elseif($cate->cat_type == 4)
+                                        帮助分类
+                                    @elseif($cate->cat_type == 5)
+                                        网店帮助
+                                    @endif
+                                </td>
+                                <td>{{$cate->cat_desc}}</td>
+                                <td>
+                                    <input class="form-control input-sm chang-cate"
+                                           type="text" data-id="{{$cate->cat_id}}"
+                                           data-cate="order" value="{{$cate->sort_order}}">
+                                </td>
                                 <td>
                                     <div class="switch-wrap clearfix">
                                         <div class="switch @if($cate->show_in_nav) active @endif" data-type="shownav"
                                              title="是">
                                             <div class="circle"></div>
-                                            <input type="hidden" value="{{$cate->id}}">
+                                            <input type="hidden" value="{{$cate->cat_id}}">
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <div class="switch-wrap clearfix">
-                                        <div class="switch @if($cate->is_show) active @endif" data-type="isshow"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$cate->id}}">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input class="form-control input-sm chang-cate" type="text" data-id="{{$cate->id}}"
-                                           data-cate="grade" value="{{$cate->grade}}">
-                                </td>
-                                <td>
-                                    <input class="form-control input-sm chang-cate" type="text" data-id="{{$cate->id}}"
-                                           data-cate="order" value="{{$cate->sort_order}}">
-                                </td>
-                                <td>
-                                    <a href="{{url('admin/comcate/add/cate/'.$cate->id)}}"
-                                       class="btn btn-info btn-warning btn-sm">添加子类</a>
-                                    <a href="{{url('admin/comcate/'.$cate->id.'/edit')}}"
+                                    <a href="{{url('admin/artcate/'.$cate->cat_id.'/edit')}}"
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a class="btn btn-danger btn-del btn-sm" data-id="{{$cate->id}}">删除</a>
+                                    <a class="btn btn-danger btn-del btn-sm" data-id="{{$cate->cat_id}}">删除</a>
                                 </td>
                             </tr>
                         @endforeach
@@ -110,10 +102,10 @@
             $('.switch').click(function () {
                 var val = 0;
                 if ($(this).hasClass('active')) {
-                    val = 0
+                    val = 0;
                     $(this).removeClass('active');
                 } else {
-                    val = 1
+                    val = 1;
                     $(this).addClass('active');
                 }
 
@@ -121,7 +113,7 @@
                 var id = $(this).children('input').val();
 
                 $.post(
-                    '{{url("admin/comcate/change")}}',
+                    '{{url("admin/artcate/change")}}',
                     {
                         id: id,
                         type: tag,
@@ -143,17 +135,9 @@
                     _token: '{{csrf_token()}}',
                 };
 
-                $.post(
-                    '{{url("admin/comcate/change")}}',
+                $.post('{{url("admin/artcate/change")}}',
                     data,
                     function (data) {
-                        layer.open({
-                            title: '提示',
-                            content: data.msg,
-                            icon: data.code,
-                            success: function (layero, index) {
-                            }
-                        });
                     }
                 );
             });
@@ -165,7 +149,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/comcate/')}}/" + Id,
+                        "{{url('admin/artcate/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});

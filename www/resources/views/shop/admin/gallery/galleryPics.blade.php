@@ -58,7 +58,7 @@
                         </select>
                     </div>
                     <div class="fl">
-                        <a type="button" class="btn btn-info btn-sure btn-sm mar-all-8">确定</a>
+                        <a type="button" class="btn btn-info btn-sure btn-sm mar-all-5">确定</a>
                     </div>
                 </div>
                 <div class="page_list">
@@ -71,6 +71,7 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
+    <script type="text/javascript" src="{{url('styles/plugin/zclip/jquery.zclip.js')}}"></script>
     <script>
         $(function () {
             //上传图片窗口
@@ -231,6 +232,20 @@
                     }
                 );
             });
+
+            //复制链接
+            $('.image-item').on('click', '.image-wrap', function () {
+                var src = $(this).find('img').attr("src");
+                $(this).zclip({
+                    path: "{{url('styles/plugin/zclip/ZeroClipboard.swf')}}",
+                    copy: function () {//复制内容
+                        return src;
+                    },
+                    afterCopy: function () {//复制成功
+                        layer.msg('链接已复制到剪贴板', {icon: 1});
+                    }
+                });
+            })
         });
     </script>
 @endsection

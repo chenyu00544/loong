@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商品分类 - 添加编辑分类</div>
+        <div class="title">文章分类 - 添加文章分类</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -16,20 +16,29 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/comcate')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
+                    <form name="conf" action="{{url('admin/artcate')}}" method="post" class="form-horizontal"
+                          enctype="multipart/form-data">
                         {{csrf_field()}}
+
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">分类名称：</label>
+                            <label class="col-sm-4 control-label">文章分类名称：</label>
                             <div class="col-sm-4">
                                 <input type="text" name="cat_name" class="form-control" value=""
-                                       placeholder="分类名称">
+                                       placeholder="文章分类名称">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">分类别名：</label>
-                            <div class="col-sm-4">
-                                <input type="text" name="cat_alias_name" class="form-control" value=""
-                                       placeholder="分类别名">
+                            <label class="col-sm-4 control-label">分类类型：</label>
+                            <div class="col-sm-8 pre-cate">
+                                <div class="cate-option fl">
+                                    <select class="form-control select" name="cat_type">
+                                        <option value="1">普通分类</option>
+                                        <option value="2">系统分类</option>
+                                        <option value="3">网店信息</option>
+                                        <option value="4">帮助分类</option>
+                                        <option value="5">网店帮助</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -41,48 +50,17 @@
                                             onchange="setNextCate(this)" data-parent="0">
                                         <option value="0">顶级分类</option>
                                         @foreach($cates as $cate)
-                                            <option value="{{$cate->id}}">{{$cate->cat_name}}</option>
+                                            <option value="{{$cate->cat_id}}">{{$cate->cat_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">手机小图片：</label>
-                            <div class="col-sm-4">
-                                <input type="file" name="touch_icon_img" value="" class="fl">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">数量单位：</label>
-                            <div class="col-sm-3">
-                                <input type="text" name="measure_unit" class="form-control" value=""
-                                       placeholder="数量单位">
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-4 control-label">排序：</label>
                             <div class="col-sm-3">
-                                <input type="text" name="sort_order" class="form-control" value="0"
+                                <input type="text" name="sort_order" class="form-control" value="50"
                                        placeholder="排序">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">利润率%：</label>
-                            <div class="col-sm-2">
-                                <input type="text" name="commission_rate" class="form-control" value="0"
-                                       placeholder="利润率">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">是否显示：</label>
-                            <div class="col-sm-4 n-wd400">
-                                <label class="radio-inline fl ml10">
-                                    <input type="radio" name="is_show" value="1" checked> 是
-                                </label>
-                                <label class="radio-inline fl ml10">
-                                    <input type="radio" name="is_show" value="0"> 否
-                                </label>
                             </div>
                         </div>
                         <div class="form-group">
@@ -97,43 +75,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">是否使用顶级分类页样式：</label>
-                            <div class="col-sm-4 n-wd400">
-                                <label class="radio-inline fl ml10">
-                                    <input type="radio" name="is_top_style" value="1"> 是
-                                </label>
-                                <label class="radio-inline fl ml10">
-                                    <input type="radio" name="is_top_style" value="0" checked> 否
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">分类菜单图标：</label>
-                            <div class="col-sm-8">
-                                @foreach($icons['cate_icons'] as $key => $val)
-                                    <label class="radio-inline fl ml10">
-                                        <input type="radio" name="style_icon" value="{{$val}}"
-                                               @if($loop->index == 0) checked @endif > <i
-                                                class="icon iconfont {{$val}}"> </i>　
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">价格区间个数：</label>
-                            <div class="col-sm-4">
-                                <input type="text" name="grade" class="form-control" value="0"
-                                       placeholder="填0表示不做分级">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">分类的样式表文件：</label>
-                            <div class="col-sm-5">
-                                <input type="text" name="style" class="form-control" value=""
-                                       placeholder="文件存放在themes目录下则输入：themes/style.css">
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="col-sm-4 control-label">关键字：</label>
                             <div class="col-sm-5">
                                 <input type="text" name="keywords" class="form-control" value=""
@@ -141,7 +82,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">分类描述：</label>
+                            <label class="col-sm-4 control-label">描述：</label>
                             <div class="col-sm-5">
                                 <textarea type="text" name="cat_desc" rows="5" class="form-control" value=""
                                           placeholder="分类描述"></textarea>
@@ -151,7 +92,8 @@
                             <div class="col-sm-4 control-label">&nbsp;</div>
                             <div class="">
                                 <input type="submit" value="　确定　" class="btn btn-danger">
-                                <a type="button" class="btn btn-default clearfix mar-left-20" href="javascript:history.go(-1)">返回</a>
+                                <a type="button" class="btn btn-default clearfix mar-left-20"
+                                   href="javascript:history.go(-1)">返回</a>
                             </div>
                         </div>
                     </form>
@@ -174,11 +116,11 @@
             $('input[name="parent_id"]').val(id);
             if (id > 0 && parent == 0) {
                 var html = '';
-                $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
+                $.post("{{url('admin/artcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
                     if (data.code == 1) {
                         html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
                         $.each(data.data, function (k, v) {
-                            html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
+                            html += '<option value="' + v.cat_id + '">' + v.cat_name + '</option>';
                         })
                         html += '</select></div>';
                         $(that).parent().nextAll().remove();

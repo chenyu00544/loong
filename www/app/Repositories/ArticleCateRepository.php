@@ -34,33 +34,19 @@ class ArticleCateRepository implements ArticleCateRepositoryInterface
         return $re;
     }
 
-    public function addCate($data)
+    public function addArticleCate($data)
     {
         $updata = [];
         foreach ($data as $key => $val) {
-            if($key == "touch_icon_img"){
-                $path = 'category';
-                $updata['touch_icon'] = FileHandle::upLoadImage($data['touch_icon_img'], $path);
-            }else{
-                $updata[$key] = $val ? $val : 0;
-            }
+            $updata[$key] = $val ? $val : 0;
         }
-        RedisCache::del('category');
         return $this->articleCatModel->addArticleCate($updata);
     }
 
-    public function upDateCate($data, $id)
+    public function upArticleCate($data, $id)
     {
-        if (!empty($data['touch_icon_img'])) {
-            $path = 'category';
-            if (!empty($data['touch_icon'])) {
-                FileHandle::deleteFile($data['touch_icon']);
-            }
-            $data['touch_icon'] = FileHandle::upLoadImage($data['touch_icon_img'], $path);
-            unset($data['touch_icon_img']);
-        }
-        RedisCache::del('category');
-        return $this->articleCatModel->upDateCate($data, $id);
+        $where['cat_id'] = $id;
+        return $this->articleCatModel->setArticleCate($where, $data);
     }
 
     public function getParentCate($id, $parentCates = [])
@@ -79,49 +65,15 @@ class ArticleCateRepository implements ArticleCateRepositoryInterface
         }
     }
 
-    public function getParentCateBySelect($id)
-    {
-        $c_list = $this->getParentCate($id);
-        $cate = [];
-        foreach ($c_list as $value) {
-            $re = $this->articleCatModel->getArticleCates($value->parent_id);
-            foreach ($re as $k => $val) {
-                if ($val->id == $value->id) {
-                    $re[$k]->select = 1;
-                } else {
-                    $re[$k]->select = 0;
-                }
-            }
-            $cate[] = $re;
-        }
-        return $cate;
-    }
-
-    public function changOrder($data)
-    {
-        if ($data['order'] == '') {
-            return ['code' => 5, 'msg' => '修改失败'];
-        }
-        $updata['sort_order'] = $data['order'];
-        $where['id'] = $data['id'];
-        $re = $this->articleCatModel->setArticleCate($updata, $where);
-        if ($re) {
-            return ['code' => 1, 'msg' => '修改成功'];
-        } else {
-            return ['code' => 5, 'msg' => '修改失败'];
-        }
-    }
-
-    public function delete($id)
+    public function delArticleCate($id)
     {
         $req = ['code' => 5, 'msg' => '删除失败'];
-        $where['id'] = $id;
+        $where['cat_id'] = $id;
         $res = $this->articleCatModel->getArticleCates($id);
         if ($res->toArray()) {
             $req['msg'] = '存在子类删除失败';
         } else {
             $re = $this->articleCatModel->deleteArticleCate($where);
-            RedisCache::del('category');
             if ($re) {
                 $req['code'] = 1;
                 $req['msg'] = '删除成功';
@@ -136,27 +88,15 @@ class ArticleCateRepository implements ArticleCateRepositoryInterface
         return $this->articleCatModel->getRank($re);
     }
 
-    public function setComCate($data)
+    public function setArticleCate($data)
     {
         $rep = ['code' => 5, 'msg' => '修改失败'];
 
-        $where['id'] = $data['id'];
+        $where['cat_id'] = $data['id'];
 
         switch ($data['type']) {
             case 'order':
                 $updata['sort_order'] = $data['val'];
-                break;
-            case 'grade':
-                $updata['grade'] = $data['val'];
-                break;
-            case 'measure_unit':
-                $updata['measure_unit'] = $data['val'];
-                break;
-            case 'commission_rate':
-                $updata['commission_rate'] = $data['val'];
-                break;
-            case 'isshow':
-                $updata['is_show'] = $data['val'];
                 break;
             case 'shownav':
                 $updata['show_in_nav'] = $data['val'];

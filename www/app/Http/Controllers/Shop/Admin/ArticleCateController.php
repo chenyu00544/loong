@@ -40,15 +40,7 @@ class ArticleCateController extends CommonController
 
     public function change(Request $request)
     {
-        return $this->artCateRepository->setComCate($request->except('_token'));
-    }
-
-    public function addCate($id)
-    {
-        $icons = LangConfig::LangAdminIconsConf();
-        $cates = $this->artCateRepository->getComCates();
-        $parentCates = $this->artCateRepository->getParentCate($id);
-        return view('shop.admin.commoditycate.subCateAdd', compact('icons', 'cates', 'parentCates'));
+        return $this->artCateRepository->setArticleCate($request->except('_token'));
     }
 
     public function getCates($id)
@@ -68,9 +60,8 @@ class ArticleCateController extends CommonController
      */
     public function create()
     {
-        $icons = LangConfig::LangAdminIconsConf();
-        $cates = $this->artCateRepository->getComCates();
-        return view('shop.admin.commoditycate.cateAdd', compact('icons', 'cates'));
+        $cates = $this->artCateRepository->getArticleCates();
+        return view('shop.admin.article.artCateAdd', compact('cates'));
     }
 
     /**
@@ -85,7 +76,7 @@ class ArticleCateController extends CommonController
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->artCateRepository->addCate($request->except('_token'));
+        $re = $this->artCateRepository->addArticleCate($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -97,9 +88,9 @@ class ArticleCateController extends CommonController
      */
     public function show($id)
     {
-        $cates = $this->artCateRepository->getComCates($id);
+        $cates = $this->artCateRepository->getArticleCates($id);
         $rank = $this->artCateRepository->getRank($id);
-        return view('shop.admin.commoditycate.category', compact('cates', 'rank'));
+        return view('shop.admin.article.artCate', compact('cates', 'rank'));
     }
 
     /**
@@ -110,12 +101,11 @@ class ArticleCateController extends CommonController
      */
     public function edit($id)
     {
-        $icons = LangConfig::LangAdminIconsConf();
-        $cates = $this->artCateRepository->getComCates();
-        $cate = $this->artCateRepository->getComCate($id);
+        $cates = $this->artCateRepository->getArticleCates();
+        $cate = $this->artCateRepository->getArticleCate($id);
         $parentCates = $this->artCateRepository->getParentCate($id);
         unset($parentCates[0]);
-        return view('shop.admin.commoditycate.cateEdit', compact('icons', 'cates', 'cate', 'parentCates'));
+        return view('shop.admin.article.artCateEdit', compact('cates', 'cate', 'parentCates'));
     }
 
     /**
@@ -131,7 +121,7 @@ class ArticleCateController extends CommonController
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->artCateRepository->upDateCate($request->except('_token', '_method', 'category_name'), $id);
+        $re = $this->artCateRepository->upArticleCate($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -143,6 +133,6 @@ class ArticleCateController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->artCateRepository->delete($id);
+        return $this->artCateRepository->delArticleCate($id);
     }
 }

@@ -278,7 +278,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::post('artcate/change', 'ArticleCateController@change');
     Route::post('artcate/getcates/{id}', 'ArticleCateController@getCates');
-    Route::any('artcate/add/cate/{id}', 'ArticleCateController@addCate');
     Route::resource('artcate', 'ArticleCateController');
 
     Route::post('article/change', 'ArticleController@change');

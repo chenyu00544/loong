@@ -87,7 +87,12 @@ class ArticleRepository implements ArticleRepositoryInterface
 
     public function deleteArticle($id)
     {
-
+        $rep = ['code' => 5, 'msg' => '修改失败'];
+        $re = $this->articleModel->delArticle(['article_id' => $id]);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
+        return $rep;
     }
 
     public function changeArticle($data)
@@ -114,15 +119,15 @@ class ArticleRepository implements ArticleRepositoryInterface
     public function changeGoods($data)
     {
         if ($data['type'] == 'add') {
-            if(!empty($data['ids'])){
-                foreach ($data['ids'] as $id){
+            if (!empty($data['ids'])) {
+                foreach ($data['ids'] as $id) {
                     $updata['article_id'] = $data['article_id'];
                     $updata['goods_id'] = $id;
                     $this->articleGoodsModel->addArticleGoods($updata);
                 }
             }
         } elseif ($data['type'] == 'remove') {
-            if(!empty($data['ids'])){
+            if (!empty($data['ids'])) {
                 $wherein = $data['ids'];
                 $this->articleGoodsModel->removeArticleGoods($wherein, $data['article_id']);
             }
