@@ -79,7 +79,7 @@
                 $('.pre-cate-sel').hide();
                 $('.pre-cate').show();
                 $('input[name="c_id"]').val(0);
-            })
+            });
 
             $('body').on('change','.select',function () {
                 var that = this;

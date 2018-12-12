@@ -178,6 +178,14 @@ textarea{
     width: auto;
 }
 
+.clearfix:after{
+    content:".";
+    display:block;
+    height:0;
+    clear:both;
+    visibility:hidden;
+}
+
 .container-fluid {
     padding: 100px 20px;
     margin-top: 100px;
@@ -508,6 +516,11 @@ textarea{
     padding-bottom: 15px;
 }
 
+.pad-tb-10{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .pad-tb-15{
     padding-top: 15px;
     padding-bottom: 15px;
@@ -735,8 +748,6 @@ textarea{
     background-position: -23px -440px;
 }
 
-
-
 .icon_sms {
     background-position: 2px -634px;
 }
@@ -762,7 +773,13 @@ textarea{
     background-position: -22px -171px;
 }
 
+.icon_article {
+    background-position: 2px -24px;
+}
 
+.current .icon_article {
+    background-position: -23px -24px;
+}
 
 
 .nav-left .sub-nav .sub-item li {

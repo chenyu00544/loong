@@ -507,7 +507,7 @@ class GoodsRepository implements GoodsRepositoryInterface
 
         if (!empty($data['goods_video'])) {
             $original_mp4 = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'video';
-            $goodsData['goods_video'] = FileHandle::upLoadFlie($data['goods_video'], $original_mp4);
+            $goodsData['goods_video'] = FileHandle::upLoadFile($data['goods_video'], $original_mp4);
         }
 
         $goodsData['is_volume'] = !empty($data['is_volume']) ? intval($data['is_volume']) : 0;
@@ -790,7 +790,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $goods_video_url = !empty($data['goods_video_url']) ? trim($data['goods_video_url']) : '';
         if (!empty($data['goods_video'])) {
             $original_mp4 = 'gallery_album' . DIRECTORY_SEPARATOR . 'goods_gallery' . DIRECTORY_SEPARATOR . 'video';
-            $goodsData['goods_video'] = FileHandle::upLoadFlie($data['goods_video'], $original_mp4);
+            $goodsData['goods_video'] = FileHandle::upLoadFile($data['goods_video'], $original_mp4);
             FileHandle::deleteFile($goods_video_url);
         }
 

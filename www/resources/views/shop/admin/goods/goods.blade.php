@@ -272,7 +272,7 @@
                             </select>
                         </div>
                         <div class="fl">
-                            <a type="button" class="btn btn-info btn-sure btn-sm mar-all-8">确定</a>
+                            <a type="button" class="btn btn-info btn-sure btn-sm mar-all-5">确定</a>
                         </div>
                     </div>
                     <div class="page_list">

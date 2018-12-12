@@ -40,6 +40,7 @@ return array(
         'setup' => '设置',
         'advertise' => '广告',
         'users' => '会员',
+        'article' => '文章',
         'examine' => '权限',
         'database' => '数据',
         'selfshop' => '自营',
@@ -267,6 +268,17 @@ return array(
             'name' => '注册项设置',
             'url' => 'admin/regfields',
         ),
+    ),
+    'article' => array(
+        'artcate' => array(
+            'name' => '文章分类',
+            'url' => 'admin/artcate',
+        ),
+        'article' => array(
+            'name' => '文章列表',
+            'url' => 'admin/article',
+        ),
+
     ),
     'examine' => array(
         'privilege' => array(

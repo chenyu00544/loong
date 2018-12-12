@@ -10,8 +10,29 @@ use OSS\Core\OssException;
 
 class FileHandleService
 {
+    //上传文件
+    public static function upLoad_file($file, $uri)
+    {
+        $filename = self::mictime() . rand(10000, 99999) . '.' . $file->getClientOriginalExtension();
+        $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR;
+        $shopConf = RedisCache::get('shop_config');
+        if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
+            //对象存储
+            //文件名称
+            $object = 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+            //由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt
+            $filePath = $file->getRealPath();
+            return Oss::uploadObject($object, $filePath);
+        }else{
+            if ($path = $file->move($dir, $filename)) {
+                return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
+            }
+        }
+        return 0;
+    }
+
     //上传原图
-    public static function upLoadFlie($file, $uri)
+    public static function upLoadFile($file, $uri)
     {
         $bool = $file->getClientOriginalExtension() == 'mp4' || $file->getClientOriginalExtension() == 'MP4';
         if ($bool) {

@@ -37,7 +37,9 @@ class NotifyRepository implements NotifyRepositoryInterface
 
     public function getOneNotify($data)
     {
-        $re = $this->notifyModel->getNotify();
+        $where['terminal'] = 'app';
+        $where['is_notify'] = 1;
+        $re = $this->notifyModel->getNotify($where);
         $re->img = FileHandle::getImgByOssUrl($re->img);
         return $re;
     }

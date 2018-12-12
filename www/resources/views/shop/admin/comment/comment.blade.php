@@ -25,8 +25,8 @@
                 </ul>
             </div>
             <div class="fromlist clearfix">
-                <div>
-                    <div class="fr wd250">
+                <div class="clearfix">
+                    <div class="fr wd250 pad-tb-10">
                         <form action="{{url('admin/comment')}}" method="get">
                             {{csrf_field()}}
                             <input type="hidden" name="seller" value="{{$search['seller']}}">
