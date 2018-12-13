@@ -14,11 +14,18 @@ Route::get('welcome', function () {
     return view('welcome');
 });
 
-Route::get('foo', function () {
-    return 'Hello World';
-});
-
-Route::group(['namespace' => 'Shop\Home'], function () {
+Route::group(['namespace' => 'Shop\Home\Pc'], function () {
     Route::any('/', 'IndexController@index');
     Route::any('test', 'IndexController@test');
+
+    Route::any('article', 'ArticleController@index')->name('article');
+    Route::any('article/detail', 'ArticleController@artDetail')->name('articleDetail');
+});
+
+Route::group(['prefix' => 'mobile', 'namespace' => 'Shop\Home\Web'], function () {
+    Route::any('/', 'IndexController@index');
+    Route::any('test', 'IndexController@test');
+
+    Route::any('article', 'ArticleController@index')->name('article');
+    Route::any('article/detail', 'ArticleController@artDetail')->name('articleDetail');
 });

@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\EmailRepository;
+use App\Repositories\Admin\EmailRepository;
 use Illuminate\Http\Request;
 
 class EmailController extends CommonController

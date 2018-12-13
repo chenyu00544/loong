@@ -61,7 +61,7 @@ class ArticleModel extends Model
     public function delArticle($where)
     {
         try {
-            $this->where($where)
+            return $this->where($where)
                 ->delete();
         } catch (\Exception $e) {
             echo $e->getMessage();

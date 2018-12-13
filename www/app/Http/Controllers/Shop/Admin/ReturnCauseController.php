@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\ReturnCauseRepository;
+use App\Repositories\Admin\ReturnCauseRepository;
 use Illuminate\Http\Request;
 
 class ReturnCauseController extends CommonController

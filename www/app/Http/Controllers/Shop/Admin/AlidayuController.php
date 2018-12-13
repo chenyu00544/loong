@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\AlidayuRepository;
+use App\Repositories\Admin\AlidayuRepository;
 use Illuminate\Http\Request;
 
 class AlidayuController extends CommonController

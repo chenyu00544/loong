@@ -10,8 +10,8 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\AdRepository;
-use App\Repositories\ComCateRepository;
+use App\Repositories\Admin\AdRepository;
+use App\Repositories\Admin\ComCateRepository;
 use Illuminate\Http\Request;
 
 class AdvertiseController extends CommonController

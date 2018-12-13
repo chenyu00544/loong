@@ -12,8 +12,8 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Html;
 use App\Facades\ShopConfig;
 use App\Facades\Verifiable;
-use App\Repositories\MerchantsRepository;
-use App\Repositories\StoreRepository;
+use App\Repositories\Admin\MerchantsRepository;
+use App\Repositories\Admin\StoreRepository;
 use Illuminate\Http\Request;
 
 class StoreController extends CommonController

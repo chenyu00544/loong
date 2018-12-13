@@ -80,7 +80,7 @@
                                        class="btn btn-info btn-edit btn-sm">编辑</a>
                                     @if($article->cat_id > 2)
                                         <a class="btn btn-danger btn-del btn-sm"
-                                           data-id="{{$article->article_id}}">删除</a>
+                                           data-id="{{$article->article_id}}" data-img="{{$article->file_url}}">删除</a>
                                     @endif
 
                                 </td>
@@ -179,12 +179,13 @@
             $('.btn-del').click(function () {
                 var that = this;
                 var Id = $(this).data('id');
+                var img = $(this).data('img');
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
                         "{{url('admin/article/')}}/" + Id,
-                        {'_method': 'delete', '_token': '{{csrf_token()}}'},
+                        {'_method': 'delete', '_token': '{{csrf_token()}}', img: img},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
                             setTimeout(function () {

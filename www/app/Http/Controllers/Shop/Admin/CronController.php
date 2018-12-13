@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\CronsRepository;
+use App\Repositories\Admin\CronsRepository;
 use Illuminate\Http\Request;
 
 class CronController extends CommonController

@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\BrandRepository;
+use App\Repositories\Admin\BrandRepository;
 use Illuminate\Http\Request;
 
 class BrandController extends CommonController

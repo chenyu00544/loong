@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\QuestionAnswerRepository;
+use App\Repositories\Admin\QuestionAnswerRepository;
 use Illuminate\Http\Request;
 
 class QuestionAnswerController extends CommonController

@@ -10,8 +10,8 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\UsersRealRepository;
-use App\Repositories\UsersRepository;
+use App\Repositories\Admin\UsersRealRepository;
+use App\Repositories\Admin\UsersRepository;
 use Illuminate\Http\Request;
 
 class UsersRealController extends CommonController

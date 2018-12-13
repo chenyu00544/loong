@@ -10,9 +10,9 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\PaymentRepository;
-use App\Repositories\UserAccountRepository;
-use App\Repositories\UsersRepository;
+use App\Repositories\Admin\PaymentRepository;
+use App\Repositories\Admin\UserAccountRepository;
+use App\Repositories\Admin\UsersRepository;
 use Illuminate\Http\Request;
 
 class UserAccountController extends CommonController

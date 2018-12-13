@@ -10,13 +10,13 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\AdminUserRepository;
-use App\Repositories\ComCateRepository;
-use App\Repositories\MerchantsRepository;
-use App\Repositories\RegionsRepository;
-use App\Repositories\SellerGradeRepository;
-use App\Repositories\SellerRepository;
-use App\Repositories\StoreListRepository;
+use App\Repositories\Admin\AdminUserRepository;
+use App\Repositories\Admin\ComCateRepository;
+use App\Repositories\Admin\MerchantsRepository;
+use App\Repositories\Admin\RegionsRepository;
+use App\Repositories\Admin\SellerGradeRepository;
+use App\Repositories\Admin\SellerRepository;
+use App\Repositories\Admin\StoreListRepository;
 use Illuminate\Http\Request;
 
 class StoreListController extends CommonController

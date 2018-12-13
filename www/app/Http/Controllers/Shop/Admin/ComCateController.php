@@ -11,7 +11,7 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\LangConfig;
 use App\Facades\Verifiable;
-use App\Repositories\ComCateRepository;
+use App\Repositories\Admin\ComCateRepository;
 use Illuminate\Http\Request;
 
 class ComCateController extends CommonController

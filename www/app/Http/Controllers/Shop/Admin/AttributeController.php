@@ -11,8 +11,8 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\RedisCache;
 use App\Facades\Verifiable;
-use App\Repositories\AttributeRepository;
-use App\Repositories\GoodsTypeRepository;
+use App\Repositories\Admin\AttributeRepository;
+use App\Repositories\Admin\GoodsTypeRepository;
 use Illuminate\Http\Request;
 
 class AttributeController extends CommonController

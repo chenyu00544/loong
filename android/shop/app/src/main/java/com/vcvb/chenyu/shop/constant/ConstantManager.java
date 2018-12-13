@@ -107,6 +107,9 @@ public interface ConstantManager {
         public String GETDEVICEID = URIHOST + "app/login/deviceid"; //获取未登录UID
         public String ALLREGION = URIHOST + "region/all/format"; //获取地址数据包
         public String SEND_SMS = URIHOST + "app/sms/send"; //发送验证码
+        public String USER_PROTOCOL = "http://www.vcvbuy.com/mobile/article/detail?id=6"; //用户协议
+        public String USER_PRIVACY = "http://www.vcvbuy.com/mobile/article/detail?id=7"; //隐私相关政策
+        public String USER_SERVICE = "http://www.vcvbuy.com/mobile/article/detail?id=8"; //服务条款
 
         public String HOME = URIHOST + "app/index";
         public String HOMELOADMORE = URIHOST + "app/index/loadmore";

@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\RegFieldsRepository;
+use App\Repositories\Admin\RegFieldsRepository;
 use Illuminate\Http\Request;
 
 class RegFieldsController extends CommonController

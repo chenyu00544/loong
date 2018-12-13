@@ -42,7 +42,6 @@ class CommonController extends Controller
             $this->privilege();
             return $next($request);
         });
-
     }
 
     public function privilege()

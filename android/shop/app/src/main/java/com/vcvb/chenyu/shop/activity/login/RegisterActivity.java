@@ -18,13 +18,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.web.WebActivity;
 import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
 import com.vcvb.chenyu.shop.tools.CountDownTimeUtils;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -126,7 +129,8 @@ public class RegisterActivity extends BaseActivity {
                             "5-8])|(18[0-9])|(147))\\d{8}$");
                     Matcher m = p.matcher(phoneEdit.getText().toString());
                     if (m.matches()) {
-                        CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME, false);
+                        CountDownTimeUtils.check(CountDownTimeUtils.SETTING_FINANCE_ACCOUNT_TIME,
+                                false);
                         CountDownTimeUtils.startCountdown(qrCodeTv);
 
                         //调用验证码接口
@@ -134,16 +138,16 @@ public class RegisterActivity extends BaseActivity {
                         mp.put("phone", phoneEdit.getText().toString());
                         HttpUtils.getInstance().post(ConstantManager.Url.SEND_SMS, mp, new
                                 HttpUtils.NetCall() {
-                                    @Override
-                                    public void success(Call call, JSONObject json) throws IOException {
+                            @Override
+                            public void success(Call call, JSONObject json) throws IOException {
 
-                                    }
+                            }
 
-                                    @Override
-                                    public void failed(Call call, IOException e) {
+                            @Override
+                            public void failed(Call call, IOException e) {
 
-                                    }
-                                });
+                            }
+                        });
 
                     } else {
                         ToastUtils.showShortToast(context, "输入的手机号码不正确");
@@ -157,19 +161,71 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (is_register) {
-                    //注册后获取的数据
-                    LoadingDialog2 loading = new LoadingDialog2(context, R.style.TransparentDialog);
+                    final LoadingDialog2 loading = new LoadingDialog2(context, R.style.TransparentDialog);
                     loading.show();
-                    Intent intent = new Intent();
-                    intent.putExtra("username", "cb");
-                    intent.putExtra("token",
-                            "eyJpdiI6ImN6S3l0RmcrSCt5Vmo5VUk2UTJ4Qnc9PSIsInZhbHVlIjoidStDQTVDY1h3ZmVsa01WbTFBUFdnZz09IiwibWFjIjoiOTFlZTFmODIxOTA1ZGI4MTJjM2IyOTNhYTlkMDhlZjhmOGM5ZjdiZDU0MDRhODI1ZDdmYTg2OTg3ZGQzOWIwMiJ9");
-                    intent.putExtra("logo", "http://a3.topitme.com/1/21/79/1128833621e7779211o" +
-                            ".jpg");
-                    intent.putExtra("nickname", "chongchong");
-                    loading.dismiss();
-                    setResult(RESULT_OK, intent);
-                    finish();
+
+                    HashMap<String, String> mp = new HashMap<>();
+                    mp.put("username", phoneEdit.getText().toString());
+                    mp.put("password", passEdit.getText().toString());
+                    mp.put("code", qrCodeEdit.getText().toString());
+                    mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo()
+                            .get("device_id"));
+                    HttpUtils.getInstance().post(ConstantManager.Url.REGISTER, mp, new HttpUtils
+                            .NetCall() {
+                        @Override
+                        public void success(Call call, final JSONObject json) throws IOException {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (json != null) {
+                                        try {
+                                            if (json.getInt("code") == 0) {
+                                                JSONObject data = json.getJSONObject("data");
+                                                String username = data.getString("user_name");
+                                                String token = json.getString("token");
+                                                String logo = data.getString("logo");
+                                                String nick_name = data.getString("nick_name");
+                                                String mobile_phone = data.getString
+                                                        ("mobile_phone");
+                                                String user_money = data.getString("user_money");
+                                                String is_real = data.getString("is_real");
+                                                HashMap<String, String> u = new HashMap<>();
+                                                u.put("username", username);
+                                                u.put("token", token);
+                                                u.put("logo", logo);
+                                                u.put("nickname", nick_name);
+                                                u.put("mobile_phone", mobile_phone);
+                                                u.put("user_money", user_money);
+                                                u.put("is_real", is_real);
+                                                UserInfoUtils.getInstance(context).setUserInfo(u);
+
+                                                Intent intent = new Intent();
+                                                setResult(RESULT_OK, intent);
+                                                finish();
+                                            } else {
+                                                String msg = json.getString("msg");
+                                                ToastUtils.showShortToast(context, msg);
+                                            }
+                                            loading.dismiss();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void failed(Call call, IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loading.dismiss();
+                                    ToastUtils.showShortToast(context, "网络错误");
+                                }
+                            });
+                        }
+                    });
                 }
             }
         });
@@ -177,14 +233,18 @@ public class RegisterActivity extends BaseActivity {
         serverTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(RegisterActivity.this, WebActivity.class);
+                intent.putExtra("url", ConstantManager.Url.USER_PROTOCOL);
+                startActivity(intent);
             }
         });
         //跳转权益政策
         interestsTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(RegisterActivity.this, WebActivity.class);
+                intent.putExtra("url", ConstantManager.Url.USER_PRIVACY);
+                startActivity(intent);
             }
         });
 
@@ -195,7 +255,7 @@ public class RegisterActivity extends BaseActivity {
                         .getText()) && !TextUtils.isEmpty(passEdit.getText()) && isChecked) {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
-                }else{
+                } else {
                     is_register = false;
                     registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
@@ -220,7 +280,7 @@ public class RegisterActivity extends BaseActivity {
                         .isChecked()) {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
-                }else{
+                } else {
                     is_register = false;
                     registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
@@ -245,7 +305,7 @@ public class RegisterActivity extends BaseActivity {
                         .isChecked()) {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
-                }else{
+                } else {
                     is_register = false;
                     registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }
@@ -270,7 +330,7 @@ public class RegisterActivity extends BaseActivity {
                         .isChecked()) {
                     is_register = true;
                     registerTv.setBackgroundResource(R.drawable.shape_button_active);
-                }else{
+                } else {
                     is_register = false;
                     registerTv.setBackgroundResource(R.drawable.shape_button_none);
                 }

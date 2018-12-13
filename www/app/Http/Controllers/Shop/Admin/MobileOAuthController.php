@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\MobileOAuthRepository;
+use App\Repositories\Admin\MobileOAuthRepository;
 use Illuminate\Http\Request;
 
 class MobileOAuthController extends CommonController

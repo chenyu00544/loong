@@ -9,9 +9,8 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Facades\LangConfig;
 use App\Facades\Verifiable;
-use App\Repositories\ArticleCateRepository;
+use App\Repositories\Admin\ArticleCateRepository;
 use Illuminate\Http\Request;
 
 class ArticleCateController extends CommonController

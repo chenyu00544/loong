@@ -10,8 +10,8 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\FavourableActivityRepository;
-use App\Repositories\UserRankRepository;
+use App\Repositories\Admin\FavourableActivityRepository;
+use App\Repositories\Admin\UserRankRepository;
 use Illuminate\Http\Request;
 
 class FavourableController extends CommonController

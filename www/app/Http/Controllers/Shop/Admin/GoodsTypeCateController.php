@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\GoodsTypeRepository;
+use App\Repositories\Admin\GoodsTypeRepository;
 use Illuminate\Http\Request;
 
 class GoodsTypeCateController extends CommonController

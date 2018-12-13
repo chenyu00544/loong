@@ -10,8 +10,8 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\MobileNavRepository;
-use App\Repositories\ComCateRepository;
+use App\Repositories\Admin\MobileNavRepository;
+use App\Repositories\Admin\ComCateRepository;
 use Illuminate\Http\Request;
 
 class MobileNavigationController extends CommonController

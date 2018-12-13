@@ -10,8 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Regions;
-use App\Repositories\OrderRepository;
-use App\Repositories\SatisticsRepository;
+use App\Repositories\Admin\SatisticsRepository;
 use Illuminate\Http\Request;
 
 class SatisticsController extends CommonController

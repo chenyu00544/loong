@@ -10,11 +10,11 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\OrderRepository;
-use App\Repositories\RegFieldsRepository;
-use App\Repositories\UserAddressRepository;
-use App\Repositories\UserRankRepository;
-use App\Repositories\UsersRepository;
+use App\Repositories\Admin\OrderRepository;
+use App\Repositories\Admin\RegFieldsRepository;
+use App\Repositories\Admin\UserAddressRepository;
+use App\Repositories\Admin\UserRankRepository;
+use App\Repositories\Admin\UsersRepository;
 use Illuminate\Http\Request;
 
 class UsersController extends CommonController

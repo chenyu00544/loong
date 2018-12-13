@@ -9,13 +9,12 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Repositories\OrderRepository;
-use App\Repositories\PaymentRepository;
-use App\Repositories\RegionsRepository;
-use App\Repositories\ShippingRepository;
-use App\Repositories\TransportRepository;
-use App\Repositories\UserAddressRepository;
-use App\Repositories\UsersRepository;
+use App\Repositories\Admin\OrderRepository;
+use App\Repositories\Admin\PaymentRepository;
+use App\Repositories\Admin\RegionsRepository;
+use App\Repositories\Admin\TransportRepository;
+use App\Repositories\Admin\UserAddressRepository;
+use App\Repositories\Admin\UsersRepository;
 use Illuminate\Http\Request;
 
 class OrderController extends CommonController

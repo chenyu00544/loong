@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\MerchantsRepository;
+use App\Repositories\Admin\MerchantsRepository;
 use Illuminate\Http\Request;
 
 class ApplyProcessController extends CommonController

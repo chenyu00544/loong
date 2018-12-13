@@ -43,12 +43,11 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">文章分类：</label>
-                                <input type="hidden" name="parent_id" value="">
+                                <input type="hidden" name="parent_id" value="1">
                                 <div class="col-sm-8 pre-cate">
                                     <div class="cate-option fl">
                                         <select class="form-control select"
                                                 onchange="setNextCate(this)" data-parent="0">
-                                            <option value="0">顶级分类</option>
                                             @foreach($cates as $cate)
                                                 <option value="{{$cate->cat_id}}">{{$cate->cat_name}}</option>
                                             @endforeach

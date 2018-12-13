@@ -12,8 +12,8 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Html;
 use App\Facades\LangConfig;
 use App\Facades\ShopConfig;
-use App\Repositories\RegionsRepository;
-use App\Repositories\SellerRepository;
+use App\Repositories\Admin\RegionsRepository;
+use App\Repositories\Admin\SellerRepository;
 use Illuminate\Http\Request;
 
 class ShopConfController extends CommonController

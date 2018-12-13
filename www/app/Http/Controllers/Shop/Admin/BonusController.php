@@ -10,10 +10,9 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\BonusRepository;
-use App\Repositories\GoodsRepository;
+use App\Repositories\Admin\BonusRepository;
+use App\Repositories\Admin\GoodsRepository;
 use Illuminate\Http\Request;
-use function Sodium\compare;
 
 class BonusController extends CommonController
 {

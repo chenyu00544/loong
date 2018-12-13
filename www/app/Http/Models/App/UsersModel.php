@@ -90,4 +90,9 @@ class UsersModel extends Model
         return $this->where($where)
             ->update($data);
     }
+
+    public function addUser($data)
+    {
+        return $this->create($data);
+    }
 }

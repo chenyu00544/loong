@@ -11,10 +11,9 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\RedisCache;
 use App\Facades\Verifiable;
-use App\Repositories\RegionsRepository;
-use App\Repositories\TransportRepository;
+use App\Repositories\Admin\RegionsRepository;
+use App\Repositories\Admin\TransportRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class TransportController extends CommonController
 {

@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\GoodsDescriptionRepository;
+use App\Repositories\Admin\GoodsDescriptionRepository;
 use Illuminate\Http\Request;
 
 class GoodsDescriptionController extends CommonController

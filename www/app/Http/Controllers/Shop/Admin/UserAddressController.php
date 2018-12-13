@@ -10,8 +10,8 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\RegionsRepository;
-use App\Repositories\UserAddressRepository;
+use App\Repositories\Admin\RegionsRepository;
+use App\Repositories\Admin\UserAddressRepository;
 use Illuminate\Http\Request;
 
 class UserAddressController extends CommonController

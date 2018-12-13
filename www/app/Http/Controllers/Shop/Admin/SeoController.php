@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\SeoRepository;
+use App\Repositories\Admin\SeoRepository;
 use Illuminate\Http\Request;
 
 class SeoController extends CommonController

@@ -9,7 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Repositories\ShippingRepository;
+use App\Repositories\Admin\ShippingRepository;
 use Illuminate\Http\Request;
 
 class ExpressController extends CommonController

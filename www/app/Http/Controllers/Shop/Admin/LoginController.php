@@ -15,11 +15,9 @@ use App\Facades\LangConfig;
 use App\Facades\RedisCache;
 use App\Facades\ShopConfig;
 use App\Facades\Verifiable;
-use App\Helper\RedisServer;
 use App\Helper\SnowFlake;
-use App\Repositories\AdminUserRepository;
+use App\Repositories\Admin\AdminUserRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class LoginController extends CommonController

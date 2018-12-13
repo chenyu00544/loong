@@ -10,8 +10,8 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\CouponsRepository;
-use App\Repositories\UserRankRepository;
+use App\Repositories\Admin\CouponsRepository;
+use App\Repositories\Admin\UserRankRepository;
 use Illuminate\Http\Request;
 
 class CouponsController extends CommonController

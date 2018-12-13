@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\AlismsRepository;
+use App\Repositories\Admin\AlismsRepository;
 use Illuminate\Http\Request;
 
 class AlismsController extends CommonController

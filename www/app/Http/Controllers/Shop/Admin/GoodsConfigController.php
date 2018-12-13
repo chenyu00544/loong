@@ -12,7 +12,7 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Html;
 use App\Facades\LangConfig;
 use App\Facades\ShopConfig;
-use App\Repositories\GoodsRepository;
+use App\Repositories\Admin\GoodsRepository;
 use Illuminate\Http\Request;
 
 class GoodsConfigController extends CommonController

@@ -56,7 +56,6 @@
                                     <div class="cate-option fl">
                                         <select class="form-control select"
                                                 onchange="setNextCate(this)" data-parent="0">
-                                            <option value="0">顶级分类</option>
                                             @foreach($cates as $cate)
                                                 <option value="{{$cate->cat_id}}">{{$cate->cat_name}}</option>
                                             @endforeach
@@ -97,7 +96,7 @@
                                 <label class="col-sm-4 control-label">作者email：</label>
                                 <div class="col-sm-3">
                                     <input type="text" name="author_email" class="form-control" value="{{$article->author_email}}"
-                                           placeholder="排序">
+                                           placeholder="作者email">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -143,7 +142,7 @@
 
                         <div class="switch-info" style="display: none;">
                             <div class="step-near clearfix" style="margin-left:1%;">
-                                <input name="keyword" value="" class="form-control fl max-wd-350 input-sm"
+                                <input value="" class="form-control fl max-wd-350 input-sm keyword"
                                        placeholder="关键字">
                                 <a class="btn btn-primary btn-search mar-left-10 fl input-sm"
                                    style="padding: 4px 10px;">搜索</a>
@@ -185,7 +184,6 @@
                                             <a class="btn btn-danger select-remove mar-left-10 fl btn-sm">移除</a>
                                         </div>
                                     </div>
-                                    <input type="hidden" value="0" name="article_id">
                                 </div>
                             </div>
                         </div>
@@ -229,7 +227,7 @@
             })
 
             $('.btn-search').on('click', function () {
-                var keywords = $('input[name=keyword]').val();
+                var keywords = $('.keyword').val();
                 if (!keywords) {
                     layer.msg('请填写关键字');
                 }

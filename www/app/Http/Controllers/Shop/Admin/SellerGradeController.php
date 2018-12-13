@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\SellerGradeRepository;
+use App\Repositories\Admin\SellerGradeRepository;
 use Illuminate\Http\Request;
 
 class SellerGradeController extends CommonController

@@ -10,16 +10,15 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\BrandRepository;
-use App\Repositories\ComCateRepository;
-use App\Repositories\GalleryRepository;
-use App\Repositories\GoodsAttrRepository;
-use App\Repositories\GoodsRepository;
-use App\Repositories\GoodsTypeRepository;
-use App\Repositories\TransportRepository;
-use App\Repositories\UserRankRepository;
+use App\Repositories\Admin\BrandRepository;
+use App\Repositories\Admin\ComCateRepository;
+use App\Repositories\Admin\GalleryRepository;
+use App\Repositories\Admin\GoodsAttrRepository;
+use App\Repositories\Admin\GoodsRepository;
+use App\Repositories\Admin\GoodsTypeRepository;
+use App\Repositories\Admin\TransportRepository;
+use App\Repositories\Admin\UserRankRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class GoodsController extends CommonController
 {

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\NotifyRepository;
+use App\Repositories\Admin\NotifyRepository;
 use Illuminate\Http\Request;
 
 class NotifyController extends CommonController

@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\OssRepository;
+use App\Repositories\Admin\OssRepository;
 use Illuminate\Http\Request;
 
 class OssController extends CommonController

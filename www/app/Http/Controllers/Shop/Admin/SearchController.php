@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\SearchRepository;
+use App\Repositories\Admin\SearchRepository;
 use Illuminate\Http\Request;
 
 class SearchController extends CommonController

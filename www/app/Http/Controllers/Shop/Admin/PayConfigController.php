@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\PaymentRepository;
+use App\Repositories\Admin\PaymentRepository;
 use Illuminate\Http\Request;
 
 class PayConfigController extends CommonController

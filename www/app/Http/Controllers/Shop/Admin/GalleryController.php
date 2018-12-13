@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\GalleryRepository;
+use App\Repositories\Admin\GalleryRepository;
 use Illuminate\Http\Request;
 
 class GalleryController extends CommonController

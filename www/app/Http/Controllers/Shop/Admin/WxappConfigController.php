@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\WxappRepository;
+use App\Repositories\Admin\WxappRepository;
 use Illuminate\Http\Request;
 
 class WxappConfigController extends CommonController

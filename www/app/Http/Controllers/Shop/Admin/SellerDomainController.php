@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\SellerDomainRepository;
+use App\Repositories\Admin\SellerDomainRepository;
 use Illuminate\Http\Request;
 
 class SellerDomainController extends CommonController

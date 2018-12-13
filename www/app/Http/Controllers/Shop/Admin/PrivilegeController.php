@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\AdminUserRepository;
+use App\Repositories\Admin\AdminUserRepository;
 use Illuminate\Http\Request;
 
 class PrivilegeController extends CommonController

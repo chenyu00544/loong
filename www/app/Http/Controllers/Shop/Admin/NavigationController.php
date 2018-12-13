@@ -11,8 +11,8 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\LangConfig;
 use App\Facades\Verifiable;
-use App\Repositories\ComCateRepository;
-use App\Repositories\NavigationRepository;
+use App\Repositories\Admin\ComCateRepository;
+use App\Repositories\Admin\NavigationRepository;
 use Illuminate\Http\Request;
 
 class NavigationController extends CommonController

@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\EntryCriteriaRepository;
+use App\Repositories\Admin\EntryCriteriaRepository;
 use Illuminate\Http\Request;
 
 class EntryCriteriaController extends CommonController

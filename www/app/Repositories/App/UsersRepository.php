@@ -66,7 +66,7 @@ class UsersRepository implements UsersRepositoryInterface
                     ];
                     $this->usersModel->setUsers($where, $updata);
                     $this->cartModel->setCart(['session_id' => $device_id], ['user_id' => $user->user_id]);
-                }else{
+                } else {
                     $req = ['code' => 1, 'msg' => '验证码错误', 'data' => '', 'token' => ''];
                 }
                 $user->is_real = '0';
@@ -101,6 +101,45 @@ class UsersRepository implements UsersRepositoryInterface
                     }
                 }
             }
+        }
+        return $req;
+    }
+
+    public function register($username, $password, $ip, $qrcode, $device_id)
+    {
+        $code = RedisCache::get('code_' . $username);
+        $column = ['user_id', 'email', 'user_name', 'mobile_phone'];
+        $user = $this->usersModel->getUser($username, $column);
+        if(empty($user)){
+            if ($code == md5($qrcode)) {
+                $salt = Common::randStr(6);
+                $time = time();
+                $user_id = RedisCache::incrby('user_id');
+                $userData = [
+                    'user_id' => $user_id,
+                    'salt' => $salt,
+                    'password' => Common::md5Encrypt($password, $salt),
+                    'user_name' => $username,
+                    'last_login' => $time,
+                    'mobile_phone' => $username,
+                    'nick_name' => APPNAME . substr(md5($username), 8, -8),
+                    'reg_time' => $time,
+                    'last_ip' => $ip,
+                    'logo' => '',
+                    'user_money' => 0,
+                    'last_ip' => $ip,
+                    'last_ip' => $ip,
+                ];
+                $user = $this->usersModel->addUser($userData);
+                $user->user_id = $user_id;
+                $this->cartModel->setCart(['session_id' => $device_id], ['user_id' => $user->user_id]);
+                $user->is_real = '0';
+                $req = ['code' => 0, 'msg' => '', 'data' => $user, 'token' => encrypt($user->user_id)];
+            } else {
+                $req = ['code' => 1, 'msg' => '验证码错误', 'data' => ''];
+            }
+        }else{
+            $req = ['code' => 1, 'msg' => '账号已存在', 'data' => ''];
         }
         return $req;
     }

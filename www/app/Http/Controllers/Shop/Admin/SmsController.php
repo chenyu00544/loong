@@ -9,7 +9,7 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Repositories\SmsRepository;
+use App\Repositories\Admin\SmsRepository;
 use Illuminate\Http\Request;
 
 class SmsController extends CommonController

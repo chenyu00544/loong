@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\RegionsRepository;
+use App\Repositories\Admin\RegionsRepository;
 use Illuminate\Http\Request;
 
 class RegionsController extends CommonController

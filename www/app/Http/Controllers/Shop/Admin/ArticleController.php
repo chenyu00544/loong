@@ -9,10 +9,9 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
-use App\Facades\LangConfig;
 use App\Facades\Verifiable;
-use App\Repositories\ArticleCateRepository;
-use App\Repositories\ArticleRepository;
+use App\Repositories\Admin\ArticleCateRepository;
+use App\Repositories\Admin\ArticleRepository;
 use Illuminate\Http\Request;
 
 class ArticleController extends CommonController
@@ -131,8 +130,8 @@ class ArticleController extends CommonController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        return $this->articleRepository->deleteArticle($id);
+        return $this->articleRepository->deleteArticle($request->all(), $id);
     }
 }

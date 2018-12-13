@@ -10,8 +10,8 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
-use App\Repositories\UserRankRepository;
-use App\Repositories\UsersRepository;
+use App\Repositories\Admin\UserRankRepository;
+use App\Repositories\Admin\UsersRepository;
 use Illuminate\Http\Request;
 
 class UserRankController extends CommonController

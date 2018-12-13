@@ -10,7 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\ShopConfig;
-use App\Repositories\InterfaceRepository;
+use App\Repositories\Admin\InterfaceRepository;
 use Illuminate\Http\Request;
 
 class InterfaceController extends CommonController
