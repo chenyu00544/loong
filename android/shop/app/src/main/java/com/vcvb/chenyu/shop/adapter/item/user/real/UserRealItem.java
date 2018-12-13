@@ -48,6 +48,9 @@ public class UserRealItem extends BaseItem<UserReal> {
         }else if(mData.getReview_status() == 1){
             textView.setText(R.string.examine_adopt);
             textView.setTextColor(context.getResources().getColor(R.color.sky));
+        } else if (mData.getReview_status() == 0) {
+            textView.setText(R.string.no_submit);
+            textView.setTextColor(context.getResources().getColor(R.color.black));
         }
 
         if (mData.getReal_name() != null) {

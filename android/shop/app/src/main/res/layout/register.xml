@@ -151,7 +151,8 @@
     <TextView
         android:id="@+id/textView70"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
         android:text="@string/agree"
         app:layout_constraintBottom_toBottomOf="@+id/checkBox5"
         app:layout_constraintStart_toEndOf="@+id/checkBox5"
@@ -160,7 +161,9 @@
     <TextView
         android:id="@+id/textView71"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/button_white_style"
+        android:gravity="center_vertical"
         android:text='@string/service'
         app:layout_constraintBottom_toBottomOf="@+id/textView70"
         app:layout_constraintStart_toEndOf="@+id/textView70"
@@ -169,7 +172,8 @@
     <TextView
         android:id="@+id/textView72"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
         android:text="@string/and"
         app:layout_constraintBottom_toBottomOf="@+id/textView71"
         app:layout_constraintStart_toEndOf="@+id/textView71"
@@ -178,7 +182,9 @@
     <TextView
         android:id="@+id/textView73"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/button_white_style"
+        android:gravity="center_vertical"
         android:text="@string/policies"
         app:layout_constraintBottom_toBottomOf="@+id/textView72"
         app:layout_constraintStart_toEndOf="@+id/textView72"

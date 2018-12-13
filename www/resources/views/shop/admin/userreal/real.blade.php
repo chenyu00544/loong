@@ -82,9 +82,11 @@
                                         {{$userReal->self_num}}
                                     </td>
                                     <td>
-                                        @if($userReal->review_status == 0 || $userReal->review_status == 3) 未审核
+                                        @if($userReal->review_status == 0) 未审核
                                         @elseif($userReal->review_status==1) 审核通过
-                                        @elseif($userReal->review_status==2) 审核不通过 @endif
+                                        @elseif($userReal->review_status==2) 审核不通过
+                                        @elseif($userReal->review_status==3) 已提交
+                                        @endif
                                     </td>
                                     <td class="text-center">
                                         <a type="button" href="{{url('admin/usersreal/'.$userReal->real_id.'/edit')}}"

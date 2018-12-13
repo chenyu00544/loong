@@ -154,9 +154,9 @@ class FileHandleService
         }
 
         //没有图片链接设置默认图片
-        $no_picture = isset($shopConf['no_picture']) && !empty($shopConf['no_picture']) ? str_replace("../", "", $shopConf['no_picture']) : '';
+        $goodsConf = RedisCache::get('goods_config');
+        $no_picture = isset($goodsConf['no_picture']) && !empty($goodsConf['no_picture']) ? str_replace("../", "", $goodsConf['no_picture']) : '';
         $url = empty($uri) ? $no_picture : $uri;
-
         return url($url);
     }
 

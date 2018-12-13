@@ -16,16 +16,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.vcvb.chenyu.shop.activity.center.userinfo.UserInfoActivity;
-import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
-import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 import com.vcvb.chenyu.shop.activity.center.AddressActivity;
 import com.vcvb.chenyu.shop.activity.center.BrowseActivity;
 import com.vcvb.chenyu.shop.activity.center.MyCollectionActivity;
+import com.vcvb.chenyu.shop.activity.center.userinfo.UserInfoActivity;
 import com.vcvb.chenyu.shop.activity.order.OrderListActivity;
+import com.vcvb.chenyu.shop.base.BaseFragment;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
+import com.vcvb.chenyu.shop.javaBean.user.UserInfoBean;
 import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
@@ -60,6 +60,8 @@ public class FragmentMy extends BaseFragment {
         initView();
         initListener();
         checkLogin();
+        registerReceiver();
+        getData();
         return view;
     }
 
@@ -190,10 +192,7 @@ public class FragmentMy extends BaseFragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getData();
+    public void registerReceiver(){
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("UserInfoCall");
@@ -215,8 +214,18 @@ public class FragmentMy extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
         broadcastManager.unregisterReceiver(receiver);
     }
@@ -380,9 +389,9 @@ public class FragmentMy extends BaseFragment {
         ImageView iv = view.findViewById(R.id.imageView15);
         TextView tv = view.findViewById(R.id.textView30);
 
-        RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable
-                .icon_boy_head);
         if (mp.get("nickname") != null && token != null && !token.equals("")) {
+            RequestOptions requestOptions = RequestOptions.circleCropTransform().error(R.drawable
+                    .icon_boy_head).dontAnimate();
             Glide.with(context).load((String) mp.get("logo")).apply(requestOptions).into(iv);
             tv.setText((CharSequence) mp.get("nickname"));
             iv.setOnClickListener(null);
@@ -400,7 +409,7 @@ public class FragmentMy extends BaseFragment {
                     showLoginDialog();
                 }
             });
-            Glide.with(context).load(R.drawable.icon_boy_head).apply(requestOptions).into(iv);
+            Glide.with(context).load(R.drawable.icon_boy_head).into(iv);
             tv.setText(R.string.login_reg);
         }
     }

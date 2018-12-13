@@ -41,7 +41,7 @@ public class UserRealCardItem extends BaseItem<UserReal> {
         ImageView iv4 = holder.getImageView(R.id.imageView72);
         RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy
                 (DiskCacheStrategy.NONE).skipMemoryCache(true).override(120, 120);
-        if (mData.getFront_of_id_card() != null) {
+        if (mData.getFront_of_id_card() != null && !mData.getFront_of_id_card().contains("styles")) {
             Glide.with(context).load(mData.getFront_of_id_card()).apply(requestOptions).into(iv1);
             iv3.setAlpha(255);
         } else {
@@ -49,7 +49,7 @@ public class UserRealCardItem extends BaseItem<UserReal> {
             iv3.setAlpha(0);
         }
 
-        if (mData.getReverse_of_id_card() != null) {
+        if (mData.getReverse_of_id_card() != null && !mData.getReverse_of_id_card().contains("styles")) {
             Glide.with(context).load(mData.getReverse_of_id_card()).apply(requestOptions).into(iv2);
             iv4.setAlpha(255);
         } else {
@@ -58,15 +58,18 @@ public class UserRealCardItem extends BaseItem<UserReal> {
         }
 
         TextView textView = holder.get(R.id.textView243);
-        if(mData.getReview_status() == 3){
+        if (mData.getReview_status() == 3) {
             textView.setText(R.string.examine);
             textView.setTextColor(context.getResources().getColor(R.color.red));
-        }else if(mData.getReview_status() == 2){
+        } else if (mData.getReview_status() == 2) {
             textView.setText(R.string.examine_adopt_no);
             textView.setTextColor(context.getResources().getColor(R.color.red));
-        }else if(mData.getReview_status() == 1){
+        } else if (mData.getReview_status() == 1) {
             textView.setText(R.string.examine_adopt);
             textView.setTextColor(context.getResources().getColor(R.color.sky));
+        } else if (mData.getReview_status() == 0) {
+            textView.setText(R.string.no_submit);
+            textView.setTextColor(context.getResources().getColor(R.color.black));
         }
     }
 }

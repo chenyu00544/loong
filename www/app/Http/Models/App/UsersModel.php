@@ -74,12 +74,12 @@ class UsersModel extends Model
             ->where($where)
             ->with(['CouponsUser' => function ($query) {
                 $query->with(['Coupons' => function ($query) {
-                    $query->select(['cou_id','cou_name','cou_man','cou_money','cou_goods','cou_cate','cou_start_time','cou_end_time','cou_title'])->where([['cou_start_time', '<', time()], ['cou_end_time', '>', time()]]);
+                    $query->select(['cou_id', 'cou_name', 'cou_man', 'cou_money', 'cou_goods', 'cou_cate', 'cou_start_time', 'cou_end_time', 'cou_title'])->where([['cou_start_time', '<', time()], ['cou_end_time', '>', time()]]);
                 }])->where(['is_use' => 0, 'order_id' => 0]);
             }])
             ->with(['BonusUser' => function ($query) {
                 $query->with(['Bonus' => function ($query) {
-                    $query->select(['bonus_id','type_name','type_money','min_goods_amount','usebonus_type','use_start_date','use_end_date'])->where([['use_start_date', '<', time()], ['use_end_date', '>', time()]]);
+                    $query->select(['bonus_id', 'type_name', 'type_money', 'min_goods_amount', 'usebonus_type', 'use_start_date', 'use_end_date'])->where([['use_start_date', '<', time()], ['use_end_date', '>', time()]]);
                 }])->where(['order_id' => 0, 'is_use' => 0]);
             }])
             ->first();
@@ -91,8 +91,28 @@ class UsersModel extends Model
             ->update($data);
     }
 
-    public function addUser($data)
+    public function addUser($data, $uid)
     {
+        $this->table($uid);
         return $this->create($data);
+    }
+
+    //分表
+    public function table($uid, $bit = 1, $seed = 24)
+    {
+        //16777216
+        if($uid >> $seed != 0){
+            $tb = $this->table . '_' . sprintf('%0' . $bit . 'd', ($uid >> $seed));
+            $this->setTable($tb);
+        }
+    }
+
+    //分库
+    public function connection($uid, $bit = 1, $seed = 20)
+    {
+        if($uid >> $seed != 0){
+            $cc = 'shop_' . sprintf('%0' . $bit . 'd', ($uid >> $seed));
+            $this->setConnection($cc);
+        }
     }
 }

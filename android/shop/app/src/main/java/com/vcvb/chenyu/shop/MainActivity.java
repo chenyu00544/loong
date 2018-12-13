@@ -61,6 +61,8 @@ public class MainActivity extends BaseActivity {
 
     private String device_id;
 
+    public boolean isExit = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -406,8 +408,6 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
-    public boolean isExit = false;
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

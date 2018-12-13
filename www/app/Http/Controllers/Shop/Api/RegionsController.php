@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Shop\Api;
 
 use App\Facades\RedisCache;
 use App\Facades\Token;
-use App\Repositories\RegionsRepository;
+use App\Repositories\Admin\RegionsRepository;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 

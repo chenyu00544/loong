@@ -138,16 +138,17 @@ public class RegisterActivity extends BaseActivity {
                         mp.put("phone", phoneEdit.getText().toString());
                         HttpUtils.getInstance().post(ConstantManager.Url.SEND_SMS, mp, new
                                 HttpUtils.NetCall() {
-                            @Override
-                            public void success(Call call, JSONObject json) throws IOException {
+                                    @Override
+                                    public void success(Call call, JSONObject json) throws
+                                            IOException {
 
-                            }
+                                    }
 
-                            @Override
-                            public void failed(Call call, IOException e) {
+                                    @Override
+                                    public void failed(Call call, IOException e) {
 
-                            }
-                        });
+                                    }
+                                });
 
                     } else {
                         ToastUtils.showShortToast(context, "输入的手机号码不正确");
@@ -161,7 +162,8 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (is_register) {
-                    final LoadingDialog2 loading = new LoadingDialog2(context, R.style.TransparentDialog);
+                    final LoadingDialog2 loading = new LoadingDialog2(context, R.style
+                            .TransparentDialog);
                     loading.show();
 
                     HashMap<String, String> mp = new HashMap<>();
@@ -189,17 +191,15 @@ public class RegisterActivity extends BaseActivity {
                                                         ("mobile_phone");
                                                 String user_money = data.getString("user_money");
                                                 String is_real = data.getString("is_real");
-                                                HashMap<String, String> u = new HashMap<>();
-                                                u.put("username", username);
-                                                u.put("token", token);
-                                                u.put("logo", logo);
-                                                u.put("nickname", nick_name);
-                                                u.put("mobile_phone", mobile_phone);
-                                                u.put("user_money", user_money);
-                                                u.put("is_real", is_real);
-                                                UserInfoUtils.getInstance(context).setUserInfo(u);
 
                                                 Intent intent = new Intent();
+                                                intent.putExtra("username", username);
+                                                intent.putExtra("token", token);
+                                                intent.putExtra("logo", logo);
+                                                intent.putExtra("nickname", nick_name);
+                                                intent.putExtra("is_real", is_real);
+                                                intent.putExtra("mobile_phone", mobile_phone);
+                                                intent.putExtra("user_money", user_money);
                                                 setResult(RESULT_OK, intent);
                                                 finish();
                                             } else {

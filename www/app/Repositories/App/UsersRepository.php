@@ -110,7 +110,7 @@ class UsersRepository implements UsersRepositoryInterface
         $code = RedisCache::get('code_' . $username);
         $column = ['user_id', 'email', 'user_name', 'mobile_phone'];
         $user = $this->usersModel->getUser($username, $column);
-        if(empty($user)){
+        if (empty($user)) {
             if ($code == md5($qrcode)) {
                 $salt = Common::randStr(6);
                 $time = time();
@@ -127,10 +127,9 @@ class UsersRepository implements UsersRepositoryInterface
                     'last_ip' => $ip,
                     'logo' => '',
                     'user_money' => 0,
-                    'last_ip' => $ip,
-                    'last_ip' => $ip,
                 ];
-                $user = $this->usersModel->addUser($userData);
+                $user = $this->usersModel->addUser($userData, $user_id);
+                $this->usersRealModel->addUsersReal(['user_id' => $user_id]);
                 $user->user_id = $user_id;
                 $this->cartModel->setCart(['session_id' => $device_id], ['user_id' => $user->user_id]);
                 $user->is_real = '0';
@@ -138,7 +137,7 @@ class UsersRepository implements UsersRepositoryInterface
             } else {
                 $req = ['code' => 1, 'msg' => '验证码错误', 'data' => ''];
             }
-        }else{
+        } else {
             $req = ['code' => 1, 'msg' => '账号已存在', 'data' => ''];
         }
         return $req;
