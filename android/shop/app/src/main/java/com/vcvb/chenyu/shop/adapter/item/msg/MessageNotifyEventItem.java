@@ -2,6 +2,7 @@ package com.vcvb.chenyu.shop.adapter.item.msg;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -65,5 +66,9 @@ public class MessageNotifyEventItem extends BaseItem<List<NotifyMsgEvent>> {
             TextView content = holder.get(R.id.textView219);
             content.setText(notifyMsgEvent.getContent());
         }
+
+        View v = holder.getItemView();
+        posMap.put(v.getId(),position);
+        v.setOnClickListener(listener);
     }
 }

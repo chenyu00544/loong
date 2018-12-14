@@ -203,6 +203,22 @@
             android:name=".activity.web.WebActivity"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".activity.msg.MessageServerActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".activity.msg.MessageFaatActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".activity.msg.MessageEventActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".activity.msg.MessageArticleActivity"
+            android:theme="@style/AppTheme" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.vcvb.chenyu.shop.provider"

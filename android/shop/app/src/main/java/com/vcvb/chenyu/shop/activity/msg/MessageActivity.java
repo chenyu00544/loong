@@ -3,7 +3,6 @@ package com.vcvb.chenyu.shop.activity.msg;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -13,10 +12,8 @@ import com.vcvb.chenyu.shop.adapter.item.msg.MessageNotifyArticleItem;
 import com.vcvb.chenyu.shop.adapter.item.msg.MessageNotifyEventItem;
 import com.vcvb.chenyu.shop.adapter.item.msg.MessageNotifyFaatItem;
 import com.vcvb.chenyu.shop.adapter.item.msg.MessageNotifyServerItem;
-import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.javaBean.msg.Message;
 import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgArticle;
 import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgEvent;
 import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgFaat;
@@ -37,7 +34,6 @@ import xiaofei.library.datastorage.DataStorageFactory;
 import xiaofei.library.datastorage.IDataStorage;
 
 public class MessageActivity extends BaseRecyclerViewActivity {
-    private List<Message> messages = new ArrayList<>();
     private IDataStorage dataStorage;
     private List<NotifyMsgArticle> articles = new ArrayList<>();
     private List<NotifyMsgEvent> events = new ArrayList<>();
@@ -74,6 +70,11 @@ public class MessageActivity extends BaseRecyclerViewActivity {
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void initListener() {
+
     }
 
     @Override
@@ -199,35 +200,81 @@ public class MessageActivity extends BaseRecyclerViewActivity {
     protected List<Item> getItems() {
         List<Item> cells = new ArrayList<>();
         if (severs.size() > 0) {
-            cells.add(new MessageNotifyServerItem(severs, context));
+            MessageNotifyServerItem messageNotifyServerItem = new MessageNotifyServerItem(severs,
+                    context);
+            messageNotifyServerItem.setOnItemClickListener(serverListener);
+            cells.add(messageNotifyServerItem);
         }
         if (faats.size() > 0) {
-            cells.add(new MessageNotifyFaatItem(faats, context));
+            MessageNotifyFaatItem messageNotifyFaatItem = new MessageNotifyFaatItem(faats, context);
+            messageNotifyFaatItem.setOnItemClickListener(faatListener);
+            cells.add(messageNotifyFaatItem);
         }
         if (events.size() > 0) {
-            cells.add(new MessageNotifyEventItem(events, context));
+            MessageNotifyEventItem messageNotifyEventItem = new MessageNotifyEventItem(events,
+                    context);
+            messageNotifyEventItem.setOnItemClickListener(eventListener);
+            cells.add(messageNotifyEventItem);
         }
         if (articles.size() > 0) {
-            cells.add(new MessageNotifyArticleItem(articles, context));
+            MessageNotifyArticleItem messageNotifyArticleItem = new MessageNotifyArticleItem
+                    (articles, context);
+            messageNotifyArticleItem.setOnItemClickListener(articleListener);
+            cells.add(messageNotifyArticleItem);
         }
         return cells;
     }
 
-    @Override
-    public void initListener() {
-        super.initListener();
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                Message message = messages.get(position);
-                switch (message.getIsType()) {
-                    case 1:
-                        Intent intent = new Intent(MessageActivity.this, MessageInfoActivity.class);
-                        startActivity(intent);
-                        break;
-                }
-            }
-        });
+    public void updateData(){
+        severs = dataStorage.loadAll(NotifyMsgSever.class);
+        faats = dataStorage.loadAll(NotifyMsgFaat.class);
+        events = dataStorage.loadAll(NotifyMsgEvent.class);
+        articles = dataStorage.loadAll(NotifyMsgArticle.class);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        updateData();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    MessageNotifyServerItem.OnClickListener serverListener = new MessageNotifyServerItem
+            .OnClickListener() {
+
+        @Override
+        public void onClicked(View view, int pos) {
+            Intent intent = new Intent(MessageActivity.this, MessageServerActivity.class);
+            startActivityForResult(intent, ConstantManager.ResultStatus.MSG_RESULT);
+        }
+    };
+
+    MessageNotifyFaatItem.OnClickListener faatListener = new MessageNotifyFaatItem
+            .OnClickListener() {
+
+        @Override
+        public void onClicked(View view, int pos) {
+            Intent intent = new Intent(MessageActivity.this, MessageFaatActivity.class);
+            startActivityForResult(intent, ConstantManager.ResultStatus.MSG_RESULT);
+        }
+    };
+
+    MessageNotifyEventItem.OnClickListener eventListener = new MessageNotifyEventItem
+            .OnClickListener() {
+
+        @Override
+        public void onClicked(View view, int pos) {
+
+        }
+    };
+
+    MessageNotifyArticleItem.OnClickListener articleListener = new MessageNotifyArticleItem
+            .OnClickListener() {
+
+        @Override
+        public void onClicked(View view, int pos) {
+
+        }
+    };
+
 }

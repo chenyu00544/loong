@@ -3,18 +3,19 @@ package com.vcvb.chenyu.shop.adapter.item.msg;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgFaat;
 
-import java.util.List;
+public class MessageFaatItem extends BaseItem<NotifyMsgFaat> {
+    public static final int TYPE = R.layout.message_info_faat_item;
 
-public class MessageFaatItem extends BaseItem<List<NotifyMsgFaat>> {
-    public static final int TYPE = 2;
-
-    public MessageFaatItem(List<NotifyMsgFaat> bean, Context c) {
+    public MessageFaatItem(NotifyMsgFaat bean, Context c) {
         super(bean, c);
     }
 
@@ -26,12 +27,19 @@ public class MessageFaatItem extends BaseItem<List<NotifyMsgFaat>> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.message_info_faat_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        TextView title = holder.get(R.id.textView222);
+        ImageView iv = holder.get(R.id.imageView92);
+        TextView desc = holder.get(R.id.textView223);
+        TextView time = holder.get(R.id.textView221);
 
+        title.setText(mData.getDescribe());
+        Glide.with(context).load(mData.getImg()).into(iv);
+        desc.setText(mData.getContent());
     }
 }

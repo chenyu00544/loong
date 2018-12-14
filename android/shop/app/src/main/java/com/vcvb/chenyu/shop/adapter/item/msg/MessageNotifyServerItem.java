@@ -2,6 +2,7 @@ package com.vcvb.chenyu.shop.adapter.item.msg;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -54,5 +55,8 @@ public class MessageNotifyServerItem extends BaseItem<List<NotifyMsgSever>> {
                 content.setText(mData.get(0).getContent());
             }
         }
+        View v = holder.getItemView();
+        posMap.put(v.getId(),position);
+        v.setOnClickListener(listener);
     }
 }

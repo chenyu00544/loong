@@ -74,28 +74,26 @@
         android:id="@+id/textView222"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="天外出散步"
-        android:textSize="12sp"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="@+id/view63"
-        app:layout_constraintStart_toStartOf="@+id/view63"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView92"
+        app:layout_constraintStart_toStartOf="@+id/imageView92"
         app:layout_constraintTop_toTopOf="@+id/view63" />
 
     <ImageView
         android:id="@+id/imageView92"
-        android:layout_width="0dp"
+        android:layout_width="320dp"
         android:layout_height="100dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="@+id/textView222"
-        app:layout_constraintStart_toStartOf="@+id/textView222"
-        app:layout_constraintTop_toBottomOf="@+id/textView222"
-        app:srcCompat="@drawable/ads1_12_2" />
+        app:layout_constraintEnd_toEndOf="@+id/view63"
+        app:layout_constraintStart_toStartOf="@+id/view63"
+        app:layout_constraintTop_toBottomOf="@+id/textView222" />
 
     <TextView
         android:id="@+id/textView223"
