@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.Locale;
+
 public class LaunchActivity extends Activity {
     private static int TOTAL_TIME = 2000;
     private static int ONECE_TIME = 1000;
@@ -30,7 +32,8 @@ public class LaunchActivity extends Activity {
         @Override
         public void onTick(long millisUntilFinished) {
             String value = String.valueOf((int) (millisUntilFinished / 1000));
-            btn.setText(value + " 跳过");
+            String str = "%s 跳过";
+            btn.setText(String.format(Locale.CHINA, str, value));
         }
 
         @Override

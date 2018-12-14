@@ -57,7 +57,6 @@ public class MainActivity extends BaseActivity {
     private String SAVED_INDEX = "SAVED_INDEX";
     //    private String[] fragmentTag = new String[]{"home", "categroy", "find", "cart", "my"};
     private String[] fragmentTag = new String[]{"home", "categroy", "cart", "my"};
-    private LoadingDialog2 loadingDialog2;
 
     private String device_id;
 
@@ -260,8 +259,6 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onLoginClickListener(Map<String, String> user) {
-//                loadingDialog2 = new LoadingDialog2(context);
-//                loadingDialog2.show();
                 LoadingDialog2.getInstance(context).show();
                 HashMap<String, String> mp = new HashMap<>();
                 mp.put("username", user.get("username"));
@@ -287,6 +284,7 @@ public class MainActivity extends BaseActivity {
                                             String mobile_phone = data.getString("mobile_phone");
                                             String user_money = data.getString("user_money");
                                             String is_real = data.getString("is_real");
+                                            Integer server_id = data.getInt("server_id");
                                             HashMap<String, String> u = new HashMap<>();
                                             u.put("username", username);
                                             u.put("token", token);
@@ -295,6 +293,7 @@ public class MainActivity extends BaseActivity {
                                             u.put("mobile_phone", mobile_phone);
                                             u.put("user_money", user_money);
                                             u.put("is_real", is_real);
+                                            u.put("server_id", String.valueOf(server_id));
                                             UserInfoUtils.getInstance(context).setUserInfo(u);
 
                                             Intent intent = new Intent();
@@ -399,6 +398,7 @@ public class MainActivity extends BaseActivity {
                 u.put("logo", data.getStringExtra("logo"));
                 u.put("nickname", data.getStringExtra("nickname"));
                 u.put("is_real", data.getStringExtra("is_real"));
+                u.put("server_id", data.getStringExtra("server_id"));
 
                 UserInfoUtils.getInstance(context).setUserInfo(u);
                 Intent intent = new Intent();
@@ -436,4 +436,5 @@ public class MainActivity extends BaseActivity {
         outState.putInt(SAVED_INDEX, index);
         super.onSaveInstanceState(outState);
     }
+
 }

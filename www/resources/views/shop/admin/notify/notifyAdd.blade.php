@@ -43,6 +43,7 @@
                                     <option value="1">文章</option>
                                     <option value="2">事件</option>
                                     <option value="3">促销</option>
+                                    <option value="4">客服</option>
                                 </select>
                             </div>
                         </div>

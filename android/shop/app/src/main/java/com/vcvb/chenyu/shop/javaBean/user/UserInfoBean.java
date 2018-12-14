@@ -13,6 +13,7 @@ public class UserInfoBean {
     private Integer order_shipped_count;
     private Integer order_comment_count;
     private Integer order_return_count;
+    private Integer server_id;
 
     private String nick_name;
     private String birthday;
@@ -217,5 +218,13 @@ public class UserInfoBean {
 
     public void setUnion_id(String union_id) {
         this.union_id = union_id;
+    }
+
+    public Integer getServer_id() {
+        return server_id;
+    }
+
+    public void setServer_id(Integer server_id) {
+        this.server_id = server_id;
     }
 }

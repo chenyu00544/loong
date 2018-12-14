@@ -21,6 +21,7 @@ import com.vcvb.chenyu.shop.adapter.item.user.real.UserRealWhyItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.user.UserReal;
 import com.vcvb.chenyu.shop.receiver.Receiver;
@@ -110,30 +111,30 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
         //身份证反面，前往相册选图
         CYCItemClickSupport.BuildTo1(mRecyclerView, R.id.imageView69).setOnChildClickListener1
                 (new CYCItemClickSupport.OnChildItemClickListener1() {
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                        goToAlbum(2);
-                    }
-                });
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                goToAlbum(2);
+            }
+        });
 
         //删除身份证正面
         CYCItemClickSupport.BuildTo2(mRecyclerView, R.id.imageView73).setOnChildClickListener2
                 (new CYCItemClickSupport.OnChildItemClickListener2() {
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                        real.setFront_of_id_card(null);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                real.setFront_of_id_card(null);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
         //删除身份证反面
         CYCItemClickSupport.BuildTo3(mRecyclerView, R.id.imageView72).setOnChildClickListener3
                 (new CYCItemClickSupport.OnChildItemClickListener3() {
-                    @Override
-                    public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                        real.setReverse_of_id_card(null);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
+            @Override
+            public void onChildItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                real.setReverse_of_id_card(null);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,6 +198,11 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                     mp.put("card_num", (real.getSelf_num() != null ? real.getSelf_num() : ""));
                 }
                 mAdapter.addAll(getItems(real));
+                if (real.getReview_status() == 2) {
+                    ConfirmDialog confirmDialog = new ConfirmDialog(context);
+                    confirmDialog.setTitle(real.getReview_content());
+                    confirmDialog.show();
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -207,53 +213,59 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
         }
     }
 
-    public void saveData(){
-        loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
-        loadingDialog.show();
+    public void saveData() {
         //保存实名认证
         mp.put("token", token);
-        HttpUtils.getInstance().postImage(ConstantManager.Url.SET_USER_REAL, mp, files,
-                new HttpUtils.NetCall() {
-                    @Override
-                    public void success(Call call, JSONObject json) throws IOException {
-                        try {
-                            if (json.getInt("code") == 0) {
-                                Integer review_status = json.getJSONObject("data").getInt
-                                        ("review_status");
-                                HashMap<String, String> mp = new HashMap<>();
-                                mp.put("is_real", review_status+"");
-                                UserInfoUtils.getInstance(context).setUserInfo(mp);
-                                real.setReview_status(review_status);
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mAdapter.notifyDataSetChanged();
-                                    }
-                                });
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        mp.put("card_name", real.getReal_name());
+        mp.put("card_num", real.getSelf_num());
+        if (mp.get("card_name") == null || mp.get("card_num") == null || mp.get("card_name")
+                .equals("") || mp.get("card_num").equals("")) {
+            ToastUtils.showShortToast(context, "请认真填写认证信息");
+            return;
+        }
+        loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
+        loadingDialog.show();
+        HttpUtils.getInstance().postImage(ConstantManager.Url.SET_USER_REAL, mp, files, new
+                HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                try {
+                    if (json.getInt("code") == 0) {
+                        Integer review_status = json.getJSONObject("data").getInt("review_status");
+                        HashMap<String, String> mp = new HashMap<>();
+                        mp.put("is_real", review_status + "");
+                        UserInfoUtils.getInstance(context).setUserInfo(mp);
+                        real.setReview_status(review_status);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                loadingDialog.dismiss();
+                                mAdapter.notifyDataSetChanged();
                             }
                         });
                     }
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void failed(Call call, IOException e) {
-                        System.out.println(e.getMessage());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingDialog.dismiss();
-                                ToastUtils.showShortToast(context, "错误");
-                            }
-                        });
+                    public void run() {
+                        loadingDialog.dismiss();
                     }
                 });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                System.out.println(e.getMessage());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        ToastUtils.showShortToast(context, "错误");
+                    }
+                });
+            }
+        });
     }
 
     //相册权限
@@ -281,9 +293,7 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
         return cells;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void registerReceiver() {
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("cardNameChange");
@@ -291,19 +301,27 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
         receiver = new Receiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case "cardNameChange":
-                        System.out.println(intent.getStringExtra("data"));
-                        mp.put("card_name", intent.getStringExtra("data"));
-                        break;
-                    case "cardNumChange":
-                        System.out.println(intent.getStringExtra("data"));
-                        mp.put("card_num", intent.getStringExtra("data"));
-                        break;
+                if (intent.getAction() != null) {
+                    switch (intent.getAction()) {
+                        case "cardNameChange":
+                            mp.put("card_name", intent.getStringExtra("data"));
+                            real.setReal_name(intent.getStringExtra("data"));
+                            break;
+                        case "cardNumChange":
+                            mp.put("card_num", intent.getStringExtra("data"));
+                            real.setSelf_num(intent.getStringExtra("data"));
+                            break;
+                    }
                 }
             }
         };
         broadcastManager.registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
     }
 
     @Override
@@ -324,13 +342,13 @@ public class UserRealNameActivity extends BaseRecyclerViewActivity {
                             files.remove(0);
                         }
                         real.setFront_of_id_card(String.valueOf(data.getParcelableExtra("uri")));
-                        files.add(new File(ConstantManager.ImgPath.PATH, "CARD_IMG_FRONT.jpg"));
+                        files.add(0, new File(ConstantManager.ImgPath.PATH, "CARD_IMG_FRONT.jpg"));
                     } else if (pos == 2) {
                         if (files.size() > 1) {
                             files.remove(1);
                         }
                         real.setReverse_of_id_card(String.valueOf(data.getParcelableExtra("uri")));
-                        files.add(new File(ConstantManager.ImgPath.PATH, "CARD_IMG_BACK.jpg"));
+                        files.add(1, new File(ConstantManager.ImgPath.PATH, "CARD_IMG_BACK.jpg"));
                     }
                     mAdapter.notifyDataSetChanged();
                     break;

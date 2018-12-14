@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.msg.MessageList;
+import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgEvent;
 
-public class MessageNoticeItem extends BaseItem<MessageList> {
+import java.util.List;
+
+public class MessageEventItem extends BaseItem<List<NotifyMsgEvent>> {
     public static final int TYPE = 1;
 
-    public MessageNoticeItem(MessageList bean, Context c) {
+    public MessageEventItem(List<NotifyMsgEvent> bean, Context c) {
         super(bean, c);
     }
 

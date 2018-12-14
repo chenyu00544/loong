@@ -46,6 +46,7 @@
                                     <option value="1" @if($notify->type == 1) selected @endif>文章</option>
                                     <option value="2" @if($notify->type == 2) selected @endif>事件</option>
                                     <option value="3" @if($notify->type == 3) selected @endif>促销</option>
+                                    <option value="4" @if($notify->type == 4) selected @endif>客服</option>
                                 </select>
                             </div>
                         </div>

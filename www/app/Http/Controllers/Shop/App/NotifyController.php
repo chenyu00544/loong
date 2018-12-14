@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Shop\App;
 
+use App\Facades\Verifiable;
 use App\Repositories\App\NotifyRepository;
 use Illuminate\Http\Request;
 
 class NotifyController extends CommonController
 {
     private $notifyRepository;
+
     public function __construct(
         NotifyRepository $notifyRepository
     )
@@ -18,7 +20,8 @@ class NotifyController extends CommonController
 
     public function index(Request $request)
     {
-        $re = $this->notifyRepository->getNotifies($request->all());
+        $uid = Verifiable::authorization($request);
+        $re = $this->notifyRepository->getNotifies($request->all(), $uid);
         if ($re) {
             return ['code' => 0, 'msg' => '', 'data' => $re];
         } else {
@@ -34,5 +37,10 @@ class NotifyController extends CommonController
         } else {
             return ['code' => 1, 'msg' => '', 'data' => ''];
         }
+    }
+
+    public function getNotifiesForPid(Request $request)
+    {
+        $re = $this->notifyRepository->getNotifiesForPid($request->all());
     }
 }

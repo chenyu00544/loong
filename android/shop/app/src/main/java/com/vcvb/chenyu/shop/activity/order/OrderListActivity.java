@@ -149,7 +149,7 @@ public class OrderListActivity extends BaseActivity {
         });
 
         confirmDialog = new ConfirmDialog(context);
-        confirmDialog.setTitle(R.string.is_delete);
+        confirmDialog.setTitle(context.getResources().getString(R.string.is_delete));
     }
 
     public void initListener() {
@@ -193,12 +193,10 @@ public class OrderListActivity extends BaseActivity {
             @Override
             public void onConfirmClickListener() {
                 cancelOrder();
-                confirmDialog.dismiss();
             }
 
             @Override
             public void onCancelClickListener() {
-                confirmDialog.dismiss();
             }
         });
     }

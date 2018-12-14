@@ -105,7 +105,7 @@ public class AddressActivity extends BaseRecyclerViewActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         confirmDialog = new ConfirmDialog(context);
-        confirmDialog.setTitle(R.string.is_delete);
+        confirmDialog.setTitle(context.getResources().getString(R.string.is_delete));
     }
 
     @Override
@@ -233,12 +233,11 @@ public class AddressActivity extends BaseRecyclerViewActivity {
             @Override
             public void onConfirmClickListener() {
                 removeAddresses();
-                confirmDialog.dismiss();
             }
 
             @Override
             public void onCancelClickListener() {
-                confirmDialog.dismiss();
+
             }
         });
     }

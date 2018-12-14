@@ -44,7 +44,7 @@ public interface ConstantManager {
 
         public int NICKNAME = 3001;
 
-        public String SEX = "XXXXXXX";
+        public int USERINFO = 3002;
 
         public String ACCESS_ID = "XXXXXXX";
     }

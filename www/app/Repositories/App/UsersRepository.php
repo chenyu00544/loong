@@ -126,6 +126,7 @@ class UsersRepository implements UsersRepositoryInterface
                     'reg_time' => $time,
                     'last_ip' => $ip,
                     'logo' => '',
+                    'server_id' => 0,
                     'user_money' => 0,
                 ];
                 $user = $this->usersModel->addUser($userData, $user_id);
@@ -145,7 +146,7 @@ class UsersRepository implements UsersRepositoryInterface
 
     public function getUserInfo($uid)
     {
-        $column = ['user_id', 'email', 'is_email', 'nick_name', 'sex', 'birthday', 'user_money', 'frozen_money', 'bonus_money', 'pay_points',
+        $column = ['user_id', 'server_id', 'email', 'is_email', 'nick_name', 'sex', 'birthday', 'user_money', 'frozen_money', 'bonus_money', 'pay_points',
             'rank_points', 'address_id', 'user_rank', 'mobile_phone', 'is_phone', 'credit_line', 'logo', 'qq', 'union_id'];
         $user = $this->usersModel->getUser($uid, $column);
         $user->is_real = '0';

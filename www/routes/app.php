@@ -73,4 +73,5 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
 
     Route::post('notify/index', 'NotifyController@index');
     Route::post('notify/get', 'NotifyController@getNotify');
+    Route::post('notify/ids', 'NotifyController@getNotifiesForIds');
 });

@@ -19,7 +19,7 @@ class IndexController extends CommonController
     {
         set_time_limit(0);
         $db = DB::table('users_copy');
-        for ($i = 4218; $i < 10000000; $i++) {
+        for ($i = 688483; $i < 10000000; $i++) {
             $user = [
                 'user_name' => 'user_name'.$i,
                 'mobile_phone' => 'mobile_phone'.$i,
@@ -27,7 +27,7 @@ class IndexController extends CommonController
                 'email' => 'email'.$i,
             ];
             $db->insert($user);
-            echo $i.'\n';
+            echo $i.'<\br>';
         }
     }
 

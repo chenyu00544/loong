@@ -28,6 +28,9 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
+import com.vcvb.chenyu.shop.activity.msg.MessageActivity;
+import com.vcvb.chenyu.shop.activity.search.SearchActivity;
 import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds1Item;
@@ -46,12 +49,9 @@ import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.HomeItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
-import com.vcvb.chenyu.shop.activity.msg.MessageActivity;
-import com.vcvb.chenyu.shop.activity.search.SearchActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.UrlParse;
@@ -91,8 +91,7 @@ public class FragmentHome extends BaseFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_home, container, false);
         initRefresh();
@@ -134,6 +133,14 @@ public class FragmentHome extends BaseFragment {
             public void onClick(View view) {
                 Intent intent = new Intent(context, MessageActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        RelativeLayout location = view.findViewById(R.id.location);
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentHomePermissionsDispatcher.locationWithCheck(FragmentHome.this);
             }
         });
     }
@@ -190,11 +197,9 @@ public class FragmentHome extends BaseFragment {
     }
 
     //定位
-    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission
-            .ACCESS_FINE_LOCATION})
+    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
     public void location() {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context
-                .LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
@@ -202,6 +207,7 @@ public class FragmentHome extends BaseFragment {
                 .PERMISSION_GRANTED) {
             return;
         }
+
         Location location = null;
         if (locationManager != null) {
             List<String> prodiverlist = locationManager.getProviders(true);
@@ -595,13 +601,11 @@ public class FragmentHome extends BaseFragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        if (requestCode == 0) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //发起定位
-                FragmentHomePermissionsDispatcher.locationWithCheck(this);
-            } else {
-                ToastUtils.showShortToast(context, "您拒绝了定位权限");
-            }
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            //发起定位
+            FragmentHomePermissionsDispatcher.locationWithCheck(this);
+        } else {
+            ToastUtils.showShortToast(context, "您拒绝了定位权限");
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

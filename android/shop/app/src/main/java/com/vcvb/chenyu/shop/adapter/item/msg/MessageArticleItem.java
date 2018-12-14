@@ -7,12 +7,17 @@ import android.view.ViewGroup;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.msg.Message;
+import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgArticle;
 
-public class MessageItem extends BaseItem<Message> {
-    public static final int TYPE = 1;
+import java.util.List;
 
-    public MessageItem(Message bean, Context c) {
+import xiaofei.library.datastorage.DataStorageFactory;
+import xiaofei.library.datastorage.IDataStorage;
+
+public class MessageArticleItem extends BaseItem<List<NotifyMsgArticle>> {
+    public static final int TYPE = R.layout.message_item;
+
+    public MessageArticleItem(List<NotifyMsgArticle> bean, Context c) {
         super(bean, c);
     }
 
@@ -24,12 +29,12 @@ public class MessageItem extends BaseItem<Message> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.message_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-
+        IDataStorage dataStorage = DataStorageFactory.getInstance(context, DataStorageFactory.TYPE_DATABASE);
     }
 }

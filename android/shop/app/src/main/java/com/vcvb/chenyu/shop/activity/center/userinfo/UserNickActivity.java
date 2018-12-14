@@ -40,6 +40,7 @@ public class UserNickActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_nick);
         context = this;
+        changeStatusBarTextColor(true);
         setNavBack();
         initView();
         initListener();

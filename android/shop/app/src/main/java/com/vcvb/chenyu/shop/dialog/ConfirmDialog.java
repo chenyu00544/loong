@@ -14,7 +14,7 @@ public class ConfirmDialog extends AlertDialog {
     private TextView content;
     private TextView confirm;
     private TextView cancel;
-    private int title;
+    private String title;
 
     public ConfirmDialog(Context context) {
         super(context, R.style.TranslucentDialog);
@@ -44,8 +44,8 @@ public class ConfirmDialog extends AlertDialog {
         super.dismiss();
     }
 
-    public void setTitle(int id) {
-        title = id;
+    public void setTitle(String t) {
+        title = t;
     }
 
     private void initView() {
@@ -74,6 +74,7 @@ public class ConfirmDialog extends AlertDialog {
                 if (onDialogClickListener != null) {
                     onDialogClickListener.onConfirmClickListener();
                 }
+                dismiss();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +83,7 @@ public class ConfirmDialog extends AlertDialog {
                 if (onDialogClickListener != null) {
                     onDialogClickListener.onCancelClickListener();
                 }
+                dismiss();
             }
         });
     }

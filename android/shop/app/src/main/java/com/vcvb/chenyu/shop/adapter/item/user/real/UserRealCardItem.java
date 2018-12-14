@@ -39,8 +39,8 @@ public class UserRealCardItem extends BaseItem<UserReal> {
         ImageView iv2 = holder.getImageView(R.id.imageView69);
         ImageView iv3 = holder.getImageView(R.id.imageView73);
         ImageView iv4 = holder.getImageView(R.id.imageView72);
-        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy
-                (DiskCacheStrategy.NONE).skipMemoryCache(true).override(120, 120);
+        RequestOptions requestOptions = RequestOptions.centerInsideTransform().diskCacheStrategy
+                (DiskCacheStrategy.ALL).skipMemoryCache(true).override(120, 120);
         if (mData.getFront_of_id_card() != null && !mData.getFront_of_id_card().contains("styles")) {
             Glide.with(context).load(mData.getFront_of_id_card()).apply(requestOptions).into(iv1);
             iv3.setAlpha(255);

@@ -191,6 +191,7 @@ public class RegisterActivity extends BaseActivity {
                                                         ("mobile_phone");
                                                 String user_money = data.getString("user_money");
                                                 String is_real = data.getString("is_real");
+                                                String server_id = data.getString("server_id");
 
                                                 Intent intent = new Intent();
                                                 intent.putExtra("username", username);
@@ -200,6 +201,7 @@ public class RegisterActivity extends BaseActivity {
                                                 intent.putExtra("is_real", is_real);
                                                 intent.putExtra("mobile_phone", mobile_phone);
                                                 intent.putExtra("user_money", user_money);
+                                                intent.putExtra("server_id", server_id);
                                                 setResult(RESULT_OK, intent);
                                                 finish();
                                             } else {

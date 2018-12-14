@@ -606,6 +606,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                                             String mobile_phone = data.getString("mobile_phone");
                                             String user_money = data.getString("user_money");
                                             String is_real = data.getString("is_real");
+                                            Integer server_id = data.getInt("server_id");
                                             HashMap<String, String> u = new HashMap<>();
                                             u.put("username", username);
                                             u.put("token", _token);
@@ -614,6 +615,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                                             u.put("mobile_phone", mobile_phone);
                                             u.put("user_money", user_money);
                                             u.put("is_real", is_real);
+                                            u.put("server_id", String.valueOf(server_id));
                                             UserInfoUtils.getInstance(context).setUserInfo(u);
                                             token = _token;
 

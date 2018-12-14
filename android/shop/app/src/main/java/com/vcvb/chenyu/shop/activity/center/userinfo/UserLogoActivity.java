@@ -58,7 +58,7 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
         //获取传古来的文件名
         Intent intent = getIntent();
         uri = intent.getStringExtra("card_uri");
-        if(uri != null){
+        if (uri != null) {
             mCropFile = new File(path, uri);
         }
         setNavBack();
@@ -156,7 +156,7 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
         mCameraFile = new File(path, "IMAGE_FILE_NAME.jpg");//照相机的File对象
         Intent intentFromCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//7.0及以上
-            Uri uriForFile = FileProvider.getUriForFile(this, "com.vcvb.chenyu.shop" +
+            Uri uriForFile = FileProvider.getUriForFile(this, "com.vcvb.chenyu.shop" + "" + "" +
                     ".provider", mCameraFile);
             intentFromCapture.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intentFromCapture.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -176,8 +176,8 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
             String path = photos.get(pos).getFilePath();
             mCameraFile = new File(path);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Uri inputUri = FileProvider.getUriForFile(this, "com.vcvb.chenyu.shop" +
-                        ".provider", mCameraFile);//通过FileProvider创建一个content类型的Uri
+                Uri inputUri = FileProvider.getUriForFile(this, "com.vcvb.chenyu.shop" + "" + ""
+                        + ".provider", mCameraFile);//通过FileProvider创建一个content类型的Uri
                 startPhotoZoom(inputUri);//设置输入类型
             } else {
                 Uri inputUri = Uri.fromFile(mCameraFile);
@@ -202,7 +202,7 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
                     }
                     break;
                 case ConstantManager.PhotoAlbum.CROP_PHOTO:
-                    Uri inputUri = FileProvider.getUriForFile(this, "com.vcvb.chenyu.shop" +
+                    Uri inputUri = FileProvider.getUriForFile(this, "com.vcvb.chenyu.shop" + "" +
                             ".provider", mCropFile);//通过FileProvider创建一个content类型的Uri
                     Intent intent = new Intent();
                     intent.putExtra("uri", inputUri);
@@ -246,11 +246,18 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
         // 设置裁剪
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
-//        intent.putExtra("aspectX", 1);
-//        intent.putExtra("aspectY", 1);
         // outputX outputY 是裁剪图片宽高
-//        intent.putExtra("outputX", 250);
-//        intent.putExtra("outputY", 250);
+        if (uri != null) {
+            intent.putExtra("aspectX", 16);
+            intent.putExtra("aspectY", 10);
+            intent.putExtra("outputX", 640);
+            intent.putExtra("outputY", 400);
+        } else {
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("outputX", 250);
+            intent.putExtra("outputY", 250);
+        }
         intent.putExtra("return-data", false);
         //去除默认的人脸识别，否则和剪裁匡重叠
         intent.putExtra("noFaceDetection", false);

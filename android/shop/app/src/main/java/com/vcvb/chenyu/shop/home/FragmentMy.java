@@ -232,7 +232,7 @@ public class FragmentMy extends BaseFragment {
 
     public void initView() {
         confirmDialog = new ConfirmDialog(context);
-        confirmDialog.setTitle(R.string.is_logout);
+        confirmDialog.setTitle(context.getResources().getString(R.string.is_logout));
     }
 
     public void initListener() {
@@ -364,7 +364,11 @@ public class FragmentMy extends BaseFragment {
                 if (oldScrollY >= 255) {
                     header.setAlpha(1);
                 } else {
-                    header.setAlpha((float) oldScrollY / 255);
+                    if(oldScrollY < 50){
+                        header.setAlpha(0);
+                    }else{
+                        header.setAlpha((float) oldScrollY / 255);
+                    }
                 }
             }
         });
@@ -372,13 +376,11 @@ public class FragmentMy extends BaseFragment {
         confirmDialog.setOnDialogClickListener(new ConfirmDialog.OnDialogClickListener() {
             @Override
             public void onConfirmClickListener() {
-                confirmDialog.dismiss();
                 logoutBySure();
             }
 
             @Override
             public void onCancelClickListener() {
-                confirmDialog.dismiss();
             }
         });
     }
@@ -492,7 +494,17 @@ public class FragmentMy extends BaseFragment {
             showLoginDialog();
         } else {
             Intent intent = new Intent(context, UserInfoActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, ConstantManager.User.USERINFO);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ConstantManager.User.USERINFO:
+                getData();
+                break;
         }
     }
 }

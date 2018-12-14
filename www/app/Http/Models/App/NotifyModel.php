@@ -18,21 +18,28 @@ class NotifyModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getNotifies($where, $page = 1, $column = ['*'])
+    public function getNotifies($where, $column = ['*'])
     {
         return $this->select($column)
             ->where($where)
             ->orderBy('id', 'DESC')
-            ->offset(($page - 1) * 10)
-            ->limit(10)
             ->get();
     }
 
-    public function getNotify($where = [], $column = ['*'])
+    public function getNotify($where = [], $column = ['*'], $orderby = 'DESC')
     {
         return $this->select($column)
             ->where($where)
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', $orderby)
+            ->first();
+    }
+
+    public function getNotifyGT($where, $id, $column = ['*'], $orderby = 'DESC')
+    {
+        return $this->select($column)
+            ->where($where)
+            ->where('id', '>', $id)
+            ->orderBy('id', $orderby)
             ->first();
     }
 
