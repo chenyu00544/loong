@@ -31,7 +31,7 @@ public class HomeBean {
         this.goodses = goodses;
     }
 
-    public void setData(JSONObject Json){
+    public void setData(JSONObject Json) {
         try {
             JSONArray goodsesJsonArray = Json.getJSONArray("goodses");
             List<Goods> goodses = new ArrayList<>();
@@ -56,11 +56,26 @@ public class HomeBean {
                 JSONObject object = (JSONObject) adsesJsonArray.get(i);
                 Adses ads = new Adses();
                 ads.setData(object);
-                adses.add(ads);
+                if(this.isHave(ads.getType())){
+                    adses.add(ads);
+                }
             }
             this.setAdses(adses);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isHave(String str) {
+        String[] strs = new String[]{
+                "slide", "navigation", "ads_1", "ads_2", "ads_3", "ads_10", "ads_4", "ads_5",
+                "ads_7", "ads_8", "ads_9"
+        };
+        for (int i = 0; i < strs.length; i++) {
+            if(str.equals(strs[i])){
+                return true;
+            }
+        }
+        return false;
     }
 }

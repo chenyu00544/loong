@@ -49,7 +49,7 @@ class UsersRepository implements UsersRepositoryInterface
     public function login($username, $password, $type, $ip, $device_id = '')
     {
         $req = ['code' => 1, 'msg' => '账号密码错误', 'data' => '', 'token' => ''];
-        $column = ['user_id', 'email', 'user_name', 'nick_name', 'logo', 'password', 'salt', 'mobile_phone', 'user_money', 'visit_count'];
+        $column = ['user_id', 'server_id', 'email', 'user_name', 'nick_name', 'logo', 'password', 'salt', 'mobile_phone', 'user_money', 'visit_count'];
         $user = $this->usersModel->getUser($username, $column);
         if ($user) {
             if ($type == 1) {

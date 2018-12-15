@@ -20,6 +20,7 @@ import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgFaat;
 import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgSever;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,6 +83,7 @@ public class MessageActivity extends BaseRecyclerViewActivity {
         super.getData(b);
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
+        mp.put("server_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get("server_id"));
         HttpUtils.getInstance().post(ConstantManager.Url.NOTIFY, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
@@ -111,14 +113,20 @@ public class MessageActivity extends BaseRecyclerViewActivity {
     public void bindViewData(JSONObject json) {
         severs = dataStorage.loadAll(NotifyMsgSever.class);
         try {
+            JSONObject server = json.getJSONObject("data").getJSONObject("server");
+            NotifyMsgSever notifySever = JsonUtils.fromJsonObject(server, NotifyMsgSever
+                    .class);
+            HashMap<String, String> mp = new HashMap<>();
+            mp.put("server_id", notifySever.getId_str());
+            UserInfoUtils.getInstance(context).setUserInfo(mp);
             if (severs.size() == 0) {
-                JSONObject server = json.getJSONObject("data").getJSONObject("server");
-                NotifyMsgSever notifySever = JsonUtils.fromJsonObject(server, NotifyMsgSever
-                        .class);
                 notifySever.setIs_look(false);
                 severs.add(notifySever);
-                dataStorage.storeOrUpdate(severs);
+            }else{
+                notifySever.setIs_look(true);
+                severs.set(0,notifySever);
             }
+            dataStorage.storeOrUpdate(severs);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

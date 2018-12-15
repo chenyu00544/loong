@@ -60,7 +60,6 @@ public class FragmentMy extends BaseFragment {
         initView();
         initListener();
         checkLogin();
-        registerReceiver();
         getData();
         return view;
     }
@@ -216,6 +215,7 @@ public class FragmentMy extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        registerReceiver();
     }
 
     @Override

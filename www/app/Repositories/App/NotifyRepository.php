@@ -45,9 +45,9 @@ class NotifyRepository implements NotifyRepositoryInterface
             } else {
                 $servers = $this->notifyModel->getNotifies($where);
                 $rand = rand(0, $servers->count() - 1);
-                $where['user_id'] = $uid;
-                $uData['server'] = $servers[$rand]->id;
-                $this->usersModel->setUsers($where, $uData);
+                $uwhere['user_id'] = $uid;
+                $uData['server_id'] = $servers[$rand]->id;
+                $this->usersModel->setUsers($uwhere, $uData);
                 $servers[$rand]->img = FileHandle::getImgByOssUrl($servers[$rand]->img);
                 $servers[$rand]->id_str = $servers[$rand]->id . '';
                 $servers[$rand]->add_time_format = date('Y-m-d', $servers[$rand]->add_time);

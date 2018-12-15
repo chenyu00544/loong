@@ -61,8 +61,8 @@ public interface ConstantManager {
     }
 
     interface Menu {
-        public int MESSAGE = R.id.view33;
-        public int HOME = R.id.view35;
+        public int HOME = R.id.view33;
+        public int MESSAGE = R.id.view35;
         public int CART = R.id.view36;
     }
 

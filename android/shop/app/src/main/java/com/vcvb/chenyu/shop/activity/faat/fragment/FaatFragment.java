@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.activity.faat.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatBannerItem;
@@ -28,6 +30,8 @@ import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.home.Ads;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
+import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -205,6 +209,7 @@ public class FaatFragment extends BaseRecyclerViewFragment {
                     if (faats.get(i).getObjs().get(j) instanceof Goods) {
                         FaatGoodsItem faatGoodsItem = new FaatGoodsItem((Goods) faats.get(i)
                                 .getObjs().get(j), context);
+                        faatGoodsItem.setSubOnItemClickListener(goodsItemListener);
                         items.add(faatGoodsItem);
                     } else {
                         FaatBannerItem faatBannerItem = new FaatBannerItem((Banner) faats.get(i)
@@ -312,6 +317,54 @@ public class FaatFragment extends BaseRecyclerViewFragment {
         }
     }
 
+    public void addCart(Goods goods) {
+        loadingDialog.show();
+        HashMap<String, String> mp = new HashMap<>();
+        String device_id = (String) UserInfoUtils.getInstance(context).getUserInfo().get
+                ("device_id");
+        mp.put("token", token);
+        mp.put("device_id", device_id);
+        mp.put("goods_id", goods.getGoods_id() + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.ADD_CART, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.dismiss();
+                            if (json != null) {
+                                try {
+                                    if (json.getInt("code") == 0) {
+                                        String str = "%s";
+                                        ToastUtils.showShortToast(context, "添加成功");
+                                    } else {
+                                        ToastUtils.showShortToast(context, "已添加");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.dismiss();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
     FaatNavItem.OnItemClickListener navListener = new FaatNavItem.OnItemClickListener() {
         @Override
         public void clicked(int group, int pos) {
@@ -345,9 +398,13 @@ public class FaatFragment extends BaseRecyclerViewFragment {
         public void clicked(int group, int pos, View v) {
             switch (v.getId()) {
                 case R.id.view76:
+                    addCart((Goods) faats.get(group).getObjs().get(pos));
                     break;
                 default:
-//                    ((Goods)faats.get(group).getObjs().get(pos));
+                    Goods goods = ((Goods) faats.get(group).getObjs().get(pos));
+                    Intent intent = new Intent(context, GoodsDetailActivity.class);
+                    intent.putExtra("id", goods.getGoods_id());
+                    startActivity(intent);
                     break;
             }
         }

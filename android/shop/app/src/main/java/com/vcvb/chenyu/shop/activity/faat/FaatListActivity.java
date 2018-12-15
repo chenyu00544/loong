@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
+import com.vcvb.chenyu.shop.activity.goods.CartActivity;
+import com.vcvb.chenyu.shop.activity.msg.MessageActivity;
 import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
@@ -120,20 +122,23 @@ public class FaatListActivity extends BaseActivity {
     PopWin.OnItemClickListener popListener = new PopWin.OnItemClickListener() {
         @Override
         public void onClicked(View v) {
+            popWindow.dismiss();
             switch (v.getId()) {
-                case ConstantManager.Menu.MESSAGE:
-                    break;
                 case ConstantManager.Menu.HOME:
-                    popWindow.dismiss();
-                    Intent intent = new Intent(FaatListActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    Intent intentM = new Intent(FaatListActivity.this, MainActivity.class);
+                    startActivity(intentM);
+                    break;
+                case ConstantManager.Menu.MESSAGE:
+                    Intent intentH = new Intent(FaatListActivity.this, MessageActivity.class);
+                    startActivity(intentH);
                     break;
                 case ConstantManager.Menu.CART:
+                    Intent intentC = new Intent(FaatListActivity.this, CartActivity.class);
+                    startActivity(intentC);
                     break;
             }
-            popWindow.dismiss();
-            Intent intent = new Intent(FaatListActivity.this, MainActivity.class);
-            startActivity(intent);
+
+
         }
     };
 }

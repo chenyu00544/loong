@@ -2,11 +2,13 @@ package com.vcvb.chenyu.shop.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,13 +17,14 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.center.MyCollectionActivity;
+import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
+import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartErrorItem;
@@ -29,14 +32,13 @@ import com.vcvb.chenyu.shop.adapter.item.cart.CartHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.CartItemDecoration;
+import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.store.Shop;
-import com.vcvb.chenyu.shop.activity.center.MyCollectionActivity;
-import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
+import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
@@ -83,6 +85,8 @@ public class FragmentCart extends BaseFragment {
 
     private ConstraintLayout cly;
     private ConstraintSet set = new ConstraintSet();
+
+    private Receiver receiver;
 
     @Nullable
     @Override
@@ -381,27 +385,27 @@ public class FragmentCart extends BaseFragment {
         mp.put("rec_ids", StringUtils.join(rec_ids, ","));
         HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS_CART, mp, new
                 HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                if (json != null) {
-                    try {
-                        Integer code = json.getInt("code");
-                        if (code == 0) {
-                            Intent intent = new Intent(context, MyCollectionActivity.class);
-                            startActivityForResult(intent, ConstantManager.ResultStatus
-                                    .COLLECT_RESULT);
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        if (json != null) {
+                            try {
+                                Integer code = json.getInt("code");
+                                if (code == 0) {
+                                    Intent intent = new Intent(context, MyCollectionActivity.class);
+                                    startActivityForResult(intent, ConstantManager.ResultStatus
+                                            .COLLECT_RESULT);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            }
 
-            @Override
-            public void failed(Call call, IOException e) {
+                    @Override
+                    public void failed(Call call, IOException e) {
 
-            }
-        });
+                    }
+                });
     }
 
     //fixme 设置选中状态
@@ -429,36 +433,39 @@ public class FragmentCart extends BaseFragment {
                     () {
 
                 @Override
-                public void success(Call call, JSONObject json) throws IOException {
+                public void success(Call call,final JSONObject json) throws IOException {
                     if (json != null) {
-                        try {
-                            Integer code = json.getInt("code");
-                            if (code == 0) {
-                                JSONObject object = json.getJSONObject("data");
-                                JSONArray jsonArray = object.getJSONArray("order");
-                                final List<Integer> orderIds = new ArrayList<>();
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    orderIds.add((Integer) jsonArray.get(i));
-                                }
-                                if (getActivity() != null) {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Integer code = json.getInt("code");
+                                        if (code == 0) {
+                                            JSONObject object = json.getJSONObject("data");
+                                            JSONArray jsonArray = object.getJSONArray("order");
+                                            final List<Integer> orderIds = new ArrayList<>();
+                                            for (int i = 0; i < jsonArray.length(); i++) {
+                                                orderIds.add((Integer) jsonArray.get(i));
+                                            }
+
                                             Intent intent = new Intent(context,
                                                     OrderDetailsActivity.class);
                                             intent.putExtra("order_id", StringUtils.join
                                                     (orderIds, ","));
                                             startActivityForResult(intent, ConstantManager
                                                     .ResultStatus.ADD_ORDER_RESULT);
+
+                                        } else {
+                                            showLoginDialog();
                                         }
-                                    });
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            });
                         }
                     }
-
                 }
 
                 @Override
@@ -473,13 +480,23 @@ public class FragmentCart extends BaseFragment {
                     }
                 }
             });
+        }else{
+            ToastUtils.showShortToast(context, "未选中商品");
         }
     }
 
     @Override
     public void onResume() {
         token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
+        registerReceiver();
         super.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
+        broadcastManager.unregisterReceiver(receiver);
     }
 
     @Override
@@ -493,10 +510,37 @@ public class FragmentCart extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ConstantManager.ResultStatus.ADD_ORDER_RESULT
-                || requestCode == ConstantManager.ResultStatus.COLLECT_RESULT){
+        if (requestCode == ConstantManager.ResultStatus.ADD_ORDER_RESULT
+                || requestCode == ConstantManager.ResultStatus.COLLECT_RESULT) {
             getCartData(false);
         }
+    }
+
+    public void registerReceiver(){
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("UserInfoCall");
+        receiver = new Receiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction() != null) {
+                    switch (intent.getAction()) {
+                        case "UserInfoCall":
+                            token = (String) UserInfoUtils.getInstance(context).getUserInfo().get
+                                    ("token");
+                            getCartData(false);
+                            break;
+                    }
+                }
+            }
+        };
+        broadcastManager.registerReceiver(receiver, intentFilter);
+    }
+
+    public void showLoginDialog() {
+        Intent intent = new Intent();
+        intent.setAction("LoginClick");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -505,7 +549,6 @@ public class FragmentCart extends BaseFragment {
             switch (view.getId()) {
                 case R.id.textView107:
                     //fixme 底栏支付
-                    Toast.makeText(context, "toPay", Toast.LENGTH_SHORT).show();
                     List<Integer> rec_ids = new ArrayList<>();
                     for (int i = 0; i < carts.size(); i++) {
                         if (carts.get(i).getIsType() != 2) {
