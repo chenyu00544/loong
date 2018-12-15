@@ -57,6 +57,7 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
         $faat = $this->favourableActivityModel->getFavourableActivity($where);
         $faat->user_rank = explode(',', $faat->user_rank);
         $range_arr = [];
+        $act_range_ext = [];
         switch ($faat->act_range) {
             case 1:
                 foreach ($faat->fgs as $fg){
@@ -91,6 +92,7 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
             default:
                 break;
         }
+        $faat->activity_thumb = FileHandle::getImgByOssUrl($faat->activity_thumb );
         $faat->act_range_ext = $range_arr;
         $faat->gift = unserialize($faat->gift);
         return $faat;
@@ -201,9 +203,9 @@ class FavourableActivityRepository implements FavourableActivityRepositoryInterf
         $updata['sort_order'] = 50;
         $updata['review_status'] = 3;
         $re = $this->favourableActivityModel->addFavourableActivity($updata);
-        $where['art_id'] = $re;
+        $where['act_id'] = $re->act_id;
         $this->favourableGoodsModel->delFG($where);
-        $fg_data['act_id'] = $re;
+        $fg_data['act_id'] = $re->act_id;
         if ($updata['act_range'] == 1) {
             foreach ($act_range_ext as $value){
                 $fg_data['cate_id'] = $value;

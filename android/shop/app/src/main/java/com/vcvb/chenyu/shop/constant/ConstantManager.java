@@ -172,5 +172,8 @@ public interface ConstantManager {
         //fixme 通知
         public String NOTIFY = URIHOST + "app/notify/index";
         public String NOTIFY_GET = URIHOST + "app/notify/get";
+
+        //fixme 活动
+        public String FAAT = URIHOST + "app/faat/index";
     }
 }

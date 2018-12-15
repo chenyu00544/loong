@@ -1,5 +1,6 @@
-package com.vcvb.chenyu.shop.activity.goods.faat.fragment;
+package com.vcvb.chenyu.shop.activity.faat.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
-import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
@@ -19,13 +19,18 @@ import com.vcvb.chenyu.shop.adapter.item.faat.FaatBannerItem;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatNavItem;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.FaatItemDecoration;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
+import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.faat.Banner;
 import com.vcvb.chenyu.shop.javaBean.faat.Faat;
 import com.vcvb.chenyu.shop.javaBean.faat.FaatNav;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+import com.vcvb.chenyu.shop.javaBean.home.Ads;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.Routes;
+import com.vcvb.chenyu.shop.tools.JsonUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -35,49 +40,62 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class CosmeticsFragment extends BaseRecyclerViewFragment {
+public class FaatFragment extends BaseRecyclerViewFragment {
 
     public GroupedListAdapter adapter;
     private GroupedGridLayoutManager groupedGridLayoutManager;
     public List<Faat> faats = new ArrayList<>();
+
     public int position = 0;
     //目标项是否在最后一个可见项之后
     private boolean mShouldScroll;
     //记录目标项位置
     private int mToPosition;
 
+    private String id;
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
-            savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.faat_fragment, container, false);
+        if (getActivity() != null) {
+            id = getActivity().getIntent().getStringExtra("id");
+        }
+        getData();
         initView();
         return view;
     }
 
     public void initView() {
-        getData();
         mRecyclerView = view.findViewById(R.id.rv_list);
         ((DefaultItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         mRecyclerView.addOnScrollListener(rvScrollListener);
+        adapter = new GroupedListAdapter(context);
     }
 
     @Override
     public void getData() {
-        super.getData();
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", "");
-        mp.put("nav_id", "0");
-        HttpUtils.getInstance().post(Routes.getInstance().getIndex(), mp, new HttpUtils.NetCall() {
+        mp.put("id", id);
+        HttpUtils.getInstance().post(ConstantManager.Url.FAAT, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                if (json != null) {
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (getActivity() != null) {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             loadingDialog.dismiss();
-                            bindData();
+                            if (json != null) {
+                                try {
+                                    if (json.getInt("code") == 0) {
+                                        bindData(json);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     });
                 }
@@ -85,66 +103,83 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
 
             @Override
             public void failed(Call call, IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingDialog.dismiss();
-                        Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadingDialog.dismiss();
+                            Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
     }
 
-    public void bindData() {
+    public void bindData(JSONObject json) {
         Faat faat = new Faat();
-        Banner banner = new Banner();
-        banner.setWidth(750);
-        banner.setHeight(440);
-        banner.setBackGroundPic("http://scimg.jb51.net/allimg/161202/102-161202094551Z8.jpg");
+        Faat _faat = new Faat();
         List<Object> bs = new ArrayList<>();
-        bs.add(banner);
-        faat.setObjs(bs);
-        faat.setGroup(0);
-        faats.add(faat);
+        try {
+            JSONObject data = json.getJSONObject("data");
+            JSONObject bannerJSONObject = data.getJSONObject("banner");
+            Banner banner = JsonUtils.fromJsonObject(bannerJSONObject, Banner.class);
+            banner.setData(bannerJSONObject);
+            bs.add(banner);
+            faat.setObjs(bs);
+            faat.setGroup(0);
+            faats.add(faat);
 
-        Faat brand1 = new Faat();
-        ArrayList<Object> goodses = new ArrayList<>();
-        ArrayList<FaatNav> faatNavs = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            FaatNav faatNav = new FaatNav();
-            if (i == 0) {
-                faatNav.setIsSelect(true);
-            }
-            faatNav.setTitle("火爆一行" + i);
-            faatNavs.add(faatNav);
+            JSONArray faatJSONArray = data.getJSONArray("faat");
+            ArrayList<Object> goodses = new ArrayList<>();
+            ArrayList<FaatNav> faatNavs = new ArrayList<>();
+            for (int i = 0; i < faatJSONArray.length(); i++) {
+                JSONObject object = (JSONObject) faatJSONArray.get(i);
+                FaatNav faatNav = JsonUtils.fromJsonObject(object, FaatNav.class);
+                if (i == 0) {
+                    mRecyclerView.setBackgroundColor(Color.parseColor(faatNav.getColor()));
+                    faatNav.setIsSelect(true);
+                }
+                faatNavs.add(faatNav);
 
-            Banner subbanner = new Banner();
-            subbanner.setBackGroundPic("http://58pic.ooopic.com/58pic/19/50/38/56e00c6189f99.jpg");
-            subbanner.setNavPos(i);
-            subbanner.setWidth(750);
-            subbanner.setHeight(185);
-            goodses.add(subbanner);
-            for (int j = 0; j < 20; j++) {
-                Goods goods = new Goods();
-                goods.setGoods_name("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
-                goods.setOriginal_img("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + "" +
-                        ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
-                goodses.add(goods);
+                Banner subbanner = new Banner();
+                subbanner.setWidth("750");
+                subbanner.setHeight("185");
+                subbanner.setType("faat");
+                Ads ads = new Ads();
+                ads.setAd_code(object.getString("activity_thumb"));
+                ArrayList<Ads> ads1 = new ArrayList<>();
+                ads1.add(ads);
+                subbanner.setNavpos(i);
+                subbanner.setAds(ads1);
+                goodses.add(subbanner);
+
+                JSONArray goodsJSONArray = object.getJSONArray("goods");
+                for (int j = 0; j < goodsJSONArray.length(); j++) {
+                    JSONObject gobject = (JSONObject) goodsJSONArray.get(j);
+                    Goods goods = JsonUtils.fromJsonObject(gobject, Goods.class);
+                    goodses.add(goods);
+                }
             }
+
+            _faat.setHeader(faatNavs);
+            _faat.setObjs(goodses);
+            _faat.setGroup(1);
+            faats.add(_faat);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
         }
-        brand1.setHeader(faatNavs);
-        brand1.setObjs(goodses);
-        brand1.setGroup(1);
-        faats.add(brand1);
 
-        adapter = new GroupedListAdapter(context);
         adapter.setData(getItems(faats));
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, adapter) {
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (faats.get(groupPosition).getItemList().get(childPosition).getItemType() == R.layout
-                        .faat_banner_item) {
+                if (faats.get(groupPosition).getItemList().get(childPosition).getItemType() == R
+                        .layout.faat_banner_item) {
                     return 3;
                 }
                 return super.getChildSpanSize(groupPosition, childPosition);
@@ -168,12 +203,12 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
             if (faats.get(i).getObjs() != null) {
                 for (int j = 0; j < faats.get(i).getObjs().size(); j++) {
                     if (faats.get(i).getObjs().get(j) instanceof Goods) {
-                        FaatGoodsItem faatGoodsItem = new FaatGoodsItem((Goods) faats.get(i).getObjs().get(j),
-                                context);
+                        FaatGoodsItem faatGoodsItem = new FaatGoodsItem((Goods) faats.get(i)
+                                .getObjs().get(j), context);
                         items.add(faatGoodsItem);
                     } else {
-                        FaatBannerItem faatBannerItem = new FaatBannerItem((Banner) faats.get(i).getObjs().get(j)
-                                , context);
+                        FaatBannerItem faatBannerItem = new FaatBannerItem((Banner) faats.get(i)
+                                .getObjs().get(j), context);
                         items.add(faatBannerItem);
                     }
                 }
@@ -212,7 +247,8 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
                 p += 1;
             }
             if (banner != null) {
-                ((List<FaatNav>) faats.get(i).getHeader()).get(banner.getNavPos()).setIsSelect(true);
+                ((List<FaatNav>) faats.get(i).getHeader()).get(banner.getNavpos()).setIsSelect
+                        (true);
                 break;
             }
         }
@@ -253,8 +289,8 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         // 第一个可见位置
         int firstItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(0));
         // 最后一个可见位置
-        int lastItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(mRecyclerView.getChildCount() -
-                1));
+        int lastItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt
+                (mRecyclerView.getChildCount() - 1));
 
         if (position < firstItem) {
             //跳转位置在第一个可见位置之前
@@ -299,6 +335,21 @@ public class CosmeticsFragment extends BaseRecyclerViewFragment {
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
             position = groupedGridLayoutManager.findFirstVisibleItemPosition();
+        }
+    };
+
+    FaatGoodsItem.OnSubItemClickListener goodsItemListener = new FaatGoodsItem
+            .OnSubItemClickListener() {
+
+        @Override
+        public void clicked(int group, int pos, View v) {
+            switch (v.getId()) {
+                case R.id.view76:
+                    break;
+                default:
+//                    ((Goods)faats.get(group).getObjs().get(pos));
+                    break;
+            }
         }
     };
 }

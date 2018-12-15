@@ -13,7 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessageInfoActivity extends BaseRecyclerViewActivity {
-    private List<MessageList> messages = new ArrayList<>();
+
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class MessageInfoActivity extends BaseRecyclerViewActivity {
         context = this;
         setContentView(R.layout.message_info_list);
         changeStatusBarTextColor(true);
+        id = getIntent().getStringExtra("id");
         setNavBack();
         initView();
         getData(true);
@@ -48,13 +50,7 @@ public class MessageInfoActivity extends BaseRecyclerViewActivity {
     public void getData(boolean b) {
         super.getData(b);
 
-        for (int i = 0; i < 1; i++) {
-            MessageList message = new MessageList();
-            message.setIsType(4);
-            messages.add(message);
-        }
 
-        mAdapter.addAll(getItems(messages));
     }
 
     protected List<Item> getItems(List<MessageList> list) {

@@ -38,8 +38,8 @@ public class FaatSubNavItem extends BaseItem<FaatNav> {
         int width = ToolUtils.getWindowsWidth(context);
         ConstraintLayout.LayoutParams params;
         View v = holder.getItemView();
-        if(mData.getIsSelect() == true){
-            v.setBackgroundResource(R.color.colorFont_morandi);
+        if(mData.getIsSelect()){
+            v.setBackgroundResource(R.color.black_translucent_30);
         }else {
             v.setBackgroundResource(R.color.color_transparent);
         }
@@ -53,7 +53,7 @@ public class FaatSubNavItem extends BaseItem<FaatNav> {
         }
         v.setLayoutParams(params);
         TextView tv = holder.getTextView(R.id.textView25);
-        tv.setText(mData.getTitle());
+        tv.setText(mData.getAct_name());
         posMap.put(v.getId(),position);
         v.setOnClickListener(listener);
     }

@@ -15,6 +15,7 @@ public class NotifyMsgArticle {
     private String img;
     private String type;
     private String url;
+    private String add_time_format;
     private boolean is_look;
 
     public String getId_str() {
@@ -79,6 +80,14 @@ public class NotifyMsgArticle {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getAdd_time_format() {
+        return add_time_format;
+    }
+
+    public void setAdd_time_format(String add_time_format) {
+        this.add_time_format = add_time_format;
     }
 
     public boolean isIs_look() {

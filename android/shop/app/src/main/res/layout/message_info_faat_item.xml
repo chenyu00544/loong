@@ -20,9 +20,9 @@
         android:id="@+id/textView221"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:layout_marginLeft="4dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="12dp"
         android:layout_marginStart="4dp"
         android:text="@string/today"
         android:textColor="@color/gray"
@@ -45,29 +45,15 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView91" />
 
     <View
-        android:id="@+id/view62"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="12dp"
-        android:background="@color/gray_d"
-        app:layout_constraintEnd_toEndOf="@+id/imageView92"
-        app:layout_constraintStart_toStartOf="@+id/imageView92"
-        app:layout_constraintTop_toBottomOf="@+id/textView223" />
-
-    <View
         android:id="@+id/view63"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@color/white"
+        android:background="@drawable/shape_4_grad_b_white"
         app:layout_constraintBottom_toBottomOf="@+id/view61"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view61"
+        app:layout_constraintEnd_toEndOf="@+id/textView221"
+        app:layout_constraintStart_toStartOf="@+id/textView221"
         app:layout_constraintTop_toBottomOf="@+id/textView221" />
 
     <TextView
@@ -83,8 +69,8 @@
 
     <ImageView
         android:id="@+id/imageView92"
-        android:layout_width="320dp"
-        android:layout_height="100dp"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -100,11 +86,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="我昨天外出散步时碰巧遇见了他。我昨天外出散步时碰巧遇见了他。"
-        android:maxLines="2"
         android:ellipsize="end"
-        android:textSize="12sp"
+        android:maxLines="2"
         android:textColor="@color/gray"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView92"
         app:layout_constraintStart_toStartOf="@+id/imageView92"
         app:layout_constraintTop_toBottomOf="@+id/imageView92" />
@@ -133,4 +118,14 @@
         app:layout_constraintEnd_toEndOf="@+id/view62"
         app:layout_constraintTop_toTopOf="@+id/textView224"
         app:srcCompat="@drawable/icon_forward" />
+
+    <View
+        android:id="@+id/view62"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/gray_d"
+        app:layout_constraintEnd_toEndOf="@+id/imageView92"
+        app:layout_constraintStart_toStartOf="@+id/imageView92"
+        app:layout_constraintTop_toBottomOf="@+id/textView223" />
 </android.support.constraint.ConstraintLayout>

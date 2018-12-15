@@ -1,6 +1,7 @@
 package com.vcvb.chenyu.shop.adapter.item.faat;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ public class FaatNavItem extends BaseItem<Faat> {
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         navView = holder.get(R.id.navs_wrap);
+        View v = holder.get(R.id.navs_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         navView.setLayoutManager(layoutManager);
@@ -49,7 +51,10 @@ public class FaatNavItem extends BaseItem<Faat> {
         List<FaatNav> navs = (List<FaatNav>) mData.getHeader();
         boolean bool = true;
         for (int i = 0; i < navs.size(); i++) {
-            if (navs.get(i).getIsSelect() == true) {
+            if(i == 0){
+                v.setBackgroundColor(Color.parseColor(navs.get(i).getColor()));
+            }
+            if (navs.get(i).getIsSelect()) {
                 selectNavs(i);
                 bool = false;
             }

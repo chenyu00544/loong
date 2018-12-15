@@ -34,6 +34,7 @@ class FavourableActivityModel extends Model
                 }
             });
         }
+        $m->orderBy('act_id', 'DESC');
         return $m->paginate($size);
     }
 

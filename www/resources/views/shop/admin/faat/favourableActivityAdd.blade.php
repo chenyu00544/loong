@@ -1,4 +1,7 @@
 @extends('shop.layouts.index')
+@section('css')
+    <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.css')}}">
+@endsection
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
@@ -24,6 +27,26 @@
                             <div class="col-sm-3">
                                 <input type="text" name="act_name" class="form-control input-sm" value=""
                                        placeholder="优惠活动名称" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">广告群组：</label>
+                            <div class="col-sm-3">
+                                <select name="group_id" class="form-control select input-sm wd120">
+                                    @foreach($adGroup as $group)
+                                        <option value="{{$group->position_id}}">{{$group->position_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">主题颜色：</label>
+                            <div class="col-sm-3">
+                                <input id="color-picker" type="text" name="color"
+                                       class="form-control max-wd-100 input-sm" value="#000000"
+                                       style="background: #000000;color: #ffffff;" autocomplete="off">
+                                <div class="form-prompt"></div>
+                                <div class="notic fl mar-left-10"></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -182,8 +205,18 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
+    <script type="text/javascript"
+            src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
+
+            //选择颜色
+            $('#color-picker').colorpicker();
+            $('#color-picker').on('change', function () {
+                $(this).css('background', $(this).val());
+                $(this).css('color', '#fff');
+            });
+
             $('#start_end_date').daterangepicker(optionDateSet, function (start, end) {
                 var s = start.format('YYYY-MM-DD HH:mm:ss');
                 var e = end.format('YYYY-MM-DD HH:mm');

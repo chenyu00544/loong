@@ -12,6 +12,8 @@ import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.msg.NotifyMsgFaat;
 
+import java.util.Locale;
+
 public class MessageFaatItem extends BaseItem<NotifyMsgFaat> {
     public static final int TYPE = R.layout.message_info_faat_item;
 
@@ -38,8 +40,10 @@ public class MessageFaatItem extends BaseItem<NotifyMsgFaat> {
         TextView desc = holder.get(R.id.textView223);
         TextView time = holder.get(R.id.textView221);
 
-        title.setText(mData.getDescribe());
+        title.setText(mData.getTitle());
         Glide.with(context).load(mData.getImg()).into(iv);
-        desc.setText(mData.getContent());
+        String str = "%s-%s";
+        desc.setText(String.format(Locale.CHINA, str, mData.getDescribe(), mData.getContent()));
+        time.setText(mData.getAdd_time_format());
     }
 }

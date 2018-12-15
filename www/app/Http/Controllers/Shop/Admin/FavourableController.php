@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
+use App\Repositories\Admin\AdRepository;
 use App\Repositories\Admin\FavourableActivityRepository;
 use App\Repositories\Admin\UserRankRepository;
 use Illuminate\Http\Request;
@@ -19,16 +20,19 @@ class FavourableController extends CommonController
 
     private $favourableActivityRepository;
     private $userRankRepository;
+    private $adRepository;
 
     public function __construct(
         FavourableActivityRepository $favourableActivityRepository,
-        UserRankRepository $userRankRepository
+        UserRankRepository $userRankRepository,
+        AdRepository $adRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('favourable');
         $this->favourableActivityRepository = $favourableActivityRepository;
         $this->userRankRepository = $userRankRepository;
+        $this->adRepository = $adRepository;
     }
 
     /**
@@ -53,7 +57,8 @@ class FavourableController extends CommonController
     {
         $now_date = $this->now_date;
         $userRanks = $this->userRankRepository->getUserRanks();
-        return view('shop.admin.faat.favourableActivityAdd', compact('now_date', 'userRanks'));
+        $adGroup = $this->adRepository->getAdPosesByType('faat');
+        return view('shop.admin.faat.favourableActivityAdd', compact('now_date', 'userRanks', 'adGroup'));
     }
 
     /**
@@ -101,7 +106,8 @@ class FavourableController extends CommonController
     {
         $userRanks = $this->userRankRepository->getUserRanks();
         $faat = $this->favourableActivityRepository->getFavourableActivity($id);
-        return view('shop.admin.faat.favourableActivityEdit', compact('userRanks', 'faat'));
+        $adGroup = $this->adRepository->getAdPosesByType('faat');
+        return view('shop.admin.faat.favourableActivityEdit', compact('userRanks', 'faat', 'adGroup'));
     }
 
     /**

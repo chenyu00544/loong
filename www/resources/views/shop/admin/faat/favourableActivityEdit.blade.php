@@ -1,4 +1,7 @@
 @extends('shop.layouts.index')
+@section('css')
+    <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.css')}}">
+@endsection
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
@@ -27,6 +30,26 @@
                                 <input type="text" name="act_name" class="form-control input-sm"
                                        value="{{$faat->act_name}}"
                                        placeholder="优惠活动名称" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">广告群组：</label>
+                            <div class="col-sm-3">
+                                <select name="group_id" class="form-control select input-sm wd120">
+                                    @foreach($adGroup as $group)
+                                        <option value="{{$group->position_id}}" @if($group->position_id == $faat->group_id) selected @endif>{{$group->position_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">主题颜色：</label>
+                            <div class="col-sm-3">
+                                <input id="color-picker" type="text" name="color"
+                                       class="form-control max-wd-100 input-sm" value="{{$faat->color}}"
+                                       style="background: {{$faat->color}};color: #ffffff;" autocomplete="off">
+                                <div class="form-prompt"></div>
+                                <div class="notic fl mar-left-10"></div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -78,11 +101,12 @@
                             <label class="col-sm-4 control-label">终端类型：</label>
                             <div class="col-sm-4">
                                 <select name="terminal_type" class="form-control select input-sm wd120">
-                                    <option value="all" @if($faat->userFav_type == 'all') selected @endif>全部通用</option>
-                                    <option value="pc" @if($faat->userFav_type == 'pc') selected @endif>PC端</option>
-                                    <option value="web" @if($faat->userFav_type == 'web') selected @endif>WEB端</option>
-                                    <option value="app" @if($faat->userFav_type == 'app') selected @endif>APP端</option>
-                                    <option value="wxapp" @if($faat->userFav_type == 'wxapp') selected @endif>微信小程序</option>
+                                    <option value="all" @if($faat->terminal_type == 'all') selected @endif>全部通用</option>
+                                    <option value="pc" @if($faat->terminal_type == 'pc') selected @endif>PC端</option>
+                                    <option value="web" @if($faat->terminal_type == 'web') selected @endif>WEB端</option>
+                                    <option value="app" @if($faat->terminal_type == 'app') selected @endif>APP端</option>
+                                    <option value="wxapp" @if($faat->terminal_type == 'wxapp') selected @endif>微信小程序
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -102,12 +126,14 @@
                             <label class="col-sm-4 control-label"></label>
                             <div class="col-sm-7">
                                 <div class="checkbox bg-eee pad-bt-10 rang-ext-val-list">
-                                    @foreach($faat->act_range_ext as $range_ext)
-                                        <label class="mar-all-10 db">
-                                            <input type="checkbox" name="act_range_ext[]"
-                                                   value="{{$range_ext['id']}}"
-                                                   checked>{{$range_ext['name']}}</label>
-                                    @endforeach
+                                    @if(!empty($faat->act_range_ext))
+                                        @foreach($faat->act_range_ext as $range_ext)
+                                            <label class="mar-all-10 db">
+                                                <input type="checkbox" name="act_range_ext[]"
+                                                       value="{{$range_ext['id']}}"
+                                                       checked>{{$range_ext['name']}}</label>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -156,7 +182,7 @@
                                        placeholder="数值">
                             </div>
                         </div>
-                        <div class="form-group act-type-ext">
+                        <div class="form-group act-type-ext" style="@if(empty($faat->gift)) display: none; @endif">
                             <label class="col-sm-4 control-label">搜索并加入赠品（特惠品）：</label>
                             <div class="col-sm-8">
                                 <input type="text" class="keyword-2 form-control wd-120 input-sm fl" placeholder="关键字">
@@ -245,8 +271,17 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
+    <script type="text/javascript"
+            src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
+            //选择颜色
+            $('#color-picker').colorpicker();
+            $('#color-picker').on('change', function () {
+                $(this).css('background', $(this).val());
+                $(this).css('color', '#fff');
+            });
+
             $('.nyroModal').nyroModal();
 
             $('#start_end_date').daterangepicker(optionDateSet, function (start, end) {

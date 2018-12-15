@@ -28,6 +28,7 @@
     <color name="colorInactiveSmall">#50FFFFFF</color>
     <color name="color_transparent">#00FFFFFF</color>
     <color name="black_translucent">#55000000</color>
+    <color name="black_translucent_30">#30000000</color>
     <color name="color_tab_1">#455C65</color>
     <color name="color_tab_2">#00886A</color>
     <color name="color_tab_3">#8B6B62</color>

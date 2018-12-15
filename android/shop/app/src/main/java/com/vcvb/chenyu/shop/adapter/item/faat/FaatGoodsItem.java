@@ -34,7 +34,6 @@ public class FaatGoodsItem extends BaseItem<Goods> {
     @Override
     public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         int width = ToolUtils.getWindowsWidth(context);
-        View item = holder.get(R.id.goods_item);
         ImageView iv = holder.get(R.id.imageView124);
         ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width / 3, width
                 / 3);
@@ -43,8 +42,24 @@ public class FaatGoodsItem extends BaseItem<Goods> {
         TextView tv1 = holder.get(R.id.textView239);
         tv1.setText(mData.getGoods_name());
         TextView tv2 = holder.get(R.id.textView240);
-        tv2.setText("1");
+        tv2.setText(mData.getShop_price_format());
 
         View addCart = holder.get(R.id.view76);
+        posMap.put(addCart.getId(), position);
+        groupMap.put(addCart.getId(), groupPosition);
+        addCart.setOnClickListener(listener);
+
+        posMap.put(iv.getId(), position);
+        groupMap.put(iv.getId(), groupPosition);
+        iv.setOnClickListener(listener);
+
+        posMap.put(tv1.getId(), position);
+        groupMap.put(tv1.getId(), groupPosition);
+        tv1.setOnClickListener(listener);
+
+        posMap.put(tv2.getId(), position);
+        groupMap.put(tv2.getId(), groupPosition);
+        tv2.setOnClickListener(listener);
+
     }
 }

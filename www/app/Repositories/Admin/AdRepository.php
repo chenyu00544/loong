@@ -89,7 +89,7 @@ class AdRepository implements AdRepositoryInterface
                 $imgPath = FileHandle::upLoadImage($value, $uri);
                 $updata['ad_code'] = $imgPath;
             } elseif ($key == 'parent_id') {
-                $updata['cate_id'] = $value;
+                $updata['cate_id'] = empty($value) ? 0 : $value;
             } else {
                 $updata[$key] = $value;
             }
@@ -146,6 +146,12 @@ class AdRepository implements AdRepositoryInterface
     public function getAdPoses($type)
     {
         $where['ad_terminal'] = $type;
+        return $this->adPositionModel->getAdPoses($where);
+    }
+
+    public function getAdPosesByType($type)
+    {
+        $where['ad_type'] = $type;
         return $this->adPositionModel->getAdPoses($where);
     }
 

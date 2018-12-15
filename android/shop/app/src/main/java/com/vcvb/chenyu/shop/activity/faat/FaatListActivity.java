@@ -13,7 +13,7 @@ import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.activity.goods.faat.fragment.CosmeticsFragment;
+import com.vcvb.chenyu.shop.activity.faat.fragment.FaatFragment;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
@@ -23,7 +23,7 @@ public class FaatListActivity extends BaseActivity {
     private FragmentTransaction fragmentTransaction;
     private PopWin popWindow;
     private TextView title;
-    private CosmeticsFragment cosmeticsFragment;
+    private FaatFragment faatFragment;
 
     private int index = 0;
     private String SAVED_INDEX = "SAVED_INDEX";
@@ -37,7 +37,7 @@ public class FaatListActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SAVED_INDEX, index);
-            cosmeticsFragment = (CosmeticsFragment) fragmentManager.findFragmentByTag
+            faatFragment = (FaatFragment) fragmentManager.findFragmentByTag
                     (fragmentTag[0]);
         }
         setNavBack();
@@ -79,13 +79,13 @@ public class FaatListActivity extends BaseActivity {
         hideFragment(fragmentTransaction);
         switch (type) {
             case 0:
-                if (cosmeticsFragment == null) {
-                    cosmeticsFragment = new CosmeticsFragment();
+                if (faatFragment == null) {
+                    faatFragment = new FaatFragment();
                     //加入事务
-                    fragmentTransaction.add(R.id.faat_main, cosmeticsFragment, fragmentTag[type]);
+                    fragmentTransaction.add(R.id.faat_main, faatFragment, fragmentTag[type]);
                 } else {
                     //如果不为空就显示出来
-                    fragmentTransaction.show(cosmeticsFragment);
+                    fragmentTransaction.show(faatFragment);
                 }
                 changeStatusBarTextColor(true);
                 break;
@@ -95,8 +95,8 @@ public class FaatListActivity extends BaseActivity {
     }
 
     private void hideFragment(FragmentTransaction fragmentTransaction) {
-        if (cosmeticsFragment != null) {
-            fragmentTransaction.hide(cosmeticsFragment);
+        if (faatFragment != null) {
+            fragmentTransaction.hide(faatFragment);
         }
     }
 

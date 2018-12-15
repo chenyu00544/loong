@@ -27,13 +27,13 @@
             <div class="fromlist clearfix">
                 <div class="clearfix mar-bt-20">
                     <a href="{{url('admin/favourable/create')}}" class="btn btn-success btn-add btn-sm">添加优惠活动</a>
-                    <div class="fr wd250">
+                    <div class="fr wd250 pad-tb-10">
                         <form action="{{url('admin/favourable/'.$seller)}}" method="get">
                             {{csrf_field()}}
 
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
                                    class="form-control input-sm max-wd-190" placeholder="活动名称">
-                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr lh22" value="查询">
+                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fr" value="查询">
                         </form>
                     </div>
                 </div>

@@ -50,6 +50,7 @@
                     <table class="table table-hover table-condensed" style="margin-bottom: 2px">
                         <thead>
                         <tr>
+                            <th width="5%">编号</th>
                             <th width="13%">广告位名称</th>
                             <th width="12%">商家名称</th>
                             <th width="10%">位置宽度</th>
@@ -70,6 +71,7 @@
                             <tbody>
                             @foreach($adPoses as $adPos)
                                 <tr class="">
+                                    <td>{{$adPos->position_id}}</td>
                                     <td>{{$adPos->position_name}}</td>
                                     <td>@if($adPos->user_id){{$adPos->rz_shopName}}@else 自营 @endif</td>
                                     <td>{{$adPos->ad_width}}</td>

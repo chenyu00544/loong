@@ -37,12 +37,13 @@ public class FaatBannerItem extends BaseItem<Banner> {
         int width = ToolUtils.getWindowsWidth(context);
         View v = holder.get(R.id.banner);
         ImageView iv = holder.get(R.id.imageView122);
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width, width * mData
-                .getHeight() / mData.getWidth());
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width, width *
+                Integer.valueOf(mData.getHeight()) / Integer.valueOf(mData.getWidth()));
         v.setLayoutParams(params);
         RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy(DiskCacheStrategy
                 .AUTOMATIC).skipMemoryCache(true).override
-                (width, width * mData.getHeight() / mData.getWidth());
-        Glide.with(context).load(mData.getBackGroundPic()).apply(requestOptions).into(iv);
+                (width, width *
+                        Integer.valueOf(mData.getHeight()) / Integer.valueOf(mData.getWidth()));
+        Glide.with(context).load(mData.getAds().get(0).getAd_code()).apply(requestOptions).into(iv);
     }
 }

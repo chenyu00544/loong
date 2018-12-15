@@ -51,4 +51,26 @@ class AdRepository implements AdRepositoryInterface
         }
         return $ads;
     }
+
+    public function getAdPositionAndAdsByFaat($id)
+    {
+        $where['position_id'] = $id;
+        $re = $this->adPositionModel->getPositionByAd($where, ['position_id', 'ad_type', 'ad_width', 'ad_height']);
+        $ads = [];
+        $adp['type'] = $re->ad_type;
+        $adp['width'] = $re->ad_width;
+        $adp['height'] = $re->ad_height;
+        $advs = [];
+        foreach ($re->ads as $ad) {
+            $adv['ad_code'] = FileHandle::getImgByOssUrl($ad->ad_code);
+            $adv['ad_link'] = $ad->ad_link;
+            $adv['ad_color'] = $ad->link_color;
+            $advs[] = $adv;
+        }
+        if (count($advs) > 0) {
+            $adp['ads'] = $advs;
+            $ads = $adp;
+        }
+        return $ads;
+    }
 }

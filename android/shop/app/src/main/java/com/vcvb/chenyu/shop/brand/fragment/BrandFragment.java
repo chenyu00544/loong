@@ -98,60 +98,60 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     public void bindData() {
         Brand brand = new Brand();
         Banner banner = new Banner();
-        banner.setWidth(750);
-        banner.setHeight(440);
-        banner.setBackGroundPic("http://scimg.jb51.net/allimg/161202/102-161202094551Z8.jpg");
-        List<Object> bs = new ArrayList<>();
-        bs.add(banner);
-        brand.setObjs(bs);
-        brand.setGroup(0);
-        brands.add(brand);
-
-        Brand brand1 = new Brand();
-        ArrayList<Object> goodses = new ArrayList<>();
-        ArrayList<FaatNav> faatNavs = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            FaatNav faatNav = new FaatNav();
-            if (i == 0) {
-                faatNav.setIsSelect(true);
-            }
-            faatNav.setTitle("火爆一行" + i);
-            faatNavs.add(faatNav);
-
-            Banner subbanner = new Banner();
-            subbanner.setBackGroundPic("http://58pic.ooopic.com/58pic/19/50/38/56e00c6189f99.jpg");
-            subbanner.setNavPos(i);
-            subbanner.setWidth(750);
-            subbanner.setHeight(185);
-            goodses.add(subbanner);
-            for (int j = 0; j < 20; j++) {
-                Goods goods = new Goods();
-                goods.setGoods_name("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
-                goods.setOriginal_img("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + ""
-                        + ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
-                goodses.add(goods);
-            }
-        }
-        brand1.setHeader(faatNavs);
-        brand1.setObjs(goodses);
-        brand1.setGroup(1);
-        brands.add(brand1);
-
-        adapter = new GroupedListAdapter(context);
-        adapter.setData(getItems(brands));
-        groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, adapter) {
-            @Override
-            public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (brands.get(groupPosition).getItemList().get(childPosition).getItemType() == R
-                        .layout.faat_banner_item) {
-                    return 3;
-                }
-                return super.getChildSpanSize(groupPosition, childPosition);
-            }
-        };
-
-        mRecyclerView.setLayoutManager(groupedGridLayoutManager);
-        mRecyclerView.setAdapter(adapter);
+//        banner.setWidth(750);
+//        banner.setHeight(440);
+//        banner.setBackGroundPic("http://scimg.jb51.net/allimg/161202/102-161202094551Z8.jpg");
+//        List<Object> bs = new ArrayList<>();
+//        bs.add(banner);
+//        brand.setObjs(bs);
+//        brand.setGroup(0);
+//        brands.add(brand);
+//
+//        Brand brand1 = new Brand();
+//        ArrayList<Object> goodses = new ArrayList<>();
+//        ArrayList<FaatNav> faatNavs = new ArrayList<>();
+//        for (int i = 0; i < 7; i++) {
+//            FaatNav faatNav = new FaatNav();
+//            if (i == 0) {
+//                faatNav.setIsSelect(true);
+//            }
+//            faatNav.setTitle("火爆一行" + i);
+//            faatNavs.add(faatNav);
+//
+//            Banner subbanner = new Banner();
+//            subbanner.setBackGroundPic("http://58pic.ooopic.com/58pic/19/50/38/56e00c6189f99.jpg");
+//            subbanner.setNavPos(i);
+//            subbanner.setWidth(750);
+//            subbanner.setHeight(185);
+//            goodses.add(subbanner);
+//            for (int j = 0; j < 20; j++) {
+//                Goods goods = new Goods();
+//                goods.setGoods_name("上传到我图网， 素材大小为7.73 MB上传到我图网， 素材大小为7.73 MB" + j);
+//                goods.setOriginal_img("http://dimage.yissimg" + "" + "" + "" + "" + "" + "" + ""
+//                        + ".com/item/2014/0630/15/f1f4970f7eac4584becc4614aa187c3c.jpg");
+//                goodses.add(goods);
+//            }
+//        }
+//        brand1.setHeader(faatNavs);
+//        brand1.setObjs(goodses);
+//        brand1.setGroup(1);
+//        brands.add(brand1);
+//
+//        adapter = new GroupedListAdapter(context);
+//        adapter.setData(getItems(brands));
+//        groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, adapter) {
+//            @Override
+//            public int getChildSpanSize(int groupPosition, int childPosition) {
+//                if (brands.get(groupPosition).getItemList().get(childPosition).getItemType() == R
+//                        .layout.faat_banner_item) {
+//                    return 3;
+//                }
+//                return super.getChildSpanSize(groupPosition, childPosition);
+//            }
+//        };
+//
+//        mRecyclerView.setLayoutManager(groupedGridLayoutManager);
+//        mRecyclerView.setAdapter(adapter);
     }
 
     protected List<Brand> getItems(List<Brand> beans) {
@@ -210,8 +210,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                 p += 1;
             }
             if (banner != null) {
-                ((List<FaatNav>) brands.get(i).getHeader()).get(banner.getNavPos()).setIsSelect
-                        (true);
+//                ((List<FaatNav>) brands.get(i).getHeader()).get(banner.getNavPos()).setIsSelect
+//                        (true);
                 break;
             }
         }

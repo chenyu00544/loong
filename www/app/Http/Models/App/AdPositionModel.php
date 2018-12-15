@@ -33,4 +33,15 @@ class AdPositionModel extends Model
             ->orderBy('sort', 'DESC')
             ->get();
     }
+
+    public function getPositionByAd($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->with(['ads' => function ($query) {
+                $query->select(['ad_id', 'position_id', 'ad_link', 'ad_code', 'link_color'])->where([['enabled','=',1],['start_time','<',time()],['end_time','>',time()]]);
+            }])
+            ->where($where)
+            ->orderBy('sort', 'DESC')
+            ->first();
+    }
 }
