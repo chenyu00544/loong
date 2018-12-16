@@ -2,10 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Models\Test\CronModel;
-use App\Repositories\CronsRepository;
+use App\Repositories\Admin\CronsRepository;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 //php artisan make:command TestCommand
 class CronCommand extends Command

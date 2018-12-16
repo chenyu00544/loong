@@ -76,4 +76,5 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('notify/ids', 'NotifyController@getNotifiesForIds');
 
     Route::post('faat/index', 'FaatController@index');
+    Route::post('faat/brand', 'FaatController@brand');
 });

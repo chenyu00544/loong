@@ -25,4 +25,11 @@ class BrandModel extends Model
             ->whereIn('id', $whereIn)
             ->get();
     }
+
+    public function getBrand($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
 }

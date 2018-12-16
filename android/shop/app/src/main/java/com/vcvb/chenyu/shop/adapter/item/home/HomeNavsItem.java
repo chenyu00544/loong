@@ -17,7 +17,7 @@ import com.wangjie.shadowviewhelper.ShadowProperty;
 import com.wangjie.shadowviewhelper.ShadowViewHelper;
 
 public class HomeNavsItem extends BaseItem<Adses> {
-    public static final int TYPE = 1;
+    public static final int TYPE = R.layout.home_navs_item;
 
     public HomeNavsItem(Adses bean, Context c) {
         super(bean, c);
@@ -30,15 +30,14 @@ public class HomeNavsItem extends BaseItem<Adses> {
 
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CYCBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout
-                .home_navs_item, null));
+        return new CYCBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(TYPE, null));
     }
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        int width = ToolUtils.getWindowsWidth(context) - ToolUtils.dip2px
-                (context, 12);
+        int width = ToolUtils.getWindowsWidth(context);
 
+        //阴影部分
         ShadowViewHelper.bindShadowHelper(new ShadowProperty().setShadowRadius(ToolUtils.dip2px
                 (context, 3)).setShadowColor(0xAA965456), holder.getView(R.id.view67));
         FlowLayout flowLayout = (FlowLayout) holder.getView(R.id.navs_wrap);

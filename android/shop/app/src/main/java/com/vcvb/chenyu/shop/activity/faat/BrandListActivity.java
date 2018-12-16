@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
-import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.faat.fragment.BrandFragment;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.activity.faat.fragment.FaatFragment;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
@@ -21,7 +21,7 @@ public class BrandListActivity extends BaseActivity {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private FaatFragment brandFragment;
+    private BrandFragment brandFragment;
     private PopWin popWindow;
     private TextView title;
 
@@ -38,7 +38,7 @@ public class BrandListActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SAVED_INDEX, index);
-            brandFragment = (FaatFragment) fragmentManager.findFragmentByTag
+            brandFragment = (BrandFragment) fragmentManager.findFragmentByTag
                     (fragmentTag[0]);
         }
         changeStatusBarTextColor(true);
@@ -82,7 +82,7 @@ public class BrandListActivity extends BaseActivity {
         switch (type) {
             case 0:
                 if (brandFragment == null) {
-                    brandFragment = new FaatFragment();
+                    brandFragment = new BrandFragment();
                     //加入事务
                     fragmentTransaction.add(R.id.faat_main, brandFragment, fragmentTag[0]);
                 } else {

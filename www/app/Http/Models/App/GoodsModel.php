@@ -65,6 +65,11 @@ class GoodsModel extends Model
         return $this->hasOne('App\Http\Models\App\GoodsExtendModel', 'goods_id', 'goods_id');
     }
 
+    public function category()
+    {
+        return $this->hasOne('App\Http\Models\App\CategoryModel', 'id', 'cat_id');
+    }
+
     public function getGoodses($where, $page = 1, $column = ['*'], $size = 10)
     {
         return $this->select($column)
@@ -76,6 +81,19 @@ class GoodsModel extends Model
             ->orderBy('sort_order', 'DESC')
             ->orderBy('add_time', 'DESC')
             ->offset(($page - 1) * $size)->limit($size)
+            ->get();
+    }
+
+    public function getGoodsByBrandId($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->where(['is_on_sale' => 1, 'is_delete' => 0])
+            ->where([['review_status', '>=', 3], ['cat_id', '<>', 0]])
+            ->with(['category'=>function($query){
+                $query->select(['id','cat_name','cat_alias_name','is_show', 'touch_icon']);
+            }])
+            ->orderBy('cat_id', 'DESC')
             ->get();
     }
 

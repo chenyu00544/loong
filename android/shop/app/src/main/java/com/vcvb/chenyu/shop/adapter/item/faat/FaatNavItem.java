@@ -60,8 +60,10 @@ public class FaatNavItem extends BaseItem<Faat> {
             }
         }
         if (bool) {
-            navs.get(0).setIsSelect(true);
-            navView.scrollToPosition(0);
+            if(navs.size() > 0){
+                navs.get(0).setIsSelect(true);
+                navView.scrollToPosition(0);
+            }
         }
     }
 

@@ -84,7 +84,9 @@
                                         </span>
                                     </td>
                                     <td>{{date('Y-m-d H:i:s', $ad->start_time)}}</td>
-                                    <td>@if($ad->end_time < time()) <font class="red">已结束</font> @else{{date('Y-m-d H:i:s', $ad->end_time)}}@endif</td>
+                                    <td>@if($ad->end_time < time()) <font
+                                                class="red">已结束</font> @else{{date('Y-m-d H:i:s', $ad->end_time)}}@endif
+                                    </td>
                                     <td>{{$ad->click_count}}</td>
                                     <td>
                                         <div class="switch-wrap clearfix">
@@ -94,6 +96,11 @@
                                                 <input type="hidden" value="{{$ad->ad_id}}">
                                             </div>
                                         </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="sort" autocomplete="off"
+                                               class="form-control input-sm chang-order wd-80"
+                                               value="{{$ad->sort_order}}" data-id="{{$ad->ad_id}}">
                                     </td>
                                     <td class="text-center">
                                         <a type="button"
@@ -133,16 +140,34 @@
                 }
 
                 var id = $(this).children('input').val();
-
+                var type = 'is_enabled';
                 $.post(
                     '{{url("admin/ad/change")}}',
                     {
                         id: id,
                         val: val,
+                        type: type,
                         _token: '{{csrf_token()}}'
                     },
                     function (data) {
 
+                    }
+                );
+            });
+
+            $('body').on('change', 'input[name=sort]', function () {
+                var id = $(this).data('id');
+                var sort = $(this).val();
+                var type = 'order';
+                $.post(
+                    '{{url("admin/ad/change")}}',
+                    {
+                        id: id,
+                        val: sort,
+                        type: type,
+                        _token: '{{csrf_token()}}'
+                    },
+                    function (data) {
                     }
                 );
             });

@@ -21,7 +21,7 @@ import com.youth.banner.listener.OnBannerListener;
 import java.util.ArrayList;
 
 public class HomeSlideItem extends BaseItem<Adses> {
-    public static final int TYPE = Integer.MAX_VALUE - 5;
+    public static final int TYPE = R.layout.goods_slide_item;
     public OnClickListener onClickListener;
     public OnPageChangeListener onPageChangeListener;
 
@@ -37,7 +37,7 @@ public class HomeSlideItem extends BaseItem<Adses> {
     @Override
     public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         CYCBaseViewHolder base = new CYCBaseViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.goods_slide_item, null));
+                .inflate(TYPE, null));
         return base;
     }
 
@@ -63,7 +63,7 @@ public class HomeSlideItem extends BaseItem<Adses> {
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
-        set.constrainHeight(R.id.goods_slide, width * 1 / 2);
+        set.constrainHeight(R.id.goods_slide, width / 2);
         set.applyTo(cly);
         banner.setOnBannerListener(listener);
         banner.setOnPageChangeListener(pageListener);

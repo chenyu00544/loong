@@ -20,7 +20,10 @@ class CartModel extends Model
 
     public function delCartsByTime()
     {
-        return $this->where([['add_time', '<', time() - 86400 * 15], ['user_id', '=', '0']])
-            ->delete();
+        try {
+            return $this->where([['add_time', '<', time() - 86400 * 15], ['user_id', '=', '0']])
+                ->delete();
+        } catch (\Exception $e) {
+        }
     }
 }

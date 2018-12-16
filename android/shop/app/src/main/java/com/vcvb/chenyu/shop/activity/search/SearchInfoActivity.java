@@ -264,6 +264,15 @@ public class SearchInfoActivity extends BaseRecyclerViewActivity {
                             }
                         }
                     });
+                }else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (b) {
+                                loadingDialog.dismiss();
+                            }
+                        }
+                    });
                 }
             }
 

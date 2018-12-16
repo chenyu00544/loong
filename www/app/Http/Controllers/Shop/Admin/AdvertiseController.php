@@ -93,12 +93,13 @@ class AdvertiseController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["ad_name" => 'required', "position_id" => 'required', "ad_img" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["ad_name" => 'required', "position_id" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
         $re = $this->adRepository->addAd($request->except('_token'));
-        return view('shop.admin.success');
+        $back_url = $this->success('admin/ad/', $request->get('ad_terminal'), 'admin/ad/add/' . $request->get('ad_terminal'));
+        return view('shop.admin.success', compact('back_url'));
     }
 
     /**
@@ -141,7 +142,8 @@ class AdvertiseController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->adRepository->setAd($request->except('_token', '_method'), $id);
-        return view('shop.admin.success');
+        $back_url = $this->success('admin/ad/', $request->get('ad_terminal'), 'admin/ad/add/' . $request->get('ad_terminal'));
+        return view('shop.admin.success', compact('back_url'));
     }
 
     /**

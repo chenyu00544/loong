@@ -61,7 +61,8 @@ class AdvertiseTypeController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->adRepository->addAdType($request->except('_token'));
-        return view('shop.admin.success');
+        $back_url = $this->success('admin/adstype');
+        return view('shop.admin.success', compact('back_url'));
     }
 
     /**
@@ -101,7 +102,8 @@ class AdvertiseTypeController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->adRepository->setAdType($request->except('_token', '_method'), $id);
-        return view('shop.admin.success');
+        $back_url = $this->success('admin/adstype');
+        return view('shop.admin.success', compact('back_url'));
     }
 
     /**

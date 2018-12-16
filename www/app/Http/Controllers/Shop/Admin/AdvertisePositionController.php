@@ -68,7 +68,8 @@ class AdvertisePositionController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->adRepository->addAdPos($request->except('_token'));
-        return view('shop.admin.success');
+        $back_url = $this->success('admin/adspos/', $request->get('ad_terminal'));
+        return view('shop.admin.success', compact('back_url'));
     }
 
     /**
@@ -111,8 +112,10 @@ class AdvertisePositionController extends CommonController
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
+
         $re = $this->adRepository->setAdPos($request->except('_token', '_method'), $id);
-        return view('shop.admin.success');
+        $back_url = $this->success('admin/adspos/', $request->get('ad_terminal'));
+        return view('shop.admin.success', compact('back_url'));
     }
 
     /**

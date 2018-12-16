@@ -36,7 +36,7 @@ class CommonController extends Controller
             $uid = $request->cookie('user_id');
             $ip = $request->getClientIp();
             $this->user = RedisCache::get('adminUser' . md5($ip) . $uid);
-            if(!$this->user){
+            if (!$this->user) {
 //                $this->user = Cache::get('adminUser' . md5($ip) . $uid);
             }
             $this->privilege();
@@ -77,7 +77,7 @@ class CommonController extends Controller
     public function sellerPrivilege()
     {
         $nav = RedisCache::get('seller_nav');
-        if(empty($nav)){
+        if (empty($nav)) {
             $nav = LangConfig::LangSellerNavConf();
             RedisCache::set('seller_nav', $nav);
         }
@@ -148,7 +148,7 @@ class CommonController extends Controller
             $m = (new WechatModel);
             $conf = $m->getWechat(['ru_id' => 0]);
             $_conf = [];
-            if($conf){
+            if ($conf) {
                 $_conf = $conf->toArray();
             }
             RedisCache::set('wechat_config', $_conf);
@@ -159,9 +159,9 @@ class CommonController extends Controller
             $m = (new PaymentModel);
             $conf = $m->getPayment(['pay_code' => 'alipay']);
             $_conf = [];
-            if($conf){
+            if ($conf) {
                 $_conf = $conf->toArray();
-                foreach (unserialize($conf->pay_config) as $key => $value){
+                foreach (unserialize($conf->pay_config) as $key => $value) {
                     $_conf[$key] = $value;
                 }
                 unset($_conf['pay_config']);
@@ -174,9 +174,9 @@ class CommonController extends Controller
             $m = (new PaymentModel);
             $conf = $m->getPayment(['pay_code' => 'wxpay']);
             $_conf = [];
-            if($conf){
+            if ($conf) {
                 $_conf = $conf->toArray();
-                foreach (unserialize($conf->pay_config) as $key => $value){
+                foreach (unserialize($conf->pay_config) as $key => $value) {
                     $_conf[$key] = $value;
                 }
                 unset($_conf['pay_config']);
@@ -200,7 +200,7 @@ class CommonController extends Controller
             $m = (new AliossConfigureModel);
             $conf = $m->getAlioss(['is_use' => 1]);
             $_conf = [];
-            if($conf){
+            if ($conf) {
                 $_conf = $conf->toArray();
             }
             RedisCache::set('oss_config', $_conf);
@@ -233,7 +233,7 @@ class CommonController extends Controller
             $m = (new EmailConfigureModel);
             $conf = $m->getEmailConfigure();
             $_conf = [];
-            if($conf){
+            if ($conf) {
                 $_conf = $conf->toArray();
             }
             RedisCache::set('smtp_config', $_conf);
@@ -244,10 +244,19 @@ class CommonController extends Controller
             $m = (new CronsModel);
             $crons = $m->getCrons();
             $_conf = [];
-            foreach ($crons as $cron){
+            foreach ($crons as $cron) {
                 $_conf[$cron->cron_id] = $cron;
             }
             RedisCache::set('cron_config', $_conf);
         }
+    }
+
+    public function success($uri, $param = '', $_uri = '')
+    {
+        $back_url = [
+            '<div class=""><a href="' . url($uri) . '/' . $param . '">返回列表</a></div>',
+            '<div class=""><a href="' . url((!empty($_uri) ? $_uri : $uri . '/create')) . '">继续添加</a></div>'
+        ];
+        return $back_url;
     }
 }

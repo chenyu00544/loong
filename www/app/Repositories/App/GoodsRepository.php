@@ -326,7 +326,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
         }
 
-        if (!empty($request['cate_id']) && !empty($request['cate_name'])) {
+        if (!empty($request['cate_id'])) {
             $cate_id = $request['cate_id'];
             $res = $this->categoryModel->getSubCates(['parent_id' => $cate_id], ['id', 'parent_id']);
             $whereIn['cat_id'][] = $cate_id;
@@ -336,7 +336,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $cwhere = ['cate_id' => $cate_id];
             $re = $this->cateKeywordModel->incrementKeyword($cwhere);
 
-            if (empty($re)) {
+            if (empty($re) && !empty($request['cate_name'])) {
                 $cupdata = [
                     'cate_id' => $cate_id,
                     'cate_name' => $request['cate_name'],

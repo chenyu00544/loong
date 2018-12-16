@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
@@ -32,7 +33,7 @@ class AdModel extends Model
                 $m->where('end_time', '<', time());
             }
         }
-        return $m->orderBy('ad_id', 'desc')
+        return $m->orderBy('sort_order', 'DESC')
             ->paginate($size);
     }
 
@@ -63,7 +64,11 @@ class AdModel extends Model
 
     public function delAd($where)
     {
-        return $this->where($where)
-            ->delete();
+        try {
+            return $this->where($where)
+                ->delete();
+        } catch (\Exception $e) {
+
+        }
     }
 }

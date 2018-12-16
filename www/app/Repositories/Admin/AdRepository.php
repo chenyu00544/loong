@@ -65,7 +65,11 @@ class AdRepository implements AdRepositoryInterface
     {
         $req = ['code' => 5, 'msg' => '操作失败'];
         $where['ad_id'] = $data['id'];
-        $updata['enabled'] = $data['val'];
+        if ($data['type'] == 'order') {
+            $updata['sort_order'] = $data['val'];
+        } else {
+            $updata['enabled'] = $data['val'];
+        }
         $re = $this->adModel->setAd($where, $updata);
         if ($re) {
             $req['code'] = 1;

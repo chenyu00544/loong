@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UrlParse;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -83,15 +85,18 @@ public class FragmentHome extends BaseFragment {
     private GridLayoutManager mLayoutManager;
     private HomeItemDecoration homeItemDecoration;
 
+    private LinearLayout header;
+
     private RefreshLayout refreshLayout;
     private ImageView upwardView;
     private View slideBg;
-    private int pos;
+    private int sroll_y = 0;
     private int page = 1;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_home, container, false);
         initRefresh();
@@ -148,6 +153,7 @@ public class FragmentHome extends BaseFragment {
     private void initView() {
         upwardView = view.findViewById(R.id.imageView116);
         slideBg = view.findViewById(R.id.view88);
+        header = view.findViewById(R.id.nav_header_home);
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(context).load(R.drawable.icon_upward).apply(requestOptions).into(upwardView);
         mRecyclerView = view.findViewById(R.id.recyclerView);
@@ -166,13 +172,22 @@ public class FragmentHome extends BaseFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                pos += dy;
-                if (pos > 1500) {
+                sroll_y += dy;
+                if (sroll_y > 1500) {
                     upwardView.setVisibility(View.VISIBLE);
                     upwardView.setOnClickListener(listener);
                 } else {
                     upwardView.setVisibility(View.GONE);
                     upwardView.setOnClickListener(null);
+                }
+                if (sroll_y > ToolUtils.dip2px(context, 70) + ToolUtils.getWindowsWidth(context)
+                        / 2) {
+                    header.setBackgroundColor(context.getResources().getColor(R.color
+                            .colorBack_morandi));
+
+                } else {
+                    header.setBackgroundColor(context.getResources().getColor(R.color
+                            .color_transparent));
                 }
             }
         });
@@ -197,9 +212,11 @@ public class FragmentHome extends BaseFragment {
     }
 
     //定位
-    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
+    @NeedsPermission({Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission
+            .ACCESS_FINE_LOCATION})
     public void location() {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context
+                .LOCATION_SERVICE);
 
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
@@ -254,7 +271,7 @@ public class FragmentHome extends BaseFragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(getActivity() != null){
+            if (getActivity() != null) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -313,6 +330,34 @@ public class FragmentHome extends BaseFragment {
         });
     }
 
+    public void bindData() {
+        if (data != null) {
+            try {
+                homeBean.setData(data.getJSONObject("data"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        mAdapter.clear();
+
+        homeItemDecoration.setData(homeBean);
+        mAdapter.addAll(getItems(homeBean));
+        final int pos = homeBean.getAdses().size();
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                if (position >= pos) {
+                    int p = position - pos;
+                    Goods goods = homeBean.getGoodses().get(p);
+                    Intent intent = new Intent(context, GoodsDetailActivity.class);
+                    intent.putExtra("id", goods.getGoods_id());
+                    context.startActivity(intent);
+                }
+            }
+        });
+    }
+
     public void loadmore() {
         page += 1;
         HashMap<String, String> mp = new HashMap<>();
@@ -344,34 +389,6 @@ public class FragmentHome extends BaseFragment {
                             Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }
-            }
-        });
-    }
-
-    public void bindData() {
-        if (data != null) {
-            try {
-                homeBean.setData(data.getJSONObject("data"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        mAdapter.clear();
-
-        homeItemDecoration.setData(homeBean);
-        mAdapter.addAll(getItems(homeBean));
-        final int pos = homeBean.getAdses().size();
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                if (position >= pos) {
-                    int p = position - pos;
-                    Goods goods = homeBean.getGoodses().get(p);
-                    Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("id", goods.getGoods_id());
-                    context.startActivity(intent);
                 }
             }
         });
@@ -504,9 +521,17 @@ public class FragmentHome extends BaseFragment {
                 Class c = UrlParse.getUrlToClass(uri);
                 if (c != null) {
                     Map<String, String> id = UrlParse.getUrlParams(uri);
-                    Intent intent = new Intent(context, c);
-                    intent.putExtra("id", Integer.valueOf(id.get("id")));
-                    context.startActivity(intent);
+                    if (id.get("id") != null) {
+                        if (type.equals("navigation")) {
+                            Intent intent = new Intent(context, c);
+                            intent.putExtra("cate", Integer.valueOf(id.get("id")));
+                            context.startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(context, c);
+                            intent.putExtra("id", Integer.valueOf(id.get("id")));
+                            context.startActivity(intent);
+                        }
+                    }
                 }
             }
         }
@@ -522,7 +547,9 @@ public class FragmentHome extends BaseFragment {
             .OnPageChangeListener() {
         @Override
         public void onPageChanged(int pos, Adses adses) {
-            slideBg.setBackgroundColor(Color.parseColor(adses.getAds().get(pos).getAd_color()));
+            if(adses.getAds().get(pos).getAd_color() != null){
+                slideBg.setBackgroundColor(Color.parseColor(adses.getAds().get(pos).getAd_color()));
+            }
         }
     };
     HomeNavsItem.OnClickListener homeNavsItemListener = new HomeNavsItem.OnClickListener() {

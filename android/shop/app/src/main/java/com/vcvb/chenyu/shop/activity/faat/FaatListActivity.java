@@ -137,8 +137,6 @@ public class FaatListActivity extends BaseActivity {
                     startActivity(intentC);
                     break;
             }
-
-
         }
     };
 }
