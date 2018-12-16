@@ -140,7 +140,6 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
     public void getData(final boolean b) {
         over();
         page = 1;
-        super.getData(b);
         if (b) {
             loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
             loadingDialog.show();
@@ -151,25 +150,26 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
         HttpUtils.getInstance().post(ConstantManager.Url.BROWSE_GOODS, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
-                if (json != null) {
-                    try {
-                        Integer code = json.getInt("code");
-                        if (code == 0) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (b) {
-                                        loadingDialog.dismiss();
-                                    }
-                                    refreshLayout.finishRefresh();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (b) {
+                            loadingDialog.dismiss();
+                        }
+                        refreshLayout.finishRefresh();
+                        if (json != null) {
+                            try {
+                                Integer code = json.getInt("code");
+                                if (code == 0) {
                                     bindViewData(json);
                                 }
-                            });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
+                });
+
             }
 
             @Override
@@ -248,22 +248,23 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
         HttpUtils.getInstance().post(ConstantManager.Url.BROWSE_GOODS, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
-                if (json != null) {
-                    try {
-                        Integer code = json.getInt("code");
-                        if (code == 0) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (json != null) {
+                            try {
+                                Integer code = json.getInt("code");
+                                if (code == 0) {
                                     refreshLayout.finishLoadMore();
                                     bindViewMoreData(json);
                                 }
-                            });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
+                });
+
             }
 
             @Override

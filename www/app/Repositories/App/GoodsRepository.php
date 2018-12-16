@@ -154,12 +154,12 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->shop_price_format = Common::priceFormat($goods_detail->shop_price);
             $goods_detail->market_price_format = Common::priceFormat($goods_detail->market_price);
             $goods_detail->promote_price_format = Common::priceFormat($goods_detail->promote_price);
-            if($user_id > 0){
+            if ($user_id > 0) {
                 $goods_detail->count_cart = $this->cartModel->countCart(['user_id' => $user_id]);
-            }else{
-                if($device_id != ''){
+            } else {
+                if ($device_id != '') {
                     $goods_detail->count_cart = $this->cartModel->countCart(['session_id' => $device_id]);
-                }else{
+                } else {
                     $goods_detail->count_cart = 0;
                 }
             }
@@ -294,6 +294,44 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->single_attr = $single_attr;
         }
         return $goods_detail;
+    }
+
+    public function getGoodsesByUserLike($data, $user_id = 0)
+    {
+        $page = empty($data['page']) ? 1 : $data['page'];
+        $column = ['goods_id', 'goods_name', 'shop_price', 'market_price', 'goods_thumb', 'goods_img', 'original_img', 'is_best', 'is_hot', 'is_new', 'promote_price', 'is_promote', 'is_fullcut', 'is_volume', 'sales_volume'];
+        $goodses = [];
+        if ($user_id > 0) {
+            $where['user_id'] = $user_id;
+            if ($page < 2) {
+                $col_goodses = $this->browseGoodsModel->getBrowseGoodses($where, $page, ['*'], 'DESC');
+                if ($col_goodses->count() > 0) {
+                    foreach ($col_goodses as $col_goods) {
+                        if (!empty($col_goods->goods)) {
+                            $goodses[] = $col_goods->goods;
+                        }
+                    }
+                } else {
+                    $gwhere = ['is_delete' => 0, 'is_best' => 1, 'is_on_sale' => 1, 'is_hot' => 1, 'is_new' => 1];
+                    $goodses = $this->goodsModel->getGoodses($gwhere, $page, $column);
+                }
+            } else {
+                $gwhere = ['is_delete' => 0, 'is_best' => 1, 'is_on_sale' => 1, 'is_hot' => 1, 'is_new' => 1];
+                $goodses = $this->goodsModel->getGoodses($gwhere, $page, $column);
+            }
+        } else {
+            $gwhere = ['is_delete' => 0, 'is_best' => 1, 'is_on_sale' => 1, 'is_hot' => 1, 'is_new' => 1];
+            $goodses = $this->goodsModel->getGoodses($gwhere, $page, $column);
+        }
+        foreach ($goodses as $goods){
+            $goods->goods_thumb = FileHandle::getImgByOssUrl($goods->goods_thumb);
+            $goods->goods_img = FileHandle::getImgByOssUrl($goods->goods_img);
+            $goods->original_img = FileHandle::getImgByOssUrl($goods->original_img);
+            $goods->market_price_format = Common::priceFormat($goods->market_price);
+            $goods->shop_price_format = Common::priceFormat($goods->shop_price);
+            $goods->promote_price_format = Common::priceFormat($goods->promote_price);
+        }
+        return $goodses;
     }
 
     public function getSearchByGoods($request)
@@ -585,7 +623,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $column = ['rec_id', 'user_id', 'goods_id', 'goods_sn', 'product_id', 'goods_attr'
             , 'goods_number', 'goods_attr_id', 'add_time', 'ru_id', 'goods_name'
         ];
-        $res = [];
+
         $where['user_id'] = 0;
         if ($uid != '' || !empty($uid)) {
             $where['user_id'] = $uid;
@@ -630,7 +668,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         foreach ($data as $d) {
             $data_bak[] = $d;
         }
-        return $data_bak;
+        $return['cart'] = $data_bak;
+        $return['like_goods'] = $this->getGoodsesByUserLike([], $uid);
+        return $return;
     }
 
     public function addCart($request, $uid = 0)

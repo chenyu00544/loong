@@ -1207,4 +1207,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $rep;
     }
 
+    public function delGoods($id)
+    {
+        
+    }
+
 }

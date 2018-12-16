@@ -171,6 +171,7 @@
 
             $('.btn-del').click(function () {
                 var Id = $(this).data('id');
+                var that = this;
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
@@ -178,15 +179,12 @@
                         "{{url('admin/brand/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
-                            if (data.code == 1) {
-                                layer.msg(data.msg, {icon: data.code});
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 2000);
-                            } else {
-                                layer.msg(data.msg, {icon: data.code});
-                            }
-
+                            layer.msg(data.msg, {icon: data.code});
+                            setTimeout(function () {
+                                if (data.code == 1) {
+                                    $(that).parent().parent().remove();
+                                }
+                            }, 1000);
                         });
                     // layer.msg('的确很重要', {icon: 1});
                 }, function () {

@@ -23,7 +23,7 @@ class BrowseGoodsModel extends Model
         return $this->hasOne('App\Http\Models\App\GoodsModel', 'goods_id', 'goods_id');
     }
 
-    public function getBrowseGoodses($where, $page = 1, $column = ['*'], $size = 10)
+    public function getBrowseGoodses($where, $page = 1, $column = ['*'], $order = 'DESC', $size = 10)
     {
         return $this->select($column)
             ->where($where)
@@ -31,18 +31,20 @@ class BrowseGoodsModel extends Model
                 $query->select(['goods_id', 'goods_name', 'shop_price', 'market_price', 'is_promote'
                     , 'promote_price', 'promote_start_date', 'promote_end_date', 'original_img', 'goods_thumb', 'goods_img', 'is_best', 'is_new', 'is_hot']);
             }])
-            ->orderBy('add_time', 'DESC')
+            ->orderBy('add_time', $order)
             ->offset(($page - 1) * $size)
             ->limit($size)
             ->get();
     }
 
-    public function addBrowseGoods($data)
+    public
+    function addBrowseGoods($data)
     {
         return $this->create($data);
     }
 
-    public function setBrowseGoods($where, $data, $whereIn = [])
+    public
+    function setBrowseGoods($where, $data, $whereIn = [])
     {
         $m = $this->where($where);
         if (count($whereIn) > 0) {
@@ -51,7 +53,8 @@ class BrowseGoodsModel extends Model
         return $m->update($data);
     }
 
-    public function countBrowseGoods($where)
+    public
+    function countBrowseGoods($where)
     {
         return $this->where($where)->count();
     }

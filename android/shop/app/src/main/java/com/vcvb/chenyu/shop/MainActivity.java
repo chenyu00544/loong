@@ -364,6 +364,7 @@ public class MainActivity extends BaseActivity {
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("LoginClick");
+        intentFilter.addAction("GoHome");
         receiver = new Receiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -372,6 +373,10 @@ public class MainActivity extends BaseActivity {
                 switch (str) {
                     case "LoginClick":
                         showLoginDialog();
+                        break;
+                    case "GoHome":
+                        setClick(0);
+                        bottomBar.selectTabAtPosition(0, true);
                         break;
                 }
             }

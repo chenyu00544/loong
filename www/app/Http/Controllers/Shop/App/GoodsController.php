@@ -22,7 +22,14 @@ class GoodsController extends CommonController
 
     public function index(Request $request)
     {
-
+        $user_id = Verifiable::authorization($request);
+        $data = $this->goodsRepository->getGoodsesByUserLike($request->all(), $user_id);
+        if($data){
+            $rep = ['code' => 0, 'msg' => '', 'data' => $data];
+        }else{
+            $rep = ['code' => 1, 'msg' => '', 'data' => $data];
+        }
+        return $rep;
     }
 
     public function detail(Request $request)

@@ -88,6 +88,8 @@ public class FragmentCart extends BaseFragment {
 
     private Receiver receiver;
 
+    private int page = 1;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -107,6 +109,7 @@ public class FragmentCart extends BaseFragment {
         getCartData(true);
         initView();
         initListener();
+        initRefreshListener();
     }
 
     public void initView() {
@@ -129,7 +132,7 @@ public class FragmentCart extends BaseFragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    public void initListener() {
+    public void initRefreshListener() {
         refreshLayout = view.findViewById(R.id.cart_list);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -141,10 +144,13 @@ public class FragmentCart extends BaseFragment {
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
+//                loadmore();
+                refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
             }
         });
+    }
 
+    public void initListener() {
         toPay.setOnClickListener(onClickListener);
 
         editView.setOnClickListener(onClickListener);
@@ -171,6 +177,7 @@ public class FragmentCart extends BaseFragment {
 
     //fixme 数据获取操作
     public void getCartData(final boolean bool) {
+        page = 1;
         if (bool) {
             loadingDialog.show();
         }
@@ -178,6 +185,7 @@ public class FragmentCart extends BaseFragment {
         mp.put("token", token);
         mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
                 ("device_id"));
+        mp.put("page", page + "");
         HttpUtils.getInstance().post(ConstantManager.Url.CART_LIST, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
@@ -218,7 +226,7 @@ public class FragmentCart extends BaseFragment {
         if (json != null) {
             try {
                 if (json.getInt("code") == 0) {
-                    JSONArray jsonArray = json.getJSONArray("data");
+                    JSONArray jsonArray = json.getJSONObject("data").getJSONArray("cart");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject cartJson = (JSONObject) jsonArray.get(i);
                         CartListBean c = new CartListBean();
@@ -256,6 +264,71 @@ public class FragmentCart extends BaseFragment {
         mAdapter.addAll(getItems(carts));
     }
 
+//    public void loadmore() {
+//        page += 1;
+//        HashMap<String, String> mp = new HashMap<>();
+//        mp.put("page", page + "");
+//        mp.put("token", token);
+//        HttpUtils.getInstance().post(ConstantManager.Url.GOODS, mp, new HttpUtils.NetCall() {
+//            @Override
+//            public void success(Call call, final JSONObject json) throws IOException {
+//                if(getActivity() != null){
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            bindViewMoreData(json);
+//                            if (refreshLayout != null) {
+//                                refreshLayout.finishLoadMore();
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//
+//            @Override
+//            public void failed(Call call, IOException e) {
+//                if(getActivity() != null){
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            if (refreshLayout != null) {
+//                                refreshLayout.finishLoadMore();
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//        });
+//    }
+//
+//    public void bindViewMoreData(JSONObject json) {
+//        if (json != null) {
+//            try {
+//                Integer code = json.getInt("code");
+//                if (code == 0) {
+//                    int index = orders.size();
+//                    List<OrderDetail> _orders = new ArrayList<>();
+//                    JSONArray orderJSONArray = json.getJSONArray("data");
+//                    for (int i = 0; i < orderJSONArray.length(); i++) {
+//                        JSONObject object = (JSONObject) orderJSONArray.get(i);
+//                        OrderDetail orderDetail = JsonUtils.fromJsonObject(object, OrderDetail
+//                                .class);
+//                        orderDetail.setData(object);
+//                        _orders.add(orderDetail);
+//                        orders.add(orderDetail);
+//                    }
+//                    mAdapter.addAll(index, getItems(_orders));
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            } catch (java.lang.InstantiationException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
     //fixme 显示隐藏结算栏
     public void hideOrShowPayBottom(boolean b) {
         View payFoot = view.findViewById(R.id.pay_foot);
@@ -285,7 +358,7 @@ public class FragmentCart extends BaseFragment {
         List<Item> cells = new ArrayList<>();
         if (list.size() == 0) {
             CartErrorItem cartErrorItem = new CartErrorItem(null, context);
-            cartErrorItem.setOnItemClickListener(cartItemListener);
+            cartErrorItem.setOnItemClickListener(cartErrorListener);
             cells.add(cartErrorItem);
         } else {
             for (int i = 0; i < list.size(); i++) {
@@ -433,7 +506,7 @@ public class FragmentCart extends BaseFragment {
                     () {
 
                 @Override
-                public void success(Call call,final JSONObject json) throws IOException {
+                public void success(Call call, final JSONObject json) throws IOException {
                     if (json != null) {
                         if (getActivity() != null) {
                             getActivity().runOnUiThread(new Runnable() {
@@ -480,7 +553,7 @@ public class FragmentCart extends BaseFragment {
                     }
                 }
             });
-        }else{
+        } else {
             ToastUtils.showShortToast(context, "未选中商品");
         }
     }
@@ -516,7 +589,7 @@ public class FragmentCart extends BaseFragment {
         }
     }
 
-    public void registerReceiver(){
+    public void registerReceiver() {
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("UserInfoCall");
@@ -775,5 +848,16 @@ public class FragmentCart extends BaseFragment {
         }
     };
 
-
+    CartErrorItem.OnClickListener cartErrorListener = new CartErrorItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            switch (view.getId()) {
+                case R.id.textView82:
+                    Intent intent = new Intent();
+                    intent.setAction("GoHome");
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    break;
+            }
+        }
+    };
 }

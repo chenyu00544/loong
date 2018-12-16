@@ -20,16 +20,19 @@ class CollectGoodsModel extends Model
 
     public function goods()
     {
-        return $this->hasOne('App\Http\Models\App\GoodsModel','goods_id','goods_id');
+        return $this->hasOne('App\Http\Models\App\GoodsModel', 'goods_id', 'goods_id');
     }
 
-    public function getColloectsByGoods($where, $page = 1, $column = ['*'], $size = 10)
+    public function getColloectsByGoods($where, $page = 1, $column = ['*'], $order = 'DESC', $size = 10)
     {
         return $this->select($column)
             ->where($where)
-            ->with(['goods'])
+            ->with(['goods' => function ($query) {
+                $query->select(['goods_id', 'goods_name', 'shop_price', 'market_price', 'goods_thumb', 'goods_img', 'original_img', 'is_best', 'is_hot', 'is_new', 'promote_price', 'is_promote', 'is_fullcut', 'is_volume', 'sales_volume']);
+            }])
             ->offset(($page - 1) * $size)
             ->limit($size)
+            ->orderBy('add_time', $order)
             ->get();
     }
 

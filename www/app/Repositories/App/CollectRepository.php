@@ -162,6 +162,7 @@ class CollectRepository implements CollectRepositoryInterface
         $page = $data['page'];
         $res = $this->browseGoodsModel->getBrowseGoodses($where, $page);
         $return = [];
+
         foreach ($res as $re) {
             $d_time = strtotime(date('Y-m-d', time()));
             if ($re->add_time > $d_time - 7 * 86400) {
@@ -172,12 +173,14 @@ class CollectRepository implements CollectRepositoryInterface
             $return[$group]['group'] = $group;
             $re->browse_id_str = $re->browse_id.'';
             $re->add_time_format = date('Y-m-d', $re->add_time);
-            $re->goods->current_time = time();
-            $re->goods->original_img = FileHandle::getImgByOssUrl($re->goods->original_img);
-            $re->goods->shop_price_format = Common::priceFormat($re->goods->shop_price);
-            $re->goods->market_price_format = Common::priceFormat($re->goods->market_price);
-            $re->goods->promote_price_format = Common::priceFormat($re->goods->promote_price);
-            $return[$group]['browse'][] = $re;
+            if(!empty($re->goods)){
+                $re->goods->current_time = time();
+                $re->goods->original_img = FileHandle::getImgByOssUrl($re->goods->original_img);
+                $re->goods->shop_price_format = Common::priceFormat($re->goods->shop_price);
+                $re->goods->market_price_format = Common::priceFormat($re->goods->market_price);
+                $re->goods->promote_price_format = Common::priceFormat($re->goods->promote_price);
+                $return[$group]['browse'][] = $re;
+            }
         }
         $req = [];
         foreach ($return as $r){

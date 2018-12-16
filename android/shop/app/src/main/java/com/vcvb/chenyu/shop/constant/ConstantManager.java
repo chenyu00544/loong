@@ -115,6 +115,7 @@ public interface ConstantManager {
         public String HOME = URIHOST + "app/index";
         public String HOMELOADMORE = URIHOST + "app/index/loadmore";
 
+        public String GOODS = URIHOST + "app/goods/index";
         public String GOODSDETAIL = URIHOST + "app/goods/detail";
 
         //fixme 购物车操作

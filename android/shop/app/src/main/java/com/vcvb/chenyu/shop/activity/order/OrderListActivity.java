@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.transition.TransitionManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -18,13 +19,14 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.base.BaseActivity;
+import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderListItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderNoDataItem;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.OrderItemDecoration;
+import com.vcvb.chenyu.shop.base.BaseActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
@@ -353,7 +355,11 @@ public class OrderListActivity extends BaseActivity {
                 cells.add(orderListItem);
             }
         } else {
-            cells.add(new OrderNoDataItem(null, context));
+            if(page == 1){
+                OrderNoDataItem orderNoDataItem = new OrderNoDataItem(null, context);
+                orderNoDataItem.setOnItemClickListener(orderNoDataListener);
+                cells.add(orderNoDataItem);
+            }
         }
         return cells;
     }
@@ -490,6 +496,21 @@ public class OrderListActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    OrderNoDataItem.OnClickListener orderNoDataListener = new OrderNoDataItem.OnClickListener(){
+        @Override
+        public void onClicked(View view, int pos) {
+            switch (view.getId()){
+                case R.id.textView82:
+                    Intent intentM = new Intent(OrderListActivity.this, MainActivity.class);
+                    startActivity(intentM);
+                    Intent intent = new Intent();
+                    intent.setAction("GoHome");
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    break;
+            }
+        }
+    };
+
     OrderListItem.OnClickListener orderListListener = new OrderListItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
@@ -517,7 +538,6 @@ public class OrderListActivity extends BaseActivity {
                     System.out.println("评价");
                     break;
                 default:
-
                     break;
             }
         }

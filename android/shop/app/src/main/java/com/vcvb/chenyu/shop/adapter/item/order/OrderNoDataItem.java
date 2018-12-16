@@ -3,6 +3,7 @@ package com.vcvb.chenyu.shop.adapter.item.order;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
@@ -30,5 +31,8 @@ public class OrderNoDataItem extends BaseItem<OrderDetail> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        TextView tv = holder.get(R.id.textView82);
+        posMap.put(tv.getId(), position);
+        tv.setOnClickListener(listener);
     }
 }

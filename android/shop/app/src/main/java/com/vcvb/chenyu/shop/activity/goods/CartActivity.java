@@ -288,7 +288,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
         if (json != null) {
             try {
                 if (json.getInt("code") == 0) {
-                    JSONArray jsonArray = json.getJSONArray("data");
+                    JSONArray jsonArray = json.getJSONObject("data").getJSONArray("cart");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject cartJson = (JSONObject) jsonArray.get(i);
                         CartListBean c = new CartListBean();

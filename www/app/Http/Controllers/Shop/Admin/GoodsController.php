@@ -323,9 +323,6 @@ class GoodsController extends CommonController
      */
     public function destroy($id)
     {
-        $data['id'] = $id;
-        $data['type'] = 'is_delete';
-        $data['val'] = 1;
-        return $this->goodsRepository->setGoods($data);
+        return $this->goodsRepository->delGoods($id);
     }
 }
