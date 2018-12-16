@@ -15,9 +15,12 @@ public class CartItemDecoration extends RecyclerView.ItemDecoration {
     private Context mContext;
     private List<CartListBean> mList;
 
-    public CartItemDecoration(Context context, List<CartListBean> list) {
+    public CartItemDecoration(Context context) {
         super();
         mContext = context;
+    }
+
+    public void setData(List<CartListBean> list) {
         mList = list;
     }
 
@@ -38,6 +41,8 @@ public class CartItemDecoration extends RecyclerView.ItemDecoration {
                     outRect.set(0, 16, 0, 0);
                 } else if (bean.getIsType() == 1) {
                     outRect.set(0, 0, 0, 0);
+                } else if (bean.getIsType() == 3) {
+                    outRect.set(3, 3, 3, 3);
                 } else {
                     outRect.set(0, 0, 0, 0);
                 }

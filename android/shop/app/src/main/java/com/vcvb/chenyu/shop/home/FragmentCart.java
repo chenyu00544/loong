@@ -25,11 +25,12 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.activity.center.MyCollectionActivity;
 import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
-import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
+import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartItem;
+import com.vcvb.chenyu.shop.adapter.item.cart.Goods_V_Item;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.CartItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseFragment;
@@ -75,9 +76,10 @@ public class FragmentCart extends BaseFragment {
     private TextView collection;
 
     private RecyclerView mRecyclerView;
-    private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
+    private CYCGridAdapter mAdapter = new CYCGridAdapter();
     private List<CartListBean> carts = new ArrayList<>();
     private GridLayoutManager mLayoutManager;
+    private CartItemDecoration spaces;
 
     private RefreshLayout refreshLayout;
 
@@ -125,8 +127,8 @@ public class FragmentCart extends BaseFragment {
         collection = view.findViewById(R.id.textView104);
 
         mRecyclerView = view.findViewById(R.id.cart_content);
-        mLayoutManager = new GridLayoutManager(context, 1);
-        CartItemDecoration spaces = new CartItemDecoration(context, carts);
+        mLayoutManager = new GridLayoutManager(context, 6);
+        spaces = new CartItemDecoration(context);
         mRecyclerView.addItemDecoration(spaces);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -238,11 +240,22 @@ public class FragmentCart extends BaseFragment {
                         JSONArray goodses = cartJson.getJSONArray("goods");
                         for (int j = 0; j < goodses.length(); j++) {
                             CartListBean cart = new CartListBean();
+                            cart.setIsType(1);
                             Goods goods = JsonUtils.fromJsonObject((JSONObject) goodses.get(j),
                                     Goods.class);
                             cart.setGoods(goods);
                             carts.add(cart);
                         }
+                    }
+
+                    JSONArray goodsArray = json.getJSONObject("data").getJSONArray("like_goods");
+                    for (int i = 0; i < goodsArray.length(); i++) {
+                        CartListBean cartListBean = new CartListBean();
+                        cartListBean.setIsType(3);
+                        JSONObject object = (JSONObject) goodsArray.get(i);
+                        Goods goods = JsonUtils.fromJsonObject(object, Goods.class);
+                        cartListBean.setGoods(goods);
+                        carts.add(cartListBean);
                     }
                 }
             } catch (JSONException e) {
@@ -254,13 +267,13 @@ public class FragmentCart extends BaseFragment {
             }
         }
 
-
         if (carts.size() > 0) {
             hideOrShowPayBottom(true);
         } else {
             hideOrShowPayBottom(false);
         }
         setTotal();
+        spaces.setData(carts);
         mAdapter.addAll(getItems(carts));
     }
 
@@ -357,19 +370,25 @@ public class FragmentCart extends BaseFragment {
     protected List<Item> getItems(List<CartListBean> list) {
         List<Item> cells = new ArrayList<>();
         if (list.size() == 0) {
-            CartErrorItem cartErrorItem = new CartErrorItem(null, context);
-            cartErrorItem.setOnItemClickListener(cartErrorListener);
-            cells.add(cartErrorItem);
+            if (page == 1) {
+                CartErrorItem cartErrorItem = new CartErrorItem(null, context);
+                cartErrorItem.setOnItemClickListener(cartErrorListener);
+                cells.add(cartErrorItem);
+            }
         } else {
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getShop() != null) {
+                if (list.get(i).getIsType() == 2) {
                     CartHeaderItem cartHeaderItem = new CartHeaderItem(list.get(i), context);
                     cartHeaderItem.setOnItemClickListener(cartItemListener);
                     cells.add(cartHeaderItem);
-                } else {
+                } else if (list.get(i).getIsType() == 1) {
                     CartItem cartItem = new CartItem(list.get(i), context);
                     cartItem.setOnItemClickListener(cartItemListener);
                     cells.add(cartItem);
+                } else if (list.get(i).getIsType() == 3) {
+                    Goods_V_Item goods_v_item = new Goods_V_Item(list.get(i), context);
+                    goods_v_item.setOnItemClickListener(cartItemListener);
+                    cells.add(goods_v_item);
                 }
             }
         }
@@ -485,7 +504,7 @@ public class FragmentCart extends BaseFragment {
     public void setCheckStatus() {
         boolean b = false;
         for (int i = carts.size() - 1; i >= 0; i--) {
-            if (carts.get(i).getIsType() != 2) {
+            if (carts.get(i).getIsType() == 1) {
                 if (carts.get(i).isCheckOnce()) {
                     b = true;
                 }
@@ -624,7 +643,7 @@ public class FragmentCart extends BaseFragment {
                     //fixme 底栏支付
                     List<Integer> rec_ids = new ArrayList<>();
                     for (int i = 0; i < carts.size(); i++) {
-                        if (carts.get(i).getIsType() != 2) {
+                        if (carts.get(i).getIsType() == 1) {
                             if (carts.get(i).isCheckOnce()) {
                                 rec_ids.add(carts.get(i).getGoods().getRec_id());
                             }
@@ -648,7 +667,7 @@ public class FragmentCart extends BaseFragment {
                     List<Integer> _cartIds = new ArrayList<>();
                     List<CartListBean> _carts = new ArrayList<>();
                     for (int i = 0; i < carts.size(); i++) {
-                        if (carts.get(i).getIsType() != 2) {
+                        if (carts.get(i).getIsType() == 1) {
                             if (carts.get(i).isCheckOnce()) {
                                 _cartIds.add(carts.get(i).getGoods().getRec_id());
                             } else {
@@ -705,7 +724,7 @@ public class FragmentCart extends BaseFragment {
                     //fixme 底栏收藏
                     List<Integer> _rec_ids = new ArrayList<>();
                     for (int i = 0; i < carts.size(); i++) {
-                        if (carts.get(i).getIsType() != 2) {
+                        if (carts.get(i).getIsType() == 1) {
                             if (carts.get(i).isCheckOnce()) {
                                 _rec_ids.add(carts.get(i).getGoods().getRec_id());
                             }

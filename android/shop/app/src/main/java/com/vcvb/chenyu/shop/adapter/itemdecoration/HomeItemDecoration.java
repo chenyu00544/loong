@@ -16,7 +16,6 @@ public class HomeItemDecoration extends RecyclerView.ItemDecoration {
     public HomeItemDecoration(Context context) {
         super();
         mContext = context;
-
     }
 
     public void setData(HomeBean bean){

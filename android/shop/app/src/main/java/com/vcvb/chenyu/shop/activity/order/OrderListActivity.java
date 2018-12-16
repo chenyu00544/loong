@@ -135,20 +135,6 @@ public class OrderListActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         refreshLayout = findViewById(R.id.order_wrap);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-            @Override
-            public void onRefresh(RefreshLayout refreshLayout) {
-                getData(type, false);
-                refreshLayout.finishRefresh(10000/*,false*/);//传入false表示刷新失败
-            }
-        });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(RefreshLayout refreshLayout) {
-                loadmore();
-                refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
-            }
-        });
 
         confirmDialog = new ConfirmDialog(context);
         confirmDialog.setTitle(context.getResources().getString(R.string.is_delete));
@@ -188,6 +174,21 @@ public class OrderListActivity extends BaseActivity {
             public void onClick(View view) {
                 getData(5, true);
                 setTypeStyle(5);
+            }
+        });
+
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshLayout) {
+                getData(type, false);
+                refreshLayout.finishRefresh(10000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshLayout) {
+                loadmore();
+                refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
             }
         });
 

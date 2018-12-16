@@ -62,7 +62,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
     private TextView del;
 
     private List<CartListBean> carts = new ArrayList<>();
-
+    private CartItemDecoration spaces;
     private RefreshLayout refreshLayout;
 
     public LoadingDialog loadingDialog;
@@ -101,7 +101,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
 
         mRecyclerView = findViewById(R.id.cart_content);
         mLayoutManager = new GridLayoutManager(context, 1);
-        CartItemDecoration spaces = new CartItemDecoration(context, carts);
+        spaces = new CartItemDecoration(context);
         mRecyclerView.addItemDecoration(spaces);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
@@ -194,7 +194,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
                 List<Integer> _cartIds = new ArrayList<>();
                 List<CartListBean> _carts = new ArrayList<>();
                 for (int i = 0; i < carts.size(); i++) {
-                    if (carts.get(i).getIsType() != 2) {
+                    if (carts.get(i).getIsType() == 1) {
                         if (carts.get(i).isCheckOnce()) {
                             _cartIds.add(carts.get(i).getGoods().getRec_id());
                         } else {
@@ -306,6 +306,16 @@ public class CartActivity extends BaseRecyclerViewActivity {
                             carts.add(cart);
                         }
                     }
+
+                    JSONArray goodsArray = json.getJSONObject("data").getJSONArray("like_goods");
+                    for (int i = 0; i < goodsArray.length(); i++) {
+                        CartListBean cartListBean = new CartListBean();
+                        cartListBean.setIsType(3);
+                        JSONObject object = (JSONObject) goodsArray.get(i);
+                        Goods goods = JsonUtils.fromJsonObject(object, Goods.class);
+                        cartListBean.setGoods(goods);
+                        carts.add(cartListBean);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -322,6 +332,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
         } else {
             hideOrShowPayBottom(false);
         }
+        spaces.setData(carts);
         mAdapter.addAll(getItems(carts));
     }
 
@@ -452,7 +463,8 @@ public class CartActivity extends BaseRecyclerViewActivity {
     public void collectCartGoods(List<Integer> goods_ids) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("goods_id", StringUtils.join(goods_ids, ","));
-        HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS, mp, new HttpUtils
+                .NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
                 System.out.println(json);
@@ -469,7 +481,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
     public void setCheckStatus() {
         boolean b = false;
         for (int i = carts.size() - 1; i >= 0; i--) {
-            if (carts.get(i).getIsType() != 2) {
+            if (carts.get(i).getIsType() == 1) {
                 if (carts.get(i).isCheckOnce()) {
                     b = true;
                 }
