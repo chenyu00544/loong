@@ -9,11 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.msg.MessageActivity;
+import com.vcvb.chenyu.shop.activity.search.SearchInfoActivity;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -28,7 +31,6 @@ import com.vcvb.chenyu.shop.javaBean.cate.Categroy;
 import com.vcvb.chenyu.shop.javaBean.cate.SubCate;
 import com.vcvb.chenyu.shop.javaBean.cate.SubCategroy;
 import com.vcvb.chenyu.shop.javaBean.home.Ads;
-import com.vcvb.chenyu.shop.activity.search.SearchInfoActivity;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.UrlParse;
@@ -108,6 +110,16 @@ public class FragmentCategory extends BaseFragment {
         subRecyclerView.setLayoutManager(groupedGridLayoutManager);
         groupedListAdapter.setOnHeaderClickListener(onHeaderClickListener);
         groupedListAdapter.setOnChildClickListener(onChildClickListener);
+
+        ImageView msg = view.findViewById(R.id.imageView45);
+        msg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MessageActivity.class);
+                startActivity(intent);
+            }
+        });
+
         getData();
     }
 

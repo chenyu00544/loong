@@ -36,6 +36,8 @@ class BrandRepository implements BrandRepositoryInterface
         $brand = $this->brandModel->getBrand(['id' => $id, 'is_show' => 1]);
         $brand->brand_logo = FileHandle::getImgByOssUrl($brand->brand_logo);
         $brand->index_img = FileHandle::getImgByOssUrl($brand->index_img);
+        $brand->brand_bg = FileHandle::getImgByOssUrl($brand->brand_bg);
+        $brand->brand_bg_app = FileHandle::getImgByOssUrl($brand->brand_bg_app);
         $return['brand'] = $brand;
         $res = $this->goodsModel->getGoodsByBrandId($where, $column);
         $cate = [];
@@ -48,6 +50,7 @@ class BrandRepository implements BrandRepositoryInterface
                 $re->shop_price_format = Common::priceFormat($re->shop_price);
                 $re->market_price_format = Common::priceFormat($re->market_price);
                 $re->promote_price_format = Common::priceFormat($re->promote_price);
+                $re->category->touch_icon = FileHandle::getImgByOssUrl($re->category->touch_icon);
                 $goods[$re->category->id][] = $re;
                 $cate[$re->category->id] = $re->category;
                 unset($re->category);

@@ -56,10 +56,10 @@ class AdRepository implements AdRepositoryInterface
     {
         $where['position_id'] = $id;
         $re = $this->adPositionModel->getPositionByAd($where, ['position_id', 'ad_type', 'ad_width', 'ad_height']);
-        $ads = [];
         $adp['type'] = $re->ad_type;
         $adp['width'] = $re->ad_width;
         $adp['height'] = $re->ad_height;
+        $ads = $adp;
         $advs = [];
         foreach ($re->ads as $ad) {
             $adv['ad_code'] = FileHandle::getImgByOssUrl($ad->ad_code);

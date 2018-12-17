@@ -56,7 +56,7 @@ public class FaatFragment extends BaseRecyclerViewFragment {
     //记录目标项位置
     private int mToPosition;
 
-    private String id;
+    private int id;
 
     @Nullable
     @Override
@@ -65,7 +65,7 @@ public class FaatFragment extends BaseRecyclerViewFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.faat_fragment, container, false);
         if (getActivity() != null) {
-            id = getActivity().getIntent().getStringExtra("id");
+            id = getActivity().getIntent().getIntExtra("id", 0);
         }
         getData();
         initView();
@@ -82,7 +82,7 @@ public class FaatFragment extends BaseRecyclerViewFragment {
     @Override
     public void getData() {
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("id", id);
+        mp.put("id", id+"");
         HttpUtils.getInstance().post(ConstantManager.Url.FAAT, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
@@ -148,7 +148,7 @@ public class FaatFragment extends BaseRecyclerViewFragment {
 
                 Banner subbanner = new Banner();
                 subbanner.setWidth("750");
-                subbanner.setHeight("185");
+                subbanner.setHeight("160");
                 subbanner.setType("faat");
                 Ads ads = new Ads();
                 ads.setAd_code(object.getString("activity_thumb"));

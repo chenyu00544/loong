@@ -191,7 +191,7 @@ public class FragmentMy extends BaseFragment {
         }
     }
 
-    public void registerReceiver(){
+    public void registerReceiver() {
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(context);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("UserInfoCall");
@@ -364,9 +364,9 @@ public class FragmentMy extends BaseFragment {
                 if (oldScrollY >= 255) {
                     header.setAlpha(1);
                 } else {
-                    if(oldScrollY < 50){
+                    if (oldScrollY < 50) {
                         header.setAlpha(0);
-                    }else{
+                    } else {
                         header.setAlpha((float) oldScrollY / 255);
                     }
                 }
@@ -449,7 +449,7 @@ public class FragmentMy extends BaseFragment {
         } else {
             Intent intent = new Intent(context, OrderListActivity.class);
             intent.putExtra("type", type);
-            startActivity(intent);
+            startActivityForResult(intent, ConstantManager.ResultStatus.ORDER_RESULT);
         }
     }
 
@@ -504,6 +504,13 @@ public class FragmentMy extends BaseFragment {
         switch (requestCode) {
             case ConstantManager.User.USERINFO:
                 getData();
+                break;
+            case ConstantManager.ResultStatus.ORDER_RESULT:
+                if(data != null && data.getExtras().getInt("code") == ConstantManager.ResultStatus.ORDER_RESULT){
+                    Intent intent = new Intent();
+                    intent.setAction("GoHome");
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                }
                 break;
         }
     }

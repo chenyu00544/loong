@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.transition.TransitionManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
@@ -502,11 +500,10 @@ public class OrderListActivity extends BaseActivity {
         public void onClicked(View view, int pos) {
             switch (view.getId()){
                 case R.id.textView82:
-                    Intent intentM = new Intent(OrderListActivity.this, MainActivity.class);
-                    startActivity(intentM);
-                    Intent intent = new Intent();
-                    intent.setAction("GoHome");
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    Intent intentM = new Intent();
+                    intentM.putExtra("code", ConstantManager.ResultStatus.ORDER_RESULT);
+                    OrderListActivity.this.setResult(RESULT_OK, intentM);
+                    finish();
                     break;
             }
         }

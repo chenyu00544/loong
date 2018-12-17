@@ -85,6 +85,7 @@ public class MainActivity extends BaseActivity {
             fragmentMy = (FragmentMy) fragmentManager.findFragmentByTag(fragmentTag[3]);
         }
         setClick(index);
+        registerReceiver();
     }
 
     public void initViewPager() {
@@ -358,9 +359,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    public void registerReceiver(){
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("LoginClick");
@@ -385,10 +384,15 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
-        broadcastManager.unregisterReceiver(receiver);
+//        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+//        broadcastManager.unregisterReceiver(receiver);
     }
 
     @Override

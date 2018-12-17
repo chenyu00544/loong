@@ -1,4 +1,7 @@
 @extends('shop.layouts.index')
+@section('css')
+    <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.css')}}">
+@endsection
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
@@ -51,14 +54,24 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">主题颜色：</label>
+                            <div class="col-sm-3">
+                                <input id="color-picker" type="text" name="color"
+                                       class="form-control max-wd-100 input-sm" value="{{$brand->color}}"
+                                       style="background: {{$brand->color}};color: #ffffff;" autocomplete="off">
+                                <div class="form-prompt"></div>
+                                <div class="notic fl mar-left-10"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>品牌LOGO：</label>
                             <div class="col-sm-4 n-wd400">
                                 <input type="file" name="brand_logo" class="fl">
                                 <input type="hidden" name="brand_logo_path" value="{{$brand->brand_logo}}">
                                 <span class="img-show fl">
-                                    <a href="{{url($brand->brand_logo)}}" target="_blank" class="nyroModal">
+                                    <a href="{{url($brand->brand_logo_oss)}}" target="_blank" class="nyroModal">
                                         <i class="glyphicon glyphicon-picture top5"
-                                           data-tooltipimg="{{url($brand->brand_logo)}}"
+                                           data-tooltipimg="{{url($brand->brand_logo_oss)}}"
                                            ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
                                     </a>
                                 </span>
@@ -72,9 +85,9 @@
                                 <input type="file" name="index_img" class="fl">
                                 <input type="hidden" name="index_img_path" value="{{$brand->index_img}}">
                                 <span class="img-show fl">
-                                    <a href="{{url($brand->index_img)}}" target="_blank" class="nyroModal">
+                                    <a href="{{url($brand->index_img_oss)}}" target="_blank" class="nyroModal">
                                         <i class="glyphicon glyphicon-picture top5"
-                                           data-tooltipimg="{{url($brand->index_img)}}"
+                                           data-tooltipimg="{{url($brand->index_img_oss)}}"
                                            ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
                                     </a>
                                 </span>
@@ -83,15 +96,30 @@
                             <div class="notic col-sm-3">标准尺寸278*285</div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>App品牌的背景：</label>
+                            <div class="col-sm-4 n-wd400">
+                                <input type="file" name="brand_bg_app" class="fl">
+                                <input type="hidden" name="brand_bg_app_path" value="{{$brand->brand_bg_app}}">
+                                <span class="img-show fl">
+                                    <a href="{{url($brand->brand_bg_app_oss)}}" target="_blank" class="nyroModal">
+                                        <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{url($brand->brand_bg_app_oss)}}"
+                                           ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                    </a>
+                                </span>
+                                <a href="" class="btn btn-danger fr btn-sm">　删除　</a>
+                            </div>
+                            <div class="notic col-sm-3">请上传图片，做为App品牌的背景！标准尺寸750*300</div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">品牌背景图：</label>
                             <div class="col-sm-4 n-wd400">
                                 <input type="file" name="brand_bg" class="fl">
                                 <input type="hidden" name="brand_bg_path" value="{{$brand->brand_bg}}">
                                 <span class="img-show fl">
-                                    <a href="{{url($brand->brand_bg)}}" target="_blank"
+                                    <a href="{{url($brand->brand_bg_oss)}}" target="_blank"
                                        class="nyroModal">
                                         <i class="glyphicon glyphicon-picture top5"
-                                           data-tooltipimg="{{url($brand->brand_bg)}}"
+                                           data-tooltipimg="{{url($brand->brand_bg_oss)}}"
                                            ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
                                     </a>
                                 </span>
@@ -155,9 +183,18 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
+    <script type="text/javascript"
+            src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
             $('.nyroModal').nyroModal();
+
+            //选择颜色
+            $('#color-picker').colorpicker();
+            $('#color-picker').on('change', function () {
+                $(this).css('background', $(this).val());
+                $(this).css('color', '#fff');
+            });
         });
     </script>
 @endsection

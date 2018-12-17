@@ -201,6 +201,11 @@ class GoodsModel extends Model
             ->get();
     }
 
+    public function countGoods($where)
+    {
+        return $this->where($where)->count();
+    }
+
     //自增
     public function incrementGoodses($where, $column)
     {

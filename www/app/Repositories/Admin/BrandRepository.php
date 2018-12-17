@@ -33,7 +33,12 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function getBrand($id)
     {
-        return $this->brandModel->getBrand($id);
+        $re = $this->brandModel->getBrand($id);
+        $re->brand_logo_oss = FileHandle::getImgByOssUrl($re->brand_logo);
+        $re->index_img_oss = FileHandle::getImgByOssUrl($re->index_img);
+        $re->brand_bg_app_oss = FileHandle::getImgByOssUrl($re->brand_bg_app);
+        $re->brand_bg_oss = FileHandle::getImgByOssUrl($re->brand_bg);
+        return $re;
     }
 
     public function getBrandsAll()
@@ -43,7 +48,7 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function addBrand($data)
     {
-        $fileImg = ['brand_logo', 'index_img', 'brand_bg'];
+        $fileImg = ['brand_logo', 'index_img', 'brand_bg', 'brand_bg_app'];
         $updata = [];
         foreach ($data as $key => $val) {
             if (in_array($key, $fileImg)) {
@@ -57,8 +62,8 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function upDateBrand($data, $id)
     {
-        $fileImg = ['brand_logo', 'index_img', 'brand_bg'];
-        $filePath = ['brand_logo_path', 'index_img_path', 'brand_bg_path'];
+        $fileImg = ['brand_logo', 'index_img', 'brand_bg', 'brand_bg_app'];
+        $filePath = ['brand_logo_path', 'index_img_path', 'brand_bg_path', 'brand_bg_app_path'];
         $updata = [];
         foreach ($data as $key => $val) {
             if (in_array($key, $fileImg)) {

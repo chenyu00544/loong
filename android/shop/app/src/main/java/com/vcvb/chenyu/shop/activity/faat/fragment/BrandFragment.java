@@ -17,17 +17,18 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
-import com.vcvb.chenyu.shop.adapter.item.faat.FaatBannerItem;
+import com.vcvb.chenyu.shop.adapter.item.faat.FaatBrandItem;
+import com.vcvb.chenyu.shop.adapter.item.faat.FaatBrandNavItem;
+import com.vcvb.chenyu.shop.adapter.item.faat.FaatBrandTitleItem;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatGoodsItem;
-import com.vcvb.chenyu.shop.adapter.item.faat.FaatNavItem;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.FaatItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.faat.Banner;
+import com.vcvb.chenyu.shop.javaBean.faat.Brand;
+import com.vcvb.chenyu.shop.javaBean.faat.BrandNav;
 import com.vcvb.chenyu.shop.javaBean.faat.Faat;
-import com.vcvb.chenyu.shop.javaBean.faat.FaatNav;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
-import com.vcvb.chenyu.shop.javaBean.home.Ads;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
@@ -56,7 +57,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     //记录目标项位置
     private int mToPosition;
 
-    private String id;
+    private int id;
 
     @Nullable
     @Override
@@ -65,7 +66,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.faat_fragment, container, false);
         if (getActivity() != null) {
-            id = getActivity().getIntent().getStringExtra("id");
+            id = getActivity().getIntent().getIntExtra("id", 0);
         }
         getData();
         initView();
@@ -82,8 +83,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     @Override
     public void getData() {
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("id", id);
-        HttpUtils.getInstance().post(ConstantManager.Url.FAAT, mp, new HttpUtils.NetCall() {
+        mp.put("id", id + "");
+        HttpUtils.getInstance().post(ConstantManager.Url.FAAT_BRAND, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 if (getActivity() != null) {
@@ -126,37 +127,27 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         List<Object> bs = new ArrayList<>();
         try {
             JSONObject data = json.getJSONObject("data");
-            JSONObject bannerJSONObject = data.getJSONObject("banner");
-            Banner banner = JsonUtils.fromJsonObject(bannerJSONObject, Banner.class);
-            banner.setData(bannerJSONObject);
-            bs.add(banner);
+            JSONObject bannerJSONObject = data.getJSONObject("brand");
+            Brand brand = JsonUtils.fromJsonObject(bannerJSONObject, Brand.class);
+            bs.add(brand);
             faat.setObjs(bs);
             faat.setGroup(0);
             faats.add(faat);
 
-            JSONArray faatJSONArray = data.getJSONArray("faat");
+            JSONArray faatJSONArray = data.getJSONArray("cate");
             ArrayList<Object> goodses = new ArrayList<>();
-            ArrayList<FaatNav> faatNavs = new ArrayList<>();
+            ArrayList<BrandNav> brandNavs = new ArrayList<>();
             for (int i = 0; i < faatJSONArray.length(); i++) {
                 JSONObject object = (JSONObject) faatJSONArray.get(i);
-                FaatNav faatNav = JsonUtils.fromJsonObject(object, FaatNav.class);
+                BrandNav brandNav = JsonUtils.fromJsonObject(object, BrandNav.class);
+                brandNav.setColor(brand.getColor());
                 if (i == 0) {
-                    mRecyclerView.setBackgroundColor(Color.parseColor(faatNav.getColor()));
-                    faatNav.setIsSelect(true);
+                    mRecyclerView.setBackgroundColor(Color.parseColor(brand.getColor()));
+                    brandNav.setSelect(true);
                 }
-                faatNavs.add(faatNav);
+                brandNavs.add(brandNav);
 
-                Banner subbanner = new Banner();
-                subbanner.setWidth("750");
-                subbanner.setHeight("185");
-                subbanner.setType("faat");
-                Ads ads = new Ads();
-                ads.setAd_code(object.getString("activity_thumb"));
-                ArrayList<Ads> ads1 = new ArrayList<>();
-                ads1.add(ads);
-                subbanner.setNavpos(i);
-                subbanner.setAds(ads1);
-                goodses.add(subbanner);
+                goodses.add(brandNav);
 
                 JSONArray goodsJSONArray = object.getJSONArray("goods");
                 for (int j = 0; j < goodsJSONArray.length(); j++) {
@@ -166,7 +157,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                 }
             }
 
-            _faat.setHeader(faatNavs);
+            _faat.setHeader(brandNavs);
             _faat.setObjs(goodses);
             _faat.setGroup(1);
             faats.add(_faat);
@@ -183,7 +174,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
                 if (faats.get(groupPosition).getItemList().get(childPosition).getItemType() == R
-                        .layout.faat_banner_item) {
+                        .layout.faat_brand_item || faats.get(groupPosition).getItemList().get
+                        (childPosition).getItemType() == R.layout.faat_brand_title_item) {
                     return 3;
                 }
                 return super.getChildSpanSize(groupPosition, childPosition);
@@ -196,12 +188,11 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     }
 
     protected List<Faat> getItems(List<Faat> beans) {
-
         for (int i = 0; i < beans.size(); i++) {
             if (faats.get(i).getHeader() != null) {
-                FaatNavItem faatNavItem = new FaatNavItem(beans.get(i), context);
-                faatNavItem.setOnItemClickListener(navListener);
-                faats.get(i).setMheader(faatNavItem);
+                FaatBrandNavItem faatBrandNavItem = new FaatBrandNavItem(beans.get(i), context);
+                faatBrandNavItem.setOnItemClickListener(navListener);
+                faats.get(i).setMheader(faatBrandNavItem);
             }
             List<Item> items = new ArrayList<>();
             if (faats.get(i).getObjs() != null) {
@@ -211,10 +202,14 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                                 .getObjs().get(j), context);
                         faatGoodsItem.setSubOnItemClickListener(goodsItemListener);
                         items.add(faatGoodsItem);
-                    } else {
-                        FaatBannerItem faatBannerItem = new FaatBannerItem((Banner) faats.get(i)
+                    } else if (faats.get(i).getObjs().get(j) instanceof Brand) {
+                        FaatBrandItem faatBrandItem = new FaatBrandItem((Brand) faats.get(i)
                                 .getObjs().get(j), context);
-                        items.add(faatBannerItem);
+                        items.add(faatBrandItem);
+                    } else {
+                        FaatBrandTitleItem faatBrandTitleItem = new FaatBrandTitleItem((BrandNav)
+                                faats.get(i).getObjs().get(j), context);
+                        items.add(faatBrandTitleItem);
                     }
                 }
             }
@@ -229,8 +224,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         for (int i = 1; i < faats.size(); i++) {
             Faat faat = faats.get(i);
             if (faat.getHeader() != null) {
-                for (int j = 0; j < ((List<FaatNav>) faats.get(i).getHeader()).size(); j++) {
-                    ((List<FaatNav>) faats.get(i).getHeader()).get(j).setIsSelect(false);
+                for (int j = 0; j < ((List<BrandNav>) faats.get(i).getHeader()).size(); j++) {
+                    ((List<BrandNav>) faats.get(i).getHeader()).get(j).setSelect(false);
                 }
                 p += 1;
             }
@@ -252,8 +247,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                 p += 1;
             }
             if (banner != null) {
-                ((List<FaatNav>) faats.get(i).getHeader()).get(banner.getNavpos()).setIsSelect
-                        (true);
+                ((List<BrandNav>) faats.get(i).getHeader()).get(banner.getNavpos()).setSelect(true);
                 break;
             }
         }
@@ -267,8 +261,8 @@ public class BrandFragment extends BaseRecyclerViewFragment {
             Faat faat = faats.get(i);
             if (faat.getHeader() != null) {
                 p += 1;
-                for (int j = 0; j < ((List<FaatNav>) faats.get(i).getHeader()).size(); j++) {
-                    ((List<FaatNav>) faats.get(i).getHeader()).get(j).setIsSelect(false);
+                for (int j = 0; j < ((List<BrandNav>) faats.get(i).getHeader()).size(); j++) {
+                    ((List<BrandNav>) faats.get(i).getHeader()).get(j).setSelect(false);
                 }
             }
             if (faat.getObjs() != null) {
@@ -287,7 +281,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
                 }
             }
         }
-        ((List<FaatNav>) faats.get(group).getHeader()).get(pos).setIsSelect(true);
+        ((List<BrandNav>) faats.get(group).getHeader()).get(pos).setSelect(true);
     }
 
     public void smoothMoveToPosition(int position) {
@@ -365,7 +359,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         });
     }
 
-    FaatNavItem.OnItemClickListener navListener = new FaatNavItem.OnItemClickListener() {
+    FaatBrandNavItem.OnItemClickListener navListener = new FaatBrandNavItem.OnItemClickListener() {
         @Override
         public void clicked(int group, int pos) {
             clickSelectNavs(group, pos);

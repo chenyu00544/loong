@@ -31,6 +31,7 @@ public interface ConstantManager {
         public int COLLECT_RESULT = 1005;
         public int PHONE = 1006;
         public int MSG_RESULT = 1007;
+        public int ORDER_RESULT = 1008;
     }
 
     interface PhotoAlbum {
@@ -176,5 +177,6 @@ public interface ConstantManager {
 
         //fixme 活动
         public String FAAT = URIHOST + "app/faat/index";
+        public String FAAT_BRAND = URIHOST + "app/faat/brand";
     }
 }

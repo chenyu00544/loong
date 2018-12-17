@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,6 +48,10 @@ public class Goods_V_Item extends BaseItem<CartListBean> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        View v = holder.getItemView();
+        posMap.put(v.getId(), position);
+        v.setOnClickListener(listener);
+
         int width = ToolUtils.getWindowsWidth(context);
         TextView tv = holder.getTextView(R.id.textView164);
         tv.setText(mData.getGoods().getGoods_name());
@@ -85,12 +90,12 @@ public class Goods_V_Item extends BaseItem<CartListBean> {
                 RoundedCornersTransformation.CornerType.TOP);
         RequestOptions requestOptions = RequestOptions.bitmapTransform(roundedCorners)
                 .placeholder(R.drawable.icon_goods_no_pic_v).diskCacheStrategy(DiskCacheStrategy
-                        .AUTOMATIC).skipMemoryCache(true);
+                        .AUTOMATIC);
         Glide.with(context).load(mData.getGoods().getOriginal_img()).apply(requestOptions).into(iv);
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
-        set.constrainWidth(iv.getId(), (width - ToolUtils.dip2px(context, 11)) / 2);
+        set.constrainWidth(iv.getId(), (width - ToolUtils.dip2px(context, 10)) / 2);
         set.constrainHeight(iv.getId(), (width - ToolUtils.dip2px(context, 10)) / 2);
         set.applyTo(cly);
     }

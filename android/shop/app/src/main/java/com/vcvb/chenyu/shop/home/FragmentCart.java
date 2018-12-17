@@ -28,6 +28,7 @@ import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartErrorItem;
+import com.vcvb.chenyu.shop.adapter.item.cart.CartGuessYouLoveItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.Goods_V_Item;
@@ -146,7 +147,7 @@ public class FragmentCart extends BaseFragment {
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-//                loadmore();
+                loadmore();
                 refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
             }
         });
@@ -225,10 +226,16 @@ public class FragmentCart extends BaseFragment {
     public void bindData(JSONObject json) {
         carts.clear();
         mAdapter.clear();
+        boolean bool = false;
         if (json != null) {
             try {
                 if (json.getInt("code") == 0) {
                     JSONArray jsonArray = json.getJSONObject("data").getJSONArray("cart");
+                    if (jsonArray.length() > 0) {
+                        bool = true;
+                    } else {
+                        bool = false;
+                    }
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject cartJson = (JSONObject) jsonArray.get(i);
                         CartListBean c = new CartListBean();
@@ -249,6 +256,12 @@ public class FragmentCart extends BaseFragment {
                     }
 
                     JSONArray goodsArray = json.getJSONObject("data").getJSONArray("like_goods");
+                    if(goodsArray.length() > 0){
+                        CartListBean guessBean = new CartListBean();
+                        guessBean.setIsType(4);
+                        carts.add(guessBean);
+                    }
+
                     for (int i = 0; i < goodsArray.length(); i++) {
                         CartListBean cartListBean = new CartListBean();
                         cartListBean.setIsType(3);
@@ -267,7 +280,7 @@ public class FragmentCart extends BaseFragment {
             }
         }
 
-        if (carts.size() > 0) {
+        if (bool) {
             hideOrShowPayBottom(true);
         } else {
             hideOrShowPayBottom(false);
@@ -277,70 +290,102 @@ public class FragmentCart extends BaseFragment {
         mAdapter.addAll(getItems(carts));
     }
 
-//    public void loadmore() {
-//        page += 1;
-//        HashMap<String, String> mp = new HashMap<>();
-//        mp.put("page", page + "");
-//        mp.put("token", token);
-//        HttpUtils.getInstance().post(ConstantManager.Url.GOODS, mp, new HttpUtils.NetCall() {
-//            @Override
-//            public void success(Call call, final JSONObject json) throws IOException {
-//                if(getActivity() != null){
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            bindViewMoreData(json);
-//                            if (refreshLayout != null) {
-//                                refreshLayout.finishLoadMore();
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//
-//            @Override
-//            public void failed(Call call, IOException e) {
-//                if(getActivity() != null){
-//                    getActivity().runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (refreshLayout != null) {
-//                                refreshLayout.finishLoadMore();
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
-//    }
-//
-//    public void bindViewMoreData(JSONObject json) {
-//        if (json != null) {
-//            try {
-//                Integer code = json.getInt("code");
-//                if (code == 0) {
-//                    int index = orders.size();
-//                    List<OrderDetail> _orders = new ArrayList<>();
-//                    JSONArray orderJSONArray = json.getJSONArray("data");
-//                    for (int i = 0; i < orderJSONArray.length(); i++) {
-//                        JSONObject object = (JSONObject) orderJSONArray.get(i);
-//                        OrderDetail orderDetail = JsonUtils.fromJsonObject(object, OrderDetail
-//                                .class);
-//                        orderDetail.setData(object);
-//                        _orders.add(orderDetail);
-//                        orders.add(orderDetail);
-//                    }
-//                    mAdapter.addAll(index, getItems(_orders));
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            } catch (java.lang.InstantiationException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    public void loadmore() {
+        page += 1;
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("page", page + "");
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.GOODS, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bindViewMoreData(json);
+                            if (refreshLayout != null) {
+                                refreshLayout.finishLoadMore();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (refreshLayout != null) {
+                                refreshLayout.finishLoadMore();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void bindViewMoreData(JSONObject json) {
+        if (json != null) {
+            try {
+                Integer code = json.getInt("code");
+                if (code == 0) {
+                    int index = carts.size();
+                    List<CartListBean> _carts = new ArrayList<>();
+                    JSONArray goodsrJSONArray = json.getJSONArray("data");
+                    for (int i = 0; i < goodsrJSONArray.length(); i++) {
+                        CartListBean cartListBean = new CartListBean();
+                        cartListBean.setIsType(3);
+                        JSONObject object = (JSONObject) goodsrJSONArray.get(i);
+                        Goods goods = JsonUtils.fromJsonObject(object, Goods.class);
+                        cartListBean.setGoods(goods);
+                        _carts.add(cartListBean);
+                        carts.add(cartListBean);
+                    }
+                    mAdapter.addAll(index, getItems(_carts));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected List<Item> getItems(List<CartListBean> list) {
+        List<Item> cells = new ArrayList<>();
+        if (carts.size() == 0) {
+            if (page == 1) {
+                CartErrorItem cartErrorItem = new CartErrorItem(null, context);
+                cartErrorItem.setOnItemClickListener(cartErrorListener);
+                cells.add(cartErrorItem);
+            }
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getIsType() == 2) {
+                    CartHeaderItem cartHeaderItem = new CartHeaderItem(list.get(i), context);
+                    cartHeaderItem.setOnItemClickListener(cartItemListener);
+                    cells.add(cartHeaderItem);
+                } else if (list.get(i).getIsType() == 1) {
+                    CartItem cartItem = new CartItem(list.get(i), context);
+                    cartItem.setOnItemClickListener(cartItemListener);
+                    cells.add(cartItem);
+                } else if (list.get(i).getIsType() == 3) {
+                    Goods_V_Item goods_v_item = new Goods_V_Item(list.get(i), context);
+                    goods_v_item.setOnItemClickListener(goodsItemListener);
+                    cells.add(goods_v_item);
+                } else if (list.get(i).getIsType() == 4) {
+                    CartGuessYouLoveItem guessYouLoveItem = new CartGuessYouLoveItem(null, context);
+                    cells.add(guessYouLoveItem);
+                }
+            }
+        }
+        return cells;
+    }
 
     //fixme 显示隐藏结算栏
     public void hideOrShowPayBottom(boolean b) {
@@ -365,34 +410,6 @@ public class FragmentCart extends BaseFragment {
             set.constrainHeight(payFoot.getId(), 1);
         }
         set.applyTo(cly);
-    }
-
-    protected List<Item> getItems(List<CartListBean> list) {
-        List<Item> cells = new ArrayList<>();
-        if (list.size() == 0) {
-            if (page == 1) {
-                CartErrorItem cartErrorItem = new CartErrorItem(null, context);
-                cartErrorItem.setOnItemClickListener(cartErrorListener);
-                cells.add(cartErrorItem);
-            }
-        } else {
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getIsType() == 2) {
-                    CartHeaderItem cartHeaderItem = new CartHeaderItem(list.get(i), context);
-                    cartHeaderItem.setOnItemClickListener(cartItemListener);
-                    cells.add(cartHeaderItem);
-                } else if (list.get(i).getIsType() == 1) {
-                    CartItem cartItem = new CartItem(list.get(i), context);
-                    cartItem.setOnItemClickListener(cartItemListener);
-                    cells.add(cartItem);
-                } else if (list.get(i).getIsType() == 3) {
-                    Goods_V_Item goods_v_item = new Goods_V_Item(list.get(i), context);
-                    goods_v_item.setOnItemClickListener(cartItemListener);
-                    cells.add(goods_v_item);
-                }
-            }
-        }
-        return cells;
     }
 
     //fixme 清理长按显示状态
@@ -426,9 +443,6 @@ public class FragmentCart extends BaseFragment {
                     bool = false;
                 }
             }
-        }
-        if (carts.size() == 0) {
-            bool = false;
         }
         selectAllCB.setChecked(bool);
         totalView.setText(String.format(Locale.CHINA, "￥%.2f", total + totalTax));
@@ -477,40 +491,40 @@ public class FragmentCart extends BaseFragment {
         mp.put("rec_ids", StringUtils.join(rec_ids, ","));
         HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS_CART, mp, new
                 HttpUtils.NetCall() {
-                    @Override
-                    public void success(Call call, JSONObject json) throws IOException {
-                        if (json != null) {
-                            try {
-                                Integer code = json.getInt("code");
-                                if (code == 0) {
-                                    Intent intent = new Intent(context, MyCollectionActivity.class);
-                                    startActivityForResult(intent, ConstantManager.ResultStatus
-                                            .COLLECT_RESULT);
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                if (json != null) {
+                    try {
+                        Integer code = json.getInt("code");
+                        if (code == 0) {
+                            Intent intent = new Intent(context, MyCollectionActivity.class);
+                            startActivityForResult(intent, ConstantManager.ResultStatus
+                                    .COLLECT_RESULT);
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                }
+            }
 
-                    @Override
-                    public void failed(Call call, IOException e) {
+            @Override
+            public void failed(Call call, IOException e) {
 
-                    }
-                });
+            }
+        });
     }
 
     //fixme 设置选中状态
     public void setCheckStatus() {
-        boolean b = false;
+        boolean b = true;
         for (int i = carts.size() - 1; i >= 0; i--) {
             if (carts.get(i).getIsType() == 1) {
-                if (carts.get(i).isCheckOnce()) {
-                    b = true;
+                if (!carts.get(i).isCheckOnce()) {
+                    b = false;
                 }
             } else if (carts.get(i).getIsType() == 2) {
                 carts.get(i).setCheckAll(b);
-                b = false;
+                b = true;
             }
         }
     }
@@ -602,8 +616,8 @@ public class FragmentCart extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ConstantManager.ResultStatus.ADD_ORDER_RESULT
-                || requestCode == ConstantManager.ResultStatus.COLLECT_RESULT) {
+        if (requestCode == ConstantManager.ResultStatus.ADD_ORDER_RESULT || requestCode ==
+                ConstantManager.ResultStatus.COLLECT_RESULT) {
             getCartData(false);
         }
     }
@@ -634,6 +648,15 @@ public class FragmentCart extends BaseFragment {
         intent.setAction("LoginClick");
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
+
+    Goods_V_Item.OnClickListener goodsItemListener = new Goods_V_Item.OnClickListener(){
+        @Override
+        public void onClicked(View view, int pos) {
+            Intent intent = new Intent(context, GoodsDetailActivity.class);
+            intent.putExtra("id", carts.get(pos).getGoods().getGoods_id());
+            startActivity(intent);
+        }
+    };
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -670,25 +693,16 @@ public class FragmentCart extends BaseFragment {
                         if (carts.get(i).getIsType() == 1) {
                             if (carts.get(i).isCheckOnce()) {
                                 _cartIds.add(carts.get(i).getGoods().getRec_id());
-                            } else {
                                 _carts.add(carts.get(i));
                             }
-                        } else {
-                            _carts.add(carts.get(i));
-                        }
-                    }
-                    carts = new ArrayList<>(_carts);
-                    for (int i = 0; i < carts.size(); i++) {
-                        if (carts.get(i).getIsType() == 2) {
-                            if (carts.size() > i + 1) {
-                                if (carts.get(i + 1).getIsType() == 2) {
-                                    carts.remove(i);
-                                }
-                            } else if (carts.size() == i + 1) {
-                                carts.remove(i);
+                        } else if(carts.get(i).getIsType() == 2) {
+                            if (carts.get(i).isCheckAll()) {
+                                _carts.add(carts.get(i));
                             }
                         }
                     }
+                    carts.removeAll(_carts);
+
                     mAdapter.clear();
                     mAdapter.addAll(getItems(carts));
                     editView.setText(R.string.edit);

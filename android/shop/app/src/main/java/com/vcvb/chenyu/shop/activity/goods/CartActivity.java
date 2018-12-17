@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,21 +18,30 @@ import com.jude.swipbackhelper.SwipeBackHelper;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.center.MyCollectionActivity;
+import com.vcvb.chenyu.shop.activity.login.RegisterActivity;
+import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
+import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartErrorItem;
+import com.vcvb.chenyu.shop.adapter.item.cart.CartGuessYouLoveItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartHeaderItem;
 import com.vcvb.chenyu.shop.adapter.item.cart.CartItem;
+import com.vcvb.chenyu.shop.adapter.item.cart.Goods_V_Item;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.CartItemDecoration;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
+import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
+import com.vcvb.chenyu.shop.dialog.LoginDialog;
 import com.vcvb.chenyu.shop.javaBean.cart.CartListBean;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.store.Shop;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
@@ -45,6 +55,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.Call;
 
@@ -60,15 +71,21 @@ public class CartActivity extends BaseRecyclerViewActivity {
     private TextView toPay;
     private View layer;
     private TextView del;
+    private TextView collection;
 
+    private CYCGridAdapter mAdapter = new CYCGridAdapter();
     private List<CartListBean> carts = new ArrayList<>();
     private CartItemDecoration spaces;
+    private GridLayoutManager mLayoutManager;
     private RefreshLayout refreshLayout;
 
     public LoadingDialog loadingDialog;
+    public LoginDialog loginDialog;
 
     private ConstraintLayout cly;
     private ConstraintSet set = new ConstraintSet();
+
+    private int page = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +103,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
         initRefresh();
         getCartData(true);
         initListener();
+        initRefreshListener();
     }
 
     public void initView() {
@@ -98,9 +116,10 @@ public class CartActivity extends BaseRecyclerViewActivity {
         layer = findViewById(R.id.view34);
         selectAllCB = findViewById(R.id.checkBox4);
         del = findViewById(R.id.textView112);
+        collection = findViewById(R.id.textView104);
 
         mRecyclerView = findViewById(R.id.cart_content);
-        mLayoutManager = new GridLayoutManager(context, 1);
+        mLayoutManager = new GridLayoutManager(context, 6);
         spaces = new CartItemDecoration(context);
         mRecyclerView.addItemDecoration(spaces);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -121,130 +140,52 @@ public class CartActivity extends BaseRecyclerViewActivity {
 
     }
 
-    @Override
-    public void onResume() {
-        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
-        super.onResume();
-    }
-
-    public void initListener() {
+    public void initRefreshListener() {
         refreshLayout = findViewById(R.id.cart_list);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
                 getCartData(false);
-                refreshLayout.finishRefresh(1000/*,false*/);//传入false表示刷新失败
+                refreshLayout.finishRefresh(10000/*,false*/);//传入false表示刷新失败
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore(1000/*,false*/);//传入false表示加载失败
-            }
-        });
-
-        toPay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "toPay", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, GoodsDetailActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        editView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (editView.getText() == context.getString(R.string.edit)) {
-                    editView.setText(R.string.over);
-                    set.setVerticalBias(layer.getId(), 0);
-                } else {
-                    editView.setText(R.string.edit);
-                    set.setVerticalBias(layer.getId(), 1);
-                }
-                set.applyTo(cly);
-            }
-        });
-
-        selectAllCB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean bool;
-                if (selectAllCB.isChecked()) {
-                    selectAllCB.setChecked(true);
-                    bool = true;
-                } else {
-                    selectAllCB.setChecked(false);
-                    bool = false;
-                }
-                for (int i = 0; i < carts.size(); i++) {
-                    carts.get(i).setCheckOnce(bool);
-                    if (carts.get(i).getIsType() == 2) {
-                        carts.get(i).setCheckAll(bool);
-                    }
-                }
-                setTotal();
-                mAdapter.notifyDataSetChanged();
-            }
-        });
-
-        del.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                List<Integer> _cartIds = new ArrayList<>();
-                List<CartListBean> _carts = new ArrayList<>();
-                for (int i = 0; i < carts.size(); i++) {
-                    if (carts.get(i).getIsType() == 1) {
-                        if (carts.get(i).isCheckOnce()) {
-                            _cartIds.add(carts.get(i).getGoods().getRec_id());
-                        } else {
-                            _carts.add(carts.get(i));
-                        }
-                    } else {
-                        _carts.add(carts.get(i));
-                    }
-                }
-                carts = new ArrayList<>(_carts);
-                for (int i = 0; i < carts.size(); i++) {
-                    if (carts.get(i).getIsType() == 2) {
-                        if (carts.size() > i + 1) {
-                            if (carts.get(i + 1).getIsType() == 2) {
-                                carts.remove(i);
-                            }
-                        } else if (carts.size() == i + 1) {
-                            carts.remove(i);
-                        }
-                    }
-                }
-                System.out.println(_cartIds);
-                mAdapter.clear();
-                mAdapter.addAll(getItems(carts));
-                editView.setText(R.string.edit);
-                set.setVerticalBias(layer.getId(), 1);
-                set.applyTo(cly);
-                if (carts.size() == 0) {
-                    hideOrShowPayBottom(false);
-                }
-                delCartGoods(_cartIds);
-                setCheckStatus();
-                setTotal();
-            }
-        });
-
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemLongClickListener(new CYCItemClickSupport.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClicked(RecyclerView recyclerView, View itemView, int
-                    position) {
-                clearLong();
-                carts.get(position).setLong(true);
-                mAdapter.notifyDataSetChanged();
-                return true;
+                loadmore();
+                refreshLayout.finishLoadMore(10000/*,false*/);//传入false表示加载失败
             }
         });
     }
 
-    //数据获取操作
+    public void initListener() {
+        toPay.setOnClickListener(onClickListener);
+
+        editView.setOnClickListener(onClickListener);
+
+        selectAllCB.setOnClickListener(onClickListener);
+
+        del.setOnClickListener(onClickListener);
+
+        collection.setOnClickListener(onClickListener);
+
+        //fixme item长按
+        CYCItemClickSupport.addTo(mRecyclerView).
+                setOnItemLongClickListener(new CYCItemClickSupport.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClicked(RecyclerView recyclerView, View itemView,
+                                                     int position) {
+                        clearLong();
+                        carts.get(position).setLong(true);
+                        mAdapter.notifyDataSetChanged();
+                        return true;
+                    }
+                });
+    }
+
+    //fixme 数据获取操作
     public void getCartData(final boolean bool) {
+        page = 1;
         if (bool) {
             loadingDialog.show();
         }
@@ -252,6 +193,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
         mp.put("token", token);
         mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
                 ("device_id"));
+        mp.put("page", page + "");
         HttpUtils.getInstance().post(ConstantManager.Url.CART_LIST, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
@@ -285,10 +227,16 @@ public class CartActivity extends BaseRecyclerViewActivity {
     public void bindData(JSONObject json) {
         carts.clear();
         mAdapter.clear();
+        boolean bool = false;
         if (json != null) {
             try {
                 if (json.getInt("code") == 0) {
                     JSONArray jsonArray = json.getJSONObject("data").getJSONArray("cart");
+                    if (jsonArray.length() > 0) {
+                        bool = true;
+                    } else {
+                        bool = false;
+                    }
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject cartJson = (JSONObject) jsonArray.get(i);
                         CartListBean c = new CartListBean();
@@ -300,6 +248,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
                         JSONArray goodses = cartJson.getJSONArray("goods");
                         for (int j = 0; j < goodses.length(); j++) {
                             CartListBean cart = new CartListBean();
+                            cart.setIsType(1);
                             Goods goods = JsonUtils.fromJsonObject((JSONObject) goodses.get(j),
                                     Goods.class);
                             cart.setGoods(goods);
@@ -308,6 +257,12 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     }
 
                     JSONArray goodsArray = json.getJSONObject("data").getJSONArray("like_goods");
+                    if (goodsArray.length() > 0) {
+                        CartListBean guessBean = new CartListBean();
+                        guessBean.setIsType(4);
+                        carts.add(guessBean);
+                    }
+
                     for (int i = 0; i < goodsArray.length(); i++) {
                         CartListBean cartListBean = new CartListBean();
                         cartListBean.setIsType(3);
@@ -326,17 +281,110 @@ public class CartActivity extends BaseRecyclerViewActivity {
             }
         }
 
-
-        if (carts.size() > 0) {
+        if (bool) {
             hideOrShowPayBottom(true);
         } else {
             hideOrShowPayBottom(false);
         }
+        setTotal();
         spaces.setData(carts);
         mAdapter.addAll(getItems(carts));
     }
 
-    //显示隐藏结算栏
+    public void loadmore() {
+        page += 1;
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("page", page + "");
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.GOODS, mp, new HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindViewMoreData(json);
+                        if (refreshLayout != null) {
+                            refreshLayout.finishLoadMore();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (refreshLayout != null) {
+                            refreshLayout.finishLoadMore();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    public void bindViewMoreData(JSONObject json) {
+        if (json != null) {
+            try {
+                Integer code = json.getInt("code");
+                if (code == 0) {
+                    int index = carts.size();
+                    List<CartListBean> _carts = new ArrayList<>();
+                    JSONArray goodsrJSONArray = json.getJSONArray("data");
+                    for (int i = 0; i < goodsrJSONArray.length(); i++) {
+                        CartListBean cartListBean = new CartListBean();
+                        cartListBean.setIsType(3);
+                        JSONObject object = (JSONObject) goodsrJSONArray.get(i);
+                        Goods goods = JsonUtils.fromJsonObject(object, Goods.class);
+                        cartListBean.setGoods(goods);
+                        _carts.add(cartListBean);
+                        carts.add(cartListBean);
+                    }
+                    mAdapter.addAll(index, getItems(_carts));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected List<Item> getItems(List<CartListBean> list) {
+        List<Item> cells = new ArrayList<>();
+        if (carts.size() == 0) {
+            if (page == 1) {
+                CartErrorItem cartErrorItem = new CartErrorItem(null, context);
+                cartErrorItem.setOnItemClickListener(cartErrorListener);
+                cells.add(cartErrorItem);
+            }
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getIsType() == 2) {
+                    CartHeaderItem cartHeaderItem = new CartHeaderItem(list.get(i), context);
+                    cartHeaderItem.setOnItemClickListener(cartItemListener);
+                    cells.add(cartHeaderItem);
+                } else if (list.get(i).getIsType() == 1) {
+                    CartItem cartItem = new CartItem(list.get(i), context);
+                    cartItem.setOnItemClickListener(cartItemListener);
+                    cells.add(cartItem);
+                } else if (list.get(i).getIsType() == 3) {
+                    Goods_V_Item goods_v_item = new Goods_V_Item(list.get(i), context);
+                    goods_v_item.setOnItemClickListener(goodsItemListener);
+                    cells.add(goods_v_item);
+                } else if (list.get(i).getIsType() == 4) {
+                    CartGuessYouLoveItem guessYouLoveItem = new CartGuessYouLoveItem(null, context);
+                    cells.add(guessYouLoveItem);
+                }
+            }
+        }
+        return cells;
+    }
+
+    //fixme 显示隐藏结算栏
     public void hideOrShowPayBottom(boolean b) {
         View payFoot = findViewById(R.id.pay_foot);
         CheckBox cb = findViewById(R.id.checkBox4);
@@ -361,30 +409,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
         set.applyTo(cly);
     }
 
-    protected List<Item> getItems(List<CartListBean> list) {
-        List<Item> cells = new ArrayList<>();
-        if (list.size() == 0) {
-            CartErrorItem cartErrorItem = new CartErrorItem(null, context);
-            cartErrorItem.setOnItemClickListener(cartItemListener);
-            cells.add(cartErrorItem);
-        } else {
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getShop() != null) {
-                    CartHeaderItem cartHeaderItem = new CartHeaderItem(list.get(i), context);
-                    cartHeaderItem.setOnItemClickListener(cartItemListener);
-                    cells.add(cartHeaderItem);
-                }
-                if (list.get(i).getGoods() != null) {
-                    CartItem cartItem = new CartItem(list.get(i), context);
-                    cartItem.setOnItemClickListener(cartItemListener);
-                    cells.add(cartItem);
-                }
-            }
-        }
-        return cells;
-    }
-
-    //清理长按显示状态
+    //fixme 清理长按显示状态
     public void clearLong() {
         for (int i = 0; i < carts.size(); i++) {
             if (carts.get(i).isLong()) {
@@ -393,7 +418,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
         }
     }
 
-    //设置订单总金额
+    //fixme 设置订单总金额
     public void setTotal() {
         double total = 0;
         double totalTax = 0;
@@ -416,15 +441,12 @@ public class CartActivity extends BaseRecyclerViewActivity {
                 }
             }
         }
-        if (carts.size() == 0) {
-            bool = false;
-        }
         selectAllCB.setChecked(bool);
         totalView.setText(String.format(Locale.CHINA, "￥%.2f", total + totalTax));
         totalTaxView.setText(String.format(Locale.CHINA, "包含税费￥%.2f", totalTax));
     }
 
-    //增加减少商品数量同步服务器
+    //fixme 增加减少商品数量同步服务器
     public void modifyCartNum(Integer rec_id, Integer num) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("rec_id", String.valueOf(rec_id));
@@ -442,7 +464,7 @@ public class CartActivity extends BaseRecyclerViewActivity {
         });
     }
 
-    //删除购物车商品
+    //fixme 删除购物车商品
     public void delCartGoods(List<Integer> rec_ids) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("rec_ids", StringUtils.join(rec_ids, ","));
@@ -459,15 +481,27 @@ public class CartActivity extends BaseRecyclerViewActivity {
         });
     }
 
-    //收藏购物车商品
-    public void collectCartGoods(List<Integer> goods_ids) {
+    //fixme 收藏购物车商品
+    public void collectCartGoods(List<Integer> rec_ids) {
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("goods_id", StringUtils.join(goods_ids, ","));
-        HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS, mp, new HttpUtils
-                .NetCall() {
+        mp.put("token", token);
+        mp.put("rec_ids", StringUtils.join(rec_ids, ","));
+        HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS_CART, mp, new
+                HttpUtils.NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
-                System.out.println(json);
+                if (json != null) {
+                    try {
+                        Integer code = json.getInt("code");
+                        if (code == 0) {
+                            Intent intent = new Intent(context, MyCollectionActivity.class);
+                            startActivityForResult(intent, ConstantManager.ResultStatus
+                                    .COLLECT_RESULT);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
@@ -477,45 +511,308 @@ public class CartActivity extends BaseRecyclerViewActivity {
         });
     }
 
-    //设置选中状态
+    //fixme 设置选中状态
     public void setCheckStatus() {
-        boolean b = false;
+        boolean b = true;
         for (int i = carts.size() - 1; i >= 0; i--) {
             if (carts.get(i).getIsType() == 1) {
-                if (carts.get(i).isCheckOnce()) {
-                    b = true;
+                if (!carts.get(i).isCheckOnce()) {
+                    b = false;
                 }
             } else if (carts.get(i).getIsType() == 2) {
                 carts.get(i).setCheckAll(b);
-                b = false;
+                b = true;
             }
         }
     }
+
+    //fixme 结算
+    public void pay(List<Integer> rec_ids) {
+        if (rec_ids.size() > 0) {
+            HashMap<String, String> mp = new HashMap<>();
+            mp.put("token", token);
+            mp.put("rec_ids", StringUtils.join(rec_ids, ","));
+            HttpUtils.getInstance().post(ConstantManager.Url.ADD_ORDER, mp, new HttpUtils.NetCall
+                    () {
+
+                @Override
+                public void success(Call call, final JSONObject json) throws IOException {
+                    if (json != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    Integer code = json.getInt("code");
+                                    if (code == 0) {
+                                        JSONObject object = json.getJSONObject("data");
+                                        JSONArray jsonArray = object.getJSONArray("order");
+                                        final List<Integer> orderIds = new ArrayList<>();
+                                        for (int i = 0; i < jsonArray.length(); i++) {
+                                            orderIds.add((Integer) jsonArray.get(i));
+                                        }
+
+                                        Intent intent = new Intent(context, OrderDetailsActivity
+                                                .class);
+                                        intent.putExtra("order_id", StringUtils.join(orderIds, "," +
+                                                "" + ""));
+                                        startActivityForResult(intent, ConstantManager
+                                                .ResultStatus.ADD_ORDER_RESULT);
+
+                                    } else {
+                                        showLoginDialog();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void failed(Call call, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ToastUtils.showShortToast(context, "网络错误");
+                        }
+                    });
+                }
+            });
+        } else {
+            ToastUtils.showShortToast(context, "未选中商品");
+        }
+    }
+
+    //fixme 显示登录框
+    public void showLoginDialog() {
+        loginDialog = new LoginDialog(context);
+        loginDialog.show();
+        loginDialog.setOnDialogClickListener(new LoginDialog.OnDialogClickListener() {
+            @Override
+            public void onPhoneClickListener() {
+                System.out.println("onPhoneClickListener");
+                loginDialog.phoneLogin();
+            }
+
+            @Override
+            public void onEmailClickListener() {
+                System.out.println("onEmailClickListener");
+                loginDialog.emailLogin();
+            }
+
+            @Override
+            public void onRegisterClickListener() {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivityForResult(intent, ConstantManager.REGISTER_FOR_MY);
+            }
+
+            @Override
+            public void onProblemClickListener() {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLoginClickListener(Map<String, String> user) {
+                final LoadingDialog2 loadingDialog2 = new LoadingDialog2(context);
+                loadingDialog2.show();
+                HashMap<String, String> mp = new HashMap<>();
+                mp.put("username", user.get("username"));
+                mp.put("password", user.get("password"));
+                mp.put("qrtype", user.get("type"));
+                mp.put("device_id", (String) UserInfoUtils.getInstance(context).getUserInfo().get
+                        ("device_id"));
+                HttpUtils.getInstance().post(ConstantManager.Url.LOGIN, mp, new HttpUtils.NetCall
+                        () {
+                    @Override
+                    public void success(Call call, final JSONObject json) throws IOException {
+                        if (json != null) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    loadingDialog2.dismiss();
+                                    try {
+                                        if (json.getInt("code") == 0) {
+                                            JSONObject data = json.getJSONObject("data");
+                                            String username = data.getString("user_name");
+                                            String _token = json.getString("token");
+                                            String logo = data.getString("logo");
+                                            String nick_name = data.getString("nick_name");
+                                            String mobile_phone = data.getString("mobile_phone");
+                                            String user_money = data.getString("user_money");
+                                            String is_real = data.getString("is_real");
+                                            Integer server_id = data.getInt("server_id");
+                                            HashMap<String, String> u = new HashMap<>();
+                                            u.put("username", username);
+                                            u.put("token", _token);
+                                            u.put("logo", logo);
+                                            u.put("nickname", nick_name);
+                                            u.put("mobile_phone", mobile_phone);
+                                            u.put("user_money", user_money);
+                                            u.put("is_real", is_real);
+                                            u.put("server_id", String.valueOf(server_id));
+                                            UserInfoUtils.getInstance(context).setUserInfo(u);
+                                            token = _token;
+
+                                            loginDialog.dismiss();
+                                        } else {
+                                            ToastUtils.showShortToast(context, json.getString
+                                                    ("msg"));
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, "网络错误！", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
+        super.onResume();
+    }
+
+    Goods_V_Item.OnClickListener goodsItemListener = new Goods_V_Item.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            Intent intent = new Intent(context, GoodsDetailActivity.class);
+            intent.putExtra("id", carts.get(pos).getGoods().getGoods_id());
+            startActivity(intent);
+        }
+    };
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.textView107:
+                    //fixme 底栏支付
+                    List<Integer> rec_ids = new ArrayList<>();
+                    for (int i = 0; i < carts.size(); i++) {
+                        if (carts.get(i).getIsType() == 1) {
+                            if (carts.get(i).isCheckOnce()) {
+                                rec_ids.add(carts.get(i).getGoods().getRec_id());
+                            }
+                        }
+                    }
+                    pay(rec_ids);
+                    break;
+                case R.id.textView96:
+                    //fixme 导航编辑
+                    if (editView.getText() == context.getString(R.string.edit)) {
+                        editView.setText(R.string.over);
+                        set.setVerticalBias(layer.getId(), 0);
+                    } else {
+                        editView.setText(R.string.edit);
+                        set.setVerticalBias(layer.getId(), 1);
+                    }
+                    set.applyTo(cly);
+                    break;
+                case R.id.textView112:
+                    //fixme 底栏删除
+                    List<Integer> _cartIds = new ArrayList<>();
+                    List<CartListBean> _carts = new ArrayList<>();
+                    for (int i = 0; i < carts.size(); i++) {
+                        if (carts.get(i).getIsType() == 1) {
+                            if (carts.get(i).isCheckOnce()) {
+                                _cartIds.add(carts.get(i).getGoods().getRec_id());
+                                _carts.add(carts.get(i));
+                            }
+                        } else if (carts.get(i).getIsType() == 2) {
+                            if (carts.get(i).isCheckAll()) {
+                                _carts.add(carts.get(i));
+                            }
+                        }
+                    }
+                    carts.removeAll(_carts);
+
+                    mAdapter.clear();
+                    mAdapter.addAll(getItems(carts));
+                    editView.setText(R.string.edit);
+                    set.setVerticalBias(layer.getId(), 1);
+                    set.applyTo(cly);
+                    if (carts.size() == 0) {
+                        hideOrShowPayBottom(false);
+                    }
+                    delCartGoods(_cartIds);
+                    setCheckStatus();
+                    setTotal();
+                    break;
+                case R.id.checkBox4:
+                    //fixme 底栏全选
+                    boolean bool;
+                    if (selectAllCB.isChecked()) {
+                        selectAllCB.setChecked(true);
+                        bool = true;
+                    } else {
+                        selectAllCB.setChecked(false);
+                        bool = false;
+                    }
+                    for (int i = 0; i < carts.size(); i++) {
+                        carts.get(i).setCheckOnce(bool);
+                        if (carts.get(i).getIsType() == 2) {
+                            carts.get(i).setCheckAll(bool);
+                        }
+                    }
+                    setTotal();
+                    mAdapter.notifyDataSetChanged();
+                    break;
+                case R.id.textView104:
+                    //fixme 底栏收藏
+                    List<Integer> _rec_ids = new ArrayList<>();
+                    for (int i = 0; i < carts.size(); i++) {
+                        if (carts.get(i).getIsType() == 1) {
+                            if (carts.get(i).isCheckOnce()) {
+                                _rec_ids.add(carts.get(i).getGoods().getRec_id());
+                            }
+                        }
+                    }
+                    collectCartGoods(_rec_ids);
+                    break;
+            }
+        }
+    };
 
     CartItem.OnClickListener cartItemListener = new CartItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             clearLong();
             switch (view.getId()) {
-                case R.id.imageView41://跳转Activity Goods
-                case R.id.textView95: //跳转Activity Brand
+                case R.id.imageView41:
+                    //跳转Activity Goods
+                case R.id.textView95:
+                    //跳转Activity Brand
                     if (carts.size() > pos) {
                         if (carts.get(pos).getGoods() != null && carts.get(pos).getIsType() == 1) {
                             Intent intent = new Intent(context, GoodsDetailActivity.class);
                             intent.putExtra("id", carts.get(pos).getGoods().getGoods_id());
-                            context.startActivity(intent);
+                            startActivity(intent);
                         } else if (carts.get(pos).getShop() != null && carts.get(pos).getIsType()
                                 == 2) {
                             System.out.println("Brand");
-//                        Intent intent = new Intent(context, GoodsDetailActivity.class);
-//                        intent.putExtra("id", carts.get(position).getShop().getRu_id());
-//                        context.startActivity(intent);
                         }
                     }
                     break;
                 case R.id.view30:
                     break;
-                case R.id.checkBox3://单选商品
+                case R.id.checkBox3:
+                    //单选商品
                     if (carts.get(pos).getIsType() == 1) {
                         if (carts.get(pos).isCheckOnce()) {
                             carts.get(pos).setCheckOnce(false);
@@ -526,7 +823,8 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     setCheckStatus();
                     setTotal();
                     break;
-                case R.id.checkBox2://全选本品牌商品
+                case R.id.checkBox2:
+                    //全选本品牌商品
                     if (carts.get(pos).getIsType() == 2) {
                         int npos = pos;
                         boolean tbool = false;
@@ -545,7 +843,8 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     }
                     setTotal();
                     break;
-                case R.id.imageView43://减少商品数量
+                case R.id.imageView43:
+                    //减少商品数量
                     int num = carts.get(pos).getGoods().getGoods_number();
                     if (num <= 1) {
                         num = 1;
@@ -556,7 +855,8 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     setTotal();
                     modifyCartNum(carts.get(pos).getGoods().getRec_id(), num);
                     break;
-                case R.id.imageView44://增加商品数量
+                case R.id.imageView44:
+                    //增加商品数量
                     int _num = carts.get(pos).getGoods().getGoods_number();
                     _num += 1;
                     carts.get(pos).getGoods().setGoods_number(_num);
@@ -564,7 +864,8 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     mAdapter.notifyDataSetChanged();
                     modifyCartNum(carts.get(pos).getGoods().getRec_id(), _num);
                     break;
-                case R.id.textView111: //删除单件购物车商品
+                case R.id.textView111:
+                    //删除单件购物车商品
                     List<Integer> rec_ids = new ArrayList<>();
                     rec_ids.add(carts.get(pos).getGoods().getRec_id());
                     carts.remove(pos);
@@ -585,7 +886,8 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     }
                     delCartGoods(rec_ids);
                     break;
-                case R.id.textView110://收藏商品
+                case R.id.textView110:
+                    //收藏商品
                     List<Integer> goods_ids = new ArrayList<>();
                     goods_ids.add(carts.get(pos).getGoods().getGoods_id());
                     carts.remove(pos);
@@ -607,12 +909,27 @@ public class CartActivity extends BaseRecyclerViewActivity {
                     mAdapter.notifyDataSetChanged();
                     collectCartGoods(goods_ids);
                     break;
-                case R.id.textView109://找相似商品
+                case R.id.textView109:
+                    //找相似商品
                     break;
-                case R.id.textView82://购物车无商品去找找看
+                case R.id.textView82:
+                    //购物车无商品去找找看
                     break;
             }
             mAdapter.notifyDataSetChanged();
+        }
+    };
+
+    CartErrorItem.OnClickListener cartErrorListener = new CartErrorItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            switch (view.getId()) {
+                case R.id.textView82:
+                    Intent intent = new Intent();
+                    intent.setAction("GoHome");
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    break;
+            }
         }
     };
 }

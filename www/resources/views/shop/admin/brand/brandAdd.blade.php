@@ -1,4 +1,7 @@
 @extends('shop.layouts.index')
+@section('css')
+    <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.css')}}">
+@endsection
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
@@ -48,6 +51,16 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">主题颜色：</label>
+                            <div class="col-sm-3">
+                                <input id="color-picker" type="text" name="color"
+                                       class="form-control max-wd-100 input-sm" value="#000000"
+                                       style="background: #000000;color: #ffffff;" autocomplete="off">
+                                <div class="form-prompt"></div>
+                                <div class="notic fl mar-left-10"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>品牌LOGO：</label>
                             <div class="col-sm-4 n-wd400">
                                 <input type="file" name="brand_logo" class="fl">
@@ -74,6 +87,20 @@
                                 <a href="" class="btn btn-danger fr btn-sm">　删除　</a>
                             </div>
                             <div class="notic col-sm-3">标准尺寸278*285</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>App品牌的背景：</label>
+                            <div class="col-sm-4 n-wd400">
+                                <input type="file" name="brand_bg_app" class="fl">
+                                <span class="img-show fl">
+                                    <a href="" target="_blank" class="nyroModal">
+                                        <i class="glyphicon glyphicon-picture top5" data-tooltipimg=""
+                                           ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
+                                    </a>
+                                </span>
+                                <a href="" class="btn btn-danger fr btn-sm">　删除　</a>
+                            </div>
+                            <div class="notic col-sm-3">请上传图片，做为App品牌的背景！标准尺寸750*300</div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">品牌背景图：</label>
@@ -141,9 +168,16 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
+    <script type="text/javascript"
+            src="{{url('styles/plugin/bootstrap/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
     <script>
         $(function () {
-
+            //选择颜色
+            $('#color-picker').colorpicker();
+            $('#color-picker').on('change', function () {
+                $(this).css('background', $(this).val());
+                $(this).css('color', '#fff');
+            });
         });
     </script>
 @endsection

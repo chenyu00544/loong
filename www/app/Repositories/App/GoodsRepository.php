@@ -301,6 +301,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $page = empty($data['page']) ? 1 : $data['page'];
         $column = ['goods_id', 'goods_name', 'shop_price', 'market_price', 'goods_thumb', 'goods_img', 'original_img', 'is_best', 'is_hot', 'is_new', 'promote_price', 'is_promote', 'is_fullcut', 'is_volume', 'sales_volume'];
         $goodses = [];
+        $gwhere = ['is_delete' => 0, 'is_best' => 1, 'is_on_sale' => 1, 'is_hot' => 1, 'is_new' => 1];
         if ($user_id > 0) {
             $where['user_id'] = $user_id;
             if ($page < 2) {
@@ -312,15 +313,12 @@ class GoodsRepository implements GoodsRepositoryInterface
                         }
                     }
                 } else {
-                    $gwhere = ['is_delete' => 0, 'is_best' => 1, 'is_on_sale' => 1, 'is_hot' => 1, 'is_new' => 1];
                     $goodses = $this->goodsModel->getGoodses($gwhere, $page, $column);
                 }
             } else {
-                $gwhere = ['is_delete' => 0, 'is_best' => 1, 'is_on_sale' => 1, 'is_hot' => 1, 'is_new' => 1];
                 $goodses = $this->goodsModel->getGoodses($gwhere, $page, $column);
             }
         } else {
-            $gwhere = ['is_delete' => 0, 'is_best' => 1, 'is_on_sale' => 1, 'is_hot' => 1, 'is_new' => 1];
             $goodses = $this->goodsModel->getGoodses($gwhere, $page, $column);
         }
         foreach ($goodses as $goods){

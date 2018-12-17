@@ -20,6 +20,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('index/loadmore', 'IndexController@loadmore');
     Route::any('test', 'IndexController@test');
 
+    Route::post('goods/index', 'GoodsController@index');
     Route::post('goods/detail', 'GoodsController@detail');
 
     Route::post('sms/send', 'SmsController@send');

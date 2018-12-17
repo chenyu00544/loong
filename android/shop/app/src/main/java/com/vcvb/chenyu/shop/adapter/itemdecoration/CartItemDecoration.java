@@ -42,7 +42,7 @@ public class CartItemDecoration extends RecyclerView.ItemDecoration {
                 } else if (bean.getIsType() == 1) {
                     outRect.set(0, 0, 0, 0);
                 } else if (bean.getIsType() == 3) {
-                    outRect.set(3, 3, 3, 3);
+                    outRect.set(4, 4, 4, 4);
                 } else {
                     outRect.set(0, 0, 0, 0);
                 }
