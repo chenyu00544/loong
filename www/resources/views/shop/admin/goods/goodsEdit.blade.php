@@ -669,7 +669,7 @@
                                                                 class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
                                                         <input type="text" style="width: 300px" name="limit_buy_date"
                                                                id="limit_buy_date" class="form-control input-sm"
-                                                               value="@if($goodsInfo->is_limit_buy == 1) {{$goodsInfo->limit_buy_start_date}}～{{$goodsInfo->limit_buy_end_date}} @else {{$now_date}} 00:00:00～{{$now_date}} 23:59:59 @endif">
+                                                               value="@if($goodsInfo->is_limit_buy == 1) {{date('Y-m-d H:i:s',$goodsInfo->limit_buy_start_date)}}～{{date('Y-m-d H:i:s',$goodsInfo->limit_buy_end_date)}} @else {{$now_date}} 00:00:00～{{$now_date}} 23:59:59 @endif">
                                                         <input type="text"
                                                                class="form-control max-wd-100 fl mar-left-20 input-sm"
                                                                name="limit_buy_num"

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -16,7 +18,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.center.AddressActivity;
+import com.vcvb.chenyu.shop.activity.center.ModifyAddressActivity;
 import com.vcvb.chenyu.shop.activity.center.userinfo.UserRealNameActivity;
+import com.vcvb.chenyu.shop.activity.evaluate.EvaluateListActivity;
+import com.vcvb.chenyu.shop.activity.evaluate.QuestionsListActivity;
+import com.vcvb.chenyu.shop.activity.faat.BrandListActivity;
+import com.vcvb.chenyu.shop.activity.login.RegisterActivity;
+import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.goods.GoodsAttrItem;
@@ -40,15 +49,8 @@ import com.vcvb.chenyu.shop.dialog.GoodsFaatDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog2;
 import com.vcvb.chenyu.shop.dialog.LoginDialog;
-import com.vcvb.chenyu.shop.activity.evaluate.EvaluateListActivity;
-import com.vcvb.chenyu.shop.activity.evaluate.QuestionsListActivity;
-import com.vcvb.chenyu.shop.activity.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
-import com.vcvb.chenyu.shop.activity.login.RegisterActivity;
-import com.vcvb.chenyu.shop.activity.center.AddressActivity;
-import com.vcvb.chenyu.shop.activity.center.ModifyAddressActivity;
-import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.overrideView.ShopGridLayoutManager;
 import com.vcvb.chenyu.shop.overrideView.ShopRecyclerView;
 import com.vcvb.chenyu.shop.popwin.PopWin;
@@ -80,6 +82,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     private View child1;
     private View line;
     private TextView cartNum;
+    private TextView addCart;
 
     private ShopRecyclerView goodsDetail;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
@@ -94,6 +97,9 @@ public class GoodsDetailActivity extends GoodsActivity {
     private ArrayList<GoodsAttr> selectAttrs = new ArrayList<>();
 
     public LoginDialog loginDialog;
+
+    private ConstraintLayout cly;
+    private ConstraintSet set = new ConstraintSet();
 
     public GoodsDetailActivity() {
     }
@@ -110,6 +116,9 @@ public class GoodsDetailActivity extends GoodsActivity {
         setNavBack();
         initView();
         initListener();
+        set = new ConstraintSet();
+        cly = findViewById(R.id.goods_bottom);
+        set.clone(cly);
         getData(true);
     }
 
@@ -132,24 +141,19 @@ public class GoodsDetailActivity extends GoodsActivity {
         mp.put("device_id", device_id);
         HttpUtils.getInstance().post(ConstantManager.Url.GOODSDETAIL, mp, new HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                if (json != null) {
-                    goodsJson = json;
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (json != null) {
+                            goodsJson = json;
                             loadingDialog.dismiss();
                             bindData();
-                        }
-                    });
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                        } else {
                             loadingDialog.dismiss();
                         }
-                    });
-                }
+                    }
+                });
             }
 
             @Override
@@ -322,7 +326,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     public void initView() {
         line = findViewById(R.id.view68);
         TextView buy = findViewById(R.id.textView32);
-        TextView addCart = findViewById(R.id.textView31);
+        addCart = findViewById(R.id.textView31);
         ImageView iv1 = findViewById(R.id.imageView11);
         TextView server = findViewById(R.id.textView26);
 
@@ -370,6 +374,15 @@ public class GoodsDetailActivity extends GoodsActivity {
                         Glide.with(context).load(R.drawable.icon_love_active).into(collectionView);
                     }
                 }
+
+                if (goodsDetails.getIs_limit_buy() == 1 && goodsDetails.getCurrent_time() >
+                        goodsDetails.getLimit_buy_start_date() && goodsDetails.getCurrent_time
+                        () < goodsDetails.getLimit_buy_end_date()) {
+                    set.constrainWidth(addCart.getId(), 0);
+                } else {
+                    set.constrainWidth(addCart.getId(), ToolUtils.dip2px(context, 140));
+                }
+                set.applyTo(cly);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -455,6 +468,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         mp.put("goods_id", goods_id + "");
         mp.put("token", token);
         mp.put("device_id", device_id);
+        mp.put("num", (String) attr.get("num"));
         mp.put("goods_attr_ids", StringUtils.join(goods_attr_ids_bak, ","));
         HttpUtils.getInstance().post(ConstantManager.Url.ADD_CART, mp, new HttpUtils.NetCall() {
             @Override
@@ -701,18 +715,24 @@ public class GoodsDetailActivity extends GoodsActivity {
                     @Override
                     public void run() {
                         loadingDialog.dismiss();
-                        try {
-                            if (json.getInt("code") == 0) {
-                                Intent intent = new Intent(context, OrderDetailsActivity.class);
-                                JSONArray orderIds = json.getJSONObject("data").getJSONArray
-                                        ("order");
-                                intent.putExtra("order_id", StringUtils.join(orderIds, ","));
-                                startActivity(intent);
-                            } else {
-                                ToastUtils.showShortToast(context, json.getString("msg"));
+                        if (json != null) {
+                            try {
+                                if (json.getInt("code") == 0) {
+                                    Intent intent = new Intent(context, OrderDetailsActivity.class);
+                                    JSONArray orderIds = json.getJSONObject("data").getJSONArray
+                                            ("order");
+                                    List<Integer> ids = new ArrayList<>();
+                                    for (int i = 0; i < orderIds.length(); i++) {
+                                        ids.add((Integer) orderIds.get(i));
+                                    }
+                                    intent.putExtra("order_id", StringUtils.join(ids, ","));
+                                    startActivity(intent);
+                                } else {
+                                    ToastUtils.showShortToast(context, json.getString("msg"));
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
                     }
                 });

@@ -42,8 +42,7 @@ class CartModel extends Model
     {
         $m = $this->select($column)
             ->with(['goods' => function ($query) {
-                $query->select(['goods_id', 'original_img', 'shop_price', 'market_price', 'is_promote', 'promote_price',
-                    'promote_start_date', 'promote_end_date', 'cost_price']);
+                $query->select(['goods_id', 'original_img', 'shop_price', 'market_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date', 'cost_price', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num']);
             }])
             ->with(['store' => function ($query) {
                 $query->select(['ru_id', 'shop_name', 'shop_logo']);

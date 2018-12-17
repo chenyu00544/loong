@@ -29,6 +29,10 @@ public class Goods {
     private Integer current_time;
     private Integer promote_start_date;
     private Integer promote_end_date;
+    private Integer is_limit_buy;
+    private Integer limit_buy_num;
+    private Integer limit_buy_start_date;
+    private Integer limit_buy_end_date;
     private Integer ru_id;
     private Integer product_id;
     private Integer goods_number;
@@ -316,5 +320,37 @@ public class Goods {
 
     public void setGoods_type(Integer goods_type) {
         this.goods_type = goods_type;
+    }
+
+    public Integer getIs_limit_buy() {
+        return is_limit_buy;
+    }
+
+    public void setIs_limit_buy(Integer is_limit_buy) {
+        this.is_limit_buy = is_limit_buy;
+    }
+
+    public Integer getLimit_buy_num() {
+        return limit_buy_num;
+    }
+
+    public void setLimit_buy_num(Integer limit_buy_num) {
+        this.limit_buy_num = limit_buy_num;
+    }
+
+    public Integer getLimit_buy_start_date() {
+        return limit_buy_start_date;
+    }
+
+    public void setLimit_buy_start_date(Integer limit_buy_start_date) {
+        this.limit_buy_start_date = limit_buy_start_date;
+    }
+
+    public Integer getLimit_buy_end_date() {
+        return limit_buy_end_date;
+    }
+
+    public void setLimit_buy_end_date(Integer limit_buy_end_date) {
+        this.limit_buy_end_date = limit_buy_end_date;
     }
 }

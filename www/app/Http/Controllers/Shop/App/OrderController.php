@@ -52,10 +52,10 @@ class OrderController extends CommonController
         $uid = Verifiable::authorization($request);
         if($uid != ''){
             $data = $this->orderRepository->addOrder($request->all(), $uid);
-            if($data){
+            if(is_array($data)){
                 return ['code' => 0, 'msg' => '', 'data' => $data];
             }else{
-                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+                return ['code' => 1, 'msg' => $data, 'data' => ''];
             }
         }
         return ['code' => 1, 'msg' => '未登录', 'data' => []];

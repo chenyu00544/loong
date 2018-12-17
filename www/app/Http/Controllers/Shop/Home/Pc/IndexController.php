@@ -17,14 +17,25 @@ class IndexController extends CommonController
 
     public function index(Request $request)
     {
+        ignore_user_abort(true);
         set_time_limit(0);
         $db = DB::table('users_copy');
-        for ($i = 2849674; $i < 10000000; $i++) {
+        for ($i = 1; $i < 10000000; $i++) {
             $user = [
                 'user_name' => 'user_name'.$i,
-                'mobile_phone' => 'mobile_phone'.$i,
+                'mobile_phone' => 'phone'.$i,
                 'nick_name' => 'nick_name'.$i,
                 'email' => 'email'.$i,
+                'logo' => 'upload/user_logo/154392704137964890396.jpg',
+                'password' => '6965dd27b9a8534a0a063c19b2193fb9',
+                'salt' => '8xb5qy',
+                'sex' => '1',
+                'birthday' => '1980-01-01',
+                'user_money' => '1000',
+                'reg_time' => '1532593507',
+                'last_login' => '1543891322',
+                'last_time' => '2018-12-04 20:37:55',
+                'last_ip' => '60.181.174.160',
             ];
             $db->insert($user);
             echo $i.'<\br>';

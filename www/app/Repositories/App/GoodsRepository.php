@@ -117,17 +117,18 @@ class GoodsRepository implements GoodsRepositoryInterface
     public function getGoodsDetail($goods_id, $user_id = 0, $device_id = '')
     {
         //添加浏览足迹
+        $time = time();
         if ($user_id > 0 && $this->browseGoodsModel->countBrowseGoods(['user_id' => $user_id, 'goods_id' => $goods_id]) == 0) {
             $browse_data = [
                 'browse_id' => RedisCache::incrby("browse_id"),
                 'user_id' => $user_id,
-                'add_time' => time(),
+                'add_time' => $time,
                 'goods_id' => $goods_id,
                 'is_attention' => 1,
             ];
             $this->browseGoodsModel->addBrowseGoods($browse_data);
         } else {
-            $this->browseGoodsModel->setBrowseGoods(['user_id' => $user_id, 'goods_id' => $goods_id], ['add_time' => time(), 'is_attention' => 1]);
+            $this->browseGoodsModel->setBrowseGoods(['user_id' => $user_id, 'goods_id' => $goods_id], ['add_time' => $time, 'is_attention' => 1]);
         }
 
         $where['goods_id'] = $goods_id;
@@ -170,7 +171,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             //大型活动
             $faat = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
             if ($faat) {
-                $faat->current_time = time();
+                $faat->current_time = $time;
                 $faat->min_amount = Common::priceFormat($faat->min_amount);
                 if ($faat->act_type == 1) {
                     $faat->act_type_ext = Common::priceFormat($faat->act_type_ext);
@@ -292,6 +293,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
             $goods_detail->multi_attr = $multi;
             $goods_detail->single_attr = $single_attr;
+            $goods_detail->current_time = $time;
         }
         return $goods_detail;
     }
@@ -321,7 +323,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         } else {
             $goodses = $this->goodsModel->getGoodses($gwhere, $page, $column);
         }
-        foreach ($goodses as $goods){
+        foreach ($goodses as $goods) {
             $goods->goods_thumb = FileHandle::getImgByOssUrl($goods->goods_thumb);
             $goods->goods_img = FileHandle::getImgByOssUrl($goods->goods_img);
             $goods->original_img = FileHandle::getImgByOssUrl($goods->original_img);
@@ -675,6 +677,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     {
         $uwhere = [];
         $goods_id = $request['goods_id'];
+        $num = empty($request['goods_id']) ? 1 : $request['goods_id'];
         $session_id = !empty($request['device_id']) ? $request['device_id'] : 0;
         $where['goods_id'] = $goods_id;
         $where['goods_attr_id'] = !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '';
@@ -712,7 +715,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                     'goods_name' => $goods->goods_name,
                     'market_price' => $goods->market_price,
                     'goods_price' => $goods->shop_price,
-                    'goods_number' => 1,
+                    'goods_number' => $num,
                     'is_real' => $goods->is_real,
                     'goods_attr_id' => !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '',
                     'ru_id' => $goods->user_id,

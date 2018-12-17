@@ -256,7 +256,7 @@ public class FragmentCart extends BaseFragment {
                     }
 
                     JSONArray goodsArray = json.getJSONObject("data").getJSONArray("like_goods");
-                    if(goodsArray.length() > 0){
+                    if (goodsArray.length() > 0) {
                         CartListBean guessBean = new CartListBean();
                         guessBean.setIsType(4);
                         carts.add(guessBean);
@@ -491,27 +491,27 @@ public class FragmentCart extends BaseFragment {
         mp.put("rec_ids", StringUtils.join(rec_ids, ","));
         HttpUtils.getInstance().post(ConstantManager.Url.ADD_COLLECT_GOODS_CART, mp, new
                 HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                if (json != null) {
-                    try {
-                        Integer code = json.getInt("code");
-                        if (code == 0) {
-                            Intent intent = new Intent(context, MyCollectionActivity.class);
-                            startActivityForResult(intent, ConstantManager.ResultStatus
-                                    .COLLECT_RESULT);
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        if (json != null) {
+                            try {
+                                Integer code = json.getInt("code");
+                                if (code == 0) {
+                                    Intent intent = new Intent(context, MyCollectionActivity.class);
+                                    startActivityForResult(intent, ConstantManager.ResultStatus
+                                            .COLLECT_RESULT);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
-                }
-            }
 
-            @Override
-            public void failed(Call call, IOException e) {
+                    @Override
+                    public void failed(Call call, IOException e) {
 
-            }
-        });
+                    }
+                });
     }
 
     //fixme 设置选中状态
@@ -649,7 +649,7 @@ public class FragmentCart extends BaseFragment {
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 
-    Goods_V_Item.OnClickListener goodsItemListener = new Goods_V_Item.OnClickListener(){
+    Goods_V_Item.OnClickListener goodsItemListener = new Goods_V_Item.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             Intent intent = new Intent(context, GoodsDetailActivity.class);
@@ -695,7 +695,7 @@ public class FragmentCart extends BaseFragment {
                                 _cartIds.add(carts.get(i).getGoods().getRec_id());
                                 _carts.add(carts.get(i));
                             }
-                        } else if(carts.get(i).getIsType() == 2) {
+                        } else if (carts.get(i).getIsType() == 2) {
                             if (carts.get(i).isCheckAll()) {
                                 _carts.add(carts.get(i));
                             }
@@ -820,6 +820,17 @@ public class FragmentCart extends BaseFragment {
                     //增加商品数量
                     int _num = carts.get(pos).getGoods().getGoods_number();
                     _num += 1;
+                    if (carts.get(pos).getGoods().getIs_limit_buy() == 1 && carts.get(pos)
+                            .getGoods().getLimit_buy_start_date() < carts.get(pos)
+                            .getGoods().getCurrent_time() && carts.get(pos).getGoods()
+                            .getLimit_buy_end_date() > carts.get(pos)
+                            .getGoods().getCurrent_time()) {
+                        if (_num > carts.get(pos).getGoods().getLimit_buy_num()) {
+                            _num = carts.get(pos).getGoods().getLimit_buy_num();
+                            ToastUtils.showShortToast(context, "当前商品达到限购数量");
+                        }
+                    }
+
                     carts.get(pos).getGoods().setGoods_number(_num);
                     setTotal();
                     mAdapter.notifyDataSetChanged();

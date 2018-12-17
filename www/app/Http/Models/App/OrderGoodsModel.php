@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -27,5 +28,13 @@ class OrderGoodsModel extends Model
     public function addOrderGoods($data)
     {
         return $this->create($data);
+    }
+
+    public function getOrderGoodsByOrder($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->join('order_info', 'order_info.order_id', '=', 'order_goods.order_id')
+            ->where($where)
+            ->get();
     }
 }

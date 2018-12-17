@@ -32,6 +32,7 @@ import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.dialog.GoodsAttrsItem;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsAttr;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.util.ArrayList;
@@ -98,9 +99,9 @@ public class GoodsAttrDialog extends DialogFragment {
         }
         tax = v.findViewById(R.id.textView16);
         String tax_fee = "";
-        if(goodsDetail.getGoodsTexAttr() == null){
+        if (goodsDetail.getGoodsTexAttr() == null) {
             tax_fee = "0";
-        }else{
+        } else {
             tax_fee = goodsDetail.getGoodsTexAttr().getAttr_value();
         }
         String str = "税率" + tax_fee + "%";
@@ -187,7 +188,7 @@ public class GoodsAttrDialog extends DialogFragment {
             this.tag = tag;
             manager.beginTransaction().remove(this).commit();
             super.show(manager, tag);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -264,7 +265,7 @@ public class GoodsAttrDialog extends DialogFragment {
         public void onClick(View view) {
             int num = 0;
             switch (view.getId()) {
-                case R.id.imageView85:
+                case R.id.imageView85: //++
                     if (outAttr.get("num") != null) {
                         num = (int) outAttr.get("num") + 1;
                         outAttr.put("num", num);
@@ -272,15 +273,19 @@ public class GoodsAttrDialog extends DialogFragment {
                         num = 1;
                         outAttr.put("num", 1);
                     }
-                    if(goodsDetail.getIs_limit_buy() == 1){
-                        if(num > goodsDetail.getLimit_buy_num()){
+                    if (goodsDetail.getIs_limit_buy() == 1 && goodsDetail.getCurrent_time() >
+                            goodsDetail.getLimit_buy_start_date() && goodsDetail.getCurrent_time
+                            () < goodsDetail.getLimit_buy_end_date()) {
+                        if (num > goodsDetail.getLimit_buy_num()) {
                             num = goodsDetail.getLimit_buy_num();
                             outAttr.put("num", num);
+                            ToastUtils.showShortToast(context, "当前商品达到限购数量");
                         }
                     }
-                    ((TextView) v.findViewById(R.id.textView181)).setText(String.format(Locale.CANADA,"%d", num));
+                    ((TextView) v.findViewById(R.id.textView181)).setText(String.format(Locale
+                            .CANADA, "%d", num));
                     break;
-                case R.id.imageView84:
+                case R.id.imageView84: //--
                     if (outAttr.get("num") != null && (int) outAttr.get("num") > 1) {
                         num = (int) outAttr.get("num") - 1;
                         outAttr.put("num", num);
@@ -288,7 +293,8 @@ public class GoodsAttrDialog extends DialogFragment {
                         num = 1;
                         outAttr.put("num", 1);
                     }
-                    ((TextView) v.findViewById(R.id.textView181)).setText(String.format(Locale.CANADA,"%d", num));
+                    ((TextView) v.findViewById(R.id.textView181)).setText(String.format(Locale
+                            .CANADA, "%d", num));
                     break;
             }
         }

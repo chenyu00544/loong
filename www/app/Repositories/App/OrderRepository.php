@@ -319,6 +319,19 @@ class OrderRepository implements OrderRepositoryInterface
 
             foreach ($goodses as $goods_detail) {
 
+                //限购
+                if ($goods_detail->is_limit_buy == 1 && $goods_detail->limit_buy_start_date < time() && $goods_detail->limit_buy_end_date > time()) {
+                    $orderWhere = [['add_time', '>', $goods_detail->limit_buy_start_date], ['add_time', '<', $goods_detail->limit_buy_end_date], ['goods_id', '=', $goods_detail->goods_id], ['order_status', '<>', OS_CANCELED], ['order_status', '<>', OS_INVALID]];
+                    $limit_orders = $this->orderGoodsModel->getOrderGoodsByOrder($orderWhere);
+                    $goods_num = 0;
+                    foreach ($limit_orders as $limit_order) {
+                        $goods_num += $limit_order->o_goods_number;
+                    }
+                    if ($goods_num + $num > $goods_detail->limit_buy_num) {
+                        return '当前商品达到限购数量';
+                    }
+                }
+
                 if (empty($order[$goods_detail->user_id]['order_id'])) {
                     $goods_amount[$goods_detail->user_id] = 0;
                     $discount[$goods_detail->user_id] = 0;
@@ -345,7 +358,6 @@ class OrderRepository implements OrderRepositoryInterface
                         'ru_id' => $goods_detail->user_id,
                     ];
                 }
-
 
                 $order_goods['rec_id'] = RedisCache::incrby("order_goods_id");
                 $order_goods['user_id'] = $uid;
@@ -493,8 +505,7 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
             return $return;
-        }
-        // fixme 订单再次购买
+        } // fixme 订单再次购买
         elseif (!empty($data['order_id'])) {
             $where['order_id'] = $data['order_id'];
             $column = ['*'];
@@ -717,8 +728,7 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
             return $return;
-        }
-        // fixme 购物车结算购买
+        } // fixme 购物车结算购买
         elseif (!empty($data['rec_ids'])) {
             $rec_ids = explode(',', $data['rec_ids']);
 
@@ -761,7 +771,7 @@ class OrderRepository implements OrderRepositoryInterface
 
             foreach ($goods_ids as $key => $goods_id) {
                 $goods_detail = $goodses_arr[$goods_id];
-                $goods_attr_ids = empty($goods_attr_ids_arr[$key])?[]:explode(',', $goods_attr_ids_arr[$key]);
+                $goods_attr_ids = empty($goods_attr_ids_arr[$key]) ? [] : explode(',', $goods_attr_ids_arr[$key]);
 
                 $num = $goods_num[$key];
                 if (empty($order[$goods_detail->user_id]['order_id'])) {
@@ -831,9 +841,9 @@ class OrderRepository implements OrderRepositoryInterface
                 $goods_amount[$goods_detail->user_id] += $g_amount;
 
                 //大型活动
-                if(empty($faat[$goods_detail->user_id])){
+                if (empty($faat[$goods_detail->user_id])) {
                     $faat[$goods_detail->user_id] = $this->favourableGoodsModel->getFaat([['goods_id' => $goods_detail->goods_id], ['brand_id' => $goods_detail->brand_id], ['cate_id' => $goods_detail->cat_id]]);
-                }else{
+                } else {
                     $goods_detail->faat_act_id = $faat[$goods_detail->user_id]->act_id;
                     $goods_detail->faat_act_type = $faat[$goods_detail->user_id]->act_type;
                     $goods_detail->faat_act_type_ext = $faat[$goods_detail->user_id]->act_type_ext;

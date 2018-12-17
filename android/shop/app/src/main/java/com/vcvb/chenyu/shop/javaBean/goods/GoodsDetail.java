@@ -66,6 +66,7 @@ public class GoodsDetail {
     private GoodsAttr goodsTexAttr;
     private GoodsFaat goodsFaat;
     private GoodsBrand goodsBrand;
+    private Long current_time;
 
     public int getIsScroll() {
         return isScroll;
@@ -483,6 +484,14 @@ public class GoodsDetail {
         this.collect = collect;
     }
 
+    public Long getCurrent_time() {
+        return current_time;
+    }
+
+    public void setCurrent_time(Long current_time) {
+        this.current_time = current_time;
+    }
+
     public void setData(JSONObject Json) throws JSONException {
         this.setBanner(Json);
         this.setCommentLabel(Json);
@@ -535,6 +544,7 @@ public class GoodsDetail {
         this.setPromote_price_format(Json.getString("promote_price_format"));
         this.setCount_cart(Json.getInt("count_cart"));
         this.setCollect(Json.getInt("collect"));
+        this.setCurrent_time(Json.getLong("current_time"));
     }
 
     private void setBanner(JSONObject Json) {
