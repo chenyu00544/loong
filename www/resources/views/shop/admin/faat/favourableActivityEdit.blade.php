@@ -75,13 +75,29 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">上传图片：</label>
+                            <label class="col-sm-4 control-label">上传条幅图片：</label>
                             <div class="col-sm-4">
                                 <input type="file" name="activity_thumb" class="fl">
+                                <input type="hidden" name="activity_thumb_path" value="{{$faat->activity_thumb}}">
                                 <span class="img-show">
-                                        <a href="{{url($faat->activity_thumb)}}" class="nyroModal">
+                                        <a href="{{$faat->activity_thumb_oss}}" class="nyroModal">
                                             <i class="glyphicon glyphicon-picture top2"
-                                               data-tooltipimg="{{url($faat->activity_thumb)}}"
+                                               data-tooltipimg="{{$faat->activity_thumb_oss}}"
+                                               ctype="tooltip" title="tooltip"></i>
+                                        </a>
+                                    </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">上传移动端Icon图片：</label>
+                            <div class="col-sm-4">
+                                <input type="file" name="app_icon" class="fl">
+                                <input type="hidden" name="app_icon_path" value="{{$faat->app_icon}}">
+                                <span class="img-show">
+                                        <a href="{{$faat->app_icon_oss}}" class="nyroModal">
+                                            <i class="glyphicon glyphicon-picture top2"
+                                               data-tooltipimg="{{$faat->app_icon_oss}}"
                                                ctype="tooltip" title="tooltip"></i>
                                         </a>
                                     </span>

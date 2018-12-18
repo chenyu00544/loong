@@ -677,7 +677,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     {
         $uwhere = [];
         $goods_id = $request['goods_id'];
-        $num = empty($request['goods_id']) ? 1 : $request['goods_id'];
+        $num = empty($request['num']) ? 1 : $request['num'];
         $session_id = !empty($request['device_id']) ? $request['device_id'] : 0;
         $where['goods_id'] = $goods_id;
         $where['goods_attr_id'] = !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '';

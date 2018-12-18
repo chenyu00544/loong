@@ -45,7 +45,7 @@
                            class="btn btn-default btn-add btn-sm">审核未通过</a>
                     @endif
 
-                    <div class="fr wd250">
+                    <div class="fr wd250 pad-top-7">
                         <form action="{{url('admin/goods/'.$navType)}}" method="get">
                             {{csrf_field()}}
                             <input type="hidden" name="seller" value="{{$seller}}">

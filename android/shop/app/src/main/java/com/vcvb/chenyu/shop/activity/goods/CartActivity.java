@@ -688,6 +688,14 @@ public class CartActivity extends BaseRecyclerViewActivity {
         super.onResume();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ConstantManager.ResultStatus.COLLECT_RESULT){
+            getCartData(false);
+        }
+    }
+
     Goods_V_Item.OnClickListener goodsItemListener = new Goods_V_Item.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {

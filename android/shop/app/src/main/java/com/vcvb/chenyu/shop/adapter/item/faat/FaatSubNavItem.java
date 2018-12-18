@@ -5,8 +5,12 @@ import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -56,5 +60,10 @@ public class FaatSubNavItem extends BaseItem<FaatNav> {
         tv.setText(mData.getAct_name());
         posMap.put(v.getId(),position);
         v.setOnClickListener(listener);
+
+        ImageView iv = holder.get(R.id.imageView121);
+        RequestOptions requestOptions = RequestOptions.centerCropTransform().diskCacheStrategy(DiskCacheStrategy
+                .AUTOMATIC);
+        Glide.with(context).load(mData.getApp_icon()).apply(requestOptions).into(iv);
     }
 }

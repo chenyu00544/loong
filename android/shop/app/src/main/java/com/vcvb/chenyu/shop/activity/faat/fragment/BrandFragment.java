@@ -57,7 +57,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     //记录目标项位置
     private int mToPosition;
 
-    private int id;
+    private String id;
 
     @Nullable
     @Override
@@ -66,7 +66,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.faat_fragment, container, false);
         if (getActivity() != null) {
-            id = getActivity().getIntent().getIntExtra("id", 0);
+            id = getActivity().getIntent().getStringExtra("id");
         }
         getData();
         initView();
@@ -83,7 +83,7 @@ public class BrandFragment extends BaseRecyclerViewFragment {
     @Override
     public void getData() {
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("id", id + "");
+        mp.put("id", id);
         HttpUtils.getInstance().post(ConstantManager.Url.FAAT_BRAND, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {

@@ -66,6 +66,7 @@ class OrderInfoModel extends Model
                 }
             });
         }
+        $m->orderBy('add_time', 'DESC');
         return $m->paginate($size);
     }
 

@@ -468,7 +468,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         mp.put("goods_id", goods_id + "");
         mp.put("token", token);
         mp.put("device_id", device_id);
-        mp.put("num", (String) attr.get("num"));
+        mp.put("num", String.valueOf(attr.get("num")));
         mp.put("goods_attr_ids", StringUtils.join(goods_attr_ids_bak, ","));
         HttpUtils.getInstance().post(ConstantManager.Url.ADD_CART, mp, new HttpUtils.NetCall() {
             @Override
@@ -845,6 +845,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             Intent intent;
             if (pos == -1) {
                 intent = new Intent(GoodsDetailActivity.this, BrandListActivity.class);
+                intent.putExtra("id", String.valueOf(goodsDetails.getGoods_id()));
             } else {
                 intent = new Intent(GoodsDetailActivity.this, GoodsDetailActivity.class);
                 intent.putExtra("id", goodsDetails.getGoods_id());
@@ -936,7 +937,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == ConstantManager.ResultStatus.ADDRESSRESULT) {
-                System.out.println(data);
+                getData(false);
             }
         }
     }

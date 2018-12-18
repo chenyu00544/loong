@@ -23,6 +23,31 @@ class OrderInfoModel extends Model
         return $this->hasMany('App\Http\Models\App\OrderGoodsModel', 'order_id', 'order_id');
     }
 
+    public function mapcountry()
+    {
+        return $this->hasOne('App\Http\Models\App\RegionsModel', 'region_id', 'country');
+    }
+
+    public function mapprovince()
+    {
+        return $this->hasOne('App\Http\Models\App\RegionsModel', 'region_id', 'province');
+    }
+
+    public function mapcity()
+    {
+        return $this->hasOne('App\Http\Models\App\RegionsModel', 'region_id', 'city');
+    }
+
+    public function mapdistrict()
+    {
+        return $this->hasOne('App\Http\Models\App\RegionsModel', 'region_id', 'district');
+    }
+
+    public function mapstreet()
+    {
+        return $this->hasOne('App\Http\Models\App\RegionsModel', 'region_id', 'street');
+    }
+
     public function getOrders($where, $orWhere=[], $page = 0, $column = ['*'], $size = 10)
     {
         $m = $this->select($column)
@@ -49,6 +74,33 @@ class OrderInfoModel extends Model
                 $query->select(['*'])
                     ->with(['Goods'])
                     ->get();
+            }])
+            ->where($where);
+        if (!empty($whereIn)) {
+            $m->whereIn('order_id', $whereIn);
+        }
+        return $m->orderBy('add_time', 'DESC')->get();
+    }
+
+    public function getOrderToAfterSale($where, $column = ['*'], $whereIn = [])
+    {
+        $m = $this->select($column)
+            ->with(['orderGoods' => function ($query) {
+                $query->select(['*'])
+                    ->with(['Goods'])
+                    ->get();
+            }])
+            ->with(['mapcountry' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapprovince' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapcity' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapdistrict' => function ($query) {
+                $query->select(['region_id', 'region_name']);
             }])
             ->where($where);
         if (!empty($whereIn)) {

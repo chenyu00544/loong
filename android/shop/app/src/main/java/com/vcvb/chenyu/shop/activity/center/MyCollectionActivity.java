@@ -14,22 +14,22 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
+import com.vcvb.chenyu.shop.activity.search.SearchInfoActivity;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.collection.CollectionErrorItem;
 import com.vcvb.chenyu.shop.adapter.item.collection.CollectionItem;
 import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.collection.CollectionBean;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.Routes;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
-import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,7 +54,6 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
         changeStatusBarTextColor(true);
         setContentView(R.layout.collection_list);
         context = this;
-        token = (String) UserInfoUtils.getInstance(context).getUserInfo().get("token");
         setNavBack();
         initView();
         initRefresh();
@@ -264,7 +263,7 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
     }
 
     //取消收藏
-    public void cancelCollect(final Integer pos){
+    public void cancelCollect(final Integer pos) {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("goods_id", collections.get(pos).getGoods().getGoods_id() + "");
         mp.put("token", token);
@@ -305,6 +304,9 @@ public class MyCollectionActivity extends BaseRecyclerViewActivity {
             switch (view.getId()) {
                 case R.id.textView113:
                     //找相似
+                    Intent intentS = new Intent(MyCollectionActivity.this, SearchInfoActivity.class);
+                    intentS.putExtra("cate", collections.get(pos).getGoods().getCat_id());
+                    startActivity(intentS);
                     break;
                 case R.id.imageView48:
                 case R.id.imageView47:

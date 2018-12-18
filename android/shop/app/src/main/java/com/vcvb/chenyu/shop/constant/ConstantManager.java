@@ -153,6 +153,7 @@ public interface ConstantManager {
         //fixme 订单操作
         public String ORDERS = URIHOST + "app/order/index";
         public String GET_ORDER = URIHOST + "app/order/get";
+        public String ORDER_AFTER_SALE = URIHOST + "app/order/after/sale";
         public String ADD_ORDER = URIHOST + "app/order/add";
         public String CANCEL_ORDER = URIHOST + "app/order/cancel";
 

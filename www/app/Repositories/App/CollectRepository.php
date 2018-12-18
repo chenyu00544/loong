@@ -98,12 +98,8 @@ class CollectRepository implements CollectRepositoryInterface
                 $data['add_time'] = time();
                 $data['is_attention'] = 1;
                 $this->collectGoodsModel->addCollectGoods($data);
-            } else {
-                if ($re->is_attention == 1) {
-                    $data['is_attention'] = 0;
-                } else {
-                    $data['is_attention'] = 1;
-                }
+            }else{
+                $data['is_attention'] = 1;
                 $this->collectGoodsModel->setCollectGoods($where, $data);
             }
         }

@@ -53,6 +53,10 @@ b {
     color: red;
 }
 
+table{
+    width: 100%;
+}
+
 .table > tbody > tr > th, .table > tbody > tr > td {
     line-height: 30px;
 !important;
@@ -2640,10 +2644,6 @@ input[type=file].upload-file {
     border: 1px solid #ECECEC;
     padding: 10px;
     white-space: normal;
-}
-
-.td-product{
-    min-width: 395px;
 }
 
 .order-list .td-product .img {

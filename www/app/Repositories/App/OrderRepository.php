@@ -521,6 +521,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $goods_num[$o_goods->goods_id] = $o_goods->o_goods_number;
                 $goods_attr_ids[$o_goods->goods_id] = $o_goods->goods_attr_id;
             }
+
             $gwhere['is_on_sale'] = 1;
             $gwhere['is_delete'] = 0;
             $gwhere['review_status'] = 3;
@@ -546,6 +547,19 @@ class OrderRepository implements OrderRepositoryInterface
             $order_goodses = [];
 
             foreach ($goodses as $goods_detail) {
+                //限购
+                if ($goods_detail->is_limit_buy == 1 && $goods_detail->limit_buy_start_date < time() && $goods_detail->limit_buy_end_date > time()) {
+                    $orderWhere = [['add_time', '>', $goods_detail->limit_buy_start_date], ['add_time', '<', $goods_detail->limit_buy_end_date], ['goods_id', '=', $goods_detail->goods_id], ['order_status', '<>', OS_CANCELED], ['order_status', '<>', OS_INVALID]];
+                    $limit_orders = $this->orderGoodsModel->getOrderGoodsByOrder($orderWhere);
+                    $goods_number = 0;
+                    foreach ($limit_orders as $limit_order) {
+                        $goods_number += $limit_order->o_goods_number;
+                    }
+                    if ($goods_number + $goods_num[$goods_detail->goods_id] > $goods_detail->limit_buy_num) {
+                        return '当前商品中包含限购商品，无法再次购买';
+                    }
+                }
+
                 if (empty($order_new[$goods_detail->user_id]['order_id'])) {
                     $goods_amount[$goods_detail->user_id] = 0;
                     $discount[$goods_detail->user_id] = 0;
@@ -759,8 +773,20 @@ class OrderRepository implements OrderRepositoryInterface
             ];
             $goodses = $this->goodsModel->getGoodsByOrder($where, $column, $wherein);
             $goodses_arr = [];
-            foreach ($goodses as $goods) {
-                $goodses_arr[$goods->goods_id] = $goods;
+            foreach ($goodses as $k => $goods_detail) {
+                //限购
+                if ($goods_detail->is_limit_buy == 1 && $goods_detail->limit_buy_start_date < time() && $goods_detail->limit_buy_end_date > time()) {
+                    $orderWhere = [['add_time', '>', $goods_detail->limit_buy_start_date], ['add_time', '<', $goods_detail->limit_buy_end_date], ['goods_id', '=', $goods_detail->goods_id], ['order_status', '<>', OS_CANCELED], ['order_status', '<>', OS_INVALID]];
+                    $limit_orders = $this->orderGoodsModel->getOrderGoodsByOrder($orderWhere);
+                    $goods_number = 0;
+                    foreach ($limit_orders as $limit_order) {
+                        $goods_number += $limit_order->o_goods_number;
+                    }
+                    if ($goods_number + $goods_num[$k] > $goods_detail->limit_buy_num) {
+                        return '当前商品中包含限购商品，无法再次购买';
+                    }
+                }
+                $goodses_arr[$goods_detail->goods_id] = $goods_detail;
             }
 
             $goods_amount = [];  //商品总金额

@@ -37,12 +37,13 @@ class FaatRepository implements FavourableActivityRepositoryInterface
             ['terminal_type', '=', 'app'],
         ];
         $column = [
-            'act_id', 'act_name', 'group_id', 'start_time', 'end_time', 'terminal_type', 'activity_thumb', 'sort_order', 'color'
+            'act_id', 'act_name', 'group_id', 'start_time', 'end_time', 'terminal_type', 'activity_thumb', 'sort_order', 'color', 'app_icon'
         ];
-        $banner =  $this->adRepository->getAdPositionAndAdsByFaat($id);
+        $banner = $this->adRepository->getAdPositionAndAdsByFaat($id);
         $res = $this->favourableActivityModel->getFaats($where, $column);
         foreach ($res as $re) {
             $re->activity_thumb = FileHandle::getImgByOssUrl($re->activity_thumb);
+            $re->app_icon = FileHandle::getImgByOssUrl($re->app_icon);
             foreach ($re->goods as $goods) {
                 $goods->original_img = FileHandle::getImgByOssUrl($goods->original_img);
                 $goods->goods_thumb = FileHandle::getImgByOssUrl($goods->goods_thumb);

@@ -224,6 +224,9 @@
     <string name="wechatpay">微信支付</string>
     <string name="goods_total">商品总金额</string>
     <string name="pay_total">应付金额</string>
+    <string name="pay_amount">付款金额</string>
+    <string name="other_amount">不退金额(包括邮费等其他费用)</string>
+    <string name="refund_amount">实际退款金额</string>
     <string name="tax_fee">税费</string>
     <string name="now_pay">立即支付</string>
     <string name="pay">支付</string>
@@ -239,7 +242,9 @@
     <string name="bonus">红包</string>
     <string name="select">选择</string>
     <string name="no_partake">不参与</string>
-
+    <string name="return_goods">申请退货</string>
+    <string name="shipping_sn">提交运单</string>
+    <string name="feedback">等待平台反馈</string>
 
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
@@ -251,4 +256,6 @@
     <string name="into_brand">进入品牌</string>
     <string name="img_text_info">图文详情</string>
     <string name="product_parameters">产品参数</string>
+
+    <string name="return_cause">退货原因</string>
 </resources>

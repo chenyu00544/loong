@@ -20,7 +20,7 @@ class IndexController extends CommonController
         ignore_user_abort(true);
         set_time_limit(0);
         $db = DB::table('users_copy');
-        for ($i = 2334770; $i < 10000000; $i++) {
+        for ($i = 10000000; $i < 20000000; $i++) {
             $user = [
                 'user_name' => 'user_name'.$i,
                 'mobile_phone' => 'phone'.$i,

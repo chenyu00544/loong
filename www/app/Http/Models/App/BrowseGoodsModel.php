@@ -28,7 +28,7 @@ class BrowseGoodsModel extends Model
         return $this->select($column)
             ->where($where)
             ->with(['goods' => function ($query) {
-                $query->select(['goods_id', 'goods_name', 'shop_price', 'market_price', 'is_promote'
+                $query->select(['goods_id', 'cat_id', 'brand_id', 'goods_name', 'shop_price', 'market_price', 'is_promote'
                     , 'promote_price', 'promote_start_date', 'promote_end_date', 'original_img', 'goods_thumb', 'goods_img', 'is_best', 'is_new', 'is_hot']);
             }])
             ->orderBy('add_time', $order)

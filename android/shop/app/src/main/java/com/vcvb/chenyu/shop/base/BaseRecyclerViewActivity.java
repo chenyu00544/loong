@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
-import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
 public class BaseRecyclerViewActivity extends BaseActivity {
 
@@ -20,7 +19,6 @@ public class BaseRecyclerViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        token = (String) UserInfoUtils.getInstance(this).getUserInfo().get("token");
     }
 
     public void setTitle(String str, int id){

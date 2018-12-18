@@ -123,6 +123,7 @@ public class MessageActivity extends BaseRecyclerViewActivity {
                 notifySever.setIs_look(false);
                 severs.add(notifySever);
             }else{
+                dataStorage.deleteAll(NotifyMsgSever.class);
                 notifySever.setIs_look(true);
                 severs.set(0,notifySever);
             }

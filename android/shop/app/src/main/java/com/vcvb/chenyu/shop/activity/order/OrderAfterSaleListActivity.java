@@ -46,7 +46,7 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class OrderListActivity extends BaseActivity {
+public class OrderAfterSaleListActivity extends BaseActivity {
     private Context context;
     private View line;
     private TextView tv1;
@@ -74,7 +74,7 @@ public class OrderListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.order_list);
+        setContentView(R.layout.order_after_sale_list);
         changeStatusBarTextColor(true);
         context = this;
         cly = findViewById(R.id.order_list);
@@ -93,7 +93,7 @@ public class OrderListActivity extends BaseActivity {
         TextView titleView = new TextView(this);
         titleView.setLayoutParams(layoutParams);
         titleView.setGravity(gravity);
-        titleView.setText(R.string.order_list);
+        titleView.setText(R.string.sale_after);
         titleView.setTextColor(Color.parseColor("#000000"));
         titleView.setTextSize(18);
         titleView.setSingleLine();
@@ -507,21 +507,8 @@ public class OrderListActivity extends BaseActivity {
     }
 
     // fixme 售后
-    public void afterSale() {
-        OrderDetail orderDetail = orders.get(position);
-        Intent intent = new Intent(OrderListActivity.this, OrderAfterSaleActivity.class);
-        intent.putExtra("order_id", orderDetail.getOrder_id_str());
-        startActivityForResult(intent, ConstantManager.ResultStatus.ORDER_RESULT);
-    }
+    public void  afterSale(){
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == ConstantManager.ResultStatus.ORDER_RESULT) {
-                getData(type, false);
-            }
-        }
     }
 
     OrderNoDataItem.OnClickListener orderNoDataListener = new OrderNoDataItem.OnClickListener() {
@@ -531,7 +518,7 @@ public class OrderListActivity extends BaseActivity {
                 case R.id.textView82:
                     Intent intentM = new Intent();
                     intentM.putExtra("code", ConstantManager.ResultStatus.ORDER_RESULT);
-                    OrderListActivity.this.setResult(RESULT_OK, intentM);
+                    OrderAfterSaleListActivity.this.setResult(RESULT_OK, intentM);
                     finish();
                     break;
             }

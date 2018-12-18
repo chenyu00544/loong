@@ -52,7 +52,7 @@
             <div class="fromlist clearfix">
                 @if(empty($id))
                     <div class="clearfix mar-bt-20">
-                        <div class="fr wd250">
+                        <div class="fr wd250 pad-top-7">
                             <form action="{{url('admin/order/'.$navType)}}" method="get">
                                 {{csrf_field()}}
 
@@ -116,7 +116,7 @@
                                                    id="checkbox_{{$order->order_id}}">
                                         </span>
                                         <span class="words">订单号：{{$order->order_sn}}</span>
-                                        <span class="words">下单时间：2018-06-29 08:57:39</span>
+                                        <span class="words">下单时间：{{date('Y-m-d H:i:s', $order->add_time)}}</span>
                                     </div>
                                 </td>
                             </tr>
@@ -165,7 +165,7 @@
                                     <td class="td-number text-center">
                                         <div>{{$goods->o_goods_number}}</div>
                                     </td>
-                                    <td class="text-center" f>
+                                    <td class="text-center">
                                         <div>
                                             <div></div>
                                         </div>
@@ -182,7 +182,7 @@
                                                 <a href="#">{{$order->User['user_name']}}</a>
                                             </div>
                                         </td>
-                                        <td rowspan="2">
+                                        <td rowspan="{{$order->Goods->count()}}">
                                             <div class="gray">{{$order->consignee}}<br> TEL:
                                                 {{$order->mobile}}<br>
                                                 {{$order->province}} {{$order->city}} {{$order->district}} {{$order->address}}

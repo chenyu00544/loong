@@ -29,9 +29,19 @@ public class OrderDetail {
     private String card_fee;
     private String money_paid;
     private String order_amount;
+    private String integral_money;
+    private String bonus;
     private String discount;
     private String tax;
     private String add_time_date;
+    private String mobile;
+    private String consignee;
+    private String address;
+    private String country_name;
+    private String province_name;
+    private String city_name;
+    private String district_name;
+
     private List<OrderGoods> orderGoodses;
 
     public Integer getAuto_delivery_time() {
@@ -216,6 +226,78 @@ public class OrderDetail {
 
     public void setCurrent_time(Integer current_time) {
         this.current_time = current_time;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(String consignee) {
+        this.consignee = consignee;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCountry_name() {
+        return country_name;
+    }
+
+    public void setCountry_name(String country_name) {
+        this.country_name = country_name;
+    }
+
+    public String getProvince_name() {
+        return province_name;
+    }
+
+    public void setProvince_name(String province_name) {
+        this.province_name = province_name;
+    }
+
+    public String getCity_name() {
+        return city_name;
+    }
+
+    public void setCity_name(String city_name) {
+        this.city_name = city_name;
+    }
+
+    public String getDistrict_name() {
+        return district_name;
+    }
+
+    public void setDistrict_name(String district_name) {
+        this.district_name = district_name;
+    }
+
+    public String getIntegral_money() {
+        return integral_money;
+    }
+
+    public void setIntegral_money(String integral_money) {
+        this.integral_money = integral_money;
+    }
+
+    public String getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(String bonus) {
+        this.bonus = bonus;
     }
 
     public void setData(JSONObject json) {

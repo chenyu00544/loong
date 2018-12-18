@@ -6,6 +6,7 @@ public class FaatNav {
     private String icon_pic;
     private String group_id;
     private String activity_thumb;
+    private String app_icon;
     private String color;
 
     public boolean getIsSelect() {
@@ -62,5 +63,13 @@ public class FaatNav {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getApp_icon() {
+        return app_icon;
+    }
+
+    public void setApp_icon(String app_icon) {
+        this.app_icon = app_icon;
     }
 }

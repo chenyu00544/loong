@@ -71,12 +71,17 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">上传图片：</label>
+                            <label class="col-sm-4 control-label">上传条幅图片：</label>
                             <div class="col-sm-4">
                                 <input type="file" name="activity_thumb">
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">上传移动端Icon图片：</label>
+                            <div class="col-sm-4">
+                                <input type="file" name="app_icon">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">使用类型：</label>
                             <div class="col-sm-4">

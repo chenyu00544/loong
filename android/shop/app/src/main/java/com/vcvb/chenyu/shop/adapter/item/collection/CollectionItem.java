@@ -53,7 +53,9 @@ public class CollectionItem extends BaseItem<CollectionBean> {
                 () > mData.getGoods().getCurrent_time() && mData.getGoods().getPromote_start_date()
                 < mData.getGoods().getCurrent_time()) {
             tv1.setText("促销");
+            tv1.setAlpha(1);
         } else {
+            tv1.setAlpha(0);
             tv1.setText("手机用户专享");
         }
 

@@ -14,6 +14,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
+import com.vcvb.chenyu.shop.activity.search.SearchInfoActivity;
 import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
 import com.vcvb.chenyu.shop.adapter.item.browse.BrowseErrorItem;
@@ -22,7 +24,6 @@ import com.vcvb.chenyu.shop.adapter.item.browse.BrowseTitleItem;
 import com.vcvb.chenyu.shop.base.BaseGroupRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
-import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.javaBean.browse.Browse;
 import com.vcvb.chenyu.shop.javaBean.browse.GroupBrowse;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
@@ -360,8 +361,8 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
                 List<Object> objects = new ArrayList<>();
                 for (int j = 0; j < groupBrowses.get(i).getObjs().size(); j++) {
                     if (((Browse) groupBrowses.get(i).getObjs().get(j)).isSelect()) {
-                        String browse_id_str = ((Browse) groupBrowses.get(i).getObjs().get
-                                (j)).getBrowse_id_str();
+                        String browse_id_str = ((Browse) groupBrowses.get(i).getObjs().get(j))
+                                .getBrowse_id_str();
                         browseIds.add(browse_id_str);
                         objects.add(groupBrowses.get(i).getObjs().get(j));
                     }
@@ -496,7 +497,14 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
                             .getGoods().getGoods_id());
                     startActivity(intent);
                     break;
-                case R.id.textView133://找相似
+                case R.id.textView133:
+                    //找相似
+                    Intent intentS = new Intent(BrowseActivity.this, SearchInfoActivity.class);
+                    if (groupBrowses.get(group).getObjs().get(pos) instanceof Browse) {
+                        intentS.putExtra("cate", ((Browse) groupBrowses.get(group).getObjs().get
+                                (pos)).getGoods().getCat_id());
+                    }
+                    startActivity(intentS);
                     break;
             }
         }

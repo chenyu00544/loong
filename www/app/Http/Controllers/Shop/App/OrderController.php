@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Shop\App;
 use App\Facades\Verifiable;
 use App\Repositories\App\GoodsRepository;
 use App\Repositories\App\OrderRepository;
+use App\Repositories\App\OrderReturnRepository;
 use Illuminate\Http\Request;
 
 class OrderController extends CommonController
@@ -12,15 +13,18 @@ class OrderController extends CommonController
 
     private $goodsRepository;
     private $orderRepository;
+    private $orderReturnRepository;
 
     public function __construct(
         GoodsRepository $goodsRepository,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        OrderReturnRepository $orderReturnRepository
     )
     {
         parent::__construct();
         $this->goodsRepository = $goodsRepository;
         $this->orderRepository = $orderRepository;
+        $this->orderReturnRepository = $orderReturnRepository;
     }
 
     public function index(Request $request)
@@ -38,6 +42,20 @@ class OrderController extends CommonController
         $uid = Verifiable::authorization($request);
         if($uid != ''){
             $data = $this->orderRepository->getOrder($request->all(), $uid);
+            if($data){
+                return ['code' => 0, 'msg' => '', 'data' => $data];
+            }else{
+                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登录', 'data' => []];
+    }
+
+    public function afterSaleOrder(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if($uid != ''){
+            $data = $this->orderReturnRepository->afterSale($request->all(), $uid);
             if($data){
                 return ['code' => 0, 'msg' => '', 'data' => $data];
             }else{
