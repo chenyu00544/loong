@@ -9,7 +9,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['prefix' => 'wx', 'namespace' => 'Shop\WxApp'], function () {
+Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::get('/', function () {
         return [
             'status' => 'success',

@@ -382,3 +382,11 @@
     
     aclocal-1.15: command not found
     执行   autoreconf -ivf
+    
+    
+###配置自签名证书
+    cd /nginx/ssl
+    
+    openssl genrsa -out server.key 1024
+    openssl req -new -key ssl.key -out ssl.csr
+    openssl x509 -req -days 3650 -in ssl.csr -signkey ssl.key -out ssl.crt
