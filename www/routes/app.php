@@ -9,6 +9,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::get('/', function () {
         return [
