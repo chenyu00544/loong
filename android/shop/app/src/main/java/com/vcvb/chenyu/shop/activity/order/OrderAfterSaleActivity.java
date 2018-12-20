@@ -16,6 +16,7 @@ import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleCauseItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleImgItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleTotalItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleTypeItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderIdItem;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
@@ -85,7 +86,6 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
         bottomBt = findViewById(R.id.textView179);
         bottomBt.setOnClickListener(bottomListener);
     }
@@ -175,8 +175,16 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         cells.add(orderIdItem);
 
         for (int i = 0; i < orderDetail.getOrderGoodses().size(); i++) {
-            cells.add(new OrderAfterSaleGoodsItem(orderDetail.getOrderGoodses().get(i), context));
+            OrderAfterSaleGoodsItem orderAfterSaleGoodsItem = new OrderAfterSaleGoodsItem
+                    (orderDetail.getOrderGoodses().get(i), context);
+            orderAfterSaleGoodsItem.setOnItemClickListener(goodsListener);
+            cells.add(orderAfterSaleGoodsItem);
         }
+
+        OrderAfterSaleTypeItem orderAfterSaleTypeItem = new OrderAfterSaleTypeItem
+                (orderDetail, context);
+        orderAfterSaleTypeItem.setOnItemClickListener(typeListener);
+        cells.add(orderAfterSaleTypeItem);
 
         OrderAfterSaleCauseItem orderAfterSaleCauseItem = new OrderAfterSaleCauseItem
                 (orderReturnCauses, context);
@@ -212,42 +220,43 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         HashMap<String, String> mp = new HashMap<>();
         mp.put("order_id", orderId);
         mp.put("token", token);
-        HttpUtils.getInstance().post(ConstantManager.Url.ORDER_RETURN_GOODS, mp, new HttpUtils
-                .NetCall() {
-            @Override
-            public void success(Call call, final JSONObject json) throws IOException {
-                runOnUiThread(new Runnable() {
+        HttpUtils.getInstance().postImage(ConstantManager.Url.ORDER_RETURN_GOODS, mp, files, new
+                HttpUtils.NetCall() {
                     @Override
-                    public void run() {
-                        loadingDialog.dismiss();
-                        try {
-                            if (json != null) {
-                                if (json.getInt("code") == 0) {
+                    public void success(Call call, final JSONObject json) throws IOException {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.dismiss();
+                                try {
+                                    if (json != null) {
+                                        if (json.getInt("code") == 0) {
 
-                                } else {
-                                    ToastUtils.showShortToast(context, json.getString("msg"));
+                                        } else {
+                                            ToastUtils.showShortToast(context, json.getString
+                                                    ("msg"));
+                                        }
+                                    } else {
+                                        ToastUtils.showShortToast(context, "网络错误");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } else {
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.dismiss();
                                 ToastUtils.showShortToast(context, "网络错误");
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        });
                     }
                 });
-            }
-
-            @Override
-            public void failed(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingDialog.dismiss();
-                        ToastUtils.showShortToast(context, "网络错误");
-                    }
-                });
-            }
-        });
     }
 
     @Override
@@ -266,14 +275,35 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         }
     }
 
-
     View.OnClickListener bottomListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             returnGoods();
         }
     };
+    OrderAfterSaleGoodsItem.OnClickListener goodsListener = new OrderAfterSaleGoodsItem
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            for (int i = 0; i < orderDetail.getOrderGoodses().size(); i++) {
+                if(pos == orderDetail.getOrderGoodses().get(i).getGoods_id()){
+                    if (orderDetail.getOrderGoodses().get(i).isIs_select()) {
+                        orderDetail.getOrderGoodses().get(i).setIs_select(false);
+                    } else {
+                        orderDetail.getOrderGoodses().get(i).setIs_select(true);
+                    }
+                }
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+    };
+    OrderAfterSaleTypeItem.OnClickListener typeListener = new OrderAfterSaleTypeItem
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
 
+        }
+    };
     OrderAfterSaleCauseItem.OnClickListener causeListener = new OrderAfterSaleCauseItem
             .OnClickListener() {
         @Override

@@ -39,14 +39,15 @@ public class OrderAfterSaleImgItem extends BaseItem<List<String>> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         int width = ToolUtils.getWindowsWidth(context);
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(width / 3 - 16, width / 3 - 16);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(width / 3 - ToolUtils.dip2px
+                (context, 16), width / 3 - ToolUtils.dip2px(context, 16));
         FlowLayout flowLayout = holder.get(R.id.return_img);
         flowLayout.setChildSpacing(8);
         flowLayout.setRowSpacing(8);
         flowLayout.setChildSpacingForLastRow(8);
         flowLayout.removeAllViews();
         RequestOptions requestOptions = RequestOptions.centerInsideTransform().diskCacheStrategy
-                (DiskCacheStrategy.ALL);
+                (DiskCacheStrategy.NONE).dontAnimate();
         for (int i = 0; i < mData.size(); i++) {
             ImageView addImg = new ImageView(context);
             addImg.setId(IdsUtils.generateViewId());
@@ -59,16 +60,17 @@ public class OrderAfterSaleImgItem extends BaseItem<List<String>> {
             posMap.put(addImg.getId(), i);
             addImg.setOnClickListener(listener);
         }
-
-        ImageView addImg = new ImageView(context);
-        addImg.setId(IdsUtils.generateViewId());
-        addImg.setBackgroundResource(R.drawable.shape_4_grad_b_white);
-        addImg.setLayoutParams(lp);
-        addImg.setPadding(ToolUtils.dip2px(context, 30), ToolUtils.dip2px(context, 30), ToolUtils
-                .dip2px(context, 30), ToolUtils.dip2px(context, 30));
-        Glide.with(context).load(R.drawable.icon_add_back).into(addImg);
-        flowLayout.addView(addImg);
-        posMap.put(addImg.getId(), mData.size());
-        addImg.setOnClickListener(listener);
+        if (mData.size() <= 5) {
+            ImageView addImg = new ImageView(context);
+            addImg.setId(IdsUtils.generateViewId());
+            addImg.setBackgroundResource(R.drawable.shape_4_grad_b_white);
+            addImg.setLayoutParams(lp);
+            addImg.setPadding(ToolUtils.dip2px(context, 30), ToolUtils.dip2px(context, 30), ToolUtils
+                    .dip2px(context, 30), ToolUtils.dip2px(context, 30));
+            Glide.with(context).load(R.drawable.icon_add_back).into(addImg);
+            flowLayout.addView(addImg);
+            posMap.put(addImg.getId(), mData.size());
+            addImg.setOnClickListener(listener);
+        }
     }
 }

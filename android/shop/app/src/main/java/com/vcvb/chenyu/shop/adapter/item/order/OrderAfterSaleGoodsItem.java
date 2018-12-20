@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,12 +36,17 @@ public class OrderAfterSaleGoodsItem extends BaseItem<OrderGoods> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        ImageView iv = holder.getImageView(R.id.imageView87);
-        TextView tv1 = holder.getTextView(R.id.textView187);
-        TextView tv2 = holder.getTextView(R.id.textView188);
-        TextView tv3 = holder.getTextView(R.id.textView189);
-        TextView tv4 = holder.getTextView(R.id.textView190);
-        TextView tv5 = holder.getTextView(R.id.textView191);
+        ImageView iv = holder.get(R.id.imageView87);
+        TextView tv1 = holder.get(R.id.textView187);
+        TextView tv2 = holder.get(R.id.textView188);
+        TextView tv3 = holder.get(R.id.textView189);
+        TextView tv4 = holder.get(R.id.textView190);
+        TextView tv5 = holder.get(R.id.textView191);
+
+        CheckBox cb = holder.get(R.id.checkBox3);
+        posMap.put(cb.getId(), mData.getGoods_id());
+        cb.setOnClickListener(listener);
+        cb.setChecked(mData.isIs_select());
 
         tv1.setText(mData.getGoods_name());
         tv2.setText(mData.getGoods_attr());

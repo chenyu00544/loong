@@ -59,13 +59,13 @@ class OrderReturnRepository implements OrderRepositoryInterface
                 $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);
                 $order_goods->original_img = FileHandle::getImgByOssUrl($order_goods->Goods->original_img);
                 $order_goods->goods_video = FileHandle::getImgByOssUrl($order_goods->Goods->goods_video);
-
                 $order_goods->market_price_format = Common::priceFormat($order_goods->Goods->market_price);
                 $order_goods->shop_price_format = Common::priceFormat($order_goods->Goods->shop_price);
+                $order_goods->promote_price_format = Common::priceFormat($order_goods->Goods->promote_price);
+                $order_goods->goods_cause = $order_goods->Goods->goods_cause;
                 $order_goods->is_promote = $order_goods->Goods->is_promote;
                 $order_goods->promote_start_date = $order_goods->Goods->promote_start_date;
                 $order_goods->promote_end_date = $order_goods->Goods->promote_end_date;
-                $order_goods->promote_price_format = Common::priceFormat($order_goods->Goods->promote_price);
                 $order_goods->is_on_sale = $order_goods->Goods->is_on_sale;
                 $order_goods->is_delete = $order_goods->Goods->is_delete;
                 $order_goods->bonus_type_id = $order_goods->Goods->bonus_type_id;
@@ -83,6 +83,6 @@ class OrderReturnRepository implements OrderRepositoryInterface
 
     public function returnGoods($data, $uid)
     {
-        $order = $this->orderInfoModel->getOrder(['order_id'=>$data['order_id']]);
+        $order = $this->orderInfoModel->getOrder(['order_id' => $data['order_id']]);
     }
 }

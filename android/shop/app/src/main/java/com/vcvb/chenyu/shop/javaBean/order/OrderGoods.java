@@ -2,6 +2,8 @@ package com.vcvb.chenyu.shop.javaBean.order;
 
 public class OrderGoods {
 
+    private boolean is_select = false;
+
     private Integer rec_id;
     private Integer goods_id;
     private Integer order_id;
@@ -43,6 +45,8 @@ public class OrderGoods {
     private Integer current_time;
 
     private Integer bonus_type_id;
+
+    private String goods_cause;
 
     public Integer getRec_id() {
         return rec_id;
@@ -298,5 +302,21 @@ public class OrderGoods {
 
     public void setBonus_type_id(Integer bonus_type_id) {
         this.bonus_type_id = bonus_type_id;
+    }
+
+    public String getGoods_cause() {
+        return goods_cause;
+    }
+
+    public void setGoods_cause(String goods_cause) {
+        this.goods_cause = goods_cause;
+    }
+
+    public boolean isIs_select() {
+        return is_select;
+    }
+
+    public void setIs_select(boolean is_select) {
+        this.is_select = is_select;
     }
 }
