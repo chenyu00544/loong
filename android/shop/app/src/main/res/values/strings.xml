@@ -245,6 +245,7 @@
     <string name="return_goods">申请退货</string>
     <string name="shipping_sn">提交运单</string>
     <string name="feedback">等待平台反馈</string>
+    <string name="return_goods_img">退货原因图片</string>
 
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>

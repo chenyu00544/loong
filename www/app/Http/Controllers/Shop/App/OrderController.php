@@ -51,20 +51,6 @@ class OrderController extends CommonController
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
 
-    public function afterSaleOrder(Request $request)
-    {
-        $uid = Verifiable::authorization($request);
-        if($uid != ''){
-            $data = $this->orderReturnRepository->afterSale($request->all(), $uid);
-            if($data){
-                return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
-                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
-            }
-        }
-        return ['code' => 1, 'msg' => '未登录', 'data' => []];
-    }
-
     public function addOrder(Request $request)
     {
         $uid = Verifiable::authorization($request);
@@ -84,6 +70,51 @@ class OrderController extends CommonController
         $uid = Verifiable::authorization($request);
         if($uid != ''){
             $data = $this->orderRepository->setOrder($request->all(), $uid);
+            if($data){
+                return ['code' => 0, 'msg' => '', 'data' => $data];
+            }else{
+                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登录', 'data' => []];
+    }
+
+    //fixme 售后订单列表
+    public function afterSaleOrders(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if($uid != ''){
+            $data = $this->orderReturnRepository->afterSaleOrders($request->all(), $uid);
+            if($data){
+                return ['code' => 0, 'msg' => '', 'data' => $data];
+            }else{
+                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登录', 'data' => []];
+    }
+
+    //fixme 售后订单
+    public function afterSaleOrder(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if($uid != ''){
+            $data = $this->orderReturnRepository->afterSale($request->all(), $uid);
+            if($data){
+                return ['code' => 0, 'msg' => '', 'data' => $data];
+            }else{
+                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登录', 'data' => []];
+    }
+
+    //fixme 售后退换货
+    public function returnGoods(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if($uid != ''){
+            $data = $this->orderReturnRepository->returnGoods($request->all(), $uid);
             if($data){
                 return ['code' => 0, 'msg' => '', 'data' => $data];
             }else{

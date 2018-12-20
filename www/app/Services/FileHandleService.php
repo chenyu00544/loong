@@ -23,7 +23,7 @@ class FileHandleService
             //由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt
             $filePath = $file->getRealPath();
             return Oss::uploadObject($object, $filePath);
-        }else{
+        } else {
             if ($path = $file->move($dir, $filename)) {
                 return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
             }
@@ -46,7 +46,7 @@ class FileHandleService
                 //由本地文件路径加文件名包括后缀组成，例如/users/local/myfile.txt
                 $filePath = $file->getRealPath();
                 return Oss::uploadObject($object, $filePath);
-            }else{
+            } else {
                 if ($path = $file->move($dir, $filename)) {
                     return 'upload' . DIRECTORY_SEPARATOR . $uri . DIRECTORY_SEPARATOR . $filename;
                 }
@@ -142,8 +142,8 @@ class FileHandleService
         if (!empty($uri) && (strpos($uri, 'http://') === false && strpos($uri, 'https://') === false && strpos($uri, 'errorImg.png') === false)) {
             if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
                 $oss = RedisCache::get('oss_config');
-                return $oss['endpoint'].$uri;
-            }else{
+                return $oss['endpoint'] . $uri;
+            } else {
                 return url($uri);
             }
         }
@@ -157,7 +157,7 @@ class FileHandleService
         $goodsConf = RedisCache::get('goods_config');
         $no_picture = isset($goodsConf['no_picture']) && !empty($goodsConf['no_picture']) ? str_replace("../", "", $goodsConf['no_picture']) : '';
         $url = empty($uri) ? $no_picture : $uri;
-        return url($url);
+        return $goodsConf['two_code_links'] . $url;
     }
 
     public static function deleteFile($file_path)
@@ -169,9 +169,9 @@ class FileHandleService
         }
         $shopConf = RedisCache::get('shop_config');
         if (!empty($shopConf['open_oss']) && $shopConf['open_oss'] == 1) {
-            try{
+            try {
                 Oss::deleteObject($file_path);
-            }catch (OssException $e){
+            } catch (OssException $e) {
 
             }
         }

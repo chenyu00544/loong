@@ -81,28 +81,6 @@ public interface ConstantManager {
         public int SHARE = R.id.imageView120;
     }
 
-    interface Item {
-        public int HEADER = 6001;
-        public int FOOTER = 6002;
-        public int ITEMS = 6003;
-        public int ITEMS_1 = 6004;
-        public int ITEMS_2 = 6005;
-        public int ITEMS_3 = 6006;
-        public int ITEMS_4 = 6007;
-        public int ITEMS_5 = 6008;
-        public int ITEMS_6 = 6009;
-        public int ITEMS_7 = 6010;
-        public int BANNER = 6011;
-        public int ITEMHEADER = 6012;
-        public int ITEMFOOTER = 6013;
-
-        public int ADDGOODSNUM = 6014;
-        public int SUBGOODSNUM = 6015;
-        public int CHECKBOXONCE = 6016;
-        public int CHECKBOXSUBALL = 6017;
-        public int CHECKBOXALL = 6018;
-    }
-
     interface Url {
         public String URIHOST = "http://www.vcvbuy.com/api/";
         public String GETGEO = URIHOST + "region/geo/coder";
@@ -153,9 +131,14 @@ public interface ConstantManager {
         //fixme 订单操作
         public String ORDERS = URIHOST + "app/order/index";
         public String GET_ORDER = URIHOST + "app/order/get";
-        public String ORDER_AFTER_SALE = URIHOST + "app/order/after/sale";
         public String ADD_ORDER = URIHOST + "app/order/add";
         public String CANCEL_ORDER = URIHOST + "app/order/cancel";
+
+        //fixme 售后操作
+        public String ORDER_AFTER_SALE_ORDERS = URIHOST + "app/order/after/sale/orders";
+        public String ORDER_AFTER_SALE = URIHOST + "app/order/after/sale";
+        public String ORDER_RETURN_GOODS = URIHOST + "app/order/return/goods";
+
 
         //fixme 付款地址
         public String ALI_PAY = URIHOST + "app/pay/alipay";

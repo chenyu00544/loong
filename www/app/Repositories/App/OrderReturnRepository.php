@@ -30,6 +30,11 @@ class OrderReturnRepository implements OrderRepositoryInterface
         $this->orderReturnCauseModel = $orderReturnCauseModel;
     }
 
+    public function afterSaleOrders($data, $uid)
+    {
+
+    }
+
     public function afterSale($data, $uid)
     {
         $where['user_id'] = $uid;
@@ -74,5 +79,10 @@ class OrderReturnRepository implements OrderRepositoryInterface
         $return['causes'] = $causes;
         $return['order'] = $res;
         return $return;
+    }
+
+    public function returnGoods($data, $uid)
+    {
+        $order = $this->orderInfoModel->getOrder(['order_id'=>$data['order_id']]);
     }
 }

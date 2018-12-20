@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\App;
 
+use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Repositories\App\AdRepository;
 use App\Repositories\App\GoodsRepository;
@@ -48,13 +49,13 @@ class IndexController extends CommonController
 
     public function test(Request $request)
     {
-        $re = DB::select(DB::Raw("SELECT a.* FROM ( SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 61 AND attr_value IN	('二层牛皮','超纤')
-    UNION ALL
-    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 62 AND attr_value IN	('人造皮革','皮')
-    UNION ALL
-    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 63 AND attr_value IN	('橡胶')
-    UNION ALL
-    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 70 AND attr_value IN	('有跟'))a GROUP BY a.goods_id HAVING COUNT(a.goods_id)>3"));
-        dd($re);
+//        $re = DB::select(DB::Raw("SELECT a.* FROM ( SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 61 AND attr_value IN	('二层牛皮','超纤')
+//    UNION ALL
+//    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 62 AND attr_value IN	('人造皮革','皮')
+//    UNION ALL
+//    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 63 AND attr_value IN	('橡胶')
+//    UNION ALL
+//    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 70 AND attr_value IN	('有跟'))a GROUP BY a.goods_id HAVING COUNT(a.goods_id)>3"));
+        return FileHandle::getImgByOssUrl('');
     }
 }

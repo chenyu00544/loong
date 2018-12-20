@@ -43,6 +43,7 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
     File mCropFile = new File(path, "IMAGE_CROP_NAME.jpg");//裁剪后输出图片
 
     private String uri;
+    private String return_uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,10 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
         uri = intent.getStringExtra("card_uri");
         if (uri != null) {
             mCropFile = new File(path, uri);
+        }
+        return_uri = intent.getStringExtra("return_uri");
+        if (return_uri != null) {
+            mCropFile = new File(path, return_uri);
         }
         setNavBack();
         initView();
@@ -252,6 +257,11 @@ public class UserLogoActivity extends BaseRecyclerViewActivity {
             intent.putExtra("aspectY", 10);
             intent.putExtra("outputX", 640);
             intent.putExtra("outputY", 400);
+        } else if (return_uri != null) {
+            intent.putExtra("aspectX", 1);
+            intent.putExtra("aspectY", 1);
+            intent.putExtra("outputX", 640);
+            intent.putExtra("outputY", 640);
         } else {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);

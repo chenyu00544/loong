@@ -1,5 +1,6 @@
 package com.vcvb.chenyu.shop.activity.order;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,10 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.center.userinfo.UserLogoActivity;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleAddressItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleCauseItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleGoodsItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleImgItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleTotalItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderIdItem;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
@@ -22,25 +25,34 @@ import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.javaBean.order.OrderReturnCause;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
+import com.vcvb.chenyu.shop.tools.ToastUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Call;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
 
     private OrderDetail orderDetail = new OrderDetail();
     private List<OrderReturnCause> orderReturnCauses = new ArrayList<>();
+    private List<String> imgs = new ArrayList<>();
+    private List<File> files = new ArrayList<>();
+
     private String orderId = "";
     private TextView bottomBt;
-
+    private int img_pos = 0;
     private OrderReturnCauseDialog orderReturnCauseDialog;
     private HashMap<String, String> outMp = new HashMap<>();
 
@@ -173,18 +185,85 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
 
         cells.add(new OrderAfterSaleTotalItem(orderDetail, context));
 
+        OrderAfterSaleImgItem orderAfterSaleImgItem = new OrderAfterSaleImgItem(imgs, context);
+        orderAfterSaleImgItem.setOnItemClickListener(imgsListener);
+        cells.add(orderAfterSaleImgItem);
         return cells;
     }
 
-    public void returnGoods() {
+    //相册权限
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showPhotoAlbum() {
+        Intent intent = new Intent(OrderAfterSaleActivity.this, UserLogoActivity.class);
+        String str = "RETURN_IMG_FRONT_%s.jpg";
+        intent.putExtra("return_uri", String.format(Locale.CHINA, str, img_pos));
+        startActivityForResult(intent, ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST);
+    }
 
+    public void goToAlbum(int type) {
+        img_pos = type;
+        OrderAfterSaleActivityPermissionsDispatcher.showPhotoAlbumWithCheck(this);
+    }
+
+    //fixme 申请退货， 填写运单
+    public void returnGoods() {
+        loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
+        loadingDialog.show();
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("order_id", orderId);
+        mp.put("token", token);
+        HttpUtils.getInstance().post(ConstantManager.Url.ORDER_RETURN_GOODS, mp, new HttpUtils
+                .NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        try {
+                            if (json != null) {
+                                if (json.getInt("code") == 0) {
+
+                                } else {
+                                    ToastUtils.showShortToast(context, json.getString("msg"));
+                                }
+                            } else {
+                                ToastUtils.showShortToast(context, "网络错误");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        ToastUtils.showShortToast(context, "网络错误");
+                    }
+                });
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        OrderAfterSaleActivity.this.finish();
-        overridePendingTransition(0, 0);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST:
+                    String str = "RETURN_IMG_FRONT_%s.jpg";
+                    imgs.add(img_pos, String.valueOf(data.getParcelableExtra("uri")));
+                    files.add(img_pos, new File(ConstantManager.ImgPath.PATH, String.format
+                            (Locale.CHINA, str, img_pos)));
+                    mAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
     }
 
 
@@ -195,13 +274,32 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         }
     };
 
-    OrderAfterSaleCauseItem.OnClickListener causeListener = new OrderAfterSaleCauseItem.OnClickListener(){
+    OrderAfterSaleCauseItem.OnClickListener causeListener = new OrderAfterSaleCauseItem
+            .OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             orderReturnCauseDialog.show(getSupportFragmentManager(), "Cause");
         }
     };
-    OrderReturnCauseDialog.OnClickListener returnCauseListener = new OrderReturnCauseDialog.OnClickListener(){
+    OrderAfterSaleImgItem.OnClickListener imgsListener = new OrderAfterSaleImgItem
+            .OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            if (pos == imgs.size() && pos <= 5) {
+                goToAlbum(pos);
+            } else {
+                if (imgs.size() > pos) {
+                    imgs.remove(pos);
+                }
+                if (files.size() > pos) {
+                    files.remove(pos);
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+    OrderReturnCauseDialog.OnClickListener returnCauseListener = new OrderReturnCauseDialog
+            .OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
             for (int i = 0; i < orderReturnCauses.size(); i++) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Home\Pc;
 
+use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Controllers\Shop\Home\CommonController;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ class IndexController extends CommonController
 
     public function index(Request $request)
     {
+        dd(FileHandle::getImgByOssUrl(''));
 //        ignore_user_abort(true);
 //        set_time_limit(0);
 //        $db = DB::table('users_copy');
@@ -44,6 +46,7 @@ class IndexController extends CommonController
 
     public function test(Request $request)
     {
+        dd(FileHandle::getImgByOssUrl(''));
 //        echo RedisCache::incrby("order_id");
 //        echo route('articleDetail', ['post' => 1]);
     }
