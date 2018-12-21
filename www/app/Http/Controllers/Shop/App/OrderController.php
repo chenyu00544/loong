@@ -30,7 +30,7 @@ class OrderController extends CommonController
     public function index(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->orderRepository->getOrders($request->all(), $uid);
             return ['code' => 0, 'msg' => '', 'data' => $data];
         }
@@ -40,11 +40,11 @@ class OrderController extends CommonController
     public function getOrder(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->orderRepository->getOrder($request->all(), $uid);
-            if($data){
+            if ($data) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
             }
         }
@@ -54,11 +54,11 @@ class OrderController extends CommonController
     public function addOrder(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->orderRepository->addOrder($request->all(), $uid);
-            if(is_array($data)){
+            if (is_array($data)) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => $data, 'data' => ''];
             }
         }
@@ -68,11 +68,11 @@ class OrderController extends CommonController
     public function cancelOrder(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->orderRepository->setOrder($request->all(), $uid);
-            if($data){
+            if ($data) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
             }
         }
@@ -83,11 +83,11 @@ class OrderController extends CommonController
     public function afterSaleOrders(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->orderReturnRepository->afterSaleOrders($request->all(), $uid);
-            if($data){
+            if ($data) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
             }
         }
@@ -98,11 +98,11 @@ class OrderController extends CommonController
     public function afterSaleOrder(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->orderReturnRepository->afterSale($request->all(), $uid);
-            if($data){
+            if ($data) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
             }
         }
@@ -113,12 +113,12 @@ class OrderController extends CommonController
     public function returnGoods(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->orderReturnRepository->returnGoods($request->all(), $uid);
-            if(is_array($data)){
+            if (!is_string($data)) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
-                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+            } else {
+                return ['code' => 1, 'msg' => $data, 'data' => []];
             }
         }
         return ['code' => 1, 'msg' => '未登录', 'data' => []];

@@ -14,8 +14,10 @@ use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\App\OrderInfoModel;
 use App\Http\Models\App\OrderReturnCauseModel;
+use App\Http\Models\App\OrderReturnGoodsModel;
 use App\Http\Models\App\OrderReturnImagesModel;
 use App\Http\Models\App\OrderReturnModel;
+use Illuminate\Support\Facades\DB;
 
 class OrderReturnRepository implements OrderRepositoryInterface
 {
@@ -24,17 +26,20 @@ class OrderReturnRepository implements OrderRepositoryInterface
     private $orderReturnCauseModel;
     private $orderReturnModel;
     private $orderReturnImagesModel;
+    private $orderReturnGoodsModel;
 
     public function __construct(
         OrderInfoModel $orderInfoModel,
         OrderReturnCauseModel $orderReturnCauseModel,
         OrderReturnModel $orderReturnModel,
+        OrderReturnGoodsModel $orderReturnGoodsModel,
         OrderReturnImagesModel $orderReturnImagesModel
     )
     {
         $this->orderInfoModel = $orderInfoModel;
         $this->orderReturnCauseModel = $orderReturnCauseModel;
         $this->orderReturnModel = $orderReturnModel;
+        $this->orderReturnGoodsModel = $orderReturnGoodsModel;
         $this->orderReturnImagesModel = $orderReturnImagesModel;
     }
 
@@ -94,7 +99,7 @@ class OrderReturnRepository implements OrderRepositoryInterface
     public function returnGoods($data, $uid)
     {
         $time = time();
-        $orders = $this->orderInfoModel->getOrder(['order_id' => $data['order_id']]);dd($orders);
+        $orders = $this->orderInfoModel->getOrder(['order_id' => $data['order_id']]);
         $cause_id = $data['cause_id'];
         $cause_type = empty($data['cause_type']) ? 1 : $data['cause_type'];
         $return_brief = empty($data['return_brief']) ? '' : $data['return_brief'];
@@ -125,6 +130,7 @@ class OrderReturnRepository implements OrderRepositoryInterface
                         'cause_id' => $cause_id,
                         'apply_time' => $time,
                         'should_return' => $order->money_paid,
+                        'actual_return' => $order->money_paid - $order->card_fee - $order->pack_fee - $order->pay_fee - $order->insure_fee - $order->shipping_fee,
                         'return_brief' => $return_brief,
                         'ru_id' => $order->ru_id,
                         'chargeoff_status' => $order->chargeoff_status,
@@ -138,33 +144,52 @@ class OrderReturnRepository implements OrderRepositoryInterface
                         'address' => $order->address,
                     ];
                     //退货单
-//                    $rorder = $this->orderReturnModel->addOrderReturn($return_order);
+                    DB::beginTransaction();
+                    $rorder = $this->orderReturnModel->addOrderReturn($return_order);
                     //退货单商品
-                    foreach ($order->orderGoods as $orderGoods){
+                    $rog = [];
+                    foreach ($order->orderGoods as $orderGoods) {
                         $return_order_goods = [
                             'rec_id' => $orderGoods->rec_id,
                             'ret_id' => $rorder->ret_id,
-
+                            'goods_id' => $orderGoods->goods_id,
+                            'product_id' => $orderGoods->product_id,
+                            'product_sn' => $orderGoods->product_sn,
+                            'goods_name' => $orderGoods->goods_name,
+                            'brand_name' => $orderGoods->brand_name,
+                            'goods_sn' => $orderGoods->goods_sn,
+                            'is_real' => $orderGoods->is_real,
+                            'goods_attr' => $orderGoods->goods_attr,
+                            'attr_id' => $orderGoods->goods_attr_id,
+                            'return_number' => $orderGoods->o_goods_number,
+                            'ru_id' => $orderGoods->ru_id,
                         ];
+                        $rog = $this->orderReturnGoodsModel->addOrderReturnGoods($return_order_goods);
                     }
 
                     //退货商品凭证图片
                     for ($i = 0; $i < 5; $i++) {
                         if (!empty($data['file_' . $i])) {
-//                            if ($data['file_' . $i]->isValid()) {
-//                                $path = 'return_img';
-//                                $uri = FileHandle::upLoadImage($data['file_' . $i], $path);
-//                                $order_return_img = [
-//                                    'user_id' => $uid,
-//                                    'ret_id' => $rorder->ret_id,
-//                                    'img_file' => $uri,
-//                                    'add_time' => $time
-//                                ];
-//                                $this->orderReturnImagesModel->addImg($order_return_img);
-//                            }
+                            if ($data['file_' . $i]->isValid()) {
+                                $path = 'return_img';
+                                $uri = FileHandle::upLoadImage($data['file_' . $i], $path);
+                                $order_return_img = [
+                                    'user_id' => $uid,
+                                    'ret_id' => $rorder->ret_id,
+                                    'img_file' => $uri,
+                                    'add_time' => $time
+                                ];
+                                $this->orderReturnImagesModel->addImg($order_return_img);
+                            }
                         }
                     }
-
+                    if(!empty($rog) && !empty($rorder)){
+                        DB::commit();
+                        return $rorder;
+                    }else{
+                        DB::rollBack();
+                        return '申请失败';
+                    }
                 } else {
                     return '已出账单';
                 }

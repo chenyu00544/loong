@@ -24,4 +24,9 @@ class OrderReturnGoodsModel extends Model
             ->where($where)
             ->get();
     }
+
+    public function addOrderReturnGoods($data)
+    {
+        return $this->create($data);
+    }
 }
