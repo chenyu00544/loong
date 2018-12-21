@@ -1,9 +1,13 @@
 package com.vcvb.chenyu.shop.activity.order;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,11 +16,11 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.activity.center.userinfo.UserLogoActivity;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleAddressItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleBriefItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleCauseItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleImgItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleTotalItem;
-import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleTypeItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderIdItem;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
@@ -24,6 +28,8 @@ import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.dialog.OrderReturnCauseDialog;
 import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
 import com.vcvb.chenyu.shop.javaBean.order.OrderReturnCause;
+import com.vcvb.chenyu.shop.javaBean.order.ReturnOrder;
+import com.vcvb.chenyu.shop.receiver.Receiver;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
@@ -47,6 +53,7 @@ import permissions.dispatcher.RuntimePermissions;
 public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
 
     private OrderDetail orderDetail = new OrderDetail();
+    private ReturnOrder returnOrder = new ReturnOrder();
     private List<OrderReturnCause> orderReturnCauses = new ArrayList<>();
     private List<String> imgs = new ArrayList<>();
     private List<File> files = new ArrayList<>();
@@ -54,8 +61,11 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
     private String orderId = "";
     private TextView bottomBt;
     private int img_pos = 0;
+    private String return_img;
     private OrderReturnCauseDialog orderReturnCauseDialog;
     private HashMap<String, String> outMp = new HashMap<>();
+
+    private Receiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +96,8 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        ((SimpleItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
         bottomBt = findViewById(R.id.textView179);
         bottomBt.setOnClickListener(bottomListener);
     }
@@ -150,6 +162,14 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                     }
                     orderReturnCauseDialog = new OrderReturnCauseDialog(orderReturnCauses);
                     orderReturnCauseDialog.setOnItemClickListener(returnCauseListener);
+
+                    JSONArray returnJSONArray = json.getJSONObject("data").getJSONArray
+                            ("return_order");
+                    for (int i = 0; i < returnJSONArray.length(); i++) {
+                        JSONObject object = (JSONObject) returnJSONArray.get(i);
+                        returnOrder = JsonUtils.fromJsonObject(object, ReturnOrder.class);
+                        returnOrder.setData(object);
+                    }
                 }
                 mAdapter.addAll(getItems());
             } catch (JSONException e) {
@@ -171,25 +191,24 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         List<Item> cells = new ArrayList<>();
 
         cells.add(new OrderAfterSaleAddressItem(orderDetail, context));
+
         OrderIdItem orderIdItem = new OrderIdItem(orderDetail, context);
         cells.add(orderIdItem);
 
         for (int i = 0; i < orderDetail.getOrderGoodses().size(); i++) {
             OrderAfterSaleGoodsItem orderAfterSaleGoodsItem = new OrderAfterSaleGoodsItem
                     (orderDetail.getOrderGoodses().get(i), context);
-            orderAfterSaleGoodsItem.setOnItemClickListener(goodsListener);
             cells.add(orderAfterSaleGoodsItem);
         }
-
-        OrderAfterSaleTypeItem orderAfterSaleTypeItem = new OrderAfterSaleTypeItem
-                (orderDetail, context);
-        orderAfterSaleTypeItem.setOnItemClickListener(typeListener);
-        cells.add(orderAfterSaleTypeItem);
 
         OrderAfterSaleCauseItem orderAfterSaleCauseItem = new OrderAfterSaleCauseItem
                 (orderReturnCauses, context);
         orderAfterSaleCauseItem.setOnItemClickListener(causeListener);
         cells.add(orderAfterSaleCauseItem);
+
+        OrderAfterSaleBriefItem orderAfterSaleBriefItem = new OrderAfterSaleBriefItem(null,
+                context);
+        cells.add(orderAfterSaleBriefItem);
 
         cells.add(new OrderAfterSaleTotalItem(orderDetail, context));
 
@@ -203,8 +222,8 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
     @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showPhotoAlbum() {
         Intent intent = new Intent(OrderAfterSaleActivity.this, UserLogoActivity.class);
-        String str = "RETURN_IMG_FRONT_%s.jpg";
-        intent.putExtra("return_uri", String.format(Locale.CHINA, str, img_pos));
+        return_img = String.format(Locale.CHINA, "RETURN_IMG_%s.jpg", System.currentTimeMillis());
+        intent.putExtra("return_uri", return_img);
         startActivityForResult(intent, ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST);
     }
 
@@ -215,48 +234,88 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
 
     //fixme 申请退货， 填写运单
     public void returnGoods() {
+        if (outMp.get("cause_id") == null) {
+            ToastUtils.showShortToast(context, "请选择退换货原因");
+            return;
+        }
+        if (outMp.get("return_brief") == null) {
+            outMp.put("return_brief", "");
+        }
         loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
         mp.put("order_id", orderId);
         mp.put("token", token);
+        mp.put("cause_id", outMp.get("cause_id"));
+        mp.put("return_brief", outMp.get("return_brief"));
         HttpUtils.getInstance().postImage(ConstantManager.Url.ORDER_RETURN_GOODS, mp, files, new
                 HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void success(Call call, final JSONObject json) throws IOException {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingDialog.dismiss();
-                                try {
-                                    if (json != null) {
-                                        if (json.getInt("code") == 0) {
+                    public void run() {
+                        loadingDialog.dismiss();
+                        try {
+                            if (json != null) {
+                                if (json.getInt("code") == 0) {
 
-                                        } else {
-                                            ToastUtils.showShortToast(context, json.getString
-                                                    ("msg"));
-                                        }
-                                    } else {
-                                        ToastUtils.showShortToast(context, "网络错误");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                } else {
+                                    ToastUtils.showShortToast(context, json.getString("msg"));
                                 }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failed(Call call, IOException e) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingDialog.dismiss();
+                            } else {
                                 ToastUtils.showShortToast(context, "网络错误");
                             }
-                        });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        ToastUtils.showShortToast(context, "网络错误");
+                    }
+                });
+            }
+        });
+    }
+
+    public void registerReceiver() {
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("briefAction");
+        receiver = new Receiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction() != null) {
+                    switch (intent.getAction()) {
+                        case "briefAction":
+                            outMp.put("return_brief", intent.getStringExtra("data"));
+                            break;
+                    }
+                }
+            }
+        };
+        broadcastManager.registerReceiver(receiver, intentFilter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        broadcastManager.unregisterReceiver(receiver);
     }
 
     @Override
@@ -265,10 +324,8 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case ConstantManager.PhotoAlbum.PHOTOALBUM_REQUEST:
-                    String str = "RETURN_IMG_FRONT_%s.jpg";
                     imgs.add(img_pos, String.valueOf(data.getParcelableExtra("uri")));
-                    files.add(img_pos, new File(ConstantManager.ImgPath.PATH, String.format
-                            (Locale.CHINA, str, img_pos)));
+                    files.add(img_pos, new File(ConstantManager.ImgPath.PATH, return_img));
                     mAdapter.notifyDataSetChanged();
                     break;
             }
@@ -279,29 +336,6 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         @Override
         public void onClick(View view) {
             returnGoods();
-        }
-    };
-    OrderAfterSaleGoodsItem.OnClickListener goodsListener = new OrderAfterSaleGoodsItem
-            .OnClickListener() {
-        @Override
-        public void onClicked(View view, int pos) {
-            for (int i = 0; i < orderDetail.getOrderGoodses().size(); i++) {
-                if(pos == orderDetail.getOrderGoodses().get(i).getGoods_id()){
-                    if (orderDetail.getOrderGoodses().get(i).isIs_select()) {
-                        orderDetail.getOrderGoodses().get(i).setIs_select(false);
-                    } else {
-                        orderDetail.getOrderGoodses().get(i).setIs_select(true);
-                    }
-                }
-            }
-            mAdapter.notifyDataSetChanged();
-        }
-    };
-    OrderAfterSaleTypeItem.OnClickListener typeListener = new OrderAfterSaleTypeItem
-            .OnClickListener() {
-        @Override
-        public void onClicked(View view, int pos) {
-
         }
     };
     OrderAfterSaleCauseItem.OnClickListener causeListener = new OrderAfterSaleCauseItem
@@ -322,6 +356,13 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                     imgs.remove(pos);
                 }
                 if (files.size() > pos) {
+                    if (files.get(pos).exists() && files.get(pos).isFile()) {
+                        if (files.get(pos).delete()) {
+                            ToastUtils.showShortToast(context, "删除成功");
+                        } else {
+                            ToastUtils.showShortToast(context, "删除失败");
+                        }
+                    }
                     files.remove(pos);
                 }
                 mAdapter.notifyDataSetChanged();

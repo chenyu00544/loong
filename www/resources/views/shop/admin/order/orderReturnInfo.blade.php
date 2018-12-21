@@ -262,15 +262,15 @@
                                                    data-ope="receive_goods">收到退回商品</a>
                                             @endif
 
-                                            @if($rorder->return_type == 1 || $rorder->return_type == 3 && $rorder->chargeoff_status == 0 && $rorder->agree_apply)
-                                                @if($rorder->return_status == 0 )
+                                            @if($rorder->return_status == 2 && $rorder->chargeoff_status == 0 && $rorder->agree_apply == 1)
+                                                @if($rorder->return_status == 2)
                                                     <a href="{{url('admin/order/return/refound/'.$rorder->ret_id)}}"
                                                        class="btn btn-danger btn-sm mar-left-5"
                                                        data-ope="refound">去退款</a>
                                                 @endif
                                             @endif
 
-                                            @if($rorder->return_type != 1)
+                                            @if($rorder->back == 2)
                                                 @if($rorder->return_status < 2 && $rorder->return_status >= 0)
                                                     <a href="javascript:;"
                                                        class="btn btn-danger btn-sm mar-left-5"

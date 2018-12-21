@@ -43,11 +43,6 @@ public class OrderAfterSaleGoodsItem extends BaseItem<OrderGoods> {
         TextView tv4 = holder.get(R.id.textView190);
         TextView tv5 = holder.get(R.id.textView191);
 
-        CheckBox cb = holder.get(R.id.checkBox3);
-        posMap.put(cb.getId(), mData.getGoods_id());
-        cb.setOnClickListener(listener);
-        cb.setChecked(mData.isIs_select());
-
         tv1.setText(mData.getGoods_name());
         tv2.setText(mData.getGoods_attr());
 

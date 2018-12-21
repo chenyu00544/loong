@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDetail {
+public class ReturnOrder {
     private String order_id_str;
     private String main_order_id;
     private String order_sn;
@@ -21,7 +21,6 @@ public class OrderDetail {
     private Integer add_time;
     private Integer current_time;
     private Integer auto_delivery_time;
-    private Integer goods_cause;
     private String shipping_fee;
     private String goods_amount;
     private String insure_fee;
@@ -299,14 +298,6 @@ public class OrderDetail {
 
     public void setBonus(String bonus) {
         this.bonus = bonus;
-    }
-
-    public Integer getGoods_cause() {
-        return goods_cause;
-    }
-
-    public void setGoods_cause(Integer goods_cause) {
-        this.goods_cause = goods_cause;
     }
 
     public void setData(JSONObject json) {

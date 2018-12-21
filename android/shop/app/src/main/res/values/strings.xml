@@ -242,7 +242,7 @@
     <string name="bonus">红包</string>
     <string name="select">选择</string>
     <string name="no_partake">不参与</string>
-    <string name="apply_return_goods">申请退换货</string>
+    <string name="apply_return_goods">申请退货</string>
     <string name="shipping_sn">提交运单</string>
     <string name="feedback">等待平台反馈</string>
 
@@ -257,8 +257,12 @@
     <string name="img_text_info">图文详情</string>
     <string name="product_parameters">产品参数</string>
 
-    <string name="return_cause">退换货原因</string>
+    <string name="return_cause">退货原因</string>
+    <string name="return_type">退货类型</string>
+    <string name="return_repair">维修</string>
     <string name="return_goods">退货</string>
     <string name="change_goods">换货</string>
+    <string name="refund_only">仅退款</string>
     <string name="return_goods_img">退换货原因图片</string>
+    <string name="return_brief">退货原因描述</string>
 </resources>

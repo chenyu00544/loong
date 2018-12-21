@@ -48,6 +48,11 @@ class OrderInfoModel extends Model
         return $this->hasOne('App\Http\Models\App\RegionsModel', 'region_id', 'street');
     }
 
+    public function returnOrder()
+    {
+        return $this->hasMany('App\Http\Models\App\OrderReturnModel', 'order_id', 'order_id');
+    }
+
     public function getOrders($where, $orWhere=[], $page = 0, $column = ['*'], $size = 10)
     {
         $m = $this->select($column)
@@ -90,6 +95,7 @@ class OrderInfoModel extends Model
                     ->with(['Goods'])
                     ->get();
             }])
+            ->with(['returnOrder'])
             ->with(['mapcountry' => function ($query) {
                 $query->select(['region_id', 'region_name']);
             }])

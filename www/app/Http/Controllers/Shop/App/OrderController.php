@@ -115,7 +115,7 @@ class OrderController extends CommonController
         $uid = Verifiable::authorization($request);
         if($uid != ''){
             $data = $this->orderReturnRepository->returnGoods($request->all(), $uid);
-            if($data){
+            if(is_array($data)){
                 return ['code' => 0, 'msg' => '', 'data' => $data];
             }else{
                 return ['code' => 1, 'msg' => '参数错误', 'data' => $data];

@@ -19,6 +19,7 @@ import java.util.List;
 
 public class OrderAfterSaleImgItem extends BaseItem<List<String>> {
     public static final int TYPE = R.layout.order_after_sale_img_item;
+    private FlowLayout flowLayout;
 
     public OrderAfterSaleImgItem(List<String> bean, Context c) {
         super(bean, c);
@@ -41,7 +42,7 @@ public class OrderAfterSaleImgItem extends BaseItem<List<String>> {
         int width = ToolUtils.getWindowsWidth(context);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(width / 3 - ToolUtils.dip2px
                 (context, 16), width / 3 - ToolUtils.dip2px(context, 16));
-        FlowLayout flowLayout = holder.get(R.id.return_img);
+        flowLayout = holder.get(R.id.return_img);
         flowLayout.setChildSpacing(8);
         flowLayout.setRowSpacing(8);
         flowLayout.setChildSpacingForLastRow(8);
@@ -65,8 +66,8 @@ public class OrderAfterSaleImgItem extends BaseItem<List<String>> {
             addImg.setId(IdsUtils.generateViewId());
             addImg.setBackgroundResource(R.drawable.shape_4_grad_b_white);
             addImg.setLayoutParams(lp);
-            addImg.setPadding(ToolUtils.dip2px(context, 30), ToolUtils.dip2px(context, 30), ToolUtils
-                    .dip2px(context, 30), ToolUtils.dip2px(context, 30));
+            addImg.setPadding(ToolUtils.dip2px(context, 30), ToolUtils.dip2px(context, 30),
+                    ToolUtils.dip2px(context, 30), ToolUtils.dip2px(context, 30));
             Glide.with(context).load(R.drawable.icon_add_back).into(addImg);
             flowLayout.addView(addImg);
             posMap.put(addImg.getId(), mData.size());

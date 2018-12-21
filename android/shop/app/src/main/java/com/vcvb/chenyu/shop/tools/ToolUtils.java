@@ -10,6 +10,10 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +37,7 @@ public class ToolUtils {
         return true;
     }
 
-    public static int getWindowsWidth(Context context){
+    public static int getWindowsWidth(Context context) {
         return context.getResources().getDisplayMetrics().widthPixels;
     }
 
@@ -58,8 +62,8 @@ public class ToolUtils {
             else if (isDownloadsDocument(uri)) {
 
                 final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse
+                        ("content://downloads/public_downloads"), Long.valueOf(id));
 
                 return getDataColumn(context, contentUri, null, null);
             }
@@ -88,8 +92,7 @@ public class ToolUtils {
         else if ("content".equalsIgnoreCase(uri.getScheme())) {
 
             // Return the remote address
-            if (isGooglePhotosUri(uri))
-                return uri.getLastPathSegment();
+            if (isGooglePhotosUri(uri)) return uri.getLastPathSegment();
 
             return getDataColumn(context, uri, null, null);
         }
@@ -101,25 +104,24 @@ public class ToolUtils {
         return null;
     }
 
-    public static String getDataColumn(Context context, Uri uri, String selection,
-                                       String[] selectionArgs) {
+    public static String getDataColumn(Context context, Uri uri, String selection, String[]
+            selectionArgs) {
 
         Cursor cursor = null;
         final String column = MediaStore.Images.Media.DATA;
         final String[] projection = {column};
 
         try {
-            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
-                    null);
+            cursor = context.getContentResolver().query(uri, projection, selection,
+                    selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
                 final int index = cursor.getColumnIndexOrThrow(column);
                 return cursor.getString(index);
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
-            if (cursor != null)
-                cursor.close();
+            if (cursor != null) cursor.close();
         }
         return null;
     }
@@ -154,5 +156,39 @@ public class ToolUtils {
      */
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    //map计数，时间复杂度O(n)，空间复杂度O(n)，空间换时间
+    public static ArrayList<Integer> getIntersection(List<Integer> arr, List<Integer> arr2) {
+        ArrayList<Integer> res = new ArrayList<>();
+        if ((arr == null || arr.size() == 0) && (arr2 == null || arr2.size() == 0)) {
+            return res;
+        }
+        if(arr == null || arr.size() == 0){
+            return (ArrayList<Integer>) arr2;
+        }
+        if(arr2 == null || arr2.size() == 0){
+            return (ArrayList<Integer>) arr;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < arr.size(); i++) {
+            int key = arr.get(i);
+            if (map.containsKey(key)) {
+                int value = map.get(key);
+                value++;
+                map.put(key, value);
+            } else {
+                map.put(key, 1);
+            }
+        }
+
+        for (int i = 0; i < arr2.size(); i++) {
+            int key = arr2.get(i);
+            if (map.containsKey(key) && !res.contains(key)) {
+                res.add(key);
+            }
+        }
+        return res;
     }
 }

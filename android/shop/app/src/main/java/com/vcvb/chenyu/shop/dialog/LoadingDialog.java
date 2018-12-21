@@ -27,6 +27,7 @@ public class LoadingDialog extends AlertDialog {
     public void show() {
         super.show();
         avi.show();
+
     }
 
     @Override

@@ -14,20 +14,28 @@ use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\App\OrderInfoModel;
 use App\Http\Models\App\OrderReturnCauseModel;
+use App\Http\Models\App\OrderReturnImagesModel;
+use App\Http\Models\App\OrderReturnModel;
 
 class OrderReturnRepository implements OrderRepositoryInterface
 {
 
     private $orderInfoModel;
     private $orderReturnCauseModel;
+    private $orderReturnModel;
+    private $orderReturnImagesModel;
 
     public function __construct(
         OrderInfoModel $orderInfoModel,
-        OrderReturnCauseModel $orderReturnCauseModel
+        OrderReturnCauseModel $orderReturnCauseModel,
+        OrderReturnModel $orderReturnModel,
+        OrderReturnImagesModel $orderReturnImagesModel
     )
     {
         $this->orderInfoModel = $orderInfoModel;
         $this->orderReturnCauseModel = $orderReturnCauseModel;
+        $this->orderReturnModel = $orderReturnModel;
+        $this->orderReturnImagesModel = $orderReturnImagesModel;
     }
 
     public function afterSaleOrders($data, $uid)
@@ -72,17 +80,95 @@ class OrderReturnRepository implements OrderRepositoryInterface
                 $order_goods->current_time = time();
                 unset($order_goods->Goods);
             }
+            $return['return_order'] = $re->returnOrder;
+            unset($re->returnOrder);
         }
-
         //fixme 退货原因
         $causes = $this->orderReturnCauseModel->getReturnCauses(['is_show' => 1]);
         $return['causes'] = $causes;
         $return['order'] = $res;
+
         return $return;
     }
 
     public function returnGoods($data, $uid)
     {
-        $order = $this->orderInfoModel->getOrder(['order_id' => $data['order_id']]);
+        $time = time();
+        $orders = $this->orderInfoModel->getOrder(['order_id' => $data['order_id']]);dd($orders);
+        $cause_id = $data['cause_id'];
+        $cause_type = empty($data['cause_type']) ? 1 : $data['cause_type'];
+        $return_brief = empty($data['return_brief']) ? '' : $data['return_brief'];
+        foreach ($orders as $order) {
+            $rorder = $this->orderReturnModel->getOrderReturn(['order_id' => $order->order_id]);
+            if (!empty($rorder)) {
+                $shop_config = RedisCache::get('shop_config');
+                if ($shop_config['activation_number_type'] > $rorder->activation_number) {
+                    $rdata = [
+                        'agree_apply' => OR_UNAGREE,
+                        'activation_number' => $rorder->activation_number + 1
+                    ];
+                    return $this->orderReturnModel->setOrderReturn(['order_id' => $order->order_id], $rdata);
+                } else {
+                    return '申请次数为0，请联系客服';
+                }
+            } else {
+                if ($order->chargeoff_status == 0) {
+                    $return_order = [
+                        'return_status' => RS_USER_RETURN,
+                        'refound_status' => RS_NOREFOUND,
+                        'agree_apply' => OR_UNAGREE,
+                        'return_sn' => date(VCVB_SNDATE, time()) . rand(10000, 99999),
+                        'user_id' => $uid,
+                        'order_id' => $order->order_id,
+                        'order_sn' => $order->order_sn,
+                        'back' => $cause_type,
+                        'cause_id' => $cause_id,
+                        'apply_time' => $time,
+                        'should_return' => $order->money_paid,
+                        'return_brief' => $return_brief,
+                        'ru_id' => $order->ru_id,
+                        'chargeoff_status' => $order->chargeoff_status,
+                        'country' => $order->country,
+                        'province' => $order->province,
+                        'city' => $order->city,
+                        'district' => $order->district,
+                        'street' => $order->street,
+                        'addressee' => $order->consignee,
+                        'phone' => $order->mobile,
+                        'address' => $order->address,
+                    ];
+                    //退货单
+//                    $rorder = $this->orderReturnModel->addOrderReturn($return_order);
+                    //退货单商品
+                    foreach ($order->orderGoods as $orderGoods){
+                        $return_order_goods = [
+                            'rec_id' => $orderGoods->rec_id,
+                            'ret_id' => $rorder->ret_id,
+
+                        ];
+                    }
+
+                    //退货商品凭证图片
+                    for ($i = 0; $i < 5; $i++) {
+                        if (!empty($data['file_' . $i])) {
+//                            if ($data['file_' . $i]->isValid()) {
+//                                $path = 'return_img';
+//                                $uri = FileHandle::upLoadImage($data['file_' . $i], $path);
+//                                $order_return_img = [
+//                                    'user_id' => $uid,
+//                                    'ret_id' => $rorder->ret_id,
+//                                    'img_file' => $uri,
+//                                    'add_time' => $time
+//                                ];
+//                                $this->orderReturnImagesModel->addImg($order_return_img);
+//                            }
+                        }
+                    }
+
+                } else {
+                    return '已出账单';
+                }
+            }
+        }
     }
 }

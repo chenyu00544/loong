@@ -2,13 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/view_wrap"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white">
 
     <View
-        android:id="@+id/view55"
+        android:id="@+id/view52"
         android:layout_width="wrap_content"
         android:layout_height="5dp"
         android:background="@color/gray_f5"
@@ -16,8 +15,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.nex3z.flowlayout.FlowLayout
-        android:id="@+id/return_type"
+    <EditText
+        android:id="@+id/editText21"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -26,20 +25,17 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/shape_4_grad_b_white"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:hint="@string/return_brief"
+        android:textSize="14sp"
+        android:gravity="top"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView271" />
-
-    <TextView
-        android:id="@+id/textView271"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/return_type"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view55" />
+        app:layout_constraintTop_toBottomOf="@+id/view52" />
 
 </android.support.constraint.ConstraintLayout>

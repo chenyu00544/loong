@@ -85,7 +85,11 @@ class UserAddressModel extends Model
 
     public function delAddress($where)
     {
-        return $this->where($where)
-            ->delete();
+        try{
+            return $this->where($where)
+                ->delete();
+        }catch (\Exception $e){
+
+        }
     }
 }
