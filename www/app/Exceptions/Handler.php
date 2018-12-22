@@ -32,6 +32,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if (app()->bound('sentry') && $this->shouldReport($exception)) {
+            app('sentry')->captureException($exception);
+        }
         parent::report($exception);
     }
 
@@ -44,7 +47,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if ($request->is('api/*')) {
+            return response()->json([
+                'code' => $exception->getCode(),
+                'msg' => $exception->getMessage(),
+                'time' => time(),
+            ]);
+        } else {
+            return parent::render($request, $exception);
+        }
     }
 
     /**

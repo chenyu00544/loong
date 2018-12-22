@@ -37,7 +37,7 @@ class IndexController extends CommonController
 
         $data['goodses'] = $this->goodsRepository->getBestGoods(1);
         RedisCache::get('app_index_data', $data, 60);
-        return ['code' => 1, 'msg' => '', 'data' => $data];
+        return (['code' => 1, 'msg' => '', 'data' => $data]);
     }
 
     public function loadmore(Request $request)
@@ -56,6 +56,5 @@ class IndexController extends CommonController
 //    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 63 AND attr_value IN	('橡胶')
 //    UNION ALL
 //    SELECT * FROM cyc_goods_attr_bak WHERE attr_id = 70 AND attr_value IN	('有跟'))a GROUP BY a.goods_id HAVING COUNT(a.goods_id)>3"));
-        return FileHandle::getImgByOssUrl('');
     }
 }
