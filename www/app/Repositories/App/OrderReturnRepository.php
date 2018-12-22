@@ -118,11 +118,24 @@ class OrderReturnRepository implements OrderRepositoryInterface
                 }
             } else {
                 if ($order->chargeoff_status == 0) {
+                    if ($order->pay_status == 2 && $order->shipping_status == 1) {
+                        $actual_return = $order->money_paid - $order->card_fee - $order->pack_fee - $order->pay_fee - $order->insure_fee - $order->shipping_fee;
+                    } elseif ($order->pay_status == 2) {
+                        $actual_return = $order->money_paid;
+                    }
+
+                    if ($order->pay_status == 2 && $order->shipping_status == 0) {
+                        $return_type = 0;
+                    } else {
+                        $return_type = 1;
+                    }
+
                     $return_order = [
                         'return_status' => RS_USER_RETURN,
                         'refound_status' => RS_NOREFOUND,
                         'agree_apply' => OR_UNAGREE,
                         'return_sn' => date(VCVB_SNDATE, time()) . rand(10000, 99999),
+                        'return_type' => $return_type,
                         'user_id' => $uid,
                         'order_id' => $order->order_id,
                         'order_sn' => $order->order_sn,
@@ -130,7 +143,7 @@ class OrderReturnRepository implements OrderRepositoryInterface
                         'cause_id' => $cause_id,
                         'apply_time' => $time,
                         'should_return' => $order->money_paid,
-                        'actual_return' => $order->money_paid - $order->card_fee - $order->pack_fee - $order->pay_fee - $order->insure_fee - $order->shipping_fee,
+                        'actual_return' => $actual_return,
                         'return_brief' => $return_brief,
                         'ru_id' => $order->ru_id,
                         'chargeoff_status' => $order->chargeoff_status,
@@ -183,10 +196,14 @@ class OrderReturnRepository implements OrderRepositoryInterface
                             }
                         }
                     }
-                    if(!empty($rog) && !empty($rorder)){
+
+                    $orderUpdate = ['order_stauts' => OS_RETURNED];
+                    $this->orderInfoModel->setOrder(['order_id' => $data['order_id']], $orderUpdate);
+
+                    if (!empty($rog) && !empty($rorder)) {
                         DB::commit();
                         return $rorder;
-                    }else{
+                    } else {
                         DB::rollBack();
                         return '申请失败';
                     }

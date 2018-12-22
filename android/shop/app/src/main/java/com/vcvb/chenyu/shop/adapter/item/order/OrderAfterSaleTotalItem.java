@@ -42,7 +42,13 @@ public class OrderAfterSaleTotalItem extends BaseItem<OrderDetail> {
         Double refund_total = 0.0;
 
         pay_amount = Double.valueOf(mData.getMoney_paid());
-        other_fee = Double.valueOf(mData.getShipping_fee());
+
+        if (mData.getShipping_status() == 1) {
+            other_fee = Double.valueOf(mData.getShipping_fee()) + Double.valueOf(mData
+                    .getCard_fee()) + Double.valueOf(mData.getPay_fee()) + Double
+                    .valueOf(mData.getPack_fee()) + Double
+                    .valueOf(mData.getInsure_fee());
+        }
         refund_total = pay_amount - other_fee;
 
         String pay_total_str = "￥%.2f";

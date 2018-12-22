@@ -20,6 +20,7 @@ import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleBriefItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleCauseItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleImgItem;
+import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleInvoiceNoItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderAfterSaleTotalItem;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderIdItem;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
@@ -153,6 +154,11 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                         orderDetail.setData(object);
                     }
 
+                    if (orderDetail.getShipping_status() == 0 && orderDetail.getPay_status() == 2
+                            && orderDetail.getOrder_status() == 1) {
+                        bottomBt.setText(R.string.apply_refound);
+                    }
+
                     JSONArray causeJSONArray = json.getJSONObject("data").getJSONArray("causes");
                     for (int i = 0; i < causeJSONArray.length(); i++) {
                         JSONObject object = (JSONObject) causeJSONArray.get(i);
@@ -168,7 +174,6 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                     for (int i = 0; i < returnJSONArray.length(); i++) {
                         JSONObject object = (JSONObject) returnJSONArray.get(i);
                         returnOrder = JsonUtils.fromJsonObject(object, ReturnOrder.class);
-                        returnOrder.setData(object);
                     }
                 }
                 mAdapter.addAll(getItems());
@@ -210,11 +215,22 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                 context);
         cells.add(orderAfterSaleBriefItem);
 
+        if (orderDetail.getShipping_status() == 1) {
+            OrderAfterSaleImgItem orderAfterSaleImgItem = new OrderAfterSaleImgItem(imgs, context);
+            orderAfterSaleImgItem.setOnItemClickListener(imgsListener);
+            cells.add(orderAfterSaleImgItem);
+        }
+
+        if (returnOrder != null && returnOrder.getReturn_type() > 0) {
+            OrderAfterSaleInvoiceNoItem orderAfterSaleInvoiceNoItem = new
+                    OrderAfterSaleInvoiceNoItem(returnOrder, context);
+            orderAfterSaleInvoiceNoItem.setOnItemClickListener(imgsListener);
+            cells.add(orderAfterSaleInvoiceNoItem);
+        }
+
+
         cells.add(new OrderAfterSaleTotalItem(orderDetail, context));
 
-        OrderAfterSaleImgItem orderAfterSaleImgItem = new OrderAfterSaleImgItem(imgs, context);
-        orderAfterSaleImgItem.setOnItemClickListener(imgsListener);
-        cells.add(orderAfterSaleImgItem);
         return cells;
     }
 
@@ -234,6 +250,10 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
 
     //fixme 申请退货， 填写运单
     public void returnGoods() {
+        if (returnOrder != null && returnOrder.getAgree_apply() == 0) {
+            ToastUtils.showShortToast(context, "等待商家反馈");
+        }
+
         if (outMp.get("cause_id") == null) {
             ToastUtils.showShortToast(context, "请选择退换货原因");
             return;
@@ -250,40 +270,62 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         mp.put("return_brief", outMp.get("return_brief"));
         HttpUtils.getInstance().postImage(ConstantManager.Url.ORDER_RETURN_GOODS, mp, files, new
                 HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, final JSONObject json) throws IOException {
-                runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
-                        loadingDialog.dismiss();
-                        try {
-                            if (json != null) {
-                                if (json.getInt("code") == 0) {
-
-                                } else {
-                                    ToastUtils.showShortToast(context, json.getString("msg"));
+                    public void success(Call call, final JSONObject json) throws IOException {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.dismiss();
+                                try {
+                                    if (json != null) {
+                                        if (json.getInt("code") == 0) {
+                                            initReturnOrder(json);
+                                        } else {
+                                            ToastUtils.showShortToast(context, json.getString
+                                                    ("msg"));
+                                        }
+                                    } else {
+                                        ToastUtils.showShortToast(context, "网络错误");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } else {
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                loadingDialog.dismiss();
                                 ToastUtils.showShortToast(context, "网络错误");
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        });
                     }
                 });
-            }
+    }
 
-            @Override
-            public void failed(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadingDialog.dismiss();
-                        ToastUtils.showShortToast(context, "网络错误");
-                    }
-                });
+    public void initReturnOrder(JSONObject json) {
+        JSONArray returnJSONArray = null;
+        try {
+            returnJSONArray = json.getJSONObject("data").getJSONArray
+                    ("return_order");
+            for (int i = 0; i < returnJSONArray.length(); i++) {
+                JSONObject object = (JSONObject) returnJSONArray.get(i);
+                returnOrder = JsonUtils.fromJsonObject(object, ReturnOrder.class);
             }
-        });
+            bottomBt.setText(R.string.store_feedback);
+            bottomBt.setBackgroundResource(R.color.gray);
+            bottomBt.setTextColor(context.getResources().getColor(R.color.black));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 
     public void registerReceiver() {
