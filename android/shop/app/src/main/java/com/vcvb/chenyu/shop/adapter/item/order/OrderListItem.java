@@ -126,7 +126,8 @@ public class OrderListItem extends BaseItem<OrderDetail> {
             TextView now_pay = foot.findViewById(R.id.now_pay);
             posMap.put(now_pay.getId(), position);
             now_pay.setOnClickListener(listener);
-        } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 0) {
+        } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 0 && mData
+                .getOrder_status() == 1) {
             foot = LayoutInflater.from(context).inflate(R.layout
                     .order_content_have_data_buttom2_item, null);
             TextView after_sale = foot.findViewById(R.id.after_sale);
@@ -135,7 +136,8 @@ public class OrderListItem extends BaseItem<OrderDetail> {
             TextView buy_again = foot.findViewById(R.id.buy_again);
             posMap.put(buy_again.getId(), position);
             buy_again.setOnClickListener(listener);
-        } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 1) {
+        } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 1 && mData
+                .getOrder_status() == 1) {
             foot = LayoutInflater.from(context).inflate(R.layout
                     .order_content_have_data_buttom3_item, null);
             CountdownView cdv = foot.findViewById(R.id.countdownView);
@@ -163,7 +165,8 @@ public class OrderListItem extends BaseItem<OrderDetail> {
             TextView take_goods = foot.findViewById(R.id.take_goods);
             posMap.put(take_goods.getId(), position);
             take_goods.setOnClickListener(listener);
-        } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 2) {
+        } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 2 && mData
+                .getOrder_status() == 1) {
             foot = LayoutInflater.from(context).inflate(R.layout
                     .order_content_have_data_buttom4_item, null);
             TextView after_sale = foot.findViewById(R.id.after_sale);
@@ -178,7 +181,7 @@ public class OrderListItem extends BaseItem<OrderDetail> {
         } else if (mData.getOrder_status() == 4) {
             foot = LayoutInflater.from(context).inflate(R.layout
                     .order_content_have_data_buttom5_item, null);
-            TextView sale_after = foot.findViewById(R.id.sale_after);
+            TextView sale_after = foot.findViewById(R.id.sale_after_return);
             posMap.put(sale_after.getId(), position);
             sale_after.setOnClickListener(listener);
         }

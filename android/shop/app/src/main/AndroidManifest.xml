@@ -220,8 +220,14 @@
             android:theme="@style/AppTheme" />
 
         <activity
+            android:name=".activity.order.OrderAfterSaleListActivity"
+            android:label="@string/sale_after"
+            android:theme="@style/AppTheme" />
+
+        <activity
             android:name=".activity.order.OrderAfterSaleActivity"
             android:label="@string/sale_after"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:theme="@style/AppTheme" />
 
         <provider

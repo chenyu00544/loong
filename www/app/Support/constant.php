@@ -28,16 +28,6 @@ define('MOBILE_KEFU',               dirname(__DIR__) . '/Http/Controllers/Chat/I
 /* 处理并发事件 */
 define('DEALCONCURRENT_PAY_ORDER',            0); // 会员前台下单
 
-/* 订单状态 */
-define('RF_RETURNMON',             -1); // 仅退款
-define('RF_APPLICATION',            0); // 申请
-define('RF_RECEIVE',                1); // 收到退换货
-define('RF_SWAPPED_OUT_SINGLE',     2); // 换出商品寄出 分单
-define('RF_SWAPPED_OUT',            3); // 换出商品寄出
-define('RF_COMPLETE',               4); // 完成退换货
-define('RF_AGREE_APPLY',            5); // 同意申请
-define('REFUSE_APPLY',              6); // 拒绝申请
-
 /* 图片处理相关常数 */
 define('ERR_INVALID_IMAGE',         1);
 define('ERR_NO_GD',                 2);
@@ -99,7 +89,7 @@ define('OS_RETURNED',               4); // 退货
 define('OS_SPLITED',                5); // 已分单
 define('OS_SPLITING_PART',          6); // 部分分单
 define('OS_RETURNED_PART',          7); // 部分已退货
-define('OS_ONLY_REFOUND',           8); // 仅退款3
+define('OS_ONLY_REFOUND',           8); // 仅退款
 
 /* 支付状态 */
 define('PS_UNPAYED',                0); // 未付款
@@ -122,9 +112,10 @@ define('OS_SHIPPED_PART',           6); // 已发货(部分商品)
 define('CS_UNCOMMENT',              0); // 未评价
 define('CS_COMMENTED',              1); // 已评价
 
-/* 退货同意状态 */
-define('OR_UNAGREE',                0) ;//未同意
+/* 退货退款同意状态 */
+define('OR_APPLY',                  0) ;//申请
 define('OR_AGREE',                  1) ;//已同意
+define('OR_UNAGREE',                2) ;//未同意
 
 /* 退换货状态 */
 define('RS_USER_RETURN',            0) ;//商品未退回

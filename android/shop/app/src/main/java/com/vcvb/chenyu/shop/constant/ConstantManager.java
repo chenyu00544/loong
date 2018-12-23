@@ -32,6 +32,7 @@ public interface ConstantManager {
         public int PHONE = 1006;
         public int MSG_RESULT = 1007;
         public int ORDER_RESULT = 1008;
+        public int RORDER_RESULT = 1009;
     }
 
     interface PhotoAlbum {

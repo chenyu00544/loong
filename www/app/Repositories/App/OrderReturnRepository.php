@@ -103,112 +103,141 @@ class OrderReturnRepository implements OrderRepositoryInterface
         $cause_id = $data['cause_id'];
         $cause_type = empty($data['cause_type']) ? 1 : $data['cause_type'];
         $return_brief = empty($data['return_brief']) ? '' : $data['return_brief'];
-        foreach ($orders as $order) {
-            $rorder = $this->orderReturnModel->getOrderReturn(['order_id' => $order->order_id]);
-            if (!empty($rorder)) {
-                $shop_config = RedisCache::get('shop_config');
-                if ($shop_config['activation_number_type'] > $rorder->activation_number) {
-                    $rdata = [
-                        'agree_apply' => OR_UNAGREE,
-                        'activation_number' => $rorder->activation_number + 1
-                    ];
-                    return $this->orderReturnModel->setOrderReturn(['order_id' => $order->order_id], $rdata);
-                } else {
-                    return '申请次数为0，请联系客服';
+        if(!empty($data['ret_id'])){
+            if(!empty($data['ship_name']) && !empty($data['ship_no'])){
+                $rorderWhere['ret_id'] = $data['ret_id'];
+                $rorderUpdata['return_status'] = RS_USER_RETURNING;
+                $rorderUpdata['back_shipping_name'] = $data['ship_name'];
+                $rorderUpdata['back_invoice_no'] = $data['ship_no'];
+                $re = $this->orderReturnModel->setOrderReturn($rorderWhere, $rorderUpdata);
+                if($re){
+                    $rorder = $this->orderReturnModel->getOrderReturn($rorderWhere);
+                    $rorder->order_id = $rorder->order_id . '';
+                    return $rorder;
                 }
-            } else {
-                if ($order->chargeoff_status == 0) {
-                    if ($order->pay_status == 2 && $order->shipping_status == 1) {
-                        $actual_return = $order->money_paid - $order->card_fee - $order->pack_fee - $order->pay_fee - $order->insure_fee - $order->shipping_fee;
-                    } elseif ($order->pay_status == 2) {
-                        $actual_return = $order->money_paid;
-                    }
-
-                    if ($order->pay_status == 2 && $order->shipping_status == 0) {
-                        $return_type = 0;
+            }
+            return '运单填写失败';
+        }else{
+            foreach ($orders as $order) {
+                if($order->pay_status != PS_PAYED){
+                    return '无效订单';
+                }
+                $rorder = $this->orderReturnModel->getOrderReturn(['order_id' => $order->order_id]);
+                if (!empty($rorder)) {
+                    if ($rorder->refound_status == RS_REFOUND) {
+                        return '退款完成';
+                    } elseif ($rorder->return_status == RS_CHANGE_END) {
+                        return '退换货结束';
                     } else {
-                        $return_type = 1;
-                    }
-
-                    $return_order = [
-                        'return_status' => RS_USER_RETURN,
-                        'refound_status' => RS_NOREFOUND,
-                        'agree_apply' => OR_UNAGREE,
-                        'return_sn' => date(VCVB_SNDATE, time()) . rand(10000, 99999),
-                        'return_type' => $return_type,
-                        'user_id' => $uid,
-                        'order_id' => $order->order_id,
-                        'order_sn' => $order->order_sn,
-                        'back' => $cause_type,
-                        'cause_id' => $cause_id,
-                        'apply_time' => $time,
-                        'should_return' => $order->money_paid,
-                        'actual_return' => $actual_return,
-                        'return_brief' => $return_brief,
-                        'ru_id' => $order->ru_id,
-                        'chargeoff_status' => $order->chargeoff_status,
-                        'country' => $order->country,
-                        'province' => $order->province,
-                        'city' => $order->city,
-                        'district' => $order->district,
-                        'street' => $order->street,
-                        'addressee' => $order->consignee,
-                        'phone' => $order->mobile,
-                        'address' => $order->address,
-                    ];
-                    //退货单
-                    DB::beginTransaction();
-                    $rorder = $this->orderReturnModel->addOrderReturn($return_order);
-                    //退货单商品
-                    $rog = [];
-                    foreach ($order->orderGoods as $orderGoods) {
-                        $return_order_goods = [
-                            'rec_id' => $orderGoods->rec_id,
-                            'ret_id' => $rorder->ret_id,
-                            'goods_id' => $orderGoods->goods_id,
-                            'product_id' => $orderGoods->product_id,
-                            'product_sn' => $orderGoods->product_sn,
-                            'goods_name' => $orderGoods->goods_name,
-                            'brand_name' => $orderGoods->brand_name,
-                            'goods_sn' => $orderGoods->goods_sn,
-                            'is_real' => $orderGoods->is_real,
-                            'goods_attr' => $orderGoods->goods_attr,
-                            'attr_id' => $orderGoods->goods_attr_id,
-                            'return_number' => $orderGoods->o_goods_number,
-                            'ru_id' => $orderGoods->ru_id,
-                        ];
-                        $rog = $this->orderReturnGoodsModel->addOrderReturnGoods($return_order_goods);
-                    }
-
-                    //退货商品凭证图片
-                    for ($i = 0; $i < 5; $i++) {
-                        if (!empty($data['file_' . $i])) {
-                            if ($data['file_' . $i]->isValid()) {
-                                $path = 'return_img';
-                                $uri = FileHandle::upLoadImage($data['file_' . $i], $path);
-                                $order_return_img = [
-                                    'user_id' => $uid,
-                                    'ret_id' => $rorder->ret_id,
-                                    'img_file' => $uri,
-                                    'add_time' => $time
-                                ];
-                                $this->orderReturnImagesModel->addImg($order_return_img);
-                            }
+                        $shop_config = RedisCache::get('shop_config');
+                        if ($shop_config['activation_number_type'] > $rorder->activation_number) {
+                            $rdata = [
+                                'agree_apply' => OR_APPLY,
+                                'activation_number' => $rorder->activation_number + 1
+                            ];
+                            return $this->orderReturnModel->setOrderReturn(['order_id' => $order->order_id], $rdata);
+                        } else {
+                            return '申请次数为0，请联系客服';
                         }
                     }
-
-                    $orderUpdate = ['order_stauts' => OS_RETURNED];
-                    $this->orderInfoModel->setOrder(['order_id' => $data['order_id']], $orderUpdate);
-
-                    if (!empty($rog) && !empty($rorder)) {
-                        DB::commit();
-                        return $rorder;
-                    } else {
-                        DB::rollBack();
-                        return '申请失败';
-                    }
                 } else {
-                    return '已出账单';
+                    if ($order->chargeoff_status == 0) {
+                        if ($order->pay_status == 2 && $order->shipping_status == 1) {
+                            $actual_return = $order->money_paid - $order->card_fee - $order->pack_fee - $order->pay_fee - $order->insure_fee - $order->shipping_fee;
+                        } elseif ($order->pay_status == 2) {
+                            $actual_return = $order->money_paid;
+                        }
+
+                        if ($order->pay_status == 2 && $order->shipping_status == 0) {
+                            $return_type = 0;
+                        } else {
+                            $return_type = 1;
+                        }
+
+                        $return_order = [
+                            'return_status' => RS_USER_RETURN,
+                            'refound_status' => RS_NOREFOUND,
+                            'agree_apply' => OR_APPLY,
+                            'return_sn' => date(VCVB_SNDATE, time()) . rand(10000, 99999),
+                            'return_type' => $return_type,
+                            'user_id' => $uid,
+                            'order_id' => $order->order_id,
+                            'order_sn' => $order->order_sn,
+                            'back' => $cause_type,
+                            'cause_id' => $cause_id,
+                            'apply_time' => $time,
+                            'should_return' => $order->money_paid,
+                            'actual_return' => $actual_return,
+                            'return_brief' => $return_brief,
+                            'ru_id' => $order->ru_id,
+                            'chargeoff_status' => $order->chargeoff_status,
+                            'country' => $order->country,
+                            'province' => $order->province,
+                            'city' => $order->city,
+                            'district' => $order->district,
+                            'street' => $order->street,
+                            'addressee' => $order->consignee,
+                            'phone' => $order->mobile,
+                            'address' => $order->address,
+                        ];
+                        //退货单
+                        DB::beginTransaction();
+                        $rorder = $this->orderReturnModel->addOrderReturn($return_order);
+                        $rorder->order_id = $rorder->order_id . '';
+                        //退货单商品
+                        $rog = [];
+                        foreach ($order->orderGoods as $orderGoods) {
+                            $return_order_goods = [
+                                'rec_id' => $orderGoods->rec_id,
+                                'ret_id' => $rorder->ret_id,
+                                'goods_id' => $orderGoods->goods_id,
+                                'product_id' => $orderGoods->product_id,
+                                'product_sn' => $orderGoods->product_sn,
+                                'goods_name' => $orderGoods->goods_name,
+                                'brand_name' => $orderGoods->brand_name,
+                                'goods_sn' => $orderGoods->goods_sn,
+                                'is_real' => $orderGoods->is_real,
+                                'goods_attr' => $orderGoods->goods_attr,
+                                'attr_id' => $orderGoods->goods_attr_id,
+                                'return_number' => $orderGoods->o_goods_number,
+                                'ru_id' => $orderGoods->ru_id,
+                            ];
+                            $rog = $this->orderReturnGoodsModel->addOrderReturnGoods($return_order_goods);
+                        }
+
+                        //退货商品凭证图片
+                        for ($i = 0; $i < 5; $i++) {
+                            if (!empty($data['file_' . $i])) {
+                                if ($data['file_' . $i]->isValid()) {
+                                    $path = 'return_img';
+                                    $uri = FileHandle::upLoadImage($data['file_' . $i], $path);
+                                    $order_return_img = [
+                                        'user_id' => $uid,
+                                        'ret_id' => $rorder->ret_id,
+                                        'img_file' => $uri,
+                                        'add_time' => $time
+                                    ];
+                                    $this->orderReturnImagesModel->addImg($order_return_img);
+                                }
+                            }
+                        }
+                        if ($order->shipping_status == 0) {
+                            $orderUpdate = ['order_status' => OS_ONLY_REFOUND];
+                        } else {
+                            $orderUpdate = ['order_status' => OS_RETURNED];
+                        }
+                        $this->orderInfoModel->setOrder(['order_id' => $data['order_id']], $orderUpdate);
+
+                        if (!empty($rog) && !empty($rorder)) {
+                            DB::commit();
+                            return $rorder;
+                        } else {
+                            DB::rollBack();
+                            return '申请失败';
+                        }
+                    } else {
+                        return '已出账单';
+                    }
                 }
             }
         }

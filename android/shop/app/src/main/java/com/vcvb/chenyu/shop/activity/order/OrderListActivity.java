@@ -82,6 +82,7 @@ public class OrderListActivity extends BaseActivity {
         setNavBack();
         initView();
         initListener();
+        getData(type, true);
     }
 
     @Override
@@ -112,6 +113,11 @@ public class OrderListActivity extends BaseActivity {
         title_wrap.addView(titleView);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     public void initView() {
         line = findViewById(R.id.view26);
         tv1 = findViewById(R.id.textView74);
@@ -122,7 +128,6 @@ public class OrderListActivity extends BaseActivity {
 
         Intent intent = getIntent();
         type = intent.getIntExtra("type", 1);
-        getData(type, true);
         setTypeStyle(type);
 
         mRecyclerView = findViewById(R.id.order_content);

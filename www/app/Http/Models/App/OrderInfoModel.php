@@ -69,7 +69,10 @@ class OrderInfoModel extends Model
                 }
             });
         }
-        return $m->orderBy('add_time', 'DESC')->offset($page * $size)->limit($size)->get();
+        return $m->orderBy('add_time', 'DESC')
+            ->offset($page * $size)
+            ->limit($size)
+            ->get();
     }
 
     public function getOrder($where, $column = ['*'], $whereIn = [])

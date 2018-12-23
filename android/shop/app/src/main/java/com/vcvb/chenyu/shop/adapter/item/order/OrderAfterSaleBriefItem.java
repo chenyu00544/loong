@@ -12,12 +12,12 @@ import android.widget.EditText;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.order.OrderDetail;
+import com.vcvb.chenyu.shop.javaBean.order.ReturnOrder;
 
-public class OrderAfterSaleBriefItem extends BaseItem<OrderDetail> {
+public class OrderAfterSaleBriefItem extends BaseItem<ReturnOrder> {
     public static final int TYPE = R.layout.order_after_sale_brief_item;
 
-    public OrderAfterSaleBriefItem(OrderDetail bean, Context c) {
+    public OrderAfterSaleBriefItem(ReturnOrder bean, Context c) {
         super(bean, c);
     }
 
@@ -36,6 +36,9 @@ public class OrderAfterSaleBriefItem extends BaseItem<OrderDetail> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         final EditText tv = holder.get(R.id.editText21);
+        if (mData.getReturn_brief() != null) {
+            tv.setText(mData.getReturn_brief());
+        }
         tv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

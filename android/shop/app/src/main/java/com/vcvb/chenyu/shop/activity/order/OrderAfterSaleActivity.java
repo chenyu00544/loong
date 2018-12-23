@@ -159,22 +159,31 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                         bottomBt.setText(R.string.apply_refound);
                     }
 
-                    JSONArray causeJSONArray = json.getJSONObject("data").getJSONArray("causes");
-                    for (int i = 0; i < causeJSONArray.length(); i++) {
-                        JSONObject object = (JSONObject) causeJSONArray.get(i);
-                        OrderReturnCause orderReturnCause = JsonUtils.fromJsonObject(object,
-                                OrderReturnCause.class);
-                        orderReturnCauses.add(orderReturnCause);
-                    }
-                    orderReturnCauseDialog = new OrderReturnCauseDialog(orderReturnCauses);
-                    orderReturnCauseDialog.setOnItemClickListener(returnCauseListener);
-
                     JSONArray returnJSONArray = json.getJSONObject("data").getJSONArray
                             ("return_order");
                     for (int i = 0; i < returnJSONArray.length(); i++) {
                         JSONObject object = (JSONObject) returnJSONArray.get(i);
                         returnOrder = JsonUtils.fromJsonObject(object, ReturnOrder.class);
                     }
+
+                    setBottomBtState();
+
+                    JSONArray causeJSONArray = json.getJSONObject("data").getJSONArray("causes");
+                    for (int i = 0; i < causeJSONArray.length(); i++) {
+                        JSONObject object = (JSONObject) causeJSONArray.get(i);
+                        OrderReturnCause orderReturnCause = JsonUtils.fromJsonObject(object,
+                                OrderReturnCause.class);
+                        if (returnOrder.getCause_id() != null) {
+                            if (returnOrder.getCause_id().equals(orderReturnCause.getCause_id())) {
+                                orderReturnCause.setIs_select(true);
+                            } else {
+                                orderReturnCause.setIs_select(false);
+                            }
+                        }
+                        orderReturnCauses.add(orderReturnCause);
+                    }
+                    orderReturnCauseDialog = new OrderReturnCauseDialog(orderReturnCauses);
+                    orderReturnCauseDialog.setOnItemClickListener(returnCauseListener);
                 }
                 mAdapter.addAll(getItems());
             } catch (JSONException e) {
@@ -211,20 +220,20 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         orderAfterSaleCauseItem.setOnItemClickListener(causeListener);
         cells.add(orderAfterSaleCauseItem);
 
-        OrderAfterSaleBriefItem orderAfterSaleBriefItem = new OrderAfterSaleBriefItem(null,
+        OrderAfterSaleBriefItem orderAfterSaleBriefItem = new OrderAfterSaleBriefItem(returnOrder,
                 context);
         cells.add(orderAfterSaleBriefItem);
 
-        if (orderDetail.getShipping_status() == 1) {
+        if (orderDetail.getShipping_status() != null && orderDetail.getShipping_status() == 1 &&
+                returnOrder.getReturn_type() != null && returnOrder.getReturn_type() > 0) {
             OrderAfterSaleImgItem orderAfterSaleImgItem = new OrderAfterSaleImgItem(imgs, context);
             orderAfterSaleImgItem.setOnItemClickListener(imgsListener);
             cells.add(orderAfterSaleImgItem);
         }
 
-        if (returnOrder != null && returnOrder.getReturn_type() > 0) {
+        if (returnOrder.getReturn_type() != null && returnOrder.getReturn_type() > 0) {
             OrderAfterSaleInvoiceNoItem orderAfterSaleInvoiceNoItem = new
                     OrderAfterSaleInvoiceNoItem(returnOrder, context);
-            orderAfterSaleInvoiceNoItem.setOnItemClickListener(imgsListener);
             cells.add(orderAfterSaleInvoiceNoItem);
         }
 
@@ -250,17 +259,34 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
 
     //fixme 申请退货， 填写运单
     public void returnGoods() {
-        if (returnOrder != null && returnOrder.getAgree_apply() == 0) {
-            ToastUtils.showShortToast(context, "等待商家反馈");
-        }
-
-        if (outMp.get("cause_id") == null) {
-            ToastUtils.showShortToast(context, "请选择退换货原因");
-            return;
+        if (returnOrder.getAgree_apply() != null) {
+            if (returnOrder.getAgree_apply() == 0) {
+                ToastUtils.showShortToast(context, context.getResources().getString(R.string
+                        .store_feedback));
+                return;
+            } else if (returnOrder.getAgree_apply() == 1 && (returnOrder.getRefound_status() == 1
+                    || returnOrder
+                    .getReturn_status() == 4)) {
+                ToastUtils.showShortToast(context, context.getResources().getString(R.string
+                        .after_sale_over));
+                return;
+            } else if (returnOrder.getAgree_apply
+                    () == 1 && returnOrder.getReturn_status
+                    () == 1) {
+                ToastUtils.showShortToast(context, context.getResources().getString(R.string
+                        .returning_goods));
+                return;
+            }
+        } else {
+            if (outMp.get("cause_id") == null) {
+                ToastUtils.showShortToast(context, "请选择退换货原因");
+                return;
+            }
         }
         if (outMp.get("return_brief") == null) {
             outMp.put("return_brief", "");
         }
+
         loadingDialog = new LoadingDialog(context, R.style.TransparentDialog);
         loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
@@ -268,6 +294,15 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         mp.put("token", token);
         mp.put("cause_id", outMp.get("cause_id"));
         mp.put("return_brief", outMp.get("return_brief"));
+        if (outMp.get("ship_name") != null) {
+            mp.put("ship_name", outMp.get("ship_name"));
+        }
+        if (outMp.get("ship_no") != null) {
+            mp.put("ship_no", outMp.get("ship_no"));
+        }
+        if (returnOrder.getRet_id() != null) {
+            mp.put("ret_id", returnOrder.getRet_id() + "");
+        }
         HttpUtils.getInstance().postImage(ConstantManager.Url.ORDER_RETURN_GOODS, mp, files, new
                 HttpUtils.NetCall() {
                     @Override
@@ -308,17 +343,10 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
     }
 
     public void initReturnOrder(JSONObject json) {
-        JSONArray returnJSONArray = null;
         try {
-            returnJSONArray = json.getJSONObject("data").getJSONArray
-                    ("return_order");
-            for (int i = 0; i < returnJSONArray.length(); i++) {
-                JSONObject object = (JSONObject) returnJSONArray.get(i);
-                returnOrder = JsonUtils.fromJsonObject(object, ReturnOrder.class);
-            }
-            bottomBt.setText(R.string.store_feedback);
-            bottomBt.setBackgroundResource(R.color.gray);
-            bottomBt.setTextColor(context.getResources().getColor(R.color.black));
+            JSONObject returnJSONObject = json.getJSONObject("data");
+            returnOrder = JsonUtils.fromJsonObject(returnJSONObject, ReturnOrder.class);
+            setBottomBtState();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -332,6 +360,8 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("briefAction");
+        intentFilter.addAction("ShipNameAction");
+        intentFilter.addAction("ShipNoAction");
         receiver = new Receiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -340,11 +370,50 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                         case "briefAction":
                             outMp.put("return_brief", intent.getStringExtra("data"));
                             break;
+                        case "ShipNameAction":
+                            outMp.put("ship_name", intent.getStringExtra("data"));
+                            break;
+                        case "ShipNoAction":
+                            outMp.put("ship_no", intent.getStringExtra("data"));
+                            break;
                     }
                 }
             }
         };
         broadcastManager.registerReceiver(receiver, intentFilter);
+    }
+
+    public void setBottomBtState() {
+        if (returnOrder.getAgree_apply() != null) {
+            if (returnOrder.getAgree_apply() == 0) {
+                bottomBt.setText(R.string.store_feedback);
+                bottomBt.setBackgroundResource(R.color.gray_d);
+                bottomBt.setTextColor(context.getResources().getColor(R.color.black));
+            } else if (returnOrder.getAgree_apply
+                    () == 1 && returnOrder.getReturn_type() > 0 && returnOrder.getReturn_status()
+                    == 0) {
+                bottomBt.setText(R.string.shipping_sn);
+                bottomBt.setBackgroundResource(R.color.red);
+                bottomBt.setTextColor(context.getResources().getColor(R.color.white));
+            } else if (returnOrder.getAgree_apply
+                    () == 1 && (returnOrder.getRefound_status() == 1 || returnOrder
+                    .getReturn_status() == 4)) {
+                bottomBt.setText(R.string.after_sale_over);
+                bottomBt.setBackgroundResource(R.color.gray_d);
+                bottomBt.setTextColor(context.getResources().getColor(R.color.black));
+            } else if (returnOrder.getAgree_apply
+                    () == 2) {
+                bottomBt.setText(R.string.no_apply);
+                bottomBt.setBackgroundResource(R.color.colorBack_morandi);
+                bottomBt.setTextColor(context.getResources().getColor(R.color.white));
+            } else if (returnOrder.getAgree_apply
+                    () == 1 && returnOrder.getReturn_status
+                    () == 1) {
+                bottomBt.setText(R.string.returning_goods);
+                bottomBt.setBackgroundResource(R.color.gray_d);
+                bottomBt.setTextColor(context.getResources().getColor(R.color.black));
+            }
+        }
     }
 
     @Override

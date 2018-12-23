@@ -246,7 +246,10 @@
     <string name="apply_refound">申请退款</string>
     <string name="store_feedback">等待商家反馈</string>
     <string name="shipping_sn">提交运单</string>
+    <string name="no_apply">商家拒绝，重新申请</string>
+    <string name="returning_goods">商品退回中</string>
     <string name="feedback">等待平台反馈</string>
+    <string name="after_sale_over">售后处理完成</string>
 
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
@@ -267,4 +270,6 @@
     <string name="refund_only">仅退款</string>
     <string name="return_goods_img">退换货原因图片</string>
     <string name="return_brief">退货原因描述</string>
+    <string name="ship_name">快递公司</string>
+    <string name="ship_no">快递单号</string>
 </resources>

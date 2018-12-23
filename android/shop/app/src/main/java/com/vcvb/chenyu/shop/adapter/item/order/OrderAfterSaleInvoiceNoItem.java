@@ -15,7 +15,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.order.ReturnOrder;
 
 public class OrderAfterSaleInvoiceNoItem extends BaseItem<ReturnOrder> {
-    public static final int TYPE = R.layout.order_after_sale_brief_item;
+    public static final int TYPE = R.layout.order_after_sale_invoice_no_item;
 
     public OrderAfterSaleInvoiceNoItem(ReturnOrder bean, Context c) {
         super(bean, c);
@@ -35,8 +35,15 @@ public class OrderAfterSaleInvoiceNoItem extends BaseItem<ReturnOrder> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        final EditText tv = holder.get(R.id.editText21);
-        tv.addTextChangedListener(new TextWatcher() {
+        final EditText tv1 = holder.get(R.id.editText22);
+        final EditText tv2 = holder.get(R.id.editText23);
+        if(mData.getBack_shipping_name() != null ){
+            tv1.setText(mData.getBack_shipping_name());
+        }
+        if(mData.getBack_invoice_no() != null ){
+            tv2.setText(mData.getBack_invoice_no());
+        }
+        tv1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -50,8 +57,28 @@ public class OrderAfterSaleInvoiceNoItem extends BaseItem<ReturnOrder> {
             @Override
             public void afterTextChanged(Editable editable) {
                 Intent intent = new Intent();
-                intent.setAction("briefAction");
-                intent.putExtra("data", tv.getText().toString());
+                intent.setAction("ShipNameAction");
+                intent.putExtra("data", tv1.getText().toString());
+                LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+            }
+        });
+
+        tv2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Intent intent = new Intent();
+                intent.setAction("ShipNoAction");
+                intent.putExtra("data", tv2.getText().toString());
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });

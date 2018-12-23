@@ -75,12 +75,12 @@ class OrderRepository implements OrderRepositoryInterface
             switch ($data['order_type']) {
                 case 1:
                     //全部
-                    $order_orwhere = [
-                        [['order_status', '<>', OS_CANCELED]],
-                        [['order_status', '<>', OS_INVALID]],
-                    ];
                     $order_where = [
                         ['user_id', '=', $uid],
+                        ['order_status', '<>', OS_CANCELED],
+                        ['order_status', '<>', OS_INVALID],
+                        ['order_status', '<>', OS_RETURNED],
+                        ['order_status', '<>', OS_ONLY_REFOUND]
                     ];
                     break;
                 case 2:
@@ -119,6 +119,16 @@ class OrderRepository implements OrderRepositoryInterface
                         ['order_status', '=', OS_CONFIRMED],
                         ['shipping_status', '=', SS_RECEIVED],
                         ['comment_status', '=', CS_UNCOMMENT],
+                        ['user_id', '=', $uid],
+                    ];
+                    break;
+                case 6:
+                    //退款退换货
+                    $order_orwhere = [
+                        [['order_status', '>=', OS_RETURNED]],
+                        [['order_status', '<=', OS_ONLY_REFOUND]],
+                    ];
+                    $order_where = [
                         ['user_id', '=', $uid],
                     ];
                     break;

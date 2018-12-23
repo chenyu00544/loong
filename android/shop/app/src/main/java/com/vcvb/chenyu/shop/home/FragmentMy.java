@@ -21,6 +21,7 @@ import com.vcvb.chenyu.shop.activity.center.AddressActivity;
 import com.vcvb.chenyu.shop.activity.center.BrowseActivity;
 import com.vcvb.chenyu.shop.activity.center.MyCollectionActivity;
 import com.vcvb.chenyu.shop.activity.center.userinfo.UserInfoActivity;
+import com.vcvb.chenyu.shop.activity.order.OrderAfterSaleListActivity;
 import com.vcvb.chenyu.shop.activity.order.OrderListActivity;
 import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
@@ -60,7 +61,6 @@ public class FragmentMy extends BaseFragment {
         initView();
         initListener();
         checkLogin();
-        getData();
         return view;
     }
 
@@ -215,6 +215,7 @@ public class FragmentMy extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        getData();
         registerReceiver();
     }
 
@@ -457,8 +458,8 @@ public class FragmentMy extends BaseFragment {
         if (token == null || token.equals("")) {
             showLoginDialog();
         } else {
-            Intent intent = new Intent(context, OrderListActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(context, OrderAfterSaleListActivity.class);
+            startActivityForResult(intent, ConstantManager.ResultStatus.RORDER_RESULT);
         }
     }
 
@@ -506,7 +507,8 @@ public class FragmentMy extends BaseFragment {
                 getData();
                 break;
             case ConstantManager.ResultStatus.ORDER_RESULT:
-                if(data != null && data.getExtras().getInt("code") == ConstantManager.ResultStatus.ORDER_RESULT){
+                if (data != null && data.getExtras().getInt("code") == ConstantManager
+                        .ResultStatus.ORDER_RESULT) {
                     Intent intent = new Intent();
                     intent.setAction("GoHome");
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intent);

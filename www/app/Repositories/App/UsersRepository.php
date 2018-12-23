@@ -164,6 +164,9 @@ class UsersRepository implements UsersRepositoryInterface
         $order_where = [
             ['order_status', '<>', OS_CANCELED],
             ['order_status', '<>', OS_INVALID],
+            ['order_status', '<>', OS_RETURNED],
+            ['order_status', '<>', OS_ONLY_REFOUND],
+            ['order_status', '<>', OS_RETURNED_PART],
             ['pay_status', '=', PS_UNPAYED],
             ['shipping_status', '=', SS_UNSHIPPED],
             ['user_id', '=', $uid],
