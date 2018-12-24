@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
@@ -44,8 +45,10 @@ class TransportExpressModel extends Model
 
     public function delExpress($where)
     {
-        return $this->where($where)
-            ->delete();
+        try {
+            return $this->where($where)
+                ->delete();
+        } catch (\Exception $e) {
+        }
     }
-
 }

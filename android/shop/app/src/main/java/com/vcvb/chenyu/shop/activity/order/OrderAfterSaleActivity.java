@@ -224,8 +224,7 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                 context);
         cells.add(orderAfterSaleBriefItem);
 
-        if (orderDetail.getShipping_status() != null && orderDetail.getShipping_status() == 1 &&
-                returnOrder.getReturn_type() != null && returnOrder.getReturn_type() > 0) {
+        if (orderDetail.getShipping_status() != null && orderDetail.getShipping_status() == 1) {
             OrderAfterSaleImgItem orderAfterSaleImgItem = new OrderAfterSaleImgItem(imgs, context);
             orderAfterSaleImgItem.setOnItemClickListener(imgsListener);
             cells.add(orderAfterSaleImgItem);

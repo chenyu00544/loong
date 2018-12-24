@@ -12,6 +12,7 @@ use App\Contracts\OrderRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
+use App\Helper\ShippingProxy;
 use App\Http\Models\App\BonusUserModel;
 use App\Http\Models\App\CartModel;
 use App\Http\Models\App\CouponsUserModel;
@@ -986,5 +987,19 @@ class OrderRepository implements OrderRepositoryInterface
             }
             return $return;
         }
+    }
+
+    public function getLogisticsInfo($data)
+    {
+        $ports = ['EMS' => 'ems', '顺丰' => 'shunfeng', '申通' => 'shentong', '圆通' => 'yuantong', '中通' => 'zhongtong', '汇通' => 'huitongkuaidi', '百世' => 'huitongkuaidi', '韵达' => 'yunda', '天天' => 'tiantian', '京东' => 'jd', '优速' => 'youshuwuliu', '全峰' => 'quanfengkuaidi'];
+        foreach ($ports as $key => $value) {
+            if (strpos($data['ship_name'], $key) !== false) {
+                $args['ship_name'] = $value;
+                break;
+            }
+        }
+        $args['ship_no'] = $data['ship_no'];
+        $shipProxy = new ShippingProxy();
+        return $shipProxy->getExpress($args['ship_name'], $args['ship_no']);
     }
 }

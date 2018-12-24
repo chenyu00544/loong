@@ -159,6 +159,7 @@ class TransportRepository implements TransportRepositoryInterface
 
     public function getTransportInfo($id = 0, $userId = 0)
     {
+        $this->transportExpressModel->delExpress(['tid' => 0]);
         $extends = $this->transportExtendModel->getExtendAll(['ru_id' => 0, 'tid' => $id, 'admin_id' => $userId]);
         $regions = $this->regionsModel->getRegionsRange(1, 2);
         $regionArr = [];
@@ -250,7 +251,7 @@ class TransportRepository implements TransportRepositoryInterface
         } elseif ($type == 'express_del') {
             return $this->transportExpressModel->delExpress(['id' => $id]);
         } elseif ($type == 'express_update') {
-            return $this->transportExpressModel->setExpress(['id' => $id], $updata);
+            $this->transportExpressModel->setExpress(['id' => $id], $updata);
         }
     }
 

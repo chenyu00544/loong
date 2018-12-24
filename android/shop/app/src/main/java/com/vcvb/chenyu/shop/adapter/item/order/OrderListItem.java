@@ -178,7 +178,7 @@ public class OrderListItem extends BaseItem<OrderDetail> {
             TextView evaluate = foot.findViewById(R.id.evaluate);
             posMap.put(evaluate.getId(), position);
             evaluate.setOnClickListener(listener);
-        } else if (mData.getOrder_status() == 4) {
+        } else if (mData.getOrder_status() == 4 || mData.getOrder_status() == 8) {
             foot = LayoutInflater.from(context).inflate(R.layout
                     .order_content_have_data_buttom5_item, null);
             TextView sale_after = foot.findViewById(R.id.sale_after_return);

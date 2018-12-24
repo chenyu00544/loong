@@ -61,6 +61,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('order/after/sale', 'OrderController@afterSaleOrder');
     Route::post('order/after/sale/orders', 'OrderController@afterSaleOrders');
     Route::post('order/return/goods', 'OrderController@returnGoods');
+    Route::post('order/logistics/get', 'OrderController@getLogisticsInfo');
 
     Route::post('pay/alipay', 'PayController@aliPayApp');
     Route::post('pay/alipay/async/notify', 'PayController@asyncAliNotify');

@@ -123,4 +123,10 @@ class OrderController extends CommonController
         }
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
+
+    public function getLogisticsInfo(Request $request)
+    {
+        $re = $this->orderRepository->getLogisticsInfo($request->all());
+        return $re;
+    }
 }

@@ -7,7 +7,7 @@
                 @foreach($express as $val)
                     <li class="fl mar-all-5 wd120">
                         <a class="cursor sel-pro">
-                            <input type="checkbox" name="province[{{$val->shipping_id}}]" value="{{$val->shipping_id}}"
+                            <input type="radio" name="province" value="{{$val->shipping_id}}"
                                    id="province_{{$val->shipping_id}}" class="fl dis-bk regions express"
                                    @if($val->selected) checked @endif @if($val->disabled) disabled @endif>
                             <label class="ui-label cursor" for="province_{{$val->shipping_id}}">
