@@ -2736,11 +2736,12 @@ input[type=file].upload-file {
 }
 
 .return-order-goods {
-    width: calc(100% - 470px);
+    width: calc(100% - 420px);
     border-right: 1px solid #eee;
 }
 
 .return-order-desc {
+    width: 400px;
     padding: 5px 0 0 20px;
     overflow: hidden;
 }

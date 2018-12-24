@@ -224,7 +224,8 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                 context);
         cells.add(orderAfterSaleBriefItem);
 
-        if (orderDetail.getShipping_status() != null && orderDetail.getShipping_status() == 1) {
+        if (orderDetail.getShipping_status() != null && (orderDetail.getShipping_status() == 1 ||
+                orderDetail.getShipping_status() == 2)) {
             OrderAfterSaleImgItem orderAfterSaleImgItem = new OrderAfterSaleImgItem(imgs, context);
             orderAfterSaleImgItem.setOnItemClickListener(imgsListener);
             cells.add(orderAfterSaleImgItem);
@@ -261,7 +262,7 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         if (returnOrder.getAgree_apply() != null) {
             if (returnOrder.getAgree_apply() == 0) {
                 ToastUtils.showShortToast(context, context.getResources().getString(R.string
-                        .store_feedback));
+                        .feedback));
                 return;
             } else if (returnOrder.getAgree_apply() == 1 && (returnOrder.getRefound_status() == 1
                     || returnOrder
@@ -274,6 +275,13 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                     () == 1) {
                 ToastUtils.showShortToast(context, context.getResources().getString(R.string
                         .returning_goods));
+                return;
+            } else if (returnOrder.getAgree_apply
+                    () == 1 && returnOrder.getRefound_status
+                    () == 0 && returnOrder.getReturn_type()
+                    == 0) {
+                ToastUtils.showShortToast(context, context.getResources().getString(R.string
+                        .feedback_refound));
                 return;
             }
         } else {
@@ -385,7 +393,7 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
     public void setBottomBtState() {
         if (returnOrder.getAgree_apply() != null) {
             if (returnOrder.getAgree_apply() == 0) {
-                bottomBt.setText(R.string.store_feedback);
+                bottomBt.setText(R.string.feedback);
                 bottomBt.setBackgroundResource(R.color.gray_d);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.black));
             } else if (returnOrder.getAgree_apply
@@ -395,9 +403,14 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                 bottomBt.setBackgroundResource(R.color.red);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.white));
             } else if (returnOrder.getAgree_apply
-                    () == 1 && (returnOrder.getRefound_status() == 1 || returnOrder
-                    .getReturn_status() == 4)) {
+                    () == 1 && returnOrder
+                    .getReturn_status() == 4) {
                 bottomBt.setText(R.string.after_sale_over);
+                bottomBt.setBackgroundResource(R.color.gray_d);
+                bottomBt.setTextColor(context.getResources().getColor(R.color.black));
+            } else if (returnOrder.getAgree_apply
+                    () == 1 && returnOrder.getRefound_status() == 1) {
+                bottomBt.setText(R.string.refund_over);
                 bottomBt.setBackgroundResource(R.color.gray_d);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.black));
             } else if (returnOrder.getAgree_apply
@@ -409,6 +422,12 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                     () == 1 && returnOrder.getReturn_status
                     () == 1) {
                 bottomBt.setText(R.string.returning_goods);
+                bottomBt.setBackgroundResource(R.color.gray_d);
+                bottomBt.setTextColor(context.getResources().getColor(R.color.black));
+            } else if (returnOrder.getAgree_apply
+                    () == 1 && returnOrder.getReturn_type
+                    () == 0) {
+                bottomBt.setText(R.string.feedback_refound);
                 bottomBt.setBackgroundResource(R.color.gray_d);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.black));
             }

@@ -498,7 +498,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
                 $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
-                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
@@ -735,7 +735,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
                 $order_new[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
-                $order_new[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id];
+                $order_new[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
@@ -968,7 +968,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
                 $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
-                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];

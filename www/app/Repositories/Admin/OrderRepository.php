@@ -233,7 +233,13 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $where['ret_id'] = $id;
         $column = ['*'];
-        return $this->orderReturnGoodsModel->getOrderReturnGoodses($where, $column);
+        $res = $this->orderReturnGoodsModel->getOrderReturnGoodses($where, $column);
+        foreach ($res as $re) {
+            $re->goods_thumb = FileHandle::getImgByOssUrl($re->goods_thumb);
+            $re->goods_img = FileHandle::getImgByOssUrl($re->goods_img);
+            $re->original_img = FileHandle::getImgByOssUrl($re->original_img);
+        }
+        return $res;
     }
 
     public function getDeliveryGoodses($id)

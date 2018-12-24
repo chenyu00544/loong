@@ -91,7 +91,7 @@
                                 <dl>
                                     <dt>订单总金额：</dt>
                                     <dd>
-                                        <font class="red">¥{{$order->goods_amount+$order->tax+$order->shipping_fee+$order->insure_fee+$order->pay_fee-$order->discount-$order->surplus-$order->integral_money-$order->bonus-$order->coupons-$order->integral_money-$order->money_paid}}</font>
+                                        <font class="red">¥{{$order->goods_amount+$order->tax+$order->shipping_fee+$order->insure_fee+$order->pay_fee-$order->discount-$order->surplus-$order->integral_money-$order->bonus-$order->coupons-$order->integral_money}}</font>
                                     </dd>
                                     <dt>应付款金额</dt>
                                     <dd><font class="red">¥{{$order->order_amount}}</font></dd>

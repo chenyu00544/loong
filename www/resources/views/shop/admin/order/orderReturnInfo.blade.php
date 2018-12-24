@@ -28,7 +28,7 @@
                                     <dt>流水号：</dt>
                                     <dd>{{$rorder->return_sn}}</dd>
                                     <dt>配送费用：</dt>
-                                    <dd>{{$dorder->shipping_fee}}</dd>
+                                    <dd>{{$rorder->shipping_fee}}</dd>
                                 </dl>
                                 <dl>
                                     <dt>下单时间：</dt>
@@ -142,7 +142,7 @@
                                                 <div>
                                                     <div class="img fl">
                                                         <img width="80"
-                                                             src="{{url($orderGoods->goods_thumb)}}">
+                                                             src="{{$orderGoods->original_img}}">
                                                     </div>
                                                     <div class="product-info">
                                                         <div class="name">
@@ -189,7 +189,7 @@
                                                 <div>
                                                     <div class="img fl">
                                                         <img width="80"
-                                                             src="{{url($returnGoods->goods_thumb)}}">
+                                                             src="{{$returnGoods->original_img}}">
                                                     </div>
                                                     <div class="product-info">
                                                         <div class="name">
@@ -251,30 +251,26 @@
                                 <div class="item mar-top-20">
                                     <div class="step-label fl wd-120 text-right">当前可执行操作：</div>
                                     <div class="operation mar-left-5">
-                                        @if($rorder->return_status != 6)
+                                        @if($rorder->return_status < 4)
                                             @if($rorder->agree_apply != 1)
                                                 <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
                                                    data-ope="agree_apply">同意申请</a>
                                             @endif
 
-                                            @if($rorder->return_status < 1 && $rorder->return_status >= 1 && $rorder->agree_apply)
+                                            @if($rorder->return_status == 1 && $rorder->agree_apply ==1)
                                                 <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
                                                    data-ope="receive_goods">收到退回商品</a>
                                             @endif
-
+                                            @if($rorder->agree_apply == 1 && $rorder->return_type == 0)
+                                                <a href="{{url('admin/order/return/refound/'.$rorder->ret_id)}}"
+                                                   class="btn btn-danger btn-sm mar-left-5"
+                                                   data-ope="refound">去退款</a>
+                                            @endif
                                             @if($rorder->return_status == 2 && $rorder->chargeoff_status == 0 && $rorder->agree_apply == 1)
                                                 @if($rorder->return_status == 2)
                                                     <a href="{{url('admin/order/return/refound/'.$rorder->ret_id)}}"
                                                        class="btn btn-danger btn-sm mar-left-5"
                                                        data-ope="refound">去退款</a>
-                                                @endif
-                                            @endif
-
-                                            @if($rorder->back == 2)
-                                                @if($rorder->return_status < 2 && $rorder->return_status >= 0)
-                                                    <a href="javascript:;"
-                                                       class="btn btn-danger btn-sm mar-left-5"
-                                                       data-ope="swapped_out_single">换出商品寄出【分单】</a>
                                                     <a href="javascript:;"
                                                        class="btn btn-danger btn-sm mar-left-5"
                                                        data-ope="swapped_out">换出商品寄出</a>
@@ -287,7 +283,7 @@
                                             @endif
                                         @endif
                                         @if($rorder->refound_status != 1 && $rorder->agree_apply != 1)
-                                            @if($rorder->return_status != 6)
+                                            @if($rorder->return_status < 4)
                                                 <a href="javascript:;" class="btn btn-danger btn-sm mar-left-5"
                                                    data-ope="refuse_apply">拒绝</a>
                                             @else

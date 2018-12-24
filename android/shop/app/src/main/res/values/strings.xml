@@ -244,12 +244,13 @@
     <string name="no_partake">不参与</string>
     <string name="apply_return_goods">申请退货</string>
     <string name="apply_refound">申请退款</string>
-    <string name="store_feedback">等待商家反馈</string>
     <string name="shipping_sn">提交运单</string>
     <string name="no_apply">商家拒绝，重新申请</string>
     <string name="returning_goods">商品退回中</string>
     <string name="feedback">等待平台反馈</string>
+    <string name="feedback_refound">等待平台退款</string>
     <string name="after_sale_over">售后处理完成</string>
+    <string name="refund_over">退款处理完成</string>
 
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
