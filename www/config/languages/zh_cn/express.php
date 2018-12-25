@@ -54,4 +54,7 @@ return array(
     'jd_express' => '京东快递',
     'jd_express_desc' => '<a href="http://www.jd-express.com" target="_blank">http://www.jd-express.com</a>',
     'jd_code' => 'JD',
+
+    'ports' => ['EMS' => 'ems', '顺丰' => 'shunfeng', '申通' => 'shentong', '圆通' => 'yuantong', '中通' => 'zhongtong', '汇通' => 'huitongkuaidi', '百世' => 'huitongkuaidi', '韵达' => 'yunda', '天天' => 'tiantian', '京东' => 'jd', '优速' => 'youshuwuliu', '全峰' => 'quanfengkuaidi'],
+
 );

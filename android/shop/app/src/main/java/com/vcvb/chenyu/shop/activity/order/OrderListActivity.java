@@ -519,6 +519,16 @@ public class OrderListActivity extends BaseActivity {
         startActivityForResult(intent, ConstantManager.ResultStatus.ORDER_RESULT);
     }
 
+    // fixme 查看物流
+    public void logistics() {
+        Intent intent = new Intent(OrderListActivity.this, OrderLogisticsActivity.class);
+        OrderDetail obj = orders.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order", obj);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -561,7 +571,7 @@ public class OrderListActivity extends BaseActivity {
                     afterSale();
                     break;
                 case R.id.look_express://查看物流
-                    System.out.println("查看物流");
+                    logistics();
                     break;
                 case R.id.take_goods://确认收货
                     System.out.println("确认收货");

@@ -273,4 +273,7 @@
     <string name="return_brief">退货原因描述</string>
     <string name="ship_name">快递公司</string>
     <string name="ship_no">快递单号</string>
+    <string name="logistics_info">查看物流</string>
+    <string name="logistics_track">物流跟踪</string>
+
 </resources>

@@ -6,10 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDetail {
+public class OrderDetail implements Serializable {
     private String order_id_str;
     private String main_order_id;
     private String order_sn;
@@ -42,7 +43,8 @@ public class OrderDetail {
     private String province_name;
     private String city_name;
     private String district_name;
-
+    private String invoice_no;
+    private String shipping_name;
     private List<OrderGoods> orderGoodses;
 
     public Integer getAuto_delivery_time() {
@@ -307,6 +309,22 @@ public class OrderDetail {
 
     public void setGoods_cause(Integer goods_cause) {
         this.goods_cause = goods_cause;
+    }
+
+    public String getInvoice_no() {
+        return invoice_no;
+    }
+
+    public void setInvoice_no(String invoice_no) {
+        this.invoice_no = invoice_no;
+    }
+
+    public String getShipping_name() {
+        return shipping_name;
+    }
+
+    public void setShipping_name(String shipping_name) {
+        this.shipping_name = shipping_name;
     }
 
     public void setData(JSONObject json) {

@@ -31,6 +31,7 @@ class CronService
         }
         $time = time();
         $where = [
+            ['order_status', '=', OS_CONFIRMED],
             ['shipping_status', '=', SS_SHIPPED],
             ['shipping_time', '<', $time-RedisCache::get('shop_config')['auto_delivery_time']*86400]
         ];

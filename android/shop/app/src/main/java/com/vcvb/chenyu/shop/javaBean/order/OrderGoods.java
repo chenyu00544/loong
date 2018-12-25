@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.order;
 
-public class OrderGoods {
+import java.io.Serializable;
+
+public class OrderGoods  implements Serializable {
 
     private Integer rec_id;
     private Integer goods_id;

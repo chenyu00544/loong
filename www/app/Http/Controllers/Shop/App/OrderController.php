@@ -126,7 +126,15 @@ class OrderController extends CommonController
 
     public function getLogisticsInfo(Request $request)
     {
-        $re = $this->orderRepository->getLogisticsInfo($request->all());
-        return $re;
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $data = $this->orderRepository->getLogisticsInfo($request->all(), $uid);
+            if ($data) {
+                return ['code' => 0, 'msg' => '', 'data' => $data];
+            } else {
+                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
 }

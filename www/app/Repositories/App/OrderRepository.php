@@ -10,6 +10,7 @@ namespace App\Repositories\App;
 
 use App\Contracts\OrderRepositoryInterface;
 use App\Facades\Common;
+use App\Facades\LangConfig;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Helper\ShippingProxy;
@@ -148,6 +149,10 @@ class OrderRepository implements OrderRepositoryInterface
             $re->add_time_date = date('Y-m-d', $re->add_time);
             $re->current_time = time();
             $re->order_id_str = (string)$re->order_id;
+            $re->country_name = $re->mapcountry->region_name;
+            $re->province_name = $re->mapprovince->region_name;
+            $re->city_name = $re->mapcity->region_name;
+            $re->district_name = $re->mapdistrict->region_name;
             foreach ($re->orderGoods as $order_goods) {
                 $order_goods->goods_thumb = FileHandle::getImgByOssUrl($order_goods->Goods->goods_thumb);
                 $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);
@@ -989,10 +994,10 @@ class OrderRepository implements OrderRepositoryInterface
         }
     }
 
-    public function getLogisticsInfo($data)
+    public function getLogisticsInfo($data, $uid)
     {
-        $ports = ['EMS' => 'ems', '顺丰' => 'shunfeng', '申通' => 'shentong', '圆通' => 'yuantong', '中通' => 'zhongtong', '汇通' => 'huitongkuaidi', '百世' => 'huitongkuaidi', '韵达' => 'yunda', '天天' => 'tiantian', '京东' => 'jd', '优速' => 'youshuwuliu', '全峰' => 'quanfengkuaidi'];
-        foreach ($ports as $key => $value) {
+        $ports = LangConfig::LangExpressConf();
+        foreach ($ports['ports'] as $key => $value) {
             if (strpos($data['ship_name'], $key) !== false) {
                 $args['ship_name'] = $value;
                 break;
@@ -1000,6 +1005,33 @@ class OrderRepository implements OrderRepositoryInterface
         }
         $args['ship_no'] = $data['ship_no'];
         $shipProxy = new ShippingProxy();
-        return $shipProxy->getExpress($args['ship_name'], $args['ship_no']);
+        $re = $shipProxy->getExpress($args['ship_name'], $args['ship_no']);
+        $data = [];
+        if ($re['status'] == '200') {
+            foreach ($re['data'] as $key => $e) {
+                $express['time'] = $e['time'];
+                $express['context'] = $e['context'];
+                if (empty($e['location'])) {
+                    if($key == 0){
+                        if ((strpos($express['context'], '派件') === false || strpos($express['context'], '派') === false) && (strpos($express['context'], '签收') === false || strpos($express['context'], '签') === false)) {
+                            $express['location'] = '运输中';
+                        } else {
+                            if (strpos($express['context'], '签收') === false) {
+                                $express['location'] = '派件中';
+                            } else {
+                                $express['location'] = '已签收';
+                            }
+                        }
+                    }else{
+                        $express['location'] = '已送达,转下一站';
+                    }
+                } else {
+                    $express['location'] = $e['location'];
+                }
+                $express['ftime'] = $e['ftime'];
+                $data[] = $express;
+            }
+        }
+        return $data;
     }
 }

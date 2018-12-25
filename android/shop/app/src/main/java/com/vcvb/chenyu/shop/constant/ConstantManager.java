@@ -139,7 +139,7 @@ public interface ConstantManager {
         public String ORDER_AFTER_SALE_ORDERS = URIHOST + "app/order/after/sale/orders";
         public String ORDER_AFTER_SALE = URIHOST + "app/order/after/sale";
         public String ORDER_RETURN_GOODS = URIHOST + "app/order/return/goods";
-
+        public String ORDER_LOGISTICS = URIHOST + "app/order/logistics/get";
 
         //fixme 付款地址
         public String ALI_PAY = URIHOST + "app/pay/alipay";
