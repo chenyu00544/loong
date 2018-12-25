@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.BaseItem;
 import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
@@ -45,10 +44,16 @@ public class OrderLogisticsItem extends BaseItem<Logistics> {
         if (mData.isIs_last()) {
             //阴影部分
             upV.setAlpha(0);
-            Glide.with(context).load(R.drawable.icon_spot).into(ivC);
+            ivC.setImageResource(R.drawable.icon_spot);
             time.setTextColor(context.getResources().getColor(R.color.colorFont_morandi));
             title.setTextColor(context.getResources().getColor(R.color.colorFont_morandi));
             content.setTextColor(context.getResources().getColor(R.color.colorFont_morandi));
+        }else{
+            upV.setAlpha(1);
+            ivC.setImageResource(R.drawable.black_background);
+            time.setTextColor(context.getResources().getColor(R.color.gray));
+            title.setTextColor(context.getResources().getColor(R.color.gray));
+            content.setTextColor(context.getResources().getColor(R.color.gray));
         }
         time.setText(mData.getTime());
         title.setText(mData.getLocation());

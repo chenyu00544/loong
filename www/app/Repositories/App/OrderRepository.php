@@ -73,6 +73,7 @@ class OrderRepository implements OrderRepositoryInterface
         $page = $data['page'] - 1;
         $order_orwhere = [];
         $order_where = [];
+        $orderBy = [];
         if (!empty($data['order_type'])) {
             switch ($data['order_type']) {
                 case 1:
@@ -84,6 +85,7 @@ class OrderRepository implements OrderRepositoryInterface
                         ['order_status', '<>', OS_RETURNED],
                         ['order_status', '<>', OS_ONLY_REFOUND]
                     ];
+                    $orderBy['add_time'] = 'DESC';
                     break;
                 case 2:
                     //待付款
@@ -97,6 +99,7 @@ class OrderRepository implements OrderRepositoryInterface
                         ['shipping_status', '=', SS_UNSHIPPED],
                         ['user_id', '=', $uid],
                     ];
+                    $orderBy['add_time'] = 'DESC';
                     break;
                 case 3:
                     //待发货
@@ -106,6 +109,7 @@ class OrderRepository implements OrderRepositoryInterface
                         ['shipping_status', '=', SS_UNSHIPPED],
                         ['user_id', '=', $uid],
                     ];
+                    $orderBy['pay_time'] = 'DESC';
                     break;
                 case 4:
                     //待收货
@@ -114,6 +118,7 @@ class OrderRepository implements OrderRepositoryInterface
                         ['shipping_status', '=', SS_SHIPPED],
                         ['user_id', '=', $uid],
                     ];
+                    $orderBy['shipping_time'] = 'DESC';
                     break;
                 case 5:
                     //待评价
@@ -123,6 +128,7 @@ class OrderRepository implements OrderRepositoryInterface
                         ['comment_status', '=', CS_UNCOMMENT],
                         ['user_id', '=', $uid],
                     ];
+                    $orderBy['confirm_take_time'] = 'DESC';
                     break;
                 case 6:
                     //退款退换货
@@ -147,6 +153,10 @@ class OrderRepository implements OrderRepositoryInterface
         $res = $this->orderInfoModel->getOrders($order_where, $order_orwhere, $page, ['*']);
         foreach ($res as $re) {
             $re->add_time_date = date('Y-m-d', $re->add_time);
+            $re->confirm_time_date = date('Y-m-d', $re->confirm_time);
+            $re->pay_time_date = date('Y-m-d', $re->pay_time);
+            $re->shipping_time_date = date('Y-m-d', $re->shipping_time);
+            $re->confirm_take_time_date = date('Y-m-d', $re->confirm_take_time);
             $re->current_time = time();
             $re->order_id_str = (string)$re->order_id;
             $re->country_name = $re->mapcountry->region_name;
@@ -265,9 +275,19 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function setOrder($data, $uid)
     {
+        $time = time();
         $where['user_id'] = $uid;
         $where['order_id'] = $data['order_id'];
-        $updata['order_status'] = $data['order_status'];
+        $updata = [];
+        switch ($data['order_type']) {
+            case 'cancel_order':
+                $updata['order_status'] = OS_CANCELED;
+                break;
+            case 'confirm_take_order':
+                $updata['confirm_take_time'] = $time;
+                $updata['shipping_status'] = SS_RECEIVED;
+                break;
+        }
 
         //付款方式
         if (!empty($data['pay'])) {
@@ -1012,7 +1032,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $express['time'] = $e['time'];
                 $express['context'] = $e['context'];
                 if (empty($e['location'])) {
-                    if($key == 0){
+                    if ($key == 0) {
                         if ((strpos($express['context'], '派件') === false || strpos($express['context'], '派') === false) && (strpos($express['context'], '签收') === false || strpos($express['context'], '签') === false)) {
                             $express['location'] = '运输中';
                         } else {
@@ -1022,7 +1042,7 @@ class OrderRepository implements OrderRepositoryInterface
                                 $express['location'] = '已签收';
                             }
                         }
-                    }else{
+                    } else {
                         $express['location'] = '已送达,转下一站';
                     }
                 } else {

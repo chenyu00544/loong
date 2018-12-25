@@ -76,7 +76,7 @@
     <string name="no_pay_order">待付款</string>
     <string name="no_ship_order">待发货</string>
     <string name="no_sign_order">待收货</string>
-    <string name="no_evaluate_order">带评价</string>
+    <string name="no_evaluate_order">待评价</string>
 
     <string name="app_user">手机用户专享</string>
     <string name="goods_name">柠檬</string>
@@ -116,6 +116,7 @@
     <string name="no_collection">亲，您藏品太空了</string>
     <string name="delete">删除</string>
     <string name="is_delete">确定要删除吗?</string>
+    <string name="is_confirm_take_order">是否确认收货?</string>
 
     <string name="category">分类</string>
     <string name="hot_sale">热销榜</string>

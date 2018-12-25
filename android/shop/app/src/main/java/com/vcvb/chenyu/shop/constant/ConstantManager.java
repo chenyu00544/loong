@@ -134,6 +134,7 @@ public interface ConstantManager {
         public String GET_ORDER = URIHOST + "app/order/get";
         public String ADD_ORDER = URIHOST + "app/order/add";
         public String CANCEL_ORDER = URIHOST + "app/order/cancel";
+        public String CONFIRM_TAKE_ORDER = URIHOST + "order/confirm/take";
 
         //fixme 售后操作
         public String ORDER_AFTER_SALE_ORDERS = URIHOST + "app/order/after/sale/orders";

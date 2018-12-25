@@ -63,7 +63,18 @@ public class OrderListItem extends BaseItem<OrderDetail> {
         TextView orderSn = header.findViewById(R.id.textView193);
         orderSn.setText(mData.getOrder_sn());
         TextView addTime = header.findViewById(R.id.textView194);
-        addTime.setText(mData.getAdd_time_date());
+        if (mData.getOrder_status() == 1 && mData.getPay_status() == 0 && mData
+                .getShipping_status() == 0) {
+            addTime.setText(mData.getAdd_time_date());
+        } else if (mData.getPay_status() == 2 && mData.getShipping_status() == 0) {
+            addTime.setText(mData.getPay_time_date());
+        } else if (mData.getShipping_status() == 1) {
+            addTime.setText(mData.getShipping_time_date());
+        } else if (mData.getShipping_status() == 2) {
+            addTime.setText(mData.getConfirm_take_time_date());
+        } else {
+            addTime.setText(mData.getAdd_time_date());
+        }
 
         int view_id = header.getId();
 

@@ -71,6 +71,8 @@ public class OrderListActivity extends BaseActivity {
     private RefreshLayout refreshLayout;
     private ConfirmDialog confirmDialog;
 
+    private int type_action = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +142,6 @@ public class OrderListActivity extends BaseActivity {
         refreshLayout = findViewById(R.id.order_wrap);
 
         confirmDialog = new ConfirmDialog(context);
-        confirmDialog.setTitle(context.getResources().getString(R.string.is_delete));
     }
 
     public void initListener() {
@@ -198,7 +199,11 @@ public class OrderListActivity extends BaseActivity {
         confirmDialog.setOnDialogClickListener(new ConfirmDialog.OnDialogClickListener() {
             @Override
             public void onConfirmClickListener() {
-                cancelOrder();
+                if (type_action == 1) {
+                    cancelOrder();
+                } else {
+                    confirmTakeOrder();
+                }
             }
 
             @Override
@@ -410,9 +415,8 @@ public class OrderListActivity extends BaseActivity {
         final OrderDetail orderDetail = orders.get(position);
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
-        mp.put("order_status", "2");
         mp.put("order_id", orderDetail.getOrder_id_str());
-        System.out.println(orderDetail);
+        mp.put("order_type", "cancel_order");
         HttpUtils.getInstance().post(ConstantManager.Url.CANCEL_ORDER, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
@@ -529,6 +533,38 @@ public class OrderListActivity extends BaseActivity {
         startActivity(intent);
     }
 
+    // fixme 确认收货
+    public void confirmTakeOrder() {
+        final OrderDetail orderDetail = orders.get(position);
+        HashMap<String, String> mp = new HashMap<>();
+        mp.put("token", token);
+        mp.put("order_id", orderDetail.getOrder_id_str());
+        mp.put("order_type", "confirm_take_order");
+        HttpUtils.getInstance().post(ConstantManager.Url.CONFIRM_TAKE_ORDER, mp, new HttpUtils
+                .NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getData(5, true);
+                        setTypeStyle(5);
+                    }
+                });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -562,6 +598,8 @@ public class OrderListActivity extends BaseActivity {
                     pay();
                     break;
                 case R.id.cancel_order://取消购买
+                    type_action = 1;
+                    confirmDialog.setTitle(context.getResources().getString(R.string.is_delete));
                     confirmDialog.show();
                     break;
                 case R.id.buy_again://再次购买
@@ -574,7 +612,9 @@ public class OrderListActivity extends BaseActivity {
                     logistics();
                     break;
                 case R.id.take_goods://确认收货
-                    System.out.println("确认收货");
+                    type_action = 2;
+                    confirmDialog.setTitle(context.getResources().getString(R.string.is_confirm_take_order));
+                    confirmDialog.show();
                     break;
                 case R.id.evaluate://评价
                     System.out.println("评价");

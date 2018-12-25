@@ -53,7 +53,7 @@ class OrderInfoModel extends Model
         return $this->hasMany('App\Http\Models\App\OrderReturnModel', 'order_id', 'order_id');
     }
 
-    public function getOrders($where, $orWhere=[], $page = 0, $column = ['*'], $size = 10)
+    public function getOrders($where, $orWhere = [], $page = 0, $column = ['*'], $orderBy = [], $size = 10)
     {
         $m = $this->select($column)
             ->with(['orderGoods' => function ($query) {
@@ -74,15 +74,21 @@ class OrderInfoModel extends Model
                 $query->select(['region_id', 'region_name']);
             }])
             ->where($where);
-        if(!empty($orWhere)){
-            $m->where(function($query) use ($orWhere){
-                foreach ($orWhere as $where){
+        if (!empty($orWhere)) {
+            $m->where(function ($query) use ($orWhere) {
+                foreach ($orWhere as $where) {
                     $query->where($where);
                 }
             });
         }
-        return $m->orderBy('add_time', 'DESC')
-            ->offset($page * $size)
+        if (empty($orderBy)) {
+            $m->orderBy('add_time', 'DESC');
+        } else {
+            foreach ($orderBy as $key => $value){
+                $m->orderBy($key, $value);
+            }
+        }
+        return $m->offset($page * $size)
             ->limit($size)
             ->get();
     }
@@ -140,13 +146,13 @@ class OrderInfoModel extends Model
         return $this->create($data);
     }
 
-    public function countOrder($where, $orWhere=[])
+    public function countOrder($where, $orWhere = [])
     {
         return $this->where($where)
-            ->where(function($query) use ($orWhere){
-            foreach ($orWhere as $where){
-                $query->orWhere($where);
-            }
-        })->count();
+            ->where(function ($query) use ($orWhere) {
+                foreach ($orWhere as $where) {
+                    $query->orWhere($where);
+                }
+            })->count();
     }
 }

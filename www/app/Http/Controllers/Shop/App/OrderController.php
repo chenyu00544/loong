@@ -27,6 +27,7 @@ class OrderController extends CommonController
         $this->orderReturnRepository = $orderReturnRepository;
     }
 
+    //fixme 获取多个订单
     public function index(Request $request)
     {
         $uid = Verifiable::authorization($request);
@@ -37,6 +38,7 @@ class OrderController extends CommonController
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
 
+    //fixme 获取单个订单
     public function getOrder(Request $request)
     {
         $uid = Verifiable::authorization($request);
@@ -51,6 +53,7 @@ class OrderController extends CommonController
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
 
+    //fixme 添加订单
     public function addOrder(Request $request)
     {
         $uid = Verifiable::authorization($request);
@@ -65,7 +68,23 @@ class OrderController extends CommonController
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
 
+    //fixme 关闭订单
     public function cancelOrder(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $data = $this->orderRepository->setOrder($request->all(), $uid);
+            if ($data) {
+                return ['code' => 0, 'msg' => '', 'data' => $data];
+            } else {
+                return ['code' => 1, 'msg' => '参数错误', 'data' => $data];
+            }
+        }
+        return ['code' => 1, 'msg' => '未登录', 'data' => []];
+    }
+
+    //fixme 确认收货
+    public function confirmTakeOrder(Request $request)
     {
         $uid = Verifiable::authorization($request);
         if ($uid != '') {
@@ -124,6 +143,7 @@ class OrderController extends CommonController
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
     }
 
+    //fixme 物流信息
     public function getLogisticsInfo(Request $request)
     {
         $uid = Verifiable::authorization($request);

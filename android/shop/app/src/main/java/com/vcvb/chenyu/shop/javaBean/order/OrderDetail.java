@@ -18,8 +18,11 @@ public class OrderDetail implements Serializable {
     private Integer order_status;
     private Integer pay_status;
     private Integer shipping_status;
-    private Integer shipping_time;
     private Integer add_time;
+    private Integer confirm_time;
+    private Integer pay_time;
+    private Integer shipping_time;
+    private Integer confirm_take_time;
     private Integer current_time;
     private Integer auto_delivery_time;
     private Integer goods_cause;
@@ -36,6 +39,10 @@ public class OrderDetail implements Serializable {
     private String discount;
     private String tax;
     private String add_time_date;
+    private String confirm_time_date;
+    private String pay_time_date;
+    private String shipping_time_date;
+    private String confirm_take_time_date;
     private String mobile;
     private String consignee;
     private String address;
@@ -325,6 +332,62 @@ public class OrderDetail implements Serializable {
 
     public void setShipping_name(String shipping_name) {
         this.shipping_name = shipping_name;
+    }
+
+    public Integer getConfirm_time() {
+        return confirm_time;
+    }
+
+    public void setConfirm_time(Integer confirm_time) {
+        this.confirm_time = confirm_time;
+    }
+
+    public Integer getPay_time() {
+        return pay_time;
+    }
+
+    public void setPay_time(Integer pay_time) {
+        this.pay_time = pay_time;
+    }
+
+    public Integer getConfirm_take_time() {
+        return confirm_take_time;
+    }
+
+    public void setConfirm_take_time(Integer confirm_take_time) {
+        this.confirm_take_time = confirm_take_time;
+    }
+
+    public String getConfirm_time_date() {
+        return confirm_time_date;
+    }
+
+    public void setConfirm_time_date(String confirm_time_date) {
+        this.confirm_time_date = confirm_time_date;
+    }
+
+    public String getPay_time_date() {
+        return pay_time_date;
+    }
+
+    public void setPay_time_date(String pay_time_date) {
+        this.pay_time_date = pay_time_date;
+    }
+
+    public String getShipping_time_date() {
+        return shipping_time_date;
+    }
+
+    public void setShipping_time_date(String shipping_time_date) {
+        this.shipping_time_date = shipping_time_date;
+    }
+
+    public String getConfirm_take_time_date() {
+        return confirm_take_time_date;
+    }
+
+    public void setConfirm_take_time_date(String confirm_take_time_date) {
+        this.confirm_take_time_date = confirm_take_time_date;
     }
 
     public void setData(JSONObject json) {
