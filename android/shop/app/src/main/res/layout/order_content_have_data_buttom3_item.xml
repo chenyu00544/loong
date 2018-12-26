@@ -11,8 +11,6 @@
         android:id="@+id/countdownView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
         android:alpha="0"
         app:isShowDay="true"
         app:isShowHour="true"

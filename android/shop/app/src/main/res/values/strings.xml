@@ -93,6 +93,8 @@
     <string name="take_goods">确认收货</string>
     <string name="look_express">查看物流</string>
     <string name="user_evaluate">我要评价</string>
+    <string name="publish_evaluate">发表评价</string>
+    <string name="evaluate_content">给你购买的商品来个好评！！</string>
     <string name="sale_after">售后</string>
 
     <string name="edit">编辑</string>

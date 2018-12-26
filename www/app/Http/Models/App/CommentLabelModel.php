@@ -18,8 +18,10 @@ class CommentLabelModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getCommentLabels()
+    public function getCommentLabels($where =[], $column=['*'])
     {
-        return $this->get();
+        return $this->select($column)
+            ->where($where)
+            ->get();
     }
 }

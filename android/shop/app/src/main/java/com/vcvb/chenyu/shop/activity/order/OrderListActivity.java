@@ -19,6 +19,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.evaluate.EvaluateDetailActivity;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.order.OrderListItem;
@@ -565,6 +566,16 @@ public class OrderListActivity extends BaseActivity {
         });
     }
 
+    // fixme 评价
+    public void evaluate() {
+        Intent intent = new Intent(OrderListActivity.this, EvaluateDetailActivity.class);
+        OrderDetail obj = orders.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("order", obj);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -613,11 +624,12 @@ public class OrderListActivity extends BaseActivity {
                     break;
                 case R.id.take_goods://确认收货
                     type_action = 2;
-                    confirmDialog.setTitle(context.getResources().getString(R.string.is_confirm_take_order));
+                    confirmDialog.setTitle(context.getResources().getString(R.string
+                            .is_confirm_take_order));
                     confirmDialog.show();
                     break;
                 case R.id.evaluate://评价
-                    System.out.println("评价");
+                    evaluate();
                     break;
                 default:
                     break;

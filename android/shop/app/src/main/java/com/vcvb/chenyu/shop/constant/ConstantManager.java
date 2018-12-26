@@ -20,8 +20,8 @@ public interface ConstantManager {
     }
 
     interface ImgPath {
-        public String PATH = Environment.getExternalStorageDirectory() + "/Android/data/com.vcvb.chenyu" +
-                ".shop/files/";
+        public String PATH = Environment.getExternalStorageDirectory() + "/Android/data/com.vcvb"
+                + ".chenyu" + ".shop/files/";
     }
 
     interface ResultStatus {
@@ -84,85 +84,89 @@ public interface ConstantManager {
 
     interface Url {
         public String URIHOST = "http://www.vcvbuy.com/api/";
+        public String URI_TYPE_APP = "app/";
         public String GETGEO = URIHOST + "region/geo/coder";
-        public String GETDEVICEID = URIHOST + "app/login/deviceid"; //获取未登录UID
+        public String GETDEVICEID = URIHOST + URI_TYPE_APP + "login/deviceid"; //获取未登录UID
         public String ALLREGION = URIHOST + "region/all/format"; //获取地址数据包
-        public String SEND_SMS = URIHOST + "app/sms/send"; //发送验证码
+        public String SEND_SMS = URIHOST + URI_TYPE_APP + "sms/send"; //发送验证码
         public String USER_PROTOCOL = "http://www.vcvbuy.com/mobile/article/detail?id=6"; //用户协议
         public String USER_PRIVACY = "http://www.vcvbuy.com/mobile/article/detail?id=7"; //隐私相关政策
         public String USER_SERVICE = "http://www.vcvbuy.com/mobile/article/detail?id=8"; //服务条款
 
-        public String HOME = URIHOST + "app/index";
-        public String HOMELOADMORE = URIHOST + "app/index/loadmore";
+        public String HOME = URIHOST + URI_TYPE_APP + "index";
+        public String HOMELOADMORE = URIHOST + URI_TYPE_APP + "index/loadmore";
 
-        public String GOODS = URIHOST + "app/goods/index";
-        public String GOODSDETAIL = URIHOST + "app/goods/detail";
+        public String GOODS = URIHOST + URI_TYPE_APP + "goods/index";
+        public String GOODSDETAIL = URIHOST + URI_TYPE_APP + "goods/detail";
 
         //fixme 购物车操作
-        public String CART_LIST = URIHOST + "app/cart/index";
-        public String ADD_CART = URIHOST + "app/cart/add";
-        public String SET_CART = URIHOST + "app/cart/set";
-        public String DEL_CART = URIHOST + "app/cart/del";
+        public String CART_LIST = URIHOST + URI_TYPE_APP + "cart/index";
+        public String ADD_CART = URIHOST + URI_TYPE_APP + "cart/add";
+        public String SET_CART = URIHOST + URI_TYPE_APP + "cart/set";
+        public String DEL_CART = URIHOST + URI_TYPE_APP + "cart/del";
 
         //fixme 用户账号操作
-        public String LOGIN = URIHOST + "app/login/index";
-        public String REGISTER = URIHOST + "app/login/reg";
-        public String GET_USER_INFO = URIHOST + "app/user/index";
-        public String SET_USER_INFO = URIHOST + "app/user/set";
-        public String USER_REAL = URIHOST + "app/user/real";
-        public String SET_USER_REAL = URIHOST + "app/user/real/set";
+        public String LOGIN = URIHOST + URI_TYPE_APP + "login/index";
+        public String REGISTER = URIHOST + URI_TYPE_APP + "login/reg";
+        public String GET_USER_INFO = URIHOST + URI_TYPE_APP + "user/index";
+        public String SET_USER_INFO = URIHOST + URI_TYPE_APP + "user/set";
+        public String USER_REAL = URIHOST + URI_TYPE_APP + "user/real";
+        public String SET_USER_REAL = URIHOST + URI_TYPE_APP + "user/real/set";
 
         //fixme 收藏操作
-        public String COLLECT_GOODSES = URIHOST + "app/collect/goodses";
-        public String ADD_COLLECT_GOODS = URIHOST + "app/collect/goods/add";
-        public String ADD_COLLECT_GOODS_CART = URIHOST + "app/collect/goods/cart";
-        public String ADD_COLLECT_BRAND = URIHOST + "app/collect/brand/add";
-        public String ADD_COLLECT_STORE = URIHOST + "app/collect/store/add";
-        public String BROWSE_GOODS = URIHOST + "app/collect/browse";
-        public String SET_BROWSE_GOODS = URIHOST + "app/collect/browse/set";
+        public String COLLECT_GOODSES = URIHOST + URI_TYPE_APP + "collect/goodses";
+        public String ADD_COLLECT_GOODS = URIHOST + URI_TYPE_APP + "collect/goods/add";
+        public String ADD_COLLECT_GOODS_CART = URIHOST + URI_TYPE_APP + "collect/goods/cart";
+        public String ADD_COLLECT_BRAND = URIHOST + URI_TYPE_APP + "collect/brand/add";
+        public String ADD_COLLECT_STORE = URIHOST + URI_TYPE_APP + "collect/store/add";
+        public String BROWSE_GOODS = URIHOST + URI_TYPE_APP + "collect/browse";
+        public String SET_BROWSE_GOODS = URIHOST + URI_TYPE_APP + "collect/browse/set";
 
         //fixme 用户地址操作
-        public String USERADDRESSES = URIHOST + "app/user/addresses";
-        public String GETADDRESS = URIHOST + "app/user/address/get";
-        public String ADDADDRESS = URIHOST + "app/user/address/add";
-        public String SETADDRESS = URIHOST + "app/user/address/set"; //添加和设置合并 这个暂时无用
-        public String DELADDRESS = URIHOST + "app/user/address/del";
-        public String SETDEFADDRESS = URIHOST + "app/user/address/setdef";
+        public String USERADDRESSES = URIHOST + URI_TYPE_APP + "user/addresses";
+        public String GETADDRESS = URIHOST + URI_TYPE_APP + "user/address/get";
+        public String ADDADDRESS = URIHOST + URI_TYPE_APP + "user/address/add";
+        public String SETADDRESS = URIHOST + URI_TYPE_APP + "user/address/set"; //添加和设置合并 这个暂时无用
+        public String DELADDRESS = URIHOST + URI_TYPE_APP + "user/address/del";
+        public String SETDEFADDRESS = URIHOST + URI_TYPE_APP + "user/address/setdef";
 
         //fixme 订单操作
-        public String ORDERS = URIHOST + "app/order/index";
-        public String GET_ORDER = URIHOST + "app/order/get";
-        public String ADD_ORDER = URIHOST + "app/order/add";
-        public String CANCEL_ORDER = URIHOST + "app/order/cancel";
-        public String CONFIRM_TAKE_ORDER = URIHOST + "order/confirm/take";
+        public String ORDERS = URIHOST + URI_TYPE_APP + "order/index";
+        public String GET_ORDER = URIHOST + URI_TYPE_APP + "order/get";
+        public String ADD_ORDER = URIHOST + URI_TYPE_APP + "order/add";
+        public String CANCEL_ORDER = URIHOST + URI_TYPE_APP + "order/cancel";
+        public String CONFIRM_TAKE_ORDER = URIHOST + URI_TYPE_APP + "order/confirm/take";
 
         //fixme 售后操作
-        public String ORDER_AFTER_SALE_ORDERS = URIHOST + "app/order/after/sale/orders";
-        public String ORDER_AFTER_SALE = URIHOST + "app/order/after/sale";
-        public String ORDER_RETURN_GOODS = URIHOST + "app/order/return/goods";
-        public String ORDER_LOGISTICS = URIHOST + "app/order/logistics/get";
+        public String ORDER_AFTER_SALE_ORDERS = URIHOST + URI_TYPE_APP + "order/after/sale/orders";
+        public String ORDER_AFTER_SALE = URIHOST + URI_TYPE_APP + "order/after/sale";
+        public String ORDER_RETURN_GOODS = URIHOST + URI_TYPE_APP + "order/return/goods";
+        public String ORDER_LOGISTICS = URIHOST + URI_TYPE_APP + "order/logistics/get";
 
         //fixme 付款地址
-        public String ALI_PAY = URIHOST + "app/pay/alipay";
-        public String WX_PAY = URIHOST + "app/pay/wxpay";
-        public String UNION_PAY = URIHOST + "app/pay/unionpay";
+        public String ALI_PAY = URIHOST + URI_TYPE_APP + "pay/alipay";
+        public String WX_PAY = URIHOST + URI_TYPE_APP + "pay/wxpay";
+        public String UNION_PAY = URIHOST + URI_TYPE_APP + "pay/unionpay";
 
         //fixme 分类
-        public String CATEGORY = URIHOST + "app/category/index";
+        public String CATEGORY = URIHOST + URI_TYPE_APP + "category/index";
 
         //fixme 搜索
-        public String SEARCH = URIHOST + "app/search/index";
-        public String SEARCH_FILTER_BY = URIHOST + "app/search/filter/by";
-        public String SEARCH_FILTER_TO = URIHOST + "app/search/filter/to";
-        public String SEARCH_KEYWORDS = URIHOST + "app/search/keywords";
-        public String SEARCH_KEYWORDS_CHANGE = URIHOST + "app/search/keywords/change";
+        public String SEARCH = URIHOST + URI_TYPE_APP + "search/index";
+        public String SEARCH_FILTER_BY = URIHOST + URI_TYPE_APP + "search/filter/by";
+        public String SEARCH_FILTER_TO = URIHOST + URI_TYPE_APP + "search/filter/to";
+        public String SEARCH_KEYWORDS = URIHOST + URI_TYPE_APP + "search/keywords";
+        public String SEARCH_KEYWORDS_CHANGE = URIHOST + URI_TYPE_APP + "search/keywords/change";
 
         //fixme 通知
-        public String NOTIFY = URIHOST + "app/notify/index";
-        public String NOTIFY_GET = URIHOST + "app/notify/get";
+        public String NOTIFY = URIHOST + URI_TYPE_APP + "notify/index";
+        public String NOTIFY_GET = URIHOST + URI_TYPE_APP + "notify/get";
 
         //fixme 活动
-        public String FAAT = URIHOST + "app/faat/index";
-        public String FAAT_BRAND = URIHOST + "app/faat/brand";
+        public String FAAT = URIHOST + URI_TYPE_APP + "faat/index";
+        public String FAAT_BRAND = URIHOST + URI_TYPE_APP + "faat/brand";
+
+        //fixme 评价
+        public String COMMENT_LABEL = URIHOST + URI_TYPE_APP + "comment/label";
     }
 }
