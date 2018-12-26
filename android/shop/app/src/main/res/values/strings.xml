@@ -279,4 +279,7 @@
     <string name="logistics_info">查看物流</string>
     <string name="logistics_track">物流跟踪</string>
 
+    <string name="goods_rank">商品描述:</string>
+    <string name="service_rank">服务描述:</string>
+    <string name="shipping_rank">物流描述:</string>
 </resources>

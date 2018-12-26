@@ -86,4 +86,5 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('faat/brand', 'FaatController@brand');
 
     Route::post('comment/label', 'CommentController@label');
+    Route::post('comment/add', 'CommentController@addComment');
 });

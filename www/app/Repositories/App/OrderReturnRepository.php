@@ -205,22 +205,6 @@ class OrderReturnRepository implements OrderRepositoryInterface
                             $rog = $this->orderReturnGoodsModel->addOrderReturnGoods($return_order_goods);
                         }
 
-                        //退货商品凭证图片
-                        for ($i = 0; $i < 5; $i++) {
-                            if (!empty($data['file_' . $i])) {
-                                if ($data['file_' . $i]->isValid()) {
-                                    $path = 'return_img';
-                                    $uri = FileHandle::upLoadImage($data['file_' . $i], $path);
-                                    $order_return_img = [
-                                        'user_id' => $uid,
-                                        'ret_id' => $rorder->ret_id,
-                                        'img_file' => $uri,
-                                        'add_time' => $time
-                                    ];
-                                    $this->orderReturnImagesModel->addImg($order_return_img);
-                                }
-                            }
-                        }
                         if ($order->shipping_status == 0) {
                             $orderUpdate = ['order_status' => OS_ONLY_REFOUND];
                         } else {
@@ -230,6 +214,22 @@ class OrderReturnRepository implements OrderRepositoryInterface
 
                         if (!empty($rog) && !empty($rorder)) {
                             DB::commit();
+                            //退货商品凭证图片
+                            for ($i = 0; $i < 6; $i++) {
+                                if (!empty($data['file_' . $i])) {
+                                    if ($data['file_' . $i]->isValid()) {
+                                        $path = 'return_img';
+                                        $uri = FileHandle::upLoadImage($data['file_' . $i], $path);
+                                        $order_return_img = [
+                                            'user_id' => $uid,
+                                            'ret_id' => $rorder->ret_id,
+                                            'img_file' => $uri,
+                                            'add_time' => $time
+                                        ];
+                                        $this->orderReturnImagesModel->addImg($order_return_img);
+                                    }
+                                }
+                            }
                             return $rorder;
                         } else {
                             DB::rollBack();

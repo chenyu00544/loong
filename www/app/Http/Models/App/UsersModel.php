@@ -64,6 +64,7 @@ class UsersModel extends Model
             ->orWhere(['user_id' => $name])
             ->orWhere(['email' => $name])
             ->orWhere(['mobile_phone' => $name])
+            ->orWhere(['user_name' => $name])
             ->with(['real'])
             ->first();
     }

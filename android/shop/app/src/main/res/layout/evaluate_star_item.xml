@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/textView279"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/goods_rank"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView280"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/service_rank"
+        app:layout_constraintStart_toStartOf="@+id/textView279"
+        app:layout_constraintTop_toBottomOf="@+id/textView279" />
+
+    <TextView
+        android:id="@+id/textView281"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/shipping_rank"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView280"
+        app:layout_constraintTop_toBottomOf="@+id/textView280" />
+
+    <ImageView
+        android:id="@+id/imageView137"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView279"
+        app:layout_constraintStart_toEndOf="@+id/textView279"
+        app:layout_constraintTop_toTopOf="@+id/textView279" />
+
+    <ImageView
+        android:id="@+id/imageView138"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView137"
+        app:layout_constraintStart_toEndOf="@+id/imageView137"
+        app:layout_constraintTop_toTopOf="@+id/imageView137" />
+
+    <ImageView
+        android:id="@+id/imageView139"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView138"
+        app:layout_constraintStart_toEndOf="@+id/imageView138"
+        app:layout_constraintTop_toTopOf="@+id/imageView138" />
+
+    <ImageView
+        android:id="@+id/imageView140"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView139"
+        app:layout_constraintStart_toEndOf="@+id/imageView139"
+        app:layout_constraintTop_toTopOf="@+id/imageView139" />
+
+    <ImageView
+        android:id="@+id/imageView141"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView140"
+        app:layout_constraintStart_toEndOf="@+id/imageView140"
+        app:layout_constraintTop_toTopOf="@+id/imageView140" />
+
+    <ImageView
+        android:id="@+id/imageView142"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView280"
+        app:layout_constraintStart_toEndOf="@+id/textView280"
+        app:layout_constraintTop_toTopOf="@+id/textView280" />
+
+    <ImageView
+        android:id="@+id/imageView143"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView142"
+        app:layout_constraintStart_toEndOf="@+id/imageView142"
+        app:layout_constraintTop_toTopOf="@+id/imageView142" />
+
+    <ImageView
+        android:id="@+id/imageView144"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView143"
+        app:layout_constraintStart_toEndOf="@+id/imageView143"
+        app:layout_constraintTop_toTopOf="@+id/imageView143" />
+
+    <ImageView
+        android:id="@+id/imageView145"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView144"
+        app:layout_constraintStart_toEndOf="@+id/imageView144"
+        app:layout_constraintTop_toTopOf="@+id/imageView144" />
+
+    <ImageView
+        android:id="@+id/imageView146"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView145"
+        app:layout_constraintStart_toEndOf="@+id/imageView145"
+        app:layout_constraintTop_toTopOf="@+id/imageView145" />
+
+    <ImageView
+        android:id="@+id/imageView147"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView281"
+        app:layout_constraintStart_toEndOf="@+id/textView281"
+        app:layout_constraintTop_toTopOf="@+id/textView281" />
+
+    <ImageView
+        android:id="@+id/imageView148"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView147"
+        app:layout_constraintStart_toEndOf="@+id/imageView147"
+        app:layout_constraintTop_toTopOf="@+id/imageView147" />
+
+    <ImageView
+        android:id="@+id/imageView149"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView148"
+        app:layout_constraintStart_toEndOf="@+id/imageView148"
+        app:layout_constraintTop_toTopOf="@+id/imageView148" />
+
+    <ImageView
+        android:id="@+id/imageView150"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView149"
+        app:layout_constraintStart_toEndOf="@+id/imageView149"
+        app:layout_constraintTop_toTopOf="@+id/imageView149" />
+
+    <ImageView
+        android:id="@+id/imageView151"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView150"
+        app:layout_constraintStart_toEndOf="@+id/imageView150"
+        app:layout_constraintTop_toTopOf="@+id/imageView150" />
+
+    <TextView
+        android:id="@+id/textView282"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="5.0"
+        android:textSize="12sp"
+        android:textColor="@color/colorBack_morandi"
+        app:layout_constraintBottom_toBottomOf="@+id/textView279"
+        app:layout_constraintStart_toEndOf="@+id/imageView141"
+        app:layout_constraintTop_toTopOf="@+id/textView279" />
+
+    <TextView
+        android:id="@+id/textView283"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="5.0"
+        android:textSize="12sp"
+        android:textColor="@color/colorBack_morandi"
+        app:layout_constraintBottom_toBottomOf="@+id/textView280"
+        app:layout_constraintStart_toEndOf="@+id/imageView146"
+        app:layout_constraintTop_toTopOf="@+id/textView280" />
+
+    <TextView
+        android:id="@+id/textView284"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="5.0"
+        android:textSize="12sp"
+        android:textColor="@color/colorBack_morandi"
+        app:layout_constraintBottom_toBottomOf="@+id/textView281"
+        app:layout_constraintStart_toEndOf="@+id/imageView151"
+        app:layout_constraintTop_toTopOf="@+id/textView281" />
+</android.support.constraint.ConstraintLayout>

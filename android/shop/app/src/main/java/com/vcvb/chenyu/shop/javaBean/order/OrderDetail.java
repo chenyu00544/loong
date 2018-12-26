@@ -52,6 +52,7 @@ public class OrderDetail implements Serializable {
     private String district_name;
     private String invoice_no;
     private String shipping_name;
+    private String ru_id;
     private List<OrderGoods> orderGoodses;
 
     public Integer getAuto_delivery_time() {
@@ -388,6 +389,14 @@ public class OrderDetail implements Serializable {
 
     public void setConfirm_take_time_date(String confirm_take_time_date) {
         this.confirm_take_time_date = confirm_take_time_date;
+    }
+
+    public String getRu_id() {
+        return ru_id;
+    }
+
+    public void setRu_id(String ru_id) {
+        this.ru_id = ru_id;
     }
 
     public void setData(JSONObject json) {

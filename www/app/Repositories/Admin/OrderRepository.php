@@ -336,9 +336,11 @@ class OrderRepository implements OrderRepositoryInterface
                     $updata['shipping_name'] = $data['shipping_name'];
                     break;
                 case 'invoice_no':
-                    $updata['invoice_no'] = $data['invoice_no'];
-                    $updata['shipping_status'] = 1;
-                    $updata['shipping_time'] = time();
+                    if(!empty($data['invoice_no'])){
+                        $updata['invoice_no'] = $data['invoice_no'];
+                        $updata['shipping_status'] = 1;
+                        $updata['shipping_time'] = time();
+                    }
                     break;
                 case 'consignee':
                     foreach ($data['address'] as $key => $value) {
@@ -461,9 +463,11 @@ class OrderRepository implements OrderRepositoryInterface
                     break;
             }
         }
-        $re = $this->orderInfoModel->setOrderInfo($where, $updata);
-        if ($re) {
-            $req = ['code' => 1, 'msg' => '操作成功'];
+        if(!empty($updata)){
+            $re = $this->orderInfoModel->setOrderInfo($where, $updata);
+            if ($re) {
+                $req = ['code' => 1, 'msg' => '操作成功'];
+            }
         }
         return $req;
     }

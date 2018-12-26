@@ -16,6 +16,7 @@ import com.vcvb.chenyu.shop.adapter.item.evaluate.EvaluateContentItem;
 import com.vcvb.chenyu.shop.adapter.item.evaluate.EvaluateGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.evaluate.EvaluateImgItem;
 import com.vcvb.chenyu.shop.adapter.item.evaluate.EvaluateLabelItem;
+import com.vcvb.chenyu.shop.adapter.item.evaluate.EvaluateStarItem;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.javaBean.evaluate.Label;
@@ -24,6 +25,7 @@ import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.ToastUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +49,9 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
     private List<File> files = new ArrayList<>();
     private List<Label> labels = new ArrayList<>();
 
-    HashMap<String, String> evas = new HashMap<>();
+    HashMap<String, Integer> star = new HashMap<>();
+    private String content = "";
+
     private int img_pos = 0;
     private String return_img;
 
@@ -83,6 +87,10 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        star.put("goods_rank", 5);
+        star.put("service_rank", 5);
+        star.put("shipping_rank", 5);
     }
 
     @Override
@@ -128,6 +136,9 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = (JSONObject) jsonArray.get(i);
                 Label label = JsonUtils.fromJsonObject(object, Label.class);
+                if (i < 3) {
+                    label.setIs_select(true);
+                }
                 labels.add(label);
             }
             mAdapter.addAll(getItems());
@@ -161,7 +172,13 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
             evaluateLabelItem.setOnItemClickListener(labelListener);
             cells.add(evaluateLabelItem);
         }
+
+        EvaluateStarItem evaluateStarItem = new EvaluateStarItem(star, context);
+        evaluateStarItem.setOnItemClickListener(starListener);
+        cells.add(evaluateStarItem);
+
         EvaluateContentItem evaluateContentItem = new EvaluateContentItem(orderDetail, context);
+        evaluateContentItem.setOnItemClickListener(contentListener);
         cells.add(evaluateContentItem);
         EvaluateImgItem evaluateImgItem = new EvaluateImgItem(imgs, context);
         evaluateImgItem.setOnItemClickListener(imgsListener);
@@ -184,9 +201,33 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
     }
 
     public void publishEvaluate() {
+        if (content.equals("")) {
+            ToastUtils.showShortToast(context, "评论不能为空");
+            return;
+        }
         HashMap<String, String> mp = new HashMap<>();
         mp.put("token", token);
-        HttpUtils.getInstance().postImage(ConstantManager.Url.FAAT, mp, files, new HttpUtils
+        mp.put("goods_rank", String.valueOf(star.get("goods_rank")));
+        mp.put("service_rank", String.valueOf(star.get("service_rank")));
+        mp.put("shipping_rank", String.valueOf(star.get("shipping_rank")));
+
+        List<Integer> label_ids = new ArrayList<>();
+        for (int i = 0; i < labels.size(); i++) {
+            if (labels.get(i).isIs_select()) {
+                label_ids.add(labels.get(i).getId());
+            }
+        }
+        mp.put("label_ids", StringUtils.join(label_ids, ","));
+        mp.put("info", content);
+
+        List<Integer> goods_ids = new ArrayList<>();
+        for (int i = 0; i < orderDetail.getOrderGoodses().size(); i++) {
+            goods_ids.add(orderDetail.getOrderGoodses().get(i).getGoods_id());
+        }
+        mp.put("goods_ids", StringUtils.join(goods_ids, ","));
+        mp.put("order_id", orderDetail.getOrder_id_str());
+        mp.put("ru_id", orderDetail.getRu_id());
+        HttpUtils.getInstance().postImage(ConstantManager.Url.COMMENT_ADD, mp, files, new HttpUtils
                 .NetCall() {
             @Override
             public void success(Call call, JSONObject json) throws IOException {
@@ -214,6 +255,14 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
                     SwipeBackHelper.finish(EvaluateDetailActivity.this);
                     break;
             }
+        }
+    };
+
+    EvaluateContentItem.OnClickListener contentListener = new EvaluateContentItem.OnClickListener
+            () {
+        @Override
+        public void onClicked(View view, String info) {
+            content = info;
         }
     };
 
@@ -249,6 +298,14 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
             } else {
                 labels.get(pos).setIs_select(true);
             }
+            mAdapter.notifyDataSetChanged();
+        }
+    };
+
+    EvaluateStarItem.OnClickListener starListener = new EvaluateStarItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, HashMap<String, Integer> mp) {
+            star = mp;
             mAdapter.notifyDataSetChanged();
         }
     };

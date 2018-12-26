@@ -18,6 +18,11 @@ class CommentExtModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function addCommentExt($data)
+    {
+        return $this->create($data);
+    }
+
     public function countCommentExt($where)
     {
         return $this->where($where)->count();

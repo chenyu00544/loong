@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.b.BaseItem;
@@ -33,6 +34,6 @@ public class CategroyAdsItem extends BaseItem<SubCategroy> {
     public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         Ads bean = (Ads) mData.getObjs().get(position);
         ImageView iv = holder.get(R.id.imageView126);
-//        Glide.with(context).load(bean.getPic()).into(iv);
+        Glide.with(context).load(bean.getAd_code()).into(iv);
     }
 }

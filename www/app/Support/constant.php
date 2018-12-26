@@ -110,7 +110,8 @@ define('OS_SHIPPED_PART',           6); // 已发货(部分商品)
 
 /* 评价状态 */
 define('CS_UNCOMMENT',              0); // 未评价
-define('CS_COMMENTED',              1); // 已评价
+define('CS_COMMENTED',              1); // 已评价, 可追评
+define('CS_REVIEW_COMMENTED',       2); // 已追评
 
 /* 退货退款同意状态 */
 define('OR_APPLY',                  0) ;//申请
