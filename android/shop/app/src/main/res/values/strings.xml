@@ -282,4 +282,7 @@
     <string name="goods_rank">商品描述:</string>
     <string name="service_rank">服务描述:</string>
     <string name="shipping_rank">物流描述:</string>
+    <string name="good_comment">好评</string>
+    <string name="middle_comment">中评</string>
+    <string name="bad_comment">差评</string>
 </resources>

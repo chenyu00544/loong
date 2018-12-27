@@ -33,7 +33,7 @@ class CommentController extends CommonController
         if ($uid != '') {
             $data = $request->all();
             $data['ip'] = $request->getClientIp();
-            $re = $this->commentRepository->addComment($request->all(), $uid);
+            $re = $this->commentRepository->addComment($data, $uid);
             if ($re) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
             }else{

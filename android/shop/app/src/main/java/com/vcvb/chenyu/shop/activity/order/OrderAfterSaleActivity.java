@@ -220,8 +220,8 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         orderAfterSaleCauseItem.setOnItemClickListener(causeListener);
         cells.add(orderAfterSaleCauseItem);
 
-        OrderAfterSaleBriefItem orderAfterSaleBriefItem = new OrderAfterSaleBriefItem(returnOrder,
-                context);
+        OrderAfterSaleBriefItem orderAfterSaleBriefItem = new OrderAfterSaleBriefItem
+                (returnOrder, context);
         cells.add(orderAfterSaleBriefItem);
 
         if (orderDetail.getShipping_status() != null && (orderDetail.getShipping_status() == 1 ||
@@ -265,21 +265,16 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                         .feedback));
                 return;
             } else if (returnOrder.getAgree_apply() == 1 && (returnOrder.getRefound_status() == 1
-                    || returnOrder
-                    .getReturn_status() == 4)) {
+                    || returnOrder.getReturn_status() == 4)) {
                 ToastUtils.showShortToast(context, context.getResources().getString(R.string
                         .after_sale_over));
                 return;
-            } else if (returnOrder.getAgree_apply
-                    () == 1 && returnOrder.getReturn_status
-                    () == 1) {
+            } else if (returnOrder.getAgree_apply() == 1 && returnOrder.getReturn_status() == 1) {
                 ToastUtils.showShortToast(context, context.getResources().getString(R.string
                         .returning_goods));
                 return;
-            } else if (returnOrder.getAgree_apply
-                    () == 1 && returnOrder.getRefound_status
-                    () == 0 && returnOrder.getReturn_type()
-                    == 0) {
+            } else if (returnOrder.getAgree_apply() == 1 && returnOrder.getRefound_status() == 0
+                    && returnOrder.getReturn_type() == 0) {
                 ToastUtils.showShortToast(context, context.getResources().getString(R.string
                         .feedback_refound));
                 return;
@@ -312,41 +307,40 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
         }
         HttpUtils.getInstance().postImage(ConstantManager.Url.ORDER_RETURN_GOODS, mp, files, new
                 HttpUtils.NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void success(Call call, final JSONObject json) throws IOException {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingDialog.dismiss();
-                                try {
-                                    if (json != null) {
-                                        if (json.getInt("code") == 0) {
-                                            initReturnOrder(json);
-                                        } else {
-                                            ToastUtils.showShortToast(context, json.getString
-                                                    ("msg"));
-                                        }
-                                    } else {
-                                        ToastUtils.showShortToast(context, "网络错误");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                    public void run() {
+                        loadingDialog.dismiss();
+                        try {
+                            if (json != null) {
+                                if (json.getInt("code") == 0) {
+                                    initReturnOrder(json);
+                                } else {
+                                    ToastUtils.showShortToast(context, json.getString("msg"));
                                 }
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void failed(Call call, IOException e) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadingDialog.dismiss();
+                            } else {
                                 ToastUtils.showShortToast(context, "网络错误");
                             }
-                        });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadingDialog.dismiss();
+                        ToastUtils.showShortToast(context, "网络错误");
+                    }
+                });
+            }
+        });
     }
 
     public void initReturnOrder(JSONObject json) {
@@ -354,6 +348,9 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
             JSONObject returnJSONObject = json.getJSONObject("data");
             returnOrder = JsonUtils.fromJsonObject(returnJSONObject, ReturnOrder.class);
             setBottomBtState();
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -396,37 +393,28 @@ public class OrderAfterSaleActivity extends BaseRecyclerViewActivity {
                 bottomBt.setText(R.string.feedback);
                 bottomBt.setBackgroundResource(R.color.gray_d);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.black));
-            } else if (returnOrder.getAgree_apply
-                    () == 1 && returnOrder.getReturn_type() > 0 && returnOrder.getReturn_status()
-                    == 0) {
+            } else if (returnOrder.getAgree_apply() == 1 && returnOrder.getReturn_type() > 0 &&
+                    returnOrder.getReturn_status() == 0) {
                 bottomBt.setText(R.string.shipping_sn);
                 bottomBt.setBackgroundResource(R.color.red);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.white));
-            } else if (returnOrder.getAgree_apply
-                    () == 1 && returnOrder
-                    .getReturn_status() == 4) {
+            } else if (returnOrder.getAgree_apply() == 1 && returnOrder.getReturn_status() == 4) {
                 bottomBt.setText(R.string.after_sale_over);
                 bottomBt.setBackgroundResource(R.color.gray_d);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.black));
-            } else if (returnOrder.getAgree_apply
-                    () == 1 && returnOrder.getRefound_status() == 1) {
+            } else if (returnOrder.getAgree_apply() == 1 && returnOrder.getRefound_status() == 1) {
                 bottomBt.setText(R.string.refund_over);
                 bottomBt.setBackgroundResource(R.color.gray_d);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.black));
-            } else if (returnOrder.getAgree_apply
-                    () == 2) {
+            } else if (returnOrder.getAgree_apply() == 2) {
                 bottomBt.setText(R.string.no_apply);
                 bottomBt.setBackgroundResource(R.color.colorBack_morandi);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.white));
-            } else if (returnOrder.getAgree_apply
-                    () == 1 && returnOrder.getReturn_status
-                    () == 1) {
+            } else if (returnOrder.getAgree_apply() == 1 && returnOrder.getReturn_status() == 1) {
                 bottomBt.setText(R.string.returning_goods);
                 bottomBt.setBackgroundResource(R.color.gray_d);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.black));
-            } else if (returnOrder.getAgree_apply
-                    () == 1 && returnOrder.getReturn_type
-                    () == 0) {
+            } else if (returnOrder.getAgree_apply() == 1 && returnOrder.getReturn_type() == 0) {
                 bottomBt.setText(R.string.feedback_refound);
                 bottomBt.setBackgroundResource(R.color.gray_d);
                 bottomBt.setTextColor(context.getResources().getColor(R.color.black));

@@ -227,11 +227,27 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
         mp.put("goods_ids", StringUtils.join(goods_ids, ","));
         mp.put("order_id", orderDetail.getOrder_id_str());
         mp.put("ru_id", orderDetail.getRu_id());
-        HttpUtils.getInstance().postImage(ConstantManager.Url.COMMENT_ADD, mp, files, new HttpUtils
-                .NetCall() {
+        HttpUtils.getInstance().postImage(ConstantManager.Url.COMMENT_ADD, mp, files, new
+                HttpUtils.NetCall() {
             @Override
-            public void success(Call call, JSONObject json) throws IOException {
-
+            public void success(Call call, final JSONObject json) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (json != null) {
+                            try {
+                                if(json.getInt("code") == 0){
+                                    ToastUtils.showShortToast(context, "谢谢您的评价！");
+                                    Intent intent = new Intent();
+                                    setResult(RESULT_OK, intent);
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
             }
 
             @Override

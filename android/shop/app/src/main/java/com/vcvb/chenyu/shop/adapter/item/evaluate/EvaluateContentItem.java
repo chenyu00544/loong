@@ -3,9 +3,11 @@ package com.vcvb.chenyu.shop.adapter.item.evaluate;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.vcvb.chenyu.shop.R;
@@ -34,6 +36,7 @@ public class EvaluateContentItem extends BaseItem<OrderDetail> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         final EditText et = holder.get(R.id.editText24);
+        et.setOnKeyListener(onKeyListener);
         et.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -61,4 +64,21 @@ public class EvaluateContentItem extends BaseItem<OrderDetail> {
     public void setOnItemClickListener(OnClickListener listener) {
         onClickListener = listener;
     }
+
+    View.OnKeyListener onKeyListener = new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            if (i == KeyEvent.KEYCODE_ENTER) {
+                InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService
+                        (Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    if (imm.isActive()) {
+                        imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+    };
 }

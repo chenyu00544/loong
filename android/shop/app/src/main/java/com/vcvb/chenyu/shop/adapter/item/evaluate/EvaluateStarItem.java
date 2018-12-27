@@ -69,6 +69,10 @@ public class EvaluateStarItem extends BaseItem<HashMap<String, Integer>> {
         TextView tv2 = holder.get(R.id.textView283);
         TextView tv3 = holder.get(R.id.textView284);
 
+        TextView ctv1 = holder.get(R.id.textView285);
+        TextView ctv2 = holder.get(R.id.textView286);
+        TextView ctv3 = holder.get(R.id.textView287);
+
         String str = "%d.0";
         tv1.setText(String.format(Locale.CANADA, str, mData.get("goods_rank")));
         tv2.setText(String.format(Locale.CANADA, str, mData.get("service_rank")));
@@ -80,36 +84,42 @@ public class EvaluateStarItem extends BaseItem<HashMap<String, Integer>> {
             iv3.setImageResource(R.drawable.icon_star);
             iv4.setImageResource(R.drawable.icon_star);
             iv5.setImageResource(R.drawable.icon_star);
+            ctv1.setText(R.string.bad_comment);
         } else if (mData.get("goods_rank") == 1) {
             iv1.setImageResource(R.drawable.icon_star_active);
             iv2.setImageResource(R.drawable.icon_star);
             iv3.setImageResource(R.drawable.icon_star);
             iv4.setImageResource(R.drawable.icon_star);
             iv5.setImageResource(R.drawable.icon_star);
+            ctv1.setText(R.string.bad_comment);
         } else if (mData.get("goods_rank") == 2) {
             iv1.setImageResource(R.drawable.icon_star_active);
             iv2.setImageResource(R.drawable.icon_star_active);
             iv3.setImageResource(R.drawable.icon_star);
             iv4.setImageResource(R.drawable.icon_star);
             iv5.setImageResource(R.drawable.icon_star);
+            ctv1.setText(R.string.middle_comment);
         } else if (mData.get("goods_rank") == 3) {
             iv1.setImageResource(R.drawable.icon_star_active);
             iv2.setImageResource(R.drawable.icon_star_active);
             iv3.setImageResource(R.drawable.icon_star_active);
             iv4.setImageResource(R.drawable.icon_star);
             iv5.setImageResource(R.drawable.icon_star);
+            ctv1.setText(R.string.middle_comment);
         } else if (mData.get("goods_rank") == 4) {
             iv1.setImageResource(R.drawable.icon_star_active);
             iv2.setImageResource(R.drawable.icon_star_active);
             iv3.setImageResource(R.drawable.icon_star_active);
             iv4.setImageResource(R.drawable.icon_star_active);
             iv5.setImageResource(R.drawable.icon_star);
+            ctv1.setText(R.string.good_comment);
         } else if (mData.get("goods_rank") == 5) {
             iv1.setImageResource(R.drawable.icon_star_active);
             iv2.setImageResource(R.drawable.icon_star_active);
             iv3.setImageResource(R.drawable.icon_star_active);
             iv4.setImageResource(R.drawable.icon_star_active);
             iv5.setImageResource(R.drawable.icon_star_active);
+            ctv1.setText(R.string.good_comment);
         }
 
         if (mData.get("service_rank") == 0) {
@@ -118,36 +128,42 @@ public class EvaluateStarItem extends BaseItem<HashMap<String, Integer>> {
             iv8.setImageResource(R.drawable.icon_star);
             iv9.setImageResource(R.drawable.icon_star);
             iv10.setImageResource(R.drawable.icon_star);
+            ctv2.setText(R.string.bad_comment);
         } else if (mData.get("service_rank") == 1) {
             iv6.setImageResource(R.drawable.icon_star_active);
             iv7.setImageResource(R.drawable.icon_star);
             iv8.setImageResource(R.drawable.icon_star);
             iv9.setImageResource(R.drawable.icon_star);
             iv10.setImageResource(R.drawable.icon_star);
+            ctv2.setText(R.string.bad_comment);
         } else if (mData.get("service_rank") == 2) {
             iv6.setImageResource(R.drawable.icon_star_active);
             iv7.setImageResource(R.drawable.icon_star_active);
             iv8.setImageResource(R.drawable.icon_star);
             iv9.setImageResource(R.drawable.icon_star);
             iv10.setImageResource(R.drawable.icon_star);
+            ctv2.setText(R.string.middle_comment);
         } else if (mData.get("service_rank") == 3) {
             iv6.setImageResource(R.drawable.icon_star_active);
             iv7.setImageResource(R.drawable.icon_star_active);
             iv8.setImageResource(R.drawable.icon_star_active);
             iv9.setImageResource(R.drawable.icon_star);
             iv10.setImageResource(R.drawable.icon_star);
+            ctv2.setText(R.string.middle_comment);
         } else if (mData.get("service_rank") == 4) {
             iv6.setImageResource(R.drawable.icon_star_active);
             iv7.setImageResource(R.drawable.icon_star_active);
             iv8.setImageResource(R.drawable.icon_star_active);
             iv9.setImageResource(R.drawable.icon_star_active);
             iv10.setImageResource(R.drawable.icon_star);
+            ctv2.setText(R.string.good_comment);
         } else if (mData.get("service_rank") == 5) {
             iv6.setImageResource(R.drawable.icon_star_active);
             iv7.setImageResource(R.drawable.icon_star_active);
             iv8.setImageResource(R.drawable.icon_star_active);
             iv9.setImageResource(R.drawable.icon_star_active);
             iv10.setImageResource(R.drawable.icon_star_active);
+            ctv2.setText(R.string.good_comment);
         }
         if (mData.get("shipping_rank") == 0) {
             iv11.setImageResource(R.drawable.icon_star);
@@ -155,36 +171,42 @@ public class EvaluateStarItem extends BaseItem<HashMap<String, Integer>> {
             iv13.setImageResource(R.drawable.icon_star);
             iv14.setImageResource(R.drawable.icon_star);
             iv15.setImageResource(R.drawable.icon_star);
+            ctv3.setText(R.string.bad_comment);
         } else if (mData.get("shipping_rank") == 1) {
             iv11.setImageResource(R.drawable.icon_star_active);
             iv12.setImageResource(R.drawable.icon_star);
             iv13.setImageResource(R.drawable.icon_star);
             iv14.setImageResource(R.drawable.icon_star);
             iv15.setImageResource(R.drawable.icon_star);
+            ctv3.setText(R.string.bad_comment);
         } else if (mData.get("shipping_rank") == 2) {
             iv11.setImageResource(R.drawable.icon_star_active);
             iv12.setImageResource(R.drawable.icon_star_active);
             iv13.setImageResource(R.drawable.icon_star);
             iv14.setImageResource(R.drawable.icon_star);
             iv15.setImageResource(R.drawable.icon_star);
+            ctv3.setText(R.string.middle_comment);
         } else if (mData.get("shipping_rank") == 3) {
             iv11.setImageResource(R.drawable.icon_star_active);
             iv12.setImageResource(R.drawable.icon_star_active);
             iv13.setImageResource(R.drawable.icon_star_active);
             iv14.setImageResource(R.drawable.icon_star);
             iv15.setImageResource(R.drawable.icon_star);
+            ctv3.setText(R.string.middle_comment);
         } else if (mData.get("shipping_rank") == 4) {
             iv11.setImageResource(R.drawable.icon_star_active);
             iv12.setImageResource(R.drawable.icon_star_active);
             iv13.setImageResource(R.drawable.icon_star_active);
             iv14.setImageResource(R.drawable.icon_star_active);
             iv15.setImageResource(R.drawable.icon_star);
+            ctv3.setText(R.string.good_comment);
         } else if (mData.get("shipping_rank") == 5) {
             iv11.setImageResource(R.drawable.icon_star_active);
             iv12.setImageResource(R.drawable.icon_star_active);
             iv13.setImageResource(R.drawable.icon_star_active);
             iv14.setImageResource(R.drawable.icon_star_active);
             iv15.setImageResource(R.drawable.icon_star_active);
+            ctv3.setText(R.string.good_comment);
         }
     }
 

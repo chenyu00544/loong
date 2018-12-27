@@ -573,7 +573,7 @@ public class OrderListActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("order", obj);
         intent.putExtras(bundle);
-        startActivity(intent);
+        startActivityForResult(intent, ConstantManager.ResultStatus.ORDER_RESULT);
     }
 
     @Override

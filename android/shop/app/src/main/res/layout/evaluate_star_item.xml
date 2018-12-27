@@ -179,8 +179,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:text="5.0"
-        android:textSize="12sp"
         android:textColor="@color/colorBack_morandi"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView279"
         app:layout_constraintStart_toEndOf="@+id/imageView141"
         app:layout_constraintTop_toTopOf="@+id/textView279" />
@@ -192,8 +192,8 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:text="5.0"
-        android:textSize="12sp"
         android:textColor="@color/colorBack_morandi"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView280"
         app:layout_constraintStart_toEndOf="@+id/imageView146"
         app:layout_constraintTop_toTopOf="@+id/textView280" />
@@ -205,9 +205,48 @@
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:text="5.0"
-        android:textSize="12sp"
         android:textColor="@color/colorBack_morandi"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/textView281"
         app:layout_constraintStart_toEndOf="@+id/imageView151"
         app:layout_constraintTop_toTopOf="@+id/textView281" />
+
+    <TextView
+        android:id="@+id/textView285"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/good_comment"
+        android:textColor="@color/colorBack_morandi"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView282"
+        app:layout_constraintStart_toEndOf="@+id/textView282"
+        app:layout_constraintTop_toTopOf="@+id/textView282" />
+
+    <TextView
+        android:id="@+id/textView286"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/good_comment"
+        android:textColor="@color/colorBack_morandi"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView283"
+        app:layout_constraintStart_toEndOf="@+id/textView283"
+        app:layout_constraintTop_toTopOf="@+id/textView283" />
+
+    <TextView
+        android:id="@+id/textView287"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/good_comment"
+        android:textColor="@color/colorBack_morandi"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView284"
+        app:layout_constraintStart_toEndOf="@+id/textView284"
+        app:layout_constraintTop_toTopOf="@+id/textView284" />
 </android.support.constraint.ConstraintLayout>
