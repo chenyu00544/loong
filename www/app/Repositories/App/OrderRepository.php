@@ -125,7 +125,7 @@ class OrderRepository implements OrderRepositoryInterface
                     $order_where = [
                         ['order_status', '=', OS_CONFIRMED],
                         ['shipping_status', '=', SS_RECEIVED],
-                        ['comment_status', '=', CS_UNCOMMENT],
+                        ['comment_status', '<', CS_REVIEW_COMMENTED],
                         ['user_id', '=', $uid],
                     ];
                     $orderBy['confirm_take_time'] = 'DESC';
@@ -379,6 +379,7 @@ class OrderRepository implements OrderRepositoryInterface
                         'order_status' => OS_UNCONFIRMED,
                         'pay_status' => PS_UNPAYED,
                         'shipping_status' => SS_UNSHIPPED,
+                        'comment_status' => CS_UNCOMMENT,
                         'postscript' => !empty($data['postmsg']) ? @trim($data['postmsg']) : '',    //用户留言
                         'consignee' => $user->default_address->consignee,
                         'country' => $user->default_address->country,
@@ -391,6 +392,7 @@ class OrderRepository implements OrderRepositoryInterface
                         'email' => $user->default_address->email,
                         'best_time' => $user->default_address->best_time,
                         'sign_building' => $user->default_address->sign_building,
+                        'auto_delivery_time' => RedisCache::get('shop_config')['sign'],
                         'ru_id' => $goods_detail->user_id,
                     ];
                 }

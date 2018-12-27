@@ -31,22 +31,21 @@ class CommentModel extends Model
     public function getComments($id, $column = ['*'])
     {
         return $this->select($column)
+            ->leftJoin('comment_ext', 'comment_ext.comment_id', '=', 'comment.comment_id')
             ->with(['commentImg'])
             ->with(['user'])
-            ->where(['id_value' => $id, 'parent_id' => 0])
+            ->where(['comment_ext.id_value' => $id, 'parent_id' => 0])
             ->orderBy('comment_id', 'DESC')
             ->limit(10)
             ->get();
     }
 
-    public function getComment($id, $column = ['*'])
+    public function getComment($where, $column = ['*'])
     {
         return $this->select($column)
-        ->with(['commentImg'])
-        ->orWhere(['comment_id' => $id])
-        ->orWhere(['parent_id' => $id])
-        ->orderBy('comment_id', 'DESC')
-        ->get();
+            ->where($where)
+            ->orderBy('comment_id', 'DESC')
+            ->get();
     }
 
     public function addComment($data)

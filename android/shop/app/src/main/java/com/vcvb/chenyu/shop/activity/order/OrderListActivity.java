@@ -628,6 +628,7 @@ public class OrderListActivity extends BaseActivity {
                             .is_confirm_take_order));
                     confirmDialog.show();
                     break;
+                case R.id.review_evaluate://追评
                 case R.id.evaluate://评价
                     evaluate();
                     break;

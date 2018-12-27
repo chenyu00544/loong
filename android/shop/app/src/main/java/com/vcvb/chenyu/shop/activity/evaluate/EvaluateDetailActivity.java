@@ -165,24 +165,30 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
 
     protected List<Item> getItems() {
         List<Item> cells = new ArrayList<>();
-        EvaluateGoodsItem evaluateGoodsItem = new EvaluateGoodsItem(orderDetail, context);
-        cells.add(evaluateGoodsItem);
-        if (labels.size() > 0) {
-            EvaluateLabelItem evaluateLabelItem = new EvaluateLabelItem(labels, context);
-            evaluateLabelItem.setOnItemClickListener(labelListener);
-            cells.add(evaluateLabelItem);
+        for (int i = 0; i < orderDetail.getOrderGoodses().size(); i++) {
+            EvaluateGoodsItem evaluateGoodsItem = new EvaluateGoodsItem(orderDetail, context);
+            cells.add(evaluateGoodsItem);
+
+            if (orderDetail.getComment_status() == 0) {
+                if (labels.size() > 0) {
+                    EvaluateLabelItem evaluateLabelItem = new EvaluateLabelItem(labels, context);
+                    evaluateLabelItem.setOnItemClickListener(labelListener);
+                    cells.add(evaluateLabelItem);
+                }
+
+                EvaluateStarItem evaluateStarItem = new EvaluateStarItem(star, context);
+                evaluateStarItem.setOnItemClickListener(starListener);
+                cells.add(evaluateStarItem);
+            }
+
+            EvaluateContentItem evaluateContentItem = new EvaluateContentItem(orderDetail, context);
+            evaluateContentItem.setOnItemClickListener(contentListener);
+            cells.add(evaluateContentItem);
+
+            EvaluateImgItem evaluateImgItem = new EvaluateImgItem(imgs, context);
+            evaluateImgItem.setOnItemClickListener(imgsListener);
+            cells.add(evaluateImgItem);
         }
-
-        EvaluateStarItem evaluateStarItem = new EvaluateStarItem(star, context);
-        evaluateStarItem.setOnItemClickListener(starListener);
-        cells.add(evaluateStarItem);
-
-        EvaluateContentItem evaluateContentItem = new EvaluateContentItem(orderDetail, context);
-        evaluateContentItem.setOnItemClickListener(contentListener);
-        cells.add(evaluateContentItem);
-        EvaluateImgItem evaluateImgItem = new EvaluateImgItem(imgs, context);
-        evaluateImgItem.setOnItemClickListener(imgsListener);
-        cells.add(evaluateImgItem);
         return cells;
     }
 
@@ -229,32 +235,32 @@ public class EvaluateDetailActivity extends BaseRecyclerViewActivity {
         mp.put("ru_id", orderDetail.getRu_id());
         HttpUtils.getInstance().postImage(ConstantManager.Url.COMMENT_ADD, mp, files, new
                 HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, final JSONObject json) throws IOException {
-                runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
-                        if (json != null) {
-                            try {
-                                if(json.getInt("code") == 0){
-                                    ToastUtils.showShortToast(context, "谢谢您的评价！");
-                                    Intent intent = new Intent();
-                                    setResult(RESULT_OK, intent);
-                                    finish();
+                    public void success(Call call, final JSONObject json) throws IOException {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (json != null) {
+                                    try {
+                                        if (json.getInt("code") == 0) {
+                                            ToastUtils.showShortToast(context, "谢谢您的评价！");
+                                            Intent intent = new Intent();
+                                            setResult(RESULT_OK, intent);
+                                            finish();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
+                        });
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+
                     }
                 });
-            }
-
-            @Override
-            public void failed(Call call, IOException e) {
-
-            }
-        });
     }
 
     View.OnClickListener listener = new View.OnClickListener() {

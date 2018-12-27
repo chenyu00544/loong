@@ -18,6 +18,7 @@ public class OrderDetail implements Serializable {
     private Integer order_status;
     private Integer pay_status;
     private Integer shipping_status;
+    private Integer comment_status;
     private Integer add_time;
     private Integer confirm_time;
     private Integer pay_time;
@@ -397,6 +398,14 @@ public class OrderDetail implements Serializable {
 
     public void setRu_id(String ru_id) {
         this.ru_id = ru_id;
+    }
+
+    public Integer getComment_status() {
+        return comment_status;
+    }
+
+    public void setComment_status(Integer comment_status) {
+        this.comment_status = comment_status;
     }
 
     public void setData(JSONObject json) {
