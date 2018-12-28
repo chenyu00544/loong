@@ -5,23 +5,21 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.nex3z.flowlayout.FlowLayout;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.base.BaseItem;
-import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
-import com.vcvb.chenyu.shop.javaBean.evaluate.Label;
+import com.vcvb.chenyu.shop.adapter.b.BaseItem;
+import com.vcvb.chenyu.shop.javaBean.evaluate.EvaluateGroup;
+import com.vcvb.chenyu.shop.javaBean.evaluate.Labels;
 import com.vcvb.chenyu.shop.tools.IdsUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
-import java.util.List;
-
-public class EvaluateLabelItem extends BaseItem<List<Label>> {
+public class EvaluateLabelItem extends BaseItem<EvaluateGroup> {
     public static final int TYPE = R.layout.evaluate_label_item;
 
-    public EvaluateLabelItem(List<Label> bean, Context c) {
+    public EvaluateLabelItem(EvaluateGroup bean, Context c) {
         super(bean, c);
     }
 
@@ -31,18 +29,19 @@ public class EvaluateLabelItem extends BaseItem<List<Label>> {
     }
 
     @Override
-    public CYCBaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new CYCBaseViewHolder(LayoutInflater.from(parent.getContext()).inflate(TYPE, null));
+    public BaseViewHolder onCreateViewHolder(int viewType) {
+        return new BaseViewHolder(LayoutInflater.from(context).inflate(TYPE, null));
     }
 
     @Override
-    public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+    public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         FlowLayout flowLayout = holder.get(R.id.label);
         flowLayout.setChildSpacing(8);
         flowLayout.setRowSpacing(8);
         flowLayout.setChildSpacingForLastRow(8);
         flowLayout.removeAllViews();
-        for (int i = 0; i < mData.size(); i++) {
+        Labels labels = (Labels) mData.getObjs().get(position);
+        for (int i = 0; i < labels.getLabels().size(); i++) {
             TextView ftv = new TextView(context);
             int id = IdsUtils.generateViewId();
             ftv.setId(id);
@@ -51,11 +50,11 @@ public class EvaluateLabelItem extends BaseItem<List<Label>> {
             ftv.setGravity(Gravity.CENTER_HORIZONTAL);
             ftv.setLines(1);
             ftv.setMaxEms(8);
-            ftv.setText(mData.get(i).getLabel_name());
+            ftv.setText(labels.getLabels().get(i).getLabel_name());
             ftv.setPadding(ToolUtils.dip2px(context, 8), ToolUtils.dip2px(context, 4), ToolUtils
                     .dip2px(context, 8), ToolUtils.dip2px(context, 4));
             flowLayout.addView(ftv);
-            if(mData.get(i).isIs_select()){
+            if(labels.getLabels().get(i).isIs_select()){
                 ftv.setBackgroundResource(R.drawable.shape_6_red);
                 ftv.setTextColor(context.getResources().getColor(R.color.white));
             }else{

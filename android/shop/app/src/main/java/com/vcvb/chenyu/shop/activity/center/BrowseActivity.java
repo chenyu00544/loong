@@ -229,12 +229,7 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
 
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (groupBrowses.get(groupPosition).getItemList().get(childPosition).getItemType
-                        () == R.layout.categroy_ads_item) {
-                    return 3;
-                } else {
-                    return super.getChildSpanSize(groupPosition, childPosition);
-                }
+                return super.getChildSpanSize(groupPosition, childPosition);
             }
         };
         mRecyclerView.setLayoutManager(groupedGridLayoutManager);

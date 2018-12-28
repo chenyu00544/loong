@@ -144,7 +144,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             'pinyin_keyword', 'goods_brief'
         ];
         $goods_detail = $this->goodsModel->getGoodsAndExt($where, $column);
-        $this->goodsModel->getGoodsAndExt($where, 'click_count');
+        $this->goodsModel->incrementGoodses($where, 'click_count');
         if ($goods_detail) {
             $mobile_descs = unserialize($goods_detail->desc_mobile);
             $goods_detail->mobile_descs = $mobile_descs;

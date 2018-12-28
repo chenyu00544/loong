@@ -19,7 +19,7 @@
 
     <include
         android:id="@+id/browse_list"
-        layout="@layout/refresh_gruop_recyclerview_list"
+        layout="@layout/refresh_group_recyclerview_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/view38"

@@ -35,7 +35,7 @@ class CommentModel extends Model
             ->with(['commentImg'])
             ->with(['user'])
             ->where(['comment_ext.id_value' => $id, 'parent_id' => 0])
-            ->orderBy('comment_id', 'DESC')
+            ->orderBy('comment.comment_id', 'DESC')
             ->limit(10)
             ->get();
     }

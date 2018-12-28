@@ -76,6 +76,16 @@ class CommentRepository implements CommentRepositoryInterface
                 'rec_id' => empty($data['rec_id']) ? 0 : $data['rec_id'],
             ];
             $re = $this->commentModel->addComment($commentData);
+
+            $label_ids = explode(',', $data['label_ids']);
+            foreach ($label_ids as $label_id) {
+                $commentExtData = [
+                    'comment_id' => $re->comment_id,
+                    'label_id' => $label_id,
+                    'id_value' => $goods_id,
+                ];
+                $this->commentExtModel->addCommentExt($commentExtData);
+            }
         }
 
         $owhere['order_id'] = $order_id;
@@ -90,21 +100,6 @@ class CommentRepository implements CommentRepositoryInterface
         }
         $this->orderInfoModel->setOrder($owhere, $odata);
 
-
-
-        foreach ($goods_ids as $goods_id) {
-            if (!empty($data['label_ids'])) {
-                $label_ids = explode(',', $data['label_ids']);
-                foreach ($label_ids as $label_id) {
-                    $commentExtData = [
-                        'comment_id' => $re->comment_id,
-                        'label_id' => $label_id,
-                        'id_value' => $goods_id,
-                    ];
-                    $this->commentExtModel->addCommentExt($commentExtData);
-                }
-            }
-        }
 
         for ($i = 0; $i < 6; $i++) {
             if (!empty($data['file_' . $i])) {
