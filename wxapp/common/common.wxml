@@ -1,0 +1,18 @@
+<template name="loading">
+  <view class="loading-section view-loading" hidden="{{hidden}}">
+    <view class="loading"></view>
+    <view class="t-c col-m m-top20 f-24">数据加载中</view>
+  </view>
+</template>
+
+<template name='notCont'>
+  <view class="ectouch-notcont">
+    <view class="img">
+      <image src="../../images/no_content.png" mode="aspectFit" />
+    </view>
+    <text class="cont">亲，您还没有相关数据哦！</text>
+  </view>
+</template>
+
+
+

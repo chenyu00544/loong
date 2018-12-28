@@ -9,11 +9,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
+Route::group(['prefix' => 'app', 'namespace' => 'Shop\Wx'], function () {
     Route::get('/', function () {
         return [
             'status' => 'success',
             'message' => 'API version 1.'
         ];
     });
+
+    Route::any('index', 'IndexController@index');
 });

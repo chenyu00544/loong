@@ -1,0 +1,120 @@
+.user-orderJtou{color: #999; font-size: 26rpx; position: absolute;}
+.goods-fixed-icon text{color: #fff; font-size: 22rpx; text-align: center; display: block;}
+/*优惠券*/
+.goods-coupons-box .image{display:inline-block;width:96rpx;height:36rpx;position: absolute;top:50%;margin-top:-21rpx}
+.goods-coupons-box .image image{width:100%;height:100%;display: block;margin-top:5rpx;
+}
+.goods-coupons-box .text{padding-left: 110rpx;color:#333;}
+.common-title-box .l-title{width:80rpx;display:block;padding-top:15rpx;}
+.goods-coupon-cont coupons-li .max-right.active{ background:#ccc;color:#efefef}
+.goods-video{position:absolute;top:0;left:0;bottom:0;right:0;z-index:1000}
+.goods-video-close{background:#000;color:#fff;padding: 10rpx 0;text-align: center;}
+
+/**/
+.activity-goods-list .activity-tag{border:1px solid #ec5151;border-radius: 4px;padding:1rpx 6rpx;margin-right:10rpx}
+.activity-jiantou{width:20rpx}
+.activity-jiantou .icon-msnui-rightmini{position:absolute;top:10rpx}
+.activity-goods-list .cont .list:first-child{margin-top:0;}
+.activity-goods-list .cont .list {margin-top:10rpx}
+.bargain-mol .footer{background:#e9363a;width: 90%;margin:0 auto 20rpx auto;border-radius:20rpx;}
+
+.selectNumber .default-active{color:#292929;font-size:40rpx;}
+.selectNumber input{border-right:1rpx solid #c9c9cb;border-left:1rpx solid #c9c9cb;}
+.selectNumber {border:1rpx solid #c9c9cb;}
+.max-cont{border-top:1rpx solid #f2f1f7;}
+.cart_product_price{font-size: 36rpx; color: #292929; padding: 8rpx 0;}
+
+.store-header{background: #fff;padding: 10rpx 20rpx;}
+.tip-goods-wrap {display: flex;flex-wrap: wrap;justify-content: center;border-top:1rpx dashed #c9c9cb;padding: 10rpx 10rpx;}
+
+.tip-goods {display: flex;align-items: center;margin-right: 30rpx;margin-bottom: 10rpx;margin-top: 10rpx;}
+
+.tip-goods image {width: 26rpx;height: 26rpx;}
+
+.tip-goods text {font-size: 26rpx;margin-left: 10rpx;color: #666;}
+
+.goods_coupont_box{margin-top: 15rpx;}
+.coupont-wrap{border-radius: 8rpx;background: linear-gradient(to right,#fe7e4f,#fe3730);display:inline-block;width: auto;height: 125rpx;margin: 15rpx;}
+.scroll-bar{white-space: nowrap;width:100%;}
+.fdc{flex-direction:column;align-items:center;justify-content:center;height: 105rpx;padding: 10rpx}
+.bfy{background: #fff100; padding: 2rpx 10rpx;border-radius: 30rpx;}
+.tg{line-height:90rpx;margin-top:35rpx;}
+.cm{line-height:125rpx;}
+.pd10{padding: 10rpx}
+.mt{margin-top: 10rpx;}
+
+.act {background: #ddd;}
+.act .bfy{background: #aaa; color: #fff !important;}
+.jcsb{justify-content:space-between;}
+.goods_comment_box{width:690rpx;margin: auto;background: #fff; border-radius: 15rpx;padding: 15rpx;}
+
+.comment-wrap {
+  width: auto;
+  display: inline-block;
+  background: #fafafa;
+  margin: 10rpx;
+  padding: 20rpx;
+  vertical-align: top;
+  border-radius: 15rpx;
+}
+
+.comment-wrap .title {
+  display: flex;
+  align-items: center;
+}
+
+.user-logo image {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+}
+
+.user-name {
+  margin-left: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+  display:flex;
+  flex-direction:column;
+}
+
+.comment-cont {
+  color: #999;
+  font-size: 26rpx;
+  height: auto;
+}
+
+.comment-cont text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  -webkit-line-clamp: 2;
+  white-space: pre-wrap;
+  height: 80rpx;
+}
+
+.weui-panel__hd{width:690rpx;
+margin:15rpx auto 0 auto;
+border-radius: 15rpx 15rpx 0rpx 0rpx;
+padding: 14rpx 15rpx 10rpx;
+}
+.index_sale {
+  width:696rpx;
+margin:auto;
+padding:0 12rpx 12rpx 12rpx;
+border-radius: 0rpx 0rpx 15rpx 15rpx;
+}
+
+.goods-store{
+  margin: 15rpx auto 15rpx auto;
+  width: 690rpx;
+  padding:10px 15rpx;
+  border-radius:15rpx; 
+}
+
+.tag_b{
+  padding: 4rpx 10rpx;
+  background: #fe3d3e;
+  border-radius: 30rpx;
+  color: #fff;
+  margin-top: 20rpx;
+}

@@ -1,0 +1,49 @@
+scroll-view {
+  width: 100%;
+  white-space: nowrap;
+}
+
+.ad-submit-cyc {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  line-height: auto;
+}
+
+.ad-submit-cyc::after {
+  border: none;
+}
+
+/* 广告组合 */
+
+.ads {
+  float: left;
+}
+
+.ads image {
+  width: 100%;
+  height: 100%;
+}
+
+.matrix-one {
+  width: 750rpx;
+}
+
+.matrix-two {
+  width: 375rpx;
+  float: left;
+}
+
+.matrix-three {
+  width: 250rpx;
+  float: left;
+}
+
+.matrix-four {
+  width: 230rpx;
+}
+
+.matrix-five {
+  width: 150rpx;
+  height: 150rpx;
+}

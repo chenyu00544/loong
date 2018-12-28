@@ -1,0 +1,110 @@
+<view>
+  <scroll-view scroll-y="{{!adshow}}" bindscroll="scroll_Y" scroll-top="{{scrollTop}}" style='height:{{scrollview_h}}px;'>
+    <view>
+      <!-- 轮播图 -->
+      <view class="index-banner" wx:if="{{banner.length > 0}}">
+        <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" circular="true" interval="{{interval}}" duration="{{duration}}" current="{{current}}" class="banner-box swiper-box">
+          <block wx:for="{{banner}}" wx:key="banner">
+            <navigator url="{{item.ad_link}}" hover-class="navigator-hover">
+              <swiper-item>
+                <image src="{{item.ad_code}}" class="slide-image" />
+              </swiper-item>
+            </navigator>
+          </block>
+        </swiper>
+      </view>
+
+      <!-- 广告组合 -->
+      <view class='' wx:if="{{ads.length>0}}">
+        <view wx:for="{{ads}}" wx:key="adsList" class="" wx:for-index="k">
+          <block wx:for="{{item}}" wx:key="adsgroup" wx:for-index="adsg">
+            <block wx:if="{{adsg=='2*5'}}">
+              <view wx:for="{{item}}" wx:key="ads" class='ads' wx:for-index="i">
+                <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                  <button formType="submit" class="ad-submit-cyc">
+                    <view class="matrix-five">
+                      <image src="{{item.pic}}" mode="scaleToFill"></image>
+                    </view>
+                  </button>
+                </form>
+              </view>
+            </block>
+            <block wx:if="{{adsg=='1*n'}}">
+              <view wx:for="{{item}}" wx:key="ads" class='ads' wx:for-index="i">
+                <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                  <button formType="submit" class="ad-submit-cyc">
+                    <view class="matrix-one" style="height:{{imageSize[item.banner_id].height}}rpx">
+                      <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="height:{{imageSize[item.banner_id].height}}rpx"></image>
+                    </view>
+                  </button>
+                </form>
+              </view>
+            </block>
+            <block wx:if="{{adsg=='2*n'}}">
+              <view class='matrix-two'>
+                <view wx:for="{{item}}" wx:key="ads" class='ads' wx:for-index="i">
+                  <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                    <button formType="submit" class="ad-submit-cyc">
+                      <view class="matrix-two" style="height:{{imageSize[item.banner_id].height/2}}rpx">
+                        <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="height:{{imageSize[item.banner_id].height/2}}rpx"></image>
+                      </view>
+                    </button>
+                  </form>
+                </view>
+              </view>
+            </block>
+            <block wx:if="{{adsg=='3*n'}}">
+              <view class='matrix-three'>
+                <view wx:for="{{item}}" wx:key="ads" class='ads {{adsList}}' wx:for-index="i">
+                  <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                    <button formType="submit" class="ad-submit-cyc">
+                      <view class="matrix-three" style="height:{{imageSize[item.banner_id].height/2}}rpx">
+                        <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="height:{{imageSize[item.banner_id].height/2}}rpx"></image>
+                      </view>
+                    </button>
+                  </form>
+                </view>
+              </view>
+            </block>
+            <block wx:if="{{adsg=='banner'}}">
+              <!--精品推荐-->
+              <view class="">
+                <scroll-view scroll-x="true" class='ads'>
+                  <view wx:for="{{item}}" wx:key="ads" wx:for-index="i" style="display: inline-block;">
+                    <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true" data-url="{{item.link}}" style='display:block;'>
+                      <button formType="submit" class="ad-submit-cyc">
+                        <view class="matrix-four" style="height:{{imageSize[item.banner_id].height/2}}rpx">
+                          <image src="{{item.pic}}" mode="scaleToFill" bindload="imageLoad" data-index="{{item.banner_id}}" style="height:{{imageSize[item.banner_id].height/2}}rpx"></image>
+                        </view>
+                      </button>
+                    </form>
+                  </view>
+                </scroll-view>
+              </view>
+            </block>
+          </block>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="widget-goTop" bindtap="goTop" wx:if="{{ floorstatus }}">
+    <text class="iconfont icon-fanhuidingbu"></text>
+  </view>
+</view>
+
+<!-- 弹出广告 -->
+<!-- <view class='mask {{adshow? "show" :"hide"}}' catchtouchmove="move"></view>
+<form class=" {{adshow? 'show' :'hide'}}" bindsubmit="formSubmitAD" bindreset="formReset" report-submit="true">
+  <button formType="submit" class="close-btn2"></button>
+</form>
+
+<form class=" {{adshow? 'show' :'hide'}}" bindsubmit="formSubmitAD2" bindreset="formReset" report-submit="true">
+  <button formType="submit" class="mask-img ">
+    <image wx:if="{{popup.ad_image}}" src="{{popup.ad_image}}" />
+  </button>
+  <view class="redpage {{adshow? 'show' :'hide'}}">
+    <button formType="button" class="close-btn ">
+      <image src="../../images/close2.png" />
+    </button>
+  </view>
+</form> -->

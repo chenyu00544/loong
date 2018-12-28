@@ -54,27 +54,29 @@ class CommentRepository implements CommentRepositoryInterface
         $time = time();
         $order_id = empty($data['order_id']) ? 0 : $data['order_id'];
         $ure = $this->usersModel->getUser($uid);
-
-        $comment = $this->commentModel->getComment(['order_id' => $order_id, 'parent_id' => 0], ['*']);
-        $comment_id = empty($comment) ? 0 : $comment->comment_id;
-        $commentData = [
-            'comment_type' => 0,
-            'email' => $ure->email,
-            'user_name' => $ure->nick_name,
-            'content' => empty($data['info']) ? '' : $data['info'],
-            'comment_rank' => empty($data['goods_rank']) ? 5 : $data['goods_rank'],
-            'comment_server' => empty($data['service_rank']) ? 5 : $data['service_rank'],
-            'comment_delivery' => empty($data['shipping_rank']) ? 5 : $data['shipping_rank'],
-            'add_time' => $time,
-            'ip_address' => empty($data['ip']) ? 0 : $data['ip'],
-            'status' => 1,
-            'parent_id' => $comment_id,
-            'user_id' => $uid,
-            'ru_id' => empty($data['ru_id']) ? 0 : $data['ru_id'],
-            'order_id' => $order_id,
-            'rec_id' => empty($data['rec_id']) ? 0 : $data['rec_id'],
-        ];
-        $re = $this->commentModel->addComment($commentData);
+        $goods_ids = explode(',', $data['goods_ids']);
+        foreach ($goods_ids as $goods_id) {
+            $comment = $this->commentModel->getCommentsByOrder(['order_id' => $order_id, 'parent_id' => 0], ['*']);
+            $comment_id = empty($comment) ? 0 : $comment->comment_id;
+            $commentData = [
+                'comment_type' => 0,
+                'email' => $ure->email,
+                'user_name' => $ure->nick_name,
+                'content' => empty($data['info']) ? '' : $data['info'],
+                'comment_rank' => empty($data['goods_rank']) ? 5 : $data['goods_rank'],
+                'comment_server' => empty($data['service_rank']) ? 5 : $data['service_rank'],
+                'comment_delivery' => empty($data['shipping_rank']) ? 5 : $data['shipping_rank'],
+                'add_time' => $time,
+                'ip_address' => empty($data['ip']) ? 0 : $data['ip'],
+                'status' => 1,
+                'parent_id' => $comment_id,
+                'user_id' => $uid,
+                'ru_id' => empty($data['ru_id']) ? 0 : $data['ru_id'],
+                'order_id' => $order_id,
+                'rec_id' => empty($data['rec_id']) ? 0 : $data['rec_id'],
+            ];
+            $re = $this->commentModel->addComment($commentData);
+        }
 
         $owhere['order_id'] = $order_id;
         if ($comment_id == 0) {
@@ -88,7 +90,8 @@ class CommentRepository implements CommentRepositoryInterface
         }
         $this->orderInfoModel->setOrder($owhere, $odata);
 
-        $goods_ids = explode(',', $data['goods_ids']);
+
+
         foreach ($goods_ids as $goods_id) {
             if (!empty($data['label_ids'])) {
                 $label_ids = explode(',', $data['label_ids']);

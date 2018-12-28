@@ -1,0 +1,108 @@
+子账号
+http://signin.aliyun.com/1719246369921765/login.htm
+missmallXzjy
+miss64701099
+
+==========================================================================================
+==============================X-web==============================
+==========服务器信息管理==========
+内网IP:  172.16.0.218(绑定EIP:47.110.238.88)
+SLB_IP:  172.16.0.217(绑定EIP:47.110.129.47)
+管理员账号:root/A123456a
+网站文件存放路径:  /home/www/
+nginx配置文件路径:  /www/server/panel/vhost/nginx/www.missmall.com.conf
+PHP-FPM配置文件路径:/www/server/php/71/etc/php-fpm.conf          php.ini
+==========WEB-宝塔登陆面板==========
+http://EIP:8888/5e312fd4
+y6nfiph6
+1d666b80
+==========mysql数据库==========
+DB_CONNECTION=mysql
+DB_HOST=rm-bp1q45aw41a16ps39.mysql.rds.aliyuncs.com
+DB_PORT=3306
+DB_DATABASE=missx_db
+DB_USERNAME=missmysql
+DB_PASSWORD=missmall64776165!!
+DB_PREFIX=dsc_
+==========redis=============
+REDIS_HOST=miss2018-new.redis.rds.aliyuncs.com
+REDIS_PASSWORD=missmall64776165!!
+REDIS_PORT=6379
+==========nginx配置=============
+server
+{
+        listen  80  default_server  fastopen=3  reuseport;
+        listen  443  ssl  default_server  fastopen=3  reuseport;
+        server_name  www.missmall.com;
+        index  index.php  index.html  index.htm  default.php  default.htm  default.html;
+        root  /home/www/public;
+        
+        #SSL-START  SSL相关配置，请勿删除或修改下一行带注释的404规则
+        #error_page  404/404.html;
+        ssl_certificate        /etc/letsencrypt/live/www.missmall.com/fullchain.pem;
+        ssl_certificate_key        /etc/letsencrypt/live/www.missmall.com/privkey.pem;
+        ssl_protocols  TLSv1  TLSv1.1  TLSv1.2;
+        ssl_ciphers  ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+        ssl_prefer_server_ciphers  on;
+        ssl_session_cache  shared:SSL:10m;
+        ssl_session_timeout  10m;
+        error_page  497    https://$host$request_uri;
+
+        #SSL-END
+    
+        real_ip_header        X-Forwarded-For;
+  
+        
+        #ERROR-PAGE-START    错误页配置，可以注释、删除或修改
+        error_page  404  /404.html;
+        error_page  502  /502.html;
+        #ERROR-PAGE-END
+        
+        add_header  Content-Security-Policy  upgrade-insecure-requests;
+        
+        #PHP-INFO-START    PHP引用配置，可以注释或修改
+        include  enable-php-71.conf;
+        #PHP-INFO-END
+        
+        #REWRITE-START  URL重写规则引用,修改后将导致面板设置的伪静态规则失效
+        include  /www/server/panel/vhost/rewrite/www.missmall.com.conf;
+        #REWRITE-END
+        
+        #禁止访问的文件或目录
+        location  ~  ^/(\.user.ini|\.htaccess|\.git|\.svn|\.project|LICENSE|README.md)
+        {
+                return  404;
+        }
+        
+        #一键申请SSL证书验证目录相关设置
+        location  ~  \.well-known{
+                allow  all;
+        }
+        
+        location  ~  .*\.(gif|jpg|jpeg|png|bmp|swf)$
+        {
+                expires            30d;
+                error_log  off;
+                access_log  /dev/null;
+        }
+        
+        location  ~  .*\.(js|css)?$
+        {
+                expires            12h;
+                error_log  off;
+                access_log  /dev/null;  
+        }
+        access_log    /www/wwwlogs/www.missmall.com.log  main;
+        error_log    /www/wwwlogs/www.missmall.com.error.log;
+}
+
+==========nginx伪装静态配置=============
+if  (!-e  $request_filename)  {
+        rewrite  ^(.*)$  /index.php?$1  last;
+}
+
+
+
+==========================================================================================
+==============
+加载更多
