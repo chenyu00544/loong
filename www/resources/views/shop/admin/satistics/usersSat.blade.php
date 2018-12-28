@@ -42,7 +42,7 @@
     <div style="height: 30px">　</div>
     </body>
 @section('script')
-    <script type="text/javascript" src="{{url('styles/plugin/charts/echarts.js')}}"></script>
+    <script type="text/javascript" src="{{url('styles/plugin/charts/echarts.min.js')}}"></script>
     <script>
         $(function () {
             $('#start_end_date').daterangepicker(optionDateSet, function (start, end) {
