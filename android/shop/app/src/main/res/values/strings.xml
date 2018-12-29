@@ -7,6 +7,7 @@
     <string name="tab_4">购物车</string>
     <string name="tab_5">我的</string>
 
+    <string name="net_error">网络错误！</string>
     <string name="store_name">柠檬自营</string>
     <string name="store_server">柠檬服务</string>
     <string name="goods_detail">商品详情</string>
@@ -24,6 +25,8 @@
     <string name="loading">数据操作中.....</string>
     <string name="more">更多</string>
     <string name="guess">猜你喜欢</string>
+    <string name="del_success">删除成功</string>
+    <string name="del_failed">删除失败</string>
 
     <string name="login_reg">登录/注册</string>
     <string name="balance">余额</string>
@@ -286,4 +289,6 @@
     <string name="good_comment">好评</string>
     <string name="middle_comment">中评</string>
     <string name="bad_comment">差评</string>
+    <string name="comment_no_empty">"评论不能为空!"</string>
+    <string name="thank_you_comment">"谢谢您的评价！"</string>
 </resources>

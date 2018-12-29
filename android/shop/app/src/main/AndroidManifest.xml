@@ -234,6 +234,7 @@
 
         <activity
             android:name=".activity.evaluate.EvaluateDetailActivity"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:theme="@style/AppTheme" />
 
         <provider

@@ -34,7 +34,7 @@ public class EvaluateGoodsItem extends BaseItem<EvaluateGroup> {
     public void onBindViewHolder(BaseViewHolder holder, int groupPosition, int position) {
         TextView tv = holder.get(R.id.textView278);
         ImageView iv = holder.get(R.id.imageView136);
-        OrderGoods bean = (OrderGoods) mData.getObjs().get(position);
+        OrderGoods bean = (OrderGoods) mData.getHeader();
         if(bean != null){
             RequestOptions requestOptions = RequestOptions.centerCropTransform().placeholder(R
                     .drawable.common_google_signin_btn_icon_light_normal_background).dontAnimate();

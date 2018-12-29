@@ -573,7 +573,7 @@ public class OrderListActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable("order", obj);
         intent.putExtras(bundle);
-        startActivityForResult(intent, ConstantManager.ResultStatus.ORDER_RESULT);
+        startActivityForResult(intent, ConstantManager.ResultStatus.EVA_ORDER_RESULT);
     }
 
     @Override
@@ -581,6 +581,8 @@ public class OrderListActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == ConstantManager.ResultStatus.ORDER_RESULT) {
+                getData(type, false);
+            }else if(requestCode == ConstantManager.ResultStatus.EVA_ORDER_RESULT){
                 getData(type, false);
             }
         }

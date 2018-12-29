@@ -807,7 +807,7 @@ class OrderRepository implements OrderRepositoryInterface
                 'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume', 'is_fullcut',
                 'goods_type', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num', 'review_status',
                 'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
-                'pinyin_keyword', 'goods_brief'
+                'pinyin_keyword', 'goods_brief','shipping_fee'
             ];
             $goodses = $this->goodsModel->getGoodsByOrder($where, $column, $wherein);
             $goodses_arr = [];
@@ -966,6 +966,8 @@ class OrderRepository implements OrderRepositoryInterface
                         if (in_array($order[$goods_detail->user_id]['city'], $area_ids)) {
                             $order_goods['shipping_fee'] = $t_ext->sprice;
                             $shipping_fee[$goods_detail->user_id] = $t_ext->sprice;
+                        }else{
+                            $order_goods['shipping_fee'] = 0;
                         }
                     }
                 } else {

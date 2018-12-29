@@ -226,7 +226,6 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
         }
         groupedListAdapter.setData(getGroupItems(groupBrowses));
         groupedGridLayoutManager = new GroupedGridLayoutManager(context, 1, groupedListAdapter) {
-
             @Override
             public int getChildSpanSize(int groupPosition, int childPosition) {
                 return super.getChildSpanSize(groupPosition, childPosition);
@@ -278,7 +277,6 @@ public class BrowseActivity extends BaseGroupRecyclerViewActivity {
     public void bindViewMoreData(JSONObject json) {
         groupedListAdapter.notifyDataChanged();
         int index = groupBrowses.size();
-        List<Browse> _browses = new ArrayList<>();
         try {
             Integer code = json.getInt("code");
             if (code == 0) {

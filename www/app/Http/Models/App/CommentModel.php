@@ -43,14 +43,8 @@ class CommentModel extends Model
     public function getCommentsByOrder($where, $column = ['*'])
     {
         return $this->select($column)
-            ->leftJoin('comment_ext', 'comment_ext.comment_id', '=', 'comment.comment_id')
-            ->with(['commentImg'])
-            ->with(['user'])
             ->where($where)
-            ->where(['parent_id' => 0])
-            ->orderBy('comment_id', 'DESC')
-            ->limit(10)
-            ->get();
+            ->first();
     }
 
     public function getComment($where, $column = ['*'])

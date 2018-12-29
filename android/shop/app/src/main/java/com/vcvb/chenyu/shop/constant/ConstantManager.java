@@ -33,6 +33,7 @@ public interface ConstantManager {
         public int MSG_RESULT = 1007;
         public int ORDER_RESULT = 1008;
         public int RORDER_RESULT = 1009;
+        public int EVA_ORDER_RESULT = 1010;
     }
 
     interface PhotoAlbum {
@@ -83,7 +84,7 @@ public interface ConstantManager {
     }
 
     interface Url {
-        public String URIHOST = "http://www.vcvbuy.com/api/";
+        public String URIHOST = "http://app.vcvbuy.com/api/";
         public String URI_TYPE_APP = "app/";
         public String GETGEO = URIHOST + "region/geo/coder";
         public String GETDEVICEID = URIHOST + URI_TYPE_APP + "login/deviceid"; //获取未登录UID

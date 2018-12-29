@@ -61,6 +61,7 @@ public class EvaluateLabelItem extends BaseItem<EvaluateGroup> {
                 ftv.setBackgroundResource(R.drawable.shape_6_gray_d);
                 ftv.setTextColor(context.getResources().getColor(R.color.black));
             }
+            groupMap.put(ftv.getId(), groupPosition);
             posMap.put(ftv.getId(), i);
             ftv.setOnClickListener(listener);
         }

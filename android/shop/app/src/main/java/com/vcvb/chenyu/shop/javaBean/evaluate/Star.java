@@ -2,7 +2,7 @@ package com.vcvb.chenyu.shop.javaBean.evaluate;
 
 public class Star {
     private String key;
-    private Integer value;
+    private Integer value = 5;
 
     public String getKey() {
         return key;
