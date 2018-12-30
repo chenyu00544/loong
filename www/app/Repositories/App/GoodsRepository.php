@@ -226,11 +226,17 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
 
             //评价
-            $goods_detail->comments = $this->commentModel->getComments($goods_id);
+            $column_comment = ['comment_id', 'id_value', 'user_name', 'content', 'status', 'parent_id', 'user_id', 'ru_id'];
+            $goods_detail->comments = $this->commentModel->getComments($goods_id, $column_comment);
             foreach ($goods_detail->comments as $comment) {
                 $comment->user_logo = $comment->user->logo;
                 if ($comment->user_logo != '') {
                     $comment->user_logo = FileHandle::getImgByOssUrl($comment->user_logo);
+                }
+                if (count($comment->commentImg) > 0) {
+                    foreach ($comment->commentImg as $comment_img) {
+                        $comment_img->comment_img = FileHandle::getImgByOssUrl($comment_img->comment_img);
+                    }
                 }
                 unset($comment->user);
             }

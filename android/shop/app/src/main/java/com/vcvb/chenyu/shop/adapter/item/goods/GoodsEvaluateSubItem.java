@@ -15,6 +15,8 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsComment;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import java.util.Locale;
+
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
@@ -38,23 +40,23 @@ public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        ImageView iv = holder.getImageView(R.id.imageView);
+        ImageView iv = holder.get(R.id.imageView);
         RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
                 (DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).error(R.drawable
                 .icon_boy_head).override(120, 120);
-        Glide.with(context).load(mData.getLogo()).apply(requestOptions)
+        Glide.with(context).load(mData.getUser_logo()).apply(requestOptions)
                 .into(iv);
 
-        ImageView iv2 = holder.getImageView(R.id.imageView3);
+        ImageView iv2 = holder.get(R.id.imageView3);
         RoundedCornersTransformation roundedCorners = new RoundedCornersTransformation(6, 0,
                 RoundedCornersTransformation.CornerType.RIGHT);
         RequestOptions requestOptions2 = RequestOptions.bitmapTransform(roundedCorners)
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).override
-                        (ToolUtils.dip2px(context,120), ToolUtils.dip2px(context,120));
-        if(mData.getComment_imgs().size() > 0){
+                        (ToolUtils.dip2px(context, 120), ToolUtils.dip2px(context, 120));
+        if (mData.getComment_imgs().size() > 0) {
             Glide.with(context).load(mData.getComment_imgs().get(0).getComment_img()).apply
                     (requestOptions2).into(iv2);
-        }else{
+        } else {
             Glide.with(context).load(R.drawable.icon_no_pic).apply
                     (requestOptions2).into(iv2);
         }
@@ -63,5 +65,9 @@ public class GoodsEvaluateSubItem extends BaseItem<GoodsComment> {
         tv1.setText(mData.getUser_name());
         TextView tv2 = holder.get(R.id.textView5);
         tv2.setText(mData.getContent());
+
+        TextView tv3 = holder.get(R.id.textView288);
+        String str = "%d张";
+        tv3.setText(String.format(Locale.CANADA, str, mData.getComment_imgs().size()));
     }
 }

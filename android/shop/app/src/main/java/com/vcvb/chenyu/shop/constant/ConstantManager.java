@@ -84,7 +84,7 @@ public interface ConstantManager {
     }
 
     interface Url {
-        public String URIHOST = "http://app.vcvbuy.com/api/";
+        public String URIHOST = "http://www.vcvbuy.com/api/";
         public String URI_TYPE_APP = "app/";
         public String GETGEO = URIHOST + "region/geo/coder";
         public String GETDEVICEID = URIHOST + URI_TYPE_APP + "login/deviceid"; //获取未登录UID

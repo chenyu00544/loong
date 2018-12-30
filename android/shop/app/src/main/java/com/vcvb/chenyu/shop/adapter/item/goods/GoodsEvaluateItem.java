@@ -97,7 +97,7 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
                 LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
                 mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
                 if (defaultItemDecoration == null) {
-                    defaultItemDecoration = new DefaultItemDecoration(context, 5);
+                    defaultItemDecoration = new DefaultItemDecoration(context, 3);
                     recyclerView.addItemDecoration(defaultItemDecoration);
                 }
                 if (mData.getComments().size() > 0) {

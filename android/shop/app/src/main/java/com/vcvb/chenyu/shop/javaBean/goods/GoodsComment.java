@@ -14,15 +14,11 @@ public class GoodsComment {
     private String user_name;
     private String content;
     private String add_time;
-    private String logo;
+    private String user_logo;
     private List<GoodsCommentImg> comment_imgs;
 
     public String getContent() {
         return content;
-    }
-
-    public String getLogo() {
-        return logo;
     }
 
     public String getAdd_time() {
@@ -45,10 +41,6 @@ public class GoodsComment {
         this.content = content;
     }
 
-    public void setLogo(String logo) {
-        this.logo = logo;
-    }
-
     public void setAdd_time(String add_time) {
         this.add_time = add_time;
     }
@@ -63,6 +55,14 @@ public class GoodsComment {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public String getUser_logo() {
+        return user_logo;
+    }
+
+    public void setUser_logo(String user_logo) {
+        this.user_logo = user_logo;
     }
 
     public void setData(JSONObject Json){
