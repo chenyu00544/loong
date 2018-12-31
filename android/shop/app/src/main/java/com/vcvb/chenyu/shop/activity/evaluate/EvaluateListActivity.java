@@ -2,9 +2,12 @@ package com.vcvb.chenyu.shop.activity.evaluate;
 
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bm.library.Info;
+import com.bm.library.PhotoView;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.evaluate.EvaContentItem;
@@ -15,7 +18,6 @@ import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.dialog.LoadingDialog;
 import com.vcvb.chenyu.shop.javaBean.evaluate.Comment;
-import com.vcvb.chenyu.shop.javaBean.evaluate.CommentImg;
 import com.vcvb.chenyu.shop.javaBean.evaluate.Label;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
@@ -41,6 +43,8 @@ public class EvaluateListActivity extends BaseRecyclerViewActivity {
     private List<Label> labels = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
     private int page = 1;
+
+    private PhotoView photoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +73,14 @@ public class EvaluateListActivity extends BaseRecyclerViewActivity {
     @Override
     public void initView() {
         super.initView();
-        mRecyclerView = findViewById(R.id.order_content);
+        mRecyclerView = findViewById(R.id.list);
         mLayoutManager = new GridLayoutManager(context, 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+
+        photoView = findViewById(R.id.photo_view);
+        photoView.enable();
+        photoView.setVisibility(View.GONE);
     }
 
     @Override
@@ -130,20 +138,16 @@ public class EvaluateListActivity extends BaseRecyclerViewActivity {
             for (int i = 0; i < commentsArray.length(); i++) {
                 JSONObject object = (JSONObject) commentsArray.get(i);
                 Comment comment = JsonUtils.fromJsonObject(object, Comment.class);
-                JSONArray array = object.getJSONArray("comment_img");
-                List<CommentImg> commentImgs = new ArrayList<>();
-                for (int j = 0; j < array.length(); j++) {
-                    JSONObject o = (JSONObject) array.get(i);
-                    CommentImg commentImg = JsonUtils.fromJsonObject(object, CommentImg.class);
-                    commentImgs.add(commentImg);
-                }
-                comment.setCommentImgs(commentImgs);
+                comment.setData(object);
                 comments.add(comment);
             }
             JSONArray labelArray = json.getJSONObject("data").getJSONArray("comment_labels");
             for (int i = 0; i < labelArray.length(); i++) {
                 JSONObject object = (JSONObject) labelArray.get(i);
                 Label label = JsonUtils.fromJsonObject(object, Label.class);
+                if (label_id == label.getId()) {
+                    label.setIs_select(true);
+                }
                 labels.add(label);
             }
             mAdapter.addAll(getItems());
@@ -164,7 +168,8 @@ public class EvaluateListActivity extends BaseRecyclerViewActivity {
                 cells.add(evaGoodsItem);
 
                 if (labels.size() > 0) {
-                    EvaLabelItem evaLabelItem = new EvaLabelItem(null, context);
+                    EvaLabelItem evaLabelItem = new EvaLabelItem(labels, context);
+                    evaLabelItem.setOnItemClickListener(evaLabelListener);
                     cells.add(evaLabelItem);
                 }
 
@@ -172,6 +177,7 @@ public class EvaluateListActivity extends BaseRecyclerViewActivity {
                     for (int i = 0; i < comments.size(); i++) {
                         EvaContentItem evaContentItem = new EvaContentItem(comments.get(i),
                                 context);
+                        evaContentItem.setOnItemClickListener(evaContentListener);
                         cells.add(evaContentItem);
                     }
                 } else {
@@ -187,4 +193,24 @@ public class EvaluateListActivity extends BaseRecyclerViewActivity {
         }
         return cells;
     }
+
+    EvaLabelItem.OnClickListener evaLabelListener = new EvaLabelItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos) {
+            for (int i = 0; i < labels.size(); i++) {
+                labels.get(i).setIs_select(false);
+            }
+            labels.get(pos).setIs_select(true);
+            mAdapter.notifyDataSetChanged();
+        }
+    };
+
+    EvaContentItem.OnClickListener evaContentListener = new EvaContentItem.OnClickListener() {
+        @Override
+        public void onClicked(View view, int pos, Info info) {
+            photoView.animaFrom(info);
+            photoView.setVisibility(View.VISIBLE);
+        }
+    };
+
 }

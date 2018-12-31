@@ -72,6 +72,12 @@ class CommentModel extends Model
             ->get();
     }
 
+    public function setComment($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
     public function addComment($data)
     {
         return $this->create($data);

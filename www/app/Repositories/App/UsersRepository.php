@@ -13,6 +13,7 @@ use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\App\CartModel;
+use App\Http\Models\App\CommentModel;
 use App\Http\Models\App\OrderInfoModel;
 use App\Http\Models\App\OrderReturnModel;
 use App\Http\Models\App\UserAddressModel;
@@ -28,6 +29,7 @@ class UsersRepository implements UsersRepositoryInterface
     private $orderInfoModel;
     private $orderReturnModel;
     private $cartModel;
+    private $commentModel;
 
     public function __construct(
         UsersModel $usersModel,
@@ -35,7 +37,8 @@ class UsersRepository implements UsersRepositoryInterface
         UsersRealModel $usersRealModel,
         OrderInfoModel $orderInfoModel,
         OrderReturnModel $orderReturnModel,
-        CartModel $cartModel
+        CartModel $cartModel,
+        CommentModel $commentModel
     )
     {
         $this->usersModel = $usersModel;
@@ -44,6 +47,7 @@ class UsersRepository implements UsersRepositoryInterface
         $this->orderInfoModel = $orderInfoModel;
         $this->orderReturnModel = $orderReturnModel;
         $this->cartModel = $cartModel;
+        $this->commentModel = $commentModel;
     }
 
     public function login($username, $password, $type, $ip, $device_id = '')
@@ -221,6 +225,7 @@ class UsersRepository implements UsersRepositoryInterface
         $where['user_id'] = $uid;
         if (!empty($data['nickname'])) {
             $updata['nick_name'] = $data['nickname'];
+            $this->commentModel->setComment($where, ['user_name' => $data['nickname']]);
         } elseif (!empty($data['sex'])) {
             $updata['sex'] = $data['sex'];
         } elseif (!empty($data['file_0'])) {

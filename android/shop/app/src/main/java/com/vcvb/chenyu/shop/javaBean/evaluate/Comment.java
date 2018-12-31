@@ -1,5 +1,12 @@
 package com.vcvb.chenyu.shop.javaBean.evaluate;
 
+import com.vcvb.chenyu.shop.tools.JsonUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Comment {
@@ -9,7 +16,7 @@ public class Comment {
     private Integer comment_rank;
     private Integer comment_server;
     private Integer comment_delivery;
-    private Integer add_time_format;
+    private String add_time_format;
     private String user_name;
     private String content;
     private String order_id;
@@ -131,11 +138,30 @@ public class Comment {
         this.comment_delivery = comment_delivery;
     }
 
-    public Integer getAdd_time_format() {
+    public String getAdd_time_format() {
         return add_time_format;
     }
 
-    public void setAdd_time_format(Integer add_time_format) {
+    public void setAdd_time_format(String add_time_format) {
         this.add_time_format = add_time_format;
+    }
+
+    public void setData(JSONObject json) {
+        try {
+            JSONArray array = json.getJSONArray("comment_img");
+            List<CommentImg> commentImgs = new ArrayList<>();
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject o = (JSONObject) array.get(i);
+                    CommentImg commentImg = JsonUtils.fromJsonObject(o, CommentImg.class);
+                    commentImgs.add(commentImg);
+            }
+            this.setCommentImgs(commentImgs);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
     }
 }

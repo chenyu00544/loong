@@ -100,4 +100,8 @@ dependencies {
     //fixme Parceler对Bundle数据存取
     annotationProcessor "com.github.yjfnypeu.Parceler:compiler:1.4.0"
     implementation "com.github.yjfnypeu.Parceler:api:1.4.0"
+
+    //fixme PhotoView图片查看
+//    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.bm.photoview:library:1.4.1'
 }

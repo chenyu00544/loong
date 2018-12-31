@@ -40,11 +40,7 @@ class CommentController extends CommonController
             $data = $request->all();
             $data['ip'] = $request->getClientIp();
             $re = $this->commentRepository->addComment($data, $uid);
-            if ($re) {
-                return ['code' => 0, 'msg' => '', 'data' => $re];
-            } else {
-                return ['code' => 0, 'msg' => '', 'data' => []];
-            }
+            return $this->apiReturn($re);
         } else {
             return ['code' => 1, 'msg' => '未登陆'];
         }
