@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsCause {
+import java.io.Serializable;
+
+public class GoodsCause implements Serializable {
     private Integer cause_type;
     private String name;
 

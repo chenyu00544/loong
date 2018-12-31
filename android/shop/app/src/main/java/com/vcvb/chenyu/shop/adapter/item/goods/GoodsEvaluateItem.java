@@ -53,14 +53,19 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         TextView commentTitle = holder.getTextView(R.id.textView23);
+        posMap.put(commentTitle.getId(), 0);
+        commentTitle.setOnClickListener(listener);
+
         Integer commentCount = 0;
         for (int i = 0; i < mData.getCommentLabels().size(); i++) {
             commentCount += mData.getCommentLabels().get(i).getCount();
         }
-
         commentTitle.setText("商品评价(" + String.valueOf(commentCount) + ")");
+
+        TextView goodPercentTv = holder.getTextView(R.id.textView22);
+        posMap.put(goodPercentTv.getId(), 0);
+        goodPercentTv.setOnClickListener(listener);
         if (mData.getComments_number() > 0) {
-            TextView goodPercentTv = holder.getTextView(R.id.textView22);
             Double goodPercent = (double) (commentCount / mData.getComments_number()) * 100;
             goodPercentTv.setText("好评率 " + String.valueOf(goodPercent) + "%");
         }
@@ -83,7 +88,7 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
                 textView.setText(String.format(str, mData.getCommentLabels().get(i).getLabel_name
                         (), mData.getCommentLabels().get(i).getCount()));
                 flowLayout.addView(textView);
-                posMap.put(textView.getId(), Integer.MAX_VALUE - i);
+                posMap.put(textView.getId(), mData.getCommentLabels().get(i).getId());
                 textView.setOnClickListener(listener);
             }
         }
@@ -184,11 +189,8 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
                 }
             }
 
-            TextView tv1 = holder.getTextView(R.id.textView22);
-            posMap.put(tv1.getId(), Integer.MAX_VALUE - 4);
-            tv1.setOnClickListener(listener);
             View tv5 = holder.getView(R.id.view75);
-            posMap.put(tv5.getId(), Integer.MAX_VALUE - 5);
+            posMap.put(tv5.getId(), Integer.MAX_VALUE);
             tv5.setOnClickListener(listener);
         }
     }
@@ -206,7 +208,7 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
         @Override
         public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
             if (onClickListener != null) {
-                onClickListener.onClicked(itemView, position);
+                onClickListener.onClicked(itemView, 0);
             }
         }
     };

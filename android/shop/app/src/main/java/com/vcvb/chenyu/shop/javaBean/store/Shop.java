@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.store;
 
-public class Shop {
+import java.io.Serializable;
+
+public class Shop implements Serializable {
     private Integer ru_id;
     private String shop_name;
     private String shop_logo;

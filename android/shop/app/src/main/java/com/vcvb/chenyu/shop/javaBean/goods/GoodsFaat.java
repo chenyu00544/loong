@@ -6,10 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodsFaat {
+public class GoodsFaat implements Serializable {
     private Integer start_time;
     private Integer end_time;
     private Integer current_time;

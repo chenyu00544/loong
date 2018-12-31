@@ -70,6 +70,7 @@
     <string name="policies">"隐私权相关政策"</string>
     <string name="no_order">您还没有相关的订单</string>
     <string name="no_goods">您还没有相关的商品</string>
+    <string name="no_evaluate">您还没有相关的评价</string>
     <string name="no_search">没有搜索到相关商品，柠檬会尽快上架！</string>
     <string name="want_to_buy">可以去看看哪些想买的</string>
     <string name="buy_immediately">立即去购买</string>

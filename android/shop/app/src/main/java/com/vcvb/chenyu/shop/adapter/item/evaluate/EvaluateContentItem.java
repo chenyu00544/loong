@@ -16,7 +16,7 @@ import com.vcvb.chenyu.shop.javaBean.evaluate.Content;
 import com.vcvb.chenyu.shop.javaBean.evaluate.EvaluateGroup;
 
 public class EvaluateContentItem extends BaseItem<EvaluateGroup> {
-    public static final int TYPE = R.layout.evaluate_content_item;
+    public static final int TYPE = R.layout.evaluate_info_item;
     private OnClickListener onClickListener;
 
     public EvaluateContentItem(EvaluateGroup bean, Context c) {

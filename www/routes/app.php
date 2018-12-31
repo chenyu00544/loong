@@ -17,6 +17,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
             'message' => 'API version 1.'
         ];
     });
+
     Route::any('index', 'IndexController@index');
     Route::post('index/loadmore', 'IndexController@loadmore');
     Route::any('test', 'IndexController@test');
@@ -86,5 +87,6 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('faat/brand', 'FaatController@brand');
 
     Route::post('comment/label', 'CommentController@label');
+    Route::post('comment/list', 'CommentController@getComments');
     Route::post('comment/add', 'CommentController@addComment');
 });

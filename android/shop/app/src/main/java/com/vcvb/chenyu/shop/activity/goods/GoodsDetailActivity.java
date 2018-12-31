@@ -376,8 +376,8 @@ public class GoodsDetailActivity extends GoodsActivity {
                 }
 
                 if (goodsDetails.getIs_limit_buy() == 1 && goodsDetails.getCurrent_time() >
-                        goodsDetails.getLimit_buy_start_date() && goodsDetails.getCurrent_time
-                        () < goodsDetails.getLimit_buy_end_date()) {
+                        goodsDetails.getLimit_buy_start_date() && goodsDetails.getCurrent_time()
+                        < goodsDetails.getLimit_buy_end_date()) {
                     set.constrainWidth(addCart.getId(), 0);
                 } else {
                     set.constrainWidth(addCart.getId(), ToolUtils.dip2px(context, 140));
@@ -816,24 +816,17 @@ public class GoodsDetailActivity extends GoodsActivity {
     GoodsEvaluateItem.OnClickListener evaluateListener = new GoodsEvaluateItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos) {
-            Intent intent = new Intent(GoodsDetailActivity.this, EvaluateListActivity.class);
+            Intent intent;
             switch (pos) {
-                case Integer.MAX_VALUE - 1:
-                    intent.putExtra("evaluateType", 0);
-                    break;
-                case Integer.MAX_VALUE - 2:
-                    intent.putExtra("evaluateType", 1);
-                    break;
-                case Integer.MAX_VALUE - 3:
-                    intent.putExtra("evaluateType", 2);
-                    break;
-                case Integer.MAX_VALUE - 4:
-                    intent.putExtra("evaluateType", 3);
-                case Integer.MAX_VALUE - 5:
+                case Integer.MAX_VALUE:
                     intent = new Intent(GoodsDetailActivity.this, QuestionsListActivity.class);
                     break;
                 default:
-                    intent.putExtra("evaluateType", 0);
+                    intent = new Intent(GoodsDetailActivity.this, EvaluateListActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("goods", goodsDetails);
+                    intent.putExtras(bundle);
+                    intent.putExtra("label_id", pos);
                     break;
             }
             startActivity(intent);

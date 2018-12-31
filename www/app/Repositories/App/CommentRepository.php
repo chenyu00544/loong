@@ -50,6 +50,45 @@ class CommentRepository implements CommentRepositoryInterface
         return $this->commentLabelModel->getCommentLabels();
     }
 
+    public function getComments($data)
+    {
+        $return = [];
+        if (empty($data['goods_id'])) {
+            return false;
+        } else {
+            $goods_id = $data['goods_id'];
+        }
+        $column = ['comment.comment_id', 'comment_type', 'comment.id_value', 'user_name', 'content', 'order_id', 'user_id', 'parent_id', 'status',
+            'comment_rank', 'comment_server', 'comment_delivery', 'add_time'];
+        $page = empty($data['page']) ? 1 : $data['page'];
+        switch ($data['label_id']) {
+            case 0:
+                $comments = $this->commentModel->getComments($goods_id, $column, $page);
+                break;
+            default:
+                $comments = $this->commentModel->getCommentsByLabel($goods_id, $data['label_id'], $column, $page);
+                break;
+        }
+        foreach ($comments as $comment) {
+            foreach ($comment->commentImg as $commentImg) {
+                $commentImg->comment_img = FileHandle::getImgByOssUrl($commentImg->comment_img);
+            }
+            $comment->logo = FileHandle::getImgByOssUrl($comment->user->logo);
+            $comment->add_time_format = date(RedisCache::get('shop_config')['time_format'], $comment->add_time);
+            unset($comment->user);
+        }
+        $return['comments'] = $comments;
+
+        //评价统计
+        $commentLabels = $this->commentLabelModel->getCommentLabels();
+        foreach ($commentLabels as $commentLabel) {
+            $commentLabel->count = 0;
+            $commentLabel->count = $this->commentExtModel->countCommentExt(['id_value' => $goods_id, 'label_id' => $commentLabel->id]);
+        }
+        $return['comment_labels'] = $commentLabels;
+        return $return;
+    }
+
     public function addComment($data, $uid)
     {
         $time = time();

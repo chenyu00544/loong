@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsAttr {
+import java.io.Serializable;
+
+public class GoodsAttr implements Serializable {
     private boolean isSelect = false;
     private int buttonId = 0;
 

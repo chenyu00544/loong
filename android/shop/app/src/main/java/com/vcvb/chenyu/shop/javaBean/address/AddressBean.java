@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.address;
 
-public class AddressBean {
+import java.io.Serializable;
+
+public class AddressBean implements Serializable {
     private Integer def = 0;
     private String address_name;
     private Integer user_id;

@@ -94,5 +94,10 @@ dependencies {
     implementation 'com.android.support:support-v4:20.+'
     implementation "com.daimajia.swipelayout:library:1.2.0@aar"
 
+    //fixme 百度推送
     implementation files('src/main/jniLibs/pushservice-6.5.0.75.jar')
+
+    //fixme Parceler对Bundle数据存取
+    annotationProcessor "com.github.yjfnypeu.Parceler:compiler:1.4.0"
+    implementation "com.github.yjfnypeu.Parceler:api:1.4.0"
 }

@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsFC {
+import java.io.Serializable;
+
+public class GoodsFC implements Serializable {
     private Integer id;
     private String goods_id;
     private String cfull;

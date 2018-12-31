@@ -169,6 +169,7 @@ public interface ConstantManager {
 
         //fixme 评价
         public String COMMENT_LABEL = URIHOST + URI_TYPE_APP + "comment/label";
+        public String COMMENT_LIST = URIHOST + URI_TYPE_APP + "comment/list";
         public String COMMENT_ADD = URIHOST + URI_TYPE_APP + "comment/add";
     }
 }

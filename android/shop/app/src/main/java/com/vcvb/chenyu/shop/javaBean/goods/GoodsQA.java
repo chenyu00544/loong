@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsQA {
+import java.io.Serializable;
+
+public class GoodsQA implements Serializable {
     private Integer qa_id;
     private String id_value;
     private String email;

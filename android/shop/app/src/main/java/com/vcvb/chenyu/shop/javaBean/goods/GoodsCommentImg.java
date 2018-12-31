@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsCommentImg {
+import java.io.Serializable;
+
+public class GoodsCommentImg implements Serializable {
     private Integer id;
     private String comment_img;
     private String img_thumb;

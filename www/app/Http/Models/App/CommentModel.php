@@ -28,14 +28,32 @@ class CommentModel extends Model
         return $this->hasOne('App\Http\Models\App\UsersModel', 'user_id', 'user_id');
     }
 
-    public function getComments($id, $column = ['*'])
+    public function getComments($id, $column = ['*'], $page = 1, $size = 15)
     {
         return $this->select($column)
             ->with(['commentImg'])
-            ->with(['user'])
+            ->with(['user' => function ($query) {
+                $query->select(['user_id', 'logo', 'nick_name']);
+            }])
             ->where(['id_value' => $id, 'parent_id' => 0, 'status' => 1])
             ->orderBy('comment_id', 'DESC')
-            ->limit(10)
+            ->offset(($page - 1) * $size)
+            ->limit($size)
+            ->get();
+    }
+
+    public function getCommentsByLabel($id, $label_id, $column = ['*'], $page = 1, $size = 15)
+    {
+        return $this->select($column)
+            ->join('comment_ext', 'comment_ext.comment_id', '=', 'comment.comment_id')
+            ->with(['commentImg'])
+            ->with(['user' => function ($query) {
+                $query->select(['user_id', 'logo', 'nick_name']);
+            }])
+            ->where(['comment_ext.id_value' => $id, 'parent_id' => 0, 'status' => 1, 'comment_ext.label_id' => $label_id])
+            ->orderBy('comment.comment_id', 'DESC')
+            ->offset(($page - 1) * $size)
+            ->limit($size)
             ->get();
     }
 

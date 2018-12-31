@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsBanner {
+import java.io.Serializable;
+
+public class GoodsBanner implements Serializable {
     private Integer img_id;
     private String goods_id;
     private String img_original;

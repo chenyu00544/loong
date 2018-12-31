@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsCommentLabel {
+import java.io.Serializable;
+
+public class GoodsCommentLabel implements Serializable {
     private Integer id;
     private String label_name;
     private String alias_en;

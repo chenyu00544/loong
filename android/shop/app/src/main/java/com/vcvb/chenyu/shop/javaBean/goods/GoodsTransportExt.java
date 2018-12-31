@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsTransportExt {
+import java.io.Serializable;
+
+public class GoodsTransportExt implements Serializable {
     private Integer id;
     private String tid;
     private String ru_id;

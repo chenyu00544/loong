@@ -5,6 +5,7 @@ public class Label {
     private Integer id;
     private String label_name;
     private String alias_en;
+    private Integer count;
 
     public boolean isIs_select() {
         return is_select;
@@ -36,5 +37,13 @@ public class Label {
 
     public void setAlias_en(String alias_en) {
         this.alias_en = alias_en;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

@@ -6,10 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoodsBrand {
+public class GoodsBrand implements Serializable {
     private Integer id;
     private String brand_name;
     private String brand_letter;

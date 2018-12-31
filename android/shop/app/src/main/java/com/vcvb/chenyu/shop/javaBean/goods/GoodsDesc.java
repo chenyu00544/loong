@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class GoodsDesc {
+import java.io.Serializable;
+
+public class GoodsDesc implements Serializable {
     private String desc_url;
     private Integer width;
     private Integer height;

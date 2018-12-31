@@ -27,6 +27,12 @@ class CommentController extends CommonController
         }
     }
 
+    public function getComments(Request $request)
+    {
+        $re = $this->commentRepository->getComments($request->all());
+        return $this->apiReturn($re);
+    }
+
     public function addComment(Request $request)
     {
         $uid = Verifiable::authorization($request);
@@ -36,7 +42,7 @@ class CommentController extends CommonController
             $re = $this->commentRepository->addComment($data, $uid);
             if ($re) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
-            }else{
+            } else {
                 return ['code' => 0, 'msg' => '', 'data' => []];
             }
         } else {

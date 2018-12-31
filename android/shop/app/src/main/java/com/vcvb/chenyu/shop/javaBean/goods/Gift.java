@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.goods;
 
-public class Gift {
+import java.io.Serializable;
+
+public class Gift implements Serializable {
     private Integer id;
     private String price;
     private String name;
