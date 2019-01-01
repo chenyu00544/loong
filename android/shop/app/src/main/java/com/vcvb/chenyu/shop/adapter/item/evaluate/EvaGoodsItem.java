@@ -14,7 +14,7 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.goods.GoodsDetail;
 
 public class EvaGoodsItem extends BaseItem<GoodsDetail> {
-    public static final int TYPE = R.layout.evaluate_goods_item;
+    public static final int TYPE = R.layout.evaluate_goods_item2;
 
     public EvaGoodsItem(GoodsDetail beans, Context c) {
         super(beans, c);

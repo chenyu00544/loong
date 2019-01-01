@@ -358,6 +358,8 @@ public class EvaluateListActivity extends BaseRecyclerViewActivity {
                 labels.get(i).setIs_select(false);
             }
             labels.get(pos).setIs_select(true);
+            label_id = labels.get(pos).getId();
+            getData(false);
             mAdapter.notifyDataSetChanged();
         }
     };

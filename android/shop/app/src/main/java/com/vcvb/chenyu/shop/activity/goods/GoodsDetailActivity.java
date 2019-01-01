@@ -340,7 +340,7 @@ public class GoodsDetailActivity extends GoodsActivity {
 
 
         goodsDetail = findViewById(R.id.goods_detail);
-        goodsDetail.setFlingScale(0.3);
+        goodsDetail.setFlingScale(0.5);
         goodsDetail.setNestedScrollingEnabled(false);
         gridLayoutManager = new ShopGridLayoutManager(this, 1);
         gridLayoutManager.setSpeedRatio(1);
