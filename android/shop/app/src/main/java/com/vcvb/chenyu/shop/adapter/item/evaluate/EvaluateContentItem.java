@@ -54,7 +54,8 @@ public class EvaluateContentItem extends BaseItem<EvaluateGroup> {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (onClickListener != null) {
-                    onClickListener.onClicked(et, groupMap.get(et.getId()), et.getText().toString());
+                    onClickListener.onClicked(et, groupMap.get(et.getId()), et.getText().toString
+                            ());
                 }
             }
         });

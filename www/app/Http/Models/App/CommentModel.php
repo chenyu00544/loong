@@ -28,6 +28,11 @@ class CommentModel extends Model
         return $this->hasOne('App\Http\Models\App\UsersModel', 'user_id', 'user_id');
     }
 
+    public function reply()
+    {
+        return $this->hasMany('App\Http\Models\App\CommentModel', 'parent_id', 'comment_id');
+    }
+
     public function getComments($id, $column = ['*'], $page = 1, $size = 15)
     {
         return $this->select($column)
@@ -35,8 +40,17 @@ class CommentModel extends Model
             ->with(['user' => function ($query) {
                 $query->select(['user_id', 'logo', 'nick_name']);
             }])
+            ->with(['reply'=>function($query){
+                $query->select(['comment_id', 'comment_type', 'id_value', 'user_name', 'content', 'order_id', 'user_id', 'parent_id', 'status',
+                    'comment_rank', 'comment_server', 'comment_delivery', 'add_time'])
+                    ->with(['commentImg'])
+                    ->with(['user' => function ($query) {
+                        $query->select(['user_id', 'logo', 'nick_name']);
+                    }])
+                    ->orderBy('add_time', 'DESC');
+            }])
             ->where(['id_value' => $id, 'parent_id' => 0, 'status' => 1])
-            ->orderBy('comment_id', 'DESC')
+            ->orderBy('add_time', 'DESC')
             ->offset(($page - 1) * $size)
             ->limit($size)
             ->get();
@@ -50,8 +64,17 @@ class CommentModel extends Model
             ->with(['user' => function ($query) {
                 $query->select(['user_id', 'logo', 'nick_name']);
             }])
+            ->with(['reply'=>function($query){
+                $query->select(['comment_id', 'comment_type', 'id_value', 'user_name', 'content', 'order_id', 'user_id', 'parent_id', 'status',
+                    'comment_rank', 'comment_server', 'comment_delivery', 'add_time'])
+                    ->with(['commentImg'])
+                    ->with(['user' => function ($query) {
+                        $query->select(['user_id', 'logo', 'nick_name']);
+                    }])
+                    ->orderBy('add_time', 'DESC');
+            }])
             ->where(['comment_ext.id_value' => $id, 'parent_id' => 0, 'status' => 1, 'comment_ext.label_id' => $label_id])
-            ->orderBy('comment.comment_id', 'DESC')
+            ->orderBy('comment.add_time', 'DESC')
             ->offset(($page - 1) * $size)
             ->limit($size)
             ->get();

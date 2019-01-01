@@ -1,6 +1,8 @@
 package com.vcvb.chenyu.shop.javaBean.evaluate;
 
-public class CommentImg {
+import java.io.Serializable;
+
+public class CommentImg  implements Serializable {
     private Integer id;
     private String rec_id;
     private String order_id;

@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bm.library.Info;
-import com.bm.library.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
@@ -25,6 +23,7 @@ import java.util.Locale;
 public class EvaContentItem extends BaseItem<Comment> {
     public static final int TYPE = R.layout.evaluate_info_item;
     public OnClickListener onClickListener;
+    private int pos = 0;
 
     public EvaContentItem(Comment beans, Context c) {
         super(beans, c);
@@ -44,6 +43,7 @@ public class EvaContentItem extends BaseItem<Comment> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
+        pos = position;
         RequestOptions requestOptions = RequestOptions.circleCropTransform().diskCacheStrategy
                 (DiskCacheStrategy.NONE).dontAnimate();
         RequestOptions requestOptions2 = RequestOptions.centerInsideTransform().diskCacheStrategy
@@ -88,16 +88,14 @@ public class EvaContentItem extends BaseItem<Comment> {
     }
 
     public interface OnClickListener {
-        void onClicked(View view, int pos, Info info);
+        void onClicked(View view, int pos, int p);
     }
 
     public View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ImageView iv = (ImageView) view;
-            Info info = PhotoView.getImageViewInfo(iv);
             if (onClickListener != null) {
-                onClickListener.onClicked(view, posMap.get(view.getId()), info);
+                onClickListener.onClicked(view, posMap.get(view.getId()), pos);
             }
         }
     };

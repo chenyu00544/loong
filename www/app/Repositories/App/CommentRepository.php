@@ -73,6 +73,14 @@ class CommentRepository implements CommentRepositoryInterface
             foreach ($comment->commentImg as $commentImg) {
                 $commentImg->comment_img = FileHandle::getImgByOssUrl($commentImg->comment_img);
             }
+            foreach ($comment->reply as $reply){
+                foreach ($reply->commentImg as $comImg) {
+                    $comImg->comment_img = FileHandle::getImgByOssUrl($comImg->comment_img);
+                }
+                $reply->add_time_format = date(RedisCache::get('shop_config')['time_format'], $reply->add_time);
+                $reply->logo = FileHandle::getImgByOssUrl($reply->user->logo);
+                unset($reply->user);
+            }
             $comment->logo = FileHandle::getImgByOssUrl($comment->user->logo);
             $comment->add_time_format = date(RedisCache::get('shop_config')['time_format'], $comment->add_time);
             unset($comment->user);
