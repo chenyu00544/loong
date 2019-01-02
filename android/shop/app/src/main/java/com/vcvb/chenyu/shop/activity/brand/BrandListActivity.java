@@ -1,33 +1,28 @@
 package com.vcvb.chenyu.shop.activity.brand;
 
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ImageView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.base.Item;
-import com.vcvb.chenyu.shop.adapter.item.test.TestBaseItem;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
-import com.vcvb.chenyu.shop.tools.ToolUtils;
+import com.vcvb.chenyu.shop.home.FragmentFind;
+import com.vcvb.chenyu.shop.home.FragmentMy;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.everything.android.ui.overscroll.IOverScrollDecor;
-import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
-import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
-import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
-
 public class BrandListActivity extends BaseRecyclerViewActivity {
 
-    private int scroll = 0;
-    private ConstraintSet set = new ConstraintSet();
-    private ConstraintLayout cly;
-    private ImageView imageView;
+    ViewPager mViewPager;
+    List<Fragment> mFragments;
+
+    String[] mTitles = new String[]{
+            "主页", "微博", "相册"
+    };
+    private TabLayout mTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,50 +42,74 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void initView() {
-        cly = findViewById(R.id.brand_wrap);
-        set.clone(cly);
-        imageView = findViewById(R.id.imageView155);
-        mRecyclerView = findViewById(R.id.content);
-        mLayoutManager = new GridLayoutManager(context, 1);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.addAll(getItems());
+        mViewPager = findViewById(R.id.viewpager);
+        mTabLayout = findViewById(R.id.tabs);
+        setupViewPager();
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                scroll += dy;
+//                if(scroll < 70){
+//
+//                }
+//                System.out.println(scroll);
+//            }
+//        });
+//
+//        VerticalOverScrollBounceEffectDecorator decorator = new
+//                VerticalOverScrollBounceEffectDecorator(new RecyclerViewOverScrollDecorAdapter
+//                (mRecyclerView));
+//        decorator.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
+//            @Override
+//            public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
+//                final View view = decor.getView();
+//                System.out.println("-----" + offset);
+//                if (offset > 0) {
+//                    set.constrainHeight(imageView.getId(), ToolUtils.dip2px(context, 150+offset));
+//                    set.constrainWidth(imageView.getId(), (int) (width+offset));
+//                    set.connect(cly.getId(), ConstraintSet.LEFT, imageView.getId(),
+// ConstraintSet.LEFT, (int) (-offset/2));
+//                    // 'view' is currently being over-scrolled from the top.
+//                } else if (offset < 0) {
+//                    // 'view' is currently being over-scrolled from the bottom.
+//                } else {
+//                    set.constrainHeight(imageView.getId(), ToolUtils.dip2px(context, 150));
+//                    set.constrainWidth(imageView.getId(), width);
+//                    // No over-scroll is in-effect.
+//                    // This is synonymous with having (state == STATE_IDLE).
+//                }
+//                set.applyTo(cly);
+//            }
+//        });
+    }
+
+
+    private void setupViewPager() {
+
+        mFragments = new ArrayList<>();
+        mFragments.add(new FragmentMy());
+        mFragments.add(new FragmentFind());
+        mFragments.add(new FragmentFind());
+
+        mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            public Fragment getItem(int position) {
+                return mFragments.get(position);
             }
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                scroll += dy;
-                System.out.println(scroll);
+            public int getCount() {
+                return mTitles.length;
             }
         });
-
-        VerticalOverScrollBounceEffectDecorator decorator = new
-                VerticalOverScrollBounceEffectDecorator(new RecyclerViewOverScrollDecorAdapter
-                (mRecyclerView));
-        decorator.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
-            @Override
-            public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
-                final View view = decor.getView();
-                System.out.println("-----" + offset);
-                if (offset > 0) {
-                    set.constrainHeight(imageView.getId(), ToolUtils.dip2px(context, 200+offset));
-                    // 'view' is currently being over-scrolled from the top.
-                } else if (offset < 0) {
-                    // 'view' is currently being over-scrolled from the bottom.
-                } else {
-                    set.constrainHeight(imageView.getId(), ToolUtils.dip2px(context, 200));
-                    // No over-scroll is in-effect.
-                    // This is synonymous with having (state == STATE_IDLE).
-                }
-                set.applyTo(cly);
-            }
-        });
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -100,14 +119,5 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void initListener() {
-    }
-
-    protected List<Item> getItems() {
-        List<Item> cells = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            TestBaseItem collectionItem = new TestBaseItem(null, context);
-            cells.add(collectionItem);
-        }
-        return cells;
     }
 }
