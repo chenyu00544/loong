@@ -67,8 +67,20 @@
         android:layout_marginTop="8dp"
         android:overScrollMode="never"
         android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view97" />
+
+    <View
+        android:id="@+id/view97"
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/gray_d"
         app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,7 @@ import com.vcvb.chenyu.shop.R;
 
 public interface ConstantManager {
 
+    public String VERSION = "1.0.0";
     public int REGISTER_FOR_MY = 1001;
 
     interface CheckToken {
@@ -93,6 +94,8 @@ public interface ConstantManager {
         public String USER_PROTOCOL = "http://www.vcvbuy.com/mobile/article/detail?id=6"; //用户协议
         public String USER_PRIVACY = "http://www.vcvbuy.com/mobile/article/detail?id=7"; //隐私相关政策
         public String USER_SERVICE = "http://www.vcvbuy.com/mobile/article/detail?id=8"; //服务条款
+        public String GET_VERSION = URIHOST + URI_TYPE_APP + "version"; //版本号
+        public String GET_BOOT_PAGE = URIHOST + URI_TYPE_APP + "index/boot/page"; //引导页
 
         public String HOME = URIHOST + URI_TYPE_APP + "index";
         public String HOMELOADMORE = URIHOST + URI_TYPE_APP + "index/loadmore";

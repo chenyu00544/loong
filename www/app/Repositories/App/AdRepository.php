@@ -73,4 +73,23 @@ class AdRepository implements AdRepositoryInterface
         }
         return $ads;
     }
+
+    public function getgetAdPositionAndBootPages()
+    {
+        $where = [['ad_terminal', '=', 'app'], ['ad_type', '=', 'boot_page']];
+        $res = $this->adPositionModel->getPositionByAds($where, ['position_id', 'ad_type', 'ad_width', 'ad_height']);
+        foreach ($res as $re) {
+            $adp['type'] = $re->ad_type;
+            $adp['width'] = $re->ad_width;
+            $adp['height'] = $re->ad_height;
+            $advs = [];
+            foreach ($re->ads as $ad) {
+                $adv['ad_code'] = FileHandle::getImgByOssUrl($ad->ad_code);
+                $adv['ad_link'] = $ad->ad_link;
+                $adv['ad_color'] = $ad->link_color;
+                $advs[] = $adv;
+            }
+        }
+        return $advs;
+    }
 }

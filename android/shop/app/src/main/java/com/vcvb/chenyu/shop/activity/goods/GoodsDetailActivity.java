@@ -18,12 +18,12 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.brand.BrandListActivity;
 import com.vcvb.chenyu.shop.activity.center.AddressActivity;
 import com.vcvb.chenyu.shop.activity.center.ModifyAddressActivity;
 import com.vcvb.chenyu.shop.activity.center.userinfo.UserRealNameActivity;
 import com.vcvb.chenyu.shop.activity.evaluate.EvaluateListActivity;
 import com.vcvb.chenyu.shop.activity.evaluate.QuestionsListActivity;
-import com.vcvb.chenyu.shop.activity.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.activity.login.RegisterActivity;
 import com.vcvb.chenyu.shop.activity.order.OrderDetailsActivity;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
@@ -817,14 +817,15 @@ public class GoodsDetailActivity extends GoodsActivity {
         @Override
         public void onClicked(View view, int pos) {
             Intent intent;
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("goods", goodsDetails);
             switch (pos) {
                 case Integer.MAX_VALUE:
                     intent = new Intent(GoodsDetailActivity.this, QuestionsListActivity.class);
+                    intent.putExtras(bundle);
                     break;
                 default:
                     intent = new Intent(GoodsDetailActivity.this, EvaluateListActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("goods", goodsDetails);
                     intent.putExtras(bundle);
                     intent.putExtra("label_id", pos);
                     break;

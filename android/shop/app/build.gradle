@@ -104,4 +104,7 @@ dependencies {
     //fixme PhotoView图片查看
 //    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     implementation 'com.bm.photoview:library:1.4.1'
+
+    //fixme 回弹效果控件https://github.com/EverythingMe/overscroll-decor
+    implementation 'me.everything:overscroll-decor-android:1.0.4'
 }

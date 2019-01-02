@@ -18,8 +18,17 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
         ];
     });
 
+    Route::post('version', function () {
+        return [
+            'code' => '0',
+            'msg' => '',
+            'version_num' => '1.0.0'
+        ];
+    });
+
     Route::any('index', 'IndexController@index');
     Route::post('index/loadmore', 'IndexController@loadmore');
+    Route::post('index/boot/page', 'IndexController@getBootPages');
     Route::any('test', 'IndexController@test');
 
     Route::post('goods/index', 'GoodsController@index');

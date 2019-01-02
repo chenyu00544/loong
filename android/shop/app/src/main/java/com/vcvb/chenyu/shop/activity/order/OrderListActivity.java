@@ -60,10 +60,9 @@ public class OrderListActivity extends BaseActivity {
 
     private RecyclerView mRecyclerView;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
-
-    private List<OrderDetail> orders = new ArrayList<>();
     private GridLayoutManager mLayoutManager;
     private OrderItemDecoration spaces;
+    private List<OrderDetail> orders = new ArrayList<>();
 
     private int type = 0;
     private int page = 1;

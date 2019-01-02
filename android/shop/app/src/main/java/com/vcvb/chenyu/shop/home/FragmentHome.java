@@ -50,6 +50,7 @@ import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.HomeItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.dialog.ConfirmDialog;
 import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
@@ -92,6 +93,9 @@ public class FragmentHome extends BaseFragment {
     private View slideBg;
     private int sroll_y = 0;
     private int page = 1;
+
+    private String version_num;
+    private ConfirmDialog confirmDialog;
 
     @Nullable
     @Override
@@ -189,6 +193,19 @@ public class FragmentHome extends BaseFragment {
                     header.setBackgroundColor(context.getResources().getColor(R.color
                             .color_transparent));
                 }
+            }
+        });
+
+        confirmDialog = new ConfirmDialog(context);
+        confirmDialog.setOnDialogClickListener(new ConfirmDialog.OnDialogClickListener() {
+            @Override
+            public void onConfirmClickListener() {
+
+            }
+
+            @Override
+            public void onCancelClickListener() {
+
             }
         });
     }
@@ -328,6 +345,32 @@ public class FragmentHome extends BaseFragment {
                 }
             }
         });
+
+        HttpUtils.getInstance().post(ConstantManager.Url.GET_VERSION, null, new HttpUtils
+                .NetCall() {
+            @Override
+            public void success(Call call, final JSONObject json) throws IOException {
+                if (json != null) {
+                    checkVersion(json);
+                }
+            }
+
+            @Override
+            public void failed(Call call, IOException e) {
+
+            }
+        });
+    }
+
+    public void checkVersion(JSONObject json){
+        try {
+            version_num = json.getString("version_num");
+            if(!version_num.equals(ConstantManager.VERSION)){
+                confirmDialog.show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void bindData() {

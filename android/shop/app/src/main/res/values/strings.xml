@@ -27,6 +27,7 @@
     <string name="guess">猜你喜欢</string>
     <string name="del_success">删除成功</string>
     <string name="del_failed">删除失败</string>
+    <string name="in_shop">进入商城</string>
 
     <string name="login_reg">登录/注册</string>
     <string name="balance">余额</string>
