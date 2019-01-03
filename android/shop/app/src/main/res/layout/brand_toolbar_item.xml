@@ -10,7 +10,7 @@
         android:id="@+id/view98"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,8 +19,8 @@
 
     <ImageView
         android:id="@+id/imageView58"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -50,7 +50,6 @@
         android:layout_marginBottom="4dp"
         android:layout_marginTop="8dp"
         android:ellipsize="end"
-        android:maxLines="3"
         android:text=""
         android:textColor="@color/gray"
         app:layout_constraintBottom_toTopOf="@+id/textView304"

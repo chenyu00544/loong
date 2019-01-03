@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.home.FragmentMy;
+import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,8 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     private ImageView upDownIcon;
     private TextView brandInfo;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private int lineHeight;
+    private int initHeight = 0;
+    private int changeHeight;
     private int cHeight;
 
     @Override
@@ -60,9 +63,19 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
                 "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
                 "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
                 "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果");
-        lineHeight = brandInfo.getLineHeight();
+        ViewTreeObserver vto = brandInfo.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (initHeight == 0) {
+                    initHeight = brandInfo.getMeasuredHeight();
+                    brandInfo.setMaxLines(3);
+                    changeHeight = initHeight - brandInfo.getLineHeight() * 3;
+                }
+            }
+        });
         collapsingToolbarLayout = findViewById(R.id.collapsing);
-        cHeight = collapsingToolbarLayout.getHeight();
+        cHeight = ToolUtils.dip2px(context, 250);
 
         mViewPager = findViewById(R.id.viewpager);
         mTabLayout = findViewById(R.id.tabs);
@@ -73,21 +86,17 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
             public void onClick(View view) {
                 ViewGroup.LayoutParams lp = collapsingToolbarLayout.getLayoutParams();
                 if (upDownIcon.getTag().equals("down")) {
+                    upDownIcon.setTag("up");
                     brandInfo.setMaxLines(100);
+                    lp.height = cHeight + changeHeight;
                     upDownIcon.setImageResource(R.drawable.icon_forward_up);
-                    lp.height = cHeight + brandInfo.getHeight();
                 } else {
-                    lp.height = cHeight;
+                    upDownIcon.setTag("down");
                     brandInfo.setMaxLines(3);
+                    lp.height = cHeight;
                     upDownIcon.setImageResource(R.drawable.icon_forward_down);
                 }
                 collapsingToolbarLayout.setLayoutParams(lp);
-
-
-                System.out.println(collapsingToolbarLayout.getHeight());
-                System.out.println(brandInfo.getLineHeight());
-                System.out.println(brandInfo.getLineCount());
-                System.out.println(brandInfo.getHeight());
             }
         });
 

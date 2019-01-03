@@ -15,8 +15,8 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:scrimVisibleHeightTrigger="150dp"
+            android:layout_height="250dp"
+            app:scrimVisibleHeightTrigger="100dp"
             app:contentScrim="@color/colorBack_morandi"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -24,7 +24,7 @@
                 android:id="@+id/backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/my_head_backgroud"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7" />
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorFontWeak_morandi"
+            android:background="@color/colorAccent"
             app:tabIndicatorColor="@color/colorBack_morandi"
             app:tabIndicatorHeight="2dp"
             app:tabSelectedTextColor="@color/pressed_colorAccent"
