@@ -430,3 +430,20 @@
     hash $request_uri;
     hash_method crc32;
     }
+
+
+##投票
+    FTP地址：host4352964.xincache1.cn
+    FTP账号：host4352964
+    FTP密码 W8Z8u7h9 
+    
+    mysql
+    my4443118.xincache1.cn
+    my4443118
+    d9T5y4V9
+    
+    wechat
+    znkjchszd@163.com
+    wangyi123.
+    
+    http://tp.577f.cn/index.php?g=Wap&m=Vote&a=index&token=Eioa5C5oj3S32qhH&id=20

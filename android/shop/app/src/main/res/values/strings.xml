@@ -294,4 +294,6 @@
     <string name="comment_no_empty">"评论不能为空!"</string>
     <string name="thank_you_comment">"谢谢您的评价！"</string>
     <string name="reply">回复</string>
+
+    <string name="more_brand_info">更多品牌信息</string>
 </resources>
