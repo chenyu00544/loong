@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/brand_header"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="165dp">
 
     <View
         android:id="@+id/view98"
@@ -64,6 +64,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="7dp"
         android:layout_marginRight="7dp"
+        android:padding="4dp"
         android:text="@string/more_brand_info"
         android:textColor="@color/gray"
         android:textSize="12sp"

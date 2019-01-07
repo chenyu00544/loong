@@ -1,13 +1,17 @@
 package com.vcvb.chenyu.shop.activity.brand;
 
+import android.animation.ValueAnimator;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,8 +38,13 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     private TextView brandInfo;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private int initHeight = 0;
+    private int brandInfoHeight = 0;
+    private int brandHeaderHeight = 0;
     private int changeHeight;
     private int cHeight;
+
+    private ConstraintLayout brand_info;
+    private ConstraintSet set = new ConstraintSet();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +66,8 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     public void initView() {
         upDown = findViewById(R.id.textView304);
         upDownIcon = findViewById(R.id.imageView155);
+        brand_info = findViewById(R.id.brand_info);
+        set.clone(brand_info);
         brandInfo = findViewById(R.id.textView303);
         brandInfo.setText("这一看不就是跟Material " +
                 "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
@@ -69,14 +80,17 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
             public void onGlobalLayout() {
                 if (initHeight == 0) {
                     initHeight = brandInfo.getMeasuredHeight();
-                    brandInfo.setMaxLines(3);
-                    changeHeight = initHeight - brandInfo.getLineHeight() * 3;
+                    brandInfoHeight = brandInfo.getLineHeight() * 3 + 5;
+                    set.constrainHeight(brandInfo.getId(), brandInfoHeight);
+                    set.applyTo(brand_info);
+                    changeHeight = initHeight - brandInfoHeight;
                 }
             }
         });
+
         collapsingToolbarLayout = findViewById(R.id.collapsing);
         cHeight = ToolUtils.dip2px(context, 250);
-
+        brandHeaderHeight = ToolUtils.dip2px(context, 165);
         mViewPager = findViewById(R.id.viewpager);
         mTabLayout = findViewById(R.id.tabs);
         setupViewPager();
@@ -84,19 +98,15 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
         upDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ViewGroup.LayoutParams lp = collapsingToolbarLayout.getLayoutParams();
                 if (upDownIcon.getTag().equals("down")) {
                     upDownIcon.setTag("up");
-                    brandInfo.setMaxLines(100);
-                    lp.height = cHeight + changeHeight;
                     upDownIcon.setImageResource(R.drawable.icon_forward_up);
+                    animator(true);
                 } else {
                     upDownIcon.setTag("down");
-                    brandInfo.setMaxLines(3);
-                    lp.height = cHeight;
                     upDownIcon.setImageResource(R.drawable.icon_forward_down);
+                    animator(false);
                 }
-                collapsingToolbarLayout.setLayoutParams(lp);
             }
         });
 
@@ -144,6 +154,83 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 //        });
     }
 
+    private void animator(boolean b) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            TransitionManager.beginDelayedTransition(brand_info);
+        }
+        if (b) {
+            set.constrainHeight(brandInfo.getId(), initHeight);
+            set.applyTo(brand_info);
+            ValueAnimator anim = ValueAnimator.ofInt(cHeight, cHeight + changeHeight);
+            anim.setDuration(500);
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+
+                    int currentValue = (Integer) animation.getAnimatedValue();
+
+                    collapsingToolbarLayout.getLayoutParams().height = currentValue;
+
+                    brand_info.getLayoutParams().height = currentValue;
+
+                    collapsingToolbarLayout.requestLayout();
+
+                }
+            });
+            anim.start();
+
+            ValueAnimator anim2 = ValueAnimator.ofInt(brandHeaderHeight, brandHeaderHeight + changeHeight);
+            anim2.setDuration(500);
+            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+
+                    int currentValue = (Integer) animation.getAnimatedValue();
+
+                    brand_info.getLayoutParams().height = currentValue;
+
+                    brand_info.requestLayout();
+
+                }
+            });
+            anim2.start();
+        } else {
+            set.constrainHeight(brandInfo.getId(), brandInfoHeight);
+            set.applyTo(brand_info);
+            ValueAnimator anim = ValueAnimator.ofInt(cHeight + changeHeight, cHeight);
+            anim.setDuration(500);
+            anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+
+                    int currentValue = (Integer) animation.getAnimatedValue();
+
+                    collapsingToolbarLayout.getLayoutParams().height = currentValue;
+
+                    brand_info.getLayoutParams().height = currentValue;
+
+                    collapsingToolbarLayout.requestLayout();
+                }
+            });
+            anim.start();
+
+            ValueAnimator anim2 = ValueAnimator.ofInt(brandHeaderHeight + changeHeight, brandHeaderHeight);
+            anim2.setDuration(500);
+            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+
+                    int currentValue = (Integer) animation.getAnimatedValue();
+
+                    brand_info.getLayoutParams().height = currentValue;
+
+                    brand_info.requestLayout();
+
+                }
+            });
+            anim2.start();
+        }
+    }
 
     private void setupViewPager() {
 
