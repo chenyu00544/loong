@@ -2,13 +2,13 @@ package com.vcvb.chenyu.shop.activity.brand;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.support.constraint.ConstraintSet;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,13 +34,12 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     private ImageView upDownIcon;
     private TextView brandInfo;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private int changeHeight = 100;
+    private int changeHeight = 0;
+    private int infoInitHeight = 0;
     private int brandInitHeight = 0;
     private int cInitHeight;
 
-    //    private ConstraintLayout brand_info;
     private RelativeLayout brand_info;
-    private ConstraintSet set = new ConstraintSet();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,32 +60,25 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     @Override
     public void initView() {
         upDown = findViewById(R.id.textView304);
-//        upDownIcon = findViewById(R.id.imageView155);
+        upDownIcon = findViewById(R.id.imageView155);
         brand_info = findViewById(R.id.brand_info);
-//        set.clone(brand_info);
-//        brandInfo = findViewById(R.id.textView303);
-//        brandInfo.setText("这一看不就是跟Material " +
-//                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
-//                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
-//                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
-//                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果");
-//        ViewTreeObserver vto = brandInfo.getViewTreeObserver();
-//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                if (initHeight == 0) {
-//                    initHeight = brandInfo.getMeasuredHeight();
-//                    brandInfoHeight = brandInfo.getLineHeight() * 3 + 5;
-//                    set.constrainHeight(brandInfo.getId(), brandInfoHeight);
-//                    set.applyTo(brand_info);
-//                    changeHeight = initHeight - brandInfoHeight;
-//                }
-//            }
-//        });
+        brandInfo = findViewById(R.id.textView303);
+        brandInfo.setText
+                ("如果我死了，那些愧对我的人会很开心：终于不用还钱了，哎呀，不然真不知道怎么办那，不敢见他，吓得我朋友圈都不敢发了！不对，我这样的人怕他干嘛？反正也不能把我怎么样。我每天活的多潇洒，灯红酒绿左拥右抱的。怕他干嘛，我是没错的，我怎么能委屈自己那？我要活的开心就不能在乎那么多，人这一辈子就是有舍有得，凭自己本事借的钱为什么要还？——不用还");
+        ViewTreeObserver vto = brandInfo.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (changeHeight == 0) {
+                    changeHeight = brandInfo.getLineHeight() * (brandInfo.getLineCount() - 3) + 5;
+                    System.out.println(changeHeight);
+                }
+            }
+        });
 
         collapsingToolbarLayout = findViewById(R.id.collapsing);
         cInitHeight = ToolUtils.dip2px(context, 250);
-        brandInitHeight = ToolUtils.dip2px(context, 150);
+        brandInitHeight = ToolUtils.dip2px(context, 160);
         mViewPager = findViewById(R.id.viewpager);
         mTabLayout = findViewById(R.id.tabs);
         setupViewPager();
@@ -96,11 +88,11 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
             public void onClick(View view) {
                 if (upDown.getTag().equals("down")) {
                     upDown.setTag("up");
-//                    upDownIcon.setImageResource(R.drawable.icon_forward_up);
+                    upDownIcon.setImageResource(R.drawable.icon_forward_up);
                     animator(true);
                 } else {
                     upDown.setTag("down");
-//                    upDownIcon.setImageResource(R.drawable.icon_forward_down);
+                    upDownIcon.setImageResource(R.drawable.icon_forward_down);
                     animator(false);
                 }
             }
@@ -151,12 +143,7 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     }
 
     private void animator(boolean b) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            TransitionManager.beginDelayedTransition(brand_info);
-//        }
         if (b) {
-//            set.constrainHeight(brandInfo.getId(), initHeight);
-//            set.applyTo(brand_info);
             ValueAnimator anim = ValueAnimator.ofInt(cInitHeight, cInitHeight + changeHeight);
             anim.setDuration(500);
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -167,33 +154,15 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
                     collapsingToolbarLayout.getLayoutParams().height = currentValue;
 
-                    brand_info.getLayoutParams().height = currentValue-cInitHeight+brandInitHeight;
+                    brand_info.getLayoutParams().height = currentValue - cInitHeight +
+                            brandInitHeight;
 
                     collapsingToolbarLayout.requestLayout();
 
                 }
             });
             anim.start();
-
-//            ValueAnimator anim2 = ValueAnimator.ofInt(brandHeaderHeight, brandHeaderHeight +
-//                    changeHeight);
-//            anim2.setDuration(500);
-//            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                @Override
-//                public void onAnimationUpdate(ValueAnimator animation) {
-//
-//                    int currentValue = (Integer) animation.getAnimatedValue();
-//
-//                    brand_info.getLayoutParams().height = currentValue;
-//
-//                    brand_info.requestLayout();
-//
-//                }
-//            });
-//            anim2.start();
         } else {
-//            set.constrainHeight(brandInfo.getId(), brandInfoHeight);
-//            set.applyTo(brand_info);
             ValueAnimator anim = ValueAnimator.ofInt(cInitHeight + changeHeight, cInitHeight);
             anim.setDuration(500);
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -204,29 +173,13 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
                     collapsingToolbarLayout.getLayoutParams().height = currentValue;
 
-                    brand_info.getLayoutParams().height = currentValue-cInitHeight+brandInitHeight;
+                    brand_info.getLayoutParams().height = currentValue - cInitHeight +
+                            brandInitHeight;
 
                     collapsingToolbarLayout.requestLayout();
                 }
             });
             anim.start();
-
-//            ValueAnimator anim2 = ValueAnimator.ofInt(brandHeaderHeight + changeHeight,
-//                    brandHeaderHeight);
-//            anim2.setDuration(500);
-//            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                @Override
-//                public void onAnimationUpdate(ValueAnimator animation) {
-//
-//                    int currentValue = (Integer) animation.getAnimatedValue();
-//
-//                    brand_info.getLayoutParams().height = currentValue;
-//
-//                    brand_info.requestLayout();
-//
-//                }
-//            });
-//            anim2.start();
         }
     }
 

@@ -3,25 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/brand_header"
     android:layout_width="match_parent"
-    android:layout_height="165dp">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/view98"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
+        android:layout_marginTop="25dp"
         android:background="@color/white" />
 
     <ImageView
         android:id="@+id/imageView58"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/view98"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="-12dp"
         android:src="@drawable/icon_no_pic" />
 
     <TextView
@@ -35,17 +34,21 @@
         android:layout_toEndOf="@+id/imageView58"
         android:layout_toRightOf="@+id/imageView58"
         android:text="TextView"
+        android:textColor="@color/black_29"
         android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textView303"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/textView304"
         android:layout_below="@+id/imageView58"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="8dp"
-        android:text="TextView"
+        android:ellipsize="end"
+        android:text=""
+        android:textColor="@color/black_29"
         android:textSize="14sp" />
 
     <TextView
@@ -53,16 +56,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/textView303"
         android:layout_centerHorizontal="true"
         android:gravity="center_vertical"
-        android:padding="4dp"
-        android:text="@string/more_brand_info" />
+        android:padding="5dp"
+        android:tag="down"
+        android:text="@string/more_brand_info"
+        android:textColor="@color/gray" />
 
     <ImageView
         android:id="@+id/imageView155"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="12dp"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView304"
         android:layout_alignTop="@+id/textView304"
         android:layout_toEndOf="@+id/textView304"
@@ -73,15 +77,25 @@
     <View
         android:id="@+id/view99"
         android:layout_width="wrap_content"
-        android:layout_height="0.5dp"
-        android:layout_alignBottom="@+id/textView304"
+        android:layout_height="1dp"
         android:layout_alignLeft="@+id/textView303"
         android:layout_alignStart="@+id/textView303"
-        android:layout_alignTop="@+id/textView304"
         android:layout_below="@+id/textView303"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="16dp"
         android:layout_toLeftOf="@+id/textView304"
         android:layout_toStartOf="@+id/textView304"
+        android:background="@color/gray_d" />
+
+    <View
+        android:id="@+id/view100"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_alignRight="@+id/textView303"
+        android:layout_alignEnd="@+id/textView303"
+        android:layout_below="@+id/textView303"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@+id/imageView155"
+        android:layout_toEndOf="@+id/imageView155"
         android:background="@color/gray_d" />
 
 </RelativeLayout>
