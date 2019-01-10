@@ -16,9 +16,9 @@
             android:id="@+id/collapsing"
             android:layout_width="match_parent"
             android:layout_height="250dp"
-            app:scrimVisibleHeightTrigger="100dp"
             app:contentScrim="@color/colorBack_morandi"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:scrimVisibleHeightTrigger="100dp">
 
             <ImageView
                 android:id="@+id/backdrop"
@@ -34,8 +34,8 @@
                 layout="@layout/brand_toolbar_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_collapseMode="parallax"
                 android:layout_gravity="bottom"
+                app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7" />
 
             <android.support.v7.widget.Toolbar

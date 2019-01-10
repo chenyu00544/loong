@@ -1,19 +1,16 @@
 package com.vcvb.chenyu.shop.activity.brand;
 
 import android.animation.ValueAnimator;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
@@ -37,13 +34,12 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     private ImageView upDownIcon;
     private TextView brandInfo;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private int initHeight = 0;
-    private int brandInfoHeight = 0;
-    private int brandHeaderHeight = 0;
-    private int changeHeight;
-    private int cHeight;
+    private int changeHeight = 100;
+    private int brandInitHeight = 0;
+    private int cInitHeight;
 
-    private ConstraintLayout brand_info;
+    //    private ConstraintLayout brand_info;
+    private RelativeLayout brand_info;
     private ConstraintSet set = new ConstraintSet();
 
     @Override
@@ -65,32 +61,32 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     @Override
     public void initView() {
         upDown = findViewById(R.id.textView304);
-        upDownIcon = findViewById(R.id.imageView155);
+//        upDownIcon = findViewById(R.id.imageView155);
         brand_info = findViewById(R.id.brand_info);
-        set.clone(brand_info);
-        brandInfo = findViewById(R.id.textView303);
-        brandInfo.setText("这一看不就是跟Material " +
-                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
-                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
-                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
-                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果");
-        ViewTreeObserver vto = brandInfo.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (initHeight == 0) {
-                    initHeight = brandInfo.getMeasuredHeight();
-                    brandInfoHeight = brandInfo.getLineHeight() * 3 + 5;
-                    set.constrainHeight(brandInfo.getId(), brandInfoHeight);
-                    set.applyTo(brand_info);
-                    changeHeight = initHeight - brandInfoHeight;
-                }
-            }
-        });
+//        set.clone(brand_info);
+//        brandInfo = findViewById(R.id.textView303);
+//        brandInfo.setText("这一看不就是跟Material " +
+//                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
+//                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
+//                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果这一看不就是跟Material " +
+//                "Design工具栏折叠效果类似。我们捋一下效果是怎样的，滑动的时候实现搜索栏渐变以及高度改变的工具栏折叠效果");
+//        ViewTreeObserver vto = brandInfo.getViewTreeObserver();
+//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                if (initHeight == 0) {
+//                    initHeight = brandInfo.getMeasuredHeight();
+//                    brandInfoHeight = brandInfo.getLineHeight() * 3 + 5;
+//                    set.constrainHeight(brandInfo.getId(), brandInfoHeight);
+//                    set.applyTo(brand_info);
+//                    changeHeight = initHeight - brandInfoHeight;
+//                }
+//            }
+//        });
 
         collapsingToolbarLayout = findViewById(R.id.collapsing);
-        cHeight = ToolUtils.dip2px(context, 250);
-        brandHeaderHeight = ToolUtils.dip2px(context, 165);
+        cInitHeight = ToolUtils.dip2px(context, 250);
+        brandInitHeight = ToolUtils.dip2px(context, 150);
         mViewPager = findViewById(R.id.viewpager);
         mTabLayout = findViewById(R.id.tabs);
         setupViewPager();
@@ -98,13 +94,13 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
         upDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (upDownIcon.getTag().equals("down")) {
-                    upDownIcon.setTag("up");
-                    upDownIcon.setImageResource(R.drawable.icon_forward_up);
+                if (upDown.getTag().equals("down")) {
+                    upDown.setTag("up");
+//                    upDownIcon.setImageResource(R.drawable.icon_forward_up);
                     animator(true);
                 } else {
-                    upDownIcon.setTag("down");
-                    upDownIcon.setImageResource(R.drawable.icon_forward_down);
+                    upDown.setTag("down");
+//                    upDownIcon.setImageResource(R.drawable.icon_forward_down);
                     animator(false);
                 }
             }
@@ -155,13 +151,13 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     }
 
     private void animator(boolean b) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            TransitionManager.beginDelayedTransition(brand_info);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            TransitionManager.beginDelayedTransition(brand_info);
+//        }
         if (b) {
-            set.constrainHeight(brandInfo.getId(), initHeight);
-            set.applyTo(brand_info);
-            ValueAnimator anim = ValueAnimator.ofInt(cHeight, cHeight + changeHeight);
+//            set.constrainHeight(brandInfo.getId(), initHeight);
+//            set.applyTo(brand_info);
+            ValueAnimator anim = ValueAnimator.ofInt(cInitHeight, cInitHeight + changeHeight);
             anim.setDuration(500);
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -171,7 +167,7 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
                     collapsingToolbarLayout.getLayoutParams().height = currentValue;
 
-                    brand_info.getLayoutParams().height = currentValue;
+                    brand_info.getLayoutParams().height = currentValue-cInitHeight+brandInitHeight;
 
                     collapsingToolbarLayout.requestLayout();
 
@@ -179,25 +175,26 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
             });
             anim.start();
 
-            ValueAnimator anim2 = ValueAnimator.ofInt(brandHeaderHeight, brandHeaderHeight + changeHeight);
-            anim2.setDuration(500);
-            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-
-                    int currentValue = (Integer) animation.getAnimatedValue();
-
-                    brand_info.getLayoutParams().height = currentValue;
-
-                    brand_info.requestLayout();
-
-                }
-            });
-            anim2.start();
+//            ValueAnimator anim2 = ValueAnimator.ofInt(brandHeaderHeight, brandHeaderHeight +
+//                    changeHeight);
+//            anim2.setDuration(500);
+//            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                @Override
+//                public void onAnimationUpdate(ValueAnimator animation) {
+//
+//                    int currentValue = (Integer) animation.getAnimatedValue();
+//
+//                    brand_info.getLayoutParams().height = currentValue;
+//
+//                    brand_info.requestLayout();
+//
+//                }
+//            });
+//            anim2.start();
         } else {
-            set.constrainHeight(brandInfo.getId(), brandInfoHeight);
-            set.applyTo(brand_info);
-            ValueAnimator anim = ValueAnimator.ofInt(cHeight + changeHeight, cHeight);
+//            set.constrainHeight(brandInfo.getId(), brandInfoHeight);
+//            set.applyTo(brand_info);
+            ValueAnimator anim = ValueAnimator.ofInt(cInitHeight + changeHeight, cInitHeight);
             anim.setDuration(500);
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
@@ -207,28 +204,29 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
                     collapsingToolbarLayout.getLayoutParams().height = currentValue;
 
-                    brand_info.getLayoutParams().height = currentValue;
+                    brand_info.getLayoutParams().height = currentValue-cInitHeight+brandInitHeight;
 
                     collapsingToolbarLayout.requestLayout();
                 }
             });
             anim.start();
 
-            ValueAnimator anim2 = ValueAnimator.ofInt(brandHeaderHeight + changeHeight, brandHeaderHeight);
-            anim2.setDuration(500);
-            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-
-                    int currentValue = (Integer) animation.getAnimatedValue();
-
-                    brand_info.getLayoutParams().height = currentValue;
-
-                    brand_info.requestLayout();
-
-                }
-            });
-            anim2.start();
+//            ValueAnimator anim2 = ValueAnimator.ofInt(brandHeaderHeight + changeHeight,
+//                    brandHeaderHeight);
+//            anim2.setDuration(500);
+//            anim2.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                @Override
+//                public void onAnimationUpdate(ValueAnimator animation) {
+//
+//                    int currentValue = (Integer) animation.getAnimatedValue();
+//
+//                    brand_info.getLayoutParams().height = currentValue;
+//
+//                    brand_info.requestLayout();
+//
+//                }
+//            });
+//            anim2.start();
         }
     }
 
