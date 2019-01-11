@@ -60,11 +60,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorAccent"
+            android:background="@color/white"
             app:tabIndicatorColor="@color/colorBack_morandi"
             app:tabIndicatorHeight="2dp"
             app:tabSelectedTextColor="@color/pressed_colorAccent"
-            app:tabTextColor="@color/white" />
+            app:tabTextColor="@color/black_29" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
@@ -75,11 +75,11 @@
 
     </android.support.v4.view.ViewPager>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="15dp"
-        android:src="@drawable/icon_add" />
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="end|bottom"-->
+        <!--android:layout_margin="15dp"-->
+        <!--android:src="@drawable/icon_add" />-->
 </android.support.design.widget.CoordinatorLayout>

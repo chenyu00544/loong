@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.home.FragmentMy;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,49 +99,6 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
                 }
             }
         });
-
-//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                scroll += dy;
-//                if(scroll < 70){
-//
-//                }
-//                System.out.println(scroll);
-//            }
-//        });
-//
-//        VerticalOverScrollBounceEffectDecorator decorator = new
-//                VerticalOverScrollBounceEffectDecorator(new RecyclerViewOverScrollDecorAdapter
-//                (mRecyclerView));
-//        decorator.setOverScrollUpdateListener(new IOverScrollUpdateListener() {
-//            @Override
-//            public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
-//                final View view = decor.getView();
-//                System.out.println("-----" + offset);
-//                if (offset > 0) {
-//                    set.constrainHeight(imageView.getId(), ToolUtils.dip2px(context, 150+offset));
-//                    set.constrainWidth(imageView.getId(), (int) (width+offset));
-//                    set.connect(cly.getId(), ConstraintSet.LEFT, imageView.getId(),
-// ConstraintSet.LEFT, (int) (-offset/2));
-//                    // 'view' is currently being over-scrolled from the top.
-//                } else if (offset < 0) {
-//                    // 'view' is currently being over-scrolled from the bottom.
-//                } else {
-//                    set.constrainHeight(imageView.getId(), ToolUtils.dip2px(context, 150));
-//                    set.constrainWidth(imageView.getId(), width);
-//                    // No over-scroll is in-effect.
-//                    // This is synonymous with having (state == STATE_IDLE).
-//                }
-//                set.applyTo(cly);
-//            }
-//        });
     }
 
     private void animator(boolean b) {
@@ -202,6 +161,56 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
             }
         });
         mTabLayout.setupWithViewPager(mViewPager);
+        for(int i=0;i<mTitles.length;i++){
+            mTabLayout.getTabAt(i).setText(mTitles[i]);
+        }
+
+        mTabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //拿到tabLayout的mTabStrip属性
+                    LinearLayout mTabStrip = (LinearLayout) mTabLayout.getChildAt(0);
+
+//                    int dp10 = dip2px(mTabLayout.getContext(), 10);
+                    int dp10 = 20;
+                    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+                        View tabView = mTabStrip.getChildAt(i);
+
+                        //拿到tabView的mTextView属性  tab的字数不固定一定用反射取mTextView
+                        Field mTextViewField = tabView.getClass().getDeclaredField("mTextView");
+                        mTextViewField.setAccessible(true);
+
+                        TextView mTextView = (TextView) mTextViewField.get(tabView);
+
+                        tabView.setPadding(0, 0, 0, 0);
+
+                        //因为我想要的效果是   字多宽线就多宽，所以测量mTextView的宽度
+                        int width = 0;
+                        width = mTextView.getWidth();
+                        if (width == 0) {
+                            mTextView.measure(0, 0);
+                            width = mTextView.getMeasuredWidth();
+                        }
+
+                        //设置tab左右间距为10dp  注意这里不能使用Padding 因为源码中线的宽度是根据 tabView的宽度来设置的
+                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
+                        params.width = width ;
+                        params.leftMargin = dp10;
+                        params.rightMargin = dp10;
+                        tabView.setLayoutParams(params);
+
+                        tabView.invalidate();
+                    }
+
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
     }
 
     @Override
