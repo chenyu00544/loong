@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -15,9 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.brand.fragment.BrandAllFragment;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.home.FragmentFind;
-import com.vcvb.chenyu.shop.home.FragmentMy;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.lang.reflect.Field;
@@ -29,7 +30,12 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     ViewPager mViewPager;
     List<Fragment> mFragments;
 
-    String[] mTitles = new String[]{"主页", "微博", "相册"};
+    String[] mTitles = new String[]{"全部", "上新", "促销"};
+    int[] mIcon = new int[]{R.drawable.icon_tab_all, R.drawable.icon_tab_new, R.drawable
+            .icon_tab_sale};
+    int[] mIconActive = new int[]{R.drawable.icon_tab_all_active, R.drawable.icon_tab_new_active,
+            R.drawable
+            .icon_tab_sale_active};
     private TabLayout mTabLayout;
 
     private TextView upDown;
@@ -108,7 +114,6 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-
                     int currentValue = (Integer) animation.getAnimatedValue();
 
                     collapsingToolbarLayout.getLayoutParams().height = currentValue;
@@ -127,7 +132,6 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
             anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-
                     int currentValue = (Integer) animation.getAnimatedValue();
 
                     collapsingToolbarLayout.getLayoutParams().height = currentValue;
@@ -145,7 +149,7 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     private void setupViewPager() {
 
         mFragments = new ArrayList<>();
-        mFragments.add(new FragmentMy());
+        mFragments.add(new BrandAllFragment());
         mFragments.add(new FragmentFind());
         mFragments.add(new FragmentFind());
 
@@ -157,12 +161,34 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
             @Override
             public int getCount() {
-                return mTitles.length;
+                return mFragments.size();
             }
         });
         mTabLayout.setupWithViewPager(mViewPager);
-        for(int i=0;i<mTitles.length;i++){
-            mTabLayout.getTabAt(i).setText(mTitles[i]);
+
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                changeTabSelect(tab);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                changeTabNormal(tab);
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        for (int i = 0; i < mTitles.length; i++) {
+            if(i == 0){
+                mTabLayout.getTabAt(i).setCustomView(tabIcon(mTitles[i], mIconActive[i], i));
+            }else {
+                mTabLayout.getTabAt(i).setCustomView(tabIcon(mTitles[i], mIcon[i], i));
+            }
         }
 
         mTabLayout.post(new Runnable() {
@@ -194,8 +220,9 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
                         }
 
                         //设置tab左右间距为10dp  注意这里不能使用Padding 因为源码中线的宽度是根据 tabView的宽度来设置的
-                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView.getLayoutParams();
-                        params.width = width ;
+                        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) tabView
+                                .getLayoutParams();
+                        params.width = width;
                         params.leftMargin = dp10;
                         params.rightMargin = dp10;
                         tabView.setLayoutParams(params);
@@ -220,5 +247,43 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void initListener() {
+    }
+
+    private View tabIcon(String name, int iconID, int i) {
+        View newtab = LayoutInflater.from(context).inflate(R.layout.brand_tab_item, null);
+        TextView tv = newtab.findViewById(R.id.tabtext);
+        tv.setText(name);
+        ImageView im = newtab.findViewById(R.id.tabicon);
+        im.setImageResource(iconID);
+        if (i == 0) {
+            tv.setTextColor(context.getResources().getColor(R.color.colorBack_morandi));
+        }
+        return newtab;
+    }
+
+    private void changeTabSelect(TabLayout.Tab tab) {
+        View view = tab.getCustomView();
+        assert view != null;
+        ImageView img_title = view.findViewById(R.id.tabicon);
+        TextView txt_title = view.findViewById(R.id.tabtext);
+        txt_title.setTextColor(context.getResources().getColor(R.color.colorBack_morandi));
+        for (int i = 0; i < mTitles.length; i++) {
+            if (txt_title.getText().toString().equals(mTitles[i])) {
+                img_title.setImageResource(mIconActive[i]);
+            }
+        }
+    }
+
+    private void changeTabNormal(TabLayout.Tab tab) {
+        View view = tab.getCustomView();
+        assert view != null;
+        ImageView img_title = view.findViewById(R.id.tabicon);
+        TextView txt_title = view.findViewById(R.id.tabtext);
+        txt_title.setTextColor(context.getResources().getColor(R.color.black_29));
+        for (int i = 0; i < mTitles.length; i++) {
+            if (txt_title.getText().toString().equals(mTitles[i])) {
+                img_title.setImageResource(mIcon[i]);
+            }
+        }
     }
 }

@@ -60,17 +60,20 @@
         android:gravity="center_vertical"
         android:padding="5dp"
         android:tag="down"
+        android:layout_marginLeft="15dp"
         android:text="@string/more_brand_info"
         android:textColor="@color/gray" />
 
     <ImageView
         android:id="@+id/imageView155"
-        android:layout_width="12dp"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView304"
         android:layout_alignTop="@+id/textView304"
         android:layout_toEndOf="@+id/textView304"
         android:layout_toRightOf="@+id/textView304"
+        android:paddingEnd="5dp"
+        android:paddingRight="5dp"
         android:src="@drawable/icon_forward_down"
         app:srcCompat="@drawable/icon_forward_down" />
 
@@ -90,12 +93,12 @@
         android:id="@+id/view100"
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:layout_alignRight="@+id/textView303"
         android:layout_alignEnd="@+id/textView303"
+        android:layout_alignRight="@+id/textView303"
         android:layout_below="@+id/textView303"
         android:layout_marginTop="16dp"
-        android:layout_toRightOf="@+id/imageView155"
         android:layout_toEndOf="@+id/imageView155"
+        android:layout_toRightOf="@+id/imageView155"
         android:background="@color/gray_d" />
 
 </RelativeLayout>
