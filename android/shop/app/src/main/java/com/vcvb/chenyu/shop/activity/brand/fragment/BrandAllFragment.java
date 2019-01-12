@@ -1,40 +1,27 @@
 package com.vcvb.chenyu.shop.activity.brand.fragment;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
-import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
-import com.vcvb.chenyu.shop.adapter.b.Item;
-import com.vcvb.chenyu.shop.adapter.item.faat.FaatBrandItem;
-import com.vcvb.chenyu.shop.adapter.item.faat.FaatBrandNavItem;
-import com.vcvb.chenyu.shop.adapter.item.faat.FaatBrandTitleItem;
-import com.vcvb.chenyu.shop.adapter.item.faat.FaatGoodsItem;
-import com.vcvb.chenyu.shop.adapter.itemdecoration.FaatItemDecoration;
+import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
+import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.brand.BrandGoodsVItem;
+import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.javaBean.faat.Banner;
-import com.vcvb.chenyu.shop.javaBean.faat.Brand;
-import com.vcvb.chenyu.shop.javaBean.faat.BrandNav;
-import com.vcvb.chenyu.shop.javaBean.faat.Faat;
-import com.vcvb.chenyu.shop.javaBean.goods.Goods;
+import com.vcvb.chenyu.shop.javaBean.brand.BrandGoods;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
-import com.vcvb.chenyu.shop.tools.ToastUtils;
-import com.vcvb.chenyu.shop.tools.UserInfoUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,26 +34,27 @@ import okhttp3.Call;
 
 public class BrandAllFragment extends BaseRecyclerViewFragment {
 
-    public GroupedListAdapter adapter;
-    private GroupedGridLayoutManager groupedGridLayoutManager;
-    public List<Faat> faats = new ArrayList<>();
+    private String id;
+    private BrandGoods brandGoods;
 
-    public int position = 0;
-    //目标项是否在最后一个可见项之后
-    private boolean mShouldScroll;
-    //记录目标项位置
-    private int mToPosition;
+    public CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
+    private CallBackValue callBackValue;
 
-    private Integer id;
+    private int[] clickIds = new int[]{R.id.textView305, R.id.textView306, R.id.textView307, R.id
+            .textView308};
+    private ImageView upDownTip;
+
+    private String type_w = "normal";
+    private String up_down = "down";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.faat_fragment, container, false);
+        view = inflater.inflate(R.layout.brand_fragment, container, false);
         if (getActivity() != null) {
-            id = getActivity().getIntent().getIntExtra("id", 0);
+            id = getActivity().getIntent().getStringExtra("id");
         }
         getData();
         initView();
@@ -74,17 +62,31 @@ public class BrandAllFragment extends BaseRecyclerViewFragment {
     }
 
     public void initView() {
+        upDownTip = view.findViewById(R.id.imageView156);
+        TextView tv1 = view.findViewById(R.id.textView305);
+        tv1.setOnClickListener(onClickListener);
+        TextView tv2 = view.findViewById(R.id.textView306);
+        tv2.setOnClickListener(onClickListener);
+        TextView tv3 = view.findViewById(R.id.textView307);
+        tv3.setOnClickListener(onClickListener);
+        TextView tv4 = view.findViewById(R.id.textView308);
+        tv4.setOnClickListener(onClickListener);
+
         mRecyclerView = view.findViewById(R.id.rv_list);
-        ((DefaultItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-        mRecyclerView.addOnScrollListener(rvScrollListener);
-        adapter = new GroupedListAdapter(context);
+        mLayoutManager = new GridLayoutManager(context, 2);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addItemDecoration(new DefaultItemDecoration(context, 5));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void getData() {
+        loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
-        mp.put("id", id+"");
-        HttpUtils.getInstance().post(ConstantManager.Url.FAAT_BRAND, mp, new HttpUtils.NetCall() {
+        mp.put("brand_id", id);
+        mp.put("type", type_w);
+        mp.put("up_down", up_down);
+        HttpUtils.getInstance().post(ConstantManager.Url.BRAND, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 if (getActivity() != null) {
@@ -122,45 +124,18 @@ public class BrandAllFragment extends BaseRecyclerViewFragment {
     }
 
     public void bindData(JSONObject json) {
-        Faat faat = new Faat();
-        Faat _faat = new Faat();
-        List<Object> bs = new ArrayList<>();
+        mAdapter.clear();
+        if (brandGoods != null && brandGoods.getGoodses() != null) {
+            brandGoods.getGoodses().clear();
+        }
         try {
-            JSONObject data = json.getJSONObject("data");
-            JSONObject bannerJSONObject = data.getJSONObject("brand");
-            Brand brand = JsonUtils.fromJsonObject(bannerJSONObject, Brand.class);
-            bs.add(brand);
-            faat.setObjs(bs);
-            faat.setGroup(0);
-            faats.add(faat);
-
-            JSONArray faatJSONArray = data.getJSONArray("cate");
-            ArrayList<Object> goodses = new ArrayList<>();
-            ArrayList<BrandNav> brandNavs = new ArrayList<>();
-            for (int i = 0; i < faatJSONArray.length(); i++) {
-                JSONObject object = (JSONObject) faatJSONArray.get(i);
-                BrandNav brandNav = JsonUtils.fromJsonObject(object, BrandNav.class);
-                brandNav.setColor(brand.getColor());
-                if (i == 0) {
-                    mRecyclerView.setBackgroundColor(Color.parseColor(brand.getColor()));
-                    brandNav.setSelect(true);
-                }
-                brandNavs.add(brandNav);
-
-                goodses.add(brandNav);
-
-                JSONArray goodsJSONArray = object.getJSONArray("goods");
-                for (int j = 0; j < goodsJSONArray.length(); j++) {
-                    JSONObject gobject = (JSONObject) goodsJSONArray.get(j);
-                    Goods goods = JsonUtils.fromJsonObject(gobject, Goods.class);
-                    goodses.add(goods);
-                }
+            JSONObject object = json.getJSONObject("data");
+            brandGoods = JsonUtils.fromJsonObject(object, BrandGoods.class);
+            brandGoods.setData(object);
+            if (callBackValue != null) {
+                callBackValue.SendMessageValue(brandGoods);
             }
-
-            _faat.setHeader(brandNavs);
-            _faat.setObjs(goodses);
-            _faat.setGroup(1);
-            faats.add(_faat);
+            mAdapter.addAll(getItems());
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -168,238 +143,82 @@ public class BrandAllFragment extends BaseRecyclerViewFragment {
         } catch (java.lang.InstantiationException e) {
             e.printStackTrace();
         }
-
-        adapter.setData(getItems(faats));
-        groupedGridLayoutManager = new GroupedGridLayoutManager(context, 3, adapter) {
-            @Override
-            public int getChildSpanSize(int groupPosition, int childPosition) {
-                if (faats.get(groupPosition).getItemList().get(childPosition).getItemType() == R
-                        .layout.faat_brand_item || faats.get(groupPosition).getItemList().get
-                        (childPosition).getItemType() == R.layout.faat_brand_title_item) {
-                    return 3;
-                }
-                return super.getChildSpanSize(groupPosition, childPosition);
-            }
-        };
-        FaatItemDecoration faatItemDecoration = new FaatItemDecoration(faats, context);
-        mRecyclerView.addItemDecoration(faatItemDecoration);
-        mRecyclerView.setLayoutManager(groupedGridLayoutManager);
-        mRecyclerView.setAdapter(adapter);
     }
 
-    protected List<Faat> getItems(List<Faat> beans) {
-        for (int i = 0; i < beans.size(); i++) {
-            if (faats.get(i).getHeader() != null) {
-                FaatBrandNavItem faatBrandNavItem = new FaatBrandNavItem(beans.get(i), context);
-                faatBrandNavItem.setOnItemClickListener(navListener);
-                faats.get(i).setMheader(faatBrandNavItem);
+    protected List<Item> getItems() {
+        List<Item> items = new ArrayList<>();
+        if (brandGoods.getGoodses() != null && brandGoods.getGoodses().size() > 0) {
+            for (int i = 0; i < brandGoods.getGoodses().size(); i++) {
+                BrandGoodsVItem brandGoodsVItem = new BrandGoodsVItem(brandGoods.getGoodses().get
+                        (i), context);
+                items.add(brandGoodsVItem);
             }
-            List<Item> items = new ArrayList<>();
-            if (faats.get(i).getObjs() != null) {
-                for (int j = 0; j < faats.get(i).getObjs().size(); j++) {
-                    if (faats.get(i).getObjs().get(j) instanceof Goods) {
-                        FaatGoodsItem faatGoodsItem = new FaatGoodsItem((Goods) faats.get(i)
-                                .getObjs().get(j), context);
-                        faatGoodsItem.setSubOnItemClickListener(goodsItemListener);
-                        items.add(faatGoodsItem);
-                    } else if (faats.get(i).getObjs().get(j) instanceof Brand) {
-                        FaatBrandItem faatBrandItem = new FaatBrandItem((Brand) faats.get(i)
-                                .getObjs().get(j), context);
-                        items.add(faatBrandItem);
-                    } else {
-                        FaatBrandTitleItem faatBrandTitleItem = new FaatBrandTitleItem((BrandNav)
-                                faats.get(i).getObjs().get(j), context);
-                        items.add(faatBrandTitleItem);
-                    }
-                }
-            }
-            faats.get(i).setItemList(items);
         }
-        return faats;
+        return items;
     }
 
     public void selectNavs(int pos) {
-        int p = 0;
-        Banner banner = null;
-        for (int i = 1; i < faats.size(); i++) {
-            Faat faat = faats.get(i);
-            if (faat.getHeader() != null) {
-                for (int j = 0; j < ((List<BrandNav>) faats.get(i).getHeader()).size(); j++) {
-                    ((List<BrandNav>) faats.get(i).getHeader()).get(j).setSelect(false);
-                }
-                p += 1;
-            }
-            if (faat.getObjs() != null) {
-                if (pos <= p + faat.getObjs().size()) {
-                    for (int j = 0; j < faat.getObjs().size(); j++) {
-                        if (faat.getObjs().get(j) instanceof Banner) {
-                            if (pos >= p) {
-                                banner = (Banner) faat.getObjs().get(j);
-                            }
-                        }
-                        p += 1;
-                    }
-                } else {
-                    p += faat.getObjs().size();
-                }
-            }
-            if (faat.getFooter() != null) {
-                p += 1;
-            }
-            if (banner != null) {
-                ((List<BrandNav>) faats.get(i).getHeader()).get(banner.getNavpos()).setSelect(true);
-                break;
-            }
+        for (int i = 0; i < clickIds.length; i++) {
+            ((TextView) view.findViewById(clickIds[i])).setTextColor(context.getResources()
+                    .getColor(R.color.black_29));
         }
-        adapter.notifyHeaderChanged(1);
-    }
-
-    public void clickSelectNavs(int group, int pos) {
-        int p = 0;
-        for (int i = 1; i < faats.size(); i++) {
-            int n = 0;
-            Faat faat = faats.get(i);
-            if (faat.getHeader() != null) {
-                p += 1;
-                for (int j = 0; j < ((List<BrandNav>) faats.get(i).getHeader()).size(); j++) {
-                    ((List<BrandNav>) faats.get(i).getHeader()).get(j).setSelect(false);
-                }
-            }
-            if (faat.getObjs() != null) {
-                if (pos <= p + faat.getObjs().size()) {
-                    for (int j = 0; j < faat.getObjs().size(); j++) {
-                        p += 1;
-                        if (faat.getObjs().get(j) instanceof Banner) {
-                            if (n == pos) {
-                                smoothMoveToPosition(p);
-                            }
-                            n += 1;
-                        }
-                    }
-                } else {
-                    p += faat.getObjs().size();
-                }
-            }
-        }
-        ((List<BrandNav>) faats.get(group).getHeader()).get(pos).setSelect(true);
-    }
-
-    public void smoothMoveToPosition(int position) {
-        // 第一个可见位置
-        int firstItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt(0));
-        // 最后一个可见位置
-        int lastItem = mRecyclerView.getChildLayoutPosition(mRecyclerView.getChildAt
-                (mRecyclerView.getChildCount() - 1));
-
-        if (position < firstItem) {
-            //跳转位置在第一个可见位置之前
-            mRecyclerView.smoothScrollToPosition(position);
-        } else if (position <= lastItem) {
-            //跳转位置在第一个可见位置之后
-            int movePosition = position - firstItem;
-            if (movePosition >= 0 && movePosition < mRecyclerView.getChildCount()) {
-                int top = mRecyclerView.getChildAt(movePosition).getTop();
-                mRecyclerView.scrollBy(0, top);
-                //不平滑移动不走onScrollStateChanged
-                selectNavs(position);
+        ((TextView) view.findViewById(clickIds[pos])).setTextColor(context.getResources()
+                .getColor(R.color.colorFont_morandi));
+        if (clickIds[pos] == R.id.textView307) {
+            if (upDownTip.getTag().equals("down")) {
+                upDownTip.setTag("up");
+                upDownTip.setImageResource(R.drawable.icon_up);
+            } else {
+                upDownTip.setTag("down");
+                upDownTip.setImageResource(R.drawable.icon_down);
             }
         } else {
-            //跳转位置在最后可见项之后
-            mRecyclerView.smoothScrollToPosition(position);
-            mToPosition = position;
-            mShouldScroll = true;
+            upDownTip.setTag("down");
+            upDownTip.setImageResource(R.drawable.icon_up_down_gray);
         }
+        clickSelectNavs(clickIds[pos]);
     }
 
-    public void addCart(Goods goods) {
-        loadingDialog.show();
-        HashMap<String, String> mp = new HashMap<>();
-        String device_id = (String) UserInfoUtils.getInstance(context).getUserInfo().get
-                ("device_id");
-        mp.put("token", token);
-        mp.put("device_id", device_id);
-        mp.put("goods_id", goods.getGoods_id() + "");
-        HttpUtils.getInstance().post(ConstantManager.Url.ADD_CART, mp, new HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, final JSONObject json) throws IOException {
-
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingDialog.dismiss();
-                            if (json != null) {
-                                try {
-                                    if (json.getInt("code") == 0) {
-                                        String str = "%s";
-                                        ToastUtils.showShortToast(context, "添加成功");
-                                    } else {
-                                        ToastUtils.showShortToast(context, "已添加");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    });
+    public void clickSelectNavs(int type) {
+        up_down = "down";
+        switch (type) {
+            case R.id.textView305:
+                type_w = "normal";
+                break;
+            case R.id.textView306:
+                type_w = "volume";
+                break;
+            case R.id.textView307:
+                type_w = "price";
+                if (upDownTip.getTag().equals("down")) {
+                    up_down = "down";
+                } else {
+                    up_down = "up";
                 }
-            }
-
-            @Override
-            public void failed(Call call, IOException e) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadingDialog.dismiss();
-                        }
-                    });
-                }
-            }
-        });
+                break;
+            case R.id.textView308:
+                type_w = "new";
+                break;
+        }
+        getData();
     }
 
-    FaatBrandNavItem.OnItemClickListener navListener = new FaatBrandNavItem.OnItemClickListener() {
-        @Override
-        public void clicked(int group, int pos) {
-            clickSelectNavs(group, pos);
-        }
-    };
+    public void setCallBackValue(CallBackValue callBack) {
+        callBackValue = callBack;
+    }
 
-    RecyclerView.OnScrollListener rvScrollListener = new RecyclerView.OnScrollListener() {
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            if (mShouldScroll && RecyclerView.SCROLL_STATE_IDLE == newState) {
-                mShouldScroll = false;
-                smoothMoveToPosition(mToPosition);
-            } else if (RecyclerView.SCROLL_STATE_IDLE == newState) {
-                selectNavs(position);
-            }
-        }
+    //回调接口
+    public interface CallBackValue {
+        public void SendMessageValue(BrandGoods brand);
+    }
 
+    View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            position = groupedGridLayoutManager.findFirstVisibleItemPosition();
-        }
-    };
-
-    FaatGoodsItem.OnSubItemClickListener goodsItemListener = new FaatGoodsItem
-            .OnSubItemClickListener() {
-
-        @Override
-        public void clicked(int group, int pos, View v) {
-            switch (v.getId()) {
-                case R.id.view76:
-                    addCart((Goods) faats.get(group).getObjs().get(pos));
-                    break;
-                default:
-                    Goods goods = ((Goods) faats.get(group).getObjs().get(pos));
-                    Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("id", goods.getGoods_id());
-                    startActivity(intent);
-                    break;
+        public void onClick(View view) {
+            for (int i = 0; i < clickIds.length; i++) {
+                if (clickIds[i] == view.getId()) {
+                    selectNavs(i);
+                }
             }
         }
     };

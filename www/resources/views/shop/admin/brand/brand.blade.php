@@ -53,7 +53,7 @@
                                             </a>
                                         </span>
                                 </td>
-                                <td>{{$brand->brand_desc}}</td>
+                                <td><div class="wsn describe">{{$brand->brand_desc}}</div></td>
                                 <td>
                                     <div class="switch-wrap clearfix">
                                         <div class="switch @if($brand->is_recommend) active @endif"

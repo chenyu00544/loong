@@ -15,17 +15,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.activity.brand.fragment.BrandAllFragment;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
 import com.vcvb.chenyu.shop.home.FragmentFind;
+import com.vcvb.chenyu.shop.javaBean.brand.BrandGoods;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrandListActivity extends BaseRecyclerViewActivity {
+public class BrandListActivity extends BaseRecyclerViewActivity{
 
     ViewPager mViewPager;
     List<Fragment> mFragments;
@@ -41,6 +44,12 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     private TextView upDown;
     private ImageView upDownIcon;
     private TextView brandInfo;
+    private TextView brandName;
+    private ImageView brandLogo;
+    private ImageView backBrandImage;
+    private TextView navTitle;
+    private ImageView nav_back;
+
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private int changeHeight = 0;
     private int infoInitHeight = 0;
@@ -63,26 +72,28 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
 
     @Override
     public void setNavBack() {
+        navTitle = findViewById(R.id.nav_header).findViewById(R.id.textView301);
+        navTitle.setText(R.string.app_name);
+        nav_back = findViewById(R.id.nav_header).findViewById(R.id.nav_back);
+        if (nav_back != null) {
+            nav_back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    SwipeBackHelper.finish(BrandListActivity.this);
+                }
+            });
+        }
     }
 
     @Override
     public void initView() {
+        backBrandImage = findViewById(R.id.back_brand);
         upDown = findViewById(R.id.textView304);
         upDownIcon = findViewById(R.id.imageView155);
         brand_info = findViewById(R.id.brand_info);
         brandInfo = findViewById(R.id.textView303);
-        brandInfo.setText
-                ("如果我死了，那些愧对我的人会很开心：终于不用还钱了，哎呀，不然真不知道怎么办那，不敢见他，吓得我朋友圈都不敢发了！不对，我这样的人怕他干嘛？反正也不能把我怎么样。我每天活的多潇洒，灯红酒绿左拥右抱的。怕他干嘛，我是没错的，我怎么能委屈自己那？我要活的开心就不能在乎那么多，人这一辈子就是有舍有得，凭自己本事借的钱为什么要还？——不用还");
-        ViewTreeObserver vto = brandInfo.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (changeHeight == 0) {
-                    changeHeight = brandInfo.getLineHeight() * (brandInfo.getLineCount() - 3) + 5;
-                    System.out.println(changeHeight);
-                }
-            }
-        });
+        brandName = findViewById(R.id.textView302);
+        brandLogo = findViewById(R.id.imageView58);
 
         collapsingToolbarLayout = findViewById(R.id.collapsing);
         cInitHeight = ToolUtils.dip2px(context, 250);
@@ -149,7 +160,27 @@ public class BrandListActivity extends BaseRecyclerViewActivity {
     private void setupViewPager() {
 
         mFragments = new ArrayList<>();
-        mFragments.add(new BrandAllFragment());
+        BrandAllFragment brandAllFragment = new BrandAllFragment();
+        brandAllFragment.setCallBackValue(new BrandAllFragment.CallBackValue(){
+            @Override
+            public void SendMessageValue(BrandGoods brand) {
+                navTitle.setText(brand.getBrand_name());
+                brandInfo.setText(brand.getBrand_desc());
+                brandName.setText(brand.getBrand_name());
+                Glide.with(context).load(brand.getBrand_logo()).into(brandLogo);
+                Glide.with(context).load(brand.getBrand_bg_app()).into(backBrandImage);
+                ViewTreeObserver vto = brandInfo.getViewTreeObserver();
+                vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        if (changeHeight == 0) {
+                            changeHeight = brandInfo.getLineHeight() * (brandInfo.getLineCount() - 3) + 5;
+                        }
+                    }
+                });
+            }
+        });
+        mFragments.add(brandAllFragment);
         mFragments.add(new FragmentFind());
         mFragments.add(new FragmentFind());
 

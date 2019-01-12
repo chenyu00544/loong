@@ -18,6 +18,11 @@ class BrandModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function goods()
+    {
+        return $this->hasMany('App\Http\Models\App\GoodsModel', 'brand_id', 'id');
+    }
+
     public function getBrands($where = [], $whereIn = [], $column = ['*'])
     {
         return $this->select($column)
@@ -30,6 +35,25 @@ class BrandModel extends Model
     {
         return $this->select($column)
             ->where($where)
+            ->first();
+    }
+
+    public function getBrandByGoodses($where, $column = ['*'], $orderby = [])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->with(['goods' => function ($query) use ($orderby) {
+                $query->select([
+                    'goods_id', 'cat_id', 'user_id', 'goods_name', 'goods_sn', 'brand_id', 'freight',
+                    'goods_number', 'shop_price', 'market_price', 'promote_price', 'promote_start_date', 'promote_end_date',
+                    'desc_mobile', 'goods_desc', 'goods_id', 'goods_thumb', 'original_img', 'goods_img', 'is_on_sale',
+                    'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume', 'is_fullcut',
+                    'goods_type', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num', 'review_status',
+                    'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
+                    'pinyin_keyword', 'goods_brief'
+                ])
+                    ->orderBy($orderby['column'], $orderby['desc']);
+            }])
             ->first();
     }
 }

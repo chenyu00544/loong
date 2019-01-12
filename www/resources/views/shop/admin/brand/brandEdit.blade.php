@@ -102,7 +102,8 @@
                                 <input type="hidden" name="brand_bg_app_path" value="{{$brand->brand_bg_app}}">
                                 <span class="img-show fl">
                                     <a href="{{url($brand->brand_bg_app_oss)}}" target="_blank" class="nyroModal">
-                                        <i class="glyphicon glyphicon-picture top5" data-tooltipimg="{{url($brand->brand_bg_app_oss)}}"
+                                        <i class="glyphicon glyphicon-picture top5"
+                                           data-tooltipimg="{{url($brand->brand_bg_app_oss)}}"
                                            ectype="tooltip" data-toggle="tooltip" title="tooltip"></i>
                                     </a>
                                 </span>
@@ -130,7 +131,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">品牌描述：</label>
                             <div class="col-sm-4 n-wd400">
-                                <textarea name="brand_desc" class="form-control ww" row="5" placeholder="品牌描述"
+                                <textarea name="brand_desc" class="form-control ww" row="5" maxlength="255"
+                                          placeholder="品牌描述"
                                           style="min-height:100px;">{{$brand->brand_desc}}</textarea>
                             </div>
                         </div>
@@ -171,7 +173,8 @@
                             <div class="col-sm-4 control-label">&nbsp;</div>
                             <div class="">
                                 <input type="submit" value="　确定　" class="btn btn-danger clearfix">
-                                <a type="button" class="btn btn-default clearfix mar-left-20" href="javascript:history.go(-1)">返回</a>
+                                <a type="button" class="btn btn-default clearfix mar-left-20"
+                                   href="javascript:history.go(-1)">返回</a>
                             </div>
                         </div>
                     </form>

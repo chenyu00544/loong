@@ -154,6 +154,12 @@ textarea{
     white-space: normal; !important;
 }
 
+.describe{
+    max-height: 80px;
+    overflow: hidden;
+    line-height: 20px;
+}
+
 .disn {
     display: none;
 }

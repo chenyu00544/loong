@@ -21,12 +21,12 @@
             app:scrimVisibleHeightTrigger="100dp">
 
             <ImageView
-                android:id="@+id/backdrop"
+                android:id="@+id/back_brand"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/my_head_backgroud"
                 app:layout_collapseMode="parallax"
+                android:background="@color/colorBack_morandi"
                 app:layout_collapseParallaxMultiplier="0.7" />
 
             <include
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/white"
+            android:background="@drawable/tb_border"
             app:tabIndicatorColor="@color/colorBack_morandi"
             app:tabIndicatorHeight="2dp"
             app:tabSelectedTextColor="@color/pressed_colorAccent"

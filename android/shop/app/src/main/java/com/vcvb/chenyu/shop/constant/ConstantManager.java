@@ -174,5 +174,8 @@ public interface ConstantManager {
         public String COMMENT_LABEL = URIHOST + URI_TYPE_APP + "comment/label";
         public String COMMENT_LIST = URIHOST + URI_TYPE_APP + "comment/list";
         public String COMMENT_ADD = URIHOST + URI_TYPE_APP + "comment/add";
+
+        //fixme 品牌
+        public String BRAND = URIHOST + URI_TYPE_APP + "brand/index";
     }
 }

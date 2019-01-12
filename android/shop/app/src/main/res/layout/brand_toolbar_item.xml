@@ -21,6 +21,8 @@
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="-12dp"
+        android:padding="1dp"
+        android:background="@drawable/title_all_border"
         android:src="@drawable/icon_no_pic" />
 
     <TextView

@@ -60,6 +60,5 @@ public class FaatGoodsItem extends BaseItem<Goods> {
         posMap.put(tv2.getId(), position);
         groupMap.put(tv2.getId(), groupPosition);
         tv2.setOnClickListener(listener);
-
     }
 }

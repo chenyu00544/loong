@@ -9,7 +9,11 @@
     <link rel="stylesheet" href="{{asset('styles/plugin/nyroModal/styles/nyroModal.css')}}">
     <link rel="stylesheet" href="{{asset('styles/iconfont/iconfont.css')}}">
     <link rel="stylesheet" href="{{asset('styles/plugin/bootstrap/datepicker/daterangepicker.css')}}"/>
-    <link rel="stylesheet" href="{{asset('styles/admin/css/main.css').'?v='.$v}}">
+    @if($debug)
+        <link rel="stylesheet" href="{{asset('styles/admin/css/main.css').'?v='.$v}}">
+    @else
+        <link rel="stylesheet" href="{{asset('styles/admin/css/main.min.css')}}">
+    @endif
     @yield('css')
     <title>{{Config::get('config.admin_name')}}</title>
     <script>

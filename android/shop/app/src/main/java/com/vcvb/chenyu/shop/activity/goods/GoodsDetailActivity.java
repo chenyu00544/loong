@@ -839,7 +839,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             Intent intent;
             if (pos == -1) {
                 intent = new Intent(GoodsDetailActivity.this, BrandListActivity.class);
-                intent.putExtra("id", String.valueOf(goodsDetails.getGoods_id()));
+                intent.putExtra("id", String.valueOf(goodsDetails.getBrand_id()));
             } else {
                 intent = new Intent(GoodsDetailActivity.this, GoodsDetailActivity.class);
                 intent.putExtra("id", goodsDetails.getGoods_id());

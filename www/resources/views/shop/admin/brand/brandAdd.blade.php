@@ -119,7 +119,7 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">品牌描述：</label>
                             <div class="col-sm-4 n-wd400">
-                                <textarea name="brand_desc" class="form-control ww" row="5" placeholder="品牌描述"
+                                <textarea name="brand_desc" class="form-control ww" row="5" maxlength="255" placeholder="品牌描述"
                                           style="min-height:100px;"></textarea>
                             </div>
                         </div>
