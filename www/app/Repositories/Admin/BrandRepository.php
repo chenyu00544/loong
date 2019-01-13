@@ -34,10 +34,12 @@ class BrandRepository implements BrandRepositoryInterface
     public function getBrand($id)
     {
         $re = $this->brandModel->getBrand($id);
-        $re->brand_logo_oss = FileHandle::getImgByOssUrl($re->brand_logo);
-        $re->index_img_oss = FileHandle::getImgByOssUrl($re->index_img);
-        $re->brand_bg_app_oss = FileHandle::getImgByOssUrl($re->brand_bg_app);
-        $re->brand_bg_oss = FileHandle::getImgByOssUrl($re->brand_bg);
+        if($re){
+            $re->brand_logo_oss = FileHandle::getImgByOssUrl($re->brand_logo);
+            $re->index_img_oss = FileHandle::getImgByOssUrl($re->index_img);
+            $re->brand_bg_app_oss = FileHandle::getImgByOssUrl($re->brand_bg_app);
+            $re->brand_bg_oss = FileHandle::getImgByOssUrl($re->brand_bg);
+        }
         return $re;
     }
 

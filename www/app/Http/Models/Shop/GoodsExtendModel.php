@@ -45,4 +45,11 @@ class GoodsExtendModel extends Model
     {
         return $this->where($where)->count();
     }
+
+    public function delgoodsExtend($where)
+    {
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {}
+    }
 }

@@ -20,8 +20,8 @@ class BrandModel extends Model
     public function getBrands($size = 10, $column =['*'])
     {
         return $this->select($column)
-            ->orderBy('sort_order', 'asc')
-            ->orderBy('id', 'asc')
+            ->orderBy('sort_order', 'DESC')
+            ->orderBy('id', 'DESC')
             ->paginate($size);
     }
 

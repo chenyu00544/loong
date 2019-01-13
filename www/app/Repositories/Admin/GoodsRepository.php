@@ -266,9 +266,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         $req->member_price = $memPrice;
 
         //手机商品详细信息图
-        if($req->desc_mobile){
+        if ($req->desc_mobile) {
             $req->desc_mobile_html = unserialize($req->desc_mobile);
-        }else{
+        } else {
             $req->desc_mobile_html = [];
         }
 
@@ -427,7 +427,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $value->attr_values = $attrValues;
             $value->attr_sort_n = 'attr_sort[' . $value->attr_id . '][]';
             $value->attr_id_n = 'attr-img[' . $value->attr_id . '][' . $value->goods_attr_id . ']';
-            $value->dom_id_n = 'attr-img-'.$value->goods_attr_id;
+            $value->dom_id_n = 'attr-img-' . $value->goods_attr_id;
             $value->attr_img_flie_o = FileHandle::getImgByOssUrl($value->attr_img_flie);
             $goodsAttrM[$value->attr_id]['attr_name'] = $value->attr_name;
             $goodsAttrM[$value->attr_id]['values'][] = $value;
@@ -1173,6 +1173,17 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $rep;
     }
 
+    public function delPorduct($id)
+    {
+        $rep = ['code' => 0, 'msg' => '操作失败'];
+        $where['product_id'] = $id;
+        $re = $this->productsModel->delProduct($where);
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $rep;
+    }
+
     //删除商品扩展分类
     public function delCateExtend($id)
     {
@@ -1209,7 +1220,51 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function delGoods($id)
     {
-        
+        $rep = ['code' => 0, 'msg' => '操作失败'];
+        $where['goods_id'] = $id;
+        $goods = $this->goodsModel->getGoods($where);
+        FileHandle::deleteFile($goods->original_img);
+        FileHandle::deleteFile($goods->goods_thumb);
+        FileHandle::deleteFile($goods->goods_img);
+        $re = $this->goodsModel->delGoods($where);
+
+        $goodsAttrs =  $this->goodsAttrModel->getGoodsAttrs($where);
+        foreach ($goodsAttrs as $attr){
+            FileHandle::deleteFile($attr->attr_img_flie);
+            FileHandle::deleteFile($attr->attr_gallery_flie);
+        }
+        $this->goodsAttrModel->delGoodsAttrs($where);
+
+        $this->goodsCateModel->delGoodsCate($where);
+
+        $this->goodsChangeLogModel->delGoodsChangeLog($where);
+
+        $this->goodsExtendModel->delgoodsExtend($where);
+
+        $this->goodsFullCutModel->delGoodsFullCut($where);
+
+        $goodsGallerys = $this->goodsGalleryModel->getGoodsGallerys($where);
+        foreach ($goodsGallerys as $gallery){
+            FileHandle::deleteFile($gallery->img_url);
+            FileHandle::deleteFile($gallery->thumb_url);
+            FileHandle::deleteFile($gallery->img_original);
+        }
+        $this->goodsGalleryModel->delGoodsGallery($where);
+
+        $this->goodsVolumePriceModel->delGoodsVolumePrice($where);
+
+        $this->productsModel->delProduct($where);
+
+        $this->intelligentWeightModel->delGoodsWeight($where);
+
+        $this->memberPriceModel->delMemberPrice($where);
+
+        $this->productsChangeLogModel->delAll($where);
+
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '操作成功'];
+        }
+        return $rep;
     }
 
 }

@@ -9,6 +9,7 @@
         var getTypeCatesUrl = "{{url('admin/goodstype/gettypescates/')}}/";
         var getGoodsTypeUrl = "{{url('admin/goodstype/gettypes/')}}/";
         var getGoodsAttrUrl = "{{url('admin/goods/getgoodsattr/')}}/";
+        var delProductUrl = "{{url('admin/goods/delproduct/')}}/";
     </script>
 @endsection
 @section('content')
@@ -1172,7 +1173,7 @@
                                         <table class="table table-hover table_head">
                                             <thead>
                                             <tr>
-                                                <th width="25%" class="text-center">属性</th>
+                                                <th width="20%" class="text-center">属性</th>
                                                 <th width="9%"><em>*</em>市场价 <i
                                                             class="glyphicon glyphicon-edit cursor pro_market"></i></th>
                                                 <th width="9%"><em>*</em>销售价 <i
@@ -1187,7 +1188,7 @@
                                                 </th>
                                                 <th width="20%">商品货号</th>
                                                 <th width="10%">商品条形码</th>
-                                                <th class="text-center" width="5%">操作</th>
+                                                <th class="text-center" width="10%">操作</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -1238,7 +1239,7 @@
                                                            :value="product.bar_code">
                                                 </td>
                                                 <td class="handle">
-                                                    <a href="javascript:;" class="btn btn-danger btn-sm product-del"
+                                                    <a href="javascript:;" class="btn btn-danger btn-sm product-del" @click="productDel($event)"
                                                        :data-product_id="product.changelog_product_id?0:product.product_id"
                                                        v-if="!product.changelog_product_id">删除</a>
                                                     <span v-if="product.changelog_product_id">N/A</span>

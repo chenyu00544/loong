@@ -153,17 +153,26 @@ class GoodsTypeRepository implements GoodsTypeRepositoryInterface
     {
         $c_list = $this->getParentCate($id);
         $cate = [];
-        foreach ($c_list as $value) {
-            $re = $this->goodsTypeCateModel->getTypeCates(['parent_id' => $value->parent_id]);
-            foreach ($re as $k => $val) {
-                if ($val->cate_id == $value->cate_id) {
-                    $re[$k]->select = 1;
-                } else {
-                    $re[$k]->select = 0;
+        if (count($c_list) > 0) {
+            foreach ($c_list as $value) {
+                $re = $this->goodsTypeCateModel->getTypeCates(['parent_id' => $value->parent_id]);
+                foreach ($re as $k => $val) {
+                    if ($val->cate_id == $value->cate_id) {
+                        $re[$k]->select = 1;
+                    } else {
+                        $re[$k]->select = 0;
+                    }
                 }
+                $cate[] = $re;
+            }
+        } else {
+            $re = $this->goodsTypeCateModel->getTypeCates(['parent_id' => 0]);
+            foreach ($re as $k => $val) {
+                $re[$k]->select = 0;
             }
             $cate[] = $re;
         }
+
         return $cate;
     }
 

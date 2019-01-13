@@ -1,5 +1,5 @@
-$(function () {
-    //顶部导航切换
+﻿$(function () {
+    //顶部导航切换切换
     $('.admin-menu li').click(function () {
         $(this).parent().find('li').removeClass('active');
         $(this).addClass('active');
@@ -139,7 +139,9 @@ function setNextAblum(that, token, url) {
         var html = '';
         $.post(url + id, {'_token': token}, function (data) {
             if (data.length > 0) {
-                html = '<div class="gallery-option fl mar-left-20"><select class="form-control select" data-parent="1"><option value="0">请选择</option>';
+                html = '<div class="gallery-option fl mar-left-20">' +
+                    '<select class="form-control select" data-parent="1">' +
+                    '<option value="0">请选择</option>';
                 $.each(data, function (k, v) {
                     html += '<option value="' + v.album_id + '">' + v.album_name + '</option>';
                 })

@@ -46,8 +46,8 @@ class GoodsTypeController extends CommonController
     {
         $data = [];
         $goodsTypes = $this->goodsTypeRepository->getGoodsType(['cat_id' => $id]);
-        $data['goodsTypeCates'] = $this->goodsTypeRepository->getGoodsTypeCateBySelect($goodsTypes->c_id);
-        $data['goodsTypes'] = $this->goodsTypeRepository->getGoodsTypesBySelect(['c_id' => $goodsTypes->c_id], $id);
+        $data['goodsTypeCates'] = $this->goodsTypeRepository->getGoodsTypeCateBySelect(!empty($goodsTypes)?$goodsTypes->c_id:0);
+        $data['goodsTypes'] = $this->goodsTypeRepository->getGoodsTypesBySelect(['c_id' => !empty($goodsTypes)?$goodsTypes->c_id:0], $id);
         return $data;
     }
 

@@ -11,6 +11,7 @@ namespace App\Repositories\App;
 use App\Contracts\BrandRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
+use App\Facades\RedisCache;
 use App\Http\Models\App\BrandModel;
 use App\Http\Models\App\GoodsModel;
 
@@ -66,33 +67,55 @@ class BrandRepository implements BrandRepositoryInterface
 
     public function getBrandByGoodses($data, $orderby = [])
     {
+        $cache_col = 'brand_goods_'.(!empty($data['type'])?$data['type']:'').$data['brand_id'].(!empty($data['orderby_column'])?$data['orderby_column']:'').(!empty($data['orderby_desc'])?$data['orderby_desc']:'');
+        $cacheData = RedisCache::get($cache_col);
+        if($cacheData){
+            return $cacheData;
+        }
         $where['brand_id'] = $data['brand_id'];
-        $orderBy = [];
-        switch ($data['type']) {
-            case 'normal':
-                $orderBy['column'] = 'goods_id';
-                $orderBy['desc'] = 'DESC';
-                break;
-            case 'volume':
-                $orderBy['column'] = 'sales_volume';
-                $orderBy['desc'] = 'DESC';
-                break;
-            case 'price':
-                $orderBy['column'] = 'shop_price';
-                if ($data['up_down'] == 'down') {
-                    $orderBy['desc'] = 'DESC';
-                } else {
-                    $orderBy['desc'] = 'ASC';
-                }
-                $orderBy['desc'] = 'DESC';
-                break;
-            case 'new':
-                $orderBy['column'] = 'add_time';
-                $orderBy['desc'] = 'DESC';
-                break;
+        $gwhere['is_delete'] = 0;
+        $gwhere['is_on_sale'] = 1;
+        if (!empty($data['type'])) {
+            switch ($data['type']) {
+                case 'is_new':
+                    $gwhere['is_new'] = 1;
+                    break;
+                case 'is_sale':
+                    $gwhere['is_promote'] = 1;
+                    break;
+                default:
+                    break;
+            }
         }
 
-        $brand = $this->brandModel->getBrandByGoodses(['id' => $data['brand_id'], 'is_show' => 1], ['*'], $orderBy);
+        $orderBy = [];
+        if (!empty($data['orderby_column'])) {
+            switch ($data['orderby_column']) {
+                case 'normal':
+                    $orderBy['column'] = 'goods_id';
+                    $orderBy['desc'] = 'DESC';
+                    break;
+                case 'volume':
+                    $orderBy['column'] = 'sales_volume';
+                    $orderBy['desc'] = 'DESC';
+                    break;
+                case 'price':
+                    $orderBy['column'] = 'shop_price';
+                    if ($data['orderby_desc'] == 'down') {
+                        $orderBy['desc'] = 'DESC';
+                    } else {
+                        $orderBy['desc'] = 'ASC';
+                    }
+                    break;
+                case 'best':
+                    $gwhere['is_best'] = 1;
+                    $orderBy['column'] = 'is_best';
+                    $orderBy['desc'] = 'DESC';
+                    break;
+            }
+        }
+
+        $brand = $this->brandModel->getBrandByGoodses(['id' => $data['brand_id'], 'is_show' => 1], ['*'], $orderBy, $gwhere);
         $brand->brand_logo = FileHandle::getImgByOssUrl($brand->brand_logo);
         $brand->index_img = FileHandle::getImgByOssUrl($brand->index_img);
         $brand->brand_bg = FileHandle::getImgByOssUrl($brand->brand_bg);
@@ -107,6 +130,7 @@ class BrandRepository implements BrandRepositoryInterface
             $goods->promote_price_format = Common::priceFormat($goods->promote_price);
             $goods->desc_mobile = unserialize($goods->desc_mobile);
         }
+        RedisCache::setex($cache_col, $brand, 60);
         return $brand;
     }
 }

@@ -50,4 +50,12 @@ class GoodsAttrModel extends Model
     {
         return $this->create($data);
     }
+
+    public function delGoodsAttrs($where)
+    {
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {
+        }
+    }
 }

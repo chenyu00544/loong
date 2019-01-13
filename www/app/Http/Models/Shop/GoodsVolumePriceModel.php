@@ -37,6 +37,8 @@ class GoodsVolumePriceModel extends Model
 
     public function delGoodsVolumePrice($where)
     {
-        return $this->where($where)->delete();
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {}
     }
 }

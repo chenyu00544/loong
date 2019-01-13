@@ -73,7 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_vertical"
-        android:text="@string/new_product"
+        android:text="@string/recommend"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="@+id/textView307"
         app:layout_constraintEnd_toEndOf="parent"

@@ -162,7 +162,6 @@ class FileHandleService
 
     public static function deleteFile($file_path)
     {
-
         $dir = base_path() . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $file_path;
         if (file_exists($dir)) {
             @unlink($dir);

@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,11 @@ class GoodsModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function store()
+    {
+        return $this->hasOne('App\Http\Models\Shop\SellerShopInfoModel','ru_id','user_id');
+    }
+
     public function getGoodsPage($size = 10, $where = [], $columns = ['*'], $keywords = '')
     {
         $goods = $this->select($columns);
@@ -26,6 +32,7 @@ class GoodsModel extends Model
         if (!empty($keywords)) {
             $goods->where('goods_name', 'like', '%' . $keywords . '%');
         }
+        $goods->with(['store']);
         return $goods->orderBy('goods_id', 'desc')
             ->paginate($size);
     }
@@ -99,5 +106,14 @@ class GoodsModel extends Model
     public function getMaxGoodsId()
     {
         return $this->max('goods_id');
+    }
+
+    public function delGoods($where)
+    {
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {
+
+        }
     }
 }

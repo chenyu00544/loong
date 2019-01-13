@@ -19,8 +19,9 @@ import com.bumptech.glide.Glide;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.activity.brand.fragment.BrandAllFragment;
+import com.vcvb.chenyu.shop.activity.brand.fragment.BrandNewFragment;
+import com.vcvb.chenyu.shop.activity.brand.fragment.BrandSaleFragment;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewActivity;
-import com.vcvb.chenyu.shop.home.FragmentFind;
 import com.vcvb.chenyu.shop.javaBean.brand.BrandGoods;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
@@ -181,8 +182,8 @@ public class BrandListActivity extends BaseRecyclerViewActivity{
             }
         });
         mFragments.add(brandAllFragment);
-        mFragments.add(new FragmentFind());
-        mFragments.add(new FragmentFind());
+        mFragments.add(new BrandNewFragment());
+        mFragments.add(new BrandSaleFragment());
 
         mViewPager.setAdapter(new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override

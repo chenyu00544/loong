@@ -39,4 +39,13 @@ class MemberPriceModel extends Model
     {
         return $this->where($where)->count();
     }
+
+    public function delMemberPrice($where)
+    {
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {
+        }
+    }
+
 }

@@ -208,6 +208,12 @@ class GoodsController extends CommonController
         return $this->goodsRepository->getProductAndGallerys($request->except('_token'), $id, $this->user->ru_id);
     }
 
+    //删除SKU商品
+    public function delProduct(Request $request, $id)
+    {
+        return $this->goodsRepository->delPorduct($id);
+    }
+
     public function delVolumePrice($id)
     {
         return $this->goodsRepository->delVolumePrice($id);
@@ -312,7 +318,8 @@ class GoodsController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->goodsRepository->updateGoods($request->except('_token', '_method'), $id, $this->user->ru_id);
-        return view('shop.admin.success');
+        $back_url = $this->success('admin/goods/');
+        return view('shop.admin.success', compact('back_url'));
     }
 
     /**

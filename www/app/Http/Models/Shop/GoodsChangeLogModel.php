@@ -29,4 +29,11 @@ class GoodsChangeLogModel extends Model
     {
         return $this->create($data);
     }
+
+    public function delGoodsChangeLog($where)
+    {
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {}
+    }
 }

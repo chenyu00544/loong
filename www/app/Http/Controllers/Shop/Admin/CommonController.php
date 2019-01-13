@@ -31,7 +31,7 @@ class CommonController extends Controller
     {
         View::share('v', time());
 //        View::share('debug', env("APP_DEBUG", false));
-        View::share('debug', false);
+        View::share('debug', true);
         View::share('copyright', 'copyright © 2010-2028 vcvbuy.com,Inc.All rights reserved.');
         $this->now_date = date('Y-m-d', time()) . ' 00:00:00～' . date('Y-m-d', time()) . ' 23:59:59';
         $this->middleware(function ($request, $next) {

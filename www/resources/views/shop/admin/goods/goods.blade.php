@@ -128,7 +128,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td><font class="red">直营</font></td>
+                                    <td>
+                                        @if(!empty($goods->store->shop_name))
+                                            <font class="blue">{{$goods->store->shop_name}}</font>
+                                        @else
+                                            <font class="red">直营</font>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="tDiv">
                                             <div class="tDiv_item">

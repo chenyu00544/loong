@@ -38,6 +38,8 @@ class GoodsFullCutModel extends Model
 
     public function delGoodsFullCut($where)
     {
-        return $this->where($where)->delete();
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {}
     }
 }

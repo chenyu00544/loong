@@ -48,7 +48,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('brand/firstchar', 'BrandController@getFirstChar');
     Route::resource('brand', 'BrandController');
 
-
     Route::get('goods/backto/{id}', 'GoodsController@backTo');
     Route::get('goods/del/{id}', 'GoodsController@thoroughDel');
     Route::get('goods/examine/{id}', 'GoodsController@examine');
@@ -70,6 +69,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/addgoodsattr', 'GoodsController@addGoodsAttr');
     Route::post('goods/setgoodsattr', 'GoodsController@setGoodsAttr');
     Route::post('goods/product/{id}', 'GoodsController@getGoodsByProduct');
+    Route::post('goods/delproduct/{id}', 'GoodsController@delProduct');
     Route::post('goods/delvolumeprice/{id}', 'GoodsController@delVolumePrice');
     Route::post('goods/delfullcut/{id}', 'GoodsController@delFullCut');
     Route::resource('goods', 'GoodsController');

@@ -12,6 +12,7 @@ var app = new Vue({
         getTypeCatesUrl: getTypeCatesUrl,
         getGoodsTypeUrl: getGoodsTypeUrl,
         getGoodsAttrUrl: getGoodsAttrUrl,
+        delProductUrl: delProductUrl,
         products: [],
         goodsTypes: [],
         goodsTypeCatesSelect: [],
@@ -46,6 +47,9 @@ var app = new Vue({
                             that.goodsTypeCatesSelect.push(data.goodsTypeCates[i][j].cate_id);
                         }
                     }
+                }
+                if (that.goodsTypeCatesSelect.length == 0) {
+                    that.goodsTypeCatesSelect.push(0);
                 }
             });
             $.post(this.getGoodsAttrUrl + this.goods_id, {
@@ -94,7 +98,7 @@ var app = new Vue({
             var k = $(e.target).data('k');
             if ($(e.target).is(':checked')) {
                 this.goodsAttrM[key].selected[k] = 1;
-            }else{
+            } else {
                 this.goodsAttrM[key].selected[k] = 0;
             }
 
@@ -167,6 +171,18 @@ var app = new Vue({
                     that.loading(true);
                 }
             });
+        },
+        productDel: function (e) {
+            var product_id = $(e.target).data('product_id');
+            $.post(this.delProductUrl + product_id, {
+                _token: this.token
+            }, function (data) {
+                layer.msg(data.msg, {icon: data.code});
+                setTimeout(function () {
+                    $(e.target).parent().parent().remove();
+                }, 1000);
+            });
+
         },
         getNextGoodsTypeCate: function (dom) {
             var that = this;

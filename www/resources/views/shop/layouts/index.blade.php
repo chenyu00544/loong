@@ -34,7 +34,11 @@
 <!--[if IE 6]>
 <script type="text/javascript" src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal-ie6.js')}}"></script>
 <![endif]-->
-<script type="text/javascript" src="{{asset('styles/admin/js/main.js')}}"></script>
+@if($debug)
+    <script type="text/javascript" src="{{asset('styles/admin/js/main.js')}}"></script>
+@else
+    <script type="text/javascript" src="{{asset('styles/admin/js/main.min.js')}}"></script>
+@endif
 @yield('script')
 </body>
 </html>

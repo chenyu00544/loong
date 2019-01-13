@@ -37,7 +37,8 @@ class GoodsCateModel extends Model
 
     public function delGoodsCate($where)
     {
-        return $this->where($where)
-            ->delete();
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {}
     }
 }

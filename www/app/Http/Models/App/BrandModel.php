@@ -38,11 +38,11 @@ class BrandModel extends Model
             ->first();
     }
 
-    public function getBrandByGoodses($where, $column = ['*'], $orderby = [])
+    public function getBrandByGoodses($where, $column = ['*'], $orderby = [], $gwhere=[])
     {
-        return $this->select($column)
+        $m = $this->select($column)
             ->where($where)
-            ->with(['goods' => function ($query) use ($orderby) {
+            ->with(['goods' => function ($query) use ($orderby, $gwhere) {
                 $query->select([
                     'goods_id', 'cat_id', 'user_id', 'goods_name', 'goods_sn', 'brand_id', 'freight',
                     'goods_number', 'shop_price', 'market_price', 'promote_price', 'promote_start_date', 'promote_end_date',
@@ -52,8 +52,10 @@ class BrandModel extends Model
                     'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
                     'pinyin_keyword', 'goods_brief'
                 ])
+                    ->where($gwhere)
                     ->orderBy($orderby['column'], $orderby['desc']);
-            }])
-            ->first();
+            }]);
+
+        return $m->first();
     }
 }

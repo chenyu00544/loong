@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
@@ -43,6 +44,10 @@ class ProductsModel extends Model
 
     public function delProduct($where)
     {
-        return $this->where($where)->delete();
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {
+
+        }
     }
 }

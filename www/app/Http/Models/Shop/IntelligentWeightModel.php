@@ -6,6 +6,7 @@
  * Time: 16:58
  * Desc:
  */
+
 namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
@@ -21,5 +22,14 @@ class IntelligentWeightModel extends Model
     {
         return $this->where('goods_id', $id)
             ->first();
+    }
+
+    public function delGoodsWeight($where)
+    {
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {
+        }
+
     }
 }

@@ -47,7 +47,8 @@ class GoodsGalleryModel extends Model
 
     public function delGoodsGallery($where)
     {
-        return $this->where($where)
-            ->delete();
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {}
     }
 }

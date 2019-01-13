@@ -138,14 +138,7 @@
                         _token: '{{csrf_token()}}'
                     },
                     function (data) {
-                        layer.open({
-                            title: '提示',
-                            content: data.msg,
-                            icon: data.code,
-                            success: function (layero, index) {
 
-                            }
-                        });
                     }
                 );
             });
