@@ -56,8 +56,8 @@ public class GoodsBrandItem extends BaseItem<GoodsDetail> {
 
         TextView textView = holder.get(R.id.textView);
         textView.setText(mData.getGoodsBrand().getBrand_name());
-
-        if (mData.getIsScroll() == 1) {
+//        if (mData.getIsScroll() == 1) {
+        if (true) {
             if (recyclerView == null) {
                 recyclerView = (RecyclerView) holder.getView(R.id.brand_list);
                 CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();

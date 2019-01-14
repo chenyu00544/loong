@@ -62,7 +62,7 @@ public class MessageFaatActivity extends BaseRecyclerViewActivity {
                 Class c = UrlParse.getUrlToClass(uri);
                 Map<String, String> id = UrlParse.getUrlParams(uri);
                 Intent intent = new Intent(context, c);
-                intent.putExtra("id", id.get("id"));
+                intent.putExtra("id", Integer.valueOf(id.get("id")));
                 startActivity(intent);
             }
         });

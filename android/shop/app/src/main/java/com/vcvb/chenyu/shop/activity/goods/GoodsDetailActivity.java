@@ -101,8 +101,11 @@ public class GoodsDetailActivity extends GoodsActivity {
     private ConstraintLayout cly;
     private ConstraintSet set = new ConstraintSet();
 
-    public GoodsDetailActivity() {
-    }
+    //存放item宽或高
+    private Map<Integer, Integer> mMapList = new HashMap<>();
+    //记录目标项位置
+    private int mToPosition;
+    private boolean mShouldScroll = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -182,7 +185,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsInfo.setTextSize(ts_18);
                 goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                 pos = 0;
-                goodsDetail.scrollToPosition(0);
+                moveToPosition(0);
             }
         });
         goodsEvaluate.setOnClickListener(new View.OnClickListener() {
@@ -194,8 +197,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_22);
                 goodsEvaluate.setTextColor(Color.parseColor("#000000"));
-                pos = 1180;
-                goodsDetail.scrollToPosition(8);
+                moveToPosition(9);
             }
         });
         goodsInfo.setOnClickListener(new View.OnClickListener() {
@@ -207,11 +209,9 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_18);
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
-                pos = 2485;
-                goodsDetail.scrollToPosition(10);
+                moveToPosition(11);
             }
         });
-
 
         collectionView = findViewById(R.id.collection);
         collectionView.setOnClickListener(listener);
@@ -250,6 +250,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 (LinearLayout.LayoutParams.MATCH_PARENT, 0);
         final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout
                 .LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
         //滑动监听
         goodsDetail.addOnScrollListener(new RecyclerView.OnScrollListener() {
             int alpha = 0;
@@ -274,6 +275,11 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                if (mShouldScroll) {
+                    mShouldScroll = false;
+                    moveToPosition(mToPosition);
+                }
+
                 child1 = gridLayoutManager.getChildAt(0);
                 if (goodsDetail.getChildAdapterPosition(child1) == 0) {
                     goodsView.setTextSize(ts_22);
@@ -282,14 +288,14 @@ public class GoodsDetailActivity extends GoodsActivity {
                     goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsInfo.setTextSize(ts_18);
                     goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
-                } else if (goodsDetail.getChildAdapterPosition(child1) == 8) {
+                } else if (goodsDetail.getChildAdapterPosition(child1) == 9) {
                     goodsView.setTextSize(ts_18);
                     goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsInfo.setTextSize(ts_18);
                     goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsEvaluate.setTextSize(ts_22);
                     goodsEvaluate.setTextColor(Color.parseColor("#000000"));
-                } else if (goodsDetail.getChildAdapterPosition(child1) == 10) {
+                } else if (goodsDetail.getChildAdapterPosition(child1) == 11) {
                     goodsInfo.setTextSize(ts_22);
                     goodsInfo.setTextColor(Color.parseColor("#000000"));
                     goodsView.setTextSize(ts_18);
@@ -297,7 +303,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     goodsEvaluate.setTextSize(ts_18);
                     goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 }
-                pos += dy;
+                pos = calculatedDistance(dy);
                 if (pos <= 0) {
                     pos = 0;
                 }
@@ -458,6 +464,59 @@ public class GoodsDetailActivity extends GoodsActivity {
             }
         }
         return cells;
+    }
+
+    public void moveToPosition(int position) {
+        // 第一个可见位置
+        int firstItem = goodsDetail.getChildLayoutPosition(goodsDetail.getChildAt(0));
+        // 最后一个可见位置
+        int lastItem = goodsDetail.getChildLayoutPosition(goodsDetail.getChildAt(goodsDetail
+                .getChildCount() - 1));
+
+        if (position < firstItem) {
+            //跳转位置在第一个可见位置之前
+            goodsDetail.scrollToPosition(position);
+            mToPosition = position;
+            mShouldScroll = true;
+        } else if (position <= lastItem) {
+            //跳转位置在第一个可见位置之后
+            int movePosition = position - firstItem;
+            if (movePosition >= 0 && movePosition < goodsDetail.getChildCount()) {
+                int top = goodsDetail.getChildAt(movePosition).getTop();
+                goodsDetail.scrollBy(0, top - ToolUtils.dip2px(context, 70));
+                //不平滑移动不走onScrollStateChanged
+            }
+        } else {
+            //跳转位置在最后可见项之后
+            goodsDetail.scrollToPosition(position);
+            mToPosition = position;
+            mShouldScroll = true;
+        }
+    }
+
+    public int calculatedDistance(int dy) {
+        //得出spanCount几列或几排
+        int itemSpanCount = gridLayoutManager.getSpanCount();
+        //得出的position是一排或一列总和
+        int position = gridLayoutManager.findFirstVisibleItemPosition();
+        //需要算出才是即将移出屏幕Item的position
+        int itemPosition = position / itemSpanCount;
+        //因为是相同的Item所以取那个都一样
+        View firstVisiableChildView = gridLayoutManager.findViewByPosition(position);
+//        int itemHeight = firstVisiableChildView.getHeight();
+//        int itemTop = firstVisiableChildView.getTop();
+//        int iposition = itemPosition * itemHeight;
+//        int iResult = iposition - itemTop;
+//        //item宽高
+//        int itemW = firstVisiableChildView.getWidth();
+        int itemH = firstVisiableChildView.getHeight();
+        mMapList.put(itemPosition, itemH);
+        if (itemPosition == 0) {
+            pos += dy;
+        }else{
+            pos = mMapList.get(0);
+        }
+        return pos;
     }
 
     //fixme 添加到购物车
@@ -940,6 +999,4 @@ public class GoodsDetailActivity extends GoodsActivity {
     public void onPanelClosed(int featureId, Menu menu) {
         super.onPanelClosed(featureId, menu);
     }
-
-
 }

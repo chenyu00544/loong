@@ -70,7 +70,7 @@ class BrandRepository implements BrandRepositoryInterface
         $cache_col = 'brand_goods_'.(!empty($data['type'])?$data['type']:'').$data['brand_id'].(!empty($data['orderby_column'])?$data['orderby_column']:'').(!empty($data['orderby_desc'])?$data['orderby_desc']:'');
         $cacheData = RedisCache::get($cache_col);
         if($cacheData){
-            return $cacheData;
+//            return $cacheData;
         }
         $where['brand_id'] = $data['brand_id'];
         $gwhere['is_delete'] = 0;

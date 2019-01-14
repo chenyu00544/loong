@@ -89,7 +89,8 @@ public class GoodsEvaluateItem extends BaseItem<GoodsDetail> {
             }
         }
         ConstraintLayout v = (ConstraintLayout) holder.getItemView();
-        if (mData.getIsScroll() == 1) {
+//        if (mData.getIsScroll() == 1) {
+        if (true) {
             if (recyclerView == null) {
                 recyclerView = (RecyclerView) holder.getView(R.id.evaluate_list);
                 CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();

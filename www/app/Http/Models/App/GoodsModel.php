@@ -77,6 +77,10 @@ class GoodsModel extends Model
                 $query->where(['price_type' => 1]);
             }])
             ->where($where)
+            ->where(function ($query) {
+                $query->orWhere('is_best', 1)
+                    ->orWhere('is_hot', 1);
+            })
             ->where('review_status', '>=', 3)
             ->orderBy('sort_order', 'DESC')
             ->orderBy('add_time', 'DESC')
@@ -90,8 +94,8 @@ class GoodsModel extends Model
             ->where($where)
             ->where(['is_on_sale' => 1, 'is_delete' => 0])
             ->where([['review_status', '>=', 3], ['cat_id', '<>', 0]])
-            ->with(['category'=>function($query){
-                $query->select(['id','cat_name','cat_alias_name','is_show', 'touch_icon']);
+            ->with(['category' => function ($query) {
+                $query->select(['id', 'cat_name', 'cat_alias_name', 'is_show', 'touch_icon']);
             }])
             ->orderBy('cat_id', 'DESC')
             ->get();

@@ -1,18 +1,22 @@
 package com.vcvb.chenyu.shop.activity.brand.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.adapter.CYCSimpleAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.brand.BrandGoodsVItem;
+import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.DefaultItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
@@ -60,6 +64,15 @@ public class BrandSaleFragment extends BaseRecyclerViewFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DefaultItemDecoration(context, 5));
         mRecyclerView.setAdapter(mAdapter);
+
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                Intent intent = new Intent(context, GoodsDetailActivity.class);
+                intent.putExtra("id", brandGoods.getGoodses().get(position).getGoods_id());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
