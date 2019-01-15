@@ -138,8 +138,8 @@ class SatisticsRepository implements SatisticsRepositoryInterface
                 return $rep;
                 break;
             case 'industry':
-                $cates = $this->categoryModel->getComCates(0, ['id','cat_name','cat_alias_name']);
-                foreach ($cates as $cate){
+                $cates = $this->categoryModel->getComCates(0, ['id', 'cat_name', 'cat_alias_name']);
+                foreach ($cates as $cate) {
                     $ids = $this->categoryModel->getSubComCates([$cate->id]);
                     $re = $this->orderGoodsModel->sumOrderGoodsByCate($ids);
                     $cate->sat = $re;
@@ -164,5 +164,66 @@ class SatisticsRepository implements SatisticsRepositoryInterface
     {
         $where = ['pay_status' => 2];
         return $this->orderInfoModel->countOrder($where, [], '');
+    }
+
+    public function getOrderTotal($data)
+    {
+        $dates = $this->getDataArray($data['date']);
+        $order = [];
+        foreach ($dates['time'] as $k => $date) {
+            if (empty($dates[$k + 1])) {
+                $where = [['add_time', '>', $date]];
+            } else {
+                $where = [['add_time', '>', $date], ['add_time', '<', $dates[$k + 1]]];
+            }
+
+            $order[] = ['count'=>$this->orderInfoModel->countOrder($where), 'date'=>$dates['date'][$k]];
+        }
+        return $order;
+    }
+
+    public function getAmountTotal($data)
+    {
+        $dates = $this->getDataArray($data['date']);
+        $order = [];
+        foreach ($dates['time'] as $k => $date) {
+            if (empty($dates[$k + 1])) {
+                $where = [['add_time', '>', $date],['pay_status', '=', PS_PAYED]];
+            } else {
+                $where = [['add_time', '>', $date], ['add_time', '<', $dates[$k + 1]],['pay_status', '=', PS_PAYED]];
+            }
+            $order[] = ['count'=>$this->orderInfoModel->sumOrder($where, [], 'all'), 'date'=>$dates['date'][$k]];
+        }
+        return $order;
+    }
+
+    private function getDataArray($date)
+    {
+        $d = [];
+        $time = strtotime(date('Y-m-d', time()));
+        switch ($date) {
+            case 'month':
+                for ($i = 1; $i <= 30; $i++) {
+                    $d['time'][] = $time - 86400 * (30 - $i);
+                    $d['date'][] = date('m-d', $time - 86400 * (30 - $i));
+                }
+                break;
+            case 'year':
+                $now_month = date('m');
+                $now_year = date('Y');
+                for ($i = 1; $i <= 12; $i++) {
+                    $d['time'][] = strtotime(date('Y') . '-' . $i);
+                    $d['date'][] = date('Y-m', strtotime(date('Y') . '-' . $i));
+                }
+                break;
+            case 'week':
+            default:
+                for ($i = 1; $i <= 7; $i++) {
+                    $d['time'][] = $time - 86400 * (7 - $i);
+                    $d['date'][] = date('m-d', $time - 86400 * (7 - $i));
+                }
+                break;
+        }
+        return $d;
     }
 }

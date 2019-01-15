@@ -6,4 +6,5 @@ return array(
     'site_domain' => 'http://www.vcvbuy.com/',
     'TOKEN_ALG' => 'HS256',
     'TOKEN_TTL' => '43200',
+    'INSTALL_DATE' => '2019-05-02',
 );

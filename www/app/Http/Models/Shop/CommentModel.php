@@ -105,4 +105,9 @@ class CommentModel extends Model
     {
         return $this->where($where)->delete();
     }
+
+    public function countComment($where)
+    {
+        return $this->where($where)->count();
+    }
 }

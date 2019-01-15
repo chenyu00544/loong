@@ -5,13 +5,15 @@
  */
 define('APPNAME', 'VCVB');
 define('VERSION', 'v1.0');
-define('RELEASE', '20181022');
-define('CHARSET', 'utf-8');
-define('VCVB_CHARSET', 'utf-8');
-define('ADMIN_PATH', 'vcvb');
+define('RELEASE', '20191010');
+define('CHARSET', 'UTF-8');
+define('VCVB_CHARSET', 'UTF-8');
+define('ADMIN_PATH', 'admin/index');
 define('SELLER_PATH', 'seller');
 define('STORES_PATH', 'stores');
+define('WEB_PATH', 'mobile');
 define('SUPPLLY_PATH', 'suppliers');
+define('QA_PATH', 'qa');
 define('AUTH_KEY', 'this is a key');
 define('OLD_AUTH_KEY', '');
 define('API_TIME', '');

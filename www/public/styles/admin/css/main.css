@@ -22,7 +22,8 @@ body {
     height: 100%;
     overflow: hidden;
 }
-.body{
+
+.body {
     background-image: url("../images/light.png");
     background-repeat: no-repeat;
 }
@@ -53,7 +54,7 @@ b {
     color: red;
 }
 
-table{
+table {
     width: 100%;
 }
 
@@ -116,11 +117,11 @@ option {
     margin: 3px;
 }
 
-textarea{
+textarea {
     min-height: 100px;
 }
 
-.login{
+.login {
     background: url(../images/loginbg3.png) no-repeat center center;
     width: 100%;
     height: 585px;
@@ -128,14 +129,15 @@ textarea{
     position: absolute;
     top: 47px;
 }
-#mainBody{
+
+#mainBody {
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: -1;
 }
 
-.cloud{
+.cloud {
     position: absolute;
     top: 0;
     left: 0;
@@ -146,15 +148,16 @@ textarea{
     opacity: 0.5;
 }
 
-#cloud2{
+#cloud2 {
     z-index: 2;
 }
 
 .wsn {
-    white-space: normal; !important;
+    white-space: normal;
+!important;
 }
 
-.describe{
+.describe {
     max-height: 80px;
     overflow: hidden;
     line-height: 20px;
@@ -188,12 +191,12 @@ textarea{
     width: auto;
 }
 
-.clearfix:after{
-    content:".";
-    display:block;
-    height:0;
-    clear:both;
-    visibility:hidden;
+.clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }
 
 .container-fluid {
@@ -526,12 +529,12 @@ textarea{
     padding-bottom: 15px;
 }
 
-.pad-tb-10{
+.pad-tb-10 {
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
-.pad-tb-15{
+.pad-tb-15 {
     padding-top: 15px;
     padding-bottom: 15px;
 }
@@ -761,24 +764,31 @@ textarea{
 .icon_sms {
     background-position: 2px -634px;
 }
+
 .current .icon_sms {
     background-position: -26px -634px;
 }
+
 .icon_file {
-     background-position: 1px -712px;
- }
+    background-position: 1px -712px;
+}
+
 .current .icon_file {
     background-position: -25px -712px;
 }
+
 .icon_interface {
-     background-position: 2px -563px;
- }
+    background-position: 2px -563px;
+}
+
 .current .icon_interface {
     background-position: -24px -563px;
 }
+
 .icon_email {
-     background-position: 3px -171px;
- }
+    background-position: 3px -171px;
+}
+
 .current .icon_email {
     background-position: -22px -171px;
 }
@@ -790,7 +800,6 @@ textarea{
 .current .icon_article {
     background-position: -23px -24px;
 }
-
 
 .nav-left .sub-nav .sub-item li {
     height: 40px;
@@ -1158,8 +1167,9 @@ textarea{
     margin-bottom: 50px;
 }
 
-.mar-trb-10{
-    margin: 10px 10px 10px 0px;!important;
+.mar-trb-10 {
+    margin: 10px 10px 10px 0px;
+!important;
 }
 
 .pad-all-5 {
@@ -1216,7 +1226,7 @@ textarea{
     display: inline-block;
 }
 
-.switch, .circle, .sort-point, i.sc-icon, .admin-fun-right .operate a {
+.switch, .circle, .sort-point, i.sc-icon, i.ice, .admin-fun-right .operate a {
     background: url(../../images/admin-icon.png) no-repeat;
 }
 
@@ -2575,7 +2585,7 @@ input[type=file].upload-file {
     display: none;
 }
 
-.add-v-p, .add-f-p{
+.add-v-p, .add-f-p {
     display: block;
     width: 20px;
     height: 20px;
@@ -2957,11 +2967,11 @@ input[type=file].upload-file {
     margin-bottom: 10px;
 }
 
-.merchants-wrap{
+.merchants-wrap {
     margin-right: 20px;
 }
 
-#geo-container{
+#geo-container {
     width: 700px;
     height: 400px;
 }
@@ -2971,14 +2981,14 @@ input[type=file].upload-file {
     padding-bottom: 12px;
 }
 
-.merchants-section .tit{
+.merchants-section .tit {
     height: 38px;
     line-height: 38px;
     background: #f2f2f2;
     margin-bottom: 24px;
 }
 
-.merchants-section .tit h4{
+.merchants-section .tit h4 {
     font-weight: bold;
     color: #333;
     padding-left: 23px;
@@ -2987,19 +2997,20 @@ input[type=file].upload-file {
     line-height: 38px;
 }
 
-.brand-select-group{
+.brand-select-group {
     padding-top: 15px;
     padding-bottom: 15px;
     border: 1px solid #f0d58f;
     background: #fffdf0;
 }
-.comments .msg-info{
+
+.comments .msg-info {
     padding: 15px;
     border: 1px solid #dbdbdb;
     border-radius: 5px;
 }
 
-.msg-img img{
+.msg-img img {
     width: 100px;
     height: 100px;
 }

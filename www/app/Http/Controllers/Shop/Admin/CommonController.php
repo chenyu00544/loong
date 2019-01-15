@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\LangConfig;
 use App\Facades\RedisCache;
+use App\Facades\Common;
 use App\Http\Models\Shop\AliossConfigureModel;
 use App\Http\Models\Shop\AlismsConfigureModel;
 use App\Http\Models\Shop\CronsModel;
@@ -19,6 +20,8 @@ use App\Http\Models\Shop\PaymentModel;
 use App\Http\Models\Shop\ShopConfigModel;
 use App\Http\Models\Shop\WechatModel;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class CommonController extends Controller
@@ -260,5 +263,41 @@ class CommonController extends Controller
             '<div class=""><a href="' . url((!empty($_uri) ? $_uri : $uri . '/create')) . '">继续添加</a></div>'
         ];
         return $back_url;
+    }
+
+    public function systemInfo()
+    {
+        $info = [];
+        $info['gd'] = Common::gdVersion();
+        $info['system'] = PHP_OS;
+        $info['server'] = $_SERVER['SERVER_SOFTWARE'];
+        $info['php'] = PHP_VERSION;
+        foreach (DB::select('select VERSION()')[0] as $val){
+            $info['mysql'] = $val;
+        }
+        $info['safe_mode'] = (boolean)ini_get('safe_mode') ? '是' : '否';
+        $info['safe_mode_gid'] = (boolean)ini_get('safe_mode_gid') ? '是' : '否';
+        $info['upload_max'] = get_cfg_var("upload_max_filesize") ? get_cfg_var("upload_max_filesize") : "不允许上传附件";
+        $info['timezone'] = date_default_timezone_get();
+        $info['socket'] = function_exists('fsockopen') ? '是' : '否';
+        $info['zlib'] = function_exists('gzclose') ? '是' : '否';
+        $info['program_ver'] = VERSION. ' RELEASE '. RELEASE;
+        $info['install_date'] = Config::get('config')['INSTALL_DATE'];
+        $info['charset'] = CHARSET;
+        $info['home'] = url('/');
+        $info['admin'] = url(ADMIN_PATH);
+        $info['seller'] = url(SELLER_PATH);
+        $info['stores'] = url(STORES_PATH);
+        $info['web'] = url(WEB_PATH);
+
+        $shop_config = RedisCache::get('shop_config');
+
+        $info['service_phone'] = $shop_config['service_phone'];
+        $info['service_qq'] = explode("\r\n", $shop_config['qq']);
+        $info['qa'] = url(QA_PATH);
+        $info['www'] = url('/');
+        $info['qqs'] = '(群一)23123  (群二)456456  (群三)877657546  (群四)452345';
+
+        return $info;
     }
 }

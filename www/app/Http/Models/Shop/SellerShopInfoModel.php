@@ -35,4 +35,9 @@ class SellerShopInfoModel extends Model
     {
         return $this->create($data);
     }
+
+    public function countSellerShopInfo($where)
+    {
+        return $this->where($where)->count();
+    }
 }

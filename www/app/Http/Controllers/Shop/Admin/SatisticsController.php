@@ -98,4 +98,14 @@ class SatisticsController extends CommonController
         return Regions::getGeoJson();
     }
 
+    public function getOrderTotal(Request $request)
+    {
+        return $this->satisticsRepository->getOrderTotal($request->except('_token'));
+    }
+
+    public function getAmountTotal(Request $request)
+    {
+        return $this->satisticsRepository->getAmountTotal($request->except('_token'));
+    }
+
 }

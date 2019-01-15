@@ -227,6 +227,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('satistics/user/rank', 'SatisticsController@userRank');
     Route::get('satistics/user/consumption', 'SatisticsController@userConsumption');
     Route::get('satistics/industry', 'SatisticsController@industry');
+    Route::post('satistics/order/total', 'SatisticsController@getOrderTotal');
+    Route::post('satistics/amount/total', 'SatisticsController@getAmountTotal');
 
     Route::post('mobilenav/change', 'MobileNavigationController@change');
     Route::resource('mobilenav', 'MobileNavigationController');
