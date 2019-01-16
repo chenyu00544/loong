@@ -73,13 +73,13 @@ public class GoodsPriceItem extends BaseItem<GoodsDetail> {
                     TextView textView = new TextView(context);
                     textView.setText("满" + mData.getGoodsFCS().get(i).getCfull_format() + "减" + mData
                             .getGoodsFCS().get(i).getCreduce_format());
-                    textView.setTextColor(context.getResources().getColor(R.color.red));
+                    textView.setTextColor(context.getResources().getColor(R.color.white));
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
                     textView.setGravity(Gravity.CENTER_HORIZONTAL);
                     textView.setLines(1);
                     textView.setPadding(ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2),
                             ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2));
-                    textView.setBackgroundResource(R.drawable.shape_tip);
+                    textView.setBackgroundResource(R.drawable.shape_60_red);
                     flowLayout.addView(textView);
                 }
             }
@@ -91,13 +91,13 @@ public class GoodsPriceItem extends BaseItem<GoodsDetail> {
                     TextView textView = new TextView(context);
                     textView.setText(mData.getGoodsGVPS().get(i).getVolume_number() + "件" + mData
                             .getGoodsGVPS().get(i).getVolume_price_format());
-                    textView.setTextColor(context.getResources().getColor(R.color.red));
+                    textView.setTextColor(context.getResources().getColor(R.color.white));
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
                     textView.setGravity(Gravity.CENTER_HORIZONTAL);
                     textView.setLines(1);
                     textView.setPadding(ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2),
                             ToolUtils.dip2px(context, 5), ToolUtils.dip2px(context, 2));
-                    textView.setBackgroundResource(R.drawable.shape_tip);
+                    textView.setBackgroundResource(R.drawable.shape_60_red);
                     flowLayout.addView(textView);
                 }
             }

@@ -12,6 +12,7 @@
         sub_nav.find('.item').first().children('.sub-item').show();
         sub_nav.find('.item').children('.sub-item').find('li').removeClass('curr');
         sub_nav.find('.item').children('.sub-item').find('li').first().addClass('curr');
+        $('#main').attr('src',  $(this).find('a').attr('href'));
     });
 
     //左边导航切换
@@ -22,13 +23,33 @@
         $(this).parent().children('.sub-item').show();
         $(this).parent().children('.sub-item').css('top', 50 - $(this).offset().top);
         $(this).parent().children('.sub-item').find('li').removeClass('curr');
-        $(this).parent().children('.sub-item').find('li').first().addClass('curr')
+        $(this).parent().children('.sub-item').find('li').first().addClass('curr');
+        $('#main').attr('src',  $(this).find('a').attr('href'));
     });
 
     //左边子导航切换
     $('.sub-item li').click(function () {
         $(this).parent().find('li').removeClass('curr');
         $(this).addClass('curr');
+        $('#main').attr('src',  $(this).find('a').attr('href'));
+    });
+
+    $('#notice').parent().mouseenter(function () {
+        $('#msg-container').show();
+    });
+    $('#notice').parent().mouseleave(function () {
+        $('#msg-container').hide();
+    });
+
+    $('#admin-manager-btn').mouseenter(function () {
+        $(this).find('i').removeClass('arrow');
+        $(this).find('i').addClass('arrow-close');
+        $('.manager-menu').show();
+    });
+    $('#admin-manager-btn').mouseleave(function () {
+        $(this).find('i').removeClass('arrow-close');
+        $(this).find('i').addClass('arrow');
+        $('.manager-menu').hide();
     });
 
     $('.tabs li').click(function () {

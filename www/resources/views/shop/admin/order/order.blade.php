@@ -51,7 +51,7 @@
 
             <div class="fromlist clearfix">
                 @if(empty($id))
-                    <div class="clearfix mar-bt-20">
+                    <div class="clearfix mar-bt-5">
                         <div class="fr wd250 pad-top-7">
                             <form action="{{url('admin/order/'.$navType)}}" method="get">
                                 {{csrf_field()}}

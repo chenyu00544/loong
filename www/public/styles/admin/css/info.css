@@ -477,11 +477,11 @@ i.ice_b {
 }
 
 .section_total_count, .section_order_count {
-    height: 333px;
+    height: 335px;
 }
 
 #order-count, #sale-count {
-    height: 293px;
+    height: 295px;
 }
 
 @media screen and (max-width: 1550px) {

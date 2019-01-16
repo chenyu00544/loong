@@ -1,5 +1,4 @@
 @extends('shop.layouts.index')
-
 @section('content')
     @component('shop.components.headernav',['navs'=>$navs])@endcomponent
     <div class="admin-main-right fl">

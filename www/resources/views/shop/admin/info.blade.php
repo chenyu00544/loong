@@ -105,9 +105,9 @@
                                 <div class="tit">自营商品</div>
                                 <div class="number">
                                     <div class="st">实体：<a
-                                                href="goods.php?act=list&self=1">{{$info['goods_entity_num']}}</a></div>
+                                                href="{{url('admin/goods/selfsale')}}">{{$info['goods_entity_num']}}</a></div>
                                     <div class="xn">虚拟：<a
-                                                href="goods.php?act=list&extension_code=virtual_card&self=1">{{$info['goods_fictitious_num']}}</a>
+                                                href="{{url('admin/goods/selfsale')}}">{{$info['goods_fictitious_num']}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -115,10 +115,10 @@
                                 <div class="tit">商家商品</div>
                                 <div class="number">
                                     <div class="st">实体：<a
-                                                href="goods.php?act=list&merchants=1">{{$info['goods_seller_entity_num']}}</a>
+                                                href="{{url('admin/goods/seller')}}">{{$info['goods_seller_entity_num']}}</a>
                                     </div>
                                     <div class="xn">虚拟：<a
-                                                href="goods.php?act=list&extension_code=virtual_card&merchants=1">{{$info['goods_seller_fictitious_num']}}</a>
+                                                href="{{url('admin/goods/seller')}}">{{$info['goods_seller_fictitious_num']}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -129,49 +129,49 @@
                     <div class="section_order_select">
                         <ul>
                             <li>
-                                <a href="order.php?act=list&composite_status={$status.unconfirmed}&source=start">
+                                <a href="{{url('admin/order/1?seller=selfsale')}}">
                                     <i class="ice ice_w"></i>
                                     <div class="t">未确认订单</div>
                                     <span class="number">{{$info['order_no_confirm']}}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="order.php?act=list&composite_status={$status.await_pay}&source=start">
+                                <a href="{{url('admin/order/2?seller=selfsale')}}">
                                     <i class="ice ice_d"></i>
                                     <div class="t">待支付订单</div>
                                     <span class="number">{{$info['order_no_pay']}}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="order.php?act=list&composite_status={$status.await_ship}&source=start">
+                                <a href="{{url('admin/order/3?seller=selfsale')}}">
                                     <i class="ice ice_n"></i>
                                     <div class="t">待发货订单</div>
                                     <span class="number">{{$info['order_no_shipping']}}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="order.php?act=list&composite_status={$status.finished}&source=start">
+                                <a href="{{url('admin/order/5?seller=selfsale')}}">
                                     <i class="ice ice_f"></i>
                                     <div class="t">已成交订单数</div>
                                     <span class="number">{{$info['order_over_transaction']}}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="goods_booking.php?act=list_all">
+                                <a href="javascript:;">
                                     <i class="ice ice_y"></i>
                                     <div class="t">缺货登记</div>
                                     <span class="number">{{$info['shortage_registration']}}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="order.php?act=list&composite_status={$status.shipped_part}&source=start">
+                                <a href="{{url('admin/order/3?seller=selfsale')}}">
                                     <i class="ice ice_q"></i>
                                     <div class="t">部分发货订单</div>
                                     <span class="number">{{$info['order_part_shipping']}}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="user_account.php?act=list&process_type=1&is_paid=0">
+                                <a href="{{url('admin/uaccount')}}">
                                     <i class="ice ice_b"></i>
                                     <div class="t">用户提现申请</div>
                                     <span class="number">{{$info['user_cash_withdrawal']}}</span>

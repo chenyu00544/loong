@@ -446,6 +446,171 @@ textarea {
     background: rgba(0, 0, 0, 0.15);
 }
 
+.admin-fun-right .manager {
+    height: 30px;
+    padding: 9px 0;
+    position: relative;
+    z-index: 2;
+    float: left;
+    margin-right: 10px;
+}
+
+.admin-manager-btn {
+    width: 25px;
+    height: 40px;
+    float: right;
+    padding-left: 10px;
+}
+
+.admin-fun-right .manager dl {
+    color: #FFF;
+    text-align: right;
+    vertical-align: top;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.admin-fun-right .manager dt {
+    line-height: 14px;
+}
+
+.admin-fun-right .manager dd {
+    font-weight: bold;
+    line-height: 16px;
+}
+
+.admin-fun-right .manager .avatar {
+    background-color: transparent;
+    vertical-align: top;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.admin-fun-right .manager .avatar .admin-avatar-file {
+    width: 28px;
+    height: 28px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    position: absolute;
+    z-index: 2;
+    top: 1px;
+    left: 1px;
+    cursor: pointer;
+}
+
+.admin-fun-right .manager .avatar img {
+    max-width: 28px;
+    max-height: 28px;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+    top: 2px;
+    left: 0;
+}
+
+.admin-fun-right .manager .arrow {
+    font-size: 0px;
+    line-height: 0;
+    vertical-align: top;
+    display: inline-block;
+    width: 0px;
+    height: 0px;
+    margin-left: 5px;
+    margin-top: 12px;
+    margin-right: 10px;
+    border-width: 5px;
+    border-color: #FFF transparent transparent transparent;
+    border-style: solid dashed dashed dashed;
+    cursor: pointer;
+}
+
+.admin-fun-right .manager .arrow-close {
+    font-size: 0px;
+    line-height: 0;
+    vertical-align: top;
+    display: inline-block;
+    width: 0px;
+    height: 0px;
+    margin-left: 5px;
+    margin-top: 8px;
+    margin-right: 10px;
+    border-width: 5px;
+    border-color: transparent transparent #FFF transparent;
+    border-style: dashed dashed solid dashed;
+    cursor: pointer;
+}
+
+.manager-menu {
+    display: none;
+    position: absolute;
+    width: 204px;
+    padding: 10px 20px;
+    top: 50px;
+    left: -66px;
+    background: #fff;
+    border-radius: 0px 0px 5px 5px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.manager-menu .title {
+    width: 100%;
+    height: 25px;
+    line-height: 25px;
+    overflow: hidden;
+    border-bottom: 1px solid #e4eaec;
+}
+
+.manager-menu .title h4 {
+    float: left;
+    font-size: 12px;
+    line-height: 25px;
+}
+
+.manager-menu .title a {
+    float: right;
+}
+
+.manager-menu .login-date {
+    margin-top: 10px;
+}
+
+.manager-menu .login-date strong {
+    font-weight: normal;
+}
+
+.manager-menu .login-date span {
+    color: #a8a8a8;
+}
+
+.manager-menu .quick_link {
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.manager-menu .quick_link li {
+    float: left;
+    width: 102px;
+    height: 25px;
+    line-height: 25px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.manager-menu .quick_link li a {
+    color: #666;
+    display: block;
+}
+
+.manager-menu .quick_link li a:hover {
+    color: #ec5051;
+}
+
 .admin-fun-right .operate {
     float: left;
     vertical-align: top;
@@ -465,6 +630,21 @@ textarea {
     margin: 15px 5px 0;
 }
 
+.admin-fun-right .operate s {
+    text-decoration: inherit;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: #ec5051;
+    color: #fff;
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    text-align: center;
+    z-index: 999;
+    line-height: 18px;
+}
+
 .admin-fun-right .operate li {
     width: 48px;
     position: relative;
@@ -481,6 +661,14 @@ textarea {
     z-index: 1;
 }
 
+.admin-fun-right .operate li .notice {
+    background-position: 2px 2px;
+}
+
+.admin-fun-right .operate li .home {
+    background-position: -57px 2px;
+}
+
 .admin-fun-right .operate li .clear {
     background-position: -234px 2px;
 }
@@ -491,6 +679,76 @@ textarea {
 
 .admin-fun-right .operate li:hover {
     background: rgba(255, 255, 255, 0.15);
+}
+
+#msg-container {
+    display: none;
+    position: absolute;
+    background: #fff;
+    -webkit-box-shadow: 0px 0px 10px #ccc;
+    -moz-box-shadow: 0px 0px 10px #ccc;
+    box-shadow: 0px 0px 10px #ccc;
+    right: 0px;
+    top: 50px;
+    border-radius: 0px 0px 5px 5px;
+    width: 200px;
+}
+
+#msg-container h3 {
+    line-height: 35px;
+    height: 35px;
+    color: #333;
+    font-weight: normal;
+    font-size: 14px;
+    padding: 0 15px;
+    background: #ecf8ff;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+#msg-container h3 em {
+    float: right;
+    margin-top: 12px;
+    font-size: 12px;
+}
+
+#msg-container .item {
+    position: relative;
+}
+
+#msg-container .item s {
+    left: 142px;
+    top: 10px;
+}
+
+.msg_content {
+    display: none;
+}
+
+.msg_content p {
+    text-align: left;
+    line-height: 38px;
+    margin: 0 15px;
+    border-bottom: 1px solid #e4eaec;
+}
+
+.msg_content p:last-child {
+    border-bottom: 0;
+}
+
+.msg_content p a {
+    color: #909090
+}
+
+.msg_content p a:hover {
+    color: #f42424;
+}
+
+#msg-container .no_msg {
+    text-align: center;
+    padding: 20px 0;
+    color: #777;
 }
 
 .active {
@@ -855,7 +1113,7 @@ textarea {
 .admin-main-right {
     background-color: #F7F7F7;
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     top: 50px;
     right: 0;
     bottom: 0;
