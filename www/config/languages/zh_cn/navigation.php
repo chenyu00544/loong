@@ -127,6 +127,10 @@ return array(
             'name' => '红　包',
             'url' => 'admin/bonus',
         ),
+        'groupbuy' => array(
+            'name' => '团购活动',
+            'url' => 'admin/groupbuy',
+        ),
     ),
     'goods_storage' => array(
         'favouable' => array(

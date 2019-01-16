@@ -285,4 +285,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('article/change', 'ArticleController@change');
     Route::post('article/change/goods', 'ArticleController@changeGoods');
     Route::resource('article', 'ArticleController');
+
+    Route::resource('groupbuy', 'GroupBuyController');
 });
