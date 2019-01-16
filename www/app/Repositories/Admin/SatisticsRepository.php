@@ -209,15 +209,15 @@ class SatisticsRepository implements SatisticsRepositoryInterface
                 }
                 break;
             case 'year':
-                $now_month = date('m');
-                $now_year = date('Y');
+                $n_month = date('m');
+                $n_year = date('Y');
                 for ($i = 0; $i <= 12; $i++) {
-                    if ($now_month - $i < 1) {
-                        $d['time'][] = strtotime(($now_year - 1) . '-' . (12 + $now_month - $i));
+                    if ($n_month - $i < 1) {
+                        $d['time'][] = strtotime(($n_year - 1) . '-' . (12 + $n_month - $i));
                         $d['date'][] = date('Y-m', strtotime(date('Y') . '-' . $i));
                     } else {
-                        $d['time'][] = strtotime($now_year . '-' . ($now_month - $i));
-                        $d['date'][] = date('Y-m', strtotime($now_year . '-' . ($now_month - $i)));
+                        $d['time'][] = strtotime($n_year . '-' . ($n_month - $i));
+                        $d['date'][] = date('Y-m', strtotime($n_year . '-' . ($n_month - $i)));
                     }
                 }
                 break;
