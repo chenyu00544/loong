@@ -62,9 +62,11 @@ class GoodsModel extends Model
     {
         $m = $this->select($column);
         $m->where(['is_delete' => 0, 'is_on_sale' => 1]);
-        foreach ($search as $key => $value) {
-            $m->orWhere($key, 'like', '%' . $value . '%');
-        }
+        $m->where(function($query) use($search){
+            foreach ($search as $key => $value) {
+                $query->orWhere($key, 'like', '%' . $value . '%');
+            }
+        });
         return $m->get();
     }
 

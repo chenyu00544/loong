@@ -151,6 +151,27 @@ class OrderController extends CommonController
         return $this->orderRepository->delDelivery($id);
     }
 
+    //团购
+    public function getGroupBuySelf($id)
+    {
+        $seller = 'selfsale';
+        $navType = '0';
+        $search['keywords'] = '';
+        $searchNav = $this->orderRepository->getSearchNav($seller);
+        $orders = $this->orderRepository->getOrdersByPage($search, [$seller, $navType]);
+        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders'));
+    }
+
+    public function getGroupBuySeller($id)
+    {
+        $seller = 'seller';
+        $navType = '0';
+        $search['keywords'] = '';
+        $searchNav = $this->orderRepository->getSearchNav($seller);
+        $orders = $this->orderRepository->getOrdersByPage($search, [$seller, $navType]);
+        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders'));
+    }
+
     //退货单列表
     public function orderReturn(Request $request, $id)
     {

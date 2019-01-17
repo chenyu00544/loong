@@ -1762,6 +1762,13 @@ i.sc-icon-sub-small {
     width: 750px;
 }
 
+.owt{
+    width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow:ellipsis;
+}
+
 .captcha-login {
     width: 90px;
     height: 33px;

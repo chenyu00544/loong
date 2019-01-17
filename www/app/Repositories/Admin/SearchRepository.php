@@ -63,7 +63,7 @@ class SearchRepository implements SearchRepositoryInterface
                 break;
             case 3:
                 $search['goods_name'] = $data['keywords'];
-                $re = $this->goodsModel->searchGoodses($search, ['goods_id', 'goods_name']);
+                $re = $this->goodsModel->searchGoodses($search, ['goods_id', 'goods_name', 'shop_price']);
                 foreach ($re as $key => $value) {
                     $re[$key]->id = $value->goods_id;
                     $re[$key]->name = $value->goods_name;
@@ -88,10 +88,12 @@ class SearchRepository implements SearchRepositoryInterface
             default:
                 break;
         }
-        if ($re) {
+        if (count($re) > 0) {
             $req['data'] = $re;
             $req['msg'] = '';
             $req['code'] = 1;
+        } else {
+            $req['code'] = 0;
         }
         return $req;
     }

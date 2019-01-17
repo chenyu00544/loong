@@ -71,10 +71,15 @@
                                                class="checkbox check-all-list fl" id="checkbox_{{$group->act_id}}">
                                     </td>
                                     <td>{{$group->act_id}}</td>
-                                    <td class="wsn">{{$group->act_name}}</td>
-                                    <td>@if($group->user_id == 0) <font
-                                                class="red">{{$group->seller->shop_name}}</font> @else <font
-                                                class="blue">{{$group->seller->shop_name}}</font> @endif</td>
+                                    <td>
+                                        <div class="owt">{{$group->act_name}}</div>
+                                        <div><font class="red">@if($group->end_time<time() || $group->is_finished == 1)
+                                                    活动已结束 @else
+                                                    活动未结束 @endif</font></div>
+                                    </td>
+                                    <td>
+                                        <font class="@if($group->user_id == 0) red @else blue @endif">@if(empty($group->seller))
+                                                未知商家 @else {{$group->seller->shop_name}} @endif</font></td>
                                     <td>{{date('Y-m-d H:i:s', $group->end_time)}}</td>
                                     <td>{{$group->deposit}}</td>
                                     <td>{{$group->restrict_amount}}</td>
@@ -89,7 +94,8 @@
                                             <font class="red">审核未通过</font>
                                         @endif</td>
                                     <td class="text-center">
-                                        <a type="button" href="{{url('admin/groupbuy/see/'.$group->act_id)}}"
+                                        <a type="button"
+                                           href="{{url('admin/order/groupbuy/'.$seller.'/'.$group->act_id)}}"
                                            class="btn btn-info btn-edit btn-sm">查看</a>
                                         <a type="button" href="{{url('admin/groupbuy/'.$group->act_id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>

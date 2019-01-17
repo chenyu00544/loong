@@ -160,8 +160,11 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('order/return/info/{id}', 'OrderController@returnInfo');
     Route::get('order/return/refound/{id}', 'OrderController@returnRefound');
     Route::post('order/return/change', 'OrderController@returnChange');
+    Route::get('order/delivery/info/{id}', 'OrderController@deliveryInfo');
     Route::post('order/changes', 'OrderController@changes');
     Route::post('order/change', 'OrderController@change');
+    Route::get('order/groupbuy/selfsale/{id}', 'OrderController@getGroupBuySelf');
+    Route::get('order/groupbuy/seller/{id}', 'OrderController@getGroupBuySeller');
     Route::resource('order', 'OrderController');
 
     Route::post('returncause/change', 'ReturnCauseController@change');
@@ -286,5 +289,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('article/change/goods', 'ArticleController@changeGoods');
     Route::resource('article', 'ArticleController');
 
+    Route::post('groupbuy/change', 'GroupBuyController@change');
     Route::resource('groupbuy', 'GroupBuyController');
 });

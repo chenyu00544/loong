@@ -4,7 +4,7 @@
  * User: Administrator - chenyu
  * Date: 2018/6/22
  * Time: 16:58
- * Desc: 
+ * Desc:
  */
 
 namespace App\Http\Controllers\Shop\Admin;
@@ -42,7 +42,7 @@ class GroupBuyController extends CommonController
 
     public function change(Request $request)
     {
-
+        return $this->groupBuyRepository->change($request->all());
     }
 
     /**
@@ -52,7 +52,8 @@ class GroupBuyController extends CommonController
      */
     public function create()
     {
-        return view('shop.admin.group.groupAdd');
+        $now_date = $this->now_date;
+        return view('shop.admin.group.groupAdd', compact('now_date'));
     }
 
     /**
@@ -63,11 +64,11 @@ class GroupBuyController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["goods_name" => 'required', "goods_id" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->xxxxxxxxxxxxxx->xxxxxxxxxxxxxx($request->except('_token'));
+        $re = $this->groupBuyRepository->addGroupBuy($request->except('_token'), $this->user);
         return view('shop.admin.success');
     }
 
@@ -93,7 +94,8 @@ class GroupBuyController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $group = $this->groupBuyRepository->getGroupBuy($id);
+        return view('shop.admin.group.groupEdit', compact('group'));
     }
 
     /**
@@ -105,11 +107,11 @@ class GroupBuyController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
+        $ver = Verifiable::Validator($request->all(), []);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->xxxxxxxxxxxxxx->XXXXXXXXXXXXXX($request->except('_token', '_method'), $id);
+        $re = $this->groupBuyRepository->setGroupBuy($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -121,6 +123,6 @@ class GroupBuyController extends CommonController
      */
     public function destroy($id)
     {
-
+        return $this->groupBuyRepository->delGroupBuy($id);
     }
 }
