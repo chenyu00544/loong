@@ -291,4 +291,6 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::post('groupbuy/change', 'GroupBuyController@change');
     Route::resource('groupbuy', 'GroupBuyController');
+
+    Route::resource('seckill', 'SecondKillController');
 });

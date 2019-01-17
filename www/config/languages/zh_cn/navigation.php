@@ -131,6 +131,10 @@ return array(
             'name' => '团购活动',
             'url' => 'admin/groupbuy',
         ),
+        'seckill' => array(
+            'name' => '秒杀活动',
+            'url' => 'admin/seckill',
+        ),
     ),
     'goods_storage' => array(
         'favouable' => array(
