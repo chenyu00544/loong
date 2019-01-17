@@ -29,7 +29,7 @@ class IndexController extends CommonController
     {
         $data = RedisCache::get('app_index_data');
         if (!empty($data)) {
-//            return (['code' => 0, 'msg' => '', 'data' => $data]);
+            return (['code' => 0, 'msg' => '', 'data' => $data]);
         }
         //获取广告数据
         $data['adses'] = $this->adRepository->getAdPositionAndAds();
