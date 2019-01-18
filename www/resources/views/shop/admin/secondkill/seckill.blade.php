@@ -27,7 +27,7 @@
             <div class="fromlist clearfix">
                 <div class="clearfix mar-bt-20">
                     <a href="{{url('admin/seckill/create')}}" class="btn btn-success btn-add btn-sm">添加秒杀活动</a>
-                    <a href="{{url('admin/seckill/create')}}" class="btn btn-success btn-add btn-sm">秒杀时间段列表</a>
+                    <a href="{{url('admin/seckilltime')}}" class="btn btn-success btn-add btn-sm">秒杀时间段列表</a>
                     <div class="fr wd250 pad-tb-10">
                         <form action="{{url('admin/seckill/'.$seller)}}" method="get">
                             {{csrf_field()}}
@@ -71,24 +71,24 @@
                                     </td>
                                     <td>{{$seckill->sec_id}}</td>
                                     <td>
-                                        <font class="@if($seckill->ru_id == 0) red @else blue @endif">@if(empty($group->seller))
+                                        <font class="@if($seckill->ru_id == 0) red @else blue @endif">@if(empty($seckill->seller))
                                                 未知商家 @else {{$seckill->seller->shop_name}} @endif</font>
                                     </td>
                                     <td class="wsn">
                                         {{$seckill->acti_title}}
                                     </td>
                                     <td>
-                                        <div><font class="red">@if($seckill->acti_time<time())
+                                        <div><font class="red">@if($seckill->end_time<time())
                                                     活动已结束 @else
                                                     活动未结束 @endif</font></div>
                                     </td>
-                                    <td>{{date('Y-m-d H:i:s', $seckill->begin_time)}}</td>
-                                    <td>{{date('Y-m-d H:i:s', $seckill->acti_time)}}</td>
+                                    <td>{{date('Y-m-d H:i:s', $seckill->start_time)}}</td>
+                                    <td>{{date('Y-m-d H:i:s', $seckill->end_time)}}</td>
                                     <td>
                                         <div class="switch-wrap clearfix">
-                                            <div class="switch  active" data-type="isshow" title="是">
+                                            <div class="switch @if($seckill->is_putaway == 1) active @endif" data-type="isshow" title="是">
                                                 <div class="circle"></div>
-                                                <input type="hidden" value="7">
+                                                <input type="hidden" value="{{$seckill->sec_id}}">
                                             </div>
                                         </div>
                                     </td>
@@ -101,7 +101,7 @@
                                         @endif</td>
                                     <td class="text-center">
                                         <a type="button"
-                                           href="{{url('admin/order/groupbuy/'.$seller.'/'.$seckill->sec_id)}}"
+                                           href="{{url('admin/seckillgoods/'.$seckill->sec_id)}}"
                                            class="btn btn-info btn-edit btn-sm">设置商品</a>
                                         <a type="button" href="{{url('admin/seckill/'.$seckill->sec_id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>
@@ -147,8 +147,7 @@
                 }
 
                 if (ids.length > 0) {
-                    $.post(
-                        '{{url("admin/seckill/change")}}',
+                    $.post('{{url("admin/seckill/change")}}',
                         {
                             id: ids,
                             type: 'delete',
@@ -200,6 +199,30 @@
                     $(this).parent().parent().parent().parent().removeClass('current');
                     $(this).parent().parent().parent().parent().parent().removeClass('current');
                 }
+            });
+
+            //开关
+            $('.switch').on('click', function () {
+                var val = 0;
+                if ($(this).hasClass('active')) {
+                    val = 0;
+                    $(this).removeClass('active');
+                } else {
+                    val = 1;
+                    $(this).addClass('active');
+                }
+                var id = $(this).find('input').val();
+
+                $.post('{{url("admin/seckill/change")}}',
+                    {
+                        id: id,
+                        value: val,
+                        type: 'putaway',
+                        _token: '{{csrf_token()}}'
+                    },
+                    function (data) {
+                    }
+                );
             });
 
             //删除

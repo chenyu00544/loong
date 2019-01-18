@@ -4,7 +4,7 @@
  * User: Administrator - chenyu
  * Date: 2018/6/22
  * Time: 16:58
- * Desc: 
+ * Desc:
  */
 
 namespace App\Http\Models\Shop;
@@ -37,5 +37,39 @@ class SecKillModel extends Model
         }]);
         return $m->orderBy('sec_id', 'desc')
             ->paginate($size);
+    }
+
+    public function addSecondKill($data)
+    {
+        return $this->create($data);
+    }
+
+    public function getSecondKill($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->first();
+    }
+
+    public function setSecondKill($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function delSecondKill($where)
+    {
+        try {
+            return $this->where($where)->delete();
+        } catch (\Exception $e) {
+        }
+    }
+
+    public function delSecondKills($where)
+    {
+        try {
+            return $this->whereIn('sec_id', $where)->delete();
+        } catch (\Exception $e) {
+        }
     }
 }

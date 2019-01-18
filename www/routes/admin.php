@@ -260,6 +260,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('dialog/merchants/brand/modify', 'DialogController@modifyMerchantsBrand');
     Route::post('dialog/merchants/brand/del/{id}', 'DialogController@delMerchantsBrand');
 
+    Route::get('dialog/goods/search/{id}', 'DialogController@goodsSearch');
+
     Route::resource('comment', 'CommentController');
     Route::post('comment/change', 'CommentController@change');
 
@@ -292,5 +294,12 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('groupbuy/change', 'GroupBuyController@change');
     Route::resource('groupbuy', 'GroupBuyController');
 
+    Route::post('seckill/change', 'SecondKillController@change');
     Route::resource('seckill', 'SecondKillController');
+
+    Route::resource('seckilltime', 'SecondKillTimeBucketController');
+
+    Route::get('seckillgoods/{sid}/{stid}', 'SecondKillGoodsController@getSecGoods');
+    Route::post('seckillgoods/change', 'SecondKillGoodsController@change');
+    Route::resource('seckillgoods', 'SecondKillGoodsController');
 });

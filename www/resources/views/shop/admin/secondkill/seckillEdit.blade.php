@@ -16,14 +16,17 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="brand" action="{{url('admin/seckill')}}" method="post" class="form-horizontal"
+                    <form name="brand" action="{{url('admin/seckill/'.$seckill->sec_id)}}" method="post"
+                          class="form-horizontal"
                           enctype="multipart/form-data">
                         {{csrf_field()}}
+                        {{method_field('PUT')}}
 
                         <div class="form-group">
                             <label class="col-sm-4 control-label"><b>*</b>活动标题：</label>
                             <div class="col-sm-4">
-                                <input type="text" name="acti_title" class="form-control input-sm" placeholder="活动标题">
+                                <input type="text" name="acti_title" class="form-control input-sm"
+                                       value="{{$seckill->acti_title}}" placeholder="活动标题">
                             </div>
                         </div>
                         <div class="form-group">
@@ -31,17 +34,19 @@
                             <div class="col-sm-4">
                                 <input type="text" style="width: 300px" name="use_start_end_date"
                                        id="use_start_end_date" class="form-control input-sm"
-                                       value="{{$now_date}}">
+                                       value="{{date('Y-m-d H:i:s', $seckill->start_time).'～'.date('Y-m-d H:i:s', $seckill->end_time)}}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">上架/下架：</label>
                             <div class="col-sm-4">
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="is_putaway" value="1" checked> 上架
+                                    <input type="radio" name="is_putaway" value="1"
+                                           @if($seckill->is_putaway ==1) checked @endif> 上架
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="is_putaway" value="0"> 下架
+                                    <input type="radio" name="is_putaway" value="0"
+                                           @if($seckill->is_putaway ==0) checked @endif> 下架
                                 </label>
                             </div>
                         </div>
@@ -49,13 +54,13 @@
                             <label class="col-sm-4 control-label">审核：</label>
                             <div class="col-sm-4">
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="review_status" value="1" checked> 未审核
+                                    <input type="radio" name="review_status" value="1" @if($seckill->review_status ==1) checked @endif> 未审核
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="review_status" value="3"> 审核通过
+                                    <input type="radio" name="review_status" value="3" @if($seckill->review_status ==3) checked @endif> 审核通过
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="review_status" value="2"> 审核未通过
+                                    <input type="radio" name="review_status" value="2" @if($seckill->review_status ==2) checked @endif> 审核未通过
                                 </label>
                             </div>
                         </div>
@@ -78,7 +83,6 @@
 @section('script')
     <script>
         $(function () {
-
             $('#use_start_end_date').daterangepicker(optionDateSet, function (start, end) {
                 var s = start.format('YYYY-MM-DD HH:mm:ss');
                 var e = end.format('YYYY-MM-DD HH:mm');

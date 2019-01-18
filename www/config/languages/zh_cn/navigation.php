@@ -339,7 +339,7 @@ return array(
         ),
     ),
     'email' => array(
-        'email' => array(
+        'emailsever' => array(
             'name' => '邮件服务器',
             'url' => 'admin/email',
         ),

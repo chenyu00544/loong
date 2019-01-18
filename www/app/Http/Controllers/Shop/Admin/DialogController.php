@@ -10,6 +10,7 @@
 namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
+use App\Repositories\Admin\BrandRepository;
 use App\Repositories\Admin\MerchantsRepository;
 use Illuminate\Http\Request;
 
@@ -17,13 +18,16 @@ class DialogController extends CommonController
 {
 
     private $merchantsRepository;
+    private $brandRepository;
 
     public function __construct(
-        MerchantsRepository $merchantsRepository
+        MerchantsRepository $merchantsRepository,
+        BrandRepository $brandRepository
     )
     {
         parent::__construct();
         $this->merchantsRepository = $merchantsRepository;
+        $this->brandRepository = $brandRepository;
     }
 
     public function merchantsBrand($id)
@@ -58,6 +62,13 @@ class DialogController extends CommonController
     public function delMerchantsBrand($id)
     {
         return $this->merchantsRepository->delMerchantsBrand($id);
+    }
+
+    public function goodsSearch($id)
+    {
+        $ids = explode(',',$id);
+        $brands = $this->brandRepository->search([], true);
+        return view('shop.admin.dialog.goodsSearch', compact('ids','brands'));
     }
 
 }

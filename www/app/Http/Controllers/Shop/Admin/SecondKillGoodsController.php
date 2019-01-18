@@ -13,7 +13,7 @@ use App\Facades\Verifiable;
 use App\Repositories\Admin\SecondKillRepository;
 use Illuminate\Http\Request;
 
-class SecondKillController extends CommonController
+class SecondKillGoodsController extends CommonController
 {
 
     private $secondKillRepository;
@@ -34,15 +34,17 @@ class SecondKillController extends CommonController
      */
     public function index(Request $request)
     {
-        $seller = 'selfsale';
-        $search['keywords'] = '';
-        $seckills = $this->secondKillRepository->getSecondKillByPage($seller, $search);
-        return view('shop.admin.secondkill.seckill', compact('seller', 'seckills', 'search'));
+    }
+
+    public function getSecGoods($sid, $stid)
+    {
+        $secKillGoodses = $this->secondKillRepository->getSecondKillGoodses($sid, $stid);
+        return view('shop.admin.secondkill.seckillTimeGoodsList', compact('secKillGoodses', 'sid', 'stid'));
     }
 
     public function change(Request $request)
     {
-        return $this->secondKillRepository->secondKillChange($request->all());
+        return $this->secondKillRepository->secondKillGoodsChange($request->all());
     }
 
     /**
@@ -52,8 +54,6 @@ class SecondKillController extends CommonController
      */
     public function create()
     {
-        $now_date = $this->now_date;
-        return view('shop.admin.secondkill.seckillAdd', compact('now_date'));
     }
 
     /**
@@ -64,12 +64,6 @@ class SecondKillController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["acti_title" => 'required']);
-        if (!$ver->passes()) {
-            return view('shop.admin.failed');
-        }
-        $re = $this->secondKillRepository->addSecondKill($request->except('_token'), $this->user);
-        return view('shop.admin.success');
     }
 
     /**
@@ -80,10 +74,8 @@ class SecondKillController extends CommonController
      */
     public function show(Request $request, $id)
     {
-        $seller = $id;
-        $search['keywords'] = $request->get('keywords');
-        $seckills = $this->secondKillRepository->getSecondKillByPage($seller, $search);
-        return view('shop.admin.secondkill.seckill', compact('seller', 'seckills', 'search'));
+        $seckilltimes = $this->secondKillRepository->getSecondKillTimeBuckets();
+        return view('shop.admin.secondkill.seckillTimeGoods', compact('seckilltimes', 'id'));
     }
 
     /**
@@ -94,8 +86,6 @@ class SecondKillController extends CommonController
      */
     public function edit($id)
     {
-        $seckill = $this->secondKillRepository->getSecondKill($id);
-        return view('shop.admin.secondkill.seckillEdit', compact('seckill'));
     }
 
     /**
@@ -107,12 +97,6 @@ class SecondKillController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["acti_title" => 'required']);
-        if (!$ver->passes()) {
-            return view('shop.admin.failed');
-        }
-        $re = $this->secondKillRepository->setSecondKill($request->except('_token', '_method'), $id);
-        return view('shop.admin.success');
     }
 
     /**
@@ -123,6 +107,6 @@ class SecondKillController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->secondKillRepository->delSecondKill($id);
+        return $this->secondKillRepository->delSecondKillGoodses($id);
     }
 }

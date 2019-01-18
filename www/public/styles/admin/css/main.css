@@ -59,8 +59,7 @@ table {
 }
 
 .table > tbody > tr > th, .table > tbody > tr > td {
-    line-height: 30px;
-!important;
+    line-height: 30px !important;
     vertical-align: middle;
 }
 
@@ -153,8 +152,7 @@ textarea {
 }
 
 .wsn {
-    white-space: normal;
-!important;
+    white-space: normal !important;
 }
 
 .describe {
@@ -220,8 +218,7 @@ textarea {
 }
 
 .fl {
-    float: left;
-!important;
+    float: left !important;
 }
 
 .fr {
@@ -1426,8 +1423,7 @@ textarea {
 }
 
 .mar-trb-10 {
-    margin: 10px 10px 10px 0px;
-!important;
+    margin: 10px 10px 10px 0px !important;
 }
 
 .pad-all-5 {
@@ -1762,11 +1758,11 @@ i.sc-icon-sub-small {
     width: 750px;
 }
 
-.owt{
+.owt {
     width: 300px;
     overflow: hidden;
     white-space: nowrap;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
 }
 
 .captcha-login {
@@ -3278,4 +3274,71 @@ input[type=file].upload-file {
 .msg-img img {
     width: 100px;
     height: 100px;
+}
+
+
+/*dialog*/
+.goods-list {
+    height: 360px;
+    width: calc(100% - 5px);
+    overflow: hidden;
+    border: 1px solid #e9e6e6;
+}
+
+.goods-list li {
+    float: left;
+    padding: 11px;
+    border: 1px solid #e9e6e6;
+    margin: -1px 0 0 -1px;
+}
+
+.goods-list li .img {
+    width: 158px;
+    height: 158px;
+}
+
+.goods-list li .img img{
+    width: 158px;
+    height: 158px;
+}
+
+.goods-list li .name {
+    width: 158px;
+    height: 20px;
+    line-height: 20px;
+    color: #31b4e1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 5px;
+}
+
+.goods-list li .price {
+    font-size: 14px;
+    color: #ec5051;
+    margin-top: 5px;
+}
+
+.goods-list li .choose a{
+    height: 23px;
+    line-height: 23px;
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 2px;
+    color: #fff;
+    background: #5cb85c;
+    border: 1px solid #5cb85c;
+}
+
+.goods-list li .choose a.on{
+    background: #f0ad4e;
+    border: 1px solid #eea236;
+}
+
+.choose a .glyphicon {
+    font-size: 12px;
+    margin: -3px 5px 0 0;
+    vertical-align: middle;
+    display: inline-block;
+    line-height: normal;
 }
