@@ -96,7 +96,7 @@
                 }
                 layer.open({
                     type: 2,
-                    area: ['900px', '540px'],
+                    area: ['942px', '540px'],
                     fixed: true, //不固定
                     maxmin: true,
                     title: '设置商品',

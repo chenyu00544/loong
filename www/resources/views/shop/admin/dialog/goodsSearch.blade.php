@@ -6,6 +6,7 @@
             <div class="search-header ">
                 <div class="brand fl">
                     <div class="selection">
+                        <input type="hidden" name="ids" value="{{$id}}">
                         <input type="text" id="brand_name"
                                class="form-control max-wd-190 hg30 fl" data-filter="brand_name"
                                autocomplete="off" value="请选择品牌" readonly="">
@@ -56,23 +57,12 @@
                     </div>
                 </div>
                 <div class="search fl mar-left-10">
-                    <input type="text" class="form-control input-sm" value="" placeholder="名称">
+                    <input type="text" name="keywords" class="form-control input-sm" value="" placeholder="名称">
                 </div>
-                <div><a href="javascript:;" class="btn btn-primary btn-edit btn-sm mar-left-10">搜索</a></div>
+                <div><a href="javascript:;" class="btn btn-primary btn-search btn-sm mar-left-10">搜索</a></div>
             </div>
             <div class="goods-list mar-top-10">
                 <ul>
-                    <li>
-                        <div class="img"><img
-                                    src="https://cdn.missmall.com/images/201901/thumb_img/1007_thumb_G_1547748426480.jpg"
-                                    alt=""></div>
-                        <div class="name">新款韩版高腰a字裙中长款毛边牛仔半身裙A字裙女7560</div>
-                        <div class="price">$123.00</div>
-                        <div class="choose mar-top-5">
-                            <a href="javascript:;" class="@if(1) on @endif"><i
-                                        class="glyphicon @if(1) glyphicon-ok @else glyphicon-plus @endif"></i>已选择</a>
-                        </div>
-                    </li>
                 </ul>
             </div>
             <div class="text-center mar-top-10">
@@ -135,24 +125,68 @@
                 });
             });
 
-            //品牌搜索
-            function searchBrand(param, keywords) {
-                $.post("{{url('admin/brand/search')}}", param, function (data) {
-                    if (data.length > 0) {
-                        $('.brand-not').hide();
-                        var html = '<li data-id="0" data-name="请选择品牌" class="blue cursor">取消选择</li>';
-                        for (var i = 0; i < data.length; i++) {
-                            html += '<li data-id="' + data[i].id + '" data-name="' + data[i].brand_name + '"><em>' + data[i].brand_first_char + '</em>' + data[i].brand_name + '</li>'
-                        }
-                        $('.brand-list ul').html(html);
-                    } else {
-                        $('.brand-list ul').html("");
-                        $('.brand-not').show();
-                        $('.brand-not strong').html(keywords);
+            $('.goods-list').on('click', '.choose a', function () {
+                if ($(this).hasClass('on')) {
+                    $(this).removeClass('on');
+                    $(this).find('i').removeClass('glyphicon-ok');
+                    $(this).find('i').addClass('glyphicon-plus');
+                    $(this).find('span').html('选择');
+                } else {
+                    $(this).addClass('on');
+                    $(this).find('i').removeClass('glyphicon-plus');
+                    $(this).find('i').addClass('glyphicon-ok');
+                    $(this).find('span').html('已选择');
+                }
+            });
+
+            $('.btn-search').on('click', function () {
+                var brand_id = $('input[name=brand_id]').val();
+                var keywords = $('input[name=keywords]').val();
+                var ids = $('input[name=ids]').val();
+                $.post("{{url('admin/search/dialog')}}", {
+                    _token: '{{csrf_token()}}',
+                    brand_id: brand_id,
+                    keywords: keywords
+                }, function (data) {
+                    if(data.code === 1){log(1231);
+                        var html = '';
+                        $.each(data.data, function (k, v) {
+                            html += '<li>' +
+                                '<div class="img">' +
+                                '<img src="' + v.original_img + '" alt="">' +
+                                '</div>' +
+                                '<div class="name">' + v.goods_name + '</div>' +
+                                '<div class="price">￥' + v.shop_price + '</div>' +
+                                '<div class="choose mar-top-5">';
+                            if (ids.indexOf('' + v.goods_id) > 0) {
+                                html += '<a href="javascript:;" class="on"><i class="glyphicon glyphicon-ok"></i><span>已选择</span></a></div></li>';
+                            } else {
+                                html += '<a href="javascript:;" class=""><i class="glyphicon glyphicon-plus"></i><span>选择</span></a></div></li>';
+                            }
+                        });
+                        $('.goods-list ul').html(html);
                     }
-                });
-            }
+                })
+            });
         });
+
+        //品牌搜索
+        function searchBrand(param, keywords) {
+            $.post("{{url('admin/brand/search')}}", param, function (data) {
+                if (data.length > 0) {
+                    $('.brand-not').hide();
+                    var html = '<li data-id="0" data-name="请选择品牌" class="blue cursor">取消选择</li>';
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<li data-id="' + data[i].id + '" data-name="' + data[i].brand_name + '"><em>' + data[i].brand_first_char + '</em>' + data[i].brand_name + '</li>'
+                    }
+                    $('.brand-list ul').html(html);
+                } else {
+                    $('.brand-list ul').html("");
+                    $('.brand-not').show();
+                    $('.brand-not strong').html(keywords);
+                }
+            });
+        }
     </script>
 @endsection
 @endsection

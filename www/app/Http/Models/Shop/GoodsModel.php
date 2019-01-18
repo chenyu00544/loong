@@ -20,7 +20,7 @@ class GoodsModel extends Model
 
     public function store()
     {
-        return $this->hasOne('App\Http\Models\Shop\SellerShopInfoModel','ru_id','user_id');
+        return $this->hasOne('App\Http\Models\Shop\SellerShopInfoModel', 'ru_id', 'user_id');
     }
 
     public function getGoodsPage($size = 10, $where = [], $columns = ['*'], $keywords = '')
@@ -62,9 +62,22 @@ class GoodsModel extends Model
     {
         $m = $this->select($column);
         $m->where(['is_delete' => 0, 'is_on_sale' => 1]);
-        $m->where(function($query) use($search){
+        $m->where(function ($query) use ($search) {
             foreach ($search as $key => $value) {
                 $query->orWhere($key, 'like', '%' . $value . '%');
+            }
+        });
+        return $m->get();
+    }
+
+    public function dialogSearch($where, $search, $column = ['*'])
+    {
+        $m = $this->select($column);
+        $m->where(['is_delete' => 0, 'is_on_sale' => 1]);
+        $m->where($where);
+        $m->where(function ($query) use ($search) {
+            foreach ($search as $key => $value) {
+                $query->where($key, 'like', '%' . $value . '%');
             }
         });
         return $m->get();

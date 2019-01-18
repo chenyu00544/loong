@@ -66,9 +66,8 @@ class DialogController extends CommonController
 
     public function goodsSearch($id)
     {
-        $ids = explode(',',$id);
         $brands = $this->brandRepository->search([], true);
-        return view('shop.admin.dialog.goodsSearch', compact('ids','brands'));
+        return view('shop.admin.dialog.goodsSearch', compact('id','brands'));
     }
 
 }

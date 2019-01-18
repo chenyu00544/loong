@@ -30,6 +30,11 @@ class SearchController extends CommonController
         return ['code' => 5, 'msg' => '操作失败'];
     }
 
+    public function dialogSearch(Request $request)
+    {
+        return $this->searchRepository->dialogSearch($request->except('_token'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -11,6 +11,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('index', 'IndexController@index');
     Route::get('info', 'IndexController@info');
 
+    Route::post('search/dialog', 'SearchController@dialogSearch');
     Route::resource('search', 'SearchController');
 
     Route::get('shopconf/self', 'ShopConfController@selfShopConf');

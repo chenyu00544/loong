@@ -3276,16 +3276,17 @@ input[type=file].upload-file {
     height: 100px;
 }
 
-
 /*dialog*/
 .goods-list {
     height: 360px;
     width: calc(100% - 5px);
     overflow: hidden;
     border: 1px solid #e9e6e6;
+    overflow-y: scroll;
 }
 
 .goods-list li {
+    width: calc(20% - 1px);
     float: left;
     padding: 11px;
     border: 1px solid #e9e6e6;
@@ -3297,7 +3298,7 @@ input[type=file].upload-file {
     height: 158px;
 }
 
-.goods-list li .img img{
+.goods-list li .img img {
     width: 158px;
     height: 158px;
 }
@@ -3319,7 +3320,7 @@ input[type=file].upload-file {
     margin-top: 5px;
 }
 
-.goods-list li .choose a{
+.goods-list li .choose a {
     height: 23px;
     line-height: 23px;
     display: inline-block;
@@ -3330,7 +3331,7 @@ input[type=file].upload-file {
     border: 1px solid #5cb85c;
 }
 
-.goods-list li .choose a.on{
+.goods-list li .choose a.on {
     background: #f0ad4e;
     border: 1px solid #eea236;
 }

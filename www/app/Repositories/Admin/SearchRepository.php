@@ -9,6 +9,7 @@
 namespace App\Repositories\Admin;
 
 use App\Contracts\SearchRepositoryInterface;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\BrandModel;
 use App\Http\Models\Shop\CategoryModel;
 use App\Http\Models\Shop\GoodsModel;
@@ -90,6 +91,38 @@ class SearchRepository implements SearchRepositoryInterface
         }
         if (count($re) > 0) {
             $req['data'] = $re;
+            $req['msg'] = '';
+            $req['code'] = 1;
+        } else {
+            $req['code'] = 0;
+        }
+        return $req;
+    }
+
+    public function dialogSearch($data)
+    {
+        $where = [];
+        $search = [];
+        if (!empty($data['keywords'])) {
+            $search['goods_name'] = $data['keywords'];
+        }
+        if (!empty($data['brand_id'])) {
+            $where['brand_id'] = $data['brand_id'];
+        }
+        if(count($where) == 0 && count($search) == 0){
+            $req['data'] = [];
+            $req['msg'] = '';
+            $req['code'] = 0;
+            return $req;
+        }
+        $res = $this->goodsModel->dialogSearch($where, $search, ['goods_id', 'goods_id', 'goods_name', 'shop_price', 'original_img', 'goods_img', 'goods_thumb']);
+        foreach ($res as $re) {
+            $re->original_img = FileHandle::getImgByOssUrl($re->original_img);
+            $re->goods_img = FileHandle::getImgByOssUrl($re->goods_img);
+            $re->goods_thumb = FileHandle::getImgByOssUrl($re->goods_thumb);
+        }
+        if (count($res) > 0) {
+            $req['data'] = $res;
             $req['msg'] = '';
             $req['code'] = 1;
         } else {
