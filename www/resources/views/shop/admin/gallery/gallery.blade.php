@@ -128,13 +128,12 @@
                         "{{url('admin/gallery/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}', url: url},
                         function (data) {
-                            if (data.code == 1) {
-                                layer.msg(data.msg, {icon: data.code});
-                                setTimeout(function () {
-                                    $(that).parent().parent().remove();
-                                }, 1000);
-                            } else {
-                                layer.msg(data.msg, {icon: data.code});
+                            layer.msg(data.msg, {icon: data.code});
+                            if (data.code === 1) {
+                                $(that).parent().parent().remove();
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
+                                }
                             }
 
                         });

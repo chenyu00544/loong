@@ -44,28 +44,36 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($shipping as $ship)
-                            <tr>
-                                <td>{{$ship['shipping_name']}}</td>
-                                <td>{!! $ship['shipping_desc'] !!}</td>
-                                <td>{{empty($ship['insure'])?0:$ship['insure']}}%</td>
-                                <td>@if(empty($ship['support_cod'])) <img src="{{url('styles/images/no.png')}}" class="pointer"> @else <img src="{{url('styles/images/yes.png')}}" class="pointer"> @endif</td>
-                                <td><img src="{{url('styles/images/yes.png')}}" class="pointer"></td>
-                                <td><img src="{{url('styles/images/yes.png')}}" class="pointer"></td>
-                                <td>{{empty($ship['shipping_order'])?0:$ship['shipping_order']}}</td>
-                                <td class="text-center">
-                                    @if(empty($ship['shipping_id']))
-                                        <a type="button" data-code="{{$ship['outside_code']}}"
-                                           class="btn btn-primary btn-install btn-sm mar-all-5">安装</a>
-                                    @else
-                                        <a type="button" data-id="{{$ship['shipping_id']}}"
-                                           class="btn btn-info btn-edit btn-sm mar-all-5">账号编辑</a>
-                                        <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                           data-id="{{$ship['shipping_id']}}">删除</a>
-                                    @endif
-                                </td>
+                        @if(count($shipping) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach($shipping as $ship)
+                                <tr>
+                                    <td>{{$ship['shipping_name']}}</td>
+                                    <td>{!! $ship['shipping_desc'] !!}</td>
+                                    <td>{{empty($ship['insure'])?0:$ship['insure']}}%</td>
+                                    <td>@if(empty($ship['support_cod'])) <img src="{{url('styles/images/no.png')}}"
+                                                                              class="pointer"> @else <img
+                                                src="{{url('styles/images/yes.png')}}" class="pointer"> @endif</td>
+                                    <td><img src="{{url('styles/images/yes.png')}}" class="pointer"></td>
+                                    <td><img src="{{url('styles/images/yes.png')}}" class="pointer"></td>
+                                    <td>{{empty($ship['shipping_order'])?0:$ship['shipping_order']}}</td>
+                                    <td class="text-center">
+                                        @if(empty($ship['shipping_id']))
+                                            <a type="button" data-code="{{$ship['outside_code']}}"
+                                               class="btn btn-primary btn-install btn-sm mar-all-5">安装</a>
+                                        @else
+                                            <a type="button" data-id="{{$ship['shipping_id']}}"
+                                               class="btn btn-info btn-edit btn-sm mar-all-5">账号编辑</a>
+                                            <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
+                                               data-id="{{$ship['shipping_id']}}">删除</a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -116,6 +124,7 @@
             //删除
             $('.btn-del').on('click', function () {
                 var Id = $(this).data('id');
+                var that = this;
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
@@ -124,10 +133,11 @@
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
-                            if (data.code == 1) {
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
+                            if (data.code === 1) {
+                                $(that).parent().parent().remove();
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
+                                }
                             }
                         });
                 }, function () {

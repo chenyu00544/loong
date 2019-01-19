@@ -10,6 +10,7 @@ namespace App\Repositories\Admin;
 
 use App\Contracts\UsersRepositoryInterface;
 use App\Facades\Common;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\UsersModel;
 
 class UsersRepository implements UsersRepositoryInterface
@@ -56,7 +57,7 @@ class UsersRepository implements UsersRepositoryInterface
     {
         $where['user_id'] = $id;
         $updata = [];
-        $updata['email'] = !empty($data['email'])?trim($data['email']):'';
+        $updata['email'] = !empty($data['email']) ? trim($data['email']) : '';
         if (!empty($updata['email']) && $data['old_email'] != trim($data['email'])) {
             if ($this->usersModel->countUser(['email' => $data['email']])) {
                 return ['code' => 1, 'msg' => '邮件重复'];
@@ -65,29 +66,29 @@ class UsersRepository implements UsersRepositoryInterface
         if (!empty($data['password']) && $data['password'] != $data['c_password']) {
             return ['code' => 1, 'msg' => '密码不相同'];
         }
-        if(!empty($data['password'])){
+        if (!empty($data['password'])) {
             $updata['salt'] = Common::randStr(6);
             $updata['password'] = Common::md5Encrypt(trim($data['password']), $updata['salt']);
         }
-        $updata['msn'] = !empty($data['regField1'])?trim($data['regField1']):'';
-        $updata['qq'] = !empty($data['regField2'])?trim($data['regField2']):'';
+        $updata['msn'] = !empty($data['regField1']) ? trim($data['regField1']) : '';
+        $updata['qq'] = !empty($data['regField2']) ? trim($data['regField2']) : '';
         if (!empty($updata['regField2']) && $data['old_regField2'] != trim($updata['qq'])) {
             if ($this->usersModel->countUser(['qq' => $data['regField2']])) {
                 return ['code' => 1, 'msg' => 'qq重复'];
             }
         }
-        $updata['office_phone'] = !empty($data['regField3'])?trim($data['regField3']):'';
-        $updata['home_phone'] = !empty($data['regField4'])?trim($data['regField4']):'';
-        $updata['mobile_phone'] = !empty($data['regField5'])?trim($data['regField5']):'';
+        $updata['office_phone'] = !empty($data['regField3']) ? trim($data['regField3']) : '';
+        $updata['home_phone'] = !empty($data['regField4']) ? trim($data['regField4']) : '';
+        $updata['mobile_phone'] = !empty($data['regField5']) ? trim($data['regField5']) : '';
         if (!empty($updata['mobile_phone']) && $data['old_regField5'] != trim($updata['mobile_phone'])) {
             if ($this->usersModel->countUser(['mobile_phone' => $data['regField5']])) {
                 return ['code' => 1, 'msg' => '手机重复'];
             }
         }
-        $updata['user_rank'] = !empty($data['user_rank'])?trim($data['user_rank']):'';
-        $updata['sex'] = !empty($data['sex'])?trim($data['sex']):'';
-        $updata['birthday'] = !empty($data['birthday'])?trim($data['birthday']):'';
-        $updata['credit_line'] = !empty($data['credit_line'])?trim($data['credit_line']):'';
+        $updata['user_rank'] = !empty($data['user_rank']) ? trim($data['user_rank']) : '';
+        $updata['sex'] = !empty($data['sex']) ? trim($data['sex']) : '';
+        $updata['birthday'] = !empty($data['birthday']) ? trim($data['birthday']) : '';
+        $updata['credit_line'] = !empty($data['credit_line']) ? trim($data['credit_line']) : '';
         return $this->usersModel->setUser($where, $updata);
     }
 

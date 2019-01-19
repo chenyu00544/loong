@@ -9,22 +9,21 @@
 
 namespace App\Http\Controllers\Shop\Admin;
 
+use App\Facades\RedisCache;
 use App\Facades\Verifiable;
-use App\Repositories\Admin\SecondKillRepository;
+use App\Repositories\Admin\AdminUserRepository;
 use Illuminate\Http\Request;
 
-class SecondKillGoodsController extends CommonController
+class AdminUserController extends CommonController
 {
-
-    private $secondKillRepository;
+    private $adminUserRepository;
 
     public function __construct(
-        SecondKillRepository $secondKillRepository
+        AdminUserRepository $adminUserRepository
     )
     {
         parent::__construct();
-        $this->checkPrivilege('seckill');
-        $this->secondKillRepository = $secondKillRepository;
+        $this->adminUserRepository = $adminUserRepository;
     }
 
     /**
@@ -34,17 +33,17 @@ class SecondKillGoodsController extends CommonController
      */
     public function index(Request $request)
     {
+
     }
 
-    public function getSecGoods($sid, $stid)
+    public function changeLogo(Request $request)
     {
-        $secKillGoodses = $this->secondKillRepository->getSecondKillGoodses($sid, $stid);
-        return view('shop.admin.secondkill.seckillTimeGoodsList', compact('secKillGoodses', 'sid', 'stid'));
-    }
-
-    public function change(Request $request)
-    {
-        return $this->secondKillRepository->secondKillGoodsChange($request->all());
+        $uid = $request->cookie('user_id');
+        $ip = $request->getClientIp();
+        $logo = $this->adminUserRepository->changeLogo($request->except('_token'), $this->user);
+        $this->user->admin_user_img = $logo;
+        RedisCache::setex('adminUser' . md5($ip) . $uid, $this->user, 600);
+        return $logo;
     }
 
     /**
@@ -64,7 +63,6 @@ class SecondKillGoodsController extends CommonController
      */
     public function store(Request $request)
     {
-        return $this->secondKillRepository->addSecondKillGoodses($request->except('_token'));
     }
 
     /**
@@ -75,8 +73,7 @@ class SecondKillGoodsController extends CommonController
      */
     public function show(Request $request, $id)
     {
-        $seckilltimes = $this->secondKillRepository->getSecondKillTimeBuckets();
-        return view('shop.admin.secondkill.seckillTimeGoods', compact('seckilltimes', 'id'));
+
     }
 
     /**
@@ -87,6 +84,7 @@ class SecondKillGoodsController extends CommonController
      */
     public function edit($id)
     {
+        //
     }
 
     /**
@@ -108,6 +106,6 @@ class SecondKillGoodsController extends CommonController
      */
     public function destroy($id)
     {
-        return $this->secondKillRepository->delSecondKillGoodses($id);
+
     }
 }

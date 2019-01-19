@@ -45,21 +45,27 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($transports as $transport)
-                            <tr>
-                                <td>{{$transport->tid}}</td>
-                                <td>{{$transport->title}}</td>
-                                <td>{{$transport->shipping_title}}</td>
-                                <td>@if($transport->freight_type == 0) 自定义 @else 快递模板 @endif</td>
-                                <td>{{date('Y-m-d H:i:s',$transport->update_time)}}</td>
-                                <td class="text-center">
-                                    <a type="button" href="{{url('admin/transport/'.$transport->tid.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                       data-id="{{$transport->tid}}">删除</a>
-                                </td>
+                        @if(count($transports) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach($transports as $transport)
+                                <tr>
+                                    <td>{{$transport->tid}}</td>
+                                    <td>{{$transport->title}}</td>
+                                    <td>{{$transport->shipping_title}}</td>
+                                    <td>@if($transport->freight_type == 0) 自定义 @else 快递模板 @endif</td>
+                                    <td>{{date('Y-m-d H:i:s',$transport->update_time)}}</td>
+                                    <td class="text-center">
+                                        <a type="button" href="{{url('admin/transport/'.$transport->tid.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
+                                           data-id="{{$transport->tid}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -77,6 +83,7 @@
             //删除
             $('.btn-del').on('click', function () {
                 var Id = $(this).data('id');
+                var that = this;
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
@@ -85,10 +92,11 @@
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
-                            if (data.code == 1) {
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
+                            if (data.code === 1) {
+                                $(that).parent().parent().remove();
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
+                                }
                             }
                         });
                 }, function () {

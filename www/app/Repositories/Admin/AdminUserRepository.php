@@ -10,6 +10,7 @@ namespace App\Repositories\Admin;
 
 use App\Contracts\AdminUserRepositoryInterface;
 use App\Facades\Common;
+use App\Facades\FileHandle;
 use App\Http\Models\Shop\AdminUserModel;
 
 class AdminUserRepository implements AdminUserRepositoryInterface
@@ -63,6 +64,14 @@ class AdminUserRepository implements AdminUserRepositoryInterface
         $str = '';
         $updata = [];
 
+        if(!empty($data['last_login'])){
+            $updata['last_login'] = $data['last_login'];
+        }
+
+        if(!empty($data['last_ip'])){
+            $updata['last_ip'] = $data['last_ip'];
+        }
+
         foreach ($data as $key => $value) {
             if (!empty($value['code'])) {
                 $str .= $value['code'] . ',';
@@ -75,7 +84,8 @@ class AdminUserRepository implements AdminUserRepositoryInterface
                 $updata['password'] = $password;
             }
         }
-        if (!empty($data['email'])) {
+        $preg_email = '/^[a-z0-9]+([._-][a-z0-9]+)*@([0-9a-z]+\.[a-z]{2,14}(\.[a-z]{2})?)$/i';
+        if (!empty($data['email']) && is_string($data['email']) && preg_match($preg_email, $data['email'])) {
             $updata['email'] = $data['email'];
         }
         if (!empty($data['user_name'])) {
@@ -184,6 +194,17 @@ class AdminUserRepository implements AdminUserRepositoryInterface
             return ['code' => '1', 'msg' => '操作成功'];
         }
         return $req;
+    }
+
+    public function changeLogo($data, $user)
+    {
+        $logo = $data['pic'];
+        $path = 'admin_logo';
+        $url = FileHandle::upLoadImage($logo, $path);
+        $where['user_id'] = $user->user_id;
+        $updata['admin_user_img'] = $url;
+        $this->adminUserModel->setAdminUser($where, $updata);
+        return FileHandle::getImgByOssUrl($url);
     }
 
     public function test()

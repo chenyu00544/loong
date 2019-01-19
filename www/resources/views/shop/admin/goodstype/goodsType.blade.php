@@ -53,27 +53,33 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($goodsTypes as $type)
-                            <tr>
-                                <td>{{$type->cat_id}}</td>
-                                <td>{{$type->cat_name}}</td>
-                                <td><font class="red">直营</font></td>
-                                <td>{{$type->attr_group}}</td>
-                                <td>{{$typeCates[$type->c_id]}}</td>
-                                <td>{{$type->enabled}}</td>
-                                <td>@if($type->enabled == 1) <img src="{{url('styles/images/yes.png')}}"
-                                                                  class="pointer"> @else <img
-                                            src="{{url('images/no.png')}}" class="pointer"> @endif</td>
-                                <td class="text-center">
-                                    <a type="button" href="{{url('admin/attribute/'.$type->cat_id)}}"
-                                       class="btn btn-primary btn-examine btn-sm mar-all-5">属性列表</a>
-                                    <a type="button" href="{{url('admin/goodstype/'.$type->cat_id.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                       data-id="{{$type->cat_id}}">删除</a>
-                                </td>
+                        @if(count($goodsTypes) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach($goodsTypes as $type)
+                                <tr>
+                                    <td>{{$type->cat_id}}</td>
+                                    <td>{{$type->cat_name}}</td>
+                                    <td><font class="red">直营</font></td>
+                                    <td>{{$type->attr_group}}</td>
+                                    <td>{{$typeCates[$type->c_id]}}</td>
+                                    <td>{{$type->enabled}}</td>
+                                    <td>@if($type->enabled == 1) <img src="{{url('styles/images/yes.png')}}"
+                                                                      class="pointer"> @else <img
+                                                src="{{url('images/no.png')}}" class="pointer"> @endif</td>
+                                    <td class="text-center">
+                                        <a type="button" href="{{url('admin/attribute/'.$type->cat_id)}}"
+                                           class="btn btn-primary btn-examine btn-sm mar-all-5">属性列表</a>
+                                        <a type="button" href="{{url('admin/goodstype/'.$type->cat_id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
+                                           data-id="{{$type->cat_id}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                     <div class="page_list">
@@ -94,6 +100,7 @@
             //删除
             $('.btn-del').on('click', function () {
                 var Id = $(this).data('id');
+                var that = this;
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
@@ -101,15 +108,13 @@
                         "{{url('admin/goodstype/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
-                            if (data.code == 1) {
-                                layer.msg(data.msg, {icon: data.code});
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
-                            } else {
-                                layer.msg(data.msg, {icon: data.code});
+                            layer.msg(data.msg, {icon: data.code});
+                            if (data.code === 1) {
+                                $(that).parent().parent().remove();
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
+                                }
                             }
-
                         });
                 }, function () {
                 });

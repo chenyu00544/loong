@@ -31,7 +31,7 @@ class FileHandleService
         return 0;
     }
 
-    //上传原图
+    //上传MP4
     public static function upLoadFile($file, $uri)
     {
         $bool = $file->getClientOriginalExtension() == 'mp4' || $file->getClientOriginalExtension() == 'MP4';

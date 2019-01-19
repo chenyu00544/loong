@@ -66,14 +66,17 @@
                 </ul>
             </div>
             <div class="text-center mar-top-10">
-                <a type="button" href="javascript:;" class="btn btn-danger">确定</a>
-                <a type="button" href="javascript:;" class="btn btn-default mar-left-20">取消</a>
+                <a type="button" href="javascript:;" class="btn btn-danger btn-sure">确定</a>
+                <a type="button" href="javascript:;" class="btn btn-default mar-left-20 btn-close">取消</a>
             </div>
         </div>
     </div>
     </body>
 @section('script')
     <script>
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.iframeAuto(index);
+
         $(function () {
             $('body').on('click', function () {
                 $('.brand-select-container').hide();
@@ -148,8 +151,8 @@
                     brand_id: brand_id,
                     keywords: keywords
                 }, function (data) {
-                    if(data.code === 1){log(1231);
-                        var html = '';
+                    var html = '';
+                    if (data.code === 1) {
                         $.each(data.data, function (k, v) {
                             html += '<li>' +
                                 '<div class="img">' +
@@ -158,15 +161,39 @@
                                 '<div class="name">' + v.goods_name + '</div>' +
                                 '<div class="price">￥' + v.shop_price + '</div>' +
                                 '<div class="choose mar-top-5">';
-                            if (ids.indexOf('' + v.goods_id) > 0) {
-                                html += '<a href="javascript:;" class="on"><i class="glyphicon glyphicon-ok"></i><span>已选择</span></a></div></li>';
+                            if (ids.indexOf('' + v.goods_id) >= 0) {
+                                html += '<a href="javascript:;" class="on" data-goods_id="'+v.goods_id+'"><i class="glyphicon glyphicon-ok"></i><span>已选择</span></a></div></li>';
                             } else {
-                                html += '<a href="javascript:;" class=""><i class="glyphicon glyphicon-plus"></i><span>选择</span></a></div></li>';
+                                html += '<a href="javascript:;" class=""  data-goods_id="'+v.goods_id+'"><i class="glyphicon glyphicon-plus"></i><span>选择</span></a></div></li>';
                             }
                         });
                         $('.goods-list ul').html(html);
+                    } else {
+                        html += '<div class="text-center"><span style="line-height: 200px;font-size: 18px;color: #aaa;">未搜索到商品</span>' +
+                            '</div>';
                     }
+                    $('.goods-list ul').html(html);
                 })
+            });
+
+            //确定
+            $('.btn-sure').click(function () {
+                var goods_ids = [];
+                $('.goods-list ul li .choose a').each(function (k, v) {
+                    if ($(this).hasClass('on')) {
+                        goods_ids.push($(this).data('goods_id'));
+                    }
+                });
+                if(goods_ids.length>0){
+                    parent.$('input[name=goods_ids]').val(goods_ids.join(','));
+                    parent.$('input[name=goods_ids]').trigger('input');
+                }
+                parent.layer.close(index);
+            });
+
+            //关闭iframe
+            $('.btn-close').click(function () {
+                parent.layer.close(index);
             });
         });
 

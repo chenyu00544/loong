@@ -23,15 +23,19 @@ class SecKillGoodsModel extends Model
         return $this->hasOne('App\Http\Models\Shop\GoodsModel', 'goods_id', 'goods_id');
     }
 
-    public function getSecKillGoods($where, $column = ['*'])
+    public function getSecKillGoodses($where, $wherein = [], $column = ['*'])
     {
-        return $this->select($column)
+        $m = $this->select($column)
             ->where($where)
             ->with(['goods' => function ($query) {
                 $query->select(['goods_id', 'goods_name', 'shop_price']);
-            }])
-            ->orderBy('id', 'DESC')
-            ->get();
+            }]);
+        if (count($wherein) > 0) {
+            foreach ($wherein as $k => $val) {
+                $m->whereIn($k, $val);
+            }
+        }
+        return $m->orderBy('id', 'DESC')->get();
     }
 
     public function addSecKillGoods($data)

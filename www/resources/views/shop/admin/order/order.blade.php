@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商品管理 - 商品列表</div>
+        <div class="title">商品管理 - 订单列表</div>
         <div class="content">
             @if(empty($id))
                 <div class="tabs mar-top-5">
@@ -34,7 +34,7 @@
                 </div>
                 <ul>
                     <li>标识<em>"*"</em>的选项为必填项，其余为选填项。</li>
-                    <li>商城相关信息设置，请谨慎填写信息。</li>
+                    <li>订单相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
 

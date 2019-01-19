@@ -214,8 +214,11 @@
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
-                            if (data.code == 1) {
-                                $(that).parent().parent().parent().remove();
+                            if (data.code === 1) {
+                                $(that).parent().parent().remove();
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
+                                }
                             }
                         });
                 }, function () {

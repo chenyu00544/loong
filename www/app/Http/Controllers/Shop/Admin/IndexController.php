@@ -47,7 +47,7 @@ class IndexController extends CommonController
 
     public function index()
     {
-        $user = session('user');
+        $user = $this->user;
         $navs = $this->nav;
         return view('shop.admin.index', compact('user', 'navs'));
     }

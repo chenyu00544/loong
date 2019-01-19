@@ -303,4 +303,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('seckillgoods/{sid}/{stid}', 'SecondKillGoodsController@getSecGoods');
     Route::post('seckillgoods/change', 'SecondKillGoodsController@change');
     Route::resource('seckillgoods', 'SecondKillGoodsController');
+
+    Route::post('adminuser/change/logo', 'AdminUserController@changeLogo');
+
 });

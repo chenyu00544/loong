@@ -32,8 +32,9 @@
             <div class="fromlist clearfix">
                 <div>
                     @if(!empty($level))<a href="javascript:history.go(-1)"
-                                         class="btn btn-success btn-add btn-sm">返回上一级</a>@endif
-                    <a href="{{url('admin/regions/addregion/'.$parent_id.'/'.$level)}}" class="btn btn-success btn-add btn-sm">　添加　</a>
+                                          class="btn btn-success btn-add btn-sm">返回上一级</a>@endif
+                    <a href="{{url('admin/regions/addregion/'.$parent_id.'/'.$level)}}"
+                       class="btn btn-success btn-add btn-sm">　添加　</a>
                 </div>
                 <div class="main-info">
                     <table class="table table-hover table-condensed">
@@ -46,21 +47,27 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($regions as $region)
-                            <tr>
-                                <td><input type="text" class="form-control xwd100 region_name"
-                                           data-id="{{$region->region_id}}" value="{{$region->region_name}}"></td>
-                                <td>{{$region->region_type+1}}级地区</td>
-                                <td>{{$region->parent_region}}</td>
-                                <td class="text-center">
-                                    <a type="button"
-                                       href="{{url('admin/regions/nextregions/'.$region->region_id.'/'.$region->region_type)}}"
-                                       class="btn btn-info btn-edit btn-sm mar-all-5">管理</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                       data-id="{{$region->region_id}}">删除</a>
-                                </td>
+                        @if(count($regions) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach($regions as $region)
+                                <tr>
+                                    <td><input type="text" class="form-control xwd100 region_name"
+                                               data-id="{{$region->region_id}}" value="{{$region->region_name}}"></td>
+                                    <td>{{$region->region_type+1}}级地区</td>
+                                    <td>{{$region->parent_region}}</td>
+                                    <td class="text-center">
+                                        <a type="button"
+                                           href="{{url('admin/regions/nextregions/'.$region->region_id.'/'.$region->region_type)}}"
+                                           class="btn btn-info btn-edit btn-sm mar-all-5">管理</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
+                                           data-id="{{$region->region_id}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -78,7 +85,11 @@
             $('.region_name').on('change', function () {
                 var id = $(this).data('id');
                 var region_name = $(this).val();
-                $.post('{{url("admin/regions/changes")}}', {id: id, '_token': '{{csrf_token()}}', region_name:region_name}, function (data) {
+                $.post('{{url("admin/regions/changes")}}', {
+                    id: id,
+                    '_token': '{{csrf_token()}}',
+                    region_name: region_name
+                }, function (data) {
                     layer.msg(data.msg, {icon: data.code});
                 })
             })
@@ -86,6 +97,7 @@
             //删除
             $('.btn-del').on('click', function () {
                 var Id = $(this).data('id');
+                var that = this;
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
                 }, function () {
@@ -94,10 +106,11 @@
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
-                            if (data.code == 1) {
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
+                            if (data.code === 1) {
+                                $(that).parent().parent().remove();
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
+                                }
                             }
                         });
                 }, function () {

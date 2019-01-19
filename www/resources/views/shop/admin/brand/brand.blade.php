@@ -38,13 +38,18 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($brands as $brand)
-                            <tr>
-                                <td>{{$brand->id}}</td>
-                                <td>{{$brand->brand_name}}</td>
-                                <td>{{$brand->brand_letter}}</td>
-                                <td>{{$brand->brand_first_char}}</td>
-                                <td>
+                        @if(count($brands) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
+                            </tr>
+                        @else
+                            @foreach($brands as $brand)
+                                <tr>
+                                    <td>{{$brand->id}}</td>
+                                    <td>{{$brand->brand_name}}</td>
+                                    <td>{{$brand->brand_letter}}</td>
+                                    <td>{{$brand->brand_first_char}}</td>
+                                    <td>
                                     <span class="show">
                                             <a href="{{url($brand->brand_logo)}}" class="nyroModal">
                                                 <i class="glyphicon glyphicon-picture top2"
@@ -52,38 +57,42 @@
                                                    ctype="tooltip" title="tooltip"></i>
                                             </a>
                                         </span>
-                                </td>
-                                <td><div class="wsn describe">{{$brand->brand_desc}}</div></td>
-                                <td>
-                                    <div class="switch-wrap clearfix">
-                                        <div class="switch @if($brand->is_recommend) active @endif"
-                                             data-type="is_recommend" title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$brand->id}}">
+                                    </td>
+                                    <td>
+                                        <div class="wsn describe">{{$brand->brand_desc}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="switch-wrap clearfix">
+                                            <div class="switch @if($brand->is_recommend) active @endif"
+                                                 data-type="is_recommend" title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$brand->id}}">
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="switch-wrap clearfix">
-                                        <div class="switch @if($brand->is_show) active @endif"
-                                             data-type="is_show" title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$brand->id}}">
+                                    </td>
+                                    <td>
+                                        <div class="switch-wrap clearfix">
+                                            <div class="switch @if($brand->is_show) active @endif"
+                                                 data-type="is_show" title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$brand->id}}">
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input class="form-control input-sm chang-order" type="text"
-                                           data-id="{{$brand->id}}" name="sort_order" value="{{$brand->sort_order}}">
-                                </td>
-                                <td>
-                                    <a type="button" href="{{url('admin/brand/'.$brand->id.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm"
-                                       data-id="{{$brand->id}}">删除</a>
-                                </td>
-                            </tr>
-                        @endforeach
+                                    </td>
+                                    <td>
+                                        <input class="form-control input-sm chang-order" type="text"
+                                               data-id="{{$brand->id}}" name="sort_order"
+                                               value="{{$brand->sort_order}}">
+                                    </td>
+                                    <td>
+                                        <a type="button" href="{{url('admin/brand/'.$brand->id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm">编辑</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm"
+                                           data-id="{{$brand->id}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                     <div class="page_list">
@@ -173,11 +182,12 @@
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
-                            setTimeout(function () {
-                                if (data.code == 1) {
-                                    $(that).parent().parent().remove();
+                            if (data.code === 1) {
+                                $(that).parent().parent().remove();
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
                                 }
-                            }, 1000);
+                            }
                         });
                     // layer.msg('的确很重要', {icon: 1});
                 }, function () {

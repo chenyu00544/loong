@@ -42,28 +42,34 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($typeCates as $typeCate)
-                            <tr>
-                                <td>
-                                    <a href="{{url('admin/typecate/'.$typeCate->cate_id)}}"
-                                       class="btn btn-primary btn-sm">下一级</a>
-                                </td>
-                                <td><font class="red">直营</font></td>
-                                <td>{{$typeCate->cat_name}}</td>
-                                <td>123</td>
-                                <td>
-                                    <input class="form-control input-sm chang-order" type="text"
-                                           data-id="{{$typeCate->cate_id}}"
-                                           data-cate="order" value="{{$typeCate->sort_order}}">
-                                </td>
-                                <td class="text-center">
-                                    <a type="button" href="{{url('admin/typecate/'.$typeCate->cate_id.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
-                                       data-id="{{$typeCate->cate_id}}">删除</a>
-                                </td>
+                        @if(count($typeCates) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach($typeCates as $typeCate)
+                                <tr>
+                                    <td>
+                                        <a href="{{url('admin/typecate/'.$typeCate->cate_id)}}"
+                                           class="btn btn-primary btn-sm">下一级</a>
+                                    </td>
+                                    <td><font class="red">直营</font></td>
+                                    <td>{{$typeCate->cat_name}}</td>
+                                    <td>123</td>
+                                    <td>
+                                        <input class="form-control input-sm chang-order" type="text"
+                                               data-id="{{$typeCate->cate_id}}"
+                                               data-cate="order" value="{{$typeCate->sort_order}}">
+                                    </td>
+                                    <td class="text-center">
+                                        <a type="button" href="{{url('admin/typecate/'.$typeCate->cate_id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm mar-all-5">编辑</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
+                                           data-id="{{$typeCate->cate_id}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
@@ -104,6 +110,7 @@
 
             //删除
             $('.btn-del').click(function () {
+                var that = this;
                 var Id = $(this).data('id');
                 layer.confirm('您确定要删除吗', {
                     btn: ['确定', '取消'] //按钮
@@ -112,15 +119,13 @@
                         "{{url('admin/typecate/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
-                            if (data.code == 1) {
-                                layer.msg(data.msg, {icon: data.code});
-                                setTimeout(function () {
-                                    location.href = location.href;
-                                }, 1000);
-                            } else {
-                                layer.msg(data.msg, {icon: data.code});
+                            layer.msg(data.msg, {icon: data.code});
+                            if (data.code === 1) {
+                                $(that).parent().parent().remove();
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
+                                }
                             }
-
                         });
                 }, function () {
                 });

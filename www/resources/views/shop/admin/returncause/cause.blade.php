@@ -30,34 +30,40 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($causes as $cause)
-                            <tr>
-                                <td>
-                                    {{$cause->cause_name}}
-                                </td>
-                                <td>
-                                    <div class="switch-wrap clearfix">
-                                        <div class="switch @if($cause->is_show) active @endif" data-type="is_show"
-                                             title="是">
-                                            <div class="circle"></div>
-                                            <input type="hidden" value="{{$cause->cause_id}}">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input class="form-control input-sm wd-80" type="text"
-                                           data-id="{{$cause->cause_id}}"
-                                           name="sort_order"
-                                           value="{{$cause->sort_order}}">
-                                </td>
-                                <td class="text-center">
-                                    <a type="button" href="{{url('admin/returncause/'.$cause->cause_id.'/edit')}}"
-                                       class="btn btn-info btn-edit btn-sm">编辑</a>
-                                    <a type="button" class="btn btn-danger btn-del btn-sm"
-                                       data-id="{{$cause->cause_id}}">删除</a>
-                                </td>
+                        @if(count($causes) == 0)
+                            <tr class="">
+                                <td class="no-records" colspan="20">没有找到任何记录</td>
                             </tr>
-                        @endforeach
+                        @else
+                            @foreach($causes as $cause)
+                                <tr>
+                                    <td>
+                                        {{$cause->cause_name}}
+                                    </td>
+                                    <td>
+                                        <div class="switch-wrap clearfix">
+                                            <div class="switch @if($cause->is_show) active @endif" data-type="is_show"
+                                                 title="是">
+                                                <div class="circle"></div>
+                                                <input type="hidden" value="{{$cause->cause_id}}">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input class="form-control input-sm wd-80" type="text"
+                                               data-id="{{$cause->cause_id}}"
+                                               name="sort_order"
+                                               value="{{$cause->sort_order}}">
+                                    </td>
+                                    <td class="text-center">
+                                        <a type="button" href="{{url('admin/returncause/'.$cause->cause_id.'/edit')}}"
+                                           class="btn btn-info btn-edit btn-sm">编辑</a>
+                                        <a type="button" class="btn btn-danger btn-del btn-sm"
+                                           data-id="{{$cause->cause_id}}">删除</a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                     <div class="page_list">
@@ -126,9 +132,12 @@
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});
-                            setTimeout(function () {
+                            if (data.code === 1) {
                                 $(that).parent().parent().remove();
-                            }, 1000);
+                                if ($('tbody tr').length === 0) {
+                                    $('tbody').html('<tr class=""><td class="no-records" colspan="20">没有找到任何记录</td></tr>');
+                                }
+                            }
                         });
                 }, function () {
                 });

@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Captcha;
 use App\Facades\Common;
+use App\Facades\FileHandle;
 use App\Facades\LangConfig;
 use App\Facades\RedisCache;
 use App\Facades\ShopConfig;
@@ -63,6 +64,10 @@ class LoginController extends CommonController
                 if ($user->ru_id != 0) {
                     return back()->with('errors', $lang['login_faild']);
                 }
+                $this->adminUserRepository->setAdminUser(['last_login' => time(), 'last_ip' => $ip], $user->user_id);
+                $user->last_login = time();
+                $user->last_ip = $ip;
+                $user->admin_user_img = FileHandle::getImgByOssUrl($user->admin_user_img);
 //                session(['user'=>$user]);
                 RedisCache::setex('adminUser' . md5($ip) . $user->user_id, $user, 600);
                 return redirect('admin/index')->cookie('user_id', $user->user_id, 720);
@@ -121,7 +126,7 @@ class LoginController extends CommonController
 //        dd($this->adminUserRepository->getAdminUserByPage(0));
 //        dd(RedisCache::incr('gid'));
         list($msec, $sec) = explode(' ', microtime());
-        $msectime =  sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000000);
+        $msectime = sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000000);
         echo $msectime;
     }
 }

@@ -440,3 +440,9 @@
 ####返回最后更新磁盘的时间
     
      $redis->lastsave();
+     
+     
+     
+###jq 改变input值 监听不到变化
+       在jq给input赋值的时候就给 一个$("#inpstart").trigger("input"); 
+       使用$('xxx').bind('input propertychange', function () {});

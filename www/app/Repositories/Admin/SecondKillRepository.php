@@ -9,6 +9,7 @@
 namespace App\Repositories\Admin;
 
 use App\Contracts\SecondKillRepositoryInterface;
+use App\Http\Models\Shop\GoodsModel;
 use App\Http\Models\Shop\SecKillGoodsModel;
 use App\Http\Models\Shop\SecKillModel;
 use App\Http\Models\Shop\SecKillTimeBucketModel;
@@ -19,16 +20,19 @@ class SecondKillRepository implements SecondKillRepositoryInterface
     private $secKillModel;
     private $secKillTimeBucketModel;
     private $secKillGoodsModel;
+    private $goodsModel;
 
     public function __construct(
         SecKillModel $secKillModel,
         SecKillTimeBucketModel $secKillTimeBucketModel,
-        SecKillGoodsModel $secKillGoodsModel
+        SecKillGoodsModel $secKillGoodsModel,
+        GoodsModel $goodsModel
     )
     {
         $this->secKillModel = $secKillModel;
         $this->secKillTimeBucketModel = $secKillTimeBucketModel;
         $this->secKillGoodsModel = $secKillGoodsModel;
+        $this->goodsModel = $goodsModel;
     }
 
     public function secondKillChange($data)
@@ -178,12 +182,36 @@ class SecondKillRepository implements SecondKillRepositoryInterface
     {
         $where['sec_id'] = $sid;
         $where['tb_id'] = $stid;
-        return $this->secKillGoodsModel->getSecKillGoods($where);
+        return $this->secKillGoodsModel->getSecKillGoodses($where);
     }
 
-    public function addSecondKillGoodses()
+    public function addSecondKillGoodses($data)
     {
-
+        $where['sec_id'] = $data['sid'];
+        $where['tb_id'] = $data['stid'];
+        $wherein['goods_id'] = explode(',', $data['goods_ids']);
+        $skGoodses = $this->secKillGoodsModel->getSecKillGoodses($where, $wherein);
+        $goods_ids = [];
+        foreach ($skGoodses as $skGoods) {
+            $goods_ids[] = $skGoods->goods_id;
+        }
+        $result = array_diff($wherein['goods_id'], $goods_ids);
+        $goodses = $this->goodsModel->getGoodsesByIn($result, ['goods_id', 'shop_price']);
+        $updata['sec_id'] = $data['sid'];
+        $updata['tb_id'] = $data['stid'];
+        $updata['sec_num'] = 100;
+        $updata['sec_limit'] = 1;
+        foreach ($goodses as $goods) {
+            $updata['goods_id'] = $goods->goods_id;
+            $updata['sec_price'] = $goods->shop_price;
+            $re = $this->secKillGoodsModel->addSecKillGoods($updata);
+        }
+        $res = $this->secKillGoodsModel->getSecKillGoodses($where, []);
+        if ($res->count() > 0) {
+            return ['code' => 0, 'msg' => '', 'data' => $res];
+        } else {
+            return ['code' => 1, 'msg' => '', 'data' => []];
+        }
     }
 
     public function delSecondKillGoodses($id)

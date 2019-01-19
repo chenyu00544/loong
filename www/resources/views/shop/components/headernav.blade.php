@@ -18,25 +18,24 @@
     <div class="admin-fun-right fr">
         <div class="manager">
             <dl>
-                <dt class="name">miss</dt>
-                <dd class="group">超级管理员</dd>
+                <dt class="name">{{$user->user_name}}</dt>
+                <dd class="group">@if(!empty($user->action_list['all'])) 超级管理员 @else 普通管理员 @endif</dd>
             </dl>
             <span class="avatar">
-				<form action="index.php" id="fileForm" method="post" enctype="multipart/form-data" runat="server">
-					<input name="img" type="file" class="admin-avatar-file" id="_pic" title="设置管理员头像">
-				<input type="hidden" name="_token" value="C6FPoH6rvGf5FOnkOZKUuMy20ErejpGZUL5vMFxI"><input type="hidden" name="_token" value="C6FPoH6rvGf5FOnkOZKUuMy20ErejpGZUL5vMFxI"></form>
-				<img nctype="admin_avatar" src="https://cdn.missmall.com/data/store_user/1547580889370826640.png">
+				<input name="img" type="file" class="admin-avatar-file" id="_pic" title="设置管理员头像">
+				<img src="{{$user->admin_user_img}}">
 			</span>
             <div id="admin-manager-btn" class="admin-manager-btn">
                 <i class="arrow"></i>
                 <div class="manager-menu" style="display: none;">
                     <div class="title">
                         <h4>最后登录</h4>
-                        <a href="privilege.php?act=edit&amp;id=57" target="workspace" class="edit_pwd">修改密码</a>
+                        <a href="{{url('admin/privilege/'.$user->user_id.'/edit')}}" target="workspace"
+                           class="edit_pwd">修改密码</a>
                     </div>
                     <div class="login-date">
-                        <strong>2019-01-16 14:41:57</strong>
-                        <span>(IP:60.181.171.94)</span>
+                        <strong>{{date('Y-m-d H:i:s', $user->last_login)}}</strong>
+                        <span>(IP:{{$user->last_ip}})</span>
                     </div>
                     <div class="title mt10">
                         <h4>常用操作</h4>
@@ -77,9 +76,9 @@
                         <h3 class="goods_msg">商品提示<em class="iconfont icon-down"></em></h3><s
                                 id="total">8</s>
                         <div class="msg_content"><p><a href="javascript:void(0);"
-                                                                        data-url="goods_report.php?act=list&amp;handle_type=6"
-                                                                        data-param="menushopping|goods_report"
-                                                                        target="workspace" class="message">商品举报</a>
+                                                       data-url="goods_report.php?act=list&amp;handle_type=6"
+                                                       data-param="menushopping|goods_report"
+                                                       target="workspace" class="message">商品举报</a>
                                 <span class="tiptool">（<em id="goods_report">0</em>）</span></p>
                             <p><a href="javascript:void(0);" data-url="sale_notice.php?act=list"
                                   data-param="menushopping|sale_notice" target="workspace" class="message">商品降价通知</a>

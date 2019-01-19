@@ -2186,7 +2186,7 @@ i.sc-icon-sub-small {
     position: relative;
     z-index: 1;
     overflow: hidden;
-    margin: 0 8px;
+    margin: 10px 8px;
 }
 
 .brand-select-container .brand-list {
