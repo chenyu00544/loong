@@ -73,4 +73,13 @@ class GoodsActivityModel extends Model
 
         }
     }
+
+    public function delGroupBuys($ids)
+    {
+        try {
+            return $this->whereIn('act_id', $ids)->delete();
+        } catch (\Exception $e) {
+
+        }
+    }
 }

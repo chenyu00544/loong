@@ -42,6 +42,7 @@ class SecondKillRepository implements SecondKillRepositoryInterface
             case 'delete';
                 $re = $this->secKillModel->delSecondKills($data['id']);
                 if (!empty($re)) {
+                    $this->secKillGoodsModel->delSecKillGoodses($data['id']);
                     $req = ['code' => 1, 'msg' => '操作成功'];
                 }
                 return $req;
@@ -108,6 +109,7 @@ class SecondKillRepository implements SecondKillRepositoryInterface
         $where['sec_id'] = $id;
         $re = $this->secKillModel->delSecondKill($where);
         if (!empty($re)) {
+            $this->secKillGoodsModel->delSecKillGoods($where);
             $req = ['code' => 1, 'msg' => '操作成功'];
         }
         return $req;

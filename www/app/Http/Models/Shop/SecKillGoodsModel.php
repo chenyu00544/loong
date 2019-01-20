@@ -56,4 +56,12 @@ class SecKillGoodsModel extends Model
         } catch (\Exception $e) {
         }
     }
+
+    public function delSecKillGoodses($ids)
+    {
+        try {
+            return $this->whereIn('sec_id', $ids)->delete();
+        } catch (\Exception $e) {
+        }
+    }
 }

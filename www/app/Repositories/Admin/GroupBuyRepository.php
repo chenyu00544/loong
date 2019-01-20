@@ -113,12 +113,19 @@ class GroupBuyRepository implements GroupBuyRepositoryInterface
         switch ($data['type']) {
             case 'is_finish':
                 $updata['is_finished'] = 1;
+                $re = $this->goodsActivityModel->setGroupBuy($where, $updata);
+                if (!empty($re)) {
+                    $req = ['code' => 1, 'msg' => '操作成功'];
+                }
+                break;
+            case 'delete':
+                $re = $this->goodsActivityModel->delGroupBuys($data['id']);
+                if (!empty($re)) {
+                    $req = ['code' => 1, 'msg' => '操作成功'];
+                }
                 break;
         }
-        $re = $this->goodsActivityModel->setGroupBuy($where, $updata);
-        if (!empty($re)) {
-            $req = ['code' => 1, 'msg' => '操作成功'];
-        }
+
         return $req;
     }
 
