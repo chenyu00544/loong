@@ -378,6 +378,16 @@ textarea {
     height: 20px;
 }
 
+.s-back {
+    font-size: 0;
+    width: 27px;
+    height: 27px;
+    background-position: -86px -360px !important;
+    display: inline-block;
+    vertical-align: middle;
+    margin: -3px 10px 0 0;
+}
+
 .checkbox label, .radio label {
     min-height: 20px;
     padding-left: 20px;
@@ -1480,7 +1490,7 @@ textarea {
     display: inline-block;
 }
 
-.switch, .circle, .sort-point, i.sc-icon, i.ice, .admin-fun-right .operate a {
+.switch, .circle, .sort-point, i.sc-icon, i.ice, .s-back, .admin-fun-right .operate a {
     background: url(../../images/admin-icon.png) no-repeat;
 }
 
