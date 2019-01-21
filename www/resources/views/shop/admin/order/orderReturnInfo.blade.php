@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">退货单 - 操作</div>
+        <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>退货单 - 操作</div>
         <div class="content">
             <div class="fromlist clearfix">
                 <div class="main-info">

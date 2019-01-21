@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">通知管理 - 编辑通知</div>
+        <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>通知管理 - 编辑通知</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -16,7 +16,8 @@
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="conf" action="{{url('admin/notify/'.$notify->id)}}" method="post" class="form-horizontal"
+                    <form name="conf" action="{{url('admin/notify/'.$notify->id)}}" method="post"
+                          class="form-horizontal"
                           enctype="multipart/form-data">
                         {{csrf_field()}}
                         {{method_field('PUT')}}

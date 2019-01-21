@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">手机设置 - 添加编辑导航栏</div>
+        <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>手机设置 - 添加编辑导航栏</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">

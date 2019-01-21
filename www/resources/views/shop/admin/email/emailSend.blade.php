@@ -22,7 +22,7 @@
                         <div class="form-group mar-top-20">
                             <label class="col-sm-3 control-label">会员名称：</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control fl max-wd-450" name="keywords" value=""
+                                <input type="text" class="form-control fl max-wd-350" name="keywords" value=""
                                        placeholder="会员名称">
                                 <a class="btn btn-primary mar-left-10 fl search">　搜索　</a>
                             </div>

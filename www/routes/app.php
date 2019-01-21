@@ -100,4 +100,6 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('comment/add', 'CommentController@addComment');
 
     Route::post('brand/index', 'BrandController@index');
+
+
 });

@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">权限 管理 - 管理员列表</div>
+        <div class="title">权限管理 - 管理员列表</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">

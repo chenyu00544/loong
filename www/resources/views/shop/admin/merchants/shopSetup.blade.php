@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">商家后台 - 基本信息设置</div>
+        <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>商家后台 - 基本信息设置</div>
         <div class="content">
             <div class="tabs mar-top-5">
                 <ul class="fl">

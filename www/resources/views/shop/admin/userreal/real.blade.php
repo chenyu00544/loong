@@ -37,7 +37,7 @@
 
                             <input type="text" name="keywords" value="{{$keywords}}"
                                    class="form-control input-sm max-wd-190 fl mar-left-10" placeholder="名称">
-                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 lh22 fl" value="查询">
+                            <input type="submit" class="btn btn-primary btn-edit btn-sm mar-left-10 fl" value="查询">
                         </form>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                             </select>
                         </div>
                         <div class="fl">
-                            <a type="button" class="btn btn-info btn-sure btn-sm mar-all-8">确定</a>
+                            <a type="button" class="btn btn-info btn-sure btn-sm mar-all-5">确定</a>
                         </div>
                     </div>
                     <div class="page_list">
