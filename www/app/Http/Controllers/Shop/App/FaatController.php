@@ -38,10 +38,12 @@ class FaatController extends CommonController
     {
         $id = $request->get('id');
         $re = $this->brandRepository->getBrandsByGoods($id);
-        if ($re) {
-            return ['code' => 0, 'msg' => '', 'data' => $re];
-        } else {
-            return ['code' => 1, 'msg' => '', 'data' => ''];
-        }
+        return $this->apiReturn($re);
+    }
+
+    public function secondKill(Request $request)
+    {
+        $res = $this->faatRepository->getSecondKill();
+        return $this->apiReturn($res);
     }
 }

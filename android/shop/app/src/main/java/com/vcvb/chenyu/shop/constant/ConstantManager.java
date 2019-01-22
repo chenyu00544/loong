@@ -169,6 +169,7 @@ public interface ConstantManager {
         //fixme 活动
         public String FAAT = URIHOST + URI_TYPE_APP + "faat/index";
         public String FAAT_BRAND = URIHOST + URI_TYPE_APP + "faat/brand";
+        public String FAAT_SECKILL = URIHOST + URI_TYPE_APP + "faat/seckill";
 
         //fixme 评价
         public String COMMENT_LABEL = URIHOST + URI_TYPE_APP + "comment/label";

@@ -3,7 +3,9 @@ package com.vcvb.chenyu.shop.tools;
 import android.net.Uri;
 
 import com.vcvb.chenyu.shop.activity.faat.BrandListActivity;
+import com.vcvb.chenyu.shop.activity.faat.FaatGroupBuyActivity;
 import com.vcvb.chenyu.shop.activity.faat.FaatListActivity;
+import com.vcvb.chenyu.shop.activity.faat.FaatSecKillActivity;
 import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.activity.notify.ArticleInfoActivity;
 import com.vcvb.chenyu.shop.activity.search.SearchInfoActivity;
@@ -74,6 +76,12 @@ public class UrlParse {
                 break;
             case "vcvbuy:://pages/faat/index":
                 a = FaatListActivity.class;
+                break;
+            case "vcvbuy:://pages/faat/seckill":
+                a = FaatSecKillActivity.class;
+                break;
+            case "vcvbuy:://pages/faat/groupbuy":
+                a = FaatGroupBuyActivity.class;
                 break;
             case "vcvbuy:://pages/brand/index":
                 a = BrandListActivity.class;

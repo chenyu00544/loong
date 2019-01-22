@@ -268,6 +268,9 @@
     <string name="server_tip">添加微信可以更好的了解你所购买的产品的来源！！</string>
     <string name="faat">促销活动</string>
     <string name="faat_center">活动中心</string>
+    <string name="is_over">已结束</string>
+    <string name="is_start">未开始</string>
+    <string name="second_kill">限时秒杀</string>
     <string name="brand_center">品牌</string>
     <string name="into_brand">进入品牌</string>
     <string name="img_text_info">图文详情</string>
@@ -297,4 +300,5 @@
     <string name="reply">回复</string>
 
     <string name="more_brand_info">更多品牌信息</string>
+
 </resources>

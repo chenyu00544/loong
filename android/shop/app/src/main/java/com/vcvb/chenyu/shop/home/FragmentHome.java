@@ -574,6 +574,9 @@ public class FragmentHome extends BaseFragment {
                             intent.putExtra("id", Integer.valueOf(id.get("id")));
                             context.startActivity(intent);
                         }
+                    }else{
+                        Intent intent = new Intent(context, c);
+                        context.startActivity(intent);
                     }
                 }
             }

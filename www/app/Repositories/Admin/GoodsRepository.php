@@ -17,6 +17,7 @@ use App\Facades\ShopConfig;
 use App\Facades\Url;
 use App\Http\Models\Shop\AttributeModel;
 use App\Http\Models\Shop\BrandModel;
+use App\Http\Models\Shop\GoodsActivityModel;
 use App\Http\Models\Shop\GoodsAttrModel;
 use App\Http\Models\Shop\GoodsCateModel;
 use App\Http\Models\Shop\GoodsChangeLogModel;
@@ -29,6 +30,7 @@ use App\Http\Models\Shop\GoodsVolumePriceModel;
 use App\Http\Models\Shop\MemberPriceModel;
 use App\Http\Models\Shop\ProductsChangeLogModel;
 use App\Http\Models\Shop\ProductsModel;
+use App\Http\Models\Shop\SecKillGoodsModel;
 use App\Http\Models\Shop\TransportModel;
 use App\Http\Models\Shop\IntelligentWeightModel;
 use App\Http\Models\Shop\ShopConfigModel;
@@ -55,6 +57,8 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $productsChangeLogModel;
     private $userRankModel;
     private $memberPriceModel;
+    private $secKillGoodsModel;
+    private $goodsActivityModel;
 
     public function __construct(
         ShopConfigModel $shopConfigModel,
@@ -74,7 +78,9 @@ class GoodsRepository implements GoodsRepositoryInterface
         ProductsModel $productsModel,
         ProductsChangeLogModel $productsChangeLogModel,
         UserRankModel $userRankModel,
-        MemberPriceModel $memberPriceModel
+        MemberPriceModel $memberPriceModel,
+        SecKillGoodsModel $secKillGoodsModel,
+        GoodsActivityModel $goodsActivityModel
     )
     {
         $this->shopConfigModel = $shopConfigModel;
@@ -95,6 +101,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->productsChangeLogModel = $productsChangeLogModel;
         $this->userRankModel = $userRankModel;
         $this->memberPriceModel = $memberPriceModel;
+        $this->secKillGoodsModel = $secKillGoodsModel;
+        $this->goodsActivityModel = $goodsActivityModel;
     }
 
     public function getGroupsConfig($groups)
@@ -1260,6 +1268,10 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->memberPriceModel->delMemberPrice($where);
 
         $this->productsChangeLogModel->delAll($where);
+
+        $this->secKillGoodsModel->delSecKillGoods($where);
+
+        $this->goodsActivityModel->delGroupBuy($where);
 
         if ($re) {
             $rep = ['code' => 1, 'msg' => '操作成功'];

@@ -12,20 +12,28 @@ use App\Contracts\FavourableActivityRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Http\Models\App\FavourableActivityModel;
+use App\Http\Models\App\SecKillModel;
+use App\Http\Models\App\SecKillTimeBucketModel;
 
 class FaatRepository implements FavourableActivityRepositoryInterface
 {
 
     private $favourableActivityModel;
     private $adRepository;
+    private $secKillModel;
+    private $secKillTimeBucketModel;
 
     public function __construct(
         FavourableActivityModel $favourableActivityModel,
-        AdRepository $adRepository
+        AdRepository $adRepository,
+        SecKillModel $secKillModel,
+        SecKillTimeBucketModel $secKillTimeBucketModel
     )
     {
         $this->favourableActivityModel = $favourableActivityModel;
         $this->adRepository = $adRepository;
+        $this->secKillModel = $secKillModel;
+        $this->secKillTimeBucketModel = $secKillTimeBucketModel;
     }
 
     public function getFaatByGroupId($id)
@@ -57,5 +65,38 @@ class FaatRepository implements FavourableActivityRepositoryInterface
         $return['banner'] = $banner;
         $return['coupons'] = [];
         return $return;
+    }
+
+    public function getSecondKill()
+    {
+        $time = time();
+        $now_date = date('Y-m-d', $time);
+        $where = [
+            ['review_status', '=', 3],
+            ['is_putaway', '=', 1],
+            ['start_time', '<', $time],
+            ['end_time', '>', $time],
+            ['ru_id', '=', 0],
+        ];
+        $seckill = $this->secKillModel->getSecKill($where);
+        if ($seckill) {
+            $timeBuckets = $this->secKillTimeBucketModel->getSecKillTimeByGoods([], $seckill->sec_id);
+            foreach ($timeBuckets as $timeBucket) {
+                $timeBucket->begin_time = strtotime($now_date.' '.$timeBucket->begin_time);
+                $timeBucket->end_time = strtotime($now_date.' '.$timeBucket->end_time);
+                foreach ($timeBucket->killGoods as $killGoods) {
+                    $killGoods->goods_thumb = FileHandle::getImgByOssUrl($killGoods->goods_thumb);
+                    $killGoods->goods_img = FileHandle::getImgByOssUrl($killGoods->goods_img);
+                    $killGoods->original_img = FileHandle::getImgByOssUrl($killGoods->original_img);
+                    $killGoods->sec_price_format = Common::priceFormat($killGoods->sec_price);
+                    $killGoods->shop_price_format = Common::priceFormat($killGoods->shop_price);
+                    $killGoods->market_price_format = Common::priceFormat($killGoods->market_price);
+                }
+            }
+            $seckill->goods = $timeBuckets;
+            return $seckill;
+        } else {
+            return false;
+        }
     }
 }

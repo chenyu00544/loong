@@ -200,6 +200,14 @@
             android:theme="@style/AppTheme" />
 
         <activity
+            android:name=".activity.faat.FaatSecKillActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".activity.faat.FaatGroupBuyActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
             android:name=".activity.web.WebActivity"
             android:theme="@style/AppTheme" />
 
