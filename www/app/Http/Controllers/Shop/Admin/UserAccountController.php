@@ -43,9 +43,9 @@ class UserAccountController extends CommonController
     public function index(Request $request)
     {
         $navType = '1';
-        $search['date'] = !empty($request->get('date')) ? $request->get('date') : $this->now_date;
         $search['keywords'] = $request->get('keywords');
-        $search['is_paid'] = ($request->get('is_paid') != '') ? $request->get('is_paid') : -1;
+        $search['is_paid'] = $request->get('is_paid');
+        $search['date'] = !empty($request->get('date')) ? $request->get('date') : $this->now_date;
         $userAccount = $this->userAccountRepository->getUserAccountsByPages($request->except('_token'), $navType);
         $userAccount->appends(['date' => $search['date'],
             'keywords' => $search['keywords'],
@@ -91,9 +91,9 @@ class UserAccountController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->userAccountRepository->addUserAccount($request->except('_token'), $this->user);
-        if($re['code'] == 1){
+        if ($re['code'] == 1) {
             return view('shop.admin.failed');
-        }else{
+        } else {
             return view('shop.admin.success');
         }
     }
@@ -137,9 +137,9 @@ class UserAccountController extends CommonController
             return view('shop.admin.failed');
         }
         $re = $this->userAccountRepository->setUserAccount($request->except('_token', '_method'), $this->user, $id);
-        if($re['code'] == 1){
+        if ($re['code'] == 1) {
             return view('shop.admin.failed');
-        }else{
+        } else {
             return view('shop.admin.success');
         }
     }

@@ -170,6 +170,7 @@ public interface ConstantManager {
         public String FAAT = URIHOST + URI_TYPE_APP + "faat/index";
         public String FAAT_BRAND = URIHOST + URI_TYPE_APP + "faat/brand";
         public String FAAT_SECKILL = URIHOST + URI_TYPE_APP + "faat/seckill";
+        public String FAAT_GROUPBUY = URIHOST + URI_TYPE_APP + "faat/group/buy";
 
         //fixme 评价
         public String COMMENT_LABEL = URIHOST + URI_TYPE_APP + "comment/label";

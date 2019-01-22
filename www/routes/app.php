@@ -95,6 +95,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
     Route::post('faat/index', 'FaatController@index');
     Route::post('faat/brand', 'FaatController@brand');
     Route::post('faat/seckill', 'FaatController@secondKill');
+    Route::post('faat/group/buy', 'FaatController@groupBuy');
 
     Route::post('comment/label', 'CommentController@label');
     Route::post('comment/list', 'CommentController@getComments');

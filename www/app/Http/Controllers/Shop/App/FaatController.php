@@ -46,4 +46,10 @@ class FaatController extends CommonController
         $res = $this->faatRepository->getSecondKill();
         return $this->apiReturn($res);
     }
+
+    public function groupBuy(Request $request)
+    {
+        $res = $this->faatRepository->getGroupBuy();
+        return $this->apiReturn($res);
+    }
 }

@@ -12,6 +12,7 @@ use App\Contracts\FavourableActivityRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Http\Models\App\FavourableActivityModel;
+use App\Http\Models\App\GoodsActivityModel;
 use App\Http\Models\App\SecKillModel;
 use App\Http\Models\App\SecKillTimeBucketModel;
 
@@ -22,18 +23,21 @@ class FaatRepository implements FavourableActivityRepositoryInterface
     private $adRepository;
     private $secKillModel;
     private $secKillTimeBucketModel;
+    private $goodsActivityModel;
 
     public function __construct(
         FavourableActivityModel $favourableActivityModel,
         AdRepository $adRepository,
         SecKillModel $secKillModel,
-        SecKillTimeBucketModel $secKillTimeBucketModel
+        SecKillTimeBucketModel $secKillTimeBucketModel,
+        GoodsActivityModel $goodsActivityModel
     )
     {
         $this->favourableActivityModel = $favourableActivityModel;
         $this->adRepository = $adRepository;
         $this->secKillModel = $secKillModel;
         $this->secKillTimeBucketModel = $secKillTimeBucketModel;
+        $this->goodsActivityModel = $goodsActivityModel;
     }
 
     public function getFaatByGroupId($id)
@@ -82,8 +86,8 @@ class FaatRepository implements FavourableActivityRepositoryInterface
         if ($seckill) {
             $timeBuckets = $this->secKillTimeBucketModel->getSecKillTimeByGoods([], $seckill->sec_id);
             foreach ($timeBuckets as $timeBucket) {
-                $timeBucket->begin_time = strtotime($now_date.' '.$timeBucket->begin_time);
-                $timeBucket->end_time = strtotime($now_date.' '.$timeBucket->end_time);
+                $timeBucket->begin_time = strtotime($now_date . ' ' . $timeBucket->begin_time);
+                $timeBucket->end_time = strtotime($now_date . ' ' . $timeBucket->end_time);
                 foreach ($timeBucket->killGoods as $killGoods) {
                     $killGoods->goods_thumb = FileHandle::getImgByOssUrl($killGoods->goods_thumb);
                     $killGoods->goods_img = FileHandle::getImgByOssUrl($killGoods->goods_img);
@@ -98,5 +102,38 @@ class FaatRepository implements FavourableActivityRepositoryInterface
         } else {
             return false;
         }
+    }
+
+    public function getGroupBuy()
+    {
+        $time = time();
+        $where = [
+            ['review_status', '=', 3],
+            ['is_finished', '=', 0],
+            ['start_time', '<=', $time],
+            ['end_time', '>', $time]
+        ];
+        $goodsActivitys = $this->goodsActivityModel->getGoodsActivitys($where);
+        foreach ($goodsActivitys as $goodsActivity) {
+            $goodsActivity->ext_info = unserialize($goodsActivity->ext_info);
+            if($goodsActivity->goods){
+                foreach ($goodsActivity->goods->toArray() as $key => $value) {
+                    if ($key == 'goods_thumb' || $key == 'goods_img' || $key == 'original_img') {
+                        $goodsActivity->goods_thumb = FileHandle::getImgByOssUrl($value);
+                        $goodsActivity->goods_img = FileHandle::getImgByOssUrl($value);
+                        $goodsActivity->original_img = FileHandle::getImgByOssUrl($value);
+                    } elseif ($key == 'shop_price' || $key == 'market_price') {
+                        $goodsActivity->$key = $value;
+                        $goodsActivity->shop_price_format = Common::priceFormat($value);
+                        $goodsActivity->market_price_format = Common::priceFormat($value);
+                    }else{
+                        $goodsActivity->$key = $value;
+                    }
+                }
+            }
+
+            unset($goodsActivity->goods);
+        }
+        return $goodsActivitys;
     }
 }

@@ -148,7 +148,7 @@
                                        class="checkbox check-all fl ">全选</label>
                         </div>
                         <div class="fl">
-                            <a type="button" class="btn btn-info btn-sure btn-sm mar-all-8">完成</a>
+                            <a type="button" class="btn btn-info btn-sure btn-sm mar-all-5">完成</a>
                         </div>
                     </div>
                     <div class="page_list">

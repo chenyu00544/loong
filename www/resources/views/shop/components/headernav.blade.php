@@ -30,7 +30,7 @@
                 <div class="manager-menu" style="display: none;">
                     <div class="title">
                         <h4>最后登录</h4>
-                        <a href="{{url('admin/privilege/'.$user->user_id.'/edit')}}" target="workspace"
+                        <a href="{{url('admin/privilege/'.$user->user_id.'/edit')}}" target="main"
                            class="edit_pwd">修改密码</a>
                     </div>
                     <div class="login-date">
