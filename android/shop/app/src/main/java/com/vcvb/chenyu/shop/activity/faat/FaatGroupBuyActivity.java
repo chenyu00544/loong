@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.activity.faat.fragment.FaatFragment;
+import com.vcvb.chenyu.shop.activity.faat.fragment.FaatGroupBuyFragment;
 import com.vcvb.chenyu.shop.activity.goods.CartActivity;
 import com.vcvb.chenyu.shop.activity.msg.MessageActivity;
 import com.vcvb.chenyu.shop.base.BaseActivity;
@@ -25,7 +25,7 @@ public class FaatGroupBuyActivity extends BaseActivity {
     private FragmentTransaction fragmentTransaction;
     private PopWin popWindow;
     private TextView title;
-    private FaatFragment faatFragment;
+    private FaatGroupBuyFragment faatFragment;
 
     private int index = 0;
     private String SAVED_INDEX = "SAVED_INDEX";
@@ -39,7 +39,7 @@ public class FaatGroupBuyActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SAVED_INDEX, index);
-            faatFragment = (FaatFragment) fragmentManager.findFragmentByTag
+            faatFragment = (FaatGroupBuyFragment) fragmentManager.findFragmentByTag
                     (fragmentTag[0]);
         }
         setNavBack();
@@ -57,7 +57,7 @@ public class FaatGroupBuyActivity extends BaseActivity {
                 .dip2px(this, 148));
         more.setOnClickListener(listener);
         title = findViewById(R.id.textView123);
-        title.setText(R.string.faat_center);
+        title.setText(R.string.group_buy);
         popWindow.setClickListener(popListener);
     }
 
@@ -82,7 +82,7 @@ public class FaatGroupBuyActivity extends BaseActivity {
         switch (type) {
             case 0:
                 if (faatFragment == null) {
-                    faatFragment = new FaatFragment();
+                    faatFragment = new FaatGroupBuyFragment();
                     //加入事务
                     fragmentTransaction.add(R.id.faat_main, faatFragment, fragmentTag[type]);
                 } else {

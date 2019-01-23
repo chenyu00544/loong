@@ -306,4 +306,10 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::post('adminuser/change/logo', 'AdminUserController@changeLogo');
 
+    Route::post('team/change', 'TeamController@change');
+    Route::resource('team', 'TeamController');
+
+    Route::post('teamcate/change', 'TeamCategoryController@change');
+    Route::resource('teamcate', 'TeamCategoryController');
+
 });

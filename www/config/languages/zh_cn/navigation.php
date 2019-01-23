@@ -135,6 +135,10 @@ return array(
             'name' => '秒杀活动',
             'url' => 'admin/seckill',
         ),
+        'team' => array(
+            'name' => '拼团活动',
+            'url' => 'admin/team',
+        ),
     ),
     'goods_storage' => array(
         'favouable' => array(

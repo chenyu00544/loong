@@ -1,27 +1,23 @@
 package com.vcvb.chenyu.shop.activity.faat.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
-import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
-import com.vcvb.chenyu.shop.adapter.GroupedListAdapter;
 import com.vcvb.chenyu.shop.adapter.b.Item;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatSecKillGoodsItem;
 import com.vcvb.chenyu.shop.adapter.item.faat.FaatSecKillNavItem;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.javaBean.faat.GroupBuy;
 import com.vcvb.chenyu.shop.javaBean.faat.SecKill;
 import com.vcvb.chenyu.shop.javaBean.faat.SecKillGoods;
 import com.vcvb.chenyu.shop.javaBean.faat.SecKillInfo;
@@ -29,7 +25,6 @@ import com.vcvb.chenyu.shop.javaBean.faat.SecKillNav;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.JsonUtils;
 import com.vcvb.chenyu.shop.tools.TimeUtils;
-import com.vcvb.chenyu.shop.tools.ToastUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,19 +37,12 @@ import java.util.List;
 
 import okhttp3.Call;
 
-public class FaatSecKillFragment extends BaseRecyclerViewFragment {
+public class FaatGroupBuyFragment extends BaseRecyclerViewFragment {
 
-    public GroupedListAdapter adapter;
-    private GroupedGridLayoutManager groupedGridLayoutManager;
-    public List<SecKill> faats = new ArrayList<>();
-    private SecKillInfo secKillInfo;
+    public List<GroupBuy> faats = new ArrayList<>();
     private Integer currentTime;
 
     public int position = 0;
-    //目标项是否在最后一个可见项之后
-    private boolean mShouldScroll;
-    //记录目标项位置
-    private int mToPosition;
 
     @Nullable
     @Override
@@ -69,34 +57,16 @@ public class FaatSecKillFragment extends BaseRecyclerViewFragment {
 
     public void initView() {
         mRecyclerView = view.findViewById(R.id.rv_list);
-        ((DefaultItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-        mRecyclerView.addOnScrollListener(rvScrollListener);
-        adapter = new GroupedListAdapter(context);
-        adapter.setOnChildClickListener(new GroupedRecyclerViewAdapter.OnChildClickListener() {
-            @Override
-            public void onChildClick(GroupedRecyclerViewAdapter adapter, BaseViewHolder holder,
-                                     int groupPosition, int childPosition) {
-                SecKillGoods secKillGoods = (SecKillGoods) faats.get(groupPosition).getObjs().get(childPosition);
-                if(secKillGoods.getBegin_time() < currentTime && secKillGoods.getEnd_time() > currentTime){
-                    Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("id", secKillGoods.getGoods_id());
-                    startActivity(intent);
-                }else{
-                    if(secKillGoods.getEnd_time() < currentTime){
-                        ToastUtils.showShortToast(context, "时间已结束");
-                    }else{
-                        ToastUtils.showShortToast(context, "时间未开始");
-                    }
-                }
-            }
-        });
+        mLayoutManager = new GridLayoutManager(context, 1);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void getData() {
         loadingDialog.show();
         HashMap<String, String> mp = new HashMap<>();
-        HttpUtils.getInstance().post(ConstantManager.Url.FAAT_SECKILL, mp, new HttpUtils.NetCall() {
+        HttpUtils.getInstance().post(ConstantManager.Url.FAAT_GROUPBUY, mp, new HttpUtils.NetCall() {
             @Override
             public void success(Call call, final JSONObject json) throws IOException {
                 if (getActivity() != null) {
@@ -138,31 +108,7 @@ public class FaatSecKillFragment extends BaseRecyclerViewFragment {
             currentTime = json.getInt("time");
             Integer code = json.getInt("code");
             if (code == 0) {
-                JSONObject object = json.getJSONObject("data");
-                secKillInfo = JsonUtils.fromJsonObject(object, SecKillInfo.class);
-                secKillInfo.setCurrent_time(currentTime);
-                JSONArray array = object.getJSONArray("goods");
-                for (int i = 0; i < array.length(); i++) {
-                    SecKill secKill = new SecKill();
-                    JSONObject o = (JSONObject) array.get(i);
-                    SecKillNav secKillNav = JsonUtils.fromJsonObject(o, SecKillNav.class);
-                    secKillNav.setCurrent_time(currentTime);
-                    secKill.setHeader(secKillNav);
 
-                    JSONArray garr = o.getJSONArray("kill_goods");
-                    ArrayList<Object> _goodses = new ArrayList<>();
-                    for (int j = 0; j < garr.length(); j++) {
-                        JSONObject go = (JSONObject) garr.get(j);
-                        SecKillGoods secKillGoods = JsonUtils.fromJsonObject(go, SecKillGoods
-                                .class);
-                        secKillGoods.setCurrent_time(currentTime);
-                        secKillGoods.setBegin_time(secKillNav.getBegin_time());
-                        secKillGoods.setEnd_time(secKillNav.getEnd_time());
-                        _goodses.add(secKillGoods);
-                    }
-                    secKill.setObjs(_goodses);
-                    faats.add(secKill);
-                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -172,57 +118,11 @@ public class FaatSecKillFragment extends BaseRecyclerViewFragment {
             e.printStackTrace();
         }
 
-        adapter.setData(getItems(faats));
-        groupedGridLayoutManager = new GroupedGridLayoutManager(context, 1, adapter) {
-            @Override
-            public int getChildSpanSize(int groupPosition, int childPosition) {
-                return super.getChildSpanSize(groupPosition, childPosition);
-            }
-        };
-        mRecyclerView.setLayoutManager(groupedGridLayoutManager);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter.setData(getItems(faats));
     }
 
     protected List<SecKill> getItems(List<SecKill> beans) {
 
-        for (int i = 0; i < beans.size(); i++) {
-            if (faats.get(i).getHeader() != null) {
-                FaatSecKillNavItem faatSecKillNavItem = new FaatSecKillNavItem((SecKillNav) faats
-                        .get(i).getHeader(), context);
-                faats.get(i).setMheader(faatSecKillNavItem);
-            }
-            TimeUtils.startCountdown(new TimeUtils.CallBack() {
-                @Override
-                public void time() {
-                    currentTime += 1;
-                    for (int i = 0; i < faats.size(); i++) {
-                        for (int j = 0; j < faats.get(i).getObjs().size(); j++) {
-                            ((SecKillGoods) faats.get(i).getObjs().get(j)).setCurrent_time
-                                    (currentTime);
-                        }
-                    }
-                    if (currentTime % 3600 == 0) {
-                        if (getActivity() != null) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    adapter.notifyDataChanged();
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-            List<Item> items = new ArrayList<>();
-            if (beans.get(i).getObjs() != null) {
-                for (int j = 0; j < beans.get(i).getObjs().size(); j++) {
-                    FaatSecKillGoodsItem faatSecKillGoodsItem = new FaatSecKillGoodsItem(
-                            (SecKillGoods) faats.get(i).getObjs().get(j), context);
-                    items.add(faatSecKillGoodsItem);
-                }
-            }
-            faats.get(i).setItemList(items);
-        }
         return faats;
     }
 
