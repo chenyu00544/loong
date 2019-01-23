@@ -34,7 +34,7 @@ class TeamGoodsModel extends Model
             ->where($where)
             ->with(['goods' => function ($query) {
                 $query->join('seller_shop_info', 'seller_shop_info.ru_id', '=', 'goods.user_id')
-                    ->select(['goods.goods_id', 'goods.goods_name', 'goods.is_best', 'goods.is_hot', 'goods.is_new', 'goods.user_id', 'goods.shop_price','goods.goods_sn','seller_shop_info.shop_name','seller_shop_info.ru_id']);
+                    ->select(['goods.goods_id', 'goods.goods_name', 'goods.is_best', 'goods.is_hot', 'goods.is_new', 'goods.user_id', 'goods.shop_price', 'goods.goods_sn', 'goods.goods_number', 'seller_shop_info.shop_name', 'seller_shop_info.ru_id']);
             }])
             ->with(['products' => function ($query) {
                 $query->select(['goods_id']);

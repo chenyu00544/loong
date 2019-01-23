@@ -46,16 +46,16 @@
                             <th width="3%">
                                 <input type="checkbox" name="all_list" class="checkbox check-all">
                             </th>
-                            <th width="3%">编号</th>
-                            <th width="23%">商品名称</th>
+                            <th width="5%">编号</th>
+                            <th width="15%">商品名称</th>
                             <th width="7%">商家名称</th>
                             <th width="12%">原价/拼团/货号</th>
                             <th width="12%">添加排行(按钮)</th>
-                            <th width="10%">SKU/库存</th>
-                            <th width="9%">几人团</th>
-                            <th width="9%">购买人次</th>
-                            <th width="9%">排序</th>
-                            <th width="9%">审核状态</th>
+                            <th width="9%">SKU/库存</th>
+                            <th width="8%">几人团</th>
+                            <th width="8%">购买人次</th>
+                            <th width="6%">排序</th>
+                            <th width="8%">审核状态</th>
                             <th width="10%" class="text-center">操作</th>
                         </tr>
                         </thead>
@@ -126,15 +126,14 @@
                                         @if($team->products->count() == 0)
                                             {{$team->goods->goods_number}}
                                         @else
-                                            <a href="javascript:;" data-goodsid="{{$team->goods_id}}" data-userid="{{$team->goods->user_id}}"><i
+                                            <a href="javascript:;" class="sku" data-goodsid="{{$team->goods_id}}" data-userid="{{$team->goods->user_id}}"><i
                                                         class="glyphicon glyphicon-edit fs-18"></i></a>
                                         @endif
                                     </td>
                                     <td>{{$team->team_num}}人团</td>
                                     <td>{{$team->limit_num}}人次</td>
                                     <td>
-                                        <input class="form-control input-sm chang-order max-wd-100" name="sort_order" type="text"
-                                               data-id="{{$team->goods_id}}" value="{{$team->sort_order}}" autocomplete="off">
+                                        <input class="form-control input-sm chang-order max-wd-100" name="sort_order" type="text" data-id="{{$team->goods_id}}" value="{{$team->sort_order}}" autocomplete="off">
                                     </td>
                                     <td>@if($team->is_audit == 2)
                                             <font class="blue">审核已通过</font>
@@ -189,7 +188,7 @@
 
                 if (ids.length > 0) {
                     $.post(
-                        '{{url("admin/$team/change")}}',
+                        '{{url("admin/team/change")}}',
                         {
                             id: ids,
                             type: 'delete',
@@ -242,6 +241,22 @@
                 }
             });
 
+            //sku
+            $('.sku').click(function () {
+                var goods_id = $(this).data('goodsid');
+                layer.open({
+                    type: 2,
+                    area: ['800px', '470px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '审核',
+                    content: ["{{url('admin/goods/sku/')}}" + "/" + goods_id, 'no'],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
+            });
+
             //删除
             $('.btn-del').click(function () {
                 var that = this;
@@ -250,7 +265,7 @@
                     btn: ['确定', '取消'] //按钮
                 }, function () {
                     $.post(
-                        "{{url('admin/$team/')}}/" + Id,
+                        "{{url('admin/team/')}}/" + Id,
                         {'_method': 'delete', '_token': '{{csrf_token()}}'},
                         function (data) {
                             layer.msg(data.msg, {icon: data.code});

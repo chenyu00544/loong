@@ -59,7 +59,7 @@
                                 <input type="text" name="validity_time" class="form-control input-sm" value=""
                                        placeholder="开团有效期" autocomplete="off">
                             </div>
-                            <div class="notic fl mar-left-5">团长开团成功后开始倒计时，写入时间最好在24小时以内 (时间格式：小时，输入1~24 数字)</div>
+                            <div class="notic fl mar-left-5">团长开团成功后开始倒计时(时间格式：小时，输入1~24 数字)</div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">限购数量：</label>
