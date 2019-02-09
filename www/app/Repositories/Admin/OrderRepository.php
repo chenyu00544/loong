@@ -69,7 +69,7 @@ class OrderRepository implements OrderRepositoryInterface
         $this->paymentModel = $paymentModel;
     }
 
-    public function getOrdersByPage($search, $parame = [], $user_id = 0)
+    public function getOrdersByPage($search, $parame = [], $user_id = 0, $faat_id = 0)
     {
         $where = [];
         $orWhere = [];
@@ -83,6 +83,18 @@ class OrderRepository implements OrderRepositoryInterface
                     break;
                 case 'byUser':
                     $where[] = ['user_id', '=', $user_id];
+                    break;
+                case 'team':
+                    $where[] = ['extension_code', '=', 'team_buy'];
+                    $where[] = ['extension_id', '=', $faat_id];
+                    break;
+                case 'seckill':
+                    $where[] = ['extension_code', '=', 'seckill'];
+                    $where[] = ['extension_id', '=', $faat_id];
+                    break;
+                case 'groupbuy':
+                    $where[] = ['extension_code', '=', 'group_buy'];
+                    $where[] = ['extension_id', '=', $faat_id];
                     break;
                 case '0':
                     break;
@@ -122,9 +134,11 @@ class OrderRepository implements OrderRepositoryInterface
                     break;
             }
         }
-        $column = ['order_id', 'order_sn', 'user_id', 'order_status', 'pay_status', 'shipping_status', 'consignee', 'country', 'province', 'city', 'district', 'street', 'address', 'tel', 'mobile', 'email', 'shipping_id', 'shipping_name', 'shipping_fee', 'pay_id', 'pay_name', 'how_oos', 'goods_amount', 'cost_amount', 'order_amount', 'froms', 'coupons', 'add_time', 'extension_code', 'extension_id', 'invoice_no', 'tax', 'insure_fee', 'pay_fee', 'pack_fee', 'card_fee', 'discount'];
+        if (!empty($search['team_id'])) {
+            $where['team_id'] = $search['team_id'];
+        }
 
-        $req = $this->orderInfoModel->getOrderInfoByPage($where, $orWhere, $search, $column);
+        $req = $this->orderInfoModel->getOrderInfoByPage($where, $orWhere, $search);
         foreach ($req as $key => $value) {
             $req[$key]->province = $this->regionsModel->getRegion($value->province)->region_name;
             $req[$key]->city = $this->regionsModel->getRegion($value->city)->region_name;
@@ -133,7 +147,6 @@ class OrderRepository implements OrderRepositoryInterface
                 $goods->original_img = FileHandle::getImgByOssUrl($goods->original_img);
             }
         }
-
         return $req;
     }
 
@@ -249,19 +262,19 @@ class OrderRepository implements OrderRepositoryInterface
         return $this->deliveryGoodsModel->getDeliveryGoodses($where, $column);
     }
 
-    public function getSearchNav($seller)
+    public function getSearchNav($seller, $fn = 'all')
     {
-        $allOrder = $this->orderInfoModel->countOrder([], [], $seller);
-        $statusOrder = $this->orderInfoModel->countOrder(['order_status' => OS_UNCONFIRMED], [], $seller);
-        $statusOrder_2 = $this->orderInfoModel->countOrder(['order_status' => OS_CANCELED], [], $seller);
-        $statusOrder_3 = $this->orderInfoModel->countOrder(['order_status' => OS_INVALID], [], $seller);
-        $payOrder = $this->orderInfoModel->countOrder(['pay_status' => PS_UNPAYED, 'order_status' => OS_CONFIRMED], [], $seller);
-        $payOrder_1 = $this->orderInfoModel->countOrder(['pay_status' => PS_PAYING], [], $seller);
-//        $payOrder_2 = $this->orderInfoModel->countOrder(['pay_status' => Config::get('define.PS_PAYED')],[],$seller);
-        $shippingOrder = $this->orderInfoModel->countOrder(['pay_status' => PS_PAYED, 'order_status' => OS_CONFIRMED], [['shipping_status' => SS_UNSHIPPED], ['shipping_status' => SS_PREPARING]], $seller);
-        $shippingOrder_1 = $this->orderInfoModel->countOrder(['shipping_status' => SS_SHIPPED], [], $seller);
-        $shippingOrder_2 = $this->orderInfoModel->countOrder(['shipping_status' => SS_RECEIVED], [], $seller);
-        $returnOrder = $this->orderInfoModel->countOrder(['order_status' => OS_RETURNED, 'pay_status' => PS_PAYED], [['shipping_status' => SS_UNSHIPPED], ['shipping_status' => SS_PREPARING]], $seller);
+        $allOrder = $this->orderInfoModel->countOrder([], [], $seller, $fn);
+        $statusOrder = $this->orderInfoModel->countOrder(['order_status' => OS_UNCONFIRMED], [], $seller, $fn);
+        $statusOrder_2 = $this->orderInfoModel->countOrder(['order_status' => OS_CANCELED], [], $seller, $fn);
+        $statusOrder_3 = $this->orderInfoModel->countOrder(['order_status' => OS_INVALID], [], $seller, $fn);
+        $payOrder = $this->orderInfoModel->countOrder(['pay_status' => PS_UNPAYED, 'order_status' => OS_CONFIRMED], [], $seller, $fn);
+        $payOrder_1 = $this->orderInfoModel->countOrder(['pay_status' => PS_PAYING], [], $seller, $fn);
+//        $payOrder_2 = $this->orderInfoModel->countOrder(['pay_status' => Config::get('define.PS_PAYED')],[],$seller, $fn);
+        $shippingOrder = $this->orderInfoModel->countOrder(['pay_status' => PS_PAYED, 'order_status' => OS_CONFIRMED], [['shipping_status' => SS_UNSHIPPED], ['shipping_status' => SS_PREPARING]], $seller, $fn);
+        $shippingOrder_1 = $this->orderInfoModel->countOrder(['shipping_status' => SS_SHIPPED], [], $seller, $fn);
+        $shippingOrder_2 = $this->orderInfoModel->countOrder(['shipping_status' => SS_RECEIVED], [], $seller, $fn);
+        $returnOrder = $this->orderInfoModel->countOrder(['order_status' => OS_RETURNED, 'pay_status' => PS_PAYED], [['shipping_status' => SS_UNSHIPPED], ['shipping_status' => SS_PREPARING]], $seller, $fn);
 
         $req = [
             ['navType' => '0', 'title' => '全部订单', 'count' => $allOrder],
@@ -336,7 +349,7 @@ class OrderRepository implements OrderRepositoryInterface
                     $updata['shipping_name'] = $data['shipping_name'];
                     break;
                 case 'invoice_no':
-                    if(!empty($data['invoice_no'])){
+                    if (!empty($data['invoice_no'])) {
                         $updata['invoice_no'] = $data['invoice_no'];
                         $updata['shipping_status'] = 1;
                         $updata['shipping_time'] = time();
@@ -463,7 +476,7 @@ class OrderRepository implements OrderRepositoryInterface
                     break;
             }
         }
-        if(!empty($updata)){
+        if (!empty($updata)) {
             $re = $this->orderInfoModel->setOrderInfo($where, $updata);
             if ($re) {
                 $req = ['code' => 1, 'msg' => '操作成功'];

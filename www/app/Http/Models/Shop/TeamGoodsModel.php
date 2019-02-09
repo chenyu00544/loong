@@ -25,12 +25,12 @@ class TeamGoodsModel extends Model
 
     public function products()
     {
-        return $this->hasMany('App\Http\Models\Shop\ProductsModel', 'goods_id', 'goods_id');
+        return $this->hasOne('App\Http\Models\Shop\ProductsModel', 'goods_id', 'goods_id');
     }
 
-    public function getTeamsByPage($where = [], $column = ['*'], $size = 15)
+    public function getTeamsByPage($where = [], $search = [], $column = ['*'], $size = 15)
     {
-        return $this->select($column)
+        $m = $this->select($column)
             ->where($where)
             ->with(['goods' => function ($query) {
                 $query->join('seller_shop_info', 'seller_shop_info.ru_id', '=', 'goods.user_id')
@@ -38,12 +38,31 @@ class TeamGoodsModel extends Model
             }])
             ->with(['products' => function ($query) {
                 $query->select(['goods_id']);
-            }])
+            }]);
+        if (!empty($search['keywords'])) {
+            $m->where('team_name', 'like', '%' . $search['keywords'] . '%');
+        }
+        return $m->orderBy('sort_order', 'DESC')
             ->paginate($size);
+    }
+
+    public function getTeam($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->with(['goods' => function ($query) {
+                $query->select(['goods_id', 'goods_name', 'shop_price']);
+            }])
+            ->first();
     }
 
     public function addTeam($data)
     {
         return $this->create($data);
+    }
+
+    public function setTeam($where, $data)
+    {
+        return $this->where($where)->update($data);
     }
 }

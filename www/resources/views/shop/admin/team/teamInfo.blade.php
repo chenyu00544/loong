@@ -2,19 +2,23 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">促销管理 - 拼团活动列表</div>
+        <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>促销管理 - 团队列表</div>
         <div class="content">
             <div class="tabs mar-top-5">
                 <ul class="fl">
-                    <li class="@if($nav_type == 'team') curr @endif fl">
-                        <a href="{{url('admin/team')}}">拼团商品</a>
+                    <li class="@if($nav_type == 'all') curr @endif fl">
+                        <a href="{{url('admin/team/info/all')}}">全部团</a>
                     </li>
-                    <li class="@if($nav_type == 'cate') curr @endif fl">
-                        <a href="{{url('admin/teamcate')}}">活动频道</a>
+                    <li class="@if($nav_type == 'teaming') curr @endif fl">
+                        <a href="{{url('admin/team/info/teaming')}}">正在拼团</a>
                     </li>
-                    <li class="@if($nav_type == 'teaminfo') curr @endif fl">
-                        <a href="{{url('admin/team/info/all')}}">开团团队</a>
+                    <li class="@if($nav_type == 'success') curr @endif fl">
+                        <a href="{{url('admin/team/info/success')}}">成功团</a>
                     </li>
+                    <li class="@if($nav_type == 'failed') curr @endif fl">
+                        <a href="{{url('admin/team/info/failed')}}">失败团</a>
+                    </li>
+
                 </ul>
             </div>
             <div class="tip">
@@ -28,10 +32,9 @@
                 </ul>
             </div>
             <div class="fromlist clearfix">
-                <div class="clearfix mar-bt-20">
-                    <a href="{{url('admin/team/create')}}" class="btn btn-success btn-add btn-sm">添加拼团商品</a>
+                <div class="clearfix">
                     <div class="fr wd250 pad-tb-10">
-                        <form action="{{url('admin/team/'.$nav_type)}}" method="get">
+                        <form action="{{url('admin/team/info'.$nav_type)}}" method="get">
                             {{csrf_field()}}
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
                                    class="form-control input-sm max-wd-190" placeholder="活动名称">
@@ -46,20 +49,17 @@
                             <th width="3%">
                                 <input type="checkbox" name="all_list" class="checkbox check-all">
                             </th>
-                            <th width="5%">编号</th>
+                            <th width="5%">团号</th>
                             <th width="15%">商品名称</th>
-                            <th width="7%">商家名称</th>
-                            <th width="12%">原价/拼团/货号</th>
-                            <th width="12%">添加排行(按钮)</th>
-                            <th width="9%">SKU/库存</th>
-                            <th width="8%">几人团</th>
-                            <th width="8%">购买人次</th>
-                            <th width="6%">排序</th>
-                            <th width="8%">审核状态</th>
+                            <th width="15%">商家名称</th>
+                            <th width="15%">开团时间</th>
+                            <th width="15%">剩余时间</th>
+                            <th width="15%">差几人成团</th>
+                            <th width="7%">团状态</th>
                             <th width="10%" class="text-center">操作</th>
                         </tr>
                         </thead>
-                        @if($teams->count() == 0)
+                        @if($teamLogs->count() == 0)
                             <tbody>
                             <tr class="">
                                 <td class="no-records" colspan="20">没有找到任何记录</td>
@@ -67,90 +67,25 @@
                             </tbody>
                         @else
                             <tbody>
-                            @foreach($teams as $team)
+                            @foreach($teamLogs as $teamLog)
                                 <tr class="">
                                     <td>
-                                        <input type="checkbox" name="checkboxes" value="{{$team->id}}"
-                                               class="checkbox check-all-list fl" id="checkbox_{{$team->id}}">
+                                        <input type="checkbox" name="checkboxes" value="{{$teamLog->team_id}}"
+                                               class="checkbox check-all-list fl" id="checkbox_{{$teamLog->team_id}}">
                                     </td>
-                                    <td>{{$team->id}}</td>
-                                    <td>
-                                        <div class="tDiv goods-info">
-                                            <div class="img fl pad-all-5">
-                                                <a href="{{$team->goods->original_img}}" target="_blank" title="">
-                                                    <img src="{{$team->goods->original_img}}"
-                                                         width="68" height="68">
-                                                </a>
-                                            </div>
-                                            <div class="desc fl pad-all-5">
-                                                <div class="name">
-                                                    <span class="max-wd-190 line-hg-20" title="" data-toggle="tooltip"
-                                                          data-placement="bottom"
-                                                          data-original-title="{{$team->goods->goods_name}}">{{$team->goods->goods_name}}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <font class="@if(empty($team->goods)) red @else blue @endif">@if(empty($team->goods))
-                                                未知商家 @else {{$team->goods->shop_name}} @endif</font></td>
-                                    <td>
-                                        <div class="notic">拼团：¥{{$team->team_price}}</div>
-                                        <div class="notic">原价：¥{{$team->goods->shop_price}}</div>
-                                        <div class="notic">货号：{{$team->goods->goods_sn}}</div>
-                                    </td>
-                                    <td>
-                                        <div class="switch-wrap clearfix"><span class="fl">精品　</span>
-                                            <div class="switch @if($team->goods->is_best == 1) active @endif"
-                                                 data-type="is_best" title="是">
-                                                <div class="circle"></div>
-                                                <input type="hidden" value="{{$team->goods_id}}">
-                                            </div>
-                                        </div>
-                                        <div class="switch-wrap clearfix"><span class="fl">新品　</span>
-                                            <div class="switch @if($team->goods->is_new == 1) active @endif"
-                                                 data-type="is_new" title="是">
-                                                <div class="circle"></div>
-                                                <input type="hidden" value="{{$team->goods_id}}">
-                                            </div>
-                                        </div>
-                                        <div class="switch-wrap clearfix"><span class="fl">热销　</span>
-                                            <div class="switch @if($team->goods->is_hot == 1) active @endif"
-                                                 data-type="is_hot" title="是">
-                                                <div class="circle"></div>
-                                                <input type="hidden" value="{{$team->goods_id}}">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        @if(empty($team->products))
-                                            {{$team->goods->goods_number}}
-                                        @else
-                                            <a href="javascript:;" class="sku" data-goodsid="{{$team->goods_id}}" data-userid="{{$team->goods->user_id}}"><i
-                                                        class="glyphicon glyphicon-edit fs-18"></i></a>
-                                        @endif
-                                    </td>
-                                    <td>{{$team->team_num}}人团</td>
-                                    <td>{{$team->limit_num}}人次</td>
-                                    <td>
-                                        <input class="form-control input-sm chang-order max-wd-100" name="sort_order" type="text" data-id="{{$team->id}}" value="{{$team->sort_order}}" autocomplete="off">
-                                    </td>
-                                    <td>@if($team->is_audit == 2)
-                                            <font class="blue">审核已通过</font>
-                                        @elseif($team->is_audit == 0)
-                                            <font class="oranges">未审核</font>
-                                        @elseif($team->is_audit == 1)
-                                            <font class="red">审核未通过</font>
-                                        @endif</td>
+                                    <td>{{$teamLog->team_id}}</td>
+                                    <td>{{$teamLog->goods_name}}</td>
+                                    <td>{{$teamLog->store->shop_name}}</td>
+                                    <td>{{date('Y-m-d H:i:s', $teamLog->start_time)}}</td>
+                                    <td>@if($teamLog->cle < 0) 已结束 @else {{$teamLog->time}} @endif</td>
+                                    <td>@if($teamLog->surplus <= 0) 已成团 @else 差{{$teamLog->surplus}}人成团 @endif</td>
+                                    <td>{{$teamLog->status}}</td>
                                     <td class="text-center">
-                                        <a type="button"
-                                           href="{{url('admin/order/team/selfsale/0/'.$team->id)}}"
+                                        <a type="button" href="{{url('admin/order/team/'.$teamLog->team_id).'/0'}}"
                                            class="btn btn-info btn-edit btn-sm">查看</a>
-                                        <a type="button" href="{{url('admin/team/'.$team->id.'/edit')}}"
-                                           class="btn btn-info btn-edit btn-sm">编辑</a>
                                         <a type="button" href="javascript:;"
                                            class="btn btn-danger btn-del btn-sm"
-                                           data-id="{{$team->id}}">删除</a>
+                                           data-id="{{$teamLog->team_id}}">删除</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -164,7 +99,7 @@
                         </div>
                     </div>
                     <div class="page_list">
-                        {{$teams->links()}}
+                        {{$teamLogs->links()}}
                     </div>
                 </div>
             </div>

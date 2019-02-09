@@ -253,6 +253,14 @@
             android:name=".activity.brand.BrandListActivity"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".activity.faat.FaatTeamActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".activity.faat.FaatSecKillActivity"
+            android:theme="@style/AppTheme" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.vcvb.chenyu.shop.provider"

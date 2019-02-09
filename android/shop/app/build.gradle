@@ -107,4 +107,7 @@ dependencies {
 
     //fixme 回弹效果控件https://github.com/EverythingMe/overscroll-decor
     implementation 'me.everything:overscroll-decor-android:1.0.4'
+
+    //fixme tabLayout导航
+    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
 }

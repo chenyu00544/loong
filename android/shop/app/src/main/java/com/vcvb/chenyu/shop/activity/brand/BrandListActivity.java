@@ -159,7 +159,6 @@ public class BrandListActivity extends BaseRecyclerViewActivity{
     }
 
     private void setupViewPager() {
-
         mFragments = new ArrayList<>();
         BrandAllFragment brandAllFragment = new BrandAllFragment();
         brandAllFragment.setCallBackValue(new BrandAllFragment.CallBackValue(){

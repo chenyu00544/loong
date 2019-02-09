@@ -12,8 +12,6 @@ import com.vcvb.chenyu.shop.R;
 import com.vcvb.chenyu.shop.adapter.b.BaseItem;
 import com.vcvb.chenyu.shop.javaBean.faat.SecKillGoods;
 
-import cn.iwgang.countdownview.CountdownView;
-
 public class FaatSecKillGoodsItem extends BaseItem<SecKillGoods> {
     public static final int TYPE = R.layout.faat_seckill_goods_item;
 
@@ -44,24 +42,22 @@ public class FaatSecKillGoodsItem extends BaseItem<SecKillGoods> {
         TextView tv4 = holder.get(R.id.textView313);
         ImageView iv = holder.get(R.id.imageView157);
         Glide.with(context).load(mData.getOriginal_img()).into(iv);
-        CountdownView cdv = holder.get(R.id.count_down);
+        TextView tv5 = holder.get(R.id.textView315);
 
         Integer countDown = mData.getEnd_time() - mData.getCurrent_time();
         Integer startTime = mData.getCurrent_time() - mData.getBegin_time();
         Long current_time = countDown.longValue() * 1000;
         if (current_time > 0 && startTime > 0) {
-            cdv.setAlpha(1);
+            tv5.setAlpha(1);
             tv4.setAlpha(0);
         } else if (current_time > 0 && startTime < 0) {
-            cdv.setAlpha(0);
+            tv5.setAlpha(0);
             tv4.setAlpha(1);
             tv4.setText(R.string.is_start);
         }else{
-            cdv.setAlpha(0);
+            tv5.setAlpha(0);
             tv4.setAlpha(1);
             tv4.setText(R.string.is_over);
         }
-        //毫秒数
-        cdv.start(current_time);
     }
 }

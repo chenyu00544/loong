@@ -11,19 +11,23 @@ namespace App\Http\Controllers\Shop\Admin;
 
 use App\Facades\Verifiable;
 use App\Repositories\Admin\AdRepository;
+use App\Repositories\Admin\ComCateRepository;
 use Illuminate\Http\Request;
 
 class AdvertisePositionController extends CommonController
 {
     private $adRepository;
+    private $comCateRepository;
 
     public function __construct(
-        AdRepository $adRepository
+        AdRepository $adRepository,
+        ComCateRepository $comCateRepository
     )
     {
         parent::__construct();
         $this->checkPrivilege('ad_position');
         $this->adRepository = $adRepository;
+        $this->comCateRepository = $comCateRepository;
     }
 
     /**
@@ -52,7 +56,8 @@ class AdvertisePositionController extends CommonController
     public function create()
     {
         $daTypes = $this->adRepository->getAdTypes();
-        return view('shop.admin.ads.positionAdd', compact('daTypes'));
+        $cates = $this->comCateRepository->getComCates();
+        return view('shop.admin.ads.positionAdd', compact('daTypes', 'cates'));
     }
 
     /**
@@ -96,7 +101,9 @@ class AdvertisePositionController extends CommonController
     {
         $adspos = $this->adRepository->getAdPos($id);
         $daTypes = $this->adRepository->getAdTypes();
-        return view('shop.admin.ads.positionEdit', compact('adspos', 'daTypes'));
+        $cates = $this->comCateRepository->getComCates();
+        $parentCates = $this->comCateRepository->getParentCate($adspos->nav_id);
+        return view('shop.admin.ads.positionEdit', compact('adspos', 'daTypes', 'cates', 'parentCates'));
     }
 
     /**

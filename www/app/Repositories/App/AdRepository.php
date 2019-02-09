@@ -28,9 +28,9 @@ class AdRepository implements AdRepositoryInterface
         $this->adPositionModel = $adPositionModel;
     }
 
-    public function getAdPositionAndAds()
+    public function getAdPositionAndAds($nav_id = 0)
     {
-        $where = [['ad_terminal', '=', 'app'], ['ad_type', '<>', 'cate_ads']];
+        $where = [['ad_terminal', '=', 'app'], ['ad_type', '<>', 'cate_ads'], ['nav_id', '=', $nav_id]];
         $res = $this->adPositionModel->getPositionByAds($where, ['position_id', 'ad_type', 'ad_width', 'ad_height']);
         $ads = [];
         foreach ($res as $re) {

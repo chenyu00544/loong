@@ -151,25 +151,22 @@ class OrderController extends CommonController
         return $this->orderRepository->delDelivery($id);
     }
 
-    //团购
-    public function getGroupBuySelf($id)
+    /**
+     * 促销活动订单
+     * $fn          活动类型
+     * $seller      所属商家
+     * $id          活动ID
+     * $nav         订单状态导航
+     * @return \Illuminate\Http\Response
+     */
+    public function getFaatOrders(Request $request, $fn, $seller, $nav, $id)
     {
-        $seller = 'selfsale';
-        $navType = '0';
-        $search['keywords'] = '';
-        $searchNav = $this->orderRepository->getSearchNav($seller);
-        $orders = $this->orderRepository->getOrdersByPage($search, [$seller, $navType]);
-        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders'));
-    }
-
-    public function getGroupBuySeller($id)
-    {
-        $seller = 'seller';
-        $navType = '0';
-        $search['keywords'] = '';
-        $searchNav = $this->orderRepository->getSearchNav($seller);
-        $orders = $this->orderRepository->getOrdersByPage($search, [$seller, $navType]);
-        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders'));
+        $navType = $nav;
+        $faat_id = $id;
+        $search['keywords'] = $request->get('keywords');
+        $searchNav = $this->orderRepository->getSearchNav($seller, $fn);
+        $orders = $this->orderRepository->getOrdersByPage($search, [$seller, $navType, $fn], 0, $faat_id);
+        return view('shop.admin.order.order', compact('seller', 'navType', 'searchNav', 'search', 'orders', 'fn', 'faat_id'));
     }
 
     //退货单列表

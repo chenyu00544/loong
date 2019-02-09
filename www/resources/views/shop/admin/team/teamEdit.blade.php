@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow-y: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>促销管理 - 团购活动</div>
+        <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>促销管理 - 拼团活动</div>
         <div class="content">
             <div class="tip">
                 <div class="tip_title">
@@ -11,146 +11,152 @@
                 </div>
                 <ul>
                     <li>标识<em>"*"</em>的选项为必填项，其余为选填项。</li>
-                    <li>团购活动相关信息设置，请谨慎填写信息。</li>
+                    <li>拼团活动相关信息设置，请谨慎填写信息。</li>
                 </ul>
             </div>
             <div class="fromlist clearfix">
                 <div class="main-info">
-                    <form name="brand" action="{{url('admin/groupbuy/'.$group->act_id)}}" method="post"
-                          class="form-horizontal"
+                    <form name="brand" action="{{url('admin/team/'.$team->id)}}" method="post" class="form-horizontal"
                           enctype="multipart/form-data">
                         {{csrf_field()}}
                         {{method_field('PUT')}}
 
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><b>*</b>商品名称：</label>
-                            <div class="col-sm-4">
-                                <select class="form-control input-sm">
-                                    <option value="0">请选择</option>
-                                    <option value="{{$group->act_name}}" selected>{{$group->act_name}}</option>
+                            <label class="col-sm-4 control-label"><b>*</b>拼团商品：</label>
+                            <div class="col-sm-3">
+                                <select name="goods_id" class="form-control input-sm">
+                                    <option value="{{$team->goods_id}}" selected>{{$team->goods->goods_name}} - 价格：{{$team->goods->shop_price}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label"><b>*</b>起止日期：</label>
-                            <div class="col-sm-4">
-                                <input type="text" style="width: 300px" name="use_start_end_date"
-                                       id="use_start_end_date" class="form-control input-sm"
-                                       value="{{$group->date_format}}">
+                            <label class="col-sm-4 control-label"><b>*</b>拼团名称：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="team_name" class="form-control input-sm"
+                                       value="{{$team->team_name}}"
+                                       placeholder="拼团名称" autocomplete="off">
                             </div>
+                            <div class="notic fl mar-left-5">拼团购买时的商品价格</div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">保证金：</label>
-                            <div class="col-sm-2">
-                                <input type="text" name="deposit" class="form-control input-sm"
-                                       value="{{$group->ext_info['deposit']}}"
-                                       placeholder="保证金" autocomplete="off">
+                            <label class="col-sm-4 control-label">拼团价格：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="team_price" class="form-control input-sm"
+                                       value="{{$team->team_price}}"
+                                       placeholder="拼团价格" autocomplete="off">
                             </div>
-                            <div class="notic fl mar-left-10">购买该商品时赠送消费积分数,-1表示按商品价格赠送</div>
+                            <div class="notic fl mar-left-5">拼团购买时的商品价格</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">几人团：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="team_num" class="form-control input-sm"
+                                       value="{{$team->team_num}}"
+                                       placeholder="几人团" autocomplete="off">
+                            </div>
+                            <div class="notic fl mar-left-5">此商品的成团人数</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">开团有效期：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="validity_time" class="form-control input-sm"
+                                       value="{{$team->validity_time}}"
+                                       placeholder="开团有效期" autocomplete="off">
+                            </div>
+                            <div class="notic fl mar-left-5">团长开团成功后开始倒计时(时间格式：小时，输入1~24 数字)</div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-4 control-label">限购数量：</label>
-                            <div class="col-sm-2">
-                                <input type="text" name="restrict_amount" class="form-control input-sm"
-                                       value="{{$group->ext_info['restrict_amount']}}"
+                            <div class="col-sm-3">
+                                <input type="text" name="astrict_num" class="form-control input-sm shop_price"
+                                       value="{{$team->astrict_num}}"
                                        placeholder="限购数量" autocomplete="off">
                             </div>
+                            <div class="notic fl mar-left-5">每位参团人员（包括团长）的限购数量</div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">赠送积分数：</label>
-                            <div class="col-sm-2">
-                                <input type="text" name="gift_integral" class="form-control input-sm"
-                                       value="{{$group->ext_info['gift_integral']}}"
-                                       placeholder="限购数量" autocomplete="off">
+                            <label class="col-sm-4 control-label">频道：</label>
+                            <div class="col-sm-3">
+                                <select name="tc_id" class="form-control input-sm">
+                                    <option value="0">请选择</option>
+                                    @foreach($teamCates as $teamCate)
+                                        <option value="{{$teamCate->id}}" @if($teamCate->id == $team->tc_id) selected @endif>{{$teamCate->name}}</option>
+                                        @foreach($teamCate->subCates as $subCate)
+                                            <option value="{{$subCate->id}}"
+                                                    @if($subCate->id == $team->tc_id) selected @endif>{{$subCate->name}}</option>
+                                        @endforeach
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">市场售价：</label>
-                            <div class="col-sm-1">
-                                <input type="text" class="form-control input-sm shop_price"
-                                       value="{{$group->goods->shop_price}}" disabled>
-                                <input type="hidden" name="goods_name" value="">
+                            <label class="col-sm-4 control-label">已参团人数(添加虚拟数量)：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="limit_num" class="form-control input-sm"
+                                       value="{{$team->limit_num}}"
+                                       placeholder="已参团人数" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4 control-label"><b>*</b>阶梯价格：</div>
-                            <div class="col-sm-8">
-                                <div class="is-volume-div">
-                                    <table class="table table-bordered volume-price" style="width: auto;">
-                                        <tbody>
-                                        <tr class="first-tr">
-                                            <td class="text-center">开团数量</td>
-                                            @foreach($group->ext_info['price_ladder'] as $price_ladder)
-                                                <td>
-                                                    <input type="text" name="volume_number[]"
-                                                           value="{{$price_ladder['amount']}}"
-                                                           class="form-control max-wd-100" autocomplete="off">
-                                                </td>
-                                            @endforeach
-                                            <td class="" rowspan="2">
-                                                <a href="javascript:;" class="add-v-p"></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-center">享受价格</td>
-                                            @foreach($group->ext_info['price_ladder'] as $price_ladder)
-                                                <td>
-                                                    <input type="text" name="volume_price[]"
-                                                           value="{{$price_ladder['price']}}"
-                                                           class="form-control max-wd-100"
-                                                           autocomplete="off">
-                                                </td>
-                                            @endforeach
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-4 control-label">活动说明：</div>
-                            <div class="col-sm-4">
-                                            <textarea class="form-control max-wd-350 fl" rows="5"
-                                                      name="seller_note">{{$group->act_desc}}</textarea>
+                            <div class="col-sm-4 control-label">拼团介绍：</div>
+                            <div class="col-sm-3">
+                                <textarea class="form-control fl" rows="5"
+                                          name="team_desc" placeholder="拼团介绍">{{$team->team_desc}}</textarea>
                                 <div class="form-prompt"></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4 control-label">新品：</div>
-                            <div class="col-sm-4">
-                                <div class="switch-wrap clearfix fl" style="margin: 5px 0;">
-                                    <div class="switch @if($group->is_new) active @endif" data-type="is_on_sale"
-                                         title="是">
-                                        <div class="circle"></div>
-                                        <input type="hidden" value="{{$group->is_new}}" name="is_new">
-                                    </div>
-                                </div>
+                            <label class="col-sm-4 control-label">排序：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="sort_order" class="form-control input-sm"
+                                       value="{{$team->sort_order}}"
+                                       placeholder="排序" autocomplete="off">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="col-sm-4 control-label">热销：</div>
+                            <label class="col-sm-4 control-label">是否显示：</label>
                             <div class="col-sm-4">
-                                <div class="switch-wrap clearfix fl" style="margin: 5px 0;">
-                                    <div class="switch @if($group->is_hot) active @endif" data-type="is_on_sale"
-                                         title="是">
-                                        <div class="circle"></div>
-                                        <input type="hidden" value="{{$group->is_hot}}" name="is_hot">
-                                    </div>
-                                </div>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_team" value="1"
+                                           @if($team->is_team == 1) checked @endif> 是
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_team" value="0"
+                                           @if($team->is_team == 0) checked @endif> 否
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">审核：</label>
+                            <div class="col-sm-4">
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_audit" value="0"
+                                           @if($team->is_audit == 0) checked @endif> 未审核
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_audit" value="2"
+                                           @if($team->is_audit == 2) checked @endif> 审核通过
+                                </label>
+                                <label class="radio-inline fl">
+                                    <input type="radio" name="is_audit" value="1"
+                                           @if($team->is_audit == 1) checked @endif> 审核未通过
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group isnot_aduit_reason" style="display: none;">
+                            <div class="col-sm-4 control-label">审核未通过理由：</div>
+                            <div class="col-sm-3">
+                                <textarea class="form-control fl" rows="5" cols="10"
+                                          name="isnot_aduit_reason"
+                                          placeholder="审核未通过理由">{{$team->isnot_aduit_reason}}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-sm-4 control-label">&nbsp;</div>
-                            <div class="col-sm-5">
-                                <input type="submit" value="　确定　" class="btn btn-danger">
+                            <div class="col-sm-4">
+                                <input type="submit" value="　确定　" class="btn btn-danger clearfix">
                                 <a type="button" class="btn btn-default clearfix mar-left-20"
                                    href="javascript:history.go(-1)">返回</a>
-                                @if($group->end_time > time())
-                                    <div class="mar-right-20 fr">活动还未结束，要马上<a type="button" data-id="{{$group->act_id}}"
-                                                                              class="btn btn-danger over_faat"
-                                                                              href="javascript:;">结束活动</a>吗?
-                                    </div>
-                                @endif
                             </div>
                         </div>
                     </form>
@@ -164,79 +170,12 @@
 @section('script')
     <script>
         $(function () {
-
-            $('#use_start_end_date').daterangepicker(optionDateSet, function (start, end) {
-                var s = start.format('YYYY-MM-DD HH:mm:ss');
-                var e = end.format('YYYY-MM-DD HH:mm');
-                var t = s + '～' + e + ':59';
-                $('#use_start_end_date').val(t);
-            });
-
-            $('.btn-search').on('click', function () {
-                var keywords = $('.keyword').val();
-                if (keywords != '') {
-                    $.post("{{url('admin/search')}}", {
-                        keywords: keywords,
-                        type: 3,
-                        '_token': '{{csrf_token()}}'
-                    }, function (data) {
-                        var html = '<option value="0">请选择</option>';
-                        if (data.code == 1) {
-                            for (var i in data.data) {
-                                html += '<option value="' + data.data[i].id + '" data-shop_price="' + data.data[i].shop_price + '">' + data.data[i].name + '</option>'
-                            }
-                        } else {
-                            layer.msg(data.msg, {icon: data.code});
-                            html += '<option value="0" selected>没有搜索到相关记录，请重新搜索</option>'
-                        }
-                        $('select[name=goods_id]').html(html)
-                    })
+            $('input[name=is_audit]').click(function () {
+                if ($(this).val() == 1) {
+                    $('.isnot_aduit_reason').show();
                 } else {
-                    layer.msg('请输入关键字', {icon: 5});
+                    $('.isnot_aduit_reason').hide();
                 }
-            });
-
-            $('select[name=goods_id]').change(function () {
-                $('.shop_price').val($(this).find('option:selected').data('shop_price'));
-                $('input[name=goods_name]').val($(this).find('option:selected').html());
-            });
-
-            $('.is-volume-div').on('click', '.add-v-p', function () {
-                var tbody = $(this).parent().parent().parent();
-                var html = '<td><input type="text" name="volume_number[]" value="0"' +
-                    'class="form-control max-wd-100" autocomplete="off" placeholder="数量"></td>';
-                var html1 = '<td><input type="text" name="volume_price[]" value="0" class="form-control max-wd-100" autocomplete="off"  placeholder="价格"></td>';
-                tbody.find('tr').each(function (k, v) {
-                    if (k == 0) {
-                        $(v).find('td').last().before(html);
-                    } else if (k == 1) {
-                        $(v).append(html1);
-                    }
-                })
-            });
-
-            //开关
-            $('.switch').on('click', function () {
-                var val = 0;
-                if ($(this).hasClass('active')) {
-                    val = 0;
-                    $(this).removeClass('active');
-                } else {
-                    val = 1;
-                    $(this).addClass('active');
-                }
-                $(this).find('input').val(val);
-            });
-
-            $('.over_faat').click(function () {
-                var id = $(this).data('id');
-                $.post("{{url('admin/groupbuy/change')}}", {
-                    _token: '{{csrf_token()}}',
-                    id: id,
-                    type: "is_finish"
-                }, function (data) {
-                    layer.msg(data.msg, {icon: data.code});
-                })
             });
         });
     </script>

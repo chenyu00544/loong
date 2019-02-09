@@ -32,10 +32,22 @@ class TeamRepository implements TeamRepositoryInterface
         $this->teamLogModel = $teamLogModel;
     }
 
-    public function getTeamsByPage()
+    public function changeTeam($data)
     {
-        $res = $this->teamGoodsModel->getTeamsByPage();
-        foreach ($res as $re){
+        $where['id'] = $data['id'];
+        $updata = [];
+        switch ($data['type']) {
+            case 'sort_order':
+                $updata['sort_order'] = $data['value'];
+                break;
+        }
+        return $this->teamGoodsModel->setTeam($where, $updata);
+    }
+
+    public function getTeamsByPage($search = [])
+    {
+        $res = $this->teamGoodsModel->getTeamsByPage([], $search);
+        foreach ($res as $re) {
             $re->goods->goods_thumb = FileHandle::getImgByOssUrl($re->goods->goods_thumb);
             $re->goods->goods_img = FileHandle::getImgByOssUrl($re->goods->goods_img);
             $re->goods->original_img = FileHandle::getImgByOssUrl($re->goods->original_img);
@@ -43,9 +55,16 @@ class TeamRepository implements TeamRepositoryInterface
         return $res;
     }
 
-    public function addTeams($data)
+    public function getTeam($id)
+    {
+        $where['id'] = $id;
+        return $this->teamGoodsModel->getTeam($where);
+    }
+
+    public function addTeam($data)
     {
         $updata = [
+            'team_name' => trim($data['team_name']),
             'goods_id' => intval($data['goods_id']),
             'team_price' => doubleval($data['team_price']),
             'team_num' => intval($data['team_num']),
@@ -60,6 +79,28 @@ class TeamRepository implements TeamRepositoryInterface
             'isnot_aduit_reason' => trim($data['isnot_aduit_reason']),
         ];
         return $this->teamGoodsModel->addTeam($updata);
+    }
+
+    public function setTeam($data, $id)
+    {
+        $where['id'] = $id;
+        $updata = [
+            'team_name' => trim($data['team_name']),
+            'goods_id' => intval($data['goods_id']),
+            'team_price' => doubleval($data['team_price']),
+            'team_num' => intval($data['team_num']),
+            'validity_time' => intval($data['validity_time']),
+            'astrict_num' => intval($data['astrict_num']),
+            'tc_id' => intval($data['tc_id']),
+            'limit_num' => intval($data['limit_num']),
+            'team_desc' => trim($data['team_desc']),
+            'sort_order' => intval($data['sort_order']),
+            'is_team' => intval($data['is_team']),
+            'is_audit' => intval($data['is_audit']),
+            'isnot_aduit_reason' => trim($data['isnot_aduit_reason']),
+        ];
+
+        return $this->teamGoodsModel->setTeam($where, $updata);
     }
 
     public function changeTeamCate($data)
@@ -161,5 +202,57 @@ class TeamRepository implements TeamRepositoryInterface
             $req['msg'] = '操作成功';
         }
         return $req;
+    }
+
+    public function getTeamLogByPage($search, $nav_type)
+    {
+        $time = time();
+        $where = [
+            ['is_show', '=', 1]
+        ];
+        $raw = '';
+        switch ($nav_type) {
+            case 'all':
+                break;
+            case 'teaming'://拼团中
+                $raw = 'start_time > ' . $time . '-validity_time*3600';
+                $where[] = ['status', '<>', 1];
+                break;
+            case 'success'://成功团
+                $where[] = ['status', '=', 1];
+                break;
+            case 'failed'://失败团
+                $raw = 'start_time < ' . $time . '-validity_time*3600';
+                $where[] = ['status', '<>', 1];
+                break;
+        }
+        $res = $this->teamLogModel->getTeamLogByPage($where, $search, $raw);
+        foreach ($res as $re) {
+            $re->goods_thumb = FileHandle::getImgByOssUrl($re->goods_thumb);
+            $re->goods_img = FileHandle::getImgByOssUrl($re->goods_img);
+            $re->original_img = FileHandle::getImgByOssUrl($re->original_img);
+            //团状态
+            if ($re->status != 1 && $time < ($re->start_time + ($re->validity_time * 3600)) && $re->is_team == 1) {//进项中
+                $re->status = '进行中';
+            } elseif ($re->status != 1 && ($time > ($re->start_time + ($re->validity_time * 3600)) || $re->is_team != 1)) {//失败
+                $re->status = '失败团';
+            } elseif ($re->status == 1) {
+                $re->status = '成功团';
+            }
+            //剩余时间
+            $endtime = $re->start_time + $re->validity_time * 3600;
+            $cle = $endtime - $time; //得出时间戳差值
+            $d = floor($cle / 3600 / 24);
+            $h = floor(($cle % (3600 * 24)) / 3600);
+            $m = floor((($cle % (3600 * 24)) % 3600) / 60);
+            if ($d) {
+                $re->time = $d . '天' . $h . '小时' . $m . '分钟';
+            } else {
+                $re->time = $h . '小时' . $m . '分钟';
+            }
+            $re->cle = $cle;
+            $re->surplus = $re->team_num - $re->order->count();
+        }
+        return $res;
     }
 }

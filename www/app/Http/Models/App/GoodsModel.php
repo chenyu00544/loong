@@ -30,6 +30,24 @@ class GoodsModel extends Model
         return $this->hasMany('App\Http\Models\App\GoodsFullCutModel', 'goods_id', 'goods_id');
     }
 
+    //秒杀
+    public function secKill()
+    {
+        return $this->hasOne('App\Http\Models\App\SecKillGoodsModel', 'goods_id', 'goods_id');
+    }
+
+//    //拼团
+//    public function team()
+//    {
+//        return $this->hasMany('App\Http\Models\App\TeamGoodsModel', 'goods_id', 'goods_id');
+//    }
+//
+    //团购
+    public function groupBuy()
+    {
+        return $this->hasOne('App\Http\Models\App\GoodsActivityModel', 'goods_id', 'goods_id');
+    }
+
     public function qa()
     {
         return $this->hasMany('App\Http\Models\App\QuestionAnswerModel', 'id_value', 'goods_id');
@@ -131,6 +149,14 @@ class GoodsModel extends Model
             ->with(['shop' => function ($query) {
             }])
             ->with(['brand' => function ($query) {
+            }])
+            ->with(['secKill' => function ($query) {
+                $query->select(['*'])->join('seckill', 'seckill.sec_id', '=', 'seckill_goods.sec_id')->join('seckill_time_bucket', 'seckill_time_bucket.id', '=', 'seckill_goods.tb_id');
+            }])
+//            ->with(['team' => function ($query) {
+//            }])
+            ->with(['groupBuy' => function ($query) {
+                $query->select(['goods_id', 'review_status', 'act_type', 'start_time', 'end_time', 'is_finished', 'ext_info'])->where([['review_status', '=', '3'], ['act_type', '=', '1'], ['start_time', '<', time()], ['end_time', '>', time()], ['is_finished', '=', '0']]);
             }])
             ->where($where)
             ->where('review_status', '>=', 3)

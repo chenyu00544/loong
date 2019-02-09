@@ -13,7 +13,7 @@
                         <a href="{{url('admin/teamcate')}}">活动频道</a>
                     </li>
                     <li class="@if($nav_type == 'teaminfo') curr @endif fl">
-                        <a href="{{url('admin/team/teaminfo')}}">开团团队</a>
+                        <a href="{{url('admin/team/info/all')}}">开团团队</a>
                     </li>
                 </ul>
             </div>

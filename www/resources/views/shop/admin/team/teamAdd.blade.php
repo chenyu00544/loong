@@ -38,6 +38,14 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label"><b>*</b>拼团名称：</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="team_name" class="form-control input-sm" value=""
+                                       placeholder="拼团名称" autocomplete="off">
+                            </div>
+                            <div class="notic fl mar-left-5">拼团购买时的商品价格</div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">拼团价格：</label>
                             <div class="col-sm-3">
                                 <input type="text" name="team_price" class="form-control input-sm" value=""
@@ -168,7 +176,7 @@
                         var html = '<option value="0">请选择</option>';
                         if (data.code == 1) {
                             for (var i in data.data) {
-                                html += '<option value="' + data.data[i].id + '" data-shop_price="' + data.data[i].shop_price + '">' + data.data[i].name + '</option>'
+                                html += '<option value="' + data.data[i].id + '" data-shop_price="' + data.data[i].shop_price + '">' + data.data[i].name +  '- 价格：' + data.data[i].shop_price + '</option>'
                             }
                         } else {
                             layer.msg(data.msg, {icon: data.code});

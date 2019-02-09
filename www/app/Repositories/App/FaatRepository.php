@@ -15,6 +15,7 @@ use App\Http\Models\App\FavourableActivityModel;
 use App\Http\Models\App\GoodsActivityModel;
 use App\Http\Models\App\SecKillModel;
 use App\Http\Models\App\SecKillTimeBucketModel;
+use App\Http\Models\App\TeamCategoryModel;
 
 class FaatRepository implements FavourableActivityRepositoryInterface
 {
@@ -24,13 +25,15 @@ class FaatRepository implements FavourableActivityRepositoryInterface
     private $secKillModel;
     private $secKillTimeBucketModel;
     private $goodsActivityModel;
+    private $teamCategoryModel;
 
     public function __construct(
         FavourableActivityModel $favourableActivityModel,
         AdRepository $adRepository,
         SecKillModel $secKillModel,
         SecKillTimeBucketModel $secKillTimeBucketModel,
-        GoodsActivityModel $goodsActivityModel
+        GoodsActivityModel $goodsActivityModel,
+        TeamCategoryModel $teamCategoryModel
     )
     {
         $this->favourableActivityModel = $favourableActivityModel;
@@ -38,6 +41,7 @@ class FaatRepository implements FavourableActivityRepositoryInterface
         $this->secKillModel = $secKillModel;
         $this->secKillTimeBucketModel = $secKillTimeBucketModel;
         $this->goodsActivityModel = $goodsActivityModel;
+        $this->teamCategoryModel = $teamCategoryModel;
     }
 
     public function getFaatByGroupId($id)
@@ -116,7 +120,7 @@ class FaatRepository implements FavourableActivityRepositoryInterface
         $goodsActivitys = $this->goodsActivityModel->getGoodsActivitys($where);
         foreach ($goodsActivitys as $goodsActivity) {
             $goodsActivity->ext_info = unserialize($goodsActivity->ext_info);
-            if($goodsActivity->goods){
+            if ($goodsActivity->goods) {
                 foreach ($goodsActivity->goods->toArray() as $key => $value) {
                     if ($key == 'goods_thumb' || $key == 'goods_img' || $key == 'original_img') {
                         $goodsActivity->goods_thumb = FileHandle::getImgByOssUrl($value);
@@ -126,7 +130,7 @@ class FaatRepository implements FavourableActivityRepositoryInterface
                         $goodsActivity->$key = $value;
                         $goodsActivity->shop_price_format = Common::priceFormat($value);
                         $goodsActivity->market_price_format = Common::priceFormat($value);
-                    }else{
+                    } else {
                         $goodsActivity->$key = $value;
                     }
                 }
@@ -135,5 +139,33 @@ class FaatRepository implements FavourableActivityRepositoryInterface
             unset($goodsActivity->goods);
         }
         return $goodsActivitys;
+    }
+
+    public function getTeamNav()
+    {
+        $res = $this->teamCategoryModel->getTeamCates(['parent_id' => 0]);
+        foreach ($res as $re){
+            $re->tc_img = FileHandle::getImgByOssUrl($re->tc_img);
+        }
+        return $res;
+    }
+
+    public function getTeam($data)
+    {
+        $res = $this->teamCategoryModel->getTeamCates(['parent_id' => $data['id']]);
+
+        $whereIn = [];
+        $whereIn[] = $data['id'];
+        foreach ($res as $re) {
+            $whereIn[] = $re->id;
+        }
+        $goodses = $this->teamCategoryModel->getTeamCatesByGoods($whereIn);
+        foreach ($goodses as $goods){
+            foreach ($goods->goods as $gs){
+                $gs->original_img = FileHandle::getImgByOssUrl($gs->original_img);
+                $gs->team_price_format = Common::priceFormat($gs->team_price);
+            }
+        }
+        return $goodses;
     }
 }

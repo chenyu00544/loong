@@ -52,4 +52,16 @@ class FaatController extends CommonController
         $res = $this->faatRepository->getGroupBuy();
         return $this->apiReturn($res);
     }
+
+    public function teamNav(Request $request)
+    {
+        $res = $this->faatRepository->getTeamNav();
+        return $this->apiReturn($res);
+    }
+
+    public function team(Request $request)
+    {
+        $res = $this->faatRepository->getTeam($request->all());
+        return $this->apiReturn($res);
+    }
 }

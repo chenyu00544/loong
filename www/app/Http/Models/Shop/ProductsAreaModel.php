@@ -11,14 +11,14 @@ namespace App\Http\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductsModel extends Model
+class ProductsAreaModel extends Model
 {
-    protected $table = 'products';
+    protected $table = 'products_area';
     protected $primaryKey = 'product_id';
     public $timestamps = false;
     protected $guarded = [];
 
-    public function getProductsByPage($where, $column = ['*'], $size = 5)
+    public function getProductsByPage($where, $column = ['*'], $size = 15)
     {
         return $this->select($column)
             ->where($where)

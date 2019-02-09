@@ -218,6 +218,21 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $fullcut->creduce_format = Common::priceFormat((int)$fullcut->creduce);
             }
 
+            //团购
+            if (!empty($goods_detail->groupBuy)) {
+                $ext_info = unserialize($goods_detail->groupBuy->ext_info);
+                foreach ($ext_info as $k => $v) {
+                    $goods_detail->groupBuy->$k = $v;
+                }
+                unset($goods_detail->groupBuy->ext_info);
+            } else {
+                $goods_detail->groupBuy = [];
+            }
+
+            //拼团
+
+            //砍价
+
             //快递
             if ($goods_detail->freight == 2) {
                 $twhere['tid'] = $goods_detail->tid;

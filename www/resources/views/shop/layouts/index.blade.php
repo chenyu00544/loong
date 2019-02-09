@@ -18,6 +18,7 @@
     <title>{{Config::get('config.admin_name')}}</title>
     <script>
         var weburl = '{{url('/')}}';
+        var token = '{{csrf_token()}}';
     </script>
 </head>
 <body>

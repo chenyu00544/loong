@@ -101,6 +101,9 @@
                                         @endif</td>
                                     <td class="text-center">
                                         <a type="button"
+                                           href="{{url('admin/order/seckill/selfsale/0/'.$seckill->sec_id)}}"
+                                           class="btn btn-info btn-edit btn-sm">查看</a>
+                                        <a type="button"
                                            href="{{url('admin/seckillgoods/'.$seckill->sec_id)}}"
                                            class="btn btn-info btn-edit btn-sm">设置商品</a>
                                         <a type="button" href="{{url('admin/seckill/'.$seckill->sec_id.'/edit')}}"

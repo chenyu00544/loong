@@ -95,7 +95,7 @@
                                         @endif</td>
                                     <td class="text-center">
                                         <a type="button"
-                                           href="{{url('admin/order/groupbuy/'.$seller.'/'.$group->act_id)}}"
+                                           href="{{url('admin/order/groupbuy/'.$seller.'/0/'.$group->act_id)}}"
                                            class="btn btn-info btn-edit btn-sm">查看</a>
                                         <a type="button" href="{{url('admin/groupbuy/'.$group->act_id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>

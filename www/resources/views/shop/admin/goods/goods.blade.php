@@ -210,14 +210,13 @@
                                            data-goodsid="{{$goods->goods_id}}">权重排序</a>
                                     </td>
                                     <td>
-                                        @if($goods->is_attr)
-                                            <a href="javascript:;" ectype="add_sku" data-goodsid="{{$goods->goods_id}}"
-                                               data-userid="{{$goods->user_id}}">
-                                                <i class="glyphicon glyphicon-edit"></i>
-                                            </a>
+                                        @if(empty($goods->products))
+                                            {{$goods->goods_number}}
                                         @else
-                                            <span onclick="listTable.edit(this, 'edit_goods_number', {{$goods->goods_id}})">{{$goods->goods_number}}</span>
-                                        @endif</td>
+                                            <a href="javascript:;" class="sku" data-goodsid="{{$goods->goods_id}}" data-userid="{{$goods->user_id}}"><i
+                                                        class="glyphicon glyphicon-edit fs-18"></i></a>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if($goods->review_status == 1)
                                             <font class="oranges" id="examine_{{$goods->goods_id}}">未审核</font>
@@ -392,6 +391,22 @@
                 $(".check-all").each(function () {
                     $(this).prop("checked", flage);
                 })
+            });
+
+            //sku
+            $('.sku').click(function () {
+                var goods_id = $(this).data('goodsid');
+                layer.open({
+                    type: 2,
+                    area: ['800px', '500px'],
+                    fixed: true, //不固定
+                    maxmin: true,
+                    title: '商品SKU',
+                    content: ["{{url('admin/goods/sku/')}}" + "/" + goods_id, 'no'],
+                    success: function (layero, index) {
+                        layer.iframeAuto(index)
+                    }
+                });
             });
 
             // $('.check-all').click(function () {

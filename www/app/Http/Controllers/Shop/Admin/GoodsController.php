@@ -19,6 +19,7 @@ use App\Repositories\Admin\GoodsTypeRepository;
 use App\Repositories\Admin\TransportRepository;
 use App\Repositories\Admin\UserRankRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class GoodsController extends CommonController
 {
@@ -208,10 +209,23 @@ class GoodsController extends CommonController
         return $this->goodsRepository->getProductAndGallerys($request->except('_token'), $id, $this->user->ru_id);
     }
 
+    //商品sku窗口
+    public function getGoodsByProductSku($id)
+    {
+        $products = $this->goodsRepository->getProductByPage($id);
+        return view('shop.admin.goods.modal.sku', compact('products'));
+    }
+
+    //修改商品sku
+    public function changeProductSku(Request $request)
+    {
+        return $this->goodsRepository->changeProductSku($request->all());
+    }
+
     //删除SKU商品
     public function delProduct(Request $request, $id)
     {
-        return $this->goodsRepository->delPorduct($id);
+        return $this->goodsRepository->delProduct($id);
     }
 
     public function delVolumePrice($id)

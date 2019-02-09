@@ -70,6 +70,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('goods/addgoodsattr', 'GoodsController@addGoodsAttr');
     Route::post('goods/setgoodsattr', 'GoodsController@setGoodsAttr');
     Route::post('goods/product/{id}', 'GoodsController@getGoodsByProduct');
+    Route::get('goods/sku/{id}', 'GoodsController@getGoodsByProductSku');
+    Route::post('goods/change/sku', 'GoodsController@changeProductSku');
     Route::post('goods/delproduct/{id}', 'GoodsController@delProduct');
     Route::post('goods/delvolumeprice/{id}', 'GoodsController@delVolumePrice');
     Route::post('goods/delfullcut/{id}', 'GoodsController@delFullCut');
@@ -164,8 +166,8 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::get('order/delivery/info/{id}', 'OrderController@deliveryInfo');
     Route::post('order/changes', 'OrderController@changes');
     Route::post('order/change', 'OrderController@change');
-    Route::get('order/groupbuy/selfsale/{id}', 'OrderController@getGroupBuySelf');
-    Route::get('order/groupbuy/seller/{id}', 'OrderController@getGroupBuySeller');
+    Route::get('order/{fn}/{seller}/{nav}/{id}', 'OrderController@getFaatOrders');
+
     Route::resource('order', 'OrderController');
 
     Route::post('returncause/change', 'ReturnCauseController@change');
@@ -306,6 +308,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::post('adminuser/change/logo', 'AdminUserController@changeLogo');
 
+    Route::get('team/info/{id}', 'TeamController@getTeamInfo');
     Route::post('team/change', 'TeamController@change');
     Route::resource('team', 'TeamController');
 

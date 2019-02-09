@@ -10,23 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.donkingliang.groupedadapter.layoutmanger.GroupedGridLayoutManager;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.adapter.b.Item;
-import com.vcvb.chenyu.shop.adapter.item.faat.FaatSecKillGoodsItem;
-import com.vcvb.chenyu.shop.adapter.item.faat.FaatSecKillNavItem;
 import com.vcvb.chenyu.shop.base.BaseRecyclerViewFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.javaBean.faat.GroupBuy;
 import com.vcvb.chenyu.shop.javaBean.faat.SecKill;
-import com.vcvb.chenyu.shop.javaBean.faat.SecKillGoods;
-import com.vcvb.chenyu.shop.javaBean.faat.SecKillInfo;
-import com.vcvb.chenyu.shop.javaBean.faat.SecKillNav;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.JsonUtils;
-import com.vcvb.chenyu.shop.tools.TimeUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,7 +28,7 @@ import okhttp3.Call;
 
 public class FaatGroupBuyFragment extends BaseRecyclerViewFragment {
 
-    public List<GroupBuy> faats = new ArrayList<>();
+    public List<SecKill> faats = new ArrayList<>();
     private Integer currentTime;
 
     public int position = 0;
@@ -104,21 +93,21 @@ public class FaatGroupBuyFragment extends BaseRecyclerViewFragment {
     }
 
     public void bindData(JSONObject json) {
-        try {
-            currentTime = json.getInt("time");
-            Integer code = json.getInt("code");
-            if (code == 0) {
-
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (java.lang.InstantiationException e) {
-            e.printStackTrace();
-        }
-
-        mAdapter.setData(getItems(faats));
+//        try {
+//            currentTime = json.getInt("time");
+//            Integer code = json.getInt("code");
+//            if (code == 0) {
+//
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (java.lang.InstantiationException e) {
+//            e.printStackTrace();
+//        }
+//
+//        mAdapter.setData(getItems(faats));
     }
 
     protected List<SecKill> getItems(List<SecKill> beans) {
@@ -147,8 +136,8 @@ public class FaatGroupBuyFragment extends BaseRecyclerViewFragment {
         } else {
             //跳转位置在最后可见项之后
             mRecyclerView.smoothScrollToPosition(position);
-            mToPosition = position;
-            mShouldScroll = true;
+//            mToPosition = position;
+//            mShouldScroll = true;
         }
     }
 
@@ -166,7 +155,7 @@ public class FaatGroupBuyFragment extends BaseRecyclerViewFragment {
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
-            position = groupedGridLayoutManager.findFirstVisibleItemPosition();
+//            position = groupedGridLayoutManager.findFirstVisibleItemPosition();
         }
     };
 }

@@ -6,6 +6,7 @@ import com.vcvb.chenyu.shop.activity.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.activity.faat.FaatGroupBuyActivity;
 import com.vcvb.chenyu.shop.activity.faat.FaatListActivity;
 import com.vcvb.chenyu.shop.activity.faat.FaatSecKillActivity;
+import com.vcvb.chenyu.shop.activity.faat.FaatTeamActivity;
 import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.activity.notify.ArticleInfoActivity;
 import com.vcvb.chenyu.shop.activity.search.SearchInfoActivity;
@@ -82,6 +83,9 @@ public class UrlParse {
                 break;
             case "vcvbuy:://pages/faat/groupbuy":
                 a = FaatGroupBuyActivity.class;
+                break;
+            case "vcvbuy:://pages/faat/team":
+                a = FaatTeamActivity.class;
                 break;
             case "vcvbuy:://pages/brand/index":
                 a = BrandListActivity.class;

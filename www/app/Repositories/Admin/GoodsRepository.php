@@ -28,8 +28,10 @@ use App\Http\Models\Shop\GoodsModel;
 use App\Http\Models\Shop\GoodsTypeModel;
 use App\Http\Models\Shop\GoodsVolumePriceModel;
 use App\Http\Models\Shop\MemberPriceModel;
+use App\Http\Models\Shop\ProductsAreaModel;
 use App\Http\Models\Shop\ProductsChangeLogModel;
 use App\Http\Models\Shop\ProductsModel;
+use App\Http\Models\Shop\ProductsWarehouseModel;
 use App\Http\Models\Shop\SecKillGoodsModel;
 use App\Http\Models\Shop\TransportModel;
 use App\Http\Models\Shop\IntelligentWeightModel;
@@ -54,6 +56,8 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $attributeModel;
     private $intelligentWeightModel;
     private $productsModel;
+    private $productsAreaModel;
+    private $productsWarehouseModel;
     private $productsChangeLogModel;
     private $userRankModel;
     private $memberPriceModel;
@@ -76,6 +80,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         AttributeModel $attributeModel,
         IntelligentWeightModel $intelligentWeightModel,
         ProductsModel $productsModel,
+        ProductsAreaModel $productsAreaModel,
+        ProductsWarehouseModel $productsWarehouseModel,
         ProductsChangeLogModel $productsChangeLogModel,
         UserRankModel $userRankModel,
         MemberPriceModel $memberPriceModel,
@@ -98,6 +104,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->attributeModel = $attributeModel;
         $this->intelligentWeightModel = $intelligentWeightModel;
         $this->productsModel = $productsModel;
+        $this->productsAreaModel = $productsAreaModel;
+        $this->productsWarehouseModel = $productsWarehouseModel;
         $this->productsChangeLogModel = $productsChangeLogModel;
         $this->userRankModel = $userRankModel;
         $this->memberPriceModel = $memberPriceModel;
@@ -1181,7 +1189,64 @@ class GoodsRepository implements GoodsRepositoryInterface
         return $rep;
     }
 
-    public function delPorduct($id)
+    public function getProductByPage($id)
+    {
+        $where['goods_id'] = $id;
+        $gattrs = $this->goodsAttrModel->getGoodsAttrs($where);
+        $attrs = [];
+        foreach ($gattrs as $gattr) {
+            $attrs[$gattr->goods_attr_id] = $gattr;
+        }
+        $goods = $this->goodsModel->getGoods($where, ['goods_sn', 'model_inventory']);
+        if ($goods->model_inventory == 0) {
+            $res = $this->productsModel->getProductsByPage($where);
+        } elseif ($goods->model_inventory == 1) {
+            $res = $this->productsWarehouseModel->getProductsByPage($where);
+        } else {
+            $res = $this->productsAreaModel->getProductsByPage($where);
+        }
+        foreach ($res as $re) {
+            $goods_attr = explode('|', $re->goods_attr);
+            $ga = [];
+            foreach ($goods_attr as $attr_key) {
+                $ga[] = $attrs[$attr_key];
+            }
+            $re->goods_attr = $ga;
+        }
+        $return = [
+            'goods' => $goods,
+            'products' => $res,
+        ];
+        return $return;
+    }
+
+    public function changeProductSku($data)
+    {
+        $rep = ['code' => 5, 'msg' => '修改失败'];
+        $where['product_id'] = $data['id'];
+        $updata = [];
+        switch ($data['type']) {
+            case 'product_price':
+                $updata['product_price'] = $data['val'];
+                break;
+            case 'product_number':
+                $updata['product_number'] = $data['val'];
+                break;
+        }
+        if($data['model'] == 0){
+            $re = $this->productsModel->setProduct($where, $updata);
+        }elseif ($data['model'] == 1){
+            $re = $this->productsWarehouseModel->setProduct($where, $updata);
+        }else{
+            $re = $this->productsAreaModel->setProduct($where, $updata);
+        }
+        if ($re) {
+            $rep = ['code' => 1, 'msg' => '修改成功'];
+        }
+        return $rep;
+    }
+
+    public function delProduct($id)
     {
         $rep = ['code' => 0, 'msg' => '操作失败'];
         $where['product_id'] = $id;
@@ -1236,8 +1301,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         FileHandle::deleteFile($goods->goods_img);
         $re = $this->goodsModel->delGoods($where);
 
-        $goodsAttrs =  $this->goodsAttrModel->getGoodsAttrs($where);
-        foreach ($goodsAttrs as $attr){
+        $goodsAttrs = $this->goodsAttrModel->getGoodsAttrs($where);
+        foreach ($goodsAttrs as $attr) {
             FileHandle::deleteFile($attr->attr_img_flie);
             FileHandle::deleteFile($attr->attr_gallery_flie);
         }
@@ -1252,7 +1317,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->goodsFullCutModel->delGoodsFullCut($where);
 
         $goodsGallerys = $this->goodsGalleryModel->getGoodsGallerys($where);
-        foreach ($goodsGallerys as $gallery){
+        foreach ($goodsGallerys as $gallery) {
             FileHandle::deleteFile($gallery->img_url);
             FileHandle::deleteFile($gallery->thumb_url);
             FileHandle::deleteFile($gallery->img_original);

@@ -35,13 +35,13 @@ class TeamController extends CommonController
     {
         $nav_type = 'team';
         $search['keywords'] = '';
-        $teams = $this->teamRepository->getTeamsByPage();
+        $teams = $this->teamRepository->getTeamsByPage($search);
         return view('shop.admin.team.team', compact('teams', 'nav_type', 'search'));
     }
 
     public function change(Request $request)
     {
-
+        return $this->teamRepository->changeTeam($request->all());
     }
 
     /**
@@ -63,11 +63,11 @@ class TeamController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["goods_id" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["goods_id" => 'required', 'team_name' => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->teamRepository->addTeams($request->except('_token'));
+        $re = $this->teamRepository->addTeam($request->except('_token'));
         return view('shop.admin.success');
     }
 
@@ -79,7 +79,10 @@ class TeamController extends CommonController
      */
     public function show(Request $request, $id)
     {
-
+        $nav_type = $id;
+        $search['keywords'] = $request->get('keywords');
+        $teams = $this->teamRepository->getTeamsByPage($search);
+        return view('shop.admin.team.team', compact('teams', 'nav_type', 'search'));
     }
 
     /**
@@ -90,7 +93,9 @@ class TeamController extends CommonController
      */
     public function edit($id)
     {
-        //
+        $team = $this->teamRepository->getTeam($id);
+        $teamCates = $this->teamRepository->getTeamCatesBySub();
+        return view('shop.admin.team.teamEdit', compact('team', 'teamCates'));
     }
 
     /**
@@ -102,11 +107,11 @@ class TeamController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["xxxxx" => 'required']);
+        $ver = Verifiable::Validator($request->all(), ["goods_id" => 'required', 'team_name' => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->xxxxxxxxxxxxxx->XXXXXXXXXXXXXX($request->except('_token', '_method'), $id);
+        $re = $this->teamRepository->setTeam($request->except('_token', '_method'), $id);
         return view('shop.admin.success');
     }
 
@@ -119,5 +124,13 @@ class TeamController extends CommonController
     public function destroy($id)
     {
 
+    }
+
+    public function getTeamInfo(Request $request, $id)
+    {
+        $nav_type = $id;
+        $search['keywords'] = $request->get('keywords');
+        $teamLogs = $this->teamRepository->getTeamLogByPage($search, $nav_type);
+        return view('shop.admin.team.teamInfo', compact('nav_type', 'search', 'teamLogs'));
     }
 }

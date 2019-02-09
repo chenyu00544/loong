@@ -4,7 +4,7 @@
     <div class="warpper clearfix">
         <div class="title">商品管理 - 订单列表</div>
         <div class="content">
-            @if(empty($id))
+            @if($seller != '')
                 <div class="tabs mar-top-5">
                     <ul class="fl">
                         <li class="@if($seller == 'selfsale') curr @endif fl">
@@ -42,8 +42,8 @@
                 <ul class="fl">
                     @foreach($searchNav as $nav)
                         <li class="@if($navType == $nav['navType']) curr @endif fl">
-                            <a href="{{url('admin/order/'.$nav['navType'].'?seller='.$seller)}}">{{$nav['title']}}(<font
-                                        class="red">{{$nav['count']}}</font>)</a>
+                            <a href="{{url('admin/order/'.$nav['navType'].'?seat=0'.(empty($seller)?'':'&seller='.$seller).(empty($search['team_id'])?'':'&team='.$search['team_id']).(empty($search['sec_id'])?'':'&seckill='.$search['sec_id']).(empty($search['group_id'])?'':'&group_id='.$search['group_id']))}}">
+                                {{$nav['title']}}(<font class="red">{{$nav['count']}}</font>)</a>
                         </li>
                     @endforeach
                 </ul>
@@ -152,9 +152,57 @@
                                                     @endif
                                                 </div>
                                                 <div class="order_icon_items">
-                                                    <div class="order_icon @if($goods->extension_code == ''){{'order_icon_pt'}}@endif"
-                                                         title="普通订单">普通订单
-                                                    </div>
+                                                    @if($order->is_zc_order == 1)
+                                                        <div class="order_icon order_icon_zc fl" title="众筹订单">众筹订单</div>
+                                                    @endif
+                                                    @if(!empty($order->is_stages) && $order->is_stages == 1)
+                                                        <div class="order_icon order_icon_bt fl" title="白条订单">白条订单</div>
+                                                    @endif
+                                                    @if(!empty($order->is_store_order) && $order->is_store_order == 1)
+                                                        <div class="order_icon order_icon_so fl" title="门面订单">门面订单</div>
+                                                    @endif
+                                                    @if(!empty($order->is_drp_order) && $order->is_drp_order == 1)
+                                                        <div class="order_icon order_icon_fx fl" title="分销订单">分销订单</div>
+                                                    @endif
+                                                    @if($order->team_id > 0)
+                                                        <div class="order_icon order_icon_team fl" title="拼团订单">拼团订单
+                                                        </div>
+                                                    @elseif($order->extension_code == 'group_buy')
+                                                        <div class="order_icon order_icon_tg fl" title="团购订单">团购订单</div>
+                                                    @elseif($order->extension_code == 'exchange_goods')
+                                                        <div class="order_icon order_icon_jf fl" title="积分订单">积分订单</div>
+                                                    @elseif($order->extension_code == 'auction')
+                                                        <div class="order_icon order_icon_pm fl" title="拍卖订单">拍卖订单</div>
+                                                    @elseif($order->extension_code == 'snatch')
+                                                        <div class="order_icon order_icon_db fl" title="夺宝奇兵订单">夺宝奇兵订单
+                                                        </div>
+                                                    @elseif($order->extension_code == 'presale')
+                                                        <div class="order_icon order_icon_ys fl" title="预售订单">预售订单</div>
+                                                    @elseif($order->extension_code == 'seckill')
+                                                        <div class="order_icon order_icon_ms fl" title="秒杀订单">秒杀订单</div>
+                                                    @elseif($order->extension_code == 'team_buy')
+                                                        <div class="order_icon order_icon_team fl" title="拼团订单">拼团订单
+                                                        </div>
+                                                    @elseif($order->extension_code == 'bargain_buy')
+                                                        <div class="order_icon order_icon_bargain fl" title="预售订单">预售订单
+                                                        </div>
+                                                    @elseif($order->extension_code == 'wholesale')
+                                                        <div class="order_icon order_icon_wholesale fl" title="批发订单">
+                                                            批发订单
+                                                        </div>
+                                                    @elseif($order->extension_code == '')
+                                                        <div class="order_icon order_icon_pt fl" title="普通订单">普通订单</div>
+                                                    @endif
+                                                    @if($order->extension_code == 'virtual_card')
+                                                        <div class="order_icon order_icon_xn fl" title="虚拟订单">虚拟订单</div>
+                                                    @elseif($order->extension_code == 'package_buy')
+                                                        <div class="order_icon order_icon_package fl" title="礼品订单">礼品订单
+                                                        </div>
+                                                    @endif
+                                                    @if(!empty($order->ret_id) && $order->ret_id > 0)
+                                                        <div class="order_icon order_icon_return fl" title="退货订单">退货订单
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

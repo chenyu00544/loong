@@ -272,6 +272,8 @@
     <string name="is_start">未开始</string>
     <string name="second_kill">限时秒杀</string>
     <string name="group_buy">限时团购</string>
+    <string name="team">拼团购</string>
+    <string name="team_price">拼团价格</string>
     <string name="brand_center">品牌</string>
     <string name="into_brand">进入品牌</string>
     <string name="img_text_info">图文详情</string>

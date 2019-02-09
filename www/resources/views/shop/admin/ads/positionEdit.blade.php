@@ -53,6 +53,27 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">导航：</label>
+                            <div class="col-sm-8 pre-cate-sel" style="@if($adspos->nav_id == 0) display: none; @endif">
+                                @foreach($parentCates as $val)
+                                    @if($loop->index != 0)　>　@endif<span>{{$val['cat_name']}}</span>
+                                @endforeach
+                                <a href="javascript:;" class="btn btn-warning btn-reset btn-sm">重置</a>
+                                <input type="hidden" name="nav_id" value="{{$adspos->nav_id}}">
+                            </div>
+                            <div class="col-sm-8 pre-cate" style="@if($adspos->nav_id != 0) display: none; @endif">
+                                <div class="cate-option fl">
+                                    <select class="form-control select"
+                                            onchange="setNextCate(this)">
+                                        <option value="0">顶级分类</option>
+                                        @foreach($cates as $cate)
+                                            <option value="{{$cate->id}}">{{$cate->cat_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-sm-4 control-label"><font class="red">*</font>广告位宽度：</label>
                             <div class="col-sm-4">
                                 <input type="text" name="ad_width" class="form-control" value="{{$adspos->ad_width}}"
@@ -144,7 +165,41 @@
 @section('script')
     <script>
         $(function () {
+            $('select[name=ctype]').on('change', function () {
+                if($(this).val() == 1){
+                    $('.cate').show();
+                }else{
+                    $('.cate').hide();
+                }
+            });
+
+            $('.btn-reset').click(function () {
+                $('.pre-cate-sel').hide();
+                $('.pre-cate').show();
+                $('input[name="nav_id"]').val(0);
+            });
         });
+
+        function setNextCate(that) {
+            var id = $(that).val();
+            $('input[name="nav_id"]').val(id);
+            if (id > 0) {
+                var html = '';
+                $.post("{{url('admin/comcate/getcates/')}}/" + id, {'_token': '{{csrf_token()}}'}, function (data) {
+                    if (data.code === 1) {
+                        html = '<div class="cate-option fl"><select class="form-control select" onchange="setNextCate(this)"><option value="0">顶级分类</option>';
+                        $.each(data.data, function (k, v) {
+                            html += '<option value="' + v.id + '">' + v.cat_name + '</option>';
+                        })
+                        html += '</select></div>';
+                        $(that).parent().nextAll().remove();
+                        $('.pre-cate').append(html);
+                    } else {
+                        $(that).parent().nextAll().remove();
+                    }
+                })
+            }
+        }
     </script>
 @endsection
 @endsection

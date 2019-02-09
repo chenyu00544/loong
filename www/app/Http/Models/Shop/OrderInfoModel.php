@@ -94,7 +94,7 @@ class OrderInfoModel extends Model
         return $m->update($data);
     }
 
-    public function countOrder($where, $orWhere = [], $seller = 'selfsale')
+    public function countOrder($where, $orWhere = [], $seller = 'selfsale', $fn = 'all')
     {
         $m = $this->where($where);
 
@@ -102,6 +102,20 @@ class OrderInfoModel extends Model
             $m->where('ru_id', '=', '0');
         } elseif ($seller == 'seller') {
             $m->where('ru_id', '<>', '0');
+        }
+
+        switch ($fn){
+            case 'team':
+                $m->where('extension_code','=','team_buy');
+                break;
+            case 'seckill':
+                $m->where('extension_code','=','seckill');
+                break;
+            case 'groupbuy':
+                $m->where('extension_code','=','group_buy');
+                break;
+            default:
+                break;
         }
 
         if (!empty($orWhere)) {

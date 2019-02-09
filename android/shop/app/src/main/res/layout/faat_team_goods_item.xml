@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/goods_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_4_grad_b_white">
+
+    <ImageView
+        android:id="@+id/imageView124"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icon_no_pic" />
+
+    <TextView
+        android:id="@+id/textView239"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text=""
+        android:textColor="@color/black_29"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView124"
+        app:layout_constraintStart_toStartOf="@+id/imageView124"
+        app:layout_constraintTop_toBottomOf="@+id/imageView124" />
+
+    <TextView
+        android:id="@+id/textView241"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/shape_60_red"
+        android:paddingBottom="2dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="2dp"
+        android:text="@string/team_price"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView239"
+        app:layout_constraintTop_toBottomOf="@+id/textView239"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/textView240"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text=""
+        android:textColor="@color/colorBack_morandi"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView241"
+        app:layout_constraintEnd_toEndOf="@+id/textView239"
+        app:layout_constraintStart_toEndOf="@+id/textView241"
+        app:layout_constraintTop_toTopOf="@+id/textView241" />
+
+</android.support.constraint.ConstraintLayout>

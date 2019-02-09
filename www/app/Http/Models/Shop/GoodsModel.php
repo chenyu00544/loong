@@ -23,6 +23,11 @@ class GoodsModel extends Model
         return $this->hasOne('App\Http\Models\Shop\SellerShopInfoModel', 'ru_id', 'user_id');
     }
 
+    public function products()
+    {
+        return $this->hasOne('App\Http\Models\Shop\ProductsModel', 'goods_id', 'goods_id');
+    }
+
     public function getGoodsPage($size = 10, $where = [], $columns = ['*'], $keywords = '')
     {
         $goods = $this->select($columns);
@@ -33,6 +38,9 @@ class GoodsModel extends Model
             $goods->where('goods_name', 'like', '%' . $keywords . '%');
         }
         $goods->with(['store']);
+        $goods->with(['products' => function ($query) {
+            $query->select(['goods_id']);
+        }]);
         return $goods->orderBy('goods_id', 'desc')
             ->paginate($size);
     }

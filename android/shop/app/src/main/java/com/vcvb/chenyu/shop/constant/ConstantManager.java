@@ -171,6 +171,8 @@ public interface ConstantManager {
         public String FAAT_BRAND = URIHOST + URI_TYPE_APP + "faat/brand";
         public String FAAT_SECKILL = URIHOST + URI_TYPE_APP + "faat/seckill";
         public String FAAT_GROUPBUY = URIHOST + URI_TYPE_APP + "faat/group/buy";
+        public String FAAT_TEAM_NAV = URIHOST + URI_TYPE_APP + "faat/team/nav";
+        public String FAAT_TEAM = URIHOST + URI_TYPE_APP + "faat/team";
 
         //fixme 评价
         public String COMMENT_LABEL = URIHOST + URI_TYPE_APP + "comment/label";
