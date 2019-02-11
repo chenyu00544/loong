@@ -77,12 +77,15 @@ public class GoodsDetailActivity extends GoodsActivity {
     private int goods_id;
     private JSONObject goodsJson;
     private String device_id;
+    private int team_parent_id = 0;
+    private int team_id = 0;
 
     int pos = 0;
     private View child1;
     private View line;
     private TextView cartNum;
     private TextView addCart;
+    private TextView buy;
 
     private ShopRecyclerView goodsDetail;
     private CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
@@ -179,7 +182,7 @@ public class GoodsDetailActivity extends GoodsActivity {
             @Override
             public void onClick(View view) {
                 goodsView.setTextSize(ts_22);
-                goodsView.setTextColor(Color.parseColor("#000000"));
+                goodsView.setTextColor(Color.parseColor("#292929"));
                 goodsEvaluate.setTextSize(ts_18);
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsInfo.setTextSize(ts_18);
@@ -196,20 +199,20 @@ public class GoodsDetailActivity extends GoodsActivity {
                 goodsInfo.setTextSize(ts_18);
                 goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_22);
-                goodsEvaluate.setTextColor(Color.parseColor("#000000"));
-                moveToPosition(9);
+                goodsEvaluate.setTextColor(Color.parseColor("#292929"));
+                moveToPosition(getPos("eva"));
             }
         });
         goodsInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 goodsInfo.setTextSize(ts_22);
-                goodsInfo.setTextColor(Color.parseColor("#000000"));
+                goodsInfo.setTextColor(Color.parseColor("#292929"));
                 goodsView.setTextSize(ts_18);
                 goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                 goodsEvaluate.setTextSize(ts_18);
                 goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
-                moveToPosition(11);
+                moveToPosition(getPos("info"));
             }
         });
 
@@ -288,14 +291,14 @@ public class GoodsDetailActivity extends GoodsActivity {
                     goodsEvaluate.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsInfo.setTextSize(ts_18);
                     goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
-                } else if (goodsDetail.getChildAdapterPosition(child1) == 9) {
+                } else if (goodsDetail.getChildAdapterPosition(child1) == getPos("eva")) {
                     goodsView.setTextSize(ts_18);
                     goodsView.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsInfo.setTextSize(ts_18);
                     goodsInfo.setTextColor(Color.parseColor("#AAAAAA"));
                     goodsEvaluate.setTextSize(ts_22);
                     goodsEvaluate.setTextColor(Color.parseColor("#000000"));
-                } else if (goodsDetail.getChildAdapterPosition(child1) == 11) {
+                } else if (goodsDetail.getChildAdapterPosition(child1) == getPos("info")) {
                     goodsInfo.setTextSize(ts_22);
                     goodsInfo.setTextColor(Color.parseColor("#000000"));
                     goodsView.setTextSize(ts_18);
@@ -331,7 +334,7 @@ public class GoodsDetailActivity extends GoodsActivity {
 
     public void initView() {
         line = findViewById(R.id.view68);
-        TextView buy = findViewById(R.id.textView32);
+        buy = findViewById(R.id.textView32);
         addCart = findViewById(R.id.textView31);
         ImageView iv1 = findViewById(R.id.imageView11);
         TextView server = findViewById(R.id.textView26);
@@ -381,10 +384,16 @@ public class GoodsDetailActivity extends GoodsActivity {
                     }
                 }
 
-                if (goodsDetails.getIs_limit_buy() == 1 && goodsDetails.getCurrent_time() >
+                if ((goodsDetails.getIs_limit_buy() == 1 && goodsDetails.getCurrent_time() >
                         goodsDetails.getLimit_buy_start_date() && goodsDetails.getCurrent_time()
-                        < goodsDetails.getLimit_buy_end_date()) {
+                        < goodsDetails.getLimit_buy_end_date()) || (goodsDetails.getGoodsTeam() !=
+                        null)) {
                     set.constrainWidth(addCart.getId(), 0);
+                    if (goodsDetails.getGoodsSecKill() != null) {
+                        buy.setText(R.string.buy_kill);
+                    } else if (goodsDetails.getGoodsTeam() != null) {
+                        buy.setText(R.string.team_buy);
+                    }
                 } else {
                     set.constrainWidth(addCart.getId(), ToolUtils.dip2px(context, 140));
                 }
@@ -400,15 +409,21 @@ public class GoodsDetailActivity extends GoodsActivity {
         if (goodsDetails.getBanners() != null && goodsDetails.getBanners().size() > 0) {
             cells.add(new GoodsBannerItem(goodsDetails.getBanners(), context));
         }
-        if (goodsDetails.getGoodsFaat() != null && (goodsDetails.getGoodsFaat().getEnd_time() -
-                goodsDetails.getGoodsFaat().getCurrent_time()) > 0) {
-            TimeUtils.startCountdown(new TimeUtils.CallBack() {
-                @Override
-                public void time() {
+        TimeUtils.startCountdown(new TimeUtils.CallBack() {
+            @Override
+            public void time() {
+                if (goodsDetails.getGoodsFaat() != null) {
                     goodsDetails.getGoodsFaat().setCurrent_time(goodsDetails.getGoodsFaat()
                             .getCurrent_time() + 1);
                 }
-            });
+                goodsDetails.setCurrent_time(goodsDetails.getCurrent_time() + 1);
+            }
+        });
+        if ((goodsDetails.getGoodsFaat() != null && (goodsDetails.getGoodsFaat().getEnd_time() -
+                goodsDetails.getGoodsFaat().getCurrent_time()) > 0) || (goodsDetails
+                .getGoodsSecKill() != null && (goodsDetails.getGoodsSecKill()
+                .getE_time() -
+                goodsDetails.getCurrent_time()) > 0)) {
             cells.add(new GoodsSalesPromotionItem(goodsDetails, context));
         }
         if (goodsDetails.getShop_price() != null) {
@@ -434,8 +449,6 @@ public class GoodsDetailActivity extends GoodsActivity {
             GoodsShipItem goodsShipItem = new GoodsShipItem(goodsDetails, context);
             goodsShipItem.setOnItemClickListener(shipListener);
             cells.add(goodsShipItem);
-        }
-        if (goodsDetails.getGoodsTransport() != null) {
             GoodsShipFreeItem goodsShipFreeItem = new GoodsShipFreeItem(goodsDetails, context);
             cells.add(goodsShipFreeItem);
         }
@@ -466,6 +479,51 @@ public class GoodsDetailActivity extends GoodsActivity {
         return cells;
     }
 
+    public int getPos(String str) {
+        int i = 0;
+        if (goodsDetails.getBanners().size() > 0) {
+            i += 1;
+        }
+        if ((goodsDetails.getGoodsFaat() != null && (goodsDetails.getGoodsFaat().getEnd_time() -
+                goodsDetails.getGoodsFaat().getCurrent_time()) > 0) || (goodsDetails
+                .getGoodsSecKill() != null && (goodsDetails.getGoodsSecKill()
+                .getE_time() -
+                goodsDetails.getCurrent_time()) > 0)) {
+            i += 1;
+        }
+        if (goodsDetails.getShop_price() != null) {
+            i += 1;
+        }
+        if (goodsDetails.getGoods_name() != null && goodsDetails.getGoods_name() != "") {
+            i += 1;
+        }
+        if (goodsDetails.getIs_fullcut() == 1 || goodsDetails.getIs_volume() == 1) {
+            i += 1;
+        }
+        if (goodsDetails.getMultiAttrs() != null && goodsDetails.getMultiAttrs().size() > 0) {
+            i += 1;
+        }
+        if (goodsDetails.getGoodsTransport() != null) {
+            i += 2;
+        }
+        if (goodsDetails.getGoodsDescriptions() != null) {
+            i += 1;
+        }
+        if (str.equals("eva")) {
+            return i;
+        } else if (str.equals("info")) {
+            if (goodsDetails.getGoodsBrand() != null) {
+                i += 1;
+            }
+            if (goodsDetails.getSingleAttrs() != null) {
+                i += 1;
+            }
+            return i;
+        } else {
+            return 0;
+        }
+    }
+
     public void moveToPosition(int position) {
         // 第一个可见位置
         int firstItem = goodsDetail.getChildLayoutPosition(goodsDetail.getChildAt(0));
@@ -494,6 +552,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
     }
 
+    //fixme 计算高度
     public int calculatedDistance(int dy) {
         //得出spanCount几列或几排
         int itemSpanCount = gridLayoutManager.getSpanCount();
@@ -513,7 +572,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         mMapList.put(itemPosition, itemH);
         if (itemPosition == 0) {
             pos += dy;
-        }else{
+        } else {
             pos = mMapList.get(0);
         }
         return pos;
@@ -757,6 +816,8 @@ public class GoodsDetailActivity extends GoodsActivity {
         HashMap<String, String> mp = new HashMap<>();
 
         mp.put("goods_id", goods_id + "");
+        mp.put("team_parent_id", team_parent_id + "");
+        mp.put("team_id", team_id + "");
         mp.put("num", attr.get("num") + "");
         List<Integer> attr_ids = (List<Integer>) attr.get("attr_ids");
         List<Integer> goods_attr_ids = (List<Integer>) attr.get("goods_attr_ids");
@@ -901,7 +962,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                 intent.putExtra("id", String.valueOf(goodsDetails.getBrand_id()));
             } else {
                 intent = new Intent(GoodsDetailActivity.this, GoodsDetailActivity.class);
-                intent.putExtra("id", goodsDetails.getGoods_id());
+                intent.putExtra("id", goodsDetails.getGoodsBrand().getGoodses().get(pos).getGoods_id());
             }
             startActivity(intent);
         }

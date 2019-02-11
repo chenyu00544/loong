@@ -362,10 +362,10 @@ public class FragmentHome extends BaseFragment {
         });
     }
 
-    public void checkVersion(JSONObject json){
+    public void checkVersion(JSONObject json) {
         try {
             version_num = json.getString("version_num");
-            if(!version_num.equals(ConstantManager.VERSION)){
+            if (!version_num.equals(ConstantManager.VERSION)) {
                 confirmDialog.show();
             }
         } catch (JSONException e) {
@@ -557,27 +557,25 @@ public class FragmentHome extends BaseFragment {
         return cells;
     }
 
-    public void goToActivityByAdsUri(String type, int pos) {
-        for (int i = 0; i < homeBean.getAdses().size(); i++) {
-            if (homeBean.getAdses().get(i).getType().equals(type)) {
-                String uri = homeBean.getAdses().get(i).getAds().get(pos).getAd_link();
-                Class c = UrlParse.getUrlToClass(uri);
-                if (c != null) {
-                    Map<String, String> id = UrlParse.getUrlParams(uri);
-                    if (id.get("id") != null) {
-                        if (type.equals("navigation")) {
-                            Intent intent = new Intent(context, c);
-                            intent.putExtra("cate", Integer.valueOf(id.get("id")));
-                            context.startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(context, c);
-                            intent.putExtra("id", Integer.valueOf(id.get("id")));
-                            context.startActivity(intent);
-                        }
-                    }else{
+    public void goToActivityByAdsUri(String type, int pos, int group) {
+        if (homeBean.getAdses().get(group).getType().equals(type)) {
+            String uri = homeBean.getAdses().get(group).getAds().get(pos).getAd_link();
+            Class c = UrlParse.getUrlToClass(uri);
+            if (c != null) {
+                Map<String, String> id = UrlParse.getUrlParams(uri);
+                if (id.get("id") != null) {
+                    if (type.equals("navigation")) {
                         Intent intent = new Intent(context, c);
+                        intent.putExtra("cate", Integer.valueOf(id.get("id")));
+                        context.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(context, c);
+                        intent.putExtra("id", Integer.valueOf(id.get("id")));
                         context.startActivity(intent);
                     }
+                } else {
+                    Intent intent = new Intent(context, c);
+                    context.startActivity(intent);
                 }
             }
         }
@@ -586,76 +584,76 @@ public class FragmentHome extends BaseFragment {
     HomeSlideItem.OnClickListener homeSlideItemListener = new HomeSlideItem.OnClickListener() {
         @Override
         public void onClicked(int pos) {
-            goToActivityByAdsUri("slide", pos);
+            goToActivityByAdsUri("slide", pos, 0);
         }
     };
     HomeSlideItem.OnPageChangeListener onPageChangeListener = new HomeSlideItem
             .OnPageChangeListener() {
         @Override
         public void onPageChanged(int pos, Adses adses) {
-            if(adses.getAds().get(pos).getAd_color() != null){
+            if (adses.getAds().get(pos).getAd_color() != null) {
                 slideBg.setBackgroundColor(Color.parseColor(adses.getAds().get(pos).getAd_color()));
             }
         }
     };
     HomeNavsItem.OnClickListener homeNavsItemListener = new HomeNavsItem.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("navigation", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("navigation", pos, group);
         }
     };
     HomeAds1Item.OnClickListener homeAds1ItemListener = new HomeAds1Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_1", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_1", pos, group);
         }
     };
     HomeAds2Item.OnClickListener homeAds2ItemListener = new HomeAds2Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_2", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_2", pos, group);
         }
     };
     HomeAds3Item.OnClickListener homeAds3ItemListener = new HomeAds3Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_3", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_3", pos, group);
         }
     };
     HomeAds4Item.OnClickListener homeAds4ItemListener = new HomeAds4Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_10", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_10", pos, group);
         }
     };
     HomeAds5Item.OnClickListener homeAds5ItemListener = new HomeAds5Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_4", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_4", pos, group);
         }
     };
     HomeAds6Item.OnClickListener homeAds6ItemListener = new HomeAds6Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_5", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_5", pos, group);
         }
     };
     HomeAds7Item.OnClickListener homeAds7ItemListener = new HomeAds7Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_7", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_7", pos, group);
         }
     };
     HomeAds8Item.OnClickListener homeAds8ItemListener = new HomeAds8Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_8", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_8", pos, group);
         }
     };
     HomeAds9Item.OnClickListener homeAds9ItemListener = new HomeAds9Item.OnClickListener() {
         @Override
-        public void onClicked(View view, int pos) {
-            goToActivityByAdsUri("ads_9", pos);
+        public void onClicked(View view, int pos, int group) {
+            goToActivityByAdsUri("ads_9", pos, group);
         }
     };
 

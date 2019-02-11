@@ -70,7 +70,7 @@ class OrderInfoModel extends Model
         return $m->paginate($size);
     }
 
-    public function getOrderInfos($where, $column = ['*'], $size = 10)
+    public function getOrderInfos($where, $column = ['*'], $size = 50)
     {
         return $this->select($column)
             ->where($where)

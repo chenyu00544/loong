@@ -59,7 +59,7 @@
 
     <TextView
         android:id="@+id/textView31"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"

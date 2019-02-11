@@ -2,6 +2,7 @@ package com.vcvb.chenyu.shop.adapter.item.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -14,8 +15,12 @@ import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.tools.IdsUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import java.util.HashMap;
+
 public class HomeAds6Item extends BaseItem<Adses> {
     public static final int TYPE = 7;
+    public HashMap<Integer, Integer> groupMap = new HashMap<>();
+    public OnClickListener onClickListener;
 
     public HomeAds6Item(Adses bean, Context c) {
         super(bean, c);
@@ -43,6 +48,7 @@ public class HomeAds6Item extends BaseItem<Adses> {
             ImageView iv = new ImageView(context);
             iv.setId(id);
             posMap.put(id, i);
+            groupMap.put(id, position);
             iv.setLayoutParams(params);
             iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
             Glide.with(context).load(R.drawable.icon_no_pic).into(iv);
@@ -51,4 +57,21 @@ public class HomeAds6Item extends BaseItem<Adses> {
             Glide.with(context).load(mData.getAds().get(i).getAd_code()).into(iv);
         }
     }
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        onClickListener = listener;
+    }
+
+    public interface OnClickListener {
+        void onClicked(View view, int pos, int group);
+    }
+
+    public View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (onClickListener != null) {
+                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId()));
+            }
+        }
+    };
 }

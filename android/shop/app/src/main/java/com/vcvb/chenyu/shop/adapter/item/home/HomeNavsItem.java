@@ -2,6 +2,7 @@ package com.vcvb.chenyu.shop.adapter.item.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -16,8 +17,12 @@ import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.wangjie.shadowviewhelper.ShadowProperty;
 import com.wangjie.shadowviewhelper.ShadowViewHelper;
 
+import java.util.HashMap;
+
 public class HomeNavsItem extends BaseItem<Adses> {
     public static final int TYPE = R.layout.home_navs_item;
+    public HashMap<Integer, Integer> groupMap = new HashMap<>();
+    public OnClickListener onClickListener;
 
     public HomeNavsItem(Adses bean, Context c) {
         super(bean, c);
@@ -52,6 +57,7 @@ public class HomeNavsItem extends BaseItem<Adses> {
             ImageView imageView = new ImageView(context);
             imageView.setId(id);
             posMap.put(id, i);
+            groupMap.put(id, position);
             imageView.setLayoutParams(params);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             imageView.setOnClickListener(listener);
@@ -59,4 +65,21 @@ public class HomeNavsItem extends BaseItem<Adses> {
             flowLayout.addView(imageView);
         }
     }
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        onClickListener = listener;
+    }
+
+    public interface OnClickListener {
+        void onClicked(View view, int pos, int group);
+    }
+
+    public View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (onClickListener != null) {
+                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId()));
+            }
+        }
+    };
 }

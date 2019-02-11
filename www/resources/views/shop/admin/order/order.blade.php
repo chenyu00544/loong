@@ -8,10 +8,10 @@
                 <div class="tabs mar-top-5">
                     <ul class="fl">
                         <li class="@if($seller == 'selfsale') curr @endif fl">
-                            <a href="{{url('admin/order/selfsale')}}">自营</a>
+                            <a href="{{url('admin/order/'.(empty($fn)?'':$fn.'/').(empty($seller)?'':$seller.'/').'0/'.(empty($faat_id)?'':$faat_id))}}">自营</a>
                         </li>
                         <li class="@if($seller == 'seller') curr @endif fl">
-                            <a href="{{url('admin/order/seller')}}">店铺</a>
+                            <a href="{{url('admin/order/'.(empty($fn)?'':$fn.'/').(empty($seller)?'':$seller.'/').'0/'.(empty($faat_id)?'':$faat_id))}}">店铺</a>
                         </li>
                     </ul>
                 </div>
@@ -42,7 +42,7 @@
                 <ul class="fl">
                     @foreach($searchNav as $nav)
                         <li class="@if($navType == $nav['navType']) curr @endif fl">
-                            <a href="{{url('admin/order/'.$nav['navType'].'?seat=0'.(empty($seller)?'':'&seller='.$seller).(empty($search['team_id'])?'':'&team='.$search['team_id']).(empty($search['sec_id'])?'':'&seckill='.$search['sec_id']).(empty($search['group_id'])?'':'&group_id='.$search['group_id']))}}">
+                            <a href="{{url('admin/order/'.(empty($fn)?'':$fn.'/').(empty($seller)?'':$seller.'/').($nav['navType']<0?'':$nav['navType'].'/').(empty($faat_id)?'':$faat_id))}}">
                                 {{$nav['title']}}(<font class="red">{{$nav['count']}}</font>)</a>
                         </li>
                     @endforeach

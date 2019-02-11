@@ -10,6 +10,7 @@
 namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class GoodsModel extends Model
 {
@@ -36,12 +37,12 @@ class GoodsModel extends Model
         return $this->hasOne('App\Http\Models\App\SecKillGoodsModel', 'goods_id', 'goods_id');
     }
 
-//    //拼团
-//    public function team()
-//    {
-//        return $this->hasMany('App\Http\Models\App\TeamGoodsModel', 'goods_id', 'goods_id');
-//    }
-//
+    //拼团
+    public function teamGoods()
+    {
+        return $this->hasOne('App\Http\Models\App\TeamGoodsModel', 'goods_id', 'goods_id');
+    }
+
     //团购
     public function groupBuy()
     {
@@ -151,10 +152,17 @@ class GoodsModel extends Model
             ->with(['brand' => function ($query) {
             }])
             ->with(['secKill' => function ($query) {
-                $query->select(['*'])->join('seckill', 'seckill.sec_id', '=', 'seckill_goods.sec_id')->join('seckill_time_bucket', 'seckill_time_bucket.id', '=', 'seckill_goods.tb_id');
+                $time = time();
+                $date = date('H:i:s', $time);
+                $query->select(['seckill.*', 'seckill_goods.*', 'seckill_time_bucket.begin_time as b_time', 'seckill_time_bucket.end_time as e_time', 'seckill_time_bucket.id'])->join('seckill', 'seckill.sec_id', '=', 'seckill_goods.sec_id')->join('seckill_time_bucket', 'seckill_time_bucket.id', '=', 'seckill_goods.tb_id')->where([['seckill.review_status', '=', '3'], ['seckill.is_putaway', '=', '1'], ['seckill.start_time', '<', $time], ['seckill.end_time', '>', $time], ['seckill_time_bucket.begin_time', '<', $date], ['seckill_time_bucket.end_time', '>', $date]]);
             }])
-//            ->with(['team' => function ($query) {
-//            }])
+            ->with(['teamGoods' => function ($query) {
+                $query->with(['teamLog' => function ($query) {
+                    $query->with(['order' => function ($query) {
+                        $query->select(['team_id', 'users.user_id', 'team_parent_id', 'user_name', 'nick_name', 'logo'])->leftJoin('users', 'users.user_id', '=', 'order_info.user_id')->orderBy('team_parent_id', 'ASC');
+                    }])->where(['status' => 0]);
+                }])->where(['is_audit' => 2, 'is_team' => 1]);
+            }])
             ->with(['groupBuy' => function ($query) {
                 $query->select(['goods_id', 'review_status', 'act_type', 'start_time', 'end_time', 'is_finished', 'ext_info'])->where([['review_status', '=', '3'], ['act_type', '=', '1'], ['start_time', '<', time()], ['end_time', '>', time()], ['is_finished', '=', '0']]);
             }])
@@ -179,6 +187,21 @@ class GoodsModel extends Model
             }])
             ->with(['goodsext' => function ($query) {
                 $query->select(['goods_id', 'is_reality', 'is_return', 'is_fast', 'extend_id']);
+            }])
+            ->with(['secKill' => function ($query) {
+                $time = time();
+                $date = date('H:i:s', $time);
+                $query->select(['seckill.*', 'seckill_goods.*', 'seckill_time_bucket.begin_time as b_time', 'seckill_time_bucket.end_time as e_time', 'seckill_time_bucket.id'])->join('seckill', 'seckill.sec_id', '=', 'seckill_goods.sec_id')->join('seckill_time_bucket', 'seckill_time_bucket.id', '=', 'seckill_goods.tb_id')->where([['seckill.review_status', '=', '3'], ['seckill.is_putaway', '=', '1'], ['seckill.start_time', '<', $time], ['seckill.end_time', '>', $time], ['seckill_time_bucket.begin_time', '<', $date], ['seckill_time_bucket.end_time', '>', $date]]);
+            }])
+            ->with(['teamGoods' => function ($query) {
+                $query->with(['teamLog' => function ($query) {
+                    $query->with(['order' => function ($query) {
+                        $query->select(['team_id', 'users.user_id', 'team_parent_id', 'user_name', 'nick_name', 'logo'])->leftJoin('users', 'users.user_id', '=', 'order_info.user_id')->orderBy('team_parent_id', 'ASC');
+                    }])->where(['status' => 0]);
+                }])->where(['is_audit' => 2, 'is_team' => 1]);
+            }])
+            ->with(['groupBuy' => function ($query) {
+                $query->select(['act_id', 'goods_id', 'review_status', 'act_type', 'start_time', 'end_time', 'is_finished', 'ext_info'])->where([['review_status', '=', '3'], ['act_type', '=', '1'], ['start_time', '<', time()], ['end_time', '>', time()], ['is_finished', '=', '0']]);
             }])
             ->where($where)
             ->whereIn('goods_id', $whereIn)

@@ -13,7 +13,7 @@ use App\Facades\RedisCache;
 use App\Http\Models\Shop\CartModel;
 use App\Http\Models\Shop\CronsModel;
 use App\Http\Models\Shop\OrderInfoModel;
-use App\Http\Models\Test\CronModel;
+use App\Http\Models\Shop\TeamLogModel;
 
 class CronService
 {
@@ -33,24 +33,24 @@ class CronService
         $where = [
             ['order_status', '=', OS_CONFIRMED],
             ['shipping_status', '=', SS_SHIPPED],
-            ['shipping_time', '<', $time-RedisCache::get('shop_config')['auto_delivery_time']*86400]
+            ['shipping_time', '<', $time - RedisCache::get('shop_config')['auto_delivery_time'] * 86400]
         ];
         $orders = self::$orderInfoModel->getOrderInfos($where, ['*'], $limit);
         $whereIn = [];
         foreach ($orders as $order) {
             $whereIn[] = $order->order_id;
         }
-        if(count($whereIn)>0){
+        if (count($whereIn) > 0) {
             $updata['shipping_status'] = SS_RECEIVED;
             $updata['confirm_take_time'] = $time;
             self::$orderInfoModel->setOrderInfo([], $updata, $whereIn);
         }
     }
-    
+
     //红包优惠券到期提醒
     public function cbExpireRemind($limit = 50)
     {
-        
+
     }
 
     //更新定时任务执行时间
@@ -69,9 +69,25 @@ class CronService
     }
 
     //清理无状态购物车商品
-    public function ClearCart()
+    public function ClearCart($limit = 50)
     {
         $m = (new CartModel());
-        $m->delCartsByTime();
+        $m->delCartsByTime($limit);
+    }
+
+    //设置拼团成团和失败团状态
+    public function Team($limit = 50)
+    {
+        $m = (new TeamLogModel());
+        $res = $m->taskTeamLog($limit);
+        $orderM = (new OrderInfoModel());
+        foreach ($res as $re) {
+            $order = $orderM->getOrderInfos(['team_id' => $re->team_id]);
+            if ($re->team_num <= $order->count()) {
+                $m->setTeamLog(['team_id' => $re->team_id], ['status' => 1]);
+            } else {
+                $m->setTeamLog(['team_id' => $re->team_id], ['status' => 2]);
+            }
+        }
     }
 }

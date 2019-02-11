@@ -23,6 +23,7 @@ use App\Http\Models\App\OrderGoodsModel;
 use App\Http\Models\App\OrderInfoModel;
 use App\Http\Models\App\PaymentModel;
 use App\Http\Models\App\ProductsModel;
+use App\Http\Models\App\TeamLogModel;
 use App\Http\Models\App\TransportModel;
 use App\Http\Models\App\UsersModel;
 
@@ -40,6 +41,7 @@ class OrderRepository implements OrderRepositoryInterface
     private $bonusUserModel;
     private $couponsUserModel;
     private $cartModel;
+    private $teamLogModel;
 
     public function __construct(
         OrderInfoModel $orderInfoModel,
@@ -52,7 +54,8 @@ class OrderRepository implements OrderRepositoryInterface
         ProductsModel $productsModel,
         BonusUserModel $bonusUserModel,
         CouponsUserModel $couponsUserModel,
-        CartModel $cartModel
+        CartModel $cartModel,
+        TeamLogModel $teamLogModel
     )
     {
         $this->orderInfoModel = $orderInfoModel;
@@ -66,6 +69,7 @@ class OrderRepository implements OrderRepositoryInterface
         $this->bonusUserModel = $bonusUserModel;
         $this->couponsUserModel = $couponsUserModel;
         $this->cartModel = $cartModel;
+        $this->teamLogModel = $teamLogModel;
     }
 
     public function getOrders($data, $uid)
@@ -449,6 +453,22 @@ class OrderRepository implements OrderRepositoryInterface
                             $discount[$goods_detail->user_id] += $goods_amount[$goods_detail->user_id] * (1 - $faat->act_type_ext);
                         }
                     }
+                } elseif (!empty($goods_detail->secKill)) {
+                    $order[$goods_detail->user_id]['extension_code'] = 'sec_kill';
+                    $order[$goods_detail->user_id]['extension_id'] = $goods_detail->secKill->sec_id;
+                    $goods_amount[$goods_detail->user_id] = $goods_detail->secKill->sec_price;
+                } elseif (!empty($goods_detail->teamGoods)) {
+                    $order[$goods_detail->user_id]['extension_code'] = 'team_buy';
+                    $order[$goods_detail->user_id]['extension_id'] = $goods_detail->teamGoods->team_id;
+                    $order[$goods_detail->user_id]['team_id'] = $goods_detail->teamGoods->team_id;
+                    $order[$goods_detail->user_id]['team_user_id'] = $uid;
+                    $order[$goods_detail->user_id]['team_parent_id'] = empty($data['team_parent_id']) ? 0 : $data['team_parent_id'];
+                    $order[$goods_detail->user_id]['team_price'] = $goods_detail->teamGoods->team_price;
+                    $goods_amount[$goods_detail->user_id] = $goods_detail->teamGoods->team_price;
+                } elseif (!empty($goods_detail->groupBuy)) {
+                    $order[$goods_detail->user_id]['extension_code'] = 'group_buy';
+                    $order[$goods_detail->user_id]['extension_id'] = $goods_detail->groupBuy->act_id;
+//                    $goods_amount[$goods_detail->user_id] = $goods_detail->teamGoods->team_price;
                 }
 
                 //本身商品的满减活动
@@ -463,7 +483,6 @@ class OrderRepository implements OrderRepositoryInterface
                         $discount[$goods_detail->user_id] += $goods_detail->fullcut[$fullcut_k]->creduce;
                     }
                 }
-
 
                 //商品扩展信息
                 if (!empty($goods_detail->goodsext)) {
@@ -807,7 +826,7 @@ class OrderRepository implements OrderRepositoryInterface
                 'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume', 'is_fullcut',
                 'goods_type', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num', 'review_status',
                 'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
-                'pinyin_keyword', 'goods_brief','shipping_fee'
+                'pinyin_keyword', 'goods_brief', 'shipping_fee'
             ];
             $goodses = $this->goodsModel->getGoodsByOrder($where, $column, $wherein);
             $goodses_arr = [];
@@ -966,7 +985,7 @@ class OrderRepository implements OrderRepositoryInterface
                         if (in_array($order[$goods_detail->user_id]['city'], $area_ids)) {
                             $order_goods['shipping_fee'] = $t_ext->sprice;
                             $shipping_fee[$goods_detail->user_id] = $t_ext->sprice;
-                        }else{
+                        } else {
                             $order_goods['shipping_fee'] = 0;
                         }
                     }

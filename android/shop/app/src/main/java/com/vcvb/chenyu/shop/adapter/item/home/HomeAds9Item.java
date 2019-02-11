@@ -18,11 +18,15 @@ import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class HomeAds9Item extends BaseItem<Adses> {
     public static final int TYPE = 10;
     private RecyclerView recyclerView;
+    public HashMap<Integer, Integer> groupMap = new HashMap<>();
+    public OnClickListener onClickListener;
+
     public HomeAds9Item(Adses bean, Context c) {
         super(bean, c);
     }
@@ -41,13 +45,15 @@ public class HomeAds9Item extends BaseItem<Adses> {
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
         int width = context.getResources().getDisplayMetrics().widthPixels;
-        ImageView iv = holder.get(R.id.imageView115);
-        if (mData.getAds() != null){
+        final ImageView iv = holder.get(R.id.imageView115);
+        final int pos = position;
+        if (mData.getAds() != null) {
             Glide.with(context).load(mData.getAds().get(0).getAd_code()).into(iv);
             posMap.put(iv.getId(), 0);
+            groupMap.put(iv.getId(), position);
             iv.setOnClickListener(listener);
         }
-        if(recyclerView == null){
+        if (recyclerView == null) {
             recyclerView = (RecyclerView) holder.getView(R.id.goods_wrap);
             CYCSimpleAdapter mAdapter = new CYCSimpleAdapter();
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
@@ -58,13 +64,15 @@ public class HomeAds9Item extends BaseItem<Adses> {
             CYCItemClickSupport.addTo(recyclerView).setOnItemClickListener(new CYCItemClickSupport.OnItemClickListener() {
                 @Override
                 public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                    if(onClickListener != null){
-                        onClickListener.onClicked(itemView, position+1);
+                    if (onClickListener != null) {
+                        onClickListener.onClicked(itemView, position + 1, pos)
+                        ;
                     }
                 }
             });
         }
     }
+
     public List<Item> getItems(Adses bean) {
         List<Item> cells = new ArrayList<>();
         if (bean.getAds() != null && bean.getAds().size() > 0) {
@@ -74,4 +82,21 @@ public class HomeAds9Item extends BaseItem<Adses> {
         }
         return cells;
     }
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        onClickListener = listener;
+    }
+
+    public interface OnClickListener {
+        void onClicked(View view, int pos, int group);
+    }
+
+    public View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (onClickListener != null) {
+                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId()));
+            }
+        }
+    };
 }

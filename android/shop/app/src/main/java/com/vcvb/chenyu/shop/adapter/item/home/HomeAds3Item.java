@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -14,8 +15,12 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import java.util.HashMap;
+
 public class HomeAds3Item extends BaseItem<Adses> {
     public static final int TYPE = 4;
+    public HashMap<Integer, Integer> groupMap = new HashMap<>();
+    public OnClickListener onClickListener;
 
     public HomeAds3Item(Adses bean, Context c) {
         super(bean, c);
@@ -42,16 +47,35 @@ public class HomeAds3Item extends BaseItem<Adses> {
         for (int i = 0; i < ids.length; i++) {
             ImageView iv = holder.get(ids[i]);
             posMap.put(ids[i], i);
+            groupMap.put(ids[i], position);
             iv.setOnClickListener(listener);
             if (i == ids.length - 1) {
                 set.constrainWidth(iv.getId(), width * 150 / 375);
                 set.constrainHeight(iv.getId(), width * 150 / 375 * 10 / 9);
             } else {
-                set.constrainWidth(iv.getId(),  width * 225 / 375);
+                set.constrainWidth(iv.getId(), width * 225 / 375);
                 set.constrainHeight(iv.getId(), width * 150 / 375 * 5 / 9);
             }
             Glide.with(context).load(mData.getAds().get(i).getAd_code()).into(iv);
         }
         set.applyTo(cly);
     }
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        onClickListener = listener;
+    }
+
+    public interface OnClickListener {
+        void onClicked(View view, int pos, int group);
+    }
+
+    public View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (onClickListener != null) {
+                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId
+                        ()));
+            }
+        }
+    };
 }

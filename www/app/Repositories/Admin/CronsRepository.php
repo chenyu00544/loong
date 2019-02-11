@@ -127,6 +127,9 @@ class CronsRepository implements CronsRepositoryInterface
             if ($cron->nextime < $time) {
                 $cron->thistime = $time;
                 $cron->nextime = $this->computingNexTime($cron->toArray());
+                if ($cron->run_once == 1) {
+                    $cron->enable = 0;
+                }
                 $this->task($cron);
             }
         }
@@ -250,10 +253,12 @@ class CronsRepository implements CronsRepositoryInterface
                 Cron::CronUpdate();
                 break;
             case 'clear_cart':
-                Cron::ClearCart();
+                Cron::ClearCart($cron->cron_num);
+                break;
+            case 'team_task':
+                Cron::Team($cron->cron_num);
                 break;
         }
-
 
         $crons = RedisCache::get('cron_config');
         if ($crons) {

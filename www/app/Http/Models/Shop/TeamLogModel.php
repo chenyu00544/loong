@@ -40,7 +40,7 @@ class TeamLogModel extends Model
             ->leftJoin('team_goods', 'team_goods.id', '=', 'team_log.t_id')
             ->where($where)
             ->with(['order' => function ($query) {
-                $query->where([['team_parent_id', '>', 0]])->select(['team_id', 'team_parent_id', 'team_user_id', 'team_price', 'order_id']);
+                $query->where([['team_user_id', '>', 0]])->select(['team_id', 'team_parent_id', 'team_user_id', 'team_price', 'order_id']);
             }])
             ->with(['store' => function ($query) {
                 $query->select(['shop_name', 'ru_id']);
@@ -53,4 +53,19 @@ class TeamLogModel extends Model
         }
         return $m->paginate($size);
     }
+
+    public function setTeamLog($where, $data)
+    {
+        return $this->where($where)
+            ->update($data);
+    }
+
+    public function taskTeamLog($size = 10)
+    {
+        $m = $this->join('team_goods', 'team_goods.id', '=', 'team_log.t_id')
+            ->where(['status' => 0])->whereRaw('start_time < ' . (time() - 600) . '-validity_time*3600')->limit($size)->get();
+        return $m;
+    }
+
+
 }

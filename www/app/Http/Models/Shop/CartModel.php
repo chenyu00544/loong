@@ -18,10 +18,11 @@ class CartModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function delCartsByTime()
+    public function delCartsByTime($size = 10)
     {
         try {
             return $this->where([['add_time', '<', time() - 86400 * 15], ['user_id', '=', '0']])
+                ->limit($size)
                 ->delete();
         } catch (\Exception $e) {
         }

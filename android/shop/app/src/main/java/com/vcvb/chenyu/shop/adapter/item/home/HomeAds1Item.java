@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -14,8 +15,12 @@ import com.vcvb.chenyu.shop.adapter.base.CYCBaseViewHolder;
 import com.vcvb.chenyu.shop.javaBean.home.Adses;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
+import java.util.HashMap;
+
 public class HomeAds1Item extends BaseItem<Adses> {
     public static final int TYPE = 2;
+    public HashMap<Integer, Integer> groupMap = new HashMap<>();
+    public OnClickListener onClickListener;
 
     public HomeAds1Item(Adses bean, Context c) {
         super(bean, c);
@@ -42,6 +47,7 @@ public class HomeAds1Item extends BaseItem<Adses> {
         for (int i=0;i<mData.getAds().size();i++){
             ImageView iv = holder.get(ids[i]);
             posMap.put(ids[i], i);
+            groupMap.put(ids[i], position);
             iv.setOnClickListener(listener);
             if(i==0){
                 set.constrainWidth(iv.getId(), width * 150 / 375);
@@ -54,4 +60,21 @@ public class HomeAds1Item extends BaseItem<Adses> {
         }
         set.applyTo(cly);
     }
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        onClickListener = listener;
+    }
+
+    public interface OnClickListener {
+        void onClicked(View view, int pos, int group);
+    }
+
+    public View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (onClickListener != null) {
+                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId()));
+            }
+        }
+    };
 }

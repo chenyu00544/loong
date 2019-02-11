@@ -181,7 +181,7 @@ class GoodsRepository implements GoodsRepositoryInterface
                 $faat->gift = unserialize($faat->gift);
                 $goods_detail->faat = $faat;
             } else {
-                $goods_detail->faat = [];
+                $goods_detail->faat = array();
             }
 
             //退货货标志
@@ -226,12 +226,38 @@ class GoodsRepository implements GoodsRepositoryInterface
                 }
                 unset($goods_detail->groupBuy->ext_info);
             } else {
-                $goods_detail->groupBuy = [];
+                $goods_detail->groupBuy = array();
             }
 
             //拼团
+            if (!empty($goods_detail->teamGoods)) {
+                foreach ($goods_detail->teamGoods->teamLog as $key => $teamLog) {
+                    $teamLog->order_num = $teamLog->order->count();
+                    foreach ($teamLog->order as $order) {
+                        if ($order->team_parent_id == 0) {
+                            $teamLog->logo = FileHandle::getImgByOssUrl($order->logo);
+                            $teamLog->user_id = $order->user_id;
+                            $teamLog->team_parent_id = $order->team_parent_id;
+                            $teamLog->user_name = $order->user_name;
+                            $teamLog->nick_name = $order->nick_name;
+                        }
+                        unset($teamLog->order);
+                    }
+                    if ($teamLog->order_num == $goods_detail->teamGoods->team_num) {
+                        unset($goods_detail->teamGoods->teamLog[$key]);
+                    }
+                }
+            } else {
+                $goods_detail->teamGoods = array();
+            }
 
-            //砍价
+            //秒杀
+            if (!empty($goods_detail->secKill)) {
+                $goods_detail->secKill->b_time = strtotime(date('Y-m-d', $time) . ' ' . $goods_detail->secKill->b_time);
+                $goods_detail->secKill->e_time = strtotime(date('Y-m-d', $time) . ' ' . $goods_detail->secKill->e_time);
+            } else {
+                $goods_detail->secKill = array();
+            }
 
             //快递
             if ($goods_detail->freight == 2) {
@@ -264,7 +290,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->comment_label = $commentLabels;
 
             //品牌商品
-            $goods_detail->brand_goodses = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['goods_name', 'original_img', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date'], 15);
+            $goods_detail->brand_goodses = $this->goodsModel->getGoodses(['brand_id' => $goods_detail->brand_id], 1, ['goods_id', 'goods_name', 'original_img', 'shop_price', 'is_promote', 'promote_price', 'promote_start_date', 'promote_end_date'], 15);
             foreach ($goods_detail->brand_goodses as $brand_goods) {
                 $brand_goods->original_img = FileHandle::getImgByOssUrl($brand_goods->original_img);
                 $brand_goods->shop_price_format = Common::priceFormat($brand_goods->shop_price);

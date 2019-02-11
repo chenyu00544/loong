@@ -67,6 +67,9 @@ public class GoodsDetail implements Serializable {
     private GoodsAttr goodsTexAttr;
     private GoodsFaat goodsFaat;
     private GoodsBrand goodsBrand;
+    private GoodsSecKill goodsSecKill;
+    private GoodsGroupBuy goodsGroupBuy;
+    private GoodsTeam goodsTeam;
     private Long current_time;
 
     public int getIsScroll() {
@@ -493,6 +496,30 @@ public class GoodsDetail implements Serializable {
         this.current_time = current_time;
     }
 
+    public GoodsSecKill getGoodsSecKill() {
+        return goodsSecKill;
+    }
+
+    public void setGoodsSecKill(GoodsSecKill goodsSecKill) {
+        this.goodsSecKill = goodsSecKill;
+    }
+
+    public GoodsGroupBuy getGoodsGroupBuy() {
+        return goodsGroupBuy;
+    }
+
+    public void setGoodsGroupBuy(GoodsGroupBuy goodsGroupBuy) {
+        this.goodsGroupBuy = goodsGroupBuy;
+    }
+
+    public GoodsTeam getGoodsTeam() {
+        return goodsTeam;
+    }
+
+    public void setGoodsTeam(GoodsTeam goodsTeam) {
+        this.goodsTeam = goodsTeam;
+    }
+
     public void setData(JSONObject Json) throws JSONException {
         this.setBanner(Json);
         this.setCommentLabel(Json);
@@ -511,6 +538,9 @@ public class GoodsDetail implements Serializable {
         this.setStore(Json);
         this.setQA(Json);
         this.setTransport(Json);
+        this.setSecKill(Json);
+        this.setGroupBuy(Json);
+        this.setTeam(Json);
 
         this.setGoods_id(Json.getInt("goods_id"));
         this.setCat_id(Json.getString("cat_id"));
@@ -851,6 +881,53 @@ public class GoodsDetail implements Serializable {
                     .class);
             goodsTransport.setData(tpJSONObject);
             this.setGoodsTransport(goodsTransport);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setSecKill(JSONObject Json) {
+        try {
+            JSONObject killJSONObject = Json.getJSONObject("sec_kill");
+            GoodsSecKill goodsSecKill = JsonUtils.fromJsonObject(killJSONObject, GoodsSecKill
+                    .class);
+            this.setGoodsSecKill(goodsSecKill);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setGroupBuy(JSONObject Json) {
+        try {
+            JSONObject groupJSONObject = Json.getJSONObject("group_buy");
+            GoodsGroupBuy goodsGroupBuy = JsonUtils.fromJsonObject(groupJSONObject, GoodsGroupBuy
+                    .class);
+            goodsGroupBuy.setData(groupJSONObject);
+            this.setGoodsGroupBuy(goodsGroupBuy);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setTeam(JSONObject Json) {
+        try {
+            JSONObject teamJSONObject = Json.getJSONObject("team_goods");
+            GoodsTeam goodsTeam = JsonUtils.fromJsonObject(teamJSONObject, GoodsTeam
+                    .class);
+            goodsTeam.setData(teamJSONObject);
+            this.setGoodsTeam(goodsTeam);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
