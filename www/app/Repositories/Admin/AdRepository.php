@@ -145,7 +145,7 @@ class AdRepository implements AdRepositoryInterface
     public function getAdPosByPage($type, $search)
     {
         if (empty($search['type'])) {
-            if($type == ''){
+            if($type != ''){
                 return $this->adPositionModel->getAdPosByPage(['ad_terminal' => $type], $search);
             }else{
                 return $this->adPositionModel->getAdPosByPage([], $search);
