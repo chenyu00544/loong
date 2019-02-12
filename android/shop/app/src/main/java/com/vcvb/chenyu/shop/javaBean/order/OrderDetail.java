@@ -53,6 +53,8 @@ public class OrderDetail implements Serializable {
     private String district_name;
     private String invoice_no;
     private String shipping_name;
+    private String extension_code;
+    private String extension_id;
     private String ru_id;
     private List<OrderGoods> orderGoodses;
 
@@ -406,6 +408,22 @@ public class OrderDetail implements Serializable {
 
     public void setComment_status(Integer comment_status) {
         this.comment_status = comment_status;
+    }
+
+    public String getExtension_code() {
+        return extension_code;
+    }
+
+    public void setExtension_code(String extension_code) {
+        this.extension_code = extension_code;
+    }
+
+    public String getExtension_id() {
+        return extension_id;
+    }
+
+    public void setExtension_id(String extension_id) {
+        this.extension_id = extension_id;
     }
 
     public void setData(JSONObject json) {

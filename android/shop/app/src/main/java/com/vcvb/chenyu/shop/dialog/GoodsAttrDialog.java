@@ -282,6 +282,18 @@ public class GoodsAttrDialog extends DialogFragment {
                             ToastUtils.showShortToast(context, "当前商品达到限购数量");
                         }
                     }
+                    if (goodsDetail.getGoodsSecKill() != null && goodsDetail.getGoodsSecKill().getSec_limit() < num) {
+                        num = goodsDetail.getGoodsSecKill().getSec_limit();
+                        outAttr.put("num", num);
+                        ToastUtils.showShortToast(context, "当前商品达到限购数量");
+                    }
+
+                    if (goodsDetail.getGoodsTeam() != null && goodsDetail.getGoodsTeam().getAstrict_num() < num) {
+                        num = goodsDetail.getGoodsTeam().getAstrict_num();
+                        outAttr.put("num", num);
+                        ToastUtils.showShortToast(context, "当前商品达到限购数量");
+                    }
+
                     ((TextView) v.findViewById(R.id.textView181)).setText(String.format(Locale
                             .CANADA, "%d", num));
                     break;

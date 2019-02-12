@@ -456,7 +456,13 @@ class OrderRepository implements OrderRepositoryInterface
                 } elseif (!empty($goods_detail->secKill)) {
                     $order[$goods_detail->user_id]['extension_code'] = 'sec_kill';
                     $order[$goods_detail->user_id]['extension_id'] = $goods_detail->secKill->sec_id;
-                    $goods_amount[$goods_detail->user_id] = $goods_detail->secKill->sec_price;
+                    if ($goods_detail->secKill->sec_limit < $num) {
+                        return '限购数量'.$goods_detail->secKill->sec_limit.'';
+                    }
+                    if ($goods_detail->secKill->sec_num < $this->orderInfoModel->countOrder([['extension_id', '=', $goods_detail->secKill->sec_id], ['extension_id', '=', $goods_detail->secKill->sec_id], ['add_time', '>', $goods_detail->secKill->b_time], ['add_time', '>', $goods_detail->secKill->e_time]])) {
+                        return '商品已抢光';
+                    }
+                    $goods_amount[$goods_detail->user_id] = $goods_detail->secKill->sec_price * $num;
                 } elseif (!empty($goods_detail->teamGoods)) {
                     $order[$goods_detail->user_id]['extension_code'] = 'team_buy';
                     $order[$goods_detail->user_id]['extension_id'] = $goods_detail->teamGoods->team_id;
@@ -464,11 +470,20 @@ class OrderRepository implements OrderRepositoryInterface
                     $order[$goods_detail->user_id]['team_user_id'] = $uid;
                     $order[$goods_detail->user_id]['team_parent_id'] = empty($data['team_parent_id']) ? 0 : $data['team_parent_id'];
                     $order[$goods_detail->user_id]['team_price'] = $goods_detail->teamGoods->team_price;
-                    $goods_amount[$goods_detail->user_id] = $goods_detail->teamGoods->team_price;
+                    $goods_amount[$goods_detail->user_id] = $goods_detail->teamGoods->team_price * $num;
+                    if ($goods_detail->teamGoods->astrict_num < $num) {
+                        return '限购数量'.$goods_detail->teamGoods->astrict_num.'';
+                    }
                 } elseif (!empty($goods_detail->groupBuy)) {
+                    $price_ladder = unserialize($goods_detail->groupBuy->price_ladder);
                     $order[$goods_detail->user_id]['extension_code'] = 'group_buy';
                     $order[$goods_detail->user_id]['extension_id'] = $goods_detail->groupBuy->act_id;
-//                    $goods_amount[$goods_detail->user_id] = $goods_detail->teamGoods->team_price;
+                    foreach ($price_ladder as $price){
+                        if($num >= $price['amount']){
+                            $goods_amount[$goods_detail->user_id] = $price['price'] * $num;
+                            break;
+                        }
+                    }
                 }
 
                 //本身商品的满减活动

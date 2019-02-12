@@ -111,6 +111,11 @@ public class OrderListItem extends BaseItem<OrderDetail> {
                 faat.setAlpha(0);
                 shop_price.setText(orderGoodsList.get(i).getShop_price_format());
             }
+            if(mData.getExtension_code().equals("sec_kill")){
+                faat.setText("秒杀");
+            }else if(mData.getExtension_code().equals("team_buy")){
+                faat.setText("拼团");
+            }
             TextView market_price = og.findViewById(R.id.textView88);
             market_price.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
             market_price.setText(orderGoodsList.get(i).getMarket_price_format());

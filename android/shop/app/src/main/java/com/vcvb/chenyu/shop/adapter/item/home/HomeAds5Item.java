@@ -39,7 +39,7 @@ public class HomeAds5Item extends BaseItem<Adses> {
 
     @Override
     public void onBindViewHolder(CYCBaseViewHolder holder, int position) {
-        int width = ToolUtils.getWindowsWidth(context);
+        int width = ToolUtils.getWindowsWidth(context)-ToolUtils.dip2px(context, 24);
         FlowLayout fl = holder.get(R.id.three_wrap);
         fl.removeAllViews();
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width / 3, width / 3);

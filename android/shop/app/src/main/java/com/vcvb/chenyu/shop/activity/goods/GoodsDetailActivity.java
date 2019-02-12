@@ -737,7 +737,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                                             String nick_name = data.getString("nick_name");
                                             String mobile_phone = data.getString("mobile_phone");
                                             String user_money = data.getString("user_money");
-                                            String is_real = data.getString("is_real");
+                                            String _is_real = data.getString("is_real");
                                             Integer server_id = data.getInt("server_id");
                                             HashMap<String, String> u = new HashMap<>();
                                             u.put("username", username);
@@ -746,11 +746,12 @@ public class GoodsDetailActivity extends GoodsActivity {
                                             u.put("nickname", nick_name);
                                             u.put("mobile_phone", mobile_phone);
                                             u.put("user_money", user_money);
-                                            u.put("is_real", is_real);
+                                            u.put("is_real", _is_real);
                                             u.put("server_id", String.valueOf(server_id));
                                             UserInfoUtils.getInstance(context).setUserInfo(u);
                                             token = _token;
-
+                                            is_real = _is_real;
+                                            getData(false);
                                             loginDialog.dismiss();
                                         } else {
                                             ToastUtils.showShortToast(context, json.getString
@@ -978,7 +979,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                     } else {
                         if (goodsDetails.getAddressBeans() != null && goodsDetails
                                 .getAddressBeans().size() > 0) {
-                            if (is_real == null && is_real.equals("0")) {
+                            if (is_real == null || is_real.equals("0")) {
                                 Intent intent = new Intent(context, UserRealNameActivity.class);
                                 startActivity(intent);
                             } else {
