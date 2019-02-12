@@ -44,6 +44,9 @@
                                     <td>{{$adType->alias}}</td>
                                     <td class="text-center">
                                         <a type="button"
+                                           href="{{url('admin/adspos/adstype/'.$adType->type)}}"
+                                           class="btn btn-info btn-edit btn-sm">查看</a>
+                                        <a type="button"
                                            href="{{url('admin/adstype/'.$adType->id.'/edit')}}"
                                            class="btn btn-info btn-edit btn-sm">编辑</a>
                                         <a type="button" href="javascript:;"

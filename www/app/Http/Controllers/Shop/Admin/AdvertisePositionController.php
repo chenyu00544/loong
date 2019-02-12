@@ -48,6 +48,15 @@ class AdvertisePositionController extends CommonController
         return $this->adRepository->setAdPos(['sort' => $request->get('sort')], $request->get('id'));
     }
 
+    public function adsType($id)
+    {
+        $type = '';
+        $search['keywords'] = '';
+        $search['type'] = $id;
+        $adPoses = $this->adRepository->getAdPosByPage($type, $search);
+        return view('shop.admin.ads.position', compact('type', 'search', 'adPoses'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

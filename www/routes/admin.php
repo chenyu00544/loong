@@ -208,8 +208,10 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::post('ad/change', 'AdvertiseController@change');
     Route::resource('ad', 'AdvertiseController');
 
-    Route::resource('adspos', 'AdvertisePositionController');
     Route::post('adspos/change', 'AdvertisePositionController@change');
+    Route::get('adspos/adstype/{id}', 'AdvertisePositionController@adsType');
+    Route::resource('adspos', 'AdvertisePositionController');
+
     Route::resource('adstype', 'AdvertiseTypeController');
 
     Route::post('favourable/change', 'FavourableController@change');

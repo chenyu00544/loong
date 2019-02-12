@@ -483,7 +483,7 @@ public class FragmentHome extends BaseFragment {
                         cells.add(homeNavsItem);
                         break;
                     case "ads_1":
-                        //1-2广告
+                        //1-1-2广告
                         HomeAds1Item homeAds1Item = new HomeAds1Item(bean.getAdses().get(i),
                                 context);
                         homeAds1Item.setOnItemClickListener(homeAds1ItemListener);

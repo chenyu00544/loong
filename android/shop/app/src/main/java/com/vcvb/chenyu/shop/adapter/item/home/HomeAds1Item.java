@@ -43,18 +43,22 @@ public class HomeAds1Item extends BaseItem<Adses> {
         ConstraintLayout cly = (ConstraintLayout) holder.getItemView();
         ConstraintSet set = new ConstraintSet();
         set.clone(cly);
-        Integer[] ids = new Integer[]{R.id.imageView99, R.id.imageView103, R.id.imageView102};
-        for (int i=0;i<mData.getAds().size();i++){
+        Integer[] ids = new Integer[]{R.id.imageView99, R.id.imageView103, R.id.imageView102, R
+                .id.imageView158};
+        for (int i = 0; i < mData.getAds().size(); i++) {
             ImageView iv = holder.get(ids[i]);
             posMap.put(ids[i], i);
             groupMap.put(ids[i], position);
             iv.setOnClickListener(listener);
-            if(i==0){
-                set.constrainWidth(iv.getId(), width * 150 / 375);
-                set.constrainHeight(iv.getId(), width * 150 / 375 * 10 / 9);
-            }else{
-                set.constrainWidth(iv.getId(), width * 225 / 375);
-                set.constrainHeight(iv.getId(), width * 150 / 375 * 5 / 9);
+            if (i == 0) {
+                set.constrainWidth(iv.getId(), width * 2 / 5);
+                set.constrainHeight(iv.getId(), width * 42 / 75);
+            } else if (i == 1) {
+                set.constrainWidth(iv.getId(), width * 3 / 5);
+                set.constrainHeight(iv.getId(), width * 42 / 75 * 4 / 7);
+            } else {
+                set.constrainWidth(iv.getId(), width * 3 / 10);
+                set.constrainHeight(iv.getId(), width * 42 / 75 * 3 / 7);
             }
             Glide.with(context).load(mData.getAds().get(i).getAd_code()).into(iv);
         }
@@ -73,7 +77,8 @@ public class HomeAds1Item extends BaseItem<Adses> {
         @Override
         public void onClick(View view) {
             if (onClickListener != null) {
-                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId()));
+                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId
+                        ()));
             }
         }
     };

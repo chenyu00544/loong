@@ -81,7 +81,7 @@
                                     <td><input type="text" name="sort" autocomplete="off" class="form-control input-sm chang-order wd-80" value="{{$adPos->sort}}" data-id="{{$adPos->position_id}}"></td>
                                     <td class="text-center">
                                         <a type="button"
-                                           href="{{url('admin/ad/adshow/'.$type.'/'.$adPos->position_id)}}"
+                                           href="{{url('admin/ad/adshow/'.$adPos->ad_terminal.'/'.$adPos->position_id)}}"
                                            class="btn btn-info btn-edit btn-sm">查看</a>
                                         <a type="button"
                                            href="{{url('admin/adspos/'.$adPos->position_id.'/edit')}}"
