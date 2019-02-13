@@ -63,4 +63,9 @@ class CategoryRepository implements CategoryRepositoryInterface
         RedisCache::set('category', $req);
         return $req;
     }
+
+    public function getCatesByGoods($id)
+    {
+        
+    }
 }

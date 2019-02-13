@@ -125,6 +125,16 @@
         $('input[type=text]').removeClass('active');
         $('.daterangepicker').hide();
     });
+
+    $("option").click(function(){
+        $("select").removeAttr("size");
+        $("select").blur();
+        this.attr("selected","");
+    });
+
+    $("select").focus(function(){
+        $(this).attr("size","10");
+    });
 });
 
 function log(obj) {

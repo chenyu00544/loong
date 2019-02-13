@@ -22,4 +22,10 @@ class CategoryController extends CommonController
         $res = $this->categoryRepository->getCates();
         return $this->apiReturn($res);
     }
+
+    public function categoryGoods(Request $request)
+    {
+        $res = $this->categoryRepository->getCatesByGoods($request->all());
+        return $this->apiReturn($res);
+    }
 }
