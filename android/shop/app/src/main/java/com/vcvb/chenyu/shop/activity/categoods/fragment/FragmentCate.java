@@ -1,7 +1,6 @@
 package com.vcvb.chenyu.shop.activity.categoods.fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,18 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
+import com.vcvb.chenyu.shop.adapter.item.home.CateNavsItem;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds1Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds2Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds3Item;
@@ -34,15 +30,11 @@ import com.vcvb.chenyu.shop.adapter.item.home.HomeAds7Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds8Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds9Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeGoods_V_Item;
-import com.vcvb.chenyu.shop.adapter.item.home.HomeNavsItem;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeSlideItem;
-import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
 import com.vcvb.chenyu.shop.adapter.itemdecoration.HomeItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
-import com.vcvb.chenyu.shop.javaBean.goods.Goods;
-import com.vcvb.chenyu.shop.javaBean.home.Adses;
-import com.vcvb.chenyu.shop.javaBean.home.HomeBean;
+import com.vcvb.chenyu.shop.javaBean.categoods.CategroyGoods;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UrlParse;
@@ -64,15 +56,13 @@ public class FragmentCate extends BaseFragment {
 
     private RecyclerView mRecyclerView;
     private CYCGridAdapter mAdapter = new CYCGridAdapter();
-    private HomeBean homeBean = new HomeBean();
+    private CategroyGoods categroyGoods = new CategroyGoods();
     private GridLayoutManager mLayoutManager;
     private HomeItemDecoration homeItemDecoration;
 
     private ConstraintLayout header;
 
     private RefreshLayout refreshLayout;
-    private ImageView upwardView;
-    private View slideBg;
     private int sroll_y = 0;
     private int page = 1;
     private int cateId = 0;
@@ -84,7 +74,7 @@ public class FragmentCate extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.refresh_recyclerview_list, container, false);
         if (getActivity() != null) {
-            cateId = getActivity().getIntent().getIntExtra("id", 0);
+            cateId = getActivity().getIntent().getIntExtra("cate", 0);
         }
         initRefresh();
         initView();
@@ -93,18 +83,14 @@ public class FragmentCate extends BaseFragment {
     }
 
     private void initView() {
-        upwardView = view.findViewById(R.id.imageView116);
-        RequestOptions requestOptions = RequestOptions.circleCropTransform();
-        Glide.with(context).load(R.drawable.icon_upward).apply(requestOptions).into(upwardView);
-        slideBg = view.findViewById(R.id.view88);
         header = view.findViewById(R.id.nav_header_home);
-        mRecyclerView = view.findViewById(R.id.recyclerView);
+        mRecyclerView = view.findViewById(R.id.content);
         mLayoutManager = new GridLayoutManager(context, 6);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
-        homeItemDecoration = new HomeItemDecoration(context);
-        mRecyclerView.addItemDecoration(homeItemDecoration);
+//        homeItemDecoration = new HomeItemDecoration(context);
+//        mRecyclerView.addItemDecoration(homeItemDecoration);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -115,18 +101,10 @@ public class FragmentCate extends BaseFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 sroll_y += dy;
-                if (sroll_y > 1500) {
-                    upwardView.setVisibility(View.VISIBLE);
-                    upwardView.setOnClickListener(listener);
-                } else {
-                    upwardView.setVisibility(View.GONE);
-                    upwardView.setOnClickListener(null);
-                }
                 if (sroll_y > ToolUtils.dip2px(context, 70) + ToolUtils.getWindowsWidth(context)
                         / 2) {
                     header.setBackgroundColor(context.getResources().getColor(R.color
                             .colorBack_morandi));
-
                 } else {
                     header.setBackgroundColor(context.getResources().getColor(R.color
                             .color_transparent));
@@ -136,7 +114,7 @@ public class FragmentCate extends BaseFragment {
     }
 
     private void initRefresh() {
-        refreshLayout = view.findViewById(R.id.refresh_recyclerview_list);
+        refreshLayout = view.findViewById(R.id.refresh);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshLayout) {
@@ -164,7 +142,7 @@ public class FragmentCate extends BaseFragment {
         HttpUtils.getInstance().post(ConstantManager.Url.CATEGORY_GOODS, mp, new HttpUtils
                 .NetCall() {
             @Override
-            public void success(Call call,final JSONObject json) throws IOException {
+            public void success(Call call, final JSONObject json) throws IOException {
                 if (json != null) {
                     if (getActivity() != null) {
                         getActivity().runOnUiThread(new Runnable() {
@@ -204,29 +182,28 @@ public class FragmentCate extends BaseFragment {
     public void bindData(JSONObject json) {
         if (json != null) {
             try {
-                homeBean.setData(json.getJSONObject("data"));
+                categroyGoods.setData(json.getJSONObject("data"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         mAdapter.clear();
-
-        homeItemDecoration.setData(homeBean);
-        mAdapter.addAll(getItems(homeBean));
-        final int pos = homeBean.getAdses().size();
-        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-                .OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-                if (position >= pos) {
-                    int p = position - pos;
-                    Goods goods = homeBean.getGoodses().get(p);
-                    Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("id", goods.getGoods_id());
-                    context.startActivity(intent);
-                }
-            }
-        });
+//        homeItemDecoration.setData(categroyGoods);
+        mAdapter.addAll(getItems(categroyGoods));
+//        final int pos = categroyGoods.getAdses().size();
+//        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+//                .OnItemClickListener() {
+//            @Override
+//            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+//                if (position >= pos) {
+//                    int p = position - pos;
+//                    Goods goods = categroyGoods.getGoodses().get(p);
+//                    Intent intent = new Intent(context, GoodsDetailActivity.class);
+//                    intent.putExtra("id", goods.getGoods_id());
+//                    context.startActivity(intent);
+//                }
+//            }
+//        });
     }
 
     public void loadmore() {
@@ -235,81 +212,74 @@ public class FragmentCate extends BaseFragment {
         mp.put("page", page + "");
         HttpUtils.getInstance().post(ConstantManager.Url.CATEGORY_GOODS_LOADMORE, mp, new
                 HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, JSONObject json) throws IOException {
-                if (json != null) {
-                    loadMoreData = json;
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                refreshLayout.finishLoadMore();
-                                bindLoadMoreData();
+                    @Override
+                    public void success(Call call, JSONObject json) throws IOException {
+                        if (json != null) {
+                            loadMoreData = json;
+                            if (getActivity() != null) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        refreshLayout.finishLoadMore();
+                                        bindLoadMoreData();
+                                    }
+                                });
                             }
-                        });
-                    }
-                }
-            }
-
-            @Override
-            public void failed(Call call, IOException e) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            refreshLayout.finishLoadMore(false);
-                            Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
                         }
-                    });
-                }
-            }
-        });
+                    }
+
+                    @Override
+                    public void failed(Call call, IOException e) {
+                        if (getActivity() != null) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    refreshLayout.finishLoadMore(false);
+                                    Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            });
+                        }
+                    }
+                });
     }
 
     public void bindLoadMoreData() {
         if (loadMoreData != null) {
             try {
-                HomeBean homeBean = new HomeBean();
-                homeBean.setData(loadMoreData.getJSONObject("data"));
-                int index = this.homeBean.getAdses().size() + this.homeBean.getGoodses().size();
-                mAdapter.addAll(index, getItems(homeBean));
-                mAdapter.notifyItemRangeChanged(index, homeBean.getGoodses().size());
-                this.homeBean.getGoodses().addAll(homeBean.getGoodses());
+                CategroyGoods _categroyGoods = new CategroyGoods();
+                _categroyGoods.setData(loadMoreData.getJSONObject("data"));
+                int index = this.categroyGoods.getAdses().size() + this.categroyGoods.getGoodses
+                        ().size();
+                mAdapter.addAll(index, getItems(_categroyGoods));
+                mAdapter.notifyItemRangeChanged(index, _categroyGoods.getGoodses().size());
+                this.categroyGoods.getGoodses().addAll(_categroyGoods.getGoodses());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    protected List<Item> getItems(HomeBean bean) {
+    protected List<Item> getItems(CategroyGoods bean) {
         List<Item> cells = new ArrayList<>();
         if (bean.getAdses() != null && bean.getAdses().size() > 0) {
             for (int i = 0; i < bean.getAdses().size(); i++) {
                 switch (bean.getAdses().get(i).getType()) {
                     case "slide":
                         //nav
-                        if (bean.getAdses().get(i) != null) {
-                            if (bean.getAdses().get(i).getAds() != null && bean.getAdses().get(i)
-                                    .getAds().size() > 0) {
-                                slideBg.setBackgroundColor(Color.parseColor(bean.getAdses().get
-                                        (i).getAds().get(0).getAd_color()));
-                            }
-                        } else {
-                            slideBg.setBackgroundResource(R.color.colorBack_morandi);
-                        }
                         HomeSlideItem homeSlideItem = new HomeSlideItem(bean.getAdses().get(i),
                                 context);
 
                         homeSlideItem.setOnItemClickListener(homeSlideItemListener);
-                        homeSlideItem.setOnPageChangeListener(onPageChangeListener);
+//                        homeSlideItem.setOnPageChangeListener(onPageChangeListener);
                         cells.add(homeSlideItem);
-                        break;
-                    case "navigation":
                         //nav
-                        HomeNavsItem homeNavsItem = new HomeNavsItem(bean.getAdses().get(i),
-                                context);
-                        homeNavsItem.setOnItemClickListener(homeNavsItemListener);
-                        cells.add(homeNavsItem);
+                        if (bean.getCates() != null && bean.getCates().size() > 0) {
+                            CateNavsItem cateNavsItem = new CateNavsItem(bean.getCates(),
+                                    context);
+                            cateNavsItem.setOnItemClickListener(cateNavsItemListener);
+                            cells.add(cateNavsItem);
+                        }
                         break;
                     case "ads_1":
                         //1-1-2广告
@@ -387,8 +357,8 @@ public class FragmentCate extends BaseFragment {
     }
 
     public void goToActivityByAdsUri(String type, int pos, int group) {
-        if (homeBean.getAdses().get(group).getType().equals(type)) {
-            String uri = homeBean.getAdses().get(group).getAds().get(pos).getAd_link();
+        if (categroyGoods.getAdses().get(group).getType().equals(type)) {
+            String uri = categroyGoods.getAdses().get(group).getAds().get(pos).getAd_link();
             Class c = UrlParse.getUrlToClass(uri);
             if (c != null) {
                 Map<String, String> id = UrlParse.getUrlParams(uri);
@@ -416,16 +386,16 @@ public class FragmentCate extends BaseFragment {
             goToActivityByAdsUri("slide", pos, 0);
         }
     };
-    HomeSlideItem.OnPageChangeListener onPageChangeListener = new HomeSlideItem
-            .OnPageChangeListener() {
-        @Override
-        public void onPageChanged(int pos, Adses adses) {
-            if (adses.getAds().get(pos).getAd_color() != null) {
-                slideBg.setBackgroundColor(Color.parseColor(adses.getAds().get(pos).getAd_color()));
-            }
-        }
-    };
-    HomeNavsItem.OnClickListener homeNavsItemListener = new HomeNavsItem.OnClickListener() {
+//    HomeSlideItem.OnPageChangeListener onPageChangeListener = new HomeSlideItem
+//            .OnPageChangeListener() {
+//        @Override
+//        public void onPageChanged(int pos, Adses adses) {
+//            if (adses.getAds().get(pos).getAd_color() != null) {
+//                slideBg.setBackgroundColor(Color.parseColor(adses.getAds().get(pos).getAd_color()));
+//            }
+//        }
+//    };
+    CateNavsItem.OnClickListener cateNavsItemListener = new CateNavsItem.OnClickListener() {
         @Override
         public void onClicked(View view, int pos, int group) {
             goToActivityByAdsUri("navigation", pos, group);
