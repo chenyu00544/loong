@@ -82,6 +82,7 @@ Route::group(['prefix' => 'app', 'namespace' => 'Shop\App'], function () {
 
     Route::post('category/index', 'CategoryController@index');
     Route::post('category/goods', 'CategoryController@categoryGoods');
+    Route::post('category/goods/loadmore', 'CategoryController@goodsLoadMore');
 
     Route::post('search/index', 'SearchController@index');
     Route::post('search/filter/by', 'SearchController@getFilterBySearch');

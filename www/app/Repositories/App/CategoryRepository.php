@@ -12,16 +12,20 @@ use App\Contracts\CategoryRepositoryInterface;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\App\CategoryModel;
+use App\Http\Models\App\GoodsModel;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
     private $categoryModel;
+    private $goodsModel;
 
     public function __construct(
-        CategoryModel $categoryModel
+        CategoryModel $categoryModel,
+        GoodsModel $goodsModel
     )
     {
         $this->categoryModel = $categoryModel;
+        $this->goodsModel = $goodsModel;
     }
 
     public function getCates()
@@ -36,7 +40,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         $where['parent_id'] = 0;
         $res = $this->categoryModel->getComCates($where, $column);
         $req = [];
-        foreach ($res as $k =>$re) {
+        foreach ($res as $k => $re) {
             if ($re->subCate->count() > 0) {
                 foreach ($re->subCate as $sub_cate) {
                     $sub_cate->touch_icon = FileHandle::getImgByOssUrl($sub_cate->touch_icon);
@@ -64,8 +68,28 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $req;
     }
 
-    public function getCatesByGoods($id)
+    public function getCatesByGoods($data)
     {
-        
+        $cateId = $data['id'];
+        $cateIds = $this->getSubCates($cateId);
+        $column = ['*'];
+        $re['goods'] = $this->goodsModel->getGoodsesByCateIds($cateIds, $data['page'], $column);
+        $column_cate = ['id', 'cat_name', 'parent_id', 'is_show', 'touch_icon', 'cat_alias_name'];
+        $cates = $this->categoryModel->getSubCates(['parent_id' => $cateId, 'is_show' => 1], $column_cate);
+        foreach ($cates as $cate) {
+            $cate->touch_icon = FileHandle::getImgByOssUrl($cate->touch_icon);
+        }
+        $re['cates'] = $cates;
+        return $re;
+    }
+
+    public function getSubCates($id, $ids = [])
+    {
+        $ids[] = $id;
+        $cates = $this->categoryModel->getSubCates(['parent_id' => $id]);
+        foreach ($cates as $cate) {
+            $ids = $this->getSubCates($cate->id, $ids);
+        }
+        return $ids;
     }
 }

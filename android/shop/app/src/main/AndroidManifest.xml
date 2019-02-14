@@ -208,6 +208,10 @@
             android:theme="@style/AppTheme" />
 
         <activity
+            android:name=".activity.faat.FaatTeamActivity"
+            android:theme="@style/AppTheme" />
+
+        <activity
             android:name=".activity.web.WebActivity"
             android:theme="@style/AppTheme" />
 
@@ -254,11 +258,7 @@
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".activity.faat.FaatTeamActivity"
-            android:theme="@style/AppTheme" />
-
-        <activity
-            android:name=".activity.faat.FaatSecKillActivity"
+            android:name=".activity.categoods.CateGoodsActivity"
             android:theme="@style/AppTheme" />
 
         <provider

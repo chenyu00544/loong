@@ -2,6 +2,7 @@ package com.vcvb.chenyu.shop.tools;
 
 import android.net.Uri;
 
+import com.vcvb.chenyu.shop.activity.categoods.CateGoodsActivity;
 import com.vcvb.chenyu.shop.activity.faat.BrandListActivity;
 import com.vcvb.chenyu.shop.activity.faat.FaatGroupBuyActivity;
 import com.vcvb.chenyu.shop.activity.faat.FaatListActivity;
@@ -95,6 +96,9 @@ public class UrlParse {
                 break;
             case "vcvbuy:://pages/article/detail":
                 a = ArticleInfoActivity.class;
+                break;
+            case "vcvbuy:://pages/category/index":
+                a = CateGoodsActivity.class;
                 break;
         }
         return a;

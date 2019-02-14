@@ -1,4 +1,4 @@
-package com.vcvb.chenyu.shop.activity.faat;
+package com.vcvb.chenyu.shop.activity.categoods;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,12 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.MainActivity;
 import com.vcvb.chenyu.shop.R;
-import com.vcvb.chenyu.shop.activity.faat.fragment.BrandFragment;
+import com.vcvb.chenyu.shop.activity.categoods.fragment.FragmentCate;
 import com.vcvb.chenyu.shop.activity.goods.CartActivity;
 import com.vcvb.chenyu.shop.activity.msg.MessageActivity;
 import com.vcvb.chenyu.shop.base.BaseActivity;
@@ -19,13 +18,12 @@ import com.vcvb.chenyu.shop.constant.ConstantManager;
 import com.vcvb.chenyu.shop.popwin.PopWin;
 import com.vcvb.chenyu.shop.tools.ToolUtils;
 
-public class BrandListActivity extends BaseActivity {
+public class CateGoodsActivity extends BaseActivity {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private BrandFragment brandFragment;
+    private FragmentCate fragment;
     private PopWin popWindow;
-    private TextView title;
 
     private int index = 0;
     private String SAVED_INDEX = "SAVED_INDEX";
@@ -40,7 +38,7 @@ public class BrandListActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SAVED_INDEX, index);
-            brandFragment = (BrandFragment) fragmentManager.findFragmentByTag
+            fragment = (FragmentCate) fragmentManager.findFragmentByTag
                     (fragmentTag[0]);
         }
         setNavBack();
@@ -54,11 +52,9 @@ public class BrandListActivity extends BaseActivity {
         ImageView share = findViewById(R.id.imageView120);
         share.setOnClickListener(listener);
         ImageView more = findViewById(R.id.imageView94);
-        popWindow = new PopWin(BrandListActivity.this, ToolUtils.dip2px(this, 156), ToolUtils
-                .dip2px(this, 148));
         more.setOnClickListener(listener);
-        title = findViewById(R.id.textView123);
-        title.setText(R.string.brand_center);
+        popWindow = new PopWin(CateGoodsActivity.this, ToolUtils.dip2px(this, 156), ToolUtils
+                .dip2px(this, 148));
         popWindow.setClickListener(popListener);
     }
 
@@ -82,13 +78,13 @@ public class BrandListActivity extends BaseActivity {
         hideFragment(fragmentTransaction);
         switch (type) {
             case 0:
-                if (brandFragment == null) {
-                    brandFragment = new BrandFragment();
+                if (fragment == null) {
+                    fragment = new FragmentCate();
                     //加入事务
-                    fragmentTransaction.add(R.id.faat_main, brandFragment, fragmentTag[0]);
+                    fragmentTransaction.add(R.id.faat_main, fragment, fragmentTag[0]);
                 } else {
                     //如果不为空就显示出来
-                    fragmentTransaction.show(brandFragment);
+                    fragmentTransaction.show(fragment);
                 }
                 break;
         }
@@ -97,8 +93,8 @@ public class BrandListActivity extends BaseActivity {
     }
 
     private void hideFragment(FragmentTransaction fragmentTransaction) {
-        if (brandFragment != null) {
-            fragmentTransaction.hide(brandFragment);
+        if (fragment != null) {
+            fragmentTransaction.hide(fragment);
         }
     }
 
@@ -110,7 +106,7 @@ public class BrandListActivity extends BaseActivity {
                     popWindow.showAsDropDown(view);
                     break;
                 case ConstantManager.Nav.BACK_1:
-                    SwipeBackHelper.finish(BrandListActivity.this);
+                    SwipeBackHelper.finish(CateGoodsActivity.this);
                     break;
                 case ConstantManager.Nav.SHARE:
                     popWindow.showAsDropDown(view);
@@ -125,15 +121,15 @@ public class BrandListActivity extends BaseActivity {
             popWindow.dismiss();
             switch (v.getId()) {
                 case ConstantManager.Menu.HOME:
-                    Intent intentM = new Intent(BrandListActivity.this, MainActivity.class);
+                    Intent intentM = new Intent(CateGoodsActivity.this, MainActivity.class);
                     startActivity(intentM);
                     break;
                 case ConstantManager.Menu.MESSAGE:
-                    Intent intentH = new Intent(BrandListActivity.this, MessageActivity.class);
+                    Intent intentH = new Intent(CateGoodsActivity.this, MessageActivity.class);
                     startActivity(intentH);
                     break;
                 case ConstantManager.Menu.CART:
-                    Intent intentC = new Intent(BrandListActivity.this, CartActivity.class);
+                    Intent intentC = new Intent(CateGoodsActivity.this, CartActivity.class);
                     startActivity(intentC);
                     break;
             }

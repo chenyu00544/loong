@@ -103,7 +103,20 @@ class GoodsModel extends Model
             ->where('review_status', '>=', 3)
             ->orderBy('sort_order', 'DESC')
             ->orderBy('add_time', 'DESC')
-            ->offset(($page - 1) * $size)->limit($size)
+            ->offset(($page - 1) * $size)
+            ->limit($size)
+            ->get();
+    }
+
+    public function getGoodsesByCateIds($whereIn, $page = 1, $column = ['*'], $size = 10)
+    {
+        return $this->select($column)
+            ->whereIn('cat_id', $whereIn)
+            ->where('review_status', '>=', 3)
+            ->orderBy('sort_order', 'DESC')
+            ->orderBy('add_time', 'DESC')
+            ->offset(($page - 1) * $size)
+            ->limit($size)
             ->get();
     }
 

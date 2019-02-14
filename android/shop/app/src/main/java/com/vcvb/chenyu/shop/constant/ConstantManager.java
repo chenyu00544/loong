@@ -155,6 +155,7 @@ public interface ConstantManager {
         //fixme 分类
         public String CATEGORY = URIHOST + URI_TYPE_APP + "category/index";
         public String CATEGORY_GOODS = URIHOST + URI_TYPE_APP + "category/goods";
+        public String CATEGORY_GOODS_LOADMORE = URIHOST + URI_TYPE_APP + "category/goods/loadmore";
 
         //fixme 搜索
         public String SEARCH = URIHOST + URI_TYPE_APP + "search/index";
