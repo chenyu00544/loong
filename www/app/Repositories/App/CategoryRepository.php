@@ -9,6 +9,7 @@
 namespace App\Repositories\App;
 
 use App\Contracts\CategoryRepositoryInterface;
+use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\App\CategoryModel;
@@ -72,8 +73,21 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         $cateId = $data['id'];
         $cateIds = $this->getSubCates($cateId);
-        $column = ['*'];
-        $re['goods'] = $this->goodsModel->getGoodsesByCateIds($cateIds, $data['page'], $column);
+        $column = ['goods_id', 'goods_name', 'shop_price', 'market_price', 'goods_thumb', 'goods_img', 'original_img', 'is_best', 'is_hot', 'promote_price', 'is_promote', 'is_fullcut', 'is_volume', 'sales_volume'];
+        $goodses = $this->goodsModel->getGoodsesByCateIds($cateIds, $data['page'], $column);
+        foreach ($goodses as $goods){
+            $goods->goods_thumb = FileHandle::getImgByOssUrl($goods->goods_thumb);
+            $goods->goods_img = FileHandle::getImgByOssUrl($goods->goods_img);
+            $goods->original_img = FileHandle::getImgByOssUrl($goods->original_img);
+            $goods->market_price_format = Common::priceFormat($goods->market_price);
+            $goods->shop_price_format = Common::priceFormat($goods->shop_price);
+            $goods->promote_price_format = Common::priceFormat($goods->promote_price);
+            if ($goods->gvp->count() > 0) {
+                $goods->volume_number = $goods->gvp[0]->volume_number;
+                $goods->volume_price = Common::priceFormat($goods->gvp[0]->volume_price);
+            }
+        }
+        $re['goods'] = $goodses;
         $column_cate = ['id', 'cat_name', 'parent_id', 'is_show', 'touch_icon', 'cat_alias_name'];
         $cates = $this->categoryModel->getSubCates(['parent_id' => $cateId, 'is_show' => 1], $column_cate);
         foreach ($cates as $cate) {

@@ -392,10 +392,12 @@ public class FragmentHome extends BaseFragment {
             public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
                 if (position >= pos) {
                     int p = position - pos;
-                    Goods goods = homeBean.getGoodses().get(p);
-                    Intent intent = new Intent(context, GoodsDetailActivity.class);
-                    intent.putExtra("id", goods.getGoods_id());
-                    context.startActivity(intent);
+                    if(p < homeBean.getGoodses().size()){
+                        Goods goods = homeBean.getGoodses().get(p);
+                        Intent intent = new Intent(context, GoodsDetailActivity.class);
+                        intent.putExtra("id", goods.getGoods_id());
+                        context.startActivity(intent);
+                    }
                 }
             }
         });

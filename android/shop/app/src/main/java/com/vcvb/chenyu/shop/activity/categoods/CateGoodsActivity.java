@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.vcvb.chenyu.shop.MainActivity;
@@ -53,6 +54,8 @@ public class CateGoodsActivity extends BaseActivity {
         share.setOnClickListener(listener);
         ImageView more = findViewById(R.id.imageView94);
         more.setOnClickListener(listener);
+        TextView textView = findViewById(R.id.textView123);
+        textView.setText(R.string.category);
         popWindow = new PopWin(CateGoodsActivity.this, ToolUtils.dip2px(this, 156), ToolUtils
                 .dip2px(this, 148));
         popWindow.setClickListener(popListener);

@@ -2,6 +2,7 @@ package com.vcvb.chenyu.shop.adapter.item.home;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,10 +49,13 @@ public class CateNavsItem extends BaseItem<List<Categroy>> {
         if (mData.size() < 5) {
             spac = mData.size();
         }
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width / spac, width / 4);
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(width / spac,
+                width / 4);
+        ConstraintSet set = new ConstraintSet();
         for (int i = 0; i < mData.size(); i++) {
             int id = IdsUtils.generateViewId();
-            View v = LayoutInflater.from(context).inflate(R.layout.cate_navs_sub_item, null);
+            ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.cate_navs_sub_item, null);
+            set.clone(v);
             v.setId(id);
             v.setLayoutParams(params);
             v.setOnClickListener(listener);
@@ -60,8 +64,11 @@ public class CateNavsItem extends BaseItem<List<Categroy>> {
             ImageView imageView = v.findViewById(R.id.imageView159);
             TextView textView = v.findViewById(R.id.textView316);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            set.constrainWidth(imageView.getId(), width / 5);
+            set.constrainHeight(imageView.getId(), width / 5);
             Glide.with(context).load(mData.get(i).getTouch_icon()).into(imageView);
             textView.setText(mData.get(i).getCat_alias_name());
+            set.applyTo(v);
             flowLayout.addView(v);
         }
     }
@@ -78,7 +85,8 @@ public class CateNavsItem extends BaseItem<List<Categroy>> {
         @Override
         public void onClick(View view) {
             if (onClickListener != null) {
-                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId()));
+                onClickListener.onClicked(view, posMap.get(view.getId()), groupMap.get(view.getId
+                        ()));
             }
         }
     };

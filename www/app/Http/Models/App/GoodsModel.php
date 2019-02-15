@@ -111,6 +111,9 @@ class GoodsModel extends Model
     public function getGoodsesByCateIds($whereIn, $page = 1, $column = ['*'], $size = 10)
     {
         return $this->select($column)
+            ->with(['gvp' => function ($query) {
+                $query->where(['price_type' => 1]);
+            }])
             ->whereIn('cat_id', $whereIn)
             ->where('review_status', '>=', 3)
             ->orderBy('sort_order', 'DESC')

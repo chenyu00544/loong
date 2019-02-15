@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +16,8 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.vcvb.chenyu.shop.R;
+import com.vcvb.chenyu.shop.activity.categoods.CateGoodsActivity;
+import com.vcvb.chenyu.shop.activity.goods.GoodsDetailActivity;
 import com.vcvb.chenyu.shop.adapter.CYCGridAdapter;
 import com.vcvb.chenyu.shop.adapter.base.Item;
 import com.vcvb.chenyu.shop.adapter.item.home.CateNavsItem;
@@ -31,12 +32,14 @@ import com.vcvb.chenyu.shop.adapter.item.home.HomeAds8Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeAds9Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeGoods_V_Item;
 import com.vcvb.chenyu.shop.adapter.item.home.HomeSlideItem;
-import com.vcvb.chenyu.shop.adapter.itemdecoration.HomeItemDecoration;
+import com.vcvb.chenyu.shop.adapter.itemclick.CYCItemClickSupport;
+import com.vcvb.chenyu.shop.adapter.itemdecoration.CateItemDecoration;
 import com.vcvb.chenyu.shop.base.BaseFragment;
 import com.vcvb.chenyu.shop.constant.ConstantManager;
+import com.vcvb.chenyu.shop.javaBean.cate.Categroy;
 import com.vcvb.chenyu.shop.javaBean.categoods.CategroyGoods;
+import com.vcvb.chenyu.shop.javaBean.goods.Goods;
 import com.vcvb.chenyu.shop.tools.HttpUtils;
-import com.vcvb.chenyu.shop.tools.ToolUtils;
 import com.vcvb.chenyu.shop.tools.UrlParse;
 
 import org.json.JSONException;
@@ -58,9 +61,7 @@ public class FragmentCate extends BaseFragment {
     private CYCGridAdapter mAdapter = new CYCGridAdapter();
     private CategroyGoods categroyGoods = new CategroyGoods();
     private GridLayoutManager mLayoutManager;
-    private HomeItemDecoration homeItemDecoration;
-
-    private ConstraintLayout header;
+    private CateItemDecoration cateItemDecoration;
 
     private RefreshLayout refreshLayout;
     private int sroll_y = 0;
@@ -73,6 +74,7 @@ public class FragmentCate extends BaseFragment {
                              @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.refresh_recyclerview_list, container, false);
+        view.setBackgroundResource(R.color.white);
         if (getActivity() != null) {
             cateId = getActivity().getIntent().getIntExtra("cate", 0);
         }
@@ -83,14 +85,13 @@ public class FragmentCate extends BaseFragment {
     }
 
     private void initView() {
-        header = view.findViewById(R.id.nav_header_home);
         mRecyclerView = view.findViewById(R.id.content);
         mLayoutManager = new GridLayoutManager(context, 6);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
-//        homeItemDecoration = new HomeItemDecoration(context);
-//        mRecyclerView.addItemDecoration(homeItemDecoration);
+        cateItemDecoration = new CateItemDecoration(context);
+        mRecyclerView.addItemDecoration(cateItemDecoration);
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -101,14 +102,6 @@ public class FragmentCate extends BaseFragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 sroll_y += dy;
-                if (sroll_y > ToolUtils.dip2px(context, 70) + ToolUtils.getWindowsWidth(context)
-                        / 2) {
-                    header.setBackgroundColor(context.getResources().getColor(R.color
-                            .colorBack_morandi));
-                } else {
-                    header.setBackgroundColor(context.getResources().getColor(R.color
-                            .color_transparent));
-                }
             }
         });
     }
@@ -157,6 +150,20 @@ public class FragmentCate extends BaseFragment {
                             }
                         });
                     }
+                } else {
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (bool) {
+                                    loadingDialog.dismiss();
+                                } else if (refreshLayout != null) {
+                                    refreshLayout.finishRefresh(false);
+                                }
+                                Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
             }
 
@@ -188,60 +195,67 @@ public class FragmentCate extends BaseFragment {
             }
         }
         mAdapter.clear();
-//        homeItemDecoration.setData(categroyGoods);
+        cateItemDecoration.setData(categroyGoods);
         mAdapter.addAll(getItems(categroyGoods));
-//        final int pos = categroyGoods.getAdses().size();
-//        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
-//                .OnItemClickListener() {
-//            @Override
-//            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
-//                if (position >= pos) {
-//                    int p = position - pos;
-//                    Goods goods = categroyGoods.getGoodses().get(p);
-//                    Intent intent = new Intent(context, GoodsDetailActivity.class);
-//                    intent.putExtra("id", goods.getGoods_id());
-//                    context.startActivity(intent);
-//                }
-//            }
-//        });
+        final int pos;
+        if (categroyGoods.getCates() != null && categroyGoods.getCates().size() > 0) {
+            pos = categroyGoods.getAdses().size() + 1;
+        } else {
+            pos = categroyGoods.getAdses().size();
+        }
+        CYCItemClickSupport.addTo(mRecyclerView).setOnItemClickListener(new CYCItemClickSupport
+                .OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, View itemView, int position) {
+                if (position >= pos) {
+                    int p = position - pos;
+                    if (p < categroyGoods.getGoodses().size()) {
+                        Goods goods = categroyGoods.getGoodses().get(p);
+                        Intent intent = new Intent(context, GoodsDetailActivity.class);
+                        intent.putExtra("id", goods.getGoods_id());
+                        context.startActivity(intent);
+                    }
+                }
+            }
+        });
     }
 
     public void loadmore() {
         page += 1;
         HashMap<String, String> mp = new HashMap<>();
         mp.put("page", page + "");
+        mp.put("id", cateId + "");
         HttpUtils.getInstance().post(ConstantManager.Url.CATEGORY_GOODS_LOADMORE, mp, new
                 HttpUtils.NetCall() {
-                    @Override
-                    public void success(Call call, JSONObject json) throws IOException {
-                        if (json != null) {
-                            loadMoreData = json;
-                            if (getActivity() != null) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        refreshLayout.finishLoadMore();
-                                        bindLoadMoreData();
-                                    }
-                                });
+            @Override
+            public void success(Call call, JSONObject json) throws IOException {
+                if (json != null) {
+                    loadMoreData = json;
+                    if (getActivity() != null) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshLayout.finishLoadMore();
+                                bindLoadMoreData();
                             }
-                        }
+                        });
                     }
+                }
+            }
 
-                    @Override
-                    public void failed(Call call, IOException e) {
-                        if (getActivity() != null) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    refreshLayout.finishLoadMore(false);
-                                    Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT)
-                                            .show();
-                                }
-                            });
+            @Override
+            public void failed(Call call, IOException e) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            refreshLayout.finishLoadMore(false);
+                            Toast.makeText(getActivity(), "网络错误！", Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
+                    });
+                }
+            }
+        });
     }
 
     public void bindLoadMoreData() {
@@ -250,7 +264,7 @@ public class FragmentCate extends BaseFragment {
                 CategroyGoods _categroyGoods = new CategroyGoods();
                 _categroyGoods.setData(loadMoreData.getJSONObject("data"));
                 int index = this.categroyGoods.getAdses().size() + this.categroyGoods.getGoodses
-                        ().size();
+                        ().size() + 1;
                 mAdapter.addAll(index, getItems(_categroyGoods));
                 mAdapter.notifyItemRangeChanged(index, _categroyGoods.getGoodses().size());
                 this.categroyGoods.getGoodses().addAll(_categroyGoods.getGoodses());
@@ -262,6 +276,14 @@ public class FragmentCate extends BaseFragment {
 
     protected List<Item> getItems(CategroyGoods bean) {
         List<Item> cells = new ArrayList<>();
+        if(bean.getAdses() == null || bean.getAdses().size() == 0){
+            //nav
+            if (bean.getCates() != null && bean.getCates().size() > 0) {
+                CateNavsItem cateNavsItem = new CateNavsItem(bean.getCates(), context);
+                cateNavsItem.setOnItemClickListener(cateNavsItemListener);
+                cells.add(cateNavsItem);
+            }
+        }
         if (bean.getAdses() != null && bean.getAdses().size() > 0) {
             for (int i = 0; i < bean.getAdses().size(); i++) {
                 switch (bean.getAdses().get(i).getType()) {
@@ -269,14 +291,13 @@ public class FragmentCate extends BaseFragment {
                         //nav
                         HomeSlideItem homeSlideItem = new HomeSlideItem(bean.getAdses().get(i),
                                 context);
-
                         homeSlideItem.setOnItemClickListener(homeSlideItemListener);
 //                        homeSlideItem.setOnPageChangeListener(onPageChangeListener);
                         cells.add(homeSlideItem);
+
                         //nav
                         if (bean.getCates() != null && bean.getCates().size() > 0) {
-                            CateNavsItem cateNavsItem = new CateNavsItem(bean.getCates(),
-                                    context);
+                            CateNavsItem cateNavsItem = new CateNavsItem(bean.getCates(), context);
                             cateNavsItem.setOnItemClickListener(cateNavsItemListener);
                             cells.add(cateNavsItem);
                         }
@@ -357,7 +378,12 @@ public class FragmentCate extends BaseFragment {
     }
 
     public void goToActivityByAdsUri(String type, int pos, int group) {
-        if (categroyGoods.getAdses().get(group).getType().equals(type)) {
+        if (group == 1) {
+            Categroy cg = categroyGoods.getCates().get(pos);
+            Intent intent = new Intent(context, CateGoodsActivity.class);
+            intent.putExtra("cate", cg.getId());
+            context.startActivity(intent);
+        } else if (categroyGoods.getAdses().get(group).getType().equals(type)) {
             String uri = categroyGoods.getAdses().get(group).getAds().get(pos).getAd_link();
             Class c = UrlParse.getUrlToClass(uri);
             if (c != null) {
@@ -386,12 +412,13 @@ public class FragmentCate extends BaseFragment {
             goToActivityByAdsUri("slide", pos, 0);
         }
     };
-//    HomeSlideItem.OnPageChangeListener onPageChangeListener = new HomeSlideItem
+    //    HomeSlideItem.OnPageChangeListener onPageChangeListener = new HomeSlideItem
 //            .OnPageChangeListener() {
 //        @Override
 //        public void onPageChanged(int pos, Adses adses) {
 //            if (adses.getAds().get(pos).getAd_color() != null) {
-//                slideBg.setBackgroundColor(Color.parseColor(adses.getAds().get(pos).getAd_color()));
+//                slideBg.setBackgroundColor(Color.parseColor(adses.getAds().get(pos).getAd_color
+// ()));
 //            }
 //        }
 //    };
