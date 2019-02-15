@@ -171,12 +171,11 @@ class SatisticsRepository implements SatisticsRepositoryInterface
         $dates = $this->getDataArray($data['date']);
         $order = [];
         foreach ($dates['time'] as $k => $date) {
-            if (empty($dates[$k + 1])) {
+            if (empty($dates['time'][$k + 1])) {
                 $where = [['add_time', '>', $date]];
             } else {
-                $where = [['add_time', '>', $date], ['add_time', '<', $dates[$k + 1]]];
+                $where = [['add_time', '>', $date], ['add_time', '<', $dates['time'][$k + 1]]];
             }
-
             $order[] = ['count' => $this->orderInfoModel->countOrder($where), 'date' => $dates['date'][$k]];
         }
         return $order;
@@ -187,10 +186,10 @@ class SatisticsRepository implements SatisticsRepositoryInterface
         $dates = $this->getDataArray($data['date']);
         $order = [];
         foreach ($dates['time'] as $k => $date) {
-            if (empty($dates[$k + 1])) {
+            if (empty($dates['time'][$k + 1])) {
                 $where = [['add_time', '>', $date], ['pay_status', '=', PS_PAYED]];
             } else {
-                $where = [['add_time', '>', $date], ['add_time', '<', $dates[$k + 1]], ['pay_status', '=', PS_PAYED]];
+                $where = [['add_time', '>', $date], ['add_time', '<', $dates['time'][$k + 1]], ['pay_status', '=', PS_PAYED]];
             }
             $order[] = ['count' => $this->orderInfoModel->sumOrder($where, [], 'all'), 'date' => $dates['date'][$k]];
         }

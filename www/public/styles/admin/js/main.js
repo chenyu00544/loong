@@ -131,7 +131,10 @@
         $("select").blur();
         this.attr("selected","");
     });
-
+    $("select").blur(function(){
+        $("select").removeAttr("size");
+        this.attr("selected","");
+    });
     $("select").focus(function(){
         $(this).attr("size","10");
     });
