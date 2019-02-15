@@ -19,7 +19,6 @@ use App\Http\Models\App\OrderReturnModel;
 use App\Http\Models\App\UserAddressModel;
 use App\Http\Models\App\UsersModel;
 use App\Http\Models\App\UsersRealModel;
-use Illuminate\Support\Facades\DB;
 
 class UsersRepository implements UsersRepositoryInterface
 {

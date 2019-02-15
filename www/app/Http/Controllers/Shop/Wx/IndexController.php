@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Shop\Wx;
 
 use App\Facades\RedisCache;
-use App\Repositories\App\AdRepository;
-use App\Repositories\App\GoodsRepository;
+use App\Repositories\Wxapp\AdRepository;
+use App\Repositories\Wxapp\GoodsRepository;
 use Illuminate\Http\Request;
 
 class IndexController extends CommonController
@@ -25,24 +25,30 @@ class IndexController extends CommonController
 
     public function index(Request $request)
     {
-        $data = RedisCache::get('wxapp_index_data');
+        $data = RedisCache::get('app_index_data');
         if (!empty($data)) {
-//            return $data;
+            return (['code' => 0, 'msg' => '', 'data' => $data]);
         }
         //获取广告数据
         $data['adses'] = $this->adRepository->getAdPositionAndAds();
         //获取推荐的产品数据
 
         $data['goodses'] = $this->goodsRepository->getBestGoods(1);
-        RedisCache::get('wxapp_index_data', $data, 60);
-        return (['code' => 1, 'msg' => '', 'data' => $data]);
+        RedisCache::get('app_index_data', $data, 60);
+        return (['code' => 0, 'msg' => '', 'data' => $data]);
     }
 
     public function loadmore(Request $request)
     {
         $page = empty($request->get('page')) ? 1 : $request->get('page');
         $data['goodses'] = $this->goodsRepository->getBestGoods($page);
-        return ['code' => 1, 'msg' => '', 'data' => $data];
+        return ['code' => 0, 'msg' => '', 'data' => $data];
+    }
+
+    public function getBootPages(Request $request)
+    {
+        $data = $this->adRepository->getgetAdPositionAndBootPages();
+        return $this->apiReturn($data);
     }
 
     public function test(Request $request)

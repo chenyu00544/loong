@@ -10,40 +10,25 @@ scroll-view {
   line-height: auto;
 }
 
-.ad-submit-cyc::after {
+button::after {
   border: none;
 }
 
 /* 广告组合 */
-
-.ads {
-  float: left;
+.nav-item {
+  width: 150rpx;
+  height: 176rpx;
 }
 
-.ads image {
+.ads-image {
   width: 100%;
   height: 100%;
 }
 
-.matrix-one {
-  width: 750rpx;
+.ads-7-item{
+  width: 100%;
 }
 
-.matrix-two {
-  width: 375rpx;
-  float: left;
-}
-
-.matrix-three {
-  width: 250rpx;
-  float: left;
-}
-
-.matrix-four {
-  width: 230rpx;
-}
-
-.matrix-five {
-  width: 150rpx;
-  height: 150rpx;
+.ads-10-item{
+  width: 50%;
 }

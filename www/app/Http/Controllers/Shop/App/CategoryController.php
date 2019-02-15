@@ -38,6 +38,7 @@ class CategoryController extends CommonController
     {
         $res = $this->categoryRepository->getCatesByGoods($request->all());
         $res['ads'] = array();
+        $res['cates'] = array();
         return $this->apiReturn($res);
     }
 }

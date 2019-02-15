@@ -1,5 +1,5 @@
 // 配置服务器合法域名(只需写域名即可)
-const host = 'https://www.vcvbuy.com/wx/app/';
+const host = 'https://www.vcvbuy.com/api/wx/';
 App({
   onLaunch: function () {
     // 获取用户数据
@@ -250,5 +250,7 @@ App({
       }
     })
   },
-  //cyc
+  log:function(e){
+    console.log(e);
+  }
 })

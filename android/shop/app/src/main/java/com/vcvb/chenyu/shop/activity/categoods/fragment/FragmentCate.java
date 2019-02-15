@@ -263,8 +263,15 @@ public class FragmentCate extends BaseFragment {
             try {
                 CategroyGoods _categroyGoods = new CategroyGoods();
                 _categroyGoods.setData(loadMoreData.getJSONObject("data"));
-                int index = this.categroyGoods.getAdses().size() + this.categroyGoods.getGoodses
-                        ().size() + 1;
+                int index = 0;
+                if (this.categroyGoods.getCates() != null && this.categroyGoods.getCates().size()
+                        > 0) {
+                    index = this.categroyGoods.getAdses().size() + this.categroyGoods.getGoodses
+                            ().size() + 1;
+                } else {
+                    index = this.categroyGoods.getAdses().size() + this.categroyGoods.getGoodses
+                            ().size();
+                }
                 mAdapter.addAll(index, getItems(_categroyGoods));
                 mAdapter.notifyItemRangeChanged(index, _categroyGoods.getGoodses().size());
                 this.categroyGoods.getGoodses().addAll(_categroyGoods.getGoodses());
@@ -276,7 +283,7 @@ public class FragmentCate extends BaseFragment {
 
     protected List<Item> getItems(CategroyGoods bean) {
         List<Item> cells = new ArrayList<>();
-        if(bean.getAdses() == null || bean.getAdses().size() == 0){
+        if (bean.getAdses() == null || bean.getAdses().size() == 0) {
             //nav
             if (bean.getCates() != null && bean.getCates().size() > 0) {
                 CateNavsItem cateNavsItem = new CateNavsItem(bean.getCates(), context);
@@ -378,26 +385,22 @@ public class FragmentCate extends BaseFragment {
     }
 
     public void goToActivityByAdsUri(String type, int pos, int group) {
-        if (group == 1) {
+        if (type.equals("navigation")) {
             Categroy cg = categroyGoods.getCates().get(pos);
             Intent intent = new Intent(context, CateGoodsActivity.class);
             intent.putExtra("cate", cg.getId());
+            intent.putExtra("title", cg.getCat_alias_name());
             context.startActivity(intent);
-        } else if (categroyGoods.getAdses().get(group).getType().equals(type)) {
+        } else if (categroyGoods.getAdses() != null && categroyGoods.getAdses().get(group)
+                .getType().equals(type)) {
             String uri = categroyGoods.getAdses().get(group).getAds().get(pos).getAd_link();
             Class c = UrlParse.getUrlToClass(uri);
             if (c != null) {
                 Map<String, String> id = UrlParse.getUrlParams(uri);
                 if (id.get("id") != null) {
-                    if (type.equals("navigation")) {
-                        Intent intent = new Intent(context, c);
-                        intent.putExtra("cate", Integer.valueOf(id.get("id")));
-                        context.startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(context, c);
-                        intent.putExtra("id", Integer.valueOf(id.get("id")));
-                        context.startActivity(intent);
-                    }
+                    Intent intent = new Intent(context, c);
+                    intent.putExtra("id", Integer.valueOf(id.get("id")));
+                    context.startActivity(intent);
                 } else {
                     Intent intent = new Intent(context, c);
                     context.startActivity(intent);

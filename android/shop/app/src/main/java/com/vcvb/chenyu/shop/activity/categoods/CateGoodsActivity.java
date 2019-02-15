@@ -29,6 +29,7 @@ public class CateGoodsActivity extends BaseActivity {
     private int index = 0;
     private String SAVED_INDEX = "SAVED_INDEX";
     private String[] fragmentTag = new String[]{"brand"};
+    private String title = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +40,9 @@ public class CateGoodsActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState != null) {
             index = savedInstanceState.getInt(SAVED_INDEX, index);
-            fragment = (FragmentCate) fragmentManager.findFragmentByTag
-                    (fragmentTag[0]);
+            fragment = (FragmentCate) fragmentManager.findFragmentByTag(fragmentTag[0]);
         }
+        title = getIntent().getStringExtra("title");
         setNavBack();
         setClick(index);
     }
@@ -55,7 +56,11 @@ public class CateGoodsActivity extends BaseActivity {
         ImageView more = findViewById(R.id.imageView94);
         more.setOnClickListener(listener);
         TextView textView = findViewById(R.id.textView123);
-        textView.setText(R.string.category);
+        if (title == null || title.equals("")) {
+            textView.setText(R.string.app_name);
+        } else {
+            textView.setText(title);
+        }
         popWindow = new PopWin(CateGoodsActivity.this, ToolUtils.dip2px(this, 156), ToolUtils
                 .dip2px(this, 148));
         popWindow.setClickListener(popListener);

@@ -11,6 +11,7 @@ var token;
 Page({
   data: {
     banner: [],
+    navigation:[],
     ads: [],
     popup: [],
     imageSize: [],
@@ -45,14 +46,21 @@ Page({
       if (res.data.data != undefined) {
         console.log(res.data.data);
         if (!that.data.ads.length) {
-          for (let index in res.data.data.adses){
-            if (res.data.data.adses[index].type == "slide"){
+          for (let index in res.data.data.adses) {
+            if (res.data.data.adses[index].type == "slide") {
               that.data.banner = res.data.data.adses[index].ads;
+            } else if (res.data.data.adses[index].type == "navigation") {
+              that.data.navigation = res.data.data.adses[index].ads;
+            } else{
+              that.data.ads.push(res.data.data.adses[index]);
             }
           }
         }
+        app.log(that.data.ads);
         that.setData({
           banner: that.data.banner,
+          navigation: that.data.navigation,
+          ads: that.data.ads
         });
       }
     });
@@ -82,7 +90,6 @@ Page({
       });
     });
   },
-
   //进去详情页
   siteDetail: function(e) {
     var that = this
@@ -94,13 +101,6 @@ Page({
 
     wx.navigateTo({
       url: "../goods/index?objectId=" + goodsId,
-      // url: "../cashindex/index?objectId=1",
-      // url: "../cashindex/index?objectId=0&nav=60&mktag=35&ad_id=107&gzid=GZ107_",
-      // url: "../cashindex/product_list?id=361",
-      // url: "../cashgoods/index?objectId=" + goodsId// +"&mktag=12&gzid=GZ47_715-T2&gdt_vid=wx06h5cq2ttv4r4i",
-      // url: "../../packageA/pages/bonus/index",
-      // url: "faat?nav=48&page=0",
-      // url: "../coupons/index",
     });
     app.netReq("user/trajectory", {
       utype: 1,
@@ -108,7 +108,6 @@ Page({
       action_name: e.currentTarget.dataset.goods_name
     }, function(res) {});
   },
-
   //返回顶部
   goTop: function(e) {
     this.setData({
@@ -153,10 +152,6 @@ Page({
     })
   },
 
-  onPullDownRefresh: function() {
-    wx.stopPullDownRefresh();
-  },
-
   formSubmit: function(e) {
     var formID = e.detail.formId;
 
@@ -187,7 +182,7 @@ Page({
     }
   },
   //检测纵向滚动
-  scroll_Y: function (e) {
+  scroll_Y: function(e) {
     scrollTop = e.detail.scrollTop;
     if (e.detail.scrollTop > 300) {
       this.setData({
@@ -199,4 +194,8 @@ Page({
       })
     }
   },
+  //广告跳转
+  adsNav:function(e){
+    console.log(e);
+  }
 })

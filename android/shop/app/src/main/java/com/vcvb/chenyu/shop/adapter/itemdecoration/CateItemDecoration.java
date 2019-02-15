@@ -26,12 +26,16 @@ public class CateItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State
             state) {
         if (parent.getLayoutManager() instanceof GridLayoutManager) {
+            int i = 0;
+            if (_bean.getCates() != null && _bean.getCates().size() > 0) {
+                i = 1;
+            }
             int pos = parent.getChildAdapterPosition(view);
             if (_bean != null) {
-                if (pos < _bean.getAdses().size() + 1) {
+                if (pos < _bean.getAdses().size() + i) {
                     outRect.set(0, 0, 0, 0);
                 } else {
-                    if ((_bean.getAdses().size() + 1) % 2 != 0) {
+                    if ((_bean.getAdses().size() + i) % 2 != 0) {
                         if (pos % 2 != 0) {
                             outRect.set(6, 6, 3, 3);
                         } else {

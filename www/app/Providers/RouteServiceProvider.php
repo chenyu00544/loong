@@ -92,7 +92,7 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapWxAppRoutes()
     {
-        Route::prefix('wx')
+        Route::prefix('api')
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/wxapp.php'));

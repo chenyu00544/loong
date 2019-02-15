@@ -19,8 +19,7 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "米时",
     "navigationBarTextStyle": "black",
-    "backgroundTextStyle": "light",
-    "borderStyle": "black"
+    "backgroundTextStyle": "light"
   },
   "tabBar": {
     "color": "#6e6d6b",
