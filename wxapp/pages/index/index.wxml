@@ -22,14 +22,16 @@
           </view>
         </view>
       </block>
+
       <block wx:if="{{ads.length > 0}}" wx:for="{{ads}}" wx:key="adses">
         <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_7'}}">
           <block wx:for="{{item.ads}}" wx:key="ads_7">
-            <view class="ads-7-item" style="height:{{imageSize[item.ad_id].height}}rpx">
+            <view class="ads-item" style="height:{{imageSize[item.ad_id].height}}rpx">
               <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
             </view>
           </block>
         </view>
+
         <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_10'}}">
           <block wx:for="{{item.ads}}" wx:key="ads_10">
             <view class="ads-10-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
@@ -37,9 +39,67 @@
             </view>
           </block>
         </view>
+
+        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_8'}}">
+          <block wx:for="{{item.ads}}" wx:key="ads_8">
+            <view class="ads-item" style="height:{{imageSize[item.ad_id].height}}rpx">
+              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+            </view>
+          </block>
+        </view>
+
+        <view class="dis-flex nav-warp pad-box" wx:if="{{item.type=='ads_4'}}">
+          <block wx:for="{{item.ads}}" wx:key="ads_4">
+            <view class="ads-4-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
+              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+            </view>
+          </block>
+        </view>
+
+        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_1'}}">
+          <view class="ads-1-item-1" style="height:{{imageSize[item.ads[0].ad_id].height/2}}rpx">
+            <image src="{{item.ads[0].ad_code}}" class="ads-image" data-link="{{item.ads[0].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[0].ad_id}}" />
+          </view>
+          <view>
+            <view class="ads-1-item-2" style="height:{{imageSize[item.ads[1].ad_id].height*3/5}}rpx" wx:if="{{item.ads[1] != undefined}}">
+              <image src="{{item.ads[1].ad_code}}" class="ads-image" data-link="{{item.ads[1].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[1].ad_id}}" />
+            </view>
+            <view class='flex'>
+              <view class="ads-1-item-3" style="height:{{imageSize[item.ads[2].ad_id].height/2}}rpx" wx:if="{{item.ads[2] != undefined}}">
+                <image src="{{item.ads[2].ad_code}}" class="ads-image" data-link="{{item.ads[2].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[2].ad_id}}" />
+              </view>
+              <view class="ads-1-item-3" style="height:{{imageSize[item.ads[3].ad_id].height/2}}rpx" wx:if="{{item.ads[3] != undefined}}">
+                <image src="{{item.ads[3].ad_code}}" class="ads-image" data-link="{{item.ads[3].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[3].ad_id}}" />
+              </view>
+            </view>
+
+          </view>
+        </view>
+
+        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_9'}}">
+          <view class="ads-item" style="height:{{imageSize[item.ads[0].ad_id].height}}rpx" wx:if="{{item.ads[0] != undefined}}">
+            <image src="{{item.ads[0].ad_code}}" class="ads-image" data-link="{{item.ads[0].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[0].ad_id}}" />
+          </view>
+          <scroll-view scroll-x="true"  class='scroll-ads'>
+            <block wx:for="{{item.ads}}" wx:key="ads_9">
+              <view class="ads-9-item" style="height:{{imageSize[item.ad_id].height/2}}rpx" wx:if="{{index > 0}}"  style="display: inline-block;">
+                <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+              </view>
+            </block>
+          </scroll-view>
+        </view>
+
+        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_5'}}">
+          <block wx:for="{{item.ads}}" wx:key="ads_5">
+            <view class="ads-5-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
+              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+            </view>
+          </block>
+        </view>
       </block>
       <!-- 广告组合end -->
     </view>
+    
   </scroll-view>
   <view class="widget-goTop" bindtap="goTop" wx:if="{{ floorstatus }}">
     <text class="iconfont icon-fanhuidingbu"></text>
