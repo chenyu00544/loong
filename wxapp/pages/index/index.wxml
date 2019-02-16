@@ -99,7 +99,36 @@
       </block>
       <!-- 广告组合end -->
     </view>
-    
+    <!--推荐商品列表-->
+      <block wx:if="{{goodses.length > 0}}">
+        <view class="category-list">
+          <navigator class="list b-f" wx:for="{{goodses}}" wx:key="list" url="../../packageB/goods/index?objectId={{item.goods_id}}" hover-class="none">
+            <view class="left">
+              <view class="img">
+                <image src="{{item.original_img}}" mode="aspectFit" class="goodsImg" />
+              </view>
+            </view>
+            <view class="right">
+              <view class="cont">
+                <text class="f-30 title twolist-hidden m-top10">{{item.goods_name}}</text>
+                <view class="price f-34 col-m m-top10">{{item.shop_price_format}}
+                  <text class="del f-22">{{item.promote_price_format}}</text>
+                </view>
+                <view class="goods_number">
+                  <view class="dis-box  f-24 col-7 m-top10">
+                    <view class="box-flex ">库存：{{item.goods_number}}</view>
+                    <view class="box-flex t-r">销量:{{item.sales_volume}}</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </navigator>
+        </view>
+      </block>
+      <view class="title-footer p-r">
+        <text class="f-24 col-9  cont">我是有底线的</text>
+        <view class="hr"></view>
+      </view>
   </scroll-view>
   <view class="widget-goTop" bindtap="goTop" wx:if="{{ floorstatus }}">
     <text class="iconfont icon-fanhuidingbu"></text>

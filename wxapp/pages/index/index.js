@@ -11,8 +11,9 @@ var token;
 Page({
   data: {
     banner: [],
-    navigation:[],
+    navigation: [],
     ads: [],
+    goodses: [],
     popup: [],
     imageSize: [],
     adshow: false,
@@ -44,23 +45,24 @@ Page({
       nav_id: nav,
     }).then((res) => {
       if (res.data.data != undefined) {
-        console.log(res.data.data);
         if (!that.data.ads.length) {
           for (let index in res.data.data.adses) {
             if (res.data.data.adses[index].type == "slide") {
               that.data.banner = res.data.data.adses[index].ads;
             } else if (res.data.data.adses[index].type == "navigation") {
               that.data.navigation = res.data.data.adses[index].ads;
-            } else{
+            } else {
               that.data.ads.push(res.data.data.adses[index]);
             }
           }
         }
-        app.log(that.data.ads);
+        that.data.goodses = res.data.data.goodses;
+        app.log(that.data.goodses);
         that.setData({
           banner: that.data.banner,
           navigation: that.data.navigation,
-          ads: that.data.ads
+          ads: that.data.ads,
+          goodses: that.data.goodses
         });
       }
     });
@@ -195,7 +197,7 @@ Page({
     }
   },
   //广告跳转
-  adsNav:function(e){
+  adsNav: function(e) {
     console.log(e);
   }
 })
