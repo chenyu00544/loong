@@ -1,108 +1,134 @@
-<view>
-  <scroll-view scroll-y="{{!adshow}}" bindscroll="scroll_Y" scroll-top="{{scrollTop}}" style='height:{{scrollview_h}}px;'>
-    <view>
-      <!-- 轮播图 -->
-      <view class="index-banner" wx:if="{{banner.length > 0}}">
-        <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" circular="true" interval="{{interval}}" duration="{{duration}}" current="{{current}}" class="banner-box swiper-box">
-          <block wx:for="{{banner}}" wx:key="banner">
-            <navigator url="{{item.ad_link}}" hover-class="navigator-hover">
-              <swiper-item>
-                <image src="{{item.ad_code}}" class="slide-image" />
-              </swiper-item>
-            </navigator>
-          </block>
-        </swiper>
-      </view>
-
-      <!-- 广告组合start -->
-      <block wx:if="{{navigation.length > 0}}">
-        <view class="dis-flex nav-warp">
-          <view wx:for="{{navigation}}" wx:key="navigation" class="nav-item">
-            <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" />
-          </view>
-        </view>
-      </block>
-
-      <block wx:if="{{ads.length > 0}}" wx:for="{{ads}}" wx:key="adses">
-        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_7'}}">
-          <block wx:for="{{item.ads}}" wx:key="ads_7">
-            <view class="ads-item" style="height:{{imageSize[item.ad_id].height}}rpx">
-              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
-            </view>
-          </block>
-        </view>
-
-        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_10'}}">
-          <block wx:for="{{item.ads}}" wx:key="ads_10">
-            <view class="ads-10-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
-              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
-            </view>
-          </block>
-        </view>
-
-        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_8'}}">
-          <block wx:for="{{item.ads}}" wx:key="ads_8">
-            <view class="ads-item" style="height:{{imageSize[item.ad_id].height}}rpx">
-              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
-            </view>
-          </block>
-        </view>
-
-        <view class="dis-flex nav-warp pad-box" wx:if="{{item.type=='ads_4'}}">
-          <block wx:for="{{item.ads}}" wx:key="ads_4">
-            <view class="ads-4-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
-              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
-            </view>
-          </block>
-        </view>
-
-        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_1'}}">
-          <view class="ads-1-item-1" style="height:{{imageSize[item.ads[0].ad_id].height/2}}rpx">
-            <image src="{{item.ads[0].ad_code}}" class="ads-image" data-link="{{item.ads[0].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[0].ad_id}}" />
-          </view>
-          <view>
-            <view class="ads-1-item-2" style="height:{{imageSize[item.ads[1].ad_id].height*3/5}}rpx" wx:if="{{item.ads[1] != undefined}}">
-              <image src="{{item.ads[1].ad_code}}" class="ads-image" data-link="{{item.ads[1].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[1].ad_id}}" />
-            </view>
-            <view class='flex'>
-              <view class="ads-1-item-3" style="height:{{imageSize[item.ads[2].ad_id].height/2}}rpx" wx:if="{{item.ads[2] != undefined}}">
-                <image src="{{item.ads[2].ad_code}}" class="ads-image" data-link="{{item.ads[2].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[2].ad_id}}" />
+<import src="../../common/common.wxml" />
+<view class="container">
+  <block wx:if="{{banner.length > 0}}">
+    <scroll-view scroll-y="{{!adshow}}" bindscroll="scroll_Y" scroll-top="{{scrollTop}}" style="height:{{scrollview_h}}px;" bindscrolltolower="scrollToLower">
+      <view>
+        <!-- 轮播图 -->
+        <view class="index-banner" wx:if="{{banner.length > 0}}">
+          <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" circular="true" interval="{{interval}}" duration="{{duration}}" current="{{current}}" class="banner-box swiper-box">
+            <block wx:for="{{banner}}" wx:key="banner">
+              <navigator url="{{item.ad_link}}" hover-class="navigator-hover">
+                <swiper-item>
+                  <image src="{{item.ad_code}}" class="slide-image" />
+                </swiper-item>
+              </navigator>
+            </block>
+          </swiper>
+          <!--搜索框-->
+          <view class="index-search col-f ts-3 {{indexSearch>50 ? 'active' : ''}}">
+            <view class="dis-box">
+              <view class="left p-r flex-center" bindtap="chooseLocation">
+                <text class="iconfont icon-dingwei1 f-28"></text>
+                <block wx:if="{{address != undefined}}">
+                  <text class="cont f-28">{{address}}</text>
+                </block>
+                <block wx:else>
+                  <text class="cont">定位</text>
+                </block>
+                <text class="iconfont icon-xiajiantous f-22"></text>
               </view>
-              <view class="ads-1-item-3" style="height:{{imageSize[item.ads[3].ad_id].height/2}}rpx" wx:if="{{item.ads[3] != undefined}}">
-                <image src="{{item.ads[3].ad_code}}" class="ads-image" data-link="{{item.ads[3].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[3].ad_id}}" />
+              <view class="search box-flex">
+                <navigator class="cont t-c flex-center" url="../search/index" open-type="navigate" hover-class="none">
+                  <text class="iconfont icon-sousuo f-28"></text>
+                  <text class="f-30">搜索商品</text>
+                </navigator>
               </view>
+              <navigator class="right p-r" url="../category/index" open-type="switchTab" hover-class="none">
+                <text class="iconfont icon-fenlei f-34"></text>
+              </navigator>
             </view>
-
           </view>
+          <view class="linear"></view>
         </view>
 
-        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_9'}}">
-          <view class="ads-item" style="height:{{imageSize[item.ads[0].ad_id].height}}rpx" wx:if="{{item.ads[0] != undefined}}">
-            <image src="{{item.ads[0].ad_code}}" class="ads-image" data-link="{{item.ads[0].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[0].ad_id}}" />
+        <!-- 广告组合start -->
+        <block wx:if="{{navigation.length > 0}}">
+          <view class="dis-flex nav-warp">
+            <view wx:for="{{navigation}}" wx:key="navigation" class="nav-item">
+              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" />
+            </view>
           </view>
-          <scroll-view scroll-x="true"  class='scroll-ads'>
-            <block wx:for="{{item.ads}}" wx:key="ads_9">
-              <view class="ads-9-item" style="height:{{imageSize[item.ad_id].height/2}}rpx" wx:if="{{index > 0}}"  style="display: inline-block;">
+        </block>
+
+        <block wx:if="{{ads.length > 0}}" wx:for="{{ads}}" wx:key="adses">
+          <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_7'}}">
+            <block wx:for="{{item.ads}}" wx:key="ads_7">
+              <view class="ads-item" style="height:{{imageSize[item.ad_id].height}}rpx">
                 <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
               </view>
             </block>
-          </scroll-view>
-        </view>
+          </view>
 
-        <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_5'}}">
-          <block wx:for="{{item.ads}}" wx:key="ads_5">
-            <view class="ads-5-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
-              <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+          <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_10'}}">
+            <block wx:for="{{item.ads}}" wx:key="ads_10">
+              <view class="ads-10-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
+                <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+              </view>
+            </block>
+          </view>
+
+          <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_8'}}">
+            <block wx:for="{{item.ads}}" wx:key="ads_8">
+              <view class="ads-item" style="height:{{imageSize[item.ad_id].height}}rpx">
+                <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+              </view>
+            </block>
+          </view>
+
+          <view class="dis-flex nav-warp pad-box" wx:if="{{item.type=='ads_4'}}">
+            <block wx:for="{{item.ads}}" wx:key="ads_4">
+              <view class="ads-4-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
+                <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+              </view>
+            </block>
+          </view>
+
+          <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_1'}}">
+            <view class="ads-1-item-1" style="height:{{imageSize[item.ads[0].ad_id].height/2}}rpx">
+              <image src="{{item.ads[0].ad_code}}" class="ads-image" data-link="{{item.ads[0].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[0].ad_id}}" />
             </view>
-          </block>
-        </view>
-      </block>
-      <!-- 广告组合end -->
-    </view>
-    <!--推荐商品列表-->
+            <view>
+              <view class="ads-1-item-2" style="height:{{imageSize[item.ads[1].ad_id].height*3/5}}rpx" wx:if="{{item.ads[1] != undefined}}">
+                <image src="{{item.ads[1].ad_code}}" class="ads-image" data-link="{{item.ads[1].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[1].ad_id}}" />
+              </view>
+              <view class='flex'>
+                <view class="ads-1-item-3" style="height:{{imageSize[item.ads[2].ad_id].height/2}}rpx" wx:if="{{item.ads[2] != undefined}}">
+                  <image src="{{item.ads[2].ad_code}}" class="ads-image" data-link="{{item.ads[2].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[2].ad_id}}" />
+                </view>
+                <view class="ads-1-item-3" style="height:{{imageSize[item.ads[3].ad_id].height/2}}rpx" wx:if="{{item.ads[3] != undefined}}">
+                  <image src="{{item.ads[3].ad_code}}" class="ads-image" data-link="{{item.ads[3].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[3].ad_id}}" />
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_9'}}">
+            <view class="ads-item" style="height:{{imageSize[item.ads[0].ad_id].height}}rpx" wx:if="{{item.ads[0] != undefined}}">
+              <image src="{{item.ads[0].ad_code}}" class="ads-image" data-link="{{item.ads[0].ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ads[0].ad_id}}" />
+            </view>
+            <scroll-view scroll-x="true" class='scroll-ads'>
+              <block wx:for="{{item.ads}}" wx:key="ads_9">
+                <view class="ads-9-item" style="height:{{imageSize[item.ad_id].height/2}}rpx" wx:if="{{index > 0}}" style="display: inline-block;">
+                  <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+                </view>
+              </block>
+            </scroll-view>
+          </view>
+
+          <view class="dis-flex nav-warp" wx:if="{{item.type=='ads_5'}}">
+            <block wx:for="{{item.ads}}" wx:key="ads_5">
+              <view class="ads-5-item" style="height:{{imageSize[item.ad_id].height/2}}rpx">
+                <image src="{{item.ad_code}}" class="ads-image" data-link="{{item.ad_link}}" bindtap="adsNav" bindload="imageLoad" data-index="{{item.ad_id}}" />
+              </view>
+            </block>
+          </view>
+        </block>
+        <!-- 广告组合end -->
+      </view>
+      <!--推荐商品列表-->
       <block wx:if="{{goodses.length > 0}}">
-        <view class="category-list">
-          <navigator class="list b-f" wx:for="{{goodses}}" wx:key="list" url="../../packageB/goods/index?objectId={{item.goods_id}}" hover-class="none">
+        <view class="category-list m-top10">
+          <navigator class="list b-f" wx:for="{{goodses}}" wx:key="list" url="../goods/index?objectId={{item.goods_id}}" hover-class="none">
             <view class="left">
               <view class="img">
                 <image src="{{item.original_img}}" mode="aspectFit" class="goodsImg" />
@@ -110,7 +136,7 @@
             </view>
             <view class="right">
               <view class="cont">
-                <text class="f-30 title twolist-hidden m-top10">{{item.goods_name}}</text>
+                <text class="f-30 title twolist-hidden m-top10 ws">{{item.goods_name}}</text>
                 <view class="price f-34 col-m m-top10">{{item.shop_price_format}}
                   <text class="del f-22">{{item.promote_price_format}}</text>
                 </view>
@@ -125,11 +151,20 @@
           </navigator>
         </view>
       </block>
-      <view class="title-footer p-r">
-        <text class="f-24 col-9  cont">我是有底线的</text>
-        <view class="hr"></view>
-      </view>
-  </scroll-view>
+      <block wx:if="{{!is_loading}}">
+        <template is="down_loading" />
+      </block>
+      <block wx:else>
+        <view class="title-footer p-r">
+          <text class="f-24 col-9 cont">我是有底线的</text>
+          <view class="hr"></view>
+        </view>
+      </block>
+    </scroll-view>
+  </block>
+  <block wx:else>
+    <template is="loading" />
+  </block>
   <view class="widget-goTop" bindtap="goTop" wx:if="{{ floorstatus }}">
     <text class="iconfont icon-fanhuidingbu"></text>
   </view>

@@ -8,7 +8,7 @@ App({
   apiUrl(api) { return host + api },
   webUrl(web) { return host + web },
   //异步请求
-  dscRequest(url, data = {}, method = 'post') {
+  vcvbRequest(url, data = {}, method = 'post') {
     let promise = new Promise((resolve, reject) => {
       wx.request({
         url: host + url,
@@ -45,7 +45,7 @@ App({
   */
   payOrder(order_id, openid, token, formId_data) {
     var that = this
-    that.dscRequest(("payment/pay"), {
+    that.vcvbRequest(("payment/pay"), {
       id: order_id,
       open_id: openid,
       code: 'order.pay',
@@ -73,7 +73,7 @@ App({
           'success': function (payres) {
             if (payres.errMsg == 'requestPayment:ok') {
               //成功修改订单状态
-              that.dscRequest(("payment/notify"), {
+              that.vcvbRequest(("payment/notify"), {
                 "id": order_id,
                 form_id: formId_data
               })
@@ -119,7 +119,7 @@ App({
   region() {
     var that = this
     var areaInfo = [];
-    that.dscRequest(("region/list"), {
+    that.vcvbRequest(("region/list"), {
       id: 1
     })
       .then((res) => {
@@ -228,7 +228,7 @@ App({
     }
     var that = this;
     var token = wx.getStorageSync('token')
-    this.dscRequest("index_ext/addformid", {
+    this.vcvbRequest("index_ext/addformid", {
       from_id: fromId,
       user_wxid: wx.getStorageSync('openid'),
     }).then((res) => { });
@@ -238,7 +238,7 @@ App({
     wx.login({
       success: function (result) {
         var code = result.code;
-        that.dscRequest("index_ext/silen/login", {
+        that.vcvbRequest("index_ext/silen/login", {
           code: code,
         }).then((res) => {
           wx.setStorage({

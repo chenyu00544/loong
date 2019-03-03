@@ -1,11 +1,15 @@
 var app = getApp();
-
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js')
+var qqmap = new QQMapWX({
+  key: "XSYBZ-P2G34-3K7UB-XPFZS-TBGHT-CXB4U"
+})
 var goods_id = '',
   navPage = 0,
   isloading = true,
   touchDot = 0,
   scrollTop = 0,
   timeout,
+  page = 1,
   scroll_sub_X = 0;
 var token;
 Page({
@@ -23,6 +27,7 @@ Page({
     duration: 1000,
     current: 0,
     scrollview_h: app.winHeight(),
+    is_loading: false
   },
   onLoad: function(options) {
     var that = this;
@@ -32,8 +37,10 @@ Page({
     let that = this
     token = wx.getStorageSync('token')
     let cate_data = wx.getStorageSync('cate_data')
-    if (!token) {
+    if (token) {
       // app.redirectTo("../../packageA/login/index");
+    }else{
+      that.getLocation();
     }
   },
 
@@ -41,7 +48,7 @@ Page({
   getIndexData: function(nav) {
     var nav_id = nav;
     var that = this;
-    app.dscRequest("index", {
+    app.vcvbRequest("index", {
       nav_id: nav,
     }).then((res) => {
       if (res.data.data != undefined) {
@@ -57,7 +64,6 @@ Page({
           }
         }
         that.data.goodses = res.data.data.goodses;
-        app.log(that.data.goodses);
         that.setData({
           banner: that.data.banner,
           navigation: that.data.navigation,
@@ -70,25 +76,14 @@ Page({
   //加载更多
   loadMore: function() {
     var that = this;
-    var curNav = that.data.curNav;
-    if (!that.data.navList[curNav].page) {
-      that.data.navList[curNav].page = 2;
-    } else {
-      that.data.navList[curNav].page += 1;
-    }
-    if (that.data.navList[curNav].goods_cate_id == 0) {
-      isloading = true;
-      return;
-    }
-    app.dscRequest("index/loadmore", {
-      goods_id: goods_id,
-      cate_id: that.data.navList[curNav].goods_cate_id,
-      curpage: that.data.navList[curNav].page,
+    page += 1;
+    app.vcvbRequest("index/loadmore", {
+      page: page,
     }).then((res) => {
-      isloading = true;
-      that.data.goodses[curNav] = that.data.goodses[curNav].concat(res.data.data.goods_list);
+      that.data.goodses = that.data.goodses.concat(res.data.data.goodses);
       that.setData({
         goodses: that.data.goodses,
+        is_loading: false,
       });
     });
   },
@@ -186,6 +181,9 @@ Page({
   //检测纵向滚动
   scroll_Y: function(e) {
     scrollTop = e.detail.scrollTop;
+    this.setData({
+      indexSearch: e.detail.scrollTop
+    });
     if (e.detail.scrollTop > 300) {
       this.setData({
         floorstatus: true,
@@ -196,8 +194,140 @@ Page({
       })
     }
   },
+  //滑到底部
+  scrollToLower: function(e) {
+    this.setData({
+      is_loading: true,
+    });
+    this.loadMore();
+
+  },
   //广告跳转
   adsNav: function(e) {
     console.log(e);
-  }
+  },
+
+  //上拉加载
+  onReachBottom: function() {
+    var that = this;
+    page = page + 1;
+    wx.showLoading({
+      title: '玩命加载中',
+    })
+  },
+  //定位
+  chooseLocation() {
+    var that = this
+    wx.chooseLocation({
+      success: (res) => {
+        wx.setStorageSync('currentPosition', res)
+        var lat = res.latitude;
+        var lon = res.longitude;
+        qqmap.reverseGeocoder({
+          location: {
+            latitude: lat,
+            longitude: lon
+          },
+          success: (res) => {
+            app.vcvbRequest(("location/specific"), {
+              address: res.result.address_component.city,
+            })
+              .then((res) => {
+                that.setData({
+                  address: res.address,
+                })
+              })
+            var addess
+            if (res.result.address_component.province == res.result.address_component.city) {
+              addess = res.result.address_component.city
+            } else {
+              addess = res.result.address_component.city
+            }
+            that.setData({
+              hasLocation: true,
+              address: addess,
+            })
+          },
+          fail: (res) => { },
+        });
+
+      }
+    })
+  },
+  //获取当前定位
+  getLocation() {
+    var that = this
+    wx.getLocation({
+      success: (res) => {
+        //缓存当前位置坐标
+        var value = wx.getStorageSync('currentPosition')
+        if (value) {
+          // that.transformRegion(value)
+        } else {
+          wx.setStorageSync('currentPosition', res)
+          // that.transformRegion(res)
+        }
+      },
+      fail: (res) => {
+        wx.showModal({
+          title: '温馨提示',
+          content: '不允许定位,会对地区商品价格有影响，请确认，去重新允许！',
+          success: (res) => {
+            if (res.confirm) {
+              wx.getSetting({
+                success(res) {
+                  wx.openSetting({
+                    success: (res) => {
+                      if (!res.authSetting["scope.userLocation"]) {
+                        that.getLocation()
+                      } else {
+                        wx.getLocation({
+                          success: (res) => {
+                            //缓存当前位置坐标
+                            var value = wx.getStorageSync('currentPosition')
+                            if (value) {
+                              // that.transformRegion(value)
+                            } else {
+                              wx.setStorageSync('currentPosition', res)
+                              // that.transformRegion(res)
+                            }
+                          },
+                        })
+                      }
+                    }
+                  })
+                },
+              })
+            } else if (res.cancel) {
+              that.getLocation()
+            }
+          },
+        })
+      },
+    })
+  },
+  transformRegion(res) {
+    var that = this
+    var lat = res.latitude;
+    var lon = res.longitude;
+    qqmap.reverseGeocoder({
+      location: {
+        latitude: lat,
+        longitude: lon
+      },
+      success: (res) => {
+        var addess
+        if (res.result.address_component.province == res.result.address_component.city) {
+          addess = res.result.address_component.city
+        } else {
+          addess = res.result.address_component.city
+        }
+        that.setData({
+          hasLocation: true,
+          address: addess,
+        })
+      },
+      fail: (res) => { },
+    });
+  },
 })

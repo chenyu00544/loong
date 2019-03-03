@@ -633,3 +633,4 @@ buy_number{justify-content: space-between; margin: 10px 5px;}
 .f-col29{color: #292929!important}
 .f-colc6{color: #c6c6c6!important}
 .f-cole9{color: #e9363a!important}
+.flex-center{display:flex;justify-content:center;align-items:center;}

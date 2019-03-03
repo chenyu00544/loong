@@ -97,7 +97,7 @@ class GoodsRepository implements GoodsRepositoryInterface
     public function getBestGoods($page = 1)
     {
         $where = ['is_delete' => 0, 'is_on_sale' => 1];
-        $column = ['goods_id', 'goods_name', 'shop_price', 'market_price', 'goods_thumb', 'goods_img', 'original_img', 'is_best', 'is_hot', 'promote_price', 'is_promote', 'is_fullcut', 'is_volume', 'sales_volume'];
+        $column = ['goods_id', 'goods_name', 'shop_price', 'market_price', 'goods_thumb', 'goods_img', 'original_img', 'is_best', 'is_hot', 'promote_price', 'is_promote', 'is_fullcut', 'is_volume', 'sales_volume', 'goods_number'];
         $goodses = $this->goodsModel->getGoodses($where, $page, $column);
         foreach ($goodses as $value) {
             $value->goods_thumb = FileHandle::getImgByOssUrl($value->goods_thumb);

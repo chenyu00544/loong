@@ -1,5 +1,5 @@
 <import src="../../wxParse/wxParse.wxml" />
-<import src="../../pages/common/common.wxml" />
+<import src="../../common/common.wxml" />
 <block wx:if="{{goodsCont!= undefined}}">
   <scroll-view scroll-y="true" bindscroll="scroll" scroll-top="{{scrollTop}}" style="position:absolute; top:0; left:0; right:0; bottom:0;">
     <view class="container p-bottom {{isIphoneX?'iphone-p-bottom':''}}">

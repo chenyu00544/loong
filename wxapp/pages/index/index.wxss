@@ -3,6 +3,10 @@ scroll-view {
   white-space: nowrap;
 }
 
+.ws {
+  white-space: pre-line;
+}
+
 .ad-submit-cyc {
   margin: 0;
   padding: 0;
@@ -13,6 +17,17 @@ scroll-view {
 button::after {
   border: none;
 }
+
+/*search*/
+.index-search{padding:14rpx 0 14rpx 0;position:absolute;top:0;z-index:4999;left:0;right:0;}
+.index-search.active{position:fixed;background:#ff495e}
+.index-search .left{margin-left:12px;}
+.index-search .left,.index-search .right{font-size:30rpx; align-items:center; line-height:40rpx;}
+.index-search .right{padding-right:20rpx;font-size:35rpx;}
+.index-search .icon-fenlei{display: block;margin-top:6rpx}
+.index-search .left .cont{padding:0 2rpx;max-width:150rpx;overflow:hidden;}
+.index-search .search{border-bottom: 0; background: rgba(255,255,255,0.5); border-radius: 80rpx; overflow: hidden; position: relative; color:#fff; box-sizing:border-box; margin: 0 10px; line-height:45rpx;}
+.index-search .search .cont .icon-sousuo{margin-right:10rpx;}
 
 /* 广告组合 */
 
@@ -50,24 +65,25 @@ button::after {
   width: 300rpx;
 }
 
-.ads-1-item-2{
+.ads-1-item-2 {
   width: 450rpx;
 }
 
-.ads-1-item-3{
+.ads-1-item-3 {
   width: 225rpx;
 }
-.ads-9-item{
-   width: 160rpx;
-   margin-left: 10rpx;
-   height: 200rpx;
+
+.ads-9-item {
+  width: 180rpx;
+  margin-left: 10rpx;
+  height: 225rpx;
 }
 
-.scroll-ads{
+.scroll-ads {
   width: 100%;
-  margin-top: -30rpx; 
+  margin-top: -30rpx;
 }
 
-.ads-5-item{
+.ads-5-item {
   width: 25%;
 }

@@ -3,21 +3,26 @@
     "pages/index/index",
     "pages/category/index",
     "pages/cart/index",
-    "pages/user/index"
+    "pages/user/index",
+    "pages/goods/index"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "不允许定位,会对地区商品价格有影响，请确认，去重新允许！"
+    }
+  },
   "subPackages": [
     {
       "root": "packageA",
       "pages": [
-        "login/index",
-        "goods/index"
+        "login/index"
       ]
     }
   ],
   "window": {
     "backgroundColor": "#efeff4",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "米时",
+    "navigationBarTitleText": "VC柠檬",
     "navigationBarTextStyle": "black",
     "backgroundTextStyle": "light"
   },

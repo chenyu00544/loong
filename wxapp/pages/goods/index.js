@@ -1,4 +1,3 @@
-var WxParse = require('../../wxParse/wxParse.js');
 var app = getApp()
 var token
 var order = {
@@ -34,12 +33,9 @@ Page({
     showView: true,
     scrollTop: 0,
     floorstatus: false,
-
-    //cyc
-    goods_ext:[],
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     var that = this
     let isIphoneX = app.globalData.isIphoneX;
     this.setData({
@@ -54,20 +50,19 @@ Page({
     if (goodsid == '') {
       wx.setStorageSync('goodsid', goodsId)
     } else {
-      app.dscRequest(("goods/save"), {
-          list: (newId == '' ? goodsid : newId),
-          goodsId: goodsId
-        })
+      app.vcvbRequest(("goods/save"), {
+        list: (newId == '' ? goodsid : newId),
+        goodsId: goodsId
+      })
         .then((res) => {
           newId = res.data.data
           wx.setStorageSync('goodshistory', newId)
         })
     }
-    this.getGoodsExt(goodsId);
     //调用应用实例的方法获取全局数据
-    app.dscRequest(("goods/detail"), {
-        "id": goodsId,
-      })
+    app.vcvbRequest(("goods/detail"), {
+      "id": goodsId,
+    })
       .then((res) => {
         console.log(res);
         wx.setNavigationBarTitle({
@@ -102,7 +97,7 @@ Page({
         }
       })
   },
-  onShow: function() {
+  onShow: function () {
     order.num = 1;
     order.pro = [];
     order.prostr = [];
@@ -110,7 +105,7 @@ Page({
 
 
   /*提交*/
-  goodsCheckout: function(e) {
+  goodsCheckout: function (e) {
     var that = this
     wx.setStorageSync('flowcheckout', {
       from: "checkout"
@@ -118,12 +113,12 @@ Page({
     //获取id
     var goodsbtn = e.currentTarget.id || 'cart'
     var goodsId = that.data.goodsCont.goods_id
-    
-    app.dscRequest(("cart/add"), {
-        "id": order.id,
-        "num": order.num,
-        "attr_id": JSON.stringify(tempOrderPro),
-      })
+
+    app.vcvbRequest(("cart/add"), {
+      "id": order.id,
+      "num": order.num,
+      "attr_id": JSON.stringify(tempOrderPro),
+    })
       .then((res) => {
         var result = res.data.data;
         if (goodsbtn == 'cart') {
@@ -141,7 +136,7 @@ Page({
             })
           }
         } else {
-          app.dscRequest(("user/address/list"))
+          app.vcvbRequest(("user/address/list"))
             .then((res) => {
               if (res.data.data != '') {
                 wx.navigateTo({
@@ -164,14 +159,14 @@ Page({
         }
       })
   },
-  onChangeShowState: function() {
+  onChangeShowState: function () {
     var that = this;
     that.setData({
       showView: (!that.data.showView)
     })
   },
   /*增加商品数量*/
-  up: function() {
+  up: function () {
     var num = this.data.num;
     num++;
     if (num >= 99) {
@@ -184,7 +179,7 @@ Page({
     this.getGoodsTotal();
   },
   /*减少商品数量*/
-  down: function() {
+  down: function () {
     var num = this.data.num;
     num--;
     if (num <= 1) {
@@ -197,7 +192,7 @@ Page({
     this.getGoodsTotal();
   },
   /*手动输入商品*/
-  import: function(e) {
+  import: function (e) {
     var that = this
     var stock = that.data.stock
     var num = Math.floor(e.detail.value);
@@ -215,12 +210,12 @@ Page({
 
   },
   /*单选*/
-  modelTap: function(e) {
+  modelTap: function (e) {
     this.getProper(e.currentTarget.id)
     this.getGoodsTotal();
   },
   /*属性选择计算*/
-  getProper: function(id) {
+  getProper: function (id) {
     tempOrderPro = []
     tempOrderProStr = []
     var categoryList = this.data.properties;
@@ -256,16 +251,16 @@ Page({
       selectedPro: tempOrderProStr.join(',')
     });
   },
-  getGoodsTotal: function() {
+  getGoodsTotal: function () {
     //提交属性  更新价格
     var that = this;
-    app.dscRequest(("goods/property"), {
-        id: order.id,
-        attr_id: tempOrderPro,
-        num: order.num,
-        warehouse_id: "1",
-        area_id: "1"
-      })
+    app.vcvbRequest(("goods/property"), {
+      id: order.id,
+      attr_id: tempOrderPro,
+      num: order.num,
+      warehouse_id: "1",
+      area_id: "1"
+    })
       .then((res) => {
         that.setData({
           goods_price: res.data.data.goods_price_formated,
@@ -277,7 +272,7 @@ Page({
   },
 
   /*收藏*/
-  addCollect: function() {
+  addCollect: function () {
     token = wx.getStorageSync('token')
     if (!token) {
       wx.navigateTo({
@@ -286,7 +281,7 @@ Page({
       return;
     }
     var that = this;
-    app.dscRequest(("user/collect/add"), {
+    app.vcvbRequest(("user/collect/add"), {
       "id": order.id,
     }).then((res) => {
       that.setData({
@@ -296,7 +291,7 @@ Page({
   },
 
   //商品相册
-  setCurrent: function(e) {
+  setCurrent: function (e) {
     var that = this;
     if (e.detail.current > 0) {
       that.setData({
@@ -311,7 +306,7 @@ Page({
       currentIndex: e.detail.current + 1
     })
   },
-  swichNav: function(e) {
+  swichNav: function (e) {
     var that = this;
 
     that.setData({
@@ -319,7 +314,7 @@ Page({
       // currentTab: e.currentTarget.dataset.current
     });
   },
-  imgPreview: function() { //图片预览
+  imgPreview: function () { //图片预览
     const imgs = this.data.goodsCont.goods_img;
     console.log(this.data.goodsCont.goods_img)
     wx.previewImage({
@@ -328,47 +323,47 @@ Page({
     })
   },
   /**内容切换 */
-  toOrder: function(res) {
+  toOrder: function (res) {
     this.setData({
       hiddenOrder: false,
       hiddenAddress: true
     })
   },
-  toAddress: function(res) {
+  toAddress: function (res) {
     this.setData({
       hiddenOrder: true,
       hiddenAddress: false
     })
   },
   //选择属性
-  onChangeShowState: function() {
+  onChangeShowState: function () {
     var that = this;
     that.setData({
       showView: (!that.data.showView)
     })
   },
   //店铺
-  storeDetail: function(e) {
+  storeDetail: function (e) {
     var id = this.data.goodsCont.detail.user_id
     wx.navigateTo({
       url: "../../packageA/store/index?objectId=" + id
     });
   },
   //优惠券
-  onChangeShowCoupons: function() {
+  onChangeShowCoupons: function () {
     var that = this;
     that.setData({
       showViewCoupons: (!that.data.showViewCoupons)
     })
   },
   //领取优惠券
-  printCoupont: function(e) {
+  printCoupont: function (e) {
     var that = this;
     coupons_index = e.currentTarget.dataset.index;
     var couId = that.data.goodsCont.coupont[coupons_index].cou_id;
-    app.dscRequest(("goods/coupons"), {
-        "cou_id": couId,
-      })
+    app.vcvbRequest(("goods/coupons"), {
+      "cou_id": couId,
+    })
       .then((res) => {
         if (res.status_code != 500) {
           if (res.data.data.error == 2) {
@@ -389,7 +384,7 @@ Page({
             duration: 2000
           })
         }
-        app.dscRequest(("goods/detail"), {
+        app.vcvbRequest(("goods/detail"), {
           "id": order.id,
         }).then((res) => {
           that.setData({
@@ -398,19 +393,19 @@ Page({
         })
       })
   },
-  flowCart: function() {
+  flowCart: function () {
     wx.switchTab({
       url: '../../pages/flow/index',
     });
   },
 
   //返回顶部
-  goTop: function(e) {
+  goTop: function (e) {
     this.setData({
       scrollTop: 0
     })
   },
-  scroll: function(e) {
+  scroll: function (e) {
     if (e.detail.scrollTop > 300) {
       this.setData({
         floorstatus: true
@@ -421,14 +416,14 @@ Page({
       });
     }
   },
-  bindSharing: function() {
+  bindSharing: function () {
     var that = this
     var goodsId = that.data.goodsCont.goods_info.goods_id
     wx.navigateTo({
       url: "../goods/speak?objectId=" + goodsId
     });
   },
-  toChild: function() {
+  toChild: function () {
     var that = this
     var goodsId = that.data.goodsCont.goods_info.goods_id
     wx.navigateTo({
@@ -436,7 +431,7 @@ Page({
     })
   },
   //促销
-  groupPlay: function() {
+  groupPlay: function () {
     var that = this;
     that.setData({
       showViewPlay: !that.data.showViewPlay,
@@ -444,7 +439,7 @@ Page({
       isScroll: false
     })
   },
-  bargainPlayclose: function() {
+  bargainPlayclose: function () {
     var that = this;
     that.setData({
       showViewPlay: !that.data.showViewPlay,
@@ -453,18 +448,18 @@ Page({
     })
   },
   //video
-  onReady: function(res) {
+  onReady: function (res) {
     this.videoContext = wx.createVideoContext('myVideo')
   },
   //快捷导航
-  commonNav: function() {
+  commonNav: function () {
     var that = this;
     var nav_select
     that.setData({
       nav_select: !that.data.nav_select
     });
   },
-  nav: function(e) {
+  nav: function (e) {
     var that = this;
     var cont = e.currentTarget.dataset.index;
     if (cont == "home") {
@@ -486,7 +481,7 @@ Page({
     }
   },
   //分享
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     var that = this
     var goods_name = that.data.goodsCont.goods_info.goods_name
     return {
@@ -497,7 +492,7 @@ Page({
   },
 
   /* 弹出属性选择框 */
-  addBargain: function(e) {
+  addBargain: function (e) {
     token = wx.getStorageSync('token')
     if (!token) {
       wx.navigateTo({
@@ -521,21 +516,11 @@ Page({
       goodsbtns: goodsbtns,
     })
   },
-  onChangeShowState: function() {
+  onChangeShowState: function () {
     var that = this;
     that.setData({
       showViewProperty: !that.data.showViewProperty,
       showViewMol: !that.data.showViewMol
-    })
-  },
-  getGoodsExt: function (goodsId){
-    var that = this;
-    app.dscRequest(("index_ext/goods/ext"), {
-      "goods_id": goodsId,
-    }).then((res) => {
-      that.setData({
-        goods_ext: res.data.data,
-      })
     })
   },
 })

@@ -14,5 +14,11 @@
   </view>
 </template>
 
-
-
+<template name="down_loading">
+  <view class="loading-section">
+    <view class="flex" style="width:210rpx;margin:auto;">
+      <view class="loading"></view>
+      <view class="t-c f-28 flex-box" style="line-height:70rpx;">数据加载中</view>
+    </view>
+  </view>
+</template>
