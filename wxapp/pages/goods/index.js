@@ -13,7 +13,6 @@ var coupons_index = '';
 var newId = ''; //接口返回值
 Page({
   data: {
-
     showViewProperty: '',
     goodsType: "加入购物车",
     goodsbtns: "cart",
