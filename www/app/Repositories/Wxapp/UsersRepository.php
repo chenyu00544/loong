@@ -9,9 +9,10 @@
 namespace App\Repositories\Wxapp;
 
 use App\Contracts\UsersRepositoryInterface;
-use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
+use App\Helper\Wxapp;
+use App\Helper\WXBizDataCrypt;
 use App\Http\Models\Wxapp\CartModel;
 use App\Http\Models\Wxapp\CommentModel;
 use App\Http\Models\Wxapp\OrderInfoModel;
@@ -19,6 +20,7 @@ use App\Http\Models\Wxapp\OrderReturnModel;
 use App\Http\Models\Wxapp\UserAddressModel;
 use App\Http\Models\Wxapp\UsersModel;
 use App\Http\Models\Wxapp\UsersRealModel;
+use App\Http\Models\Wxapp\WechatUserModel;
 
 class UsersRepository implements UsersRepositoryInterface
 {
@@ -29,6 +31,7 @@ class UsersRepository implements UsersRepositoryInterface
     private $orderReturnModel;
     private $cartModel;
     private $commentModel;
+    private $wechatUserModel;
 
     public function __construct(
         UsersModel $usersModel,
@@ -37,7 +40,8 @@ class UsersRepository implements UsersRepositoryInterface
         OrderInfoModel $orderInfoModel,
         OrderReturnModel $orderReturnModel,
         CartModel $cartModel,
-        CommentModel $commentModel
+        CommentModel $commentModel,
+        WechatUserModel $wechatUserModel
     )
     {
         $this->usersModel = $usersModel;
@@ -47,104 +51,60 @@ class UsersRepository implements UsersRepositoryInterface
         $this->orderReturnModel = $orderReturnModel;
         $this->cartModel = $cartModel;
         $this->commentModel = $commentModel;
+        $this->wechatUserModel = $wechatUserModel;
     }
 
-    public function login($username, $password, $type, $ip, $device_id = '')
+    public function login($userInfo, $code, $type, $ip, $device_id = '')
     {
-        $req = ['code' => 1, 'msg' => '账号密码错误', 'data' => '', 'token' => ''];
-        $column = ['user_id', 'server_id', 'email', 'user_name', 'nick_name', 'logo', 'password', 'salt', 'mobile_phone', 'user_money', 'visit_count'];
-        $user = $this->usersModel->getUser($username, $column);
-        if ($user) {
-            if ($type == 1) {
-                //验证码登录
-                $code = RedisCache::get('code_' . $username);
-                if ($code == md5($password)) {
-                    $req = ['code' => 0, 'msg' => '', 'data' => $user, 'token' => encrypt($user->user_id)];
-                    $where['user_id'] = $user->user_id;
-                    $updata = [
-                        'last_login' => time(),
-                        'last_time' => date(RedisCache::get('shop_config')['time_format'], time()),
-                        'last_ip' => $ip,
-                        'visit_count' => $user->visit_count + 1
-                    ];
-                    $this->usersModel->setUsers($where, $updata);
-                    $this->cartModel->setCart(['session_id' => $device_id], ['user_id' => $user->user_id]);
-                } else {
-                    $req = ['code' => 1, 'msg' => '验证码错误', 'data' => '', 'token' => ''];
-                }
-                $user->is_real = '0';
-                $user->logo = FileHandle::getImgByOssUrl($user->logo);
-                if (!empty($user->real)) {
-                    if ($user->real->review_status == 1) {
-                        $user->is_real = '1';
-                    }
-                }
-            } else {
-                //密码登录
-                $pass = Common::md5Encrypt($password, $user->salt);
-                if ($user->password == $pass) {
-                    $req = ['code' => 0, 'msg' => '', 'data' => $user, 'token' => encrypt($user->user_id)];
-                    $where['user_id'] = $user->user_id;
-                    $updata = [
-                        'last_login' => time(),
-                        'last_time' => date(RedisCache::get('shop_config')['time_format'], time()),
-                        'last_ip' => $ip,
-                        'visit_count' => $user->visit_count + 1
-                    ];
-                    $this->usersModel->setUsers($where, $updata);
-                    $this->cartModel->setCart(['session_id' => $device_id], ['user_id' => $user->user_id]);
-                } else {
-                    $req = ['code' => 1, 'msg' => '密码错误', 'data' => '', 'token' => ''];
-                }
-                $user->is_real = '0';
-                $user->logo = FileHandle::getImgByOssUrl($user->logo);
-                if (!empty($user->real)) {
-                    if ($user->real->review_status == 1) {
-                        $user->is_real = '1';
-                    }
-                }
-            }
-        }
-        return $req;
-    }
+        $wx_config = RedisCache::get("wxapp_config");
 
-    public function register($username, $password, $ip, $qrcode, $device_id)
-    {
-        $code = RedisCache::get('code_' . $username);
-        $column = ['user_id', 'email', 'user_name', 'mobile_phone'];
-        $user = $this->usersModel->getUser($username, $column);
-        if (empty($user)) {
-            if ($code == md5($qrcode)) {
-                $salt = Common::randStr(6);
-                $time = time();
-                $user_id = RedisCache::incrby('user_id');
-                $userData = [
-                    'user_id' => $user_id,
-                    'salt' => $salt,
-                    'password' => Common::md5Encrypt($password, $salt),
-                    'user_name' => $username,
-                    'last_login' => $time,
-                    'mobile_phone' => $username,
-                    'nick_name' => APPNAME . substr(md5($username), 8, -8),
-                    'reg_time' => $time,
-                    'last_ip' => $ip,
-                    'logo' => '',
-                    'server_id' => 0,
-                    'user_money' => 0,
-                ];
-                $user = $this->usersModel->addUser($userData, $user_id);
-                $this->usersRealModel->addUsersReal(['user_id' => $user_id]);
-                $user->user_id = $user_id;
-                $this->cartModel->setCart(['session_id' => $device_id], ['user_id' => $user->user_id]);
-                $user->is_real = '0';
-                $req = ['code' => 0, 'msg' => '', 'data' => $user, 'token' => encrypt($user->user_id)];
+        $config = [
+            'appid' => $wx_config["wx_appid"],
+            'secret' => $wx_config["wx_appsecret"],
+        ];
+        $wxapp = new Wxapp($config);
+
+        // $token = $wxapp->getAccessToken();
+        $response = $wxapp->getOauthOrization($code);
+        $token = new WXBizDataCrypt($config['appid'], $response['session_key']);
+        $errCode = $token->decryptData($userInfo['encryptedData'], $userInfo['iv'], $data);
+
+//        if ($errCode == 0) {
+//            print($data . "\n");
+//        } else {
+//            print($errCode . "\n");
+//        }
+
+        $data = get_object_vars(json_decode($data));
+
+        $where['openid'] = $data['openId'];
+        $re = $this->wechatUserModel->getWechat($where);
+        if ($re) {
+            $return["openid"] = $data['openId'];
+            if ($re->ect_uid > 0) {
+                $return["token"] = encrypt($re->ect_uid);
             } else {
-                $req = ['code' => 1, 'msg' => '验证码错误', 'data' => ''];
+                $return["token"] = 0;
             }
-        } else {
-            $req = ['code' => 1, 'msg' => '账号已存在', 'data' => ''];
+            return $return;
         }
-        return $req;
+
+        // 组合数据
+        $args['unionid'] = empty($data['unionId'])?"":$data['unionId'];
+        $args['openid'] =  empty($data['openId'])?"":$data['openId'];
+        $args['nickname'] = isset($userInfo['userInfo']['nickName']) ? $userInfo['userInfo']['nickName'] : '';
+        $args['sex'] = isset($userInfo['userInfo']['gender']) ? $userInfo['userInfo']['gender'] : '';
+        $args['province'] = isset($userInfo['userInfo']['province']) ? $userInfo['userInfo']['province'] : '';
+        $args['city'] = isset($userInfo['userInfo']['city']) ? $userInfo['userInfo']['city'] : '';
+        $args['country'] = isset($userInfo['userInfo']['country']) ? $userInfo['userInfo']['country'] : '';
+        $args['headimgurl'] = isset($userInfo['userInfo']['avatarUrl']) ? $userInfo['userInfo']['avatarUrl'] : '';
+        $args['parent_id'] = isset($userInfo['userInfo']['uid']) ? $userInfo['userInfo']['uid'] : 0;
+        $args['drp_parent_id'] = isset($userInfo['userInfo']['uid']) ? $userInfo['userInfo']['uid'] : 0;
+
+        $re = $this->wechatUserModel->addWechat($args);
+        $return["openid"] = $data['openId'];
+        $return["token"] = 0;
+        return $return;
     }
 
     public function getUserInfo($uid)

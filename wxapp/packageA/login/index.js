@@ -49,7 +49,7 @@ Page({
     var that = this
     userinfo.userInfo.uid = uid;
     if (code) {
-      app.dscRequest(("user/login"), {
+      app.vcvbRequest(("login/index"), {
           userinfo: userinfo,
           code: code
         })

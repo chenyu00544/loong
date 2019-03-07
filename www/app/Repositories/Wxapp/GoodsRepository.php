@@ -148,7 +148,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         if ($goods_detail) {
             $mobile_descs = unserialize($goods_detail->desc_mobile);
             $goods_detail->mobile_descs = $mobile_descs;
-            $goods_detail->goods_video = FileHandle::getImgByOssUrl($goods_detail->goods_video);
+            $goods_detail->goods_video = url($goods_detail->goods_video);
             $goods_detail->goods_thumb = FileHandle::getImgByOssUrl($goods_detail->goods_thumb);
             $goods_detail->original_img = FileHandle::getImgByOssUrl($goods_detail->original_img);
             $goods_detail->goods_img = FileHandle::getImgByOssUrl($goods_detail->goods_img);

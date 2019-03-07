@@ -1,14 +1,14 @@
 <import src="../../wxParse/wxParse.wxml" />
 <import src="../../common/common.wxml" />
-<block wx:if="{{goodsCont!= undefined}}">
+<block wx:if="{{goodsDetail!= undefined}}">
   <scroll-view scroll-y="true" bindscroll="scroll" scroll-top="{{scrollTop}}" style="position:absolute; top:0; left:0; right:0; bottom:0;">
     <view class="container p-bottom {{isIphoneX?'iphone-p-bottom':''}}">
       <view class="common-header-xian"></view>
       <!--详情相册-->
       <view class="goods-swiper p-r">
-        <block wx:if="{{goodsCont.goods_info.goods_video!=''&& goodsCont.goods_info.goods_video!= undefined}}">
+        <block wx:if="{{goodsDetail.goods_video!=''&& goodsDetail.goods_video!= undefined}}">
           <view class="goods-video hide{{showViewvideo?'show':''}}">
-            <video poster="{{goodsCont.goods_img[0]}}" controls="true" id="myVideo" src="{{goodsCont.goods_info.goods_video}}"></video>
+            <video poster="{{goodsDetail.goods_img[0]}}" controls="true" id="myVideo" src="{{goodsDetail.goods_video}}"></video>
           </view>
           <view class=" btn-cont show {{showViewvideo?'hide':''}}">
             <view class="btn" bindtap="swichNav">
@@ -16,15 +16,15 @@
           </view>
         </block>
         <swiper current="{{currentTab}}" autoplay="{{autoplay}}" bindchange="setCurrent" indicator-dots="{{indicatorDots}}" circular="true" interval="{{interval}}" duration="{{duration}}" class="goods-box">
-          <block wx:for="{{goodsCont.goods_img}}" wx:key="goods_img">
+          <block wx:for="{{goodsDetail.ggallery}}" wx:key="goods_img">
             <swiper-item bindtap="imgPreview">
-              <image src="{{item}}" mode="aspectFill" class="slide-image" />
+              <image src="{{item.img_original}}" mode="aspectFill" class="slide-image" />
             </swiper-item>
           </block>
         </swiper>
         <view class="num">
           <text>{{currentIndex}}</text>
-          <text>/{{goodsCont.goods_img.length}}</text>
+          <text>/{{goodsDetail.ggallery.length}}</text>
         </view>
       </view>
       <view class="goods-video-close f-28 hide{{showViewvideo?'show':''}}" bindtap="swichNav">
@@ -34,47 +34,21 @@
         <!--标题-->
         <view class="title dis-box">
           <text class="cont f-31 twolist-hidden box-flex t-c">
-          <text class="tag">{{goodsCont.shop_name!=undefined?'':'自营'}}</text>{{goodsCont.goods_info.goods_name}}</text>
+          <text class="tag">{{goodsDetail.shop_name!=undefined?'':'自营'}}</text>{{goodsDetail.goods_name}}</text>
           <view class="tb-lr-center" bindtap='bindSharing'>
             <text class="iconfont icon-fenxiang  sharing col-6"></text>
           </view>
         </view>
         <view class="price m-top10 t-c">
-          <text class="col-m m-top10 f-cole9">{{goods_price}}</text>
-          <text class="del f-24">{{goods_market_price}}</text>
+          <text class="col-m m-top10 f-cole9">{{goodsDetail.shop_price_format}}</text>
+          <text class="del f-24">{{goodsDetail.market_price_format}}</text>
         </view>
-        <view class="col-9 f-24 t-c mt">{{goodsCont.goods_info.goods_brief}}</view>
+        <view class="col-9 f-24 t-c mt">{{goodsDetail.goods_brief}}</view>
 
         <!-- <view class="sales col-8 f-28 dis-box m-top10">
-          <text class="box-flex">销量：{{goodsCont.goods_info.sales}}</text>
+          <text class="box-flex">销量：{{goodsDetail.sales}}</text>
           <text class="box-flex t-r">库存：{{stock}}</text>
         </view> -->
-
-      </view>
-
-      <view class="store-header goods-cont p-r">
-        <view class='tip-goods-wrap'>
-          <view class='tip-goods' wx:if="{{goods_ext.goods_info.is_shipping == 1}}">
-            <image src='../../images/hook_black.png'></image>
-            <text>包邮</text>
-          </view>
-          <view class='tip-goods' wx:if="{{goods_ext.goods_info.is_promote == 1}}">
-            <image src='../../images/hook_black.png'></image>
-            <text>促销</text>
-          </view>
-          <view class='tip-goods' wx:if="{{goods_ext.goods_info.is_reality == 1}}">
-            <image src='../../images/hook_black.png'></image>
-            <text>正品</text>
-          </view>
-          <view class='tip-goods' wx:if="{{goods_ext.goods_info.is_return == 1}}">
-            <image src='../../images/hook_black.png'></image>
-            <text>15天包退换</text>
-          </view>
-          <view class='tip-goods' wx:if="{{goods_ext.goods_info.is_fast == 0}}">
-            <image src='../../images/hook_black.png'></image>
-            <text>48小时发货</text>
-          </view>
-        </view>
       </view>
 
       <!--促销-->

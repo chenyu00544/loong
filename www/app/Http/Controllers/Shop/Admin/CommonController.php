@@ -20,6 +20,7 @@ use App\Http\Models\Shop\PaymentModel;
 use App\Http\Models\Shop\ShopConfigModel;
 use App\Http\Models\Shop\WechatModel;
 use App\Http\Controllers\Controller;
+use App\Http\Models\Shop\WxappModel;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
@@ -156,6 +157,17 @@ class CommonController extends Controller
                 $_conf = $conf->toArray();
             }
             RedisCache::set('wechat_config', $_conf);
+        }
+
+        //fixme 微信小程序
+        if (!RedisCache::get('wxapp_config')) {
+            $m = (new WxappModel);
+            $conf = $m->getWxapp(['ru_id' => 0]);
+            $_conf = [];
+            if ($conf) {
+                $_conf = $conf->toArray();
+            }
+            RedisCache::set('wxapp_config', $_conf);
         }
 
         //fixme 支付宝支付设置

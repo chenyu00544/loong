@@ -24,15 +24,6 @@
 .max-cont{border-top:1rpx solid #f2f1f7;}
 .cart_product_price{font-size: 36rpx; color: #292929; padding: 8rpx 0;}
 
-.store-header{background: #fff;padding: 10rpx 20rpx;}
-.tip-goods-wrap {display: flex;flex-wrap: wrap;justify-content: center;border-top:1rpx dashed #c9c9cb;padding: 10rpx 10rpx;}
-
-.tip-goods {display: flex;align-items: center;margin-right: 30rpx;margin-bottom: 10rpx;margin-top: 10rpx;}
-
-.tip-goods image {width: 26rpx;height: 26rpx;}
-
-.tip-goods text {font-size: 26rpx;margin-left: 10rpx;color: #666;}
-
 .goods_coupont_box{margin-top: 15rpx;}
 .coupont-wrap{border-radius: 8rpx;background: linear-gradient(to right,#fe7e4f,#fe3730);display:inline-block;width: auto;height: 125rpx;margin: 15rpx;}
 .scroll-bar{white-space: nowrap;width:100%;}

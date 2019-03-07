@@ -9,6 +9,7 @@
 namespace App\Repositories\Admin;
 
 use App\Contracts\WxappRepositoryInterface;
+use App\Facades\RedisCache;
 use App\Http\Models\Shop\WxappModel;
 
 class WxappRepository implements WxappRepositoryInterface
@@ -50,7 +51,14 @@ class WxappRepository implements WxappRepositoryInterface
         if (strpos($data['wx_appsecret'], '******') !== false) {
             unset($data['wx_appsecret']);
         }
-        return $this->wxappModel->setWxapp($where, $data);
+        $re = $this->wxappModel->setWxapp($where, $data);
+        $conf = $this->wxappModel->getWxapp(['ru_id' => 0]);
+        $_conf = [];
+        if ($conf) {
+            $_conf = $conf->toArray();
+        }
+        RedisCache::set('wxapp_config', $_conf);
+        return $re;
     }
 
     public function addWxapp($data, $user)
