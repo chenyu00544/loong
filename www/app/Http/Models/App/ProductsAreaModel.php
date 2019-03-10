@@ -7,13 +7,13 @@
  * Desc:
  */
 
-namespace App\Http\Models\Wxapp;
+namespace App\Http\Models\App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductsModel extends Model
+class ProductsAreaModel extends Model
 {
-    protected $table = 'products';
+    protected $table = 'products_area';
     protected $primaryKey = 'product_id';
     public $timestamps = false;
     protected $guarded = [];
@@ -25,9 +25,7 @@ class ProductsModel extends Model
 
     public function getProdcut($where, $column = ['*'])
     {
-        return $this->select($column)
-            ->where($where)
-            ->first();
+
     }
 
     public function getProdcutAndAttr($ids, $column = ['*'], $where = [])

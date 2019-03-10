@@ -222,7 +222,7 @@ button.submit_btn{background: #ff495e; color: white; margin-bottom:20rpx;}
 .tipstxt{ font-size: 28rpx; color: #888;margin-bottom:10rpx;}
 .cartypeitem{position: relative; display: inline-block; overflow: hidden; height: 60rpx; font-size: 31rpx; line-height: 60rpx; padding: 0 30rpx; margin: 0 20rpx 20rpx 0; border: 1rpx solid #f3f2f8; background:#f3f2f8; border-radius: 10rpx; color: #444;}
 .cartypelist{display: inline-block;}
-.cartypeitem.cur{background: #a9a9a9; color: #fff;border:1rpx solid #a9a9a9}
+.cartypeitem.cur{background: #ff495e; color: #fff;border:1rpx solid #ff495e}
 .cartypeitem.cur:after{position: absolute; bottom: 0; right: 0; content: ''; display: inline-block; width: 16rpx; height: 16rpx;}
 .cartypeitem.disabled{color: #dedede; cursor: not-allowed; background: #eee; border: 2rpx dashed #dedede;}
 .tmall-process{width: 690rpx; padding: 20rpx 30rpx 20rpx; background: #fff;}
@@ -634,3 +634,5 @@ buy_number{justify-content: space-between; margin: 10px 5px;}
 .f-colc6{color: #c6c6c6!important}
 .f-cole9{color: #e9363a!important}
 .flex-center{display:flex;justify-content:center;align-items:center;}
+
+.ws{white-space: pre-line;}

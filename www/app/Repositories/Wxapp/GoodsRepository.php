@@ -13,6 +13,8 @@ use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\Pinyin;
 use App\Facades\RedisCache;
+use App\Http\Models\Wxapp\ProductsAreaModel;
+use App\Http\Models\Wxapp\ProductsWarehouseModel;
 use App\Http\Models\Wxapp\AttributeModel;
 use App\Http\Models\Wxapp\BrandModel;
 use App\Http\Models\Wxapp\BrowseGoodsModel;
@@ -45,6 +47,8 @@ class GoodsRepository implements GoodsRepositoryInterface
     private $cartModel;
     private $favourableGoodsModel;
     private $productsModel;
+    private $productsWarehouseModel;
+    private $productsAreaModel;
     private $collectGoodsModel;
     private $browseGoodsModel;
     private $searchKeywordModel;
@@ -65,6 +69,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         CartModel $cartModel,
         FavourableGoodsModel $favourableGoodsModel,
         ProductsModel $productsModel,
+        ProductsWarehouseModel $productsWarehouseModel,
+        ProductsAreaModel $productsAreaModel,
         CollectGoodsModel $collectGoodsModel,
         BrowseGoodsModel $browseGoodsModel,
         SearchKeywordModel $searchKeywordModel,
@@ -85,6 +91,8 @@ class GoodsRepository implements GoodsRepositoryInterface
         $this->cartModel = $cartModel;
         $this->favourableGoodsModel = $favourableGoodsModel;
         $this->productsModel = $productsModel;
+        $this->productsWarehouseModel = $productsWarehouseModel;
+        $this->productsAreaModel = $productsAreaModel;
         $this->collectGoodsModel = $collectGoodsModel;
         $this->browseGoodsModel = $browseGoodsModel;
         $this->searchKeywordModel = $searchKeywordModel;
@@ -141,7 +149,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             'is_delete', 'is_best', 'is_new', 'is_hot', 'is_promote', 'is_volume', 'is_fullcut',
             'goods_type', 'is_limit_buy', 'limit_buy_start_date', 'limit_buy_end_date', 'limit_buy_num', 'review_status',
             'sales_volume', 'comments_number', 'tid', 'goods_cause', 'goods_video', 'is_distribution',
-            'pinyin_keyword', 'goods_brief'
+            'pinyin_keyword', 'goods_brief', 'model_price'
         ];
         $goods_detail = $this->goodsModel->getGoodsAndExt($where, $column);
         $this->goodsModel->incrementGoodses($where, 'click_count');
@@ -267,13 +275,14 @@ class GoodsRepository implements GoodsRepositoryInterface
             }
 
             //评价
-            $column_comment = ['comment_id', 'id_value', 'user_name', 'content', 'status', 'parent_id', 'user_id', 'ru_id'];
+            $column_comment = ['comment_id', 'id_value', 'user_name', 'content', 'status', 'parent_id', 'user_id', 'ru_id', 'comment_rank', 'comment_server', 'comment_delivery'];
             $goods_detail->comments = $this->commentModel->getComments($goods_id, $column_comment);
             foreach ($goods_detail->comments as $comment) {
                 $comment->user_logo = $comment->user->logo;
                 if ($comment->user_logo != '') {
                     $comment->user_logo = FileHandle::getImgByOssUrl($comment->user_logo);
                 }
+                $comment->comment_rank = ($comment->comment_rank + $comment->comment_server + $comment->comment_delivery) / 3;
                 if (count($comment->commentImg) > 0) {
                     foreach ($comment->commentImg as $comment_img) {
                         $comment_img->comment_img = FileHandle::getImgByOssUrl($comment_img->comment_img);
@@ -343,6 +352,26 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goods_detail->current_time = $time;
         }
         return $goods_detail;
+    }
+
+    public function getGoodsProperty($data)
+    {
+        $where['goods_id'] = empty($data['goods_id']) ? 0 : intval($data['goods_id']);
+        $where['goods_attr'] = empty($data['attr_id']) ? 0 : implode("|", $data['attr_id']);
+        $re = [];
+        if (empty($data['model_price'])) {
+            $re = $this->productsModel->getProdcut($where);
+        } elseif ($data['model_price'] == 1) {
+            $re = $this->productsWarehouseModel->getProdcut($where);
+        } elseif ($data['model_price'] == 2) {
+            $re = $this->productsAreaModel->getProdcut($where);
+        }
+        if(!empty($re)){
+            $re->product_price_format = Common::priceFormat($re->product_price);
+            $re->product_promote_price_format = Common::priceFormat($re->product_promote_price);
+            $re->product_market_price_format = Common::priceFormat($re->product_market_price);
+        }
+        return $re;
     }
 
     public function getGoodsesByUserLike($data, $user_id = 0)

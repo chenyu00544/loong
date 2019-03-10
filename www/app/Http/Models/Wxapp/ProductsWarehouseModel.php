@@ -11,9 +11,9 @@ namespace App\Http\Models\Wxapp;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProductsModel extends Model
+class ProductsWarehouseModel extends Model
 {
-    protected $table = 'products';
+    protected $table = 'products_warehouse';
     protected $primaryKey = 'product_id';
     public $timestamps = false;
     protected $guarded = [];

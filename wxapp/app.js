@@ -3,7 +3,7 @@ const host = 'https://www.vcvbuy.com/api/wx/';
 App({
   onLaunch: function () {
     // 获取用户数据
-    // this.wxLogin();
+    this.wxLogin();
   },
   apiUrl(api) { return host + api },
   webUrl(web) { return host + web },
@@ -238,14 +238,19 @@ App({
     wx.login({
       success: function (result) {
         var code = result.code;
-        that.vcvbRequest("index_ext/silen/login", {
+        that.vcvbRequest("login/silent", {
           code: code,
         }).then((res) => {
           wx.setStorage({
             key: 'openid',
             // data: JSON.parse(res.data.split('\n')[1]).openid
             data: res.data.data.openid
-          })
+          });
+          wx.setStorage({
+            key: 'token',
+            // data: JSON.parse(res.data.split('\n')[1]).token
+            data: res.data.data.token
+          });
         });
       }
     })

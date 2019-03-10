@@ -39,6 +39,8 @@
 .jcsb{justify-content:space-between;}
 .goods_comment_box{width:690rpx;margin: auto;background: #fff; border-radius: 15rpx;padding: 15rpx;}
 
+.goods-cont-li {padding:20rpx 0;}
+
 .comment-wrap {
   width: auto;
   display: inline-block;

@@ -35,6 +35,26 @@ class LoginController extends CommonController
         return $this->apiReturn($re);
     }
 
+    /**
+     * 验证静默用户cyc
+     * @param Request $request
+     * @return array
+     */
+    public function silent(Request $request)
+    {
+        $this->validate($request, [
+            'code' => 'required'
+        ]);
+
+        // 用户登录
+        if (false === ($result = $this->usersRepository->loginSilent($request->all()))) {
+            return ['登录失败', 1];
+        }
+        //登录成功
+
+        return $this->apiReturn($result);
+    }
+
     public function getDeviceId(Request $request)
     {
         return ['code' => 0, 'msg' => '', 'data' => Common::md5Encrypt(time(), Common::randStr(10))];

@@ -3,10 +3,6 @@ scroll-view {
   white-space: nowrap;
 }
 
-.ws {
-  white-space: pre-line;
-}
-
 .ad-submit-cyc {
   margin: 0;
   padding: 0;

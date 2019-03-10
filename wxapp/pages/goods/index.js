@@ -48,41 +48,31 @@ Page({
 
     //调用应用实例的方法获取全局数据
     app.vcvbRequest(("goods/detail"), {
-        goods_id: goodsId,
-        token: token
-      }).then((res) => {
-        wx.setNavigationBarTitle({
-          title: res.data.data.goods_name,
-        })
-        if (res.data.data != undefined) {
-          // WxParse.wxParse('goods_desc', 'html', res.data.data.goods_desc, that, 5);
-          that.setData({
-            goodsDetail: res.data.data,
-            // goodsComment: res.data.data.goods_comment.slice(0, 3),
-            // flowNum: res.data.data.cart_number,
-            // collect_list: (res.data.data.goods_info.is_collect == 1) ? true : false,
-            hidden: true
-          })
-          //商品属性
-          if (res.data.data.goods_properties.pro != undefined) {
-            that.setData({
-              properties: res.data.data.goods_properties.pro
-            })
-            //商品有属性则默认选中第一个
-            for (var i in res.data.data.goods_properties.pro) {
-              that.getProper(res.data.data.goods_properties.pro[i].values[0].id)
-            }
-          }
-          if (res.data.data.goods_properties.spe != undefined) {
-            that.setData({
-              parameteCont: res.data.data.goods_properties.spe,
-            })
-          }
-          tempOrderPro = []
-          tempOrderProStr = []
-          that.getGoodsTotal();
-        }
+      goods_id: goodsId,
+      token: token
+    }).then((res) => {
+      wx.setNavigationBarTitle({
+        title: res.data.data.goods_name,
       })
+      if (res.data.data != undefined) {
+        WxParse.wxParse('goods_desc', 'html', res.data.data.goods_desc, that, 5);
+        that.setData({
+          goodsDetail: res.data.data,
+          hidden: true
+        })
+        //商品属性
+        if (res.data.data.multi_attr != undefined) {
+          that.setData({
+            properties: res.data.data.multi_attr
+          })
+          //商品有属性则默认选中第一个
+          for (var i in res.data.data.multi_attr) {
+            that.getProper(res.data.data.multi_attr[i][0].goods_attr_id);
+          }
+        }
+        that.getGoodsTotal()
+      }
+    })
   },
 
   onShow: function() {
@@ -203,59 +193,46 @@ Page({
   },
   /*属性选择计算*/
   getProper: function(id) {
-    tempOrderPro = []
-    tempOrderProStr = []
     var categoryList = this.data.properties;
-    for (var index in categoryList) {
-      for (var i in categoryList[index].values) {
-        categoryList[index].values[i].checked = false;
-        if (categoryList[index].values[i].id == id) {
-          order.pro[categoryList[index].name] = id
-          order.prostr[categoryList[index].name] = categoryList[index].values[i].label
-        }
-      }
-    }
-
-    //处理页面
-    for (var index in categoryList) {
-      if (order.pro[categoryList[index].name] != undefined && order.pro[categoryList[index].name] != '') {
-        for (var i in categoryList[index].values) {
-          if (categoryList[index].values[i].id == order.pro[categoryList[index].name]) {
-            categoryList[index].values[i].checked = true;
+    for (var i in categoryList) {
+      for (var j in categoryList[i]) {
+        if (categoryList[i][j].goods_attr_id == id) {
+          for (var k in categoryList[i]) {
+            categoryList[i][k].checked = false;
+          }
+          categoryList[i][j].checked = true;
+          order.pro[i] = id;
+          order.prostr[i] = categoryList[i][j].attr_value;
+          if (i == 0) {
+            this.setData({
+              attr_img: categoryList[i][j].attr_img_flie
+            })
           }
         }
       }
     }
-    for (var l in order.pro) {
-      tempOrderPro.push(order.pro[l]);
-    }
-    for (var n in order.prostr) {
-      tempOrderProStr.push(order.prostr[n]);
-    }
-
     this.setData({
       properties: categoryList,
-      selectedPro: tempOrderProStr.join(',')
     });
   },
-  getGoodsTotal: function() {
+  getGoodsTotal: function () {
     //提交属性  更新价格
     var that = this;
     app.vcvbRequest(("goods/property"), {
-        id: order.id,
-        attr_id: tempOrderPro,
+        goods_id: order.id,
+        attr_id: order.pro,
         num: order.num,
         warehouse_id: "1",
+        model_price: that.data.goodsDetail.model_price,
         area_id: "1"
       })
       .then((res) => {
         that.setData({
-          goods_price: res.data.data.goods_price_formated,
-          stock: res.data.data.stock,
-          attr_img: res.data.data.attr_img,
-          goods_market_price: res.data.data.market_price_formated,
+          goods_price: res.data.data.product_price_format,
+          stock: res.data.data.product_number,
+          goods_market_price: res.data.data.product_market_price_format,
         });
-      })
+      });
   },
 
   /*收藏*/

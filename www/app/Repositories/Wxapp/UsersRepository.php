@@ -86,12 +86,11 @@ class UsersRepository implements UsersRepositoryInterface
             } else {
                 $return["token"] = 0;
             }
-            return $return;
         }
 
         // 组合数据
-        $args['unionid'] = empty($data['unionId'])?"":$data['unionId'];
-        $args['openid'] =  empty($data['openId'])?"":$data['openId'];
+        $args['unionid'] = empty($data['unionId']) ? "" : $data['unionId'];
+        $args['openid'] = empty($data['openId']) ? "" : $data['openId'];
         $args['nickname'] = isset($userInfo['userInfo']['nickName']) ? $userInfo['userInfo']['nickName'] : '';
         $args['sex'] = isset($userInfo['userInfo']['gender']) ? $userInfo['userInfo']['gender'] : '';
         $args['province'] = isset($userInfo['userInfo']['province']) ? $userInfo['userInfo']['province'] : '';
@@ -101,9 +100,48 @@ class UsersRepository implements UsersRepositoryInterface
         $args['parent_id'] = isset($userInfo['userInfo']['uid']) ? $userInfo['userInfo']['uid'] : 0;
         $args['drp_parent_id'] = isset($userInfo['userInfo']['uid']) ? $userInfo['userInfo']['uid'] : 0;
 
-        $re = $this->wechatUserModel->addWechat($args);
         $return["openid"] = $data['openId'];
-        $return["token"] = 0;
+        if ($re) {
+            $this->wechatUserModel->setWechat($where, $args);
+        } else {
+            $this->wechatUserModel->addWechat($args);
+            $return["token"] = 0;
+        }
+
+        return $return;
+    }
+
+    public function loginSilent($data)
+    {
+        $wx_config = RedisCache::get("wxapp_config");
+
+        $config = [
+            'appid' => $wx_config["wx_appid"],
+            'secret' => $wx_config["wx_appsecret"],
+        ];
+        $wxapp = new Wxapp($config);
+
+        // $token = $wxapp->getAccessToken();
+        $response = $wxapp->getOauthOrization($data['code']);
+        $where['openid'] = $response['openid'];
+        $re = $this->wechatUserModel->getWechat($where);
+        $return["openid"] = $response['openid'];
+        if ($re) {
+            if ($re->ect_uid > 0) {
+                $return["token"] = encrypt($re->ect_uid);
+            } else {
+                $return["token"] = 0;
+            }
+            return $return;
+        }
+
+        $args['openid'] = $response['openid'];
+        if ($re) {
+            $this->wechatUserModel->setWechat($where, $args);
+        } else {
+            $this->wechatUserModel->addWechat($args);
+            $return["token"] = 0;
+        }
         return $return;
     }
 

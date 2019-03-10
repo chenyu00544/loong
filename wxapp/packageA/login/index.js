@@ -44,6 +44,11 @@ Page({
 
     }
   },
+
+  //获取手机信息
+  getPhoneNumber:function(e){
+
+  },
   // 小程序用户登录
   doLogin: function() {
     var that = this
@@ -54,7 +59,6 @@ Page({
           code: code
         })
         .then((res) => {
-          console.log(res.data);
           wx.setStorage({
             key: 'token',
             // data: JSON.parse(res.data.split('\n')[1]).token

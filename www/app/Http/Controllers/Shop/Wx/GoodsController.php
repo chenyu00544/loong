@@ -47,4 +47,15 @@ class GoodsController extends CommonController
         }
         return $rep;
     }
+
+    public function property(Request $request)
+    {
+        $data = $this->goodsRepository->getGoodsProperty($request->all());
+        if($data){
+            $rep = ['code' => 0, 'msg' => '', 'data' => $data];
+        }else{
+            $rep = ['code' => 1, 'msg' => '', 'data' => $data];
+        }
+        return $rep;
+    }
 }

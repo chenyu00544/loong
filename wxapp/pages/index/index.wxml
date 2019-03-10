@@ -17,7 +17,7 @@
           <!--搜索框-->
           <view class="index-search col-f ts-3 {{indexSearch>50 ? 'active' : ''}}">
             <view class="dis-box">
-              <view class="left p-r flex-center" bindtap="chooseLocation">
+              <!-- <view class="left p-r flex-center" bindtap="chooseLocation">
                 <text class="iconfont icon-dingwei1 f-28"></text>
                 <block wx:if="{{address != undefined}}">
                   <text class="cont f-28">{{address}}</text>
@@ -26,7 +26,7 @@
                   <text class="cont">定位</text>
                 </block>
                 <text class="iconfont icon-xiajiantous f-22"></text>
-              </view>
+              </view> -->
               <view class="search box-flex">
                 <navigator class="cont t-c flex-center" url="../search/index" open-type="navigate" hover-class="none">
                   <text class="iconfont icon-sousuo f-28"></text>

@@ -164,6 +164,7 @@ class GoodsModel extends Model
                 $query->select(['img_id', 'goods_id', 'img_original', 'img_url'])->orderBy('img_desc', 'DESC');
             }])
             ->with(['shop' => function ($query) {
+                $query->select(['shop_name', 'ru_id', 'notice']);
             }])
             ->with(['brand' => function ($query) {
             }])

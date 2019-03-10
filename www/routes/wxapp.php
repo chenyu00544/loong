@@ -33,6 +33,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
 
     Route::post('goods/index', 'GoodsController@index');
     Route::post('goods/detail', 'GoodsController@detail');
+    Route::post('goods/property', 'GoodsController@property');
 
     Route::post('sms/send', 'SmsController@send');
 
@@ -42,6 +43,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::post('cart/del', 'CartController@delCart');
 
     Route::post('login/index', 'LoginController@index');
+    Route::post('login/silent', 'LoginController@silent');
     Route::post('login/reg', 'LoginController@register');
     Route::post('login/deviceid', 'LoginController@getDeviceId');
 

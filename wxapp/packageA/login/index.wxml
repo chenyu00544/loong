@@ -8,17 +8,17 @@
       <open-data type="userNickName" lang="zh_CN"></open-data>
     </view>
     <view class="cont">
-      亲，您还没有授权，未授权将会影响小程序正常体验，快去授权信息吧！
+      亲，您还没有验证，未验证将会影响小程序正常体验，快去手机验证吧！
     </view>
     <view class="btn t-c">
-      <button class='login' lang="zh_CN " type="primary" bindgetuserinfo="getUserInfo" open-type='getUserInfo' wx:if="true"><text class="iconfont  icon-weixin f-34"></text><text class="pl-12">微信授权登录</text></button>
+      <button class='login' lang="zh_CN " type="primary" bindgetuserinfo="getPhoneNumber" open-type='getPhoneNumber' wx:if="true"><text class="iconfont icon-shouji f-34"></text><text class="pl-12">手机验证登录</text></button>
     </view>
   </view>
   <!--获取用户信息-->
   <view class="login-select" hidden="{{loginView}}">
     <view class="cont">
       <view class="title t-c f-38">温馨提示</view>
-      <text class="p db t-c f-32 col-8 p-t10">未授权将会影响小程序正常体验，请允许授权！</text>
+      <text class="p db t-c f-32 col-8 p-t10">未验证将会影响小程序正常体验，请允许授权！</text>
     </view>
     <view class="btn t-c" bindtap='userInfoBtn'>
       <button class='login' lang="zh_CN " bindgetuserinfo="getUserInfo" open-type='getUserInfo' wx:if="true">确定</button>
@@ -26,5 +26,5 @@
   </view>
   <view class="bargain-commont-bg" hidden="{{loginView}}">
   </view>
-  <loading hidden="{{hidden}}">授权中…</loading>
+  <loading hidden="{{hidden}}">验证中…</loading>
 </view>
