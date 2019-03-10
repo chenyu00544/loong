@@ -222,9 +222,7 @@ Page({
         goods_id: order.id,
         attr_id: order.pro,
         num: order.num,
-        warehouse_id: "1",
         model_price: that.data.goodsDetail.model_price,
-        area_id: "1"
       })
       .then((res) => {
         that.setData({

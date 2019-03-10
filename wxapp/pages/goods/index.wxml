@@ -67,6 +67,21 @@
         </view>
       </view>
 
+      <!--属性-->
+      <view class="dis-box b-f goods-property-box m-top20 common-title-box activity-goods-list" bindtap='groupPlay' wx:if="{{goodsDetail.multi_attr.length > 0}}">
+        <view class="col-3 f-31 l-title">属性</view>
+        <view class="box-flex col-3 f-31 cont">
+          <block>
+            <view class="dis-box list" wx:for="{{goodsDetail.multi_attr}}" wx:key='multi_attr'>
+              <view class="box-flex onelist-hidden">{{item.act_name}}</view>
+            </view>
+          </block>
+        </view>
+        <view class="activity-jiantou p-r">
+          <text class="iconfont icon-msnui-rightmini f-26"></text>
+        </view>
+      </view>
+
       <!--优惠券-->
       <block wx:if="{{goodsDetail.coupont!=''}}">
         <view class="goods_coupont_box">
@@ -263,8 +278,7 @@
       <view class="footer-fixed f-34 {{isIphoneX?'iphonex-class':''}}">
         <block wx:if="{{stock!='0'}}">
           <view class="goods-fixed-icon">
-            <contact-button type="default-light" size="27" end-message-title="{{goodsDetail.goods_name}}" send-message-img="{{goodsDetail.goods_thumb}}" send-message-path="/packageB/pages/goods/index?objectId={{goodsDetail.goods_id}}" session-from="weapp"
-              style="opacity: 0;position:absolute;top:20rpx;left:20rpx;">
+            <contact-button type="default-light" size="27" end-message-title="{{goodsDetail.goods_name}}" send-message-img="{{goodsDetail.goods_thumb}}" send-message-path="/packageB/pages/goods/index?objectId={{goodsDetail.goods_id}}" session-from="weapp" style="opacity: 0;position:absolute;top:20rpx;left:20rpx;">
             </contact-button>
             <image class="flow-img" src="../../images/kefu.png"></image>
           </view>
