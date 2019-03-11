@@ -55,11 +55,9 @@
       <view class="dis-box b-f goods-property-box m-top20 common-title-box activity-goods-list" bindtap='groupPlay' wx:if="{{goodsDetail.is_promote == 1 && goodsDetail.current_time > goodsDetail.promote_start_date && goodsDetail.current_time < goodsDetail.promote_end_date }}">
         <view class="col-3 f-31 l-title">促销</view>
         <view class="box-flex col-3 f-31 cont">
-          <view class="dis-box list" wx:for="{{goodsCont.goods_promotion}}" wx:key='goods_promotion'>
-            <text class="activity-tag f-22 col-m" wx:if="{{item.act_type==1}}">立减</text>
-            <text class="activity-tag f-22 col-m" wx:if="{{item.act_type==0}}">满赠</text>
-            <text class="activity-tag f-22 col-m" wx:if="{{item.act_type==2}}">折扣</text>
-            <view class="box-flex onelist-hidden">{{item.act_name}}</view>
+          <view class="dis-box list">
+            <text class="activity-tag f-22 col-m" wx:if="{{goodsDetail.is_fullcut==1}}">满减</text>
+            <text class="activity-tag f-22 col-m" wx:if="{{goodsDetail.is_volume==1}}">阶梯价格</text>
           </view>
         </view>
         <view class="activity-jiantou p-r">
@@ -68,13 +66,11 @@
       </view>
 
       <!--属性-->
-      <view class="dis-box b-f goods-property-box m-top20 common-title-box activity-goods-list" bindtap='groupPlay' wx:if="{{goodsDetail.multi_attr.length > 0}}">
+      <view class="dis-box b-f goods-property-box m-top20 common-title-box activity-goods-list" bindtap='multiAttr' wx:if="{{goodsDetail.multi_attr.length > 0}}">
         <view class="col-3 f-31 l-title">属性</view>
         <view class="box-flex col-3 f-31 cont">
-          <block>
-            <view class="dis-box list" wx:for="{{goodsDetail.multi_attr}}" wx:key='multi_attr'>
-              <view class="box-flex onelist-hidden">{{item.act_name}}</view>
-            </view>
+          <block wx:for="{{properties}}" wx:key='propertie'>
+            <text class="onelist-hidden" wx:for="{{item}}" wx:key='pro' wx:if="{{item.checked == true}}">{{item.attr_value}}</text>
           </block>
         </view>
         <view class="activity-jiantou p-r">
@@ -402,6 +398,7 @@
     </view>
     <view class="filter-menu-title" bindtap='commonNav'></view>
   </view>
+
   <!--促销模态框-->
   <view class="bargain-paly-mol bargain-mol ts-3 {{showViewPlay?'active':''}}">
     <view class="header dis-box cont-box f-28 col-3">
@@ -413,16 +410,21 @@
     <scroll-view scroll-y="true" class="max-cont">
       <view class="dis-box b-f goods-property-box m-top20 common-title-box activity-goods-list">
         <view class="box-flex col-3 f-31 cont">
-          <view class="dis-box list" wx:for="{{goodsCont.goods_promotion}}" wx:key='activityList'>
-            <text class="activity-tag f-22 col-m" wx:if="{{item.act_type==1}}">立减</text>
-            <text class="activity-tag f-22 col-m" wx:if="{{item.act_type==0}}">满赠</text>
-            <text class="activity-tag f-22 col-m" wx:if="{{item.act_type==2}}">折扣</text>
-            <navigator class="box-flex onelist-hidden" url="../activity/detail?objectId={{item.act_id}}" hover-class="none">{{item.act_name}}</navigator>
-          </view>
+          <block wx:if="{{goodsDetail.is_volume ==1}}">
+            <view class="dis-box list" wx:for="{{goodsDetail.gvp}}" wx:key='gvp'>
+              <text class="activity-tag f-26 col-m">买{{item.volume_number}}件￥{{item.volume_number*item.volume_price}}</text>
+            </view>
+          </block>
+          <block wx:if="{{goodsDetail.is_fullcut ==1}}">
+            <view class="dis-box list" wx:for="{{goodsDetail.fullcut}}" wx:key='activityList'>
+              <text class="activity-tag f-26 col-m">满{{item.cfull_format}}减{{item.creduce_format}}</text>
+            </view>
+          </block>
         </view>
       </view>
     </scroll-view>
   </view>
+
   <!--遮罩层-->
   <view class="bargain-commont-bg hide{{showViewMol?'show':''}}">
   </view>

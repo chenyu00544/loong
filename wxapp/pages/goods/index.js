@@ -401,6 +401,15 @@ Page({
       isScroll: false
     })
   },
+  //属性
+  multiAttr: function () {
+    var that = this;
+    that.setData({
+      showViewProperty: !that.data.showViewProperty,
+      showViewMol: !that.data.showViewMol,
+      isScroll: false
+    })
+  },
   bargainPlayclose: function() {
     var that = this;
     that.setData({

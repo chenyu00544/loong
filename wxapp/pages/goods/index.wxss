@@ -5,7 +5,7 @@
 .goods-coupons-box .image image{width:100%;height:100%;display: block;margin-top:5rpx;
 }
 .goods-coupons-box .text{padding-left: 110rpx;color:#333;}
-.common-title-box .l-title{width:80rpx;display:block;padding-top:15rpx;}
+.common-title-box .l-title{width:80rpx;display:block;}
 .goods-coupon-cont coupons-li .max-right.active{ background:#ccc;color:#efefef}
 .goods-video{position:absolute;top:0;left:0;bottom:0;right:0;z-index:1000}
 .goods-video-close{background:#000;color:#fff;padding: 10rpx 0;text-align: center;}
@@ -15,7 +15,7 @@
 .activity-jiantou{width:20rpx}
 .activity-jiantou .icon-msnui-rightmini{position:absolute;top:10rpx}
 .activity-goods-list .cont .list:first-child{margin-top:0;}
-.activity-goods-list .cont .list {margin-top:10rpx}
+.activity-goods-list .cont .list {margin-top:30rpx}
 .bargain-mol .footer{background:#e9363a;width: 90%;margin:0 auto 20rpx auto;border-radius:20rpx;}
 
 .selectNumber .default-active{color:#292929;font-size:40rpx;}
@@ -110,4 +110,9 @@ border-radius: 0rpx 0rpx 15rpx 15rpx;
   border-radius: 30rpx;
   color: #fff;
   margin-top: 20rpx;
+}
+
+.onelist-hidden{
+  float: left;
+  margin-right: 20rpx;
 }
