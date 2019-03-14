@@ -56,8 +56,8 @@
         <view class="col-3 f-31 l-title">促销</view>
         <view class="box-flex col-3 f-31 cont">
           <view class="dis-box list">
-            <text class="activity-tag f-22 col-m" wx:if="{{goodsDetail.is_fullcut==1}}">满减</text>
-            <text class="activity-tag f-22 col-m" wx:if="{{goodsDetail.is_volume==1}}">阶梯价格</text>
+            <text class="activity-tag f-24 col-m" wx:if="{{goodsDetail.is_fullcut==1}}">满减</text>
+            <text class="activity-tag f-24 col-m" wx:if="{{goodsDetail.is_volume==1}}">阶梯价格</text>
           </view>
         </view>
         <view class="activity-jiantou p-r">
@@ -70,7 +70,7 @@
         <view class="col-3 f-31 l-title">属性</view>
         <view class="box-flex col-3 f-31 cont">
           <block wx:for="{{properties}}" wx:key='propertie'>
-            <text class="onelist-hidden" wx:for="{{item}}" wx:key='pro' wx:if="{{item.checked == true}}">{{item.attr_value}}</text>
+            <text class="onelist-hidden fl" wx:for="{{item}}" wx:key='pro' wx:if="{{item.checked == true}}">{{item.attr_value}}</text>
           </block>
         </view>
         <view class="activity-jiantou p-r">
@@ -78,9 +78,15 @@
         </view>
       </view>
 
+      <view class="dis-box b-f" bindtap='addressChange'>
+        <view class="col-3 f-31 l-title">配送</view>
+        <view>
+           wx:if="{{goodsDetail.user.addresses.length > 0}}"
+        </view>
+      </view>
       <!--优惠券-->
-      <block wx:if="{{goodsDetail.coupont!=''}}">
-        <view class="goods_coupont_box">
+      <block wx:if="{{goodsDetail.coupont.length > 0}}">
+        <view class="goods_coupont_box m-top20">
           <scroll-view scroll-x="true" class='scroll-bar flex'>
             <block wx:for="{{goodsDetail.coupont}}" wx:key="coupont">
               <view class='coupont-wrap flex {{item.pick == 2?"act":""}}' data-index="{{index}}" bindtap='printCoupont'>
@@ -100,7 +106,7 @@
 
       <!--评论-->
       <block wx:if="{{goodsDetail.comments.length > 0}}">
-        <view class="goods_comment_box">
+        <view class="goods_comment_box m-top20">
           <view class="flex jcsb">
             <text class="col-3 f-32">评价</text>
             <text class="fr f-32 col-9" bindtap="toChild">查看评论 ></text>
@@ -270,7 +276,7 @@
         </view>
       </view>
 
-      <!-- 提交订单 -->
+      <!-- 提交订单bottom -->
       <view class="footer-fixed f-34 {{isIphoneX?'iphonex-class':''}}">
         <block wx:if="{{stock!='0'}}">
           <view class="goods-fixed-icon">

@@ -24,7 +24,6 @@
 .max-cont{border-top:1rpx solid #f2f1f7;}
 .cart_product_price{font-size: 36rpx; color: #292929; padding: 8rpx 0;}
 
-.goods_coupont_box{margin-top: 15rpx;}
 .coupont-wrap{border-radius: 8rpx;background: linear-gradient(to right,#fe7e4f,#fe3730);display:inline-block;width: auto;height: 125rpx;margin: 15rpx;}
 .scroll-bar{white-space: nowrap;width:100%;}
 .fdc{flex-direction:column;align-items:center;justify-content:center;height: 105rpx;padding: 10rpx}
@@ -37,7 +36,7 @@
 .act {background: #ddd;}
 .act .bfy{background: #aaa; color: #fff !important;}
 .jcsb{justify-content:space-between;}
-.goods_comment_box{width:690rpx;margin: auto;background: #fff; border-radius: 15rpx;padding: 15rpx;}
+.goods_comment_box{background: #fff; padding: 10px 12px;}
 
 .goods-cont-li {padding:20rpx 0;}
 
@@ -85,18 +84,6 @@
   height: 80rpx;
 }
 
-.weui-panel__hd{width:690rpx;
-margin:15rpx auto 0 auto;
-border-radius: 15rpx 15rpx 0rpx 0rpx;
-padding: 14rpx 15rpx 10rpx;
-}
-.index_sale {
-  width:696rpx;
-margin:auto;
-padding:0 12rpx 12rpx 12rpx;
-border-radius: 0rpx 0rpx 15rpx 15rpx;
-}
-
 .goods-store{
   margin: 15rpx auto 15rpx auto;
   width: 690rpx;
@@ -113,6 +100,5 @@ border-radius: 0rpx 0rpx 15rpx 15rpx;
 }
 
 .onelist-hidden{
-  float: left;
   margin-right: 20rpx;
 }

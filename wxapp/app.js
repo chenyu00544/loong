@@ -16,7 +16,7 @@ App({
         method: method,
         header: {
           'Content-Type': 'application/json',
-          'token': wx.getStorageSync('token') // Json Web Token
+          'vcvbuy-Authorization': wx.getStorageSync('token') // Json Web Token
         },
         success: (data) => {
           resolve(data);

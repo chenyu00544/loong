@@ -49,7 +49,6 @@ Page({
     //调用应用实例的方法获取全局数据
     app.vcvbRequest(("goods/detail"), {
       goods_id: goodsId,
-      token: token
     }).then((res) => {
       wx.setNavigationBarTitle({
         title: res.data.data.goods_name,
@@ -235,7 +234,6 @@ Page({
 
   /*收藏*/
   addCollect: function() {
-    token = wx.getStorageSync('token')
     if (!token) {
       wx.navigateTo({
         url: "../../packageA/login/index"
@@ -464,7 +462,6 @@ Page({
 
   /* 弹出属性选择框 */
   addBargain: function(e) {
-    token = wx.getStorageSync('token')
     if (!token) {
       wx.navigateTo({
         url: "../../packageA/login/index"
