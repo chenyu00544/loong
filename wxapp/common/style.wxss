@@ -636,3 +636,4 @@ buy_number{justify-content: space-between; margin: 10px 5px;}
 .flex-center{display:flex;justify-content:center;align-items:center;}
 
 .ws{white-space: pre-line;}
+.fd{flex-direction: column;}

@@ -58,6 +58,7 @@
           <view class="dis-box list">
             <text class="activity-tag f-24 col-m" wx:if="{{goodsDetail.is_fullcut==1}}">满减</text>
             <text class="activity-tag f-24 col-m" wx:if="{{goodsDetail.is_volume==1}}">阶梯价格</text>
+            <text class="activity-tag f-24 col-m">更多</text>
           </view>
         </view>
         <view class="activity-jiantou p-r">
@@ -68,7 +69,7 @@
       <!--属性-->
       <view class="dis-box b-f goods-property-box m-top20 common-title-box activity-goods-list" bindtap='multiAttr' wx:if="{{goodsDetail.multi_attr.length > 0}}">
         <view class="col-3 f-31 l-title">属性</view>
-        <view class="box-flex col-3 f-31 cont">
+        <view class="box-flex col-3 f-31">
           <block wx:for="{{properties}}" wx:key='propertie'>
             <text class="onelist-hidden fl" wx:for="{{item}}" wx:key='pro' wx:if="{{item.checked == true}}">{{item.attr_value}}</text>
           </block>
@@ -78,12 +79,38 @@
         </view>
       </view>
 
-      <view class="dis-box b-f" bindtap='addressChange'>
+      <view class="b-f goods-property-box m-top20 common-title-box activity-goods-list" bindtap='addressChange'>
         <view class="col-3 f-31 l-title">配送</view>
-        <view>
-           wx:if="{{goodsDetail.user.addresses.length > 0}}"
+        <view class="dis-box">
+          <view class="">
+            <view class="col-3 f-32 box-flex">
+              <text class="onelist-hidden fl">至 </text>
+              <text class="onelist-hidden fl" wx:if="{{goodsDetail.user.addresses.length > 0}}">11111</text>
+              <text class="onelist-hidden fl" wx:else>中国</text>
+            </view>
+            <view class="activity-jiantou p-r">
+              <text class="iconfont icon-msnui-rightmini f-26"></text>
+            </view>
+          </view>
+          <view>
+            <view class="flex-center">
+              <view>
+                <image src="../../images/c_au.png"></image>
+                <text>afaffdads</text>
+              </view>
+              <view>-----------------</view>
+              <view>
+                <image src="../../images/c_au.png"></image>
+                <text>afaffdads</text>
+              </view>
+            </view>
+          </view>
+          <view>
+            <text>afafafasfasfdasfa</text>
+          </view>
         </view>
       </view>
+
       <!--优惠券-->
       <block wx:if="{{goodsDetail.coupont.length > 0}}">
         <view class="goods_coupont_box m-top20">
