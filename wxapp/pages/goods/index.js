@@ -214,7 +214,7 @@ Page({
       properties: categoryList,
     });
   },
-  getGoodsTotal: function () {
+  getGoodsTotal: function() {
     //提交属性  更新价格
     var that = this;
     app.vcvbRequest(("goods/property"), {
@@ -400,7 +400,7 @@ Page({
     })
   },
   //属性
-  multiAttr: function () {
+  multiAttr: function() {
     var that = this;
     that.setData({
       showViewProperty: !that.data.showViewProperty,
@@ -489,6 +489,53 @@ Page({
     that.setData({
       showViewProperty: !that.data.showViewProperty,
       showViewMol: !that.data.showViewMol
+    })
+  },
+  //关闭所有的自定义模态窗口
+  closeModel: function() {
+    this.setData({
+      showViewProperty: false,
+      showViewMol: false,
+      showViewAddress: false,
+      showViewPlay: false,
+      showViewDesc: false,
+    })
+  },
+  //修改发货地址start
+  addressShow: function() {
+    var that = this;
+    that.setData({
+      showViewMol: !that.data.showViewMol,
+      showViewAddress: !that.data.showViewAddress,
+    })
+  },
+  addressClose: function() {
+    var that = this;
+    that.setData({
+      showViewMol: !that.data.showViewMol,
+      showViewAddress: !that.data.showViewAddress,
+    });
+  },
+  changeAddress: function(e) {
+    var that = this;
+    var address_id = e.currentTarget.dataset.address_id;
+    for (var i in that.data.goodsDetail.user.addresses) {
+      if (address_id == that.data.goodsDetail.user.addresses[i].address_id) {
+        that.data.goodsDetail.user.default_address = that.data.goodsDetail.user.addresses[i];
+        that.setData({
+          goodsDetail: that.data.goodsDetail,
+        });
+      }
+    }
+    that.addressClose()
+  },
+  //修改发货地址end
+  //查看说明
+  descriptionShow: function() {
+    var that = this;
+    that.setData({
+      showViewMol: !that.data.showViewMol,
+      showViewDesc: !that.data.showViewDesc,
     })
   },
 })

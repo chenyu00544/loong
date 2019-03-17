@@ -365,7 +365,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         if (goodsJson != null) {
             try {
                 goodsDetails.setData(goodsJson.getJSONObject("data"));
-                mAdapter.addAll(getItems(goodsDetails));
+                mAdapter.addAll(getItems());
 
                 goodsAttrDialog = new GoodsAttrDialog(goodsDetails);
                 goodsAttrDialog.setOnItemClickListener(attrDialogListener);
@@ -404,7 +404,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         }
     }
 
-    protected List<Item> getItems(GoodsDetail goodsDetail) {
+    protected List<Item> getItems() {
         List<Item> cells = new ArrayList<>();
         if (goodsDetails.getBanners() != null && goodsDetails.getBanners().size() > 0) {
             cells.add(new GoodsBannerItem(goodsDetails.getBanners(), context));

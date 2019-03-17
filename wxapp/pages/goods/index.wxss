@@ -102,3 +102,23 @@
 .onelist-hidden{
   margin-right: 20rpx;
 }
+
+.cou-img{
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 40rpx;
+}
+
+.bor-grad{
+  border: 1rpx solid #c9c9cb;
+}
+
+.mar-p{
+  margin: -55rpx 20rpx 0 20rpx;
+}
+
+.brand-img{
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 10rpx;
+}
