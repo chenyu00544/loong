@@ -637,6 +637,7 @@ buy_number{justify-content: space-between; margin: 10px 5px;}
 
 .ws{white-space: pre-line;}
 .fd{flex-direction: column;}
+.ac{align-items:center;}
 .w100{width:100%;}
 
 .flex-1{flex:1}

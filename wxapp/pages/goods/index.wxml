@@ -84,7 +84,7 @@
         <view class="col-3 f-31 flex-center flex-1 t-l">配送</view>
         <view class="flex fd pl-12 w100 flex-8">
           <view class="flex">
-            <view class="col-3 f-32 w100">
+            <view class="col-3 f-30 w100">
               <text class="onelist-hidden fl">至 </text>
               <text class="onelist-hidden fl" wx:if="{{goodsDetail.user.default_address != undefined}}">{{goodsDetail.user.default_address.province_name}} {{goodsDetail.user.default_address.city_name}} {{goodsDetail.user.default_address.district_name}} {{goodsDetail.user.default_address.address}}</text>
               <text class="onelist-hidden fl" wx:else>中国</text>
@@ -281,10 +281,10 @@
 
       <!--品牌推荐-->
       <block wx:if="{{goodsDetail.brand_goodses.length > 0}}">
-        <view class="weui-panel__hd b-f m-top20 flex">
-          <view class="flex fd">
-            <image src="{{goodsDetail.}}" class="brand-img"></image>
-            <text>dsafaf</text>
+        <view class="weui-panel__hd b-f m-top20 flex ac">
+          <view class="flex ac w100">
+            <image src="{{goodsDetail.brand.brand_logo}}" class="brand-img"></image>
+            <text class="pl-12">{{goodsDetail.brand.brand_name}}</text>
           </view>
           <view class="activity-jiantou p-r">
             <text class="iconfont icon-msnui-rightmini f-26"></text>
