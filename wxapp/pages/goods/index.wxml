@@ -86,7 +86,7 @@
           <view class="flex">
             <view class="col-3 f-30 w100">
               <text class="onelist-hidden fl">至 </text>
-              <text class="onelist-hidden fl" wx:if="{{goodsDetail.user.default_address != undefined}}">{{goodsDetail.user.default_address.province_name}} {{goodsDetail.user.default_address.city_name}} {{goodsDetail.user.default_address.district_name}} {{goodsDetail.user.default_address.address}}</text>
+              <text class="onelist-hidden fl ws" wx:if="{{goodsDetail.user.default_address != undefined}}">{{goodsDetail.user.default_address.province_name}} {{goodsDetail.user.default_address.city_name}} {{goodsDetail.user.default_address.district_name}} {{goodsDetail.user.default_address.address}}</text>
               <text class="onelist-hidden fl" wx:else>中国</text>
             </view>
             <view class="activity-jiantou p-r">
@@ -122,24 +122,24 @@
                     <block wx:else>
                       <image src="../../images/c_us.png" class="cou-img"></image>
                     </block>
-                    <text class="col-3 f-30 ws m-top4">海外采购</text>
+                    <text class="col-3 f-28 ws m-top4">海外采购</text>
                   </block>
                 </block>
                 <block wx:if="{{goodsDetail.single_attr.length == 0}}">
                   <image src="../../images/c_au.png" class="cou-img"></image>
-                  <text class="col-3 f-30 ws m-top4">海外采购</text>
+                  <text class="col-3 f-28 ws m-top4">海外采购</text>
                 </block>
               </view>
               <view class="flex-7 bor-grad mar-p"></view>
               <view class="flex-3 flex-center fd">
                 <image src="../../images/icon_location.png" class="cou-img"></image>
-                <text class="col-3 f-30 m-top4" wx:if="{{goodsDetail.user.default_address != undefined}}">{{goodsDetail.user.default_address.city_name}}</text>
-                <text class="onelist-hidden fl m-top4" wx:else>中国</text>
+                <text class="col-3 f-28 m-top4" wx:if="{{goodsDetail.user.default_address != undefined}}">{{goodsDetail.user.default_address.city_name}}</text>
+                <text class="onelist-hidden fl m-top4 f-28" wx:else>中国</text>
               </view>
             </view>
           </view>
           <view>
-            <text class="col-3 f-30 m-top20" wx:if="{{goodsDetail.transport != undefined}}">{{goodsDetail.transport.remarks}}</text>
+            <text class="col-3 f-26 m-top20" wx:if="{{goodsDetail.transport != undefined}}">{{goodsDetail.transport.remarks}}</text>
           </view>
         </view>
       </view>
@@ -185,7 +185,10 @@
         <view class="goods_comment_box m-top20">
           <view class="flex jcsb">
             <text class="col-3 f-32">评价</text>
-            <text class="fr f-32 col-9" bindtap="toChild">查看评论 ></text>
+            <view class="activity-jiantou p-r">
+              <text class="f-32 col-9" bindtap="toChild">查看评论</text>
+              <text class="iconfont icon-msnui-rightmini f-26"></text>
+            </view>
           </view>
           <scroll-view scroll-x="true" class='scroll-bar'>
             <block wx:for="{{goodsDetail.comments}}" wx:key="goodsComment">
@@ -281,7 +284,7 @@
 
       <!--品牌推荐-->
       <block wx:if="{{goodsDetail.brand_goodses.length > 0}}">
-        <view class="weui-panel__hd b-f m-top20 flex ac">
+        <view class="brands b-f m-top20 flex ac" bindtap="goBrands">
           <view class="flex ac w100">
             <image src="{{goodsDetail.brand.brand_logo}}" class="brand-img"></image>
             <text class="pl-12">{{goodsDetail.brand.brand_name}}</text>

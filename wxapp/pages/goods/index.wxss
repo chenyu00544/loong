@@ -12,7 +12,6 @@
 
 /**/
 .activity-goods-list .activity-tag{border:1px solid #ec5151;border-radius: 4px;padding:1rpx 6rpx;margin-right:10rpx}
-.activity-jiantou{width:20rpx}
 .activity-goods-list .cont .list:first-child{margin-top:0;}
 .activity-goods-list .cont .list {margin-top:30rpx}
 .bargain-mol .footer{background:#e9363a;width: 90%;margin:0 auto 20rpx auto;border-radius:20rpx;}
@@ -34,7 +33,7 @@
 
 .act {background: #ddd;}
 .act .bfy{background: #aaa; color: #fff !important;}
-.jcsb{justify-content:space-between;}
+.jcsb{justify-content:space-between; align-items: center;}
 .goods_comment_box{background: #fff; padding: 10px 12px;}
 
 .goods-cont-li {padding:20rpx 0;}
@@ -120,4 +119,9 @@
   width: 80rpx;
   height: 80rpx;
   border-radius: 45rpx;
+}
+.brands{
+  padding:14rpx 15px 10rpx;
+  color:#808080;
+  font-size:13px;
 }
