@@ -300,10 +300,6 @@ define('FROM_P',                    1); //用商城消费积分兑换
 define('TO_R',                      2); //兑换到商城等级积分
 define('FROM_R',                    3); //用商城等级积分兑换
 
-/* 支付宝商家账户 */
-define('ALIPAY_AUTH', 'gh0bis45h89m5mwcoe85us4qrwispes0');
-define('ALIPAY_ID', '2088002052150939');
-
 /* 添加feed事件到UC的TYPE*/
 define('BUY_GOODS',                 1); //购买商品
 define('COMMENT_GOODS',             2); //添加商品评论
@@ -330,7 +326,6 @@ define('USER_EMAIL',                7);     // 修改会员邮箱
 define('USER_LPASS',                8);     // 修改会员登录密码
 define('USER_LINE',                 9);     // 修改会员信用额度
 
-/* ecjia验证登录key */
 define('APP_KEY', '123456');
 
 if (!defined('CAL_GREGORIAN')) {
@@ -420,4 +415,11 @@ if (!defined('CAL_JEWISH_ADD_ALAFIM')) {
 if (!defined('CAL_JEWISH_ADD_GERESHAYIM')) {
     define ('CAL_JEWISH_ADD_GERESHAYIM', 8);
 }
-?>
+
+define('ERRORCODE', $errorCode = [
+    '10000' => '返回成功',
+    '10001' => '系统错误',
+    '30001' => '购物车以满',
+    '30002' => '商品已下架',
+    '30003' => '商品库存不足'
+]);

@@ -406,7 +406,7 @@
         <view class="cart_product_info">
           <view class="onelist-hidden f-30 h4">{{goodsDetail.goods_name}}</view>
           <view class="cart_product_price">{{goods_price}}</view>
-          <!-- <view class="cart_product_repertory">库存 {{stock}} 件</view> -->
+          <view class="cart_product_repertory">库存: {{stock}} 件</view>
         </view>
       </view>
     </view>

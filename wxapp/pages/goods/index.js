@@ -89,58 +89,74 @@ Page({
     //获取id
     var goodsbtn = e.currentTarget.id || 'cart'
     var goodsId = that.data.goodsDetail.goods_id
-    app.log(goodsbtn)
     if (goodsbtn == "cart") {
-
+      app.vcvbRequest(("cart/add"), {
+        "goods_id": order.id,
+        "num": order.num,
+        "attr_id": order.pro,
+      }).then((res) => {
+        if (res.data.data.msg == '商品库存不足') {
+          wx.showToast({
+            title: '商品库存不足',
+            image: '../../images/failure.png',
+            duration: 2000
+          })
+        } else {
+          that.setData({
+            flowNum: res.data.data.total_number,
+            showViewProperty: !that.data.showViewProperty,
+            showViewMol: !that.data.showViewMol
+          })
+        }
+      });
     } else if (goodsbtn == "change") {
-
+      that.closeModel();
     } else {
-      
+
     }
     // app.vcvbRequest(("cart/add"), {
-    //     "id": order.id,
-    //     "num": order.num,
-    //     "attr_id": JSON.stringify(tempOrderPro),
-    //   })
-    //   .then((res) => {
-    //     var result = res.data.data;
-    //     if (goodsbtn == 'cart') {
-    //       if (res.data.data == '库存不足') {
-    //         wx.showToast({
-    //           title: '库存不足',
-    //           image: '../../images/failure.png',
-    //           duration: 2000
-    //         })
-    //       } else {
-    //         that.setData({
-    //           flowNum: res.data.data.total_number,
-    //           showViewProperty: !that.data.showViewProperty,
-    //           showViewMol: !that.data.showViewMol
-    //         })
-    //       }
-    //     } else {
-    //       app.vcvbRequest(("user/address/list"))
-    //         .then((res) => {
-    //           if (res.data.data != '') {
-    //             wx.navigateTo({
-    //               url: "../../pages/flow/checkout"
-    //             });
-    //           } else {
-    //             wx.removeStorageSync('pageOptions')
-    //             wx.navigateTo({
-    //               url: "../../packageA/address/index"
-    //             });
-    //           }
-    //         })
-    //     }
-    //     if (result == "商品已下架") {
+    //   "id": order.id,
+    //   "num": order.num,
+    //   "attr_id": order.pro,
+    // }).then((res) => {
+    //   var result = res.data.data;
+    //   if (goodsbtn == 'cart') {
+    //     if (res.data.data == '库存不足') {
     //       wx.showToast({
-    //         title: '商品已下架',
+    //         title: '库存不足',
     //         image: '../../images/failure.png',
     //         duration: 2000
     //       })
+    //     } else {
+    //       that.setData({
+    //         flowNum: res.data.data.total_number,
+    //         showViewProperty: !that.data.showViewProperty,
+    //         showViewMol: !that.data.showViewMol
+    //       })
     //     }
-    //   })
+    //   } else {
+    //     app.vcvbRequest(("user/address/list"))
+    //       .then((res) => {
+    //         if (res.data.data != '') {
+    //           wx.navigateTo({
+    //             url: "../../pages/flow/checkout"
+    //           });
+    //         } else {
+    //           wx.removeStorageSync('pageOptions')
+    //           wx.navigateTo({
+    //             url: "../../packageA/address/index"
+    //           });
+    //         }
+    //       })
+    //   }
+    //   if (result == "商品已下架") {
+    //     wx.showToast({
+    //       title: '商品已下架',
+    //       image: '../../images/failure.png',
+    //       duration: 2000
+    //     })
+    //   }
+    // })
   },
   onChangeShowState: function() {
     var that = this;
@@ -275,7 +291,6 @@ Page({
   },
   swichNav: function(e) {
     var that = this;
-
     that.setData({
       showViewvideo: (!that.data.showViewvideo)
       // currentTab: e.currentTarget.dataset.current

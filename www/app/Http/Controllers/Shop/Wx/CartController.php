@@ -28,12 +28,8 @@ class CartController extends CommonController
     public function addCart(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        $re = $this->goodsRepository->addCart($request->all(), $uid);
-        if ($re) {
-            return ['code' => 0, 'msg' => '添加成功', 'data' => $re];
-        } else {
-            return ['code' => 1, 'msg' => '购物车已满', 'data' => ''];
-        }
+        $code = $this->goodsRepository->addCart($request->all(), $uid);
+        return $this->apiReturn([], $code);
     }
 
     public function setCart(Request $request)
