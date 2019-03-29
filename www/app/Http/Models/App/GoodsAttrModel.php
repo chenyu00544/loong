@@ -82,4 +82,14 @@ class GoodsAttrModel extends Model
         $re = DB::select(DB::Raw($sql));
         return $re;
     }
+
+    public function getGoodsAttrs($where = [], $inColumn = '', $inWhere = [], $column = ['*'])
+    {
+        $m = $this->select($column)
+            ->where($where);
+        if ($inColumn != '' && count($inWhere) > 0) {
+            $m->whereIn($inColumn, $inWhere);
+        }
+        return $m->get();
+    }
 }

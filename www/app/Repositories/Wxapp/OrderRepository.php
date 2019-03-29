@@ -18,6 +18,7 @@ use App\Http\Models\Wxapp\BonusUserModel;
 use App\Http\Models\Wxapp\CartModel;
 use App\Http\Models\Wxapp\CouponsUserModel;
 use App\Http\Models\Wxapp\FavourableGoodsModel;
+use App\Http\Models\Wxapp\GoodsAttrModel;
 use App\Http\Models\Wxapp\GoodsModel;
 use App\Http\Models\Wxapp\OrderGoodsModel;
 use App\Http\Models\Wxapp\OrderInfoModel;
@@ -33,6 +34,7 @@ class OrderRepository implements OrderRepositoryInterface
     private $orderInfoModel;
     private $orderGoodsModel;
     private $goodsModel;
+    private $goodsAttrModel;
     private $favourableGoodsModel;
     private $usersModel;
     private $transportModel;
@@ -47,6 +49,7 @@ class OrderRepository implements OrderRepositoryInterface
         OrderInfoModel $orderInfoModel,
         OrderGoodsModel $orderGoodsModel,
         GoodsModel $goodsModel,
+        GoodsAttrModel $goodsAttrModel,
         FavourableGoodsModel $favourableGoodsModel,
         UsersModel $usersModel,
         TransportModel $transportModel,
@@ -61,6 +64,7 @@ class OrderRepository implements OrderRepositoryInterface
         $this->orderInfoModel = $orderInfoModel;
         $this->orderGoodsModel = $orderGoodsModel;
         $this->goodsModel = $goodsModel;
+        $this->goodsAttrModel = $goodsAttrModel;
         $this->favourableGoodsModel = $favourableGoodsModel;
         $this->usersModel = $usersModel;
         $this->transportModel = $transportModel;
@@ -305,7 +309,6 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $return = [];
         $time = time();
-
         // fixme 用户地址
         $uwhere['user_id'] = $uid;
         $user = $this->usersModel->getUserByAddress($uwhere, ['user_id', 'address_id']);
@@ -314,8 +317,14 @@ class OrderRepository implements OrderRepositoryInterface
                 $address->province_name = $address->mapprovince->region_name;
                 $address->city_name = $address->mapcity->region_name;
                 $address->district_name = $address->mapdistrict->region_name;
-                if ($address->address_id == $user->address_id) {
-                    $user->default_address = $address;
+                if (empty($data['address_id'])) {
+                    if ($address->address_id == $user->address_id) {
+                        $user->default_address = $address;
+                    }
+                } else {
+                    if ($address->address_id == $data['address_id']) {
+                        $user->default_address = $address;
+                    }
                 }
             }
         }
@@ -328,11 +337,11 @@ class OrderRepository implements OrderRepositoryInterface
             $goods_id = intval($data['goods_id']);
             $num = empty($data['num']) ? 1 : intval($data['num']);
             $goods_attr_ids = [];
-            for ($i = 0; $i < count($data); $i++) {
-                if (!empty($data['attr_' . $i])) {
-                    $attr = explode('_', $data['attr_' . $i]);
-                    $attr_ids[] = $attr[0];
-                    $goods_attr_ids[] = $attr[1];
+            if (!empty($data['attr_id'])) {
+                $goods_attr = $this->goodsAttrModel->getGoodsAttrs([], 'goods_attr_id', $data['attr_id']);
+                foreach ($goods_attr as $attr) {
+                    $attr_ids[] = $attr->attr_id;
+                    $goods_attr_ids[] = $attr->goods_attr_id;
                 }
             }
 
@@ -358,7 +367,6 @@ class OrderRepository implements OrderRepositoryInterface
             $order_goodses = [];
 
             foreach ($goodses as $goods_detail) {
-
                 //限购
                 if ($goods_detail->is_limit_buy == 1 && $goods_detail->limit_buy_start_date < time() && $goods_detail->limit_buy_end_date > time()) {
                     $orderWhere = [['add_time', '>', $goods_detail->limit_buy_start_date], ['add_time', '<', $goods_detail->limit_buy_end_date], ['goods_id', '=', $goods_detail->goods_id], ['order_status', '<>', OS_CANCELED], ['order_status', '<>', OS_INVALID]];
@@ -457,7 +465,7 @@ class OrderRepository implements OrderRepositoryInterface
                     $order[$goods_detail->user_id]['extension_code'] = 'sec_kill';
                     $order[$goods_detail->user_id]['extension_id'] = $goods_detail->secKill->sec_id;
                     if ($goods_detail->secKill->sec_limit < $num) {
-                        return '限购数量'.$goods_detail->secKill->sec_limit.'';
+                        return '限购数量' . $goods_detail->secKill->sec_limit . '';
                     }
                     if ($goods_detail->secKill->sec_num < $this->orderInfoModel->countOrder([['extension_id', '=', $goods_detail->secKill->sec_id], ['extension_id', '=', $goods_detail->secKill->sec_id], ['add_time', '>', $goods_detail->secKill->b_time], ['add_time', '>', $goods_detail->secKill->e_time]])) {
                         return '商品已抢光';
@@ -472,14 +480,14 @@ class OrderRepository implements OrderRepositoryInterface
                     $order[$goods_detail->user_id]['team_price'] = $goods_detail->teamGoods->team_price;
                     $goods_amount[$goods_detail->user_id] = $goods_detail->teamGoods->team_price * $num;
                     if ($goods_detail->teamGoods->astrict_num < $num) {
-                        return '限购数量'.$goods_detail->teamGoods->astrict_num.'';
+                        return '限购数量' . $goods_detail->teamGoods->astrict_num . '';
                     }
                 } elseif (!empty($goods_detail->groupBuy)) {
                     $price_ladder = unserialize($goods_detail->groupBuy->price_ladder);
                     $order[$goods_detail->user_id]['extension_code'] = 'group_buy';
                     $order[$goods_detail->user_id]['extension_id'] = $goods_detail->groupBuy->act_id;
-                    foreach ($price_ladder as $price){
-                        if($num >= $price['amount']){
+                    foreach ($price_ladder as $price) {
+                        if ($num >= $price['amount']) {
                             $goods_amount[$goods_detail->user_id] = $price['price'] * $num;
                             break;
                         }

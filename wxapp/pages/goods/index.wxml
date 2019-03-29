@@ -367,7 +367,7 @@
       <view class="footer-fixed f-34 {{isIphoneX?'iphonex-class':''}}">
         <block wx:if="{{stock!='0'}}">
           <view class="goods-fixed-icon">
-            <contact-button type="default-light" size="27" end-message-title="{{goodsDetail.goods_name}}" send-message-img="{{goodsDetail.goods_thumb}}" send-message-path="/packageB/pages/goods/index?objectId={{goodsDetail.goods_id}}" session-from="weapp" style="opacity: 0;position:absolute;top:20rpx;left:20rpx;">
+            <contact-button type="default-light" size="27" end-message-title="{{goodsDetail.goods_name}}" send-message-img="{{goodsDetail.goods_thumb}}" send-message-path="/pages/goods/index?objectId={{goodsDetail.goods_id}}" session-from="weapp" style="opacity:0;position:absolute;width:100%;height:100%;">
             </contact-button>
             <image class="flow-img" src="../../images/kefu.png"></image>
           </view>
@@ -380,8 +380,8 @@
             </block>
           </view>
           <view class="goods-fixed-icon" bindtap="addCollect">
-            <image wx:if="{{collect_list===true}}" src="../../images/collect_active.png"></image>
-            <image wx:else="{{collect_list}}" src="../../images/collect.png"></image>
+            <image wx:if="{{goodsDetail.collect>0}}" src="../../images/collect_active.png"></image>
+            <image wx:else src="../../images/collect.png"></image>
           </view>
           <view class="order-number" id="cart" bindtap="addBargain">加入购物车</view>
           <view class="order-bt" id="checkout" bindtap="addBargain"> 立即购买</view>

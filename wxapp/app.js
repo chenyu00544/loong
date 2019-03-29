@@ -257,5 +257,16 @@ App({
   },
   log:function(e){
     console.log(e);
+  },
+  showLoading:function(){
+    wx.showLoading({
+      title: 'Loading...',
+    })
+    setTimeout(function () {
+      wx.hideLoading()
+    }, 3000)
+  },
+  hideLoading: function (title) {
+    wx.hideLoading();
   }
 })

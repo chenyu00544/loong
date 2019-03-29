@@ -415,11 +415,3 @@ if (!defined('CAL_JEWISH_ADD_ALAFIM')) {
 if (!defined('CAL_JEWISH_ADD_GERESHAYIM')) {
     define ('CAL_JEWISH_ADD_GERESHAYIM', 8);
 }
-
-define('ERRORCODE', $errorCode = [
-    '10000' => '返回成功',
-    '10001' => '系统错误',
-    '30001' => '购物车以满',
-    '30002' => '商品已下架',
-    '30003' => '商品库存不足'
-]);

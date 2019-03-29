@@ -314,8 +314,14 @@ class OrderRepository implements OrderRepositoryInterface
                 $address->province_name = $address->mapprovince->region_name;
                 $address->city_name = $address->mapcity->region_name;
                 $address->district_name = $address->mapdistrict->region_name;
-                if ($address->address_id == $user->address_id) {
-                    $user->default_address = $address;
+                if(empty($data['address_id'])){
+                    if ($address->address_id == $user->address_id) {
+                        $user->default_address = $address;
+                    }
+                }else{
+                    if ($address->address_id == $data['address_id']) {
+                        $user->default_address = $address;
+                    }
                 }
             }
         }

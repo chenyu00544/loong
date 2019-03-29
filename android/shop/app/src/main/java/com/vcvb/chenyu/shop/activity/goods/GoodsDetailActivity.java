@@ -79,6 +79,7 @@ public class GoodsDetailActivity extends GoodsActivity {
     private String device_id;
     private int team_parent_id = 0;
     private int team_id = 0;
+    private int address_id = 0;
 
     int pos = 0;
     private View child1;
@@ -819,6 +820,7 @@ public class GoodsDetailActivity extends GoodsActivity {
         mp.put("goods_id", goods_id + "");
         mp.put("team_parent_id", team_parent_id + "");
         mp.put("team_id", team_id + "");
+        mp.put("address_id", address_id + "");
         mp.put("num", attr.get("num") + "");
         List<Integer> attr_ids = (List<Integer>) attr.get("attr_ids");
         List<Integer> goods_attr_ids = (List<Integer>) attr.get("goods_attr_ids");
@@ -1038,6 +1040,7 @@ public class GoodsDetailActivity extends GoodsActivity {
                         goodsDetails.getAddressBeans().get(i).setDef(0);
                         if (i == pos) {
                             goodsDetails.getAddressBeans().get(i).setDef(1);
+                            address_id = goodsDetails.getAddressBeans().get(i).getAddress_id();
                         }
                     }
                 }

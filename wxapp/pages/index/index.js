@@ -34,6 +34,7 @@ Page({
     this.getIndexData(navPage, 0);
   },
   onShow() {
+    app.redirectTo("../goods/index?objectId=923");
     let that = this
     token = wx.getStorageSync('token')
     let cate_data = wx.getStorageSync('cate_data')

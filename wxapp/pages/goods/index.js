@@ -1,13 +1,14 @@
 var WxParse = require('../../wxParse/wxParse.js');
-var app = getApp()
-var token
+var app = getApp();
+var token;
 var order = {
   id: "",
   num: 1,
   pro: [],
   prostr: []
-}
-var goodsbtn = ''
+};
+var address_id = 0;
+var goodsbtn = '';
 var tempOrderPro = [];
 var tempOrderProStr = [];
 var coupons_index = '';
@@ -55,6 +56,9 @@ Page({
       })
       if (res.data.data != undefined) {
         WxParse.wxParse('goods_desc', 'html', res.data.data.goods_desc, that, 5);
+        if (res.data.data.user.default_address.address_id != undefined){
+          address_id = res.data.data.user.default_address.address_id;
+        }
         that.setData({
           goodsDetail: res.data.data,
           hidden: true
@@ -90,7 +94,7 @@ Page({
     var goodsbtn = e.currentTarget.id || 'cart'
     var goodsId = that.data.goodsDetail.goods_id
     if (goodsbtn == "cart") {
-      app.vcvbRequest(("cart/add"), {
+      app.vcvbRequest("cart/add", {
         "goods_id": order.id,
         "num": order.num,
         "attr_id": order.pro,
@@ -112,7 +116,23 @@ Page({
     } else if (goodsbtn == "change") {
       that.closeModel();
     } else {
-
+      app.vcvbRequest("order/add", {
+        "goods_id": order.id,
+        "num": order.num,
+        "attr_id": order.pro,
+        "address_id": address_id,
+        "froms": "wxapp",
+      }).then((res) => {
+        if (res.data.code == 0) {
+          that.setData({
+            showViewProperty: !that.data.showViewProperty,
+            showViewMol: !that.data.showViewMol
+          })
+          wx.navigateTo({
+            url: "../../packageA/order/checkout" + res.data.data.order_id,
+          });
+        }
+      });
     }
     // app.vcvbRequest(("cart/add"), {
     //   "id": order.id,
@@ -257,18 +277,15 @@ Page({
 
   /*收藏*/
   addCollect: function() {
-    if (!token) {
-      wx.navigateTo({
-        url: "../../packageA/login/index"
-      });
-      return;
-    }
+    app.showLoading();
     var that = this;
-    app.vcvbRequest(("user/collect/add"), {
-      "id": order.id,
+    app.vcvbRequest(("collect/goods/add"), {
+      "goods_id": order.id,
     }).then((res) => {
+      app.hideLoading();
+      that.data.goodsDetail.collect = res.data.is_attention;
       that.setData({
-        collect_list: res.data.data
+        goodsDetail: that.data.goodsDetail
       })
     })
   },
@@ -544,7 +561,7 @@ Page({
   },
   changeAddress: function(e) {
     var that = this;
-    var address_id = e.currentTarget.dataset.address_id;
+    address_id = e.currentTarget.dataset.address_id;
     for (var i in that.data.goodsDetail.user.addresses) {
       if (address_id == that.data.goodsDetail.user.addresses[i].address_id) {
         that.data.goodsDetail.user.default_address = that.data.goodsDetail.user.addresses[i];

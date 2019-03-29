@@ -4,7 +4,8 @@
     "pages/category/index",
     "pages/cart/index",
     "pages/user/index",
-    "pages/goods/index"
+    "pages/goods/index",
+    "pages/order/detail"
   ],
   "permission": {
     "scope.userLocation": {
@@ -15,7 +16,9 @@
     {
       "root": "packageA",
       "pages": [
-        "login/index"
+        "login/index",
+        "order/index",
+        "order/checkout"
       ]
     }
   ],
