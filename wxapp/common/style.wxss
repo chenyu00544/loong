@@ -475,7 +475,7 @@ buy_number{justify-content: space-between; margin: 10px 5px;}
 .flow-list .header{background:#fff; height:90rpx;line-height:90rpx; border-top:1rpx solid #eee; border-bottom:1rpx solid #eee; font-size:30rpx; position:relative;}
 .flow-list custom-li,.addres-list custom-li{margin-top:20px;display: block;}
  .flow-list custom-li:first-child,.addres-list custom-li:first-child{margin-top:43px;} 
-.flow-checkout-header{padding: 28rpx 0; background:#fff url(https://demo.dscmall.cn/mobile/public/img/flow_check_03.png) bottom left repeat-x;background-size: 120rpx auto; position:fixed;z-index:100;width:100%;top:1rpx;}
+.flow-checkout-header{padding: 28rpx 0; background:#fff url(https://oss.vcvbuy.com/upload/static/address_bottom.png) bottom left repeat-x;background-size: 120rpx auto; position:fixed;z-index:100;width:100%;top:1rpx;}
 .flow-header-left{flex: 14;}
 .flow-header-right{flex: 1;}
 .flow-header-right image{width: 34rpx; height: 34rpx; margin-top: 20rpx; float: right;}

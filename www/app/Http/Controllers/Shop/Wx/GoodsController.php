@@ -23,9 +23,9 @@ class GoodsController extends CommonController
     {
         $user_id = Verifiable::authorization($request);
         $data = $this->goodsRepository->getGoodsesByUserLike($request->all(), $user_id);
-        if($data){
+        if ($data) {
             $rep = ['code' => 0, 'msg' => '', 'data' => $data];
-        }else{
+        } else {
             $rep = ['code' => 1, 'msg' => '', 'data' => $data];
         }
         return $rep;
@@ -36,13 +36,13 @@ class GoodsController extends CommonController
         $goods_id = !empty($request->get('goods_id')) ? $request->get('goods_id') : 0;
         $device_id = !empty($request->get('device_id')) ? $request->get('device_id') : 0;
         $user_id = Verifiable::authorization($request);
-        if(empty($goods_id)){
+        if (empty($goods_id)) {
             return ['code' => 9, 'msg' => '商品ID不为空', 'data' => []];
         }
         $data = $this->goodsRepository->getGoodsDetail($goods_id, $user_id, $device_id);
-        if($data){
+        if ($data) {
             $rep = ['code' => 0, 'msg' => '', 'data' => $data];
-        }else{
+        } else {
             $rep = ['code' => 1, 'msg' => '', 'data' => $data];
         }
         return $rep;
@@ -51,9 +51,9 @@ class GoodsController extends CommonController
     public function property(Request $request)
     {
         $data = $this->goodsRepository->getGoodsProperty($request->all());
-        if($data){
+        if ($data) {
             $rep = ['code' => 0, 'msg' => '', 'data' => $data];
-        }else{
+        } else {
             $rep = ['code' => 1, 'msg' => '', 'data' => $data];
         }
         return $rep;

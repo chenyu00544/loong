@@ -26,11 +26,11 @@ class PayController extends CommonController
     public function aliPayApp(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->payRepository->aliPay($request->all(), $uid);
-            if(is_array($data)){
+            if (is_array($data)) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => $data, 'data' => $data];
             }
         }
@@ -40,11 +40,11 @@ class PayController extends CommonController
     public function wxPayApp(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->payRepository->weChatPay($request->all(), $uid);
-            if(is_array($data)){
+            if (is_array($data)) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => $data, 'data' => $data];
             }
         }
@@ -54,11 +54,11 @@ class PayController extends CommonController
     public function unionPay(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        if($uid != ''){
+        if ($uid != '') {
             $data = $this->payRepository->unionPay($request->all(), $uid);
-            if(is_array($data)){
+            if (is_array($data)) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
-            }else{
+            } else {
                 return ['code' => 1, 'msg' => $data, 'data' => $data];
             }
         }

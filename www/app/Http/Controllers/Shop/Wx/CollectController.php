@@ -26,7 +26,7 @@ class CollectController extends CommonController
             $re = $this->collectRepository->colloectsByGoods($request->all(), $uid);
             if ($re) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
-            }else{
+            } else {
                 return ['code' => 0, 'msg' => '', 'data' => []];
             }
         } else {
@@ -102,7 +102,7 @@ class CollectController extends CommonController
             $re = $this->collectRepository->browseByGoods($request->all(), $uid);
             if ($re) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
-            }else{
+            } else {
                 return ['code' => 0, 'msg' => '', 'data' => []];
             }
         } else {
@@ -118,7 +118,7 @@ class CollectController extends CommonController
             $re = $this->collectRepository->setBowse($request->all(), $uid);
             if ($re) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
-            }else{
+            } else {
                 return ['code' => 0, 'msg' => '', 'data' => []];
             }
         } else {

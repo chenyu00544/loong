@@ -255,6 +255,10 @@ class OrderRepository implements OrderRepositoryInterface
         $column = ['*'];
         $res = $this->orderInfoModel->getOrder($where, $column, $order_ids);
         foreach ($res as $re) {
+            $total = [
+                'number'=> 0,
+                'price' => 0
+            ];
             $re->add_time_date = date('Y-m-d', $re->add_time);
             $re->current_time = time();
             $re->order_id_str = (string)$re->order_id;
@@ -274,8 +278,11 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goods->is_delete = $order_goods->Goods->is_delete;
                 $order_goods->bonus_type_id = $order_goods->Goods->bonus_type_id;
                 $order_goods->current_time = time();
+                $total['number'] += $order_goods->o_goods_number;
+                $total['price'] += $order_goods->Goods->shop_price;
                 unset($order_goods->Goods);
             }
+            $re->total = $total;
         }
         $return['order'] = $res;
         return $return;

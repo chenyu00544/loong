@@ -56,8 +56,10 @@ Page({
       })
       if (res.data.data != undefined) {
         WxParse.wxParse('goods_desc', 'html', res.data.data.goods_desc, that, 5);
-        if (res.data.data.user.default_address.address_id != undefined){
-          address_id = res.data.data.user.default_address.address_id;
+        if (res.data.data.user != undefined){
+          if (res.data.data.user.default_address.address_id != undefined) {
+            address_id = res.data.data.user.default_address.address_id;
+          }
         }
         that.setData({
           goodsDetail: res.data.data,
@@ -82,6 +84,7 @@ Page({
     order.num = 1;
     order.pro = [];
     order.prostr = [];
+    app.redirectTo("../order/checkout?ObjectId=171");
   },
 
   /*提交*/
@@ -129,7 +132,7 @@ Page({
             showViewMol: !that.data.showViewMol
           })
           wx.navigateTo({
-            url: "../../packageA/order/checkout" + res.data.data.order_id,
+            url: "../order/checkout?ObjectId=" + res.data.data.order_id,
           });
         }
       });

@@ -21,9 +21,9 @@ class SearchController extends CommonController
     public function index(Request $request)
     {
         $res = $this->goodsRepository->getSearchByGoods($request->all());
-        if($res){
+        if ($res) {
             return ['code' => 0, 'msg' => '', 'data' => $res];
-        }else{
+        } else {
             return ['code' => 1, 'msg' => '', 'data' => []];
         }
     }
@@ -35,10 +35,10 @@ class SearchController extends CommonController
             return $data;
         }
         $res = $this->goodsRepository->getSearchByKeywords();
-        if($res){
-            RedisCache::get('search_keywords', ['code' => 0, 'msg' => '', 'data' => $res], 60*24);
+        if ($res) {
+            RedisCache::get('search_keywords', ['code' => 0, 'msg' => '', 'data' => $res], 60 * 24);
             return ['code' => 0, 'msg' => '', 'data' => $res];
-        }else{
+        } else {
             return ['code' => 1, 'msg' => '', 'data' => []];
         }
     }
@@ -47,9 +47,9 @@ class SearchController extends CommonController
     public function getFilterBySearch(Request $request)
     {
         $res = $this->goodsRepository->filterBySearch($request->all());
-        if($res){
+        if ($res) {
             return ['code' => 0, 'msg' => '', 'data' => $res];
-        }else{
+        } else {
             return ['code' => 1, 'msg' => '', 'data' => []];
         }
     }
@@ -58,9 +58,9 @@ class SearchController extends CommonController
     public function getFilterToSearch(Request $request)
     {
         $res = $this->goodsRepository->filterToSearch($request->all());
-        if($res){
+        if ($res) {
             return ['code' => 0, 'msg' => '', 'data' => $res];
-        }else{
+        } else {
             return ['code' => 1, 'msg' => '', 'data' => []];
         }
     }
@@ -69,9 +69,9 @@ class SearchController extends CommonController
     public function changeKeywords(Request $request)
     {
         $res = $this->goodsRepository->changeKeywords($request->all());
-        if($res){
+        if ($res) {
             return ['code' => 0, 'msg' => '', 'data' => $res];
-        }else{
+        } else {
             return ['code' => 1, 'msg' => '', 'data' => []];
         }
     }

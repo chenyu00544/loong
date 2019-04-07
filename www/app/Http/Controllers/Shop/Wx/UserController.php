@@ -97,7 +97,7 @@ class UserController extends CommonController
             $re = $this->usersRepository->getUsersReal($uid);
             if ($re) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
-            }else {
+            } else {
                 return ['code' => 1, 'msg' => '', 'data' => []];
             }
         }
@@ -111,7 +111,7 @@ class UserController extends CommonController
             $re = $this->usersRepository->setUsersReal($request->all(), $uid);
             if ($re) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
-            }else {
+            } else {
                 return ['code' => 1, 'msg' => '', 'data' => []];
             }
         }
@@ -125,7 +125,7 @@ class UserController extends CommonController
             $re = $this->usersRepository->setUserInfo($request->all(), $uid);
             if (!is_string($re)) {
                 return ['code' => 0, 'msg' => '', 'data' => $re];
-            }else {
+            } else {
                 return ['code' => 1, 'msg' => $re, 'data' => []];
             }
         }
