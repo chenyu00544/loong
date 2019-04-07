@@ -254,6 +254,7 @@ class OrderRepository implements OrderRepositoryInterface
         // fixme 订单详情
         $column = ['*'];
         $res = $this->orderInfoModel->getOrder($where, $column, $order_ids);
+        $order_total = 0;
         foreach ($res as $re) {
             $total = [
                 'number'=> 0,

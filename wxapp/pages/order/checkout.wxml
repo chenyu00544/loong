@@ -3,9 +3,9 @@
   <view class="container p-bottom">
     <view class="common-header-xian"></view>
     <!-- 发货地址-s -->
-    <navigator url="../../packageA/address/index" hover-class="navigator-hover">
+    <navigator url="../../packageA/address/index" hover-class="navigator-hover" class="{{address != ''?'h140':'h90'}}">
       <view wx:if="{{address !=''}}">
-        <view class="b-f h130">
+        <view class="b-f">
           <view class="flow-checkout-header dis-box">
             <text class="iconfont icon-dingwei1"></text>
             <view class="flow-header-left">
@@ -27,7 +27,7 @@
           </view>
         </view>
       </view>
-      <view class="h90" wx:else>
+      <view wx:else>
         <view class="flow-checkout-header dis-box">
           <text class="iconfont icon-dingwei1"></text>
           <view class="flow-header-left">
@@ -224,10 +224,9 @@
     <!-- 合计-e -->
 
     <!--btn-s-->
-    <view class="flow-fixed-footer b-f m-top10">
+    <view class="flow-fixed-footer b-f m-top10 {{isIphoneX?'iphonex-class':''}}">
       <view class="dis-flex chackout-box">
         <view class=" chackout-left pl-12 ">实付款：
-          <!-- <template is="wxParse" data="{{wxParseData:order_total.nodes}}"/> -->
           <text class="col-m">￥{{total}}</text>
         </view>
 

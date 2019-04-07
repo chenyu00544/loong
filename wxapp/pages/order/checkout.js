@@ -8,6 +8,9 @@ Page({
   onLoad: function(option) {
     var that = this;
     orderId = option.ObjectId;
+    that.setData({
+      isIphoneX: app.globalData.isIphoneX
+    })
   },
   onShow: function() {
     this.getCheckOrder();
