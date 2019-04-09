@@ -23,20 +23,6 @@ class PayController extends CommonController
 
     }
 
-    public function aliPayApp(Request $request)
-    {
-        $uid = Verifiable::authorization($request);
-        if ($uid != '') {
-            $data = $this->payRepository->aliPay($request->all(), $uid);
-            if (is_array($data)) {
-                return ['code' => 0, 'msg' => '', 'data' => $data];
-            } else {
-                return ['code' => 1, 'msg' => $data, 'data' => $data];
-            }
-        }
-        return ['code' => 1, 'msg' => '未登录', 'data' => []];
-    }
-
     public function wxPayApp(Request $request)
     {
         $uid = Verifiable::authorization($request);
@@ -49,30 +35,6 @@ class PayController extends CommonController
             }
         }
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
-    }
-
-    public function unionPay(Request $request)
-    {
-        $uid = Verifiable::authorization($request);
-        if ($uid != '') {
-            $data = $this->payRepository->unionPay($request->all(), $uid);
-            if (is_array($data)) {
-                return ['code' => 0, 'msg' => '', 'data' => $data];
-            } else {
-                return ['code' => 1, 'msg' => $data, 'data' => $data];
-            }
-        }
-        return ['code' => 1, 'msg' => '未登录', 'data' => []];
-    }
-
-    /**
-     * 支付回调异步通知aliyun
-     * @param Request $request
-     * @return mixed
-     */
-    public function asyncAliNotify(Request $request)
-    {
-        return $this->payRepository->aliNotify($request->all());
     }
 
     /**

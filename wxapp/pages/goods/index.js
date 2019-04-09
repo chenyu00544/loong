@@ -84,7 +84,7 @@ Page({
     order.num = 1;
     order.pro = [];
     order.prostr = [];
-    app.redirectTo("../order/checkout?ObjectId=171");
+    // app.redirectTo("../order/checkout?ObjectId=171");
   },
 
   /*提交*/

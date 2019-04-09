@@ -1,4 +1,4 @@
-<import src="../common/common.wxml" />
+<import src="../../common/common.wxml" />
 <block wx:if="{{cartData!= undefined}}">
   <view class="container {{shopLists!=''?'p-bottom':''}}">
     <view class="f-28 dis-box  b-f cart-position-header">

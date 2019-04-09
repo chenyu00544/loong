@@ -15,10 +15,8 @@ Page({
     token = wx.getStorageSync('token');
     if (!token) {
       wx.clearStorageSync('cate_data');
-      wx.navigateTo({
-        url: "../../packageA/login/index"
-      });
-    }else{
+      app.redirectTo("../../packageA/login/index");
+    } else {
       var cateCont = wx.getStorageSync('cate_data');
       if (typeof cateCont == 'object') {
         that.setData({
@@ -26,45 +24,23 @@ Page({
           curNav: cateCont[0].id
         })
       } else {
-        app.dscRequest(("category"))
+        app.vcvbRequest(("category/index"))
           .then((res) => {
-            wx.setStorageSync('cate_data', res.data.data);
+            // wx.setStorageSync('cate_data', res.data.data);
             that.setData({
               cateData: res.data.data,
               curNav: res.data.data[0].id,
             })
-          })
+          });
       }
     }
   },
-  onLoad: function() {
-    var that = this;
-    token = wx.getStorageSync('token');
-    //调用应用实例的方法获取全局数据
-    // 获取缓存数据
-    var cateCont = wx.getStorageSync('cate_data');
-    if (cateCont) {
-      that.setData({
-        cateData: cateCont,
-        curNav: cateCont[0].id
-      })
-    } else {
-      app.dscRequest(("category"))
-        .then((res) => {
-          wx.setStorageSync('cate_data', res.data.data);
-          that.setData({
-            cateData: res.data.data,
-            curNav: res.data.data[0].id,
-          })
-        })
-    }
-  },
+  onLoad: function() {},
   //事件处理函数
   //获取相对应的索引
   selectNav(event) {
     let id = event.target.dataset.id,
       index = parseInt(event.target.dataset.index);
-    self = this;
     this.setData({
       curNav: id,
       curIndex: index,

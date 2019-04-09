@@ -37,21 +37,6 @@ class PayRepository implements PayRepositoryInterface
         $this->productsModel = $productsModel;
     }
 
-    public function aliPay($data, $uid)
-    {
-        if (empty($data['order_id'])) {
-            return 'no_order_id';
-        }
-        $where['order_id'] = $data['order_id'];
-        $order = $this->orderInfoModel->getOrder($where);
-
-        if ($order) {
-            //fixme 优惠券
-
-            //fixme 红包
-        }
-    }
-
     public function weChatPay($data, $uid)
     {
         if (empty($data['order_id'])) {
@@ -75,26 +60,6 @@ class PayRepository implements PayRepositoryInterface
                 'mch_id' => $this->WxappConfigRepository->getWxappConfigByCode('wx_mch_id'),
             ];
         }
-    }
-
-    public function unionPay($data, $uid)
-    {
-        if (empty($data['order_id'])) {
-            return 'no_order_id';
-        }
-        $where['order_id'] = $data['order_id'];
-
-        $payMode = $data['pay_mode'];
-
-        $order = $this->orderInfoModel->getOrder($where);
-        if ($order) {
-
-        }
-    }
-
-    public function aliNotify($data)
-    {
-
     }
 
     public function weChatNotify($data)

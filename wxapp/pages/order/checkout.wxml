@@ -74,8 +74,8 @@
     <!--商品列表-e-->
 
     <!--优惠券-s-->
-    <block wx:if="{{coupons_list!=''}}">
-      <view class="flow-distribution dis-flex b-f m-top20" bindtap="onChangeShowCoupons" data-index="{{index}}">
+    <block wx:if="{{order.coupons != undefined && order.coupons.length > 0}}">
+      <view class="flow-distribution dis-flex b-f m-top20" bindtap="onChangeShowCoupons">
         <view class="flow-distribution-left pl-12">
           <text class="flow-dis col-7">优惠券</text>
           <text class="cont-text col-m">使用优惠券</text>
@@ -86,12 +86,12 @@
       </view>
       <view class="flow-list">
         <!--优惠券-list-->
-        <coupons-ul class="goods-coupon-cont hide {{showViewCoupons?'show':''}}">
-          <radio-group class="radio-group" bindchange="radioChangeCoupons" data-index="{{index}}">
-            <label class="radio" wx:for="{{coupons_list}}" wx:key="coupons-radio" wx:for-index="index">
+        <coupons-ul class="goods-coupon-cont {{showViewCoupons?'show':'hide'}}">
+          <radio-group class="radio-group" bindchange="radioChangeCoupons">
+            <label class="radio" wx:for="{{order.coupons}}" wx:key="coupons-radio" wx:for-index="index">
               <view class="dis-box b-f coupons_list">
                 <view class="coupons-radio-left">
-                  <radio value="{{item.uc_id}}" checked="{{item.checked}}" /> {{item.value}}
+                  <radio value="{{item.cu_id}}" checked="{{item.checked}}" disabled="{{item.cou_man < total.total ? false : true}}" /> {{item.value}}
                 </view>
                 <view class="coupons-radio-right box-flex">
                   <coupons-li class=" dis-box oh ">
@@ -107,7 +107,7 @@
                         </view>
                       </view>
                       <view class="f-24 col-7 m-top4">
-                        <text>{{item.cou_start_time}} - {{item.cou_end_time}}</text>
+                        <text>{{item.cou_start_time_format}} - {{item.cou_end_time_format}}</text>
                       </view>
                     </view>
                   </coupons-li>
@@ -121,24 +121,24 @@
     <!--优惠券-e-->
 
     <!--红包-s-->
-    <block wx:if="{{coupons_list!=''}}">
-      <view class="flow-distribution dis-flex b-f m-top20" bindtap="onChangeShowCoupons" data-index="{{index}}">
+    <block wx:if="{{order.bonus != undefined && order.bonus.length > 0}}">
+      <view class="flow-distribution dis-flex b-f m-top20" bindtap="onChangeShowBonus" data-index="{{index}}">
         <view class="flow-distribution-left pl-12">
           <text class="flow-dis col-7">红包</text>
           <text class="cont-text col-m">使用红包</text>
         </view>
         <view class="flow-distribution-right pr-12 p-r">
-          <text class="iconfont icon-xiangyoujiantou user-orderJtou-1 {{showViewCoupons?'':'user-orderJtou-2'}}"></text>
+          <text class="iconfont icon-xiangyoujiantou user-orderJtou-1 {{showViewBonus?'':'user-orderJtou-2'}}"></text>
         </view>
       </view>
       <view class="flow-list">
         <!--红包-list-->
-        <coupons-ul class="goods-coupon-cont hide {{showViewCoupons?'show':''}}">
-          <radio-group class="radio-group" bindchange="radioChangeCoupons" data-index="{{index}}">
-            <label class="radio" wx:for="{{coupons_list}}" wx:key="coupons-radio" wx:for-index="index">
+        <coupons-ul class="goods-coupon-cont {{showViewBonus?'show':'hide'}}">
+          <radio-group class="radio-group" bindchange="radioChangeBonus" data-index="{{index}}">
+            <label class="radio" wx:for="{{order.bonus}}" wx:key="bonus-radio" wx:for-index="index">
               <view class="dis-box b-f coupons_list">
                 <view class="coupons-radio-left">
-                  <radio value="{{item.uc_id}}" checked="{{item.checked}}" /> {{item.value}}
+                  <radio value="{{item.bu_id}}" checked="{{item.checked}}" disabled="{{item.min_goods_amount < total.total ? false : true}}"/> {{item.value}}
                 </view>
                 <view class="coupons-radio-right box-flex">
                   <coupons-li class=" dis-box oh ">
@@ -146,15 +146,15 @@
                       <view class="coupons-box dis-box">
                         <view class=" left">
                           <text class="sup">¥</text>
-                          <text class="price">{{item.cou_money}}</text>
+                          <text class="price">{{item.type_money}}</text>
                         </view>
                         <view class="box-flex right f-24">
-                          <text class="s_name f-24">满{{item.cou_man}}元</text>
-                          <text class="s_cont f-24 col-3">{{item.cou_title}}</text>
+                          <text class="s_name f-24">满{{item.min_goods_amount}}元</text>
+                          <text class="s_cont f-24 col-3">{{item.type_name}}</text>
                         </view>
                       </view>
                       <view class="f-24 col-7 m-top4">
-                        <text>{{item.cou_start_time}} - {{item.cou_end_time}}</text>
+                        <text>{{item.use_start_date_format}} - {{item.use_end_date_format}}</text>
                       </view>
                     </view>
                   </coupons-li>
@@ -197,27 +197,33 @@
     <!-- 合计-s-->
     <view class="flow-all-money b-f padding-box m-top20">
       <view class="dis-flex flow-all-list">
-        <text class="flex-five">合计金额:</text>
+        <text class="flex-five">商品金额:</text>
         <view class="flex-five t-r">
-          <text class="col-m">{{shopLists.order_total_formated}}</text>
+          <text class="col-m">{{total.goods_amount}}</text>
         </view>
       </view>
-      <block wx:if="{{payfee.length > 0}}">
+      <block wx:if="{{total.shipping_fee}}">
         <view class="dis-flex flow-all-list-cont">
           <text class="flex-five col-7">快递费用：</text>
-          <text class="flex-five col-m t-r">+￥{{ payfee_total }}</text>
+          <text class="flex-five col-m t-r">+￥{{total.shipping_fee}}</text>
         </view>
       </block>
-      <block wx:if="{{cou_money}}">
+      <block wx:if="{{total.tax}}">
+        <view class="dis-flex flow-all-list-cont">
+          <text class="flex-five col-7">税费：</text>
+          <text class="flex-five col-m t-r">+￥{{total.tax}}</text>
+        </view>
+      </block>
+      <block wx:if="{{total.coupons}}">
         <view class="dis-flex flow-all-list-cont">
           <text class="flex-five col-7">优惠券：</text>
-          <text class="flex-five col-m t-r">-￥{{cou_money}}</text>
+          <text class="flex-five col-m t-r">-￥{{total.coupons}}</text>
         </view>
       </block>
-      <block wx:if="{{bonus_money}}">
+      <block wx:if="{{total.bonus}}">
         <view class="dis-flex flow-all-list-cont">
           <text class="flex-five col-7">红包：</text>
-          <text class="flex-five col-m t-r">-￥{{bonus_money}}</text>
+          <text class="flex-five col-m t-r">-￥{{total.bonus}}</text>
         </view>
       </block>
     </view>
@@ -227,10 +233,10 @@
     <view class="flow-fixed-footer b-f m-top10 {{isIphoneX?'iphonex-class':''}}">
       <view class="dis-flex chackout-box">
         <view class=" chackout-left pl-12 ">实付款：
-          <text class="col-m">￥{{total}}</text>
+          <text class="col-m">￥{{total.total}}</text>
         </view>
 
-        <view class=" chackout-right" catchtap="submitOrder">
+        <view class=" chackout-right" catchtap="pay">
           <text class="flow-btn">提交订单</text>
         </view>
       </view>

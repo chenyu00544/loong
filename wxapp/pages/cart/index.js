@@ -37,7 +37,7 @@ Page({
   },
   getCartGoods: function(that) {
     //调用应用实例的方法获取全局数据
-    app.dscRequest(("cart"))
+    app.vcvbRequest (("cart"))
       .then((res) => {
         var attr;
         var temp = '';
@@ -139,7 +139,7 @@ Page({
     shopLists.total_price += parseInt(shopList.goods_price)
 
     //改变购物车商品数量
-    app.dscRequest(("cart/update"), {
+    app.vcvbRequest(("cart/update"), {
         id: data.id,
         amount: shopList.goods_number
       })
@@ -190,7 +190,7 @@ Page({
       return
     }
     //改变购物车商品数量
-    app.dscRequest(("cart/update"), {
+    app.vcvbRequest(("cart/update"), {
         id: data.id,
         amount: shopList.goods_number
       })
@@ -206,7 +206,7 @@ Page({
       content: '您确定要移除当前商品吗?',
       success: function(res) {
         if (res.confirm) {
-          app.dscRequest(("cart/delete"), {
+          app.vcvbRequest(("cart/delete"), {
               id: data.id
             })
             .then((res) => {
@@ -231,7 +231,7 @@ Page({
       that.setData({
         is_first_action: false,
       })
-      app.dscRequest(("user/address/list"))
+      app.vcvbRequest(("user/address/list"))
         .then((res) => {
           if (res.data.data != '') {
             wx.navigateTo({
@@ -408,7 +408,7 @@ Page({
   goodsCheckout: function(e) {
     let that = this
     if (e.currentTarget.id == 'checkout') {
-      app.dscRequest(("cart/addGiftCart"), {
+      app.vcvbRequest(("cart/addGiftCart"), {
           act_id: actId,
           ru_id: ruId,
           select_gift: arrId
@@ -461,7 +461,7 @@ Page({
     }
 
     //改变购物车商品数量
-    app.dscRequest(("cart/update"), {
+    app.vcvbRequest(("cart/update"), {
         id: rec_ids,
       })
       .then((res) => {
@@ -503,7 +503,7 @@ Page({
       }
     }
     //改变购物车商品数量
-    app.dscRequest(("cart/update"), {
+    app.vcvbRequest(("cart/update"), {
         id: rec_ids,
       })
       .then((res) => {

@@ -254,7 +254,6 @@ class OrderRepository implements OrderRepositoryInterface
         // fixme 订单详情
         $column = ['*'];
         $res = $this->orderInfoModel->getOrder($where, $column, $order_ids);
-        $order_total = 0;
         foreach ($res as $re) {
             $total = [
                 'number'=> 0,
@@ -280,7 +279,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goods->bonus_type_id = $order_goods->Goods->bonus_type_id;
                 $order_goods->current_time = time();
                 $total['number'] += $order_goods->o_goods_number;
-                $total['price'] += $order_goods->Goods->shop_price;
+                $total['price'] += $order_goods->Goods->shop_price * $order_goods->o_goods_number;
                 unset($order_goods->Goods);
             }
             $re->total = $total;

@@ -76,11 +76,8 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::post('order/logistics/get', 'OrderController@getLogisticsInfo');
     Route::post('order/confirm/take', 'OrderController@confirmTakeOrder');
 
-    Route::post('pay/alipay', 'PayController@aliPayApp');
-    Route::post('pay/alipay/async/notify', 'PayController@asyncAliNotify');
     Route::post('pay/wxpay', 'PayController@wxPayApp');
     Route::post('pay/wxpay/async/notify', 'PayController@asyncWxNotify');
-    Route::post('pay/unionpay', 'PayController@unionPay');
 
     Route::post('category/index', 'CategoryController@index');
     Route::post('category/goods', 'CategoryController@categoryGoods');
