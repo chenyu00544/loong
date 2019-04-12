@@ -15,6 +15,7 @@ use App\Helper\Wxapp;
 use App\Helper\WXBizDataCrypt;
 use App\Http\Models\Wxapp\CartModel;
 use App\Http\Models\Wxapp\CommentModel;
+use App\Http\Models\Wxapp\CouponsUserModel;
 use App\Http\Models\Wxapp\OrderInfoModel;
 use App\Http\Models\Wxapp\OrderReturnModel;
 use App\Http\Models\Wxapp\UserAddressModel;
@@ -32,6 +33,7 @@ class UsersRepository implements UsersRepositoryInterface
     private $cartModel;
     private $commentModel;
     private $wechatUserModel;
+    private $couponsUserModel;
 
     public function __construct(
         UsersModel $usersModel,
@@ -41,7 +43,8 @@ class UsersRepository implements UsersRepositoryInterface
         OrderReturnModel $orderReturnModel,
         CartModel $cartModel,
         CommentModel $commentModel,
-        WechatUserModel $wechatUserModel
+        WechatUserModel $wechatUserModel,
+        CouponsUserModel $couponsUserModel
     )
     {
         $this->usersModel = $usersModel;
@@ -52,6 +55,7 @@ class UsersRepository implements UsersRepositoryInterface
         $this->cartModel = $cartModel;
         $this->commentModel = $commentModel;
         $this->wechatUserModel = $wechatUserModel;
+        $this->couponsUserModel = $couponsUserModel;
     }
 
     public function login($userInfo, $code, $type, $ip, $device_id = '')
@@ -213,6 +217,14 @@ class UsersRepository implements UsersRepositoryInterface
         ];
         $order_return_count = $this->orderReturnModel->countOrderReturn($order_where);
         $user->order_return_count = $order_return_count;
+
+        //优惠券
+        $coupons_where = [
+            'user_id'=> $uid,
+            'is_use'=> 0,
+            'order_id'=> 0,
+        ];
+        $user->coupons_count = $this->couponsUserModel->countCouponsUser($coupons_where);
 
         return $user;
     }

@@ -40,6 +40,11 @@ App({
       url: url
     });
   },
+  switchTo(url) {
+    wx.switchTab({
+      url: url,
+    });
+  },
   /*
   订单支付支付
   */

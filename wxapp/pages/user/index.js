@@ -3,7 +3,6 @@ var token
 var goodshistory
 Page({
   data: {
-    userInfo: {},
     is_first_action: true,
     userService: [{
         name: "我的砍价",
@@ -41,42 +40,22 @@ Page({
   onShow() {
     let that = this
     token = wx.getStorageSync('token')
-    let cate_data = wx.getStorageSync('cate_data')
     if (!token) {
       app.redirectTo("../../packageA/login/index");
     }
-    wx.setStorageSync('flowcheckout', {
-      from: "user"
-    })
-    goodshistory = wx.getStorageSync('goodshistory')
-    var goodsNum = wx.getStorageSync('goodsNum')
-    that.setData({
-      goodsNum: goodsNum,
-    })
-    that.setData({
-      is_first_action: true,
-    })
-    this.setData({
-      recommend: '',
-      orderNum: '',
-    })
     that.user();
   },
   user() {
     var that = this
-    app.dscRequest(("user"), {
-        per_page: "10",
+    app.vcvbRequest(("user/index"), {
         page: "1",
-        list: goodshistory
-      })
-      .then((res) => {
-        if (!res.data.data.userInfo.id) {
+      }).then((res) => {
+        app.log(res);
+        if (!res.data.data.user_id) {
             app.redirectTo("../../packageA/login/index")
         }
         that.setData({
-          recommend: res.data.data.best_goods,
-          orderNum: res.data.data.order,
-          user: res.data.data,
+          userInfo: res.data.data,
           hidden: true
         })
       })
@@ -108,7 +87,7 @@ Page({
   //我的微店
   drpRegister() {
     let that = this
-    app.dscRequest(("drp"))
+    app.vcvbRequest(("drp"))
       .then((res) => {
         if (res.data.error == 0) {
           app.redirectTo("../../packageA/drp/index")
@@ -134,6 +113,4 @@ Page({
       path: '/pages/user/user'
     }
   }
-
-
 })

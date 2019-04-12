@@ -1,5 +1,5 @@
-<import src="../common/common.wxml" />
-<block wx:if="{{user!= undefined}}">
+<import src="../../common/common.wxml" />
+<block wx:if="{{userInfo != undefined}}">
   <view class="container m-b5">
     <view class="common-header-xian"></view>
     <!--header-s-->
@@ -24,6 +24,7 @@
       </view>
     </view>
     <!--header-e-->
+
     <!--orderList-s-->
     <view class="user-order b-f">
       <view class="user-order-cont dis-flex">
@@ -31,8 +32,8 @@
           <navigator url="../../packageA/order/index?id=0" hover-class="none">
             <text class="iconfont icon-form orderListIcon "></text>
             <text class="listCont">全部订单</text>
-            <block wx:if="{{orderNum.all_num > 0}}">
-              <text class="user-tag p-a">{{orderNum.all_num}}</text>
+            <block wx:if="{{userInfo.order_comment_count > 0}}">
+              <text class="user-tag p-a">{{userInfo.order_comment_count+userInfo.order_shipped_count+userInfo.order_unpayed_count+userInfo.order_unship_count}}</text>
             </block>
           </navigator>
         </view>
@@ -40,58 +41,68 @@
           <navigator url="../../packageA/order/index?id=1" hover-class="none">
             <text class="iconfont icon-daifukuan orderListIcon "></text>
             <text class="listCont">待付款</text>
-            <block wx:if="{{orderNum.no_paid_num> 0}}">
-              <text class="user-tag p-a">{{orderNum.no_paid_num}}</text>
+            <block wx:if="{{userInfo.order_unpayed_count> 0}}">
+              <text class="user-tag p-a">{{userInfo.order_unpayed_count}}</text>
             </block>
           </navigator>
         </view>
         <view class="flex-box p-r">
           <navigator url="../../packageA/order/index?id=2" hover-class="none">
-            <text class="iconfont icon-daishouhuo orderListIcon "></text>
-            <text class="listCont">待收货</text>
-            <block wx:if="{{orderNum.no_received_num > 0}}">
-              <text class="user-tag p-a">{{orderNum.no_received_num}}</text>
+            <text class="iconfont icon-templatedefault orderListIcon "></text>
+            <text class="listCont">待发货</text>
+            <block wx:if="{{userInfo.order_unship_count > 0}}">
+              <text class="user-tag p-a">{{userInfo.order_unship_count}}</text>
             </block>
           </navigator>
         </view>
         <view class="flex-box p-r">
           <navigator url="../../packageA/order/index?id=3" hover-class="none">
-            <text class="iconfont icon-daipingjia orderListIcon "></text>
-            <text class="listCont">待评价</text>
-            <block wx:if="{{orderNum.no_evaluation_num > 0}}">
-              <text class="user-tag p-a">{{orderNum.no_evaluation_num }}</text>
+            <text class="iconfont icon-daishouhuo orderListIcon "></text>
+            <text class="listCont">待收货</text>
+            <block wx:if="{{userInfo.order_shipped_count > 0}}">
+              <text class="user-tag p-a">{{userInfo.order_shipped_count}}</text>
             </block>
           </navigator>
         </view>
         <view class="flex-box p-r">
-          <navigator url="../../packageA/order/index?id=4" hover-class="navigator-hover">
-            <text class="iconfont icon-templatedefault orderListIcon "></text>
-            <text class="listCont">退/换货</text>
-            <block wx:if="{{orderNum.return_num > 0}}">
-              <text class="user-tag p-a">{{orderNum.return_num }}</text>
+          <navigator url="../../packageA/order/index?id=4" hover-class="none">
+            <text class="iconfont icon-daipingjia orderListIcon "></text>
+            <text class="listCont">待评价</text>
+            <block wx:if="{{userInfo.order_comment_count > 0}}">
+              <text class="user-tag p-a">{{userInfo.order_comment_count }}</text>
             </block>
           </navigator>
         </view>
+        <!-- <view class="flex-box p-r">
+          <navigator url="../../packageA/order/index?id=5" hover-class="navigator-hover">
+            <text class="iconfont icon-templatedefault orderListIcon "></text>
+            <text class="listCont">退/换货</text>
+            <block wx:if="{{userInfo.order_return_count > 0}}">
+              <text class="user-tag p-a">{{userInfo.order_return_count }}</text>
+            </block>
+          </navigator>
+        </view> -->
       </view>
     </view>
     <!--orderList-e-->
+
     <view class="page__input ">
       <view class="dis-box user-list cont-box weui-cells b-f m-top20">
         <view class="box-flex li t-c">
-          <text class="f-w f-32 col-m">{{user.funds.user_money}}</text>
+          <text class="f-w f-32 col-m">{{userInfo.user_money}}</text>
           <view class="f-26 col-7 m-top4">用户余额</view>
         </view>
         <view class="box-flex li t-c">
-          <text class="f-w f-32 col-m">{{user.funds.bonus_count}}</text>
+          <text class="f-w f-32 col-m">{{userInfo.bonus_money}}</text>
           <view class="f-26 col-7 m-top4">红包 </view>
         </view>
         <view class="box-flex li t-c">
-          <text class="f-w f-32 col-m">{{user.funds.pay_points}}</text>
+          <text class="f-w f-32 col-m">{{userInfo.pay_points}}</text>
           <view class="f-26 col-7 m-top4">积分</view>
         </view>
         <view class="box-flex li t-c">
           <navigator url="../user/coupons" hover-class="none">
-            <text class="f-w f-32 col-m">{{user.funds.coupons_count}}</text>
+            <text class="f-w f-32 col-m">{{userInfo.coupons_count}}</text>
             <view class="f-26 col-7 m-top4">优惠券</view>
           </navigator>
         </view>
@@ -216,8 +227,5 @@
   </view>
 </block>
 <block wx:else>
-  <view class="loading-section view-loading" hidden="{{hidden}}">
-    <view class="loading"></view>
-    <view class="t-c col-m m-top20 f-24">数据加载中</view>
-  </view>
+  <template is="loading" />
 </block>
