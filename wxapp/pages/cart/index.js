@@ -15,14 +15,13 @@ Page({
   data: {
     startX: 0, //开始坐标
     startY: 0,
-    toView: 'blue',
-    zujiIcon: '../../res/images/icon-zuji.png',
-    zijiName: '推荐商品',
-    selectedMenuId: 1,
     is_first_action: true,
     total: {
       count: 0,
-      money: 0
+      money: 0,
+      goods_price_formated: 0,
+      discount_formated: 0,
+      goods_number: 0,
     },
     province: provinces,
     city: citys,
@@ -32,64 +31,15 @@ Page({
     county_id: countys,
     flowdel: false,
     flowNumBox: true,
-    selectAllStatus: true,
-    minusStatuses: ['disabled', 'disabled', 'normal', 'normal', 'disabled'],
-  },
-  getCartGoods: function(that) {
-    //调用应用实例的方法获取全局数据
-    app.vcvbRequest (("cart"))
-      .then((res) => {
-        var attr;
-        var temp = '';
-        var giftLength //赠品最多领取个数
-        let cartList = res.data.data.cart_list;
-        for (var i in res.data.cart_list) {
-          attr = res.data.data.cart_list[i].goods_attr.split('\n')
-          temp = ''
-          for (var j in attr) {
-            if (attr[j] == '') continue;
-            temp += attr[j] + ','
-          }
-          res.data.cart_list[i].goods_attr = temp.substring(0, temp.length - 1)
-        }
-        if (res.data.data.cart_list == '' || res.data.data.cart_list == undefined) {
-          that.setData({
-            shopLists: '',
-            indexGoods: res.data.data.best_goods,
-            cartData: res.data.data
-          })
-        } else {
-          for (var l in cartList) {
-            for (var a in cartList[l].new_list) {
-              giftLength = cartList[l].new_list[a].act_type_ext_format
-              //已添加到购物车赠品
-              // for( var j in  )
-              for (var h in cartList[l].new_list[a].act_cart_gift) {
-                cartArr.push(cartList[l].new_list[a].act_cart_gift[h].goods_id)
-              }
-            }
-          }
-          that.setData({
-            giftLength: giftLength,
-            shopLists: res.data.data.cart_list,
-            total: res.data.data.total,
-            indexGoods: res.data.data.best_goods,
-            cartData: res.data.data
-          })
-        }
-      })
   },
   onLoad: function() {
     var that = this
     areaInfo = wx.getStorageSync('region')
     getProvinceData(that)
-    //加载中
-    this.loadingChange()
   },
   onShow: function() {
     var that = this
     this.getCartGoods(that);
-    this.loadingChange();
     that.setData({
       is_first_action: true,
     })
@@ -106,122 +56,118 @@ Page({
       show: show
     })
   },
-  loadingChange() {
-    setTimeout(() => {
-      this.setData({
-        hidden: true
+  //获取购物车商品
+  getCartGoods: function(that) {
+    app.vcvbRequest(("cart/index"))
+      .then((res) => {
+        var cartList = res.data.data.cart;
+        if (res.data.data.cart != '' || res.data.data.cart != undefined) {
+          that.setData({
+            likeGoods: res.data.data.like_goods,
+            carts: res.data.data.cart
+          });
+          that.total(that);
+        }
       })
-    }, 1000)
   },
+  //直接输入
   inputNumber(event) {
-    let that = this
-    let inputValue = event.detail.value
+    let that = this;
+    let inputValue = event.detail.value;
+    let rec_id = event.currentTarget.dataset.id;
+    that.updateCartNum(rec_id, inputValue);
   },
+  //增加
   addCount: function(event) {
-    var that = this
+    let that = this
     let data = event.currentTarget.dataset
-    let total = that.data.total
-    let shopLists = that.data.shopLists
-    var arr = [];
-    var shopList, v;
-    for (var i in shopLists) {
-      for (var j in shopLists[i].new_list) {
-        for (var h in shopLists[i].new_list[j].act_goods_list) {
-          arr.push(shopLists[i].new_list[j].act_goods_list[h]);
+    for (var i in that.data.carts) {
+      for (var j in that.data.carts[i].goods) {
+        if (that.data.carts[i].goods[j].rec_id == data.id){
+          that.updateCartNum(data.id, parseInt(that.data.carts[i].goods[j].goods_number) + 1);
         }
       }
     }
-    shopList = arr.find(function(v) {
-      return v.rec_id == data.id
-    })
-    shopList.goods_number = parseInt(shopList.goods_number) + 1
-    total.count += 1
-    shopLists.total_price += parseInt(shopList.goods_price)
+  },
+  //减少
+  minusCount: function(event) {
+    let that = this
+    let data = event.currentTarget.dataset
+    for (var i in that.data.carts) {
+      for (var j in that.data.carts[i].goods) {
+        if (that.data.carts[i].goods[j].rec_id == data.id) {
+          that.updateCartNum(data.id, parseInt(that.data.carts[i].goods[j].goods_number) - 1);
+        }
+      }
+    }
+  },
+  //删除
+  del: function(event) {
+    var that = this
+    let ids = [event.currentTarget.dataset.id]
+    wx.showModal({
+      title: '提示',
+      content: '您确定要移除当前商品吗?',
+      success: function(res) {
+        if (res.confirm) {
+          app.vcvbRequest(("cart/del"), {
+            rec_ids: ids.join(","),
+          }).then((res) => {
+            that.onShow();
+          })
+        }
+      }
+    });
+  },
+  //合计
+  total: function (that) {
+    let goods_price_formated = 0;
+    let discount_formated = 0;
+    let goods_number = 0;
 
-    //改变购物车商品数量
-    app.vcvbRequest(("cart/update"), {
-        id: data.id,
-        amount: shopList.goods_number
-      })
-      .then((res) => {
+    for (let i in that.data.carts) {
+      for (let j in that.data.carts[i].goods) {
+        let item = that.data.carts[i].goods[j];
+        goods_price_formated += parseFloat(item.shop_price) * parseInt(item.goods_number);
+        if (item.is_promote == 1 && item.promote_start_date < item.current_time && item.promote_end_date > item.current_time) {
+          discount_formated += (parseFloat(item.shop_price) - parseFloat(item.promote_price)) * parseInt(item.goods_number);
+        }
+        goods_number += parseInt(item.goods_number);
+      }
+    }
+
+    that.data.total.goods_price_formated = goods_price_formated - discount_formated;
+    that.data.total.discount_formated = discount_formated;
+    that.data.total.goods_number = goods_number;
+    that.setData({
+      total: that.data.total,
+    });
+  },
+  //更新购物车上牌数量
+  updateCartNum(cartId, num){
+    let that = this;
+    if (num > 0){
+      app.vcvbRequest(("cart/set"), {
+        rec_id: cartId,
+        goods_number: num
+      }).then((res) => {
         if (res.data.msg == '库存不足') {
           wx.showToast({
             title: '库存不足',
             image: '../../images/failure.png',
             duration: 2000
           })
-        } else {
-          that.onShow()
-        }
-      })
+        };
+        that.onShow();
+      });
+    }
   },
-  minusCount: function(event) {
-    var that = this
-    let data = event.currentTarget.dataset
-    let total = this.data.total
-    let shopLists = this.data.shopLists
 
-    var arr = [];
-    var shopList, v;
-    for (var i in shopLists) {
-      for (var j in shopLists[i].new_list) {
-        for (var h in shopLists[i].new_list[j].act_goods_list) {
-          arr.push(shopLists[i].new_list[j].act_goods_list[h]);
-        }
-      }
-    }
-    for (v in arr) {
-      shopList = arr.find(function(u) {
-        return u.rec_id == data.id
-      })
-      if (shopList != undefined) {
-        break;
-      }
-    }
-    shopLists.total_price -= parseInt(shopList.goods_price)
-    if (parseInt(shopLists.total_price) < 0) {
-      shopLists.total_price += parseInt(shopLists.goods_price)
-      return
-    }
-    shopList.goods_number = parseInt(shopList.goods_number) - 1
-    if (parseInt(shopList.goods_number) < 1) {
-      shopList.goods_number = parseInt(shopList.goods_number) + 1
-      shopLists.total_price += parseInt(shopList.goods_price)
-      return
-    }
-    //改变购物车商品数量
-    app.vcvbRequest(("cart/update"), {
-        id: data.id,
-        amount: shopList.goods_number
-      })
-      .then((res) => {
-        that.onShow()
-      })
-  },
-  del: function(event) {
-    var that = this
-    let data = event.currentTarget.dataset
-    wx.showModal({
-      title: '提示',
-      content: '您确定要移除当前商品吗?',
-      success: function(res) {
-        if (res.confirm) {
-          app.vcvbRequest(("cart/delete"), {
-              id: data.id
-            })
-            .then((res) => {
-              that.onShow()
-            })
-        }
-      }
-    })
-  },
   flowcartBtn: function() {
     wx.switchTab({
       url: '../index/index'
     })
   },
-
   flowCheckoutBtn: function(e) {
     var that = this
     wx.setStorageSync('flowcheckout', {
@@ -426,98 +372,6 @@ Page({
         showViewMol: !that.data.showViewMol
       })
     }
-  },
-
-  isCheckAllGoods: function(e) {
-    var rec_id = e.currentTarget.dataset.rec_id;
-    var rec_ids = [];
-    var shopLists = this.data.shopLists;
-    for (var i in shopLists) {
-      if (i == rec_id) {
-        if (shopLists[i].is_check == 1) {
-          shopLists[i].is_check = 0;
-          for (var j in shopLists[i].new_list) {
-            for (var h in shopLists[i].new_list[j].act_goods_list) {
-              shopLists[i].new_list[j].act_goods_list[h].is_check = 0;
-              rec_ids = [];
-              this.setData({
-                shopLists: shopLists
-              });
-            }
-          }
-        } else {
-          shopLists[i].is_check = 1;
-          for (var j in shopLists[i].new_list) {
-            for (var h in shopLists[i].new_list[j].act_goods_list) {
-              rec_ids.push(h);
-              shopLists[i].new_list[j].act_goods_list[h].is_check = 1;
-              this.setData({
-                shopLists: shopLists
-              });
-            }
-          }
-        }
-      }
-    }
-
-    //改变购物车商品数量
-    app.vcvbRequest(("cart/update"), {
-        id: rec_ids,
-      })
-      .then((res) => {
-        console.log(111)
-        if (res.data.msg == '库存不足') {
-          wx.showToast({
-            title: '库存不足',
-            image: '../../images/failure.png',
-            duration: 2000
-          })
-        } else {
-          that.onShow()
-        }
-      })
-
-  },
-  isCheckGoods: function(e) {
-    var that =this;
-    var rec_id = e.currentTarget.dataset.rec_id;
-    var rec_ids = [];
-    var shopLists = this.data.shopLists;
-    for (var i in shopLists) {
-      for (var j in shopLists[i].new_list) {
-        for (var h in shopLists[i].new_list[j].act_goods_list) {
-          if (h == rec_id) {
-            if (shopLists[i].new_list[j].act_goods_list[h].is_check == 1) {
-              shopLists[i].new_list[j].act_goods_list[h].is_check = 0;
-              this.setData({
-                shopLists: shopLists
-              });
-            } else {
-              shopLists[i].new_list[j].act_goods_list[h].is_check = 1;
-              this.setData({
-                shopLists: shopLists
-              });
-            }
-          }
-        }
-      }
-    }
-    //改变购物车商品数量
-    app.vcvbRequest(("cart/update"), {
-        id: rec_ids,
-      })
-      .then((res) => {
-        console.log(111)
-        if (res.data.msg == '库存不足') {
-          wx.showToast({
-            title: '库存不足',
-            image: '../../images/failure.png',
-            duration: 2000
-          })
-        } else {
-          that.onShow()
-        }
-      })
   },
 })
 

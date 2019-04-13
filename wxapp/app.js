@@ -1,12 +1,16 @@
 // 配置服务器合法域名(只需写域名即可)
 const host = 'https://www.vcvbuy.com/api/wx/';
 App({
-  onLaunch: function () {
+  onLaunch: function() {
     // 获取用户数据
     this.wxLogin();
   },
-  apiUrl(api) { return host + api },
-  webUrl(web) { return host + web },
+  apiUrl(api) {
+    return host + api
+  },
+  webUrl(web) {
+    return host + web
+  },
   //异步请求
   vcvbRequest(url, data = {}, method = 'post') {
     let promise = new Promise((resolve, reject) => {
@@ -43,7 +47,7 @@ App({
   switchTo(url) {
     wx.switchTab({
       url: url,
-    });
+    })
   },
   /*
   订单支付支付
@@ -51,10 +55,10 @@ App({
   payOrder(order_id, openid, token, formId_data) {
     var that = this
     that.vcvbRequest(("payment/pay"), {
-      id: order_id,
-      open_id: openid,
-      code: 'order.pay',
-    })
+        id: order_id,
+        open_id: openid,
+        code: 'order.pay',
+      })
       .then((res) => {
         if (res.data.status_code == 500) {
           wx.showToast({
@@ -75,13 +79,13 @@ App({
           'package': wxpayinfo.packages,
           'signType': 'MD5',
           'paySign': wxpayinfo.sign,
-          'success': function (payres) {
+          'success': function(payres) {
             if (payres.errMsg == 'requestPayment:ok') {
               //成功修改订单状态
               that.vcvbRequest(("payment/notify"), {
-                "id": order_id,
-                form_id: formId_data
-              })
+                  "id": order_id,
+                  form_id: formId_data
+                })
                 .then((res) => {
                   if (res.data.data.code == 0) {
                     wx.showToast({
@@ -107,7 +111,7 @@ App({
                 })
             }
           },
-          'fail': function (payres) {
+          'fail': function(payres) {
             wx.showToast({
               title: '支付失败',
               image: '../../images/failure.png',
@@ -125,8 +129,8 @@ App({
     var that = this
     var areaInfo = [];
     that.vcvbRequest(("region/list"), {
-      id: 1
-    })
+        id: 1
+      })
       .then((res) => {
         var province = res.data.data //数组
         var provinceName = [] //存放循环出数组中的值
@@ -183,7 +187,7 @@ App({
     isIphoneX: false,
     userInfo: null
   },
-  onShow: function () {
+  onShow: function() {
     let that = this;
     wx.getSystemInfo({
       success: res => {
@@ -196,7 +200,7 @@ App({
     })
 
   },
-  netReq: function (url, param, callback) {
+  netReq: function(url, param, callback) {
     wx.showNavigationBarLoading();
     setTimeout(() => {
       wx.hideNavigationBarLoading();
@@ -211,21 +215,21 @@ App({
         'Content-Type': 'application/json',
         'X-ECTouch-Authorization': token
       },
-      success: function (res) {
+      success: function(res) {
         wx.hideNavigationBarLoading();
         callback(res);
       }
     });
   },
   //窗口宽度
-  winWidth: function () {
+  winWidth: function() {
     return wx.getSystemInfoSync().windowWidth;
   },
   //窗口高度
-  winHeight: function () {
+  winHeight: function() {
     return wx.getSystemInfoSync().windowHeight;
   },
-  addFormId: function (fromId) {
+  addFormId: function(fromId) {
     console.log(fromId);
     console.log(wx.getStorageSync('openid'));
     if (fromId == 'the formId is a mock one' || wx.getStorageSync('openid') == '') {
@@ -236,12 +240,12 @@ App({
     this.vcvbRequest("index_ext/addformid", {
       from_id: fromId,
       user_wxid: wx.getStorageSync('openid'),
-    }).then((res) => { });
+    }).then((res) => {});
   },
-  wxLogin: function () {
+  wxLogin: function() {
     var that = this
     wx.login({
-      success: function (result) {
+      success: function(result) {
         var code = result.code;
         that.vcvbRequest("login/silent", {
           code: code,
@@ -260,18 +264,18 @@ App({
       }
     })
   },
-  log:function(e){
+  log: function(e) {
     console.log(e);
   },
-  showLoading:function(){
+  showLoading: function() {
     wx.showLoading({
       title: 'Loading...',
     })
-    setTimeout(function () {
+    setTimeout(function() {
       wx.hideLoading()
     }, 3000)
   },
-  hideLoading: function (title) {
+  hideLoading: function(title) {
     wx.hideLoading();
   }
 })

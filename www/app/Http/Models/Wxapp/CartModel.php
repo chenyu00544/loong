@@ -33,6 +33,20 @@ class CartModel extends Model
         return $this->hasOne('App\Http\Models\Wxapp\GoodsAttrModel', 'goods_id', 'goods_id');
     }
 
+    public function products()
+    {
+        return $this->hasOne('App\Http\Models\Wxapp\ProductsModel', 'product_id', 'product_id');
+    }
+
+    public function getCartByProductAndGoods($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->with(['goods'])
+            ->with(['products'])
+            ->where($where)
+            ->first();
+    }
+
     public function countCart($where)
     {
         return $this->where($where)->count();

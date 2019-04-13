@@ -1,6 +1,6 @@
 <import src="../../common/common.wxml" />
-<block wx:if="{{cartData!= undefined}}">
-  <view class="container {{shopLists!=''?'p-bottom':''}}">
+<block wx:if="{{carts != undefined}}">
+  <view class="container {{carts != ''?'p-bottom':''}}">
     <view class="f-28 dis-box  b-f cart-position-header">
       <!-- <view class="box-flex col-9" bindtap="translate">
         <text class="iconfont icon-dizhi f-28"></text>
@@ -8,23 +8,23 @@
           <block wx:if="{{province !=''&&city!=''}}">{{province}} {{city}} {{county}}</block>
           <block wx:else>选择省、市、区 </block></text>
       </view> -->
-      <view class="col-m t-r box-flex" wx:if="{{shopLists!=''}}" bindtap='updataGoods'> {{flowdel?'完成':'编辑'}}</view>
+      <view class="col-m t-r box-flex" wx:if="{{carts != ''}}" bindtap='updataGoods'> {{flowdel?'完成':'编辑'}}</view>
     </view>
     <custom-ul class="flow-list">
-      <block wx:if="{{shopLists !=''}}">
-        <custom-li wx:for="{{shopLists}}" wx:key="shopLists" wx:for-index="index">
+      <block wx:if="{{carts !=''}}">
+        <custom-li wx:for="{{carts}}" wx:key="cart" wx:for-index="index">
           <view class="header flex">
             <!-- <view style="width: 80rpx;align-items:center;" class='flex'>
               <image src='../../images/checked_active.png' data-rec_id='{{index}}' class='check' wx:if="{{item.is_check == 1}}" bindtap='isCheckAllGoods'></image>
               <image src='../../images/checked.png' class='check' data-rec_id='{{index}}' bindtap='isCheckAllGoods' wx:else></image>
             </view> -->
             <view>
-              <text class="iconfont icon-dianpu2 "></text>
-              <text class="shop_name f-w">{{item.shop_name}}</text>
+              <text class="iconfont icon-dianpu2"></text>
+              <text class="shop_name f-w">{{item.store.shop_name}}</text>
             </view>
           </view>
-          <view wx:for="{{item.new_list}}" wx:key="id" wx:for-index="index" class="cart-list-data b-f">
-            <view class="activity-title dis-box" wx:if="{{item.act_type!=undefined}}">
+          <view class="cart-list-data b-f">
+            <!-- <view class="activity-title dis-box" wx:if="{{item.act_type!=undefined}}">
               <text class="f-22 col-f a-tag">{{item.act_type_txt}}</text>
               <view class="f-26 col-3 a-cont box-flex">
                 <block wx:if="{{item.available==true}}">
@@ -60,9 +60,9 @@
               <view class="a-jiantou">
                 <text class="iconfont icon-msnui-rightmini f-26"></text>
               </view>
-            </view>
+            </view> -->
             <!--赠送商品模态框-->
-            <view class="bargain-paly-mol bargain-mol ts-3 {{showViewPlay?'active':''}}" wx:if="{{item.act_gift_list!=undefined}}">
+            <!-- <view class="bargain-paly-mol bargain-mol ts-3 {{showViewPlay?'active':''}}" wx:if="{{item.act_gift_list!=undefined}}">
               <view class="header dis-box  f-28 col-3" style="padding:0 12px">
                 <view class="box-flex f-30">最多可领取{{giftLength}}件赠品
                   <text wx:if="{{select_gift_value}}">，{{}}已选{{select_gift_value}}件</text>
@@ -93,28 +93,28 @@
                 <view class="order-number" id="cart" bindtap="goodsCheckout">取消</view>
                 <view class="order-bt" id="checkout" bindtap="goodsCheckout"> 确定</view>
               </view>
-            </view>
+            </view> -->
 
             <!-- 商品 -->
-            <block wx:for="{{item.act_goods_list}}" wx:key="act_goods_list" wx:for-index="rec_id">
+            <block wx:for="{{item.goods}}" wx:key="goods_list" wx:for-index="rec_id">
               <view class="dis-box cart-list">
                 <!-- <view style="align-items:center;" class='flex'>
                   <image src='../../images/checked_active.png' data-rec_id='{{rec_id}}' class='check' wx:if="{{item.is_check == 1}}" bindtap='isCheckGoods'></image>
                   <image src='../../images/checked.png' class='check' data-rec_id='{{rec_id}}' bindtap='isCheckGoods' wx:else></image>
                 </view> -->
-                <navigator url="../../packageB/goods/index?objectId={{item.goods_id}} " hover-class="none " class="cart-img ">
-                  <image class="image " src="{{item.goods_thumb}} " />
+                <navigator url="../pages/goods/index?objectId={{item.goods_id}} " hover-class="none " class="cart-img ">
+                  <image class="image " src="{{item.original_img}} " />
                 </navigator>
                 <view class="box-flex ">
                   <text class="twolist-hidden f-30 col-3 db " bindtap="flowDetail ">{{item.goods_name}}</text>
                   <view class="goods-attr col-7 f-24 m-top10 ">{{item.goods_attr}}</view>
                   <view class="dis-box p-r ">
                     <view class="wx-goods_price box-flex {{flowNumBox? 'show': 'hide'}} ">
-                      <text class="dish-item-money m-top4 ">{{item.goods_price_formated}} </text>
+                      <text class="dish-item-money m-top4 ">{{item.shop_price_format}} </text>
                     </view>
                     <view class="selectNumber ">
-                      <button type="default " data-id="{{item.rec_id}} " data-cid="{{item.goods_id}} " class="default {{item.goods_number>1 ? '' : ' default-active'}}" bindtap="minusCount">-</button>
-                      <input type="number" rreadOnly="true" value="{{item.goods_number}}" bindinput="inputNumber" />
+                      <button type="default " data-id="{{item.rec_id}}" data-cid="{{item.goods_id}} " class="default {{item.goods_number>1 ? '' : ' default-active'}}" bindtap="minusCount">-</button>
+                      <input type="number" readOnly="true" data-id="{{item.rec_id}}" value="{{item.goods_number}}" bindinput="inputNumber" />
                       <button type="default" data-id="{{item.rec_id}}" data-cid="{{item.goods_id}}" class="default" bindtap="addCount">+</button>
                     </view>
                     <!---删除-->
@@ -168,11 +168,11 @@
           </view>
       </block>
     </custom-ul>
-    <view wx:if="{{shopLists !=''}}">
+    <view wx:if="{{carts !=''}}">
       <view class="cart-tab-wrp dis-box">
         <view class="cart-item-total box-flex">
-          <view class=" f-32 col-m m-top10">合计：{{total.goods_price_formated}}</view>
-          <view class="f-24 col-9 m-top4">(不含运费, 已节省 {{total.discount_formated}})</view>
+          <view class=" f-32 col-m m-top10">合计：￥{{total.goods_price_formated}}</view>
+          <view class="f-24 col-9 m-top4">(不含运费, 已节省 ￥{{total.discount_formated}})</view>
         </view>
         <view class="">
           <view class="cart-tab-item-btn h4 button-common">
@@ -188,16 +188,16 @@
     </view>
     <!--list-s-->
     <view class="category-list">
-      <navigator class="list b-f" wx:for="{{indexGoods}}" wx:key="list" url="../../packageB/goods/index?objectId={{item.goods_id}}" hover-class="none">
+      <navigator class="list b-f" wx:for="{{likeGoods}}" wx:key="list" url="../goods/index?objectId={{item.goods_id}}" hover-class="none">
         <view class="left">
           <view class="img">
-            <image src="{{item.goods_thumb}}" mode="aspectFit" class="goodsImg" />
+            <image src="{{item.original_img}}" mode="aspectFit" class="goodsImg" />
           </view>
         </view>
         <view class="right">
           <view class="cont">
             <text class="f-30 title twolist-hidden m-top10">{{item.goods_name}}</text>
-            <text class="price f-34 col-m">{{item.shop_price_formated}}<text class="del f-22">{{item.market_price_formated}}</text></text>
+            <text class="price f-34 col-m">{{item.shop_price_format}}<text class="del f-22">{{item.market_price_format}}</text></text>
           </view>
         </view>
       </navigator>

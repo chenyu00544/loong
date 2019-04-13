@@ -56,13 +56,14 @@ Page({
       })
       if (res.data.data != undefined) {
         WxParse.wxParse('goods_desc', 'html', res.data.data.goods_desc, that, 5);
-        if (res.data.data.user != undefined){
+        if (res.data.data.user != undefined) {
           if (res.data.data.user.default_address.address_id != undefined) {
             address_id = res.data.data.user.default_address.address_id;
           }
         }
         that.setData({
           goodsDetail: res.data.data,
+          flowNum: res.data.data.count_cart,
           hidden: true
         })
         //商品属性
@@ -100,9 +101,9 @@ Page({
       app.vcvbRequest("cart/add", {
         "goods_id": order.id,
         "num": order.num,
-        "attr_id": order.pro,
+        "goods_attr_ids": order.pro.join(","),
       }).then((res) => {
-        if (res.data.data.msg == '商品库存不足') {
+        if (res.data.data.msg == '库存不足') {
           wx.showToast({
             title: '商品库存不足',
             image: '../../images/failure.png',
@@ -110,7 +111,7 @@ Page({
           })
         } else {
           that.setData({
-            flowNum: res.data.data.total_number,
+            flowNum: res.data.data.count_cart,
             showViewProperty: !that.data.showViewProperty,
             showViewMol: !that.data.showViewMol
           })

@@ -751,10 +751,10 @@ class GoodsRepository implements GoodsRepositoryInterface
 
     public function addCart($request, $uid = 0)
     {
-        return 10001;
         $uwhere = [];
         $goods_id = $request['goods_id'];
         $num = empty($request['num']) ? 1 : $request['num'];
+        $session_id = !empty($request['device_id']) ? $request['device_id'] : 0;
         $where['goods_id'] = $goods_id;
         $where['goods_attr_id'] = !empty($request['goods_attr_ids']) ? $request['goods_attr_ids'] : '';
         if (!empty($uid)) {
@@ -810,16 +810,30 @@ class GoodsRepository implements GoodsRepositoryInterface
             } else {
                 $this->cartModel->incrementCartGoodsNumber($where);
             }
-
             return ['count_cart' => $this->cartModel->countCart($uwhere)];
         }
-        return 0;
+        return 10001;
     }
 
     public function setCart($request)
     {
         $where['rec_id'] = !empty($request['rec_id']) ? $request['rec_id'] : 0;
         if (!empty($request['goods_number'])) {
+            //fixme 检查库存
+            $cart = $this->cartModel->getCartByProductAndGoods($where);
+            $is_exceed = false;
+            if($cart->product_id > 0){
+                if($cart->products->product_number < $request['goods_number']){
+                    $is_exceed = true;
+                }
+            }else{
+                if($cart->goods->goods_number < $request['goods_number']){
+                    $is_exceed = true;
+                }
+            }
+            if($is_exceed){
+                return false;
+            }
             $update['goods_number'] = $request['goods_number'];
             return $this->cartModel->setCart($where, $update);
         }

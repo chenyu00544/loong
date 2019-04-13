@@ -22,23 +22,31 @@ class CartController extends CommonController
     {
         $uid = Verifiable::authorization($request);
         $re = $this->goodsRepository->cartList($request->all(), $uid);
-        return ['code' => 0, 'msg' => '', 'data' => $re];
+        return $this->apiReturn($re);
     }
 
     public function addCart(Request $request)
     {
         $uid = Verifiable::authorization($request);
-        $code = $this->goodsRepository->addCart($request->all(), $uid);
-        return $this->apiReturn([], $code);
+        if ($uid != '') {
+            $code = $this->goodsRepository->addCart($request->all(), $uid);
+            if (is_array($code)) {
+                return $this->apiReturn($code);
+            } else {
+                return $this->apiReturn([], $code);
+            }
+        } else {
+            return $this->apiReturn([], 10002);
+        }
     }
 
     public function setCart(Request $request)
     {
         $re = $this->goodsRepository->setCart($request->all());
         if ($re) {
-            return ['code' => 0, 'msg' => ''];
-        } else {
             return ['code' => 1, 'msg' => ''];
+        } else {
+            return ['code' => 0, 'msg' => '库存不足'];
         }
     }
 
@@ -46,9 +54,9 @@ class CartController extends CommonController
     {
         $re = $this->goodsRepository->delCart($request->all());
         if ($re) {
-            return ['code' => 0, 'msg' => ''];
-        } else {
             return ['code' => 1, 'msg' => ''];
+        } else {
+            return ['code' => 0, 'msg' => ''];
         }
     }
 }
