@@ -49,10 +49,10 @@ class SellerRepository implements SellerRepositoryInterface
     public function getSellerShopInfo($where)
     {
         $rep = $this->sellerShopInfoModel->getSellerShopInfo($where);
-        $rep->shop_country = $this->regionsModel->getRegions(0, 0);
-        $rep->shop_province = $this->regionsModel->getRegions(1, $rep->country ? $rep->country : 1);
-        $rep->shop_city = $this->regionsModel->getRegions(2, $rep->province);
-        $rep->shop_district = $this->regionsModel->getRegions(3, $rep->city);
+        $rep->shop_country = $this->regionsModel->getRegions(0);
+        $rep->shop_province = $this->regionsModel->getRegions($rep->country ? $rep->country : 1);
+        $rep->shop_city = $this->regionsModel->getRegions($rep->province);
+        $rep->shop_district = $this->regionsModel->getRegions($rep->city);
         $rep->shippings = $this->shippingModel->getShippingAll();
         $rep->domain_name = $this->sellerDomainModel->getSellerDomain($where);
         $rep->merchants_shop = $this->merchantsShopInformationModel->getMerchantsShopInfo(['user_id' => $where['ru_id']]);

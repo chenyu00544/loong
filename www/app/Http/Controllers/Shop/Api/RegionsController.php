@@ -81,7 +81,6 @@ class RegionsController extends CommonController
         echo Token::encode();
     }
 
-
     public function deToken()
     {
     }

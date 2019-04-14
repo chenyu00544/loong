@@ -16,7 +16,7 @@ class RegionsService
     public static function getRegion($type = 0, $parent = 0)
     {
         $reArr = [];
-        $arr = (new RegionsModel())->getRegions($type, $parent);
+        $arr = (new RegionsModel())->getRegions($parent);
         foreach ($arr as $item){
             $re['id'] = $item->region_id;
             $re['name'] = $item->region_name;

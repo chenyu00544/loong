@@ -470,6 +470,7 @@
   <view class="widget-goTop" bindtap="goTop" wx:if="{{ floorstatus }}">
     <text class="iconfont icon-fanhuidingbu"></text>
   </view>
+  
   <!--悬浮导航-->
   <view class="filter-menu {{nav_select?'active':''}}">
     <view class="filter-menu-list ts-5">

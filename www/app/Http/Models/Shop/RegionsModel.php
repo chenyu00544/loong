@@ -48,20 +48,20 @@ class RegionsModel extends Model
         return $this->hasMany('App\Http\Models\Shop\RegionsModel', 'parent_id', 'region_id');
     }
 
-    public function getRegions($type = 0, $parent = 0, $column = ['region_id', 'region_name', 'parent_id', 'region_type'])
+    public function getRegions($parent = 0, $column = ['region_id', 'region_name', 'parent_id', 'region_type'])
     {
         return $this->select($column)
-            ->where([['region_type', $type], ['parent_id', $parent]])
+            ->where(['parent_id'=> $parent])
             ->get();
     }
 
     public function getAllRegionsFormat()
     {
         return $this->where(['parent_id' => 0])
-            ->with(['province'=>function($query){
-                $query->with(['city'=>function($query){
-                    $query->with(['district'=>function($query){
-                        $query->with(['street']);
+            ->with(['province' => function ($query) {
+                $query->select(['region_id', 'region_name', 'parent_id'])->with(['city' => function ($query) {
+                    $query->select(['region_id', 'region_name', 'parent_id'])->with(['district' => function ($query) {
+                        $query->select(['region_id', 'region_name', 'parent_id']);
                     }]);
                 }]);
             }])

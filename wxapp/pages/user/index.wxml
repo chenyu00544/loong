@@ -111,7 +111,7 @@
       <view class="dis-box user-list weui-cells cont-box b-f m-top20">
         <view class="box-flex li t-c">
           <navigator url="../user/collect" hover-class="none">
-            <text class="f-w f-30 col-3">{{user.funds.goods_count}}</text>
+            <text class="f-w f-30 col-3">{{userInfo.funds.goods_count}}</text>
             <view class="f-26 col-6 m-top4">商品收藏</view>
           </navigator>
         </view>
@@ -128,9 +128,7 @@
           </navigator>
         </view>
       </view>
-      <!--orderList-s-->
-      <!--list-->
-      <view class="weui-cells m-top20">
+      <!-- <view class="weui-cells m-top20">
         <navigator url="../../packageA/bargain/order/index" class="weui-cell weui-cell_access b-f">
           <view class="weui-cell__hd">
             <text class="iconfont icon-kanjia common-icon"></text>
@@ -167,8 +165,7 @@
           </view>
           <span class="weui-cell__ft"></span>
         </navigator>
-
-      </view>
+      </view> -->
       <view class="weui-cells m-top20">
         <navigator url="../../packageA/address/index" class="weui-cell weui-cell_access b-f">
           <view class="weui-cell__hd">
@@ -179,7 +176,7 @@
           </view>
           <span class="weui-cell__ft"></span>
         </navigator>
-        <view class="weui-cell weui-cell_access b-f" bindtap="invoiceNav">
+        <!-- <view class="weui-cell weui-cell_access b-f" bindtap="invoiceNav">
           <view class="weui-cell__hd">
             <text class="iconfont icon-templatedefault common-icon"></text>
           </view>
@@ -187,7 +184,7 @@
             <p class="f-30 pl-12">增值发票</p>
           </view>
           <span class="weui-cell__ft"></span>
-        </view>
+        </view> -->
       </view>
       <!--<view class="weui-cells  m-top20">
         <navigator url="../user/help" class="weui-cell weui-cell_access b-f">
@@ -201,7 +198,7 @@
         </navigator>
       </view>-->
     </view>
-    <!--orderList-e-->
+
     <!--推荐商品列表-->
     <view class="title-hrbg" style="margin-top:10rpx">
       <text class="cont">“猜您喜欢”</text>

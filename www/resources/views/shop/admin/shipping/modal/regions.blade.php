@@ -8,7 +8,8 @@
                     <li class="fl mar-all-5 wd120">
                         <a class="cursor sel-pro">
                             <input type="checkbox" name="province[{{$val['id']}}]" value="{{$val['id']}}"
-                                   id="province_{{$val['id']}}" class="fl dis-bk regions pro" @if($val['selected']) checked @endif @if($val['disabled']) disabled @endif>
+                                   id="province_{{$val['id']}}" class="fl dis-bk regions pro"
+                                   @if($val['selected']) checked @endif @if($val['disabled']) disabled @endif>
                             <label class="ui-label cursor" for="province_{{$val['id']}}">
                                 <span class="pro-name">{{$val['name']}}</span>
                                 <span class="green child_num">({{$val['num']}})</span>
@@ -19,7 +20,9 @@
                             @foreach($val['subRegion'] as $value)
                                 <li class="fl mar-all-5 sel-city">
                                     <input type="checkbox" name="city[{{$value['id']}}]" value="{{$value['id']}}"
-                                           id="city_{{$value['id']}}" class="fl dis-bk regions city" @if($value['selected']) checked @endif @if($value['disabled']) disabled @endif>
+                                           id="city_{{$value['id']}}" class="fl dis-bk regions city"
+                                           @if($value['selected']) checked
+                                           @endif @if($value['disabled']) disabled @endif>
                                     <label class="cursor" for="city_{{$value['id']}}">
                                         <span class="city-name">{{$value['name']}}</span>
                                     </label>
@@ -55,21 +58,21 @@
             $('.sel-all').click(function () {
                 if ($('input[name=select-all]').is(':checked')) {
                     $('input[type=checkbox]').each(function () {
-                        if(!$(this).prop("disabled")){
+                        if (!$(this).prop("disabled")) {
                             $(this).prop("checked", false);
                         }
                     });
                     $('.child_num').html('(0)');
                 } else {
                     $('input[type=checkbox]').each(function () {
-                        if(!$(this).prop("disabled")){
+                        if (!$(this).prop("disabled")) {
                             $(this).prop("checked", true);
                         }
                     });
                     $('.region-city').each(function () {
                         var num = 0;
                         $(this).find('input').each(function () {
-                            if(!$(this).prop("disabled")){
+                            if (!$(this).prop("disabled")) {
                                 num++;
                             }
                         });
@@ -111,21 +114,21 @@
             $('.sel-pro').click(function () {
                 if ($(this).children('input').is(':checked')) {
                     $(this).parent().find('input[type=checkbox]').each(function () {
-                        if(!$(this).prop("disabled")){
+                        if (!$(this).prop("disabled")) {
                             $(this).prop("checked", true);
                         }
                     });
 
                     var num = 0;
                     $(this).parent().find('input[type=checkbox]').each(function () {
-                        if(!$(this).prop("disabled")){
+                        if (!$(this).prop("disabled")) {
                             num++;
                         }
                     });
                     $(this).find('.child_num').html('(' + (num - 1) + ')');
                 } else {
                     $(this).parent().find('input[type=checkbox]').each(function () {
-                        if(!$(this).prop("disabled")){
+                        if (!$(this).prop("disabled")) {
                             $(this).prop("checked", false);
                         }
                     });
@@ -137,7 +140,7 @@
             $('.sel-city').click(function () {
                 var i = 0;
                 $(this).parent().find('input').each(function () {
-                    if(!$(this).prop("disabled")) {
+                    if (!$(this).prop("disabled")) {
                         if ($(this).is(':checked')) {
                             i++;
                         }

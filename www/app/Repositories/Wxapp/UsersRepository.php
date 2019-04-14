@@ -309,7 +309,7 @@ class UsersRepository implements UsersRepositoryInterface
     {
         $count = $this->userAddressModel->countAddress(['user_id' => $uid]);
         if ($count >= 10) {
-            return '限定十个地址，已添加满';
+            return 40001;
         }
         $updata['user_id'] = $uid;
         $updata['consignee'] = $data['consignee'];
@@ -318,13 +318,16 @@ class UsersRepository implements UsersRepositoryInterface
         $updata['province'] = $data['province'];
         $updata['city'] = $data['city'];
         $updata['district'] = $data['district'];
-        $updata['address'] = $data['address_info'];
+        $updata['address'] = $data['address'];
         $updata['update_time'] = time();
-        if (empty($data['address_id'])) {
-            return $this->userAddressModel->addAddress($updata);
-        } else {
-            $where['address_id'] = $data['address_id'];
-            return $this->userAddressModel->setAddress($where, $updata);
+        $re = $this->userAddressModel->addAddress($updata);
+        if($count == 0){
+            $this->usersModel->setUsers(['user_id' => $uid], ['address_id' => $re->address_id]);
+        }
+        if($re){
+            return 10000;
+        }else{
+            return 10001;
         }
     }
 

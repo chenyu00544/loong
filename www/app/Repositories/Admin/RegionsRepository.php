@@ -21,10 +21,10 @@ class RegionsRepository implements RegionsRepositoryInterface
         $this->regionsModel = $regionsModel;
     }
 
-    public function getRegions($type = 0, $parent = 0)
+    public function getRegions($parent = 0)
     {
         $reArr = [];
-        $arr = $this->regionsModel->getRegions($type, $parent);
+        $arr = $this->regionsModel->getRegions($parent);
         foreach ($arr as $item) {
             $re['id'] = $item->region_id;
             $re['name'] = $item->region_name;
@@ -60,9 +60,9 @@ class RegionsRepository implements RegionsRepositoryInterface
         return $reArr;
     }
 
-    public function getRegionsLevel($parent = 0, $type = 0)
+    public function getRegionsLevel($parent = 0)
     {
-        $re = $this->regionsModel->getRegions($type, $parent, ['*']);
+        $re = $this->regionsModel->getRegions($parent, ['*']);
         $parent_re = $this->regionsModel->getRegion($parent, ['*']);
 
         foreach ($re as $region) {
@@ -77,10 +77,10 @@ class RegionsRepository implements RegionsRepositoryInterface
 
     public function getNextRegionAll($data, $region = [])
     {
-        $re = $this->regionsModel->getRegions($data['type'], $data['parent']);
+        $re = $this->regionsModel->getRegions($data['parent']);
         if ($re->count() > 0) {
             $region[] = $re;
-            return $this->getNextRegionAll(['type' => $re[0]->region_type+1, 'parent' => $re[0]->region_id], $region);
+            return $this->getNextRegionAll(['parent' => $re[0]->region_id], $region);
         }
         return $region;
     }

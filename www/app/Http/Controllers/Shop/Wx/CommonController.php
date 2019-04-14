@@ -13,8 +13,12 @@ class CommonController extends Controller
 
     }
 
-    public function apiReturn($data = array(), $code = '10000')
+    public function apiReturn($data = array(), $msg = '', $code = '10000')
     {
-        return (['code' => 1, 'msg' => Config::get('define')[$code], 'data' => $data, 'time' => time()]);
+        if ($msg != '') {
+            return (['code' => 0, 'msg' => $msg, 'data' => $data, 'time' => time()]);
+        } else {
+            return (['code' => 0, 'msg' => Config::get('define')[$code], 'data' => $data, 'time' => time()]);
+        }
     }
 }

@@ -36,7 +36,7 @@ class UserController extends CommonController
             $re = $this->usersRepository->userAddresses($uid);
             return ['code' => 0, 'msg' => '', 'data' => $re];
         }
-        return ['code' => 1, 'msg' => '失败', 'data' => []];
+        return ['code' => 1, 'msg' => '未登陆', 'data' => []];
     }
 
     public function addAddress(Request $request)
@@ -45,9 +45,9 @@ class UserController extends CommonController
         if ($uid != '') {
             $re = $this->usersRepository->addAddress($request->all(), $uid);
             if ($re) {
-                return ['code' => 0, 'msg' => '', 'data' => $re];
+                return $this->apiReturn($re);
             } else {
-                return ['code' => 0, 'msg' => $re, 'data' => []];
+                return $this->apiReturn([]);
             }
         }
         return ['code' => 1, 'msg' => '未登陆', 'data' => []];

@@ -1,21 +1,20 @@
 // 配置服务器合法域名(只需写域名即可)
-const host = 'https://www.vcvbuy.com/api/wx/';
+const host = 'https://www.vcvbuy.com/api/';
+const uri = 'wx/';
 App({
   onLaunch: function() {
     // 获取用户数据
     this.wxLogin();
+    this.region();
   },
   apiUrl(api) {
     return host + api
-  },
-  webUrl(web) {
-    return host + web
   },
   //异步请求
   vcvbRequest(url, data = {}, method = 'post') {
     let promise = new Promise((resolve, reject) => {
       wx.request({
-        url: host + url,
+        url: host + uri + url,
         data: data,
         method: method,
         header: {
@@ -128,59 +127,25 @@ App({
   region() {
     var that = this
     var areaInfo = [];
-    that.vcvbRequest(("region/list"), {
-        id: 1
-      })
-      .then((res) => {
-        var province = res.data.data //数组
-        var provinceName = [] //存放循环出数组中的值
-        var provinceId = []
-        for (var i = 0; i < province.length; i++) {
-          provinceName = province[i].region_name;
-          provinceId = province[i].region_id
-          var provinceList = {
-            'province_id': provinceId,
-            'city_id': 0,
-            'county_id': 0,
-            'region_name': provinceName,
-            'region_id': provinceId
-          }
+    if (wx.getStorageSync("region") != undefined && wx.getStorageSync("region").length > 0){
+      return;
+    }
+    wx.request({
+      url: that.apiUrl('region/all/format'),
+      method: 'POST',
+      data: {},
+      success: function(res) {
+        var address = res.data.data //数组
+        that.log(address);
 
-          areaInfo.push(provinceList)
-          //取出所有市的数据
-          var city = province[i].region;
-          var cityName = [],
-            city_id
-          for (var j = 0; j < city.length; j++) {
-            cityName = city[j].region_name;
-            city_id = city[j].region_id
-            var cityList = {
-              'province_id': provinceId,
-              'city_id': j + 1,
-              'county_id': 0,
-              'region_name': cityName,
-              'region_id': city_id
-            }
-            areaInfo.push(cityList)
-            var countyName = [],
-              county_id
-            var county = city[j].region
-            for (var v = 0; v < county.length; v++) {
-              countyName = county[v].region_name; //取出所有区
-              county_id = county[v].region_id;
-              var countyList = {
-                'province_id': provinceId,
-                'city_id': j + 1,
-                'county_id': v + 1,
-                'region_name': countyName,
-                'region_id': county_id
-              }
-              areaInfo.push(countyList)
-            }
+        for (var i in address){
+          if (address[i].region_id === 1){
+            areaInfo = address[i].province
           }
         }
         wx.setStorageSync('region', areaInfo)
-      })
+      }
+    })
   },
   //获取媒体型号
   globalData: {

@@ -465,6 +465,7 @@ Page({
   onReady: function(res) {
     this.videoContext = wx.createVideoContext('myVideo')
   },
+
   //快捷导航
   commonNav: function() {
     var that = this;
@@ -486,7 +487,7 @@ Page({
       });
     } else if (cont == "cart") {
       wx.switchTab({
-        url: '../flow/index',
+        url: '../cart/index',
       });
     } else if (cont == "profile") {
       wx.switchTab({
@@ -494,6 +495,7 @@ Page({
       });
     }
   },
+  
   //分享
   onShareAppMessage: function() {
     var that = this

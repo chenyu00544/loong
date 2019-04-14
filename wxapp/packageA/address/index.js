@@ -29,34 +29,25 @@ Page({
   },
   getAddressList: function () {
     var that = this
-    var token = wx.getStorageSync('token')
-    wx.request({
-      url: app.apiUrl('user/address/list'),
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/json',
-        'X-ECTouch-Authorization': token
-      },
-      success: function (res) {
-        var addressList = res.data.data
-        for (var i in res.data.data) {
-          WeChatList = {
-            userName: addressList[i].consignee,
-            provinceName: addressList[i].province_name,
-            cityName: addressList[i].city_name,
-            countyName: addressList[i].district_name,
-            telNumber: addressList[i].mobile,
-            detailInfo: addressList[i].address
-          }
-        }
-        if (res.data.code == 0) {
-          that.setData({
-            addressList: res.data.data
-          });
+    app.vcvbRequest(("user/addresses"))
+    .then((res)=>{
+      var addressList = res.data.data
+      for (var i in res.data.data) {
+        WeChatList = {
+          userName: addressList[i].consignee,
+          provinceName: addressList[i].province_name,
+          cityName: addressList[i].city_name,
+          countyName: addressList[i].district_name,
+          telNumber: addressList[i].mobile,
+          detailInfo: addressList[i].address
         }
       }
-    })
-    this.loadingChange();
+      if (res.data.code == 0) {
+        that.setData({
+          addressList: res.data.data
+        });
+      }
+    });
   },
   // 添加收货地址
   createAddress: function () {

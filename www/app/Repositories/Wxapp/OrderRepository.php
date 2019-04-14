@@ -256,7 +256,7 @@ class OrderRepository implements OrderRepositoryInterface
         $res = $this->orderInfoModel->getOrder($where, $column, $order_ids);
         foreach ($res as $re) {
             $total = [
-                'number'=> 0,
+                'number' => 0,
                 'price' => 0
             ];
             $re->add_time_date = date('Y-m-d', $re->add_time);

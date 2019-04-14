@@ -4,38 +4,6 @@ var goodshistory
 Page({
   data: {
     is_first_action: true,
-    userService: [{
-        name: "我的砍价",
-        icon: "daojianfu",
-        link: "../bargain/order/index",
-        color: "#FF0C4B"
-      },
-      {
-        name: "我的拼团",
-        icon: "shehuituanti",
-        link: "../group/order/index",
-        color: "#FFB80C"
-      },
-      {
-        name: "我的代言",
-        icon: "tableshare",
-        link: "../user/speak",
-        color: "#00B9FD"
-      },
-      {
-        name: "增值发票",
-        icon: "fapiaoguanli",
-        link: "../invoice/create",
-        color: "#FD4100"
-      },
-      {
-        name: "收货地址",
-        icon: "dizhi",
-        link: "../address/index",
-        color: "#7ACF00"
-      },
-
-    ],
   },
   onShow() {
     let that = this

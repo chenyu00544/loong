@@ -18,7 +18,7 @@
               <label class="weui-label f-30">手机号</label>
             </view>
             <view class="weui-cell__bd">
-              <input class="weui-input f-30" type="number" placeholder="请输入收货人联系电话" maxlength="11" placeholder-style="color:#999" type="number" name="mobile" value="{{ mobile }}" />
+              <input class="weui-input f-30" type="number" placeholder="请输入收货人联系电话" maxlength="11" placeholder-style="color:#999" name="mobile" value="{{ mobile }}" />
             </view>
           </view>
         </view>
@@ -31,7 +31,7 @@
             </view>
             <view class="weui-cell__bd">
               <text class="infoText f-30" bindtap="translate">
-          <block wx:if="{{province !=''&&city!=''}}">{{province}} {{city}} {{county}}</block>
+          <block wx:if="{{province !='' && city!=''}}">{{province}} {{city}} {{county}}</block>
           <block wx:else><text class="col-7">选择省、市、区</text>
               </block>
               </text>
@@ -75,19 +75,19 @@
         <picker-view indicator-style="height: 50rpx;" value="{{value}}" bindchange="bindChange" catchtap="nono">
           <!--省-->
           <picker-view-column>
-            <view wx:for="{{provinces}}" wx:for-item="sheng" wx:key="">
-              {{sheng.region_name}}
+            <view wx:for="{{provinces}}" wx:key="province">
+              {{item.region_name}}
             </view>
           </picker-view-column>
           <!--地级市-->
           <picker-view-column>
-            <view wx:for="{{citys}}" wx:key="">
+            <view wx:for="{{citys}}" wx:key="city">
               {{item.region_name}}
             </view>
           </picker-view-column>
           <!--区县-->
           <picker-view-column>
-            <view wx:for="{{countys}}" wx:key="">
+            <view wx:for="{{countys}}" wx:key="county">
               {{item.region_name}}
             </view>
           </picker-view-column>
@@ -99,4 +99,3 @@
     </view>
   </form>
 </view>
-<loading hidden="{{hidden}}">加载中…</loading>
