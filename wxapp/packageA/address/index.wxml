@@ -2,9 +2,9 @@
   <view class="container m-b6 p-bottom">
     <view class="common-header-xian"></view>
     <!--地址-s-->
-    <custom-ul class="addres-list" wx:if="{{addressList !=''}}">
+    <custom-ul wx:if="{{addressList !=''}}">
       <custom-li wx:for="{{addressList}}" wx:for-index="index" wx:for-item="vo" wx:key="addressList">
-        <view class="address-header b-f dis-box m-top18">
+        <view class="address-header b-f dis-box">
           <view class="flow-header-left pl-12">
             <view class="flow-checkout-admin">{{vo.consignee}}
               <text>{{vo.mobile}}</text>
