@@ -55,7 +55,7 @@ class UserAddressModel extends Model
             ->get();
     }
 
-    public function getAddress($where, $column = ['*'])
+    public function getAddress($where = array(), $column = ['*'])
     {
         return $this->select($column)
             ->with(['mapcountry'])

@@ -29,60 +29,25 @@ Page({
     if (areaInfo != '') {
       that.addressData();
     } else {
-      wx.request({
-        url: app.apiUrl('region/list'),
-        method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-        data: {
-          id: 1
-        },
-        success: function (res) {
-          var province = res.data.data //数组
-          var provinceName = []//存放循环出数组中的值
-          var provinceId = []
-          for (var i = 0; i < province.length; i++) {
-            provinceName = province[i].region_name;
-            provinceId = province[i].region_id
-            var provinceList = {
-              'province_id': provinceId,
-              'city_id': 0,
-              'county_id': 0,
-              'region_name': provinceName,
-              'region_id': provinceId
-            }
-            areaInfo.push(provinceList)
-            //取出所有市的数据
-            var city = province[i].region;
-            var cityName = [], city_id
-            for (var j = 0; j < city.length; j++) {
-              cityName = city[j].region_name;
-              city_id = city[j].region_id
-              var cityList = {
-                'province_id': provinceId,
-                'city_id': j + 1,
-                'county_id': 0,
-                'region_name': cityName,
-                'region_id': city_id
-              }
-              areaInfo.push(cityList)
-              var countyName = [], county_id
-              var county = city[j].region
-              for (var v = 0; v < county.length; v++) {
-                countyName = county[v].region_name;//取出所有区
-                county_id = county[v].region_id;
-                var countyList = {
-                  'province_id': provinceId,
-                  'city_id': j + 1,
-                  'county_id': v + 1,
-                  'region_name': countyName,
-                  'region_id': county_id
-                }
-                areaInfo.push(countyList)
-              }
+      app.vcvbRequest(("user/addresses"))
+        .then((res) => {
+          var addressList = res.data.data
+          for (var i in res.data.data) {
+            WeChatList = {
+              userName: addressList[i].consignee,
+              provinceName: addressList[i].province_name,
+              cityName: addressList[i].city_name,
+              countyName: addressList[i].district_name,
+              telNumber: addressList[i].mobile,
+              detailInfo: addressList[i].address
             }
           }
-          that.addressData();
-        }
-      })
+          if (res.data.code == 0) {
+            that.setData({
+              addressList: res.data.data
+            });
+          }
+        });
     }
     //初始化动画层
     that.animation = wx.createAnimation({

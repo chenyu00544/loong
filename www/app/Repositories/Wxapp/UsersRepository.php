@@ -220,9 +220,9 @@ class UsersRepository implements UsersRepositoryInterface
 
         //优惠券
         $coupons_where = [
-            'user_id'=> $uid,
-            'is_use'=> 0,
-            'order_id'=> 0,
+            'user_id' => $uid,
+            'is_use' => 0,
+            'order_id' => 0,
         ];
         $user->coupons_count = $this->couponsUserModel->countCouponsUser($coupons_where);
 
@@ -321,12 +321,12 @@ class UsersRepository implements UsersRepositoryInterface
         $updata['address'] = $data['address'];
         $updata['update_time'] = time();
         $re = $this->userAddressModel->addAddress($updata);
-        if($count == 0){
+        if ($count == 0) {
             $this->usersModel->setUsers(['user_id' => $uid], ['address_id' => $re->address_id]);
         }
-        if($re){
+        if ($re) {
             return 10000;
-        }else{
+        } else {
             return 10001;
         }
     }
@@ -334,8 +334,15 @@ class UsersRepository implements UsersRepositoryInterface
     public function delAddress($data, $uid)
     {
         $where['user_id'] = $uid;
+        $user = $this->usersModel->getUser($where);
         $where['address_id'] = $data['address_id'];
-        return $this->userAddressModel->delAddress($where);
+        $res = $this->userAddressModel->delAddress($where);
+        if ($user->address_id == $data['address_id']) {
+            $re = $this->userAddressModel->getAddress();
+            $updata['address_id'] = $re->address_id;
+            $this->usersModel->setUsers($where, $updata);
+        }
+        return $res;
     }
 
     public function getUsersReal($uid)

@@ -6,10 +6,10 @@ Page({
     addressList: [],
     is_first_action: true,
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.getAddressList();
   },
-  onShow: function () {
+  onShow: function() {
     this.getAddressList();
     this.setData({
       is_first_action: true,
@@ -24,129 +24,90 @@ Page({
     }, 1000)
   },
   // 下拉刷新
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     wx.stopPullDownRefresh()
   },
-  getAddressList: function () {
+  getAddressList: function() {
     var that = this
     app.vcvbRequest(("user/addresses"))
-    .then((res)=>{
-      var addressList = res.data.data
-      for (var i in res.data.data) {
-        WeChatList = {
-          userName: addressList[i].consignee,
-          provinceName: addressList[i].province_name,
-          cityName: addressList[i].city_name,
-          countyName: addressList[i].district_name,
-          telNumber: addressList[i].mobile,
-          detailInfo: addressList[i].address
+      .then((res) => {
+        var addressList = res.data.data
+        for (var i in res.data.data) {
+          WeChatList = {
+            userName: addressList[i].consignee,
+            provinceName: addressList[i].province_name,
+            cityName: addressList[i].city_name,
+            countyName: addressList[i].district_name,
+            telNumber: addressList[i].mobile,
+            detailInfo: addressList[i].address
+          }
         }
-      }
-      if (res.data.code == 0) {
-        that.setData({
-          addressList: res.data.data
-        });
-      }
-    });
+        if (res.data.code == 0) {
+          that.setData({
+            addressList: res.data.data
+          });
+        }
+      });
   },
   // 添加收货地址
-  createAddress: function () {
+  createAddress: function() {
     wx.navigateTo({
       url: './create'
     })
   },
   // 编辑收货地址
-  editAddress: function (e) {
+  editAddress: function(e) {
     var that = this
     var address_index = e.currentTarget.dataset.address
-    var address_id = that.data.addressList[address_index].id
-    if (that.data.is_first_action == true) {
-      that.setData({
-        is_first_action: false,
-      })
-      wx.navigateTo({
-        url: "../address/detail?objectId=" + address_id
-      })
-    }
+    var address_id = that.data.addressList[address_index].address_id
+    wx.navigateTo({
+      url: "../address/detail?objectId=" + address_id
+    })
   },
   // 删除收货地址
-  removeAddress: function (e) {
+  removeAddress: function(e) {
     var that = this
     var token = wx.getStorageSync('token')
     var address_id = e.currentTarget.dataset.address
     wx.showModal({
       title: '提示',
       content: '您确定要移除当前收货地址吗?',
-      success: function (res) {
+      success: function(res) {
         if (res.confirm) {
-          wx.request({
-            url: app.apiUrl('user/address/delete'),
-            method: 'POST',
-            header: {
-              'X-ECTouch-Authorization': token
-            },
-            data: {
-              id: address_id
-            },
-            success: function () {
-              var options = wx.getStorageSync('pageOptions')
-              that.onLoad(options);
-            }
-          })
+          app.vcvbRequest(("user/address/del"), {
+            address_id: address_id
+          }).then((res) => {
+            var options = wx.getStorageSync('pageOptions')
+            that.onLoad(options);
+          });
         }
       }
     })
   },
-//设置默认地址
-
-
   // 设置默认地址
-  setDefault: function (e) {
-    var that = this
-    var address_id = e.detail.value
-    var token = wx.getStorageSync('token')
-    wx.request({
-      url: app.apiUrl('user/address/choice'),
-      method: 'POST',
-      header: {
-        'X-ECTouch-Authorization': token
-      },
-      data: {
-        id: address_id
-      },
-      success: function () {
-        wx.showToast({
-          title: '设置成功',
-          success: function () {
-            var options = wx.getStorageSync('pageOptions')
-            var options_user = wx.getStorageSync('address')
-            that.onLoad(options);
-            if (options.from == 'checkout') {
-              // wx.navigateBack({
-              //   delta: 1
-              // })
-              wx.reLaunch({
-                url: '../flow/checkout'
-              })
-            }
-            if (options.from == 'user') {
-              wx.reLaunch({
-                url: '../user/index'
-              })
-
-            }
-          }
-        })
-      }
-    })
+  setDefault: function(e) {
+    var that = this;
+    var address_id = e.detail.value;
+    app.vcvbRequest(("user/address/setdef"), {
+      address_id: address_id
+    }).then((res) => {
+      wx.showToast({
+        title: '设置成功',
+        success: function() {
+          wx.navigateBack({
+            delta: 1
+          })
+        }
+      })
+    });
   },
   //获取微信地址
-  addressChoose: function () {
+  addressChoose: function() {
     var that = this
     var token = wx.getStorageSync('token')
     if (wx.chooseAddress) {
       wx.chooseAddress({
-        success: function (res) {
+        success: function(res) {
           console.log(res)
           var postdata = {
             consignee: res.userName,
@@ -164,8 +125,7 @@ Page({
                 'X-ECTouch-Authorization': token
               },
               data: postdata,
-              success: function (res) {
-              }
+              success: function(res) {}
             })
           } else {
             wx.showToast({
@@ -175,7 +135,7 @@ Page({
             })
           }
         },
-        fail: function (err) {
+        fail: function(err) {
           console.log(JSON.stringify(err))
         }
       })
