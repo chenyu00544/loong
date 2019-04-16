@@ -6,7 +6,7 @@ Page({
     is_first_action: true,
   },
   onShow() {
-    let that = this
+    var that = this;
     token = wx.getStorageSync('token')
     if (!token) {
       app.redirectTo("../../packageA/login/index");

@@ -36,6 +36,7 @@ Page({
   onShow() {
     // app.redirectTo("../goods/index?objectId=923");
     // app.switchTo("../user/index");
+    // app.redirectTo("../../packageA/address/detail?objectId=1");
     let that = this
     token = wx.getStorageSync('token')
     let cate_data = wx.getStorageSync('cate_data')

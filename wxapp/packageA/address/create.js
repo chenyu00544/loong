@@ -120,12 +120,12 @@ Page({
     animationEvents(this, moveY, show);
     //初始化数据
     changeValue = [0, 0, 0]
-    changeProvince = '北京'
-    changeCity = '北京'
-    changeCounty = '东城区'
-    changeProvince_id = '2'
-    changeCity_id = '52'
-    changeCounty_id = '500'
+    changeProvince = provinces[0].region_name
+    changeCity = citys[0].region_name
+    changeCounty = countys[0].region_name
+    changeProvince_id = provinces[0].region_id
+    changeCity_id = citys[0].region_id
+    changeCounty_id = countys[0].region_id
     that.setData({
       showViewMol: !that.data.showViewMol,
     })

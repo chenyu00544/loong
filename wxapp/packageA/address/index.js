@@ -1,13 +1,14 @@
 var app = getApp()
 var WeChatList;
 var userName, provinceName, cityName, countyName, telNumber, detailInfo
+var fromPage = "";
 Page({
   data: {
     addressList: [],
     is_first_action: true,
   },
   onLoad: function(options) {
-    this.getAddressList();
+    fromPage = options.objectId
   },
   onShow: function() {
     this.getAddressList();
@@ -77,8 +78,9 @@ Page({
           app.vcvbRequest(("user/address/del"), {
             address_id: address_id
           }).then((res) => {
-            var options = wx.getStorageSync('pageOptions')
-            that.onLoad(options);
+            // var options = wx.getStorageSync('pageOptions')
+            // that.onLoad(options);
+            that.onShow();
           });
         }
       }
@@ -94,9 +96,13 @@ Page({
       wx.showToast({
         title: '设置成功',
         success: function() {
-          wx.navigateBack({
-            delta: 1
-          })
+          if (fromPage != "user_center"){
+            wx.navigateBack({
+              delta: 1
+            })
+          }else{
+            that.onShow();
+          }
         }
       })
     });

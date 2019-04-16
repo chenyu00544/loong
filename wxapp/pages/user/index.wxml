@@ -167,7 +167,7 @@
         </navigator>
       </view> -->
       <view class="weui-cells m-top20">
-        <navigator url="../../packageA/address/index" class="weui-cell weui-cell_access b-f">
+        <navigator url="../../packageA/address/index?objectId=user_center" class="weui-cell weui-cell_access b-f">
           <view class="weui-cell__hd">
             <text class="iconfont icon-map common-icon"></text>
           </view>

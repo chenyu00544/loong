@@ -291,7 +291,15 @@ class UsersRepository implements UsersRepositoryInterface
     public function setAddress($data)
     {
         $where['address_id'] = $data['address_id'];
-        $updata = [];
+        $updata = [
+            'consignee' => $data['consignee'],
+            "country" => $data['country'],
+            "province" => $data['province'],
+            "city" => $data['city'],
+            "district" => $data['district'],
+            "phone" => $data['phone'],
+            "address" => $data['address'],
+        ];
         return $this->userAddressModel->setAddress($where, $updata);
     }
 

@@ -1,8 +1,9 @@
 var app = getApp()
-var areaInfo = [];//所有省市区县数据
-var provinces = [];//省
-var citys = [];//城市
-var countys = [];//区县
+var country = 1;  //国家
+var areaInfo = []; //所有省市区县数据
+var provinces = []; //省
+var citys = []; //城市
+var countys = []; //区县
 var index = [0, 0, 0];
 var t = 0;
 var show = false;
@@ -21,140 +22,85 @@ Page({
     county_id: countys,
     value: [0, 0, 0]
   },
-  onLoad: function (options) {
-    var that = this
-    var token = wx.getStorageSync('token')
+  onLoad: function(options) {
+    var that = this;
     address_id = options.objectId;
     //获取地区选择数据
-    if (areaInfo != '') {
-      that.addressData();
+    var region = wx.getStorageSync("region");
+    if (region != undefined && region.length > 0) {
+      //初始化信息
+      provinces = region;
+      citys = provinces[0].city;
+      countys = citys[0].district;
+      that.setData({
+        provinces: provinces,
+        citys: citys,
+        countys: countys
+      });
     } else {
-      app.vcvbRequest(("user/addresses"))
-        .then((res) => {
-          var addressList = res.data.data
-          for (var i in res.data.data) {
-            WeChatList = {
-              userName: addressList[i].consignee,
-              provinceName: addressList[i].province_name,
-              cityName: addressList[i].city_name,
-              countyName: addressList[i].district_name,
-              telNumber: addressList[i].mobile,
-              detailInfo: addressList[i].address
-            }
-          }
-          if (res.data.code == 0) {
-            that.setData({
-              addressList: res.data.data
-            });
-          }
-        });
+      app.region();
     }
+    that.addressData();
+
     //初始化动画层
     that.animation = wx.createAnimation({
       transformOrigin: "50% 50%",
       duration: 0,
       timingFunction: "ease",
       delay: 0
-    }
-    )
+    })
     that.animation.translateY(200 + 'vh').step();
     that.setData({
       animation: that.animation.export(),
       show: show
     })
-    //加载中
-    that.loadingChange()
-  },
-  loadingChange() {
-    setTimeout(() => {
-      this.setData({
-        hidden: true
-      })
-    }, 2000)
   },
 
   //地址详细信息
-  addressData: function () {
+  addressData: function() {
     var that = this
-    var token = wx.getStorageSync('token')
-    wx.request({
-      url: app.apiUrl('user/address/detail'),
-      data: {
-        id: address_id
-      },
-      method: 'POST',
-      header: {
-        'Content-Type': 'application/json',
-        'X-ECTouch-Authorization': token
-      },
-      success: function (res) {
-        getProvinceData(that)
-        var provinceId = res.data.data.address.province_id
-        var cityId = res.data.data.address.city_id
-        var countyId = res.data.data.address.district_id
-        provinceIndex = 0
-        citysIndex = 0
-        countyIndex = 0
-        for (let i = 0; i < that.data.provinces.length; i++) {
-          if (that.data.provinces[i].province_id == provinceId) {
-            provinceIndex = i
-          }
-        }
-        getCityArr(provinceIndex, that);
-        for (let i = 0; i < that.data.citys.length; i++) {
-          if (that.data.citys[i].region_id == cityId) {
-            citysIndex = i
-          }
-        }
-        getCountyInfo(provinceIndex, citysIndex, that);
-        for (let i = 0; i < that.data.countys.length; i++) {
-          if (that.data.countys[i].region_id == countyId) {
-            countyIndex = i
-          }
-        }
-        that.setData({
-          value: [provinceIndex, citysIndex, countyIndex]
-        })
-        that.setData({
-          consignee: res.data.data.consignee,
-          mobile: res.data.data.mobile,
-          address: res.data.data.address,
-          province: res.data.data.address.province,
-          city: res.data.data.address.city,
-          county: res.data.data.address.district,
-          province_id: provinceId,
-          city_id: res.data.data.address.city_id,
-          county_id: res.data.data.address.district_id,
-        })
-      }
-    })
+    app.vcvbRequest(("user/address/get"), {
+      address_id: address_id
+    }).then((res) => {
+      that.setData({
+        consignee: res.data.data.consignee,
+        mobile: res.data.data.mobile,
+        address: res.data.data.address,
+        province: res.data.data.province_name,
+        city: res.data.data.city_name,
+        county: res.data.data.district_name,
+        province_id: res.data.data.province,
+        city_id: res.data.data.city,
+        county_id: res.data.data.district,
+      })
+    });
   },
   //滑动事件
-  bindChange: function (e) {
-    var val = e.detail.value//[0,0,0,]省市区的下标
-    if (index[0] != val[0]) {
+  bindChange: function(e) {
+    var val = e.detail.value //[0,0,0]省市区的下标
+    app.log(val);
+    if (index[0] != val[0]) { //省份做滑动,定位市/区县第一位
       val[1] = 0;
       val[2] = 0;
-      getCityArr(val[0], this);//获取地级市数据
-      getCountyInfo(val[0], val[1], this);//获取区县数据
-    } else {    //若省份column未做滑动，地级市做了滑动则定位区县第一位
+      setCity(val[0], this); //获取地级市数据
+    } else { //市做了滑动,定位区县第一位
       if (index[1] != val[1]) {
         val[2] = 0;
-        getCountyInfo(val[0], val[1], this);//获取区县数据
+        setCounty(val[0], val[1], this); //获取区县数据
       }
     }
     index = val;
     //存储滑动后的数据
-    changeValue = [val[0], val[1], val[2]]
-    changeProvince = provinces[val[0]].region_name
-    changeCity = citys[val[1]].region_name
-    changeCounty = countys[val[2]].region_name
-    changeProvince_id = provinces[val[0]].region_id
-    changeCity_id = citys[val[1]].region_id
-    changeCounty_id = countys[val[2]].region_id
+    changeValue = [val[0], val[1], val[2]];
+    changeProvince = provinces[val[0]].region_name;
+    changeCity = citys[val[1]].region_name;
+    changeCounty = countys[val[2]].region_name;
+    changeProvince_id = provinces[val[0]].region_id;
+    changeCity_id = citys[val[1]].region_id;
+    changeCounty_id = countys[val[2]].region_id;
     this.setData({
-      value: [val[0], val[1], val[2]],
-    })
+      value: index
+    });
   },
   //确定
   checkFloatView(e) {
@@ -168,9 +114,9 @@ Page({
       province: (changeProvince == undefined ? '' : changeProvince),
       city: (changeCity == undefined ? '' : changeCity),
       county: (changeCounty == undefined ? '' : changeCounty),
-      province: (changeProvince_id == undefined ? '0' : changeProvince_id),
-      city: (changeCity_id == undefined ? '0' : changeCity_id),
-      county: (changeCounty_id == undefined ? '0' : changeCounty_id),
+      province_id: (changeProvince_id == undefined ? '0' : changeProvince_id),
+      city_id: (changeCity_id == undefined ? '0' : changeCity_id),
+      county_id: (changeCounty_id == undefined ? '0' : changeCounty_id),
       showViewMol: !that.data.showViewMol,
     })
   },
@@ -187,7 +133,7 @@ Page({
     })
   },
   //移动按钮点击事件
-  translate: function (e) {
+  translate: function(e) {
     var that = this
     if (t == 0) {
       moveY = 0;
@@ -202,62 +148,104 @@ Page({
     animationEvents(this, moveY, show);
     //初始化数据
     changeValue = [0, 0, 0]
-    changeProvince = '北京'
-    changeCity = '北京'
-    changeCounty = '东城区'
-    changeProvince_id = '2'
-    changeCity_id = '52'
-    changeCounty_id = '500'
+    changeProvince = provinces[0].region_name
+    changeCity = citys[0].region_name
+    changeCounty = countys[0].region_name
+    changeProvince_id = provinces[0].region_id
+    changeCity_id = citys[0].region_id
+    changeCounty_id = countys[0].region_id
     that.setData({
       showViewMol: !that.data.showViewMol,
     })
   },
 
-  saveData: function (e) {
+  //保存地址
+  saveData: function(e) {
     var that = this
-    var token = wx.getStorageSync('token')
     var data = e.detail.value;
+    if (!that.checkAddress(data)) {
+      return;
+    }
     var postdata = {
+      address_id: address_id,
       consignee: data.consignee,
+      country: country,
       province: that.data.province_id,
       city: that.data.city_id,
       district: that.data.county_id,
-      mobile: data.mobile,
-      address: data.address,
-      id: address_id,
+      phone: data.mobile,
+      address: data.address
     }
-    wx.request({
-      url: app.apiUrl('user/address/update'),
-      method: 'post',
-      header: {
-        'X-ECTouch-Authorization': token
-      },
-      data: postdata,
-      success: function (res) {
-        var result = res.data
-        if (res.data.code != 0) {
-          wx.showToast({
-            title: '更新失败',
-            image: '../../images/failure.png',
-            duration: 2000,
-          })
-        } else {
-          wx.showToast({
-            title: '保存成功',
-            duration: 2000,
-            success: function () {
-              wx.navigateBack({
-                delta: 1
-              })
-              wx.redirectTo({ url: './index' })
-            }
-          })
-        }
-      }
-    })
+    app.vcvbRequest(("user/address/set"), postdata)
+      .then((res) => {
+        wx.showToast({
+          title: '保存成功',
+          duration: 2000,
+          success: function() {
+            wx.navigateBack({
+              delta: 1
+            })
+          }
+        })
+      });
+  },
+
+  //检查填写的地址是否符合要求
+  checkAddress: function (data) {
+    var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
+    if (!myreg.test(data.mobile)) {
+      wx.showToast({
+        title: '手机号不符合要求',
+        image: '../../images/failure.png',
+        duration: 1500
+      })
+      return false;
+    }
+    if (data.consignee == '') {
+      wx.showToast({
+        title: '收件人不能为空',
+        image: '../../images/failure.png',
+        duration: 2000,
+      })
+      return false;
+    }
+    if (data.mobile.length == 0) {
+      wx.showToast({
+        title: '手机号不能为空',
+        image: '../../images/failure.png',
+        duration: 2000,
+      })
+      return false;
+    }
+    if (data.mobile.length != 11) {
+      wx.showToast({
+        title: '手机号长度有误',
+        image: '../../images/failure.png',
+        duration: 1500
+      })
+      return false;
+    }
+
+    if (this.data.province == '' && this.data.city == '' && this.data.county == '') {
+      wx.showToast({
+        title: '省市区不能空',
+        image: '../../images/failure.png',
+        duration: 2000,
+      })
+      return false;
+    }
+    if (data.address == '') {
+      wx.showToast({
+        title: '详细地址不能为空',
+        image: '../../images/failure.png',
+        duration: 2000,
+      })
+      return false;
+    }
+    return true;
   },
   //下拉刷新完后关闭
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     wx.stopPullDownRefresh()
   },
 })
@@ -270,72 +258,28 @@ function animationEvents(that, moveY, show) {
     duration: 400,
     timingFunction: "ease",
     delay: 0
-  }
-  )
+  })
   that.animation.translateY(moveY + 'vh').step()
-
   that.setData({
     animation: that.animation.export(),
     show: show
   })
-
-}
-
-//获取省份数据
-function getProvinceData(that) {
-  var s;
-  provinces = [];
-  var num = 0;
-  for (var i = 0; i < areaInfo.length; i++) {
-    s = areaInfo[i];
-    if (s.city_id == 0 && s.county_id == 0) {
-      provinces[num] = s;
-      num++;
-    }
-  }
-  that.setData({
-    provinces: provinces
-  })
-
 }
 
 // 获取地级市数据
-function getCityArr(count, that) {
-  var c;
-  citys = [];
-  var num = 0;
-  for (var i = 0; i < areaInfo.length; i++) {
-    c = areaInfo[i];
-    if (c.county_id == 0 && c.province_id == provinces[count].province_id && c.city_id != 0) {
-      citys[num] = c;
-      num++;
-    }
-  }
-  if (citys.length == 0) {
-    citys[0] = { name: '' };
-  }
-
+function setCity(pro_num, that) {
+  citys = provinces[pro_num].city;
+  countys = citys[0].district;
   that.setData({
-    citys: citys
-  })
+    citys: citys,
+    countys: countys
+  });
 }
+
 // 获取区县数据
-function getCountyInfo(column0, column1, that) {
-  var c;
-  countys = [];
-  var num = 0;
-  for (var i = 0; i < areaInfo.length; i++) {
-    c = areaInfo[i];
-    if (c.county_id != 0 && c.province_id == provinces[column0].province_id && c.city_id == citys[column1].city_id) {
-      countys[num] = c;
-      num++;
-    }
-  }
-  if (countys.length == 0) {
-    countys[0] = { name: '' };
-  }
+function setCounty(pro_num, city_num, that) {
+  countys = provinces[pro_num].city[city_num].district;
   that.setData({
-    countys: countys,
-    // value: [column0, column1, 0]
-  })
+    countys: countys
+  });
 }
