@@ -5,15 +5,12 @@ var openid;
 var size = 100;
 var page = 1;
 var id = 0;
-// var isListData;//判断是否还有数据
 Page({
   data: {
     current: "0",
     orders: [],
     hidden: true,
     bottomloading: false,
-    isListData: true, //用于判断orderListData数组是不是空数组，默认true，空的数组
-    ListPageNum: 1,// 设置加载的第几次，默认是第一次
     viewBox: false
   },
   //事件处理函数
@@ -23,7 +20,6 @@ Page({
     this.setData({
       orders: [],
       current: event.target.dataset.index,
-      isListData: true,  //第一次加载，设置true
       scrollTop: 0,
       viewBox: false
     });
@@ -35,7 +31,7 @@ Page({
     var that = this;
     if (that.data.isListData == true) {
       wx.request({
-        url: app.apiUrl('user/order/list'),
+        url: app.apiUrl('order/index'),
         data: {
           size: size,
           page: page,
