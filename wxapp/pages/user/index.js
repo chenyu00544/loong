@@ -18,7 +18,6 @@ Page({
     app.vcvbRequest(("user/index"), {
         page: "1",
       }).then((res) => {
-        app.log(res);
         if (!res.data.data.user_id) {
             app.redirectTo("../../packageA/login/index")
         }

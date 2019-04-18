@@ -49,22 +49,13 @@
       </view>
     </view>
     <!--list-->
-    <!-- <view class="address-cont-title b-f b-b m-top20">
-      <view class="dis-box list address-box ">
-        <view class="left-name">
-          <text class="admin f-30">设置默认</text>
-        </view>
-        <view class="right-cont box-flex">
-          <switch class="fr" color='#ff495e' bindchange="switch1Change" />
-        </view>
-      </view>
-    </view> -->
     <view class="padding-box m-top20 profile-btn">
       <button formType="submit">保存</button>
     </view>
     <view class="padding-box m-top20 ">
-      <button formType="reset">取消</button>
+      <button bindtap="cancel">取消</button>
     </view>
+    
     <!--省市区弹框-->
     <view class="animation-element-wrapper" animation="{{animation}}" style="visibility:{{show ? 'visible':'hidden'}}" bindtap="hiddenFloatView" data-id="444">
       <view class="animation-element" catchtap="nono">

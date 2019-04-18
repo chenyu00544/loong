@@ -25,6 +25,10 @@ Page({
   onLoad: function(options) {
     var that = this;
     address_id = options.objectId;
+    wx.showLoading({
+      title: '数据加载中...',
+    });
+    that.addressData();
     //获取地区选择数据
     var region = wx.getStorageSync("region");
     if (region != undefined && region.length > 0) {
@@ -40,8 +44,6 @@ Page({
     } else {
       app.region();
     }
-    that.addressData();
-
     //初始化动画层
     that.animation = wx.createAnimation({
       transformOrigin: "50% 50%",
@@ -62,6 +64,7 @@ Page({
     app.vcvbRequest(("user/address/get"), {
       address_id: address_id
     }).then((res) => {
+      wx.hideLoading();
       that.setData({
         consignee: res.data.data.consignee,
         mobile: res.data.data.mobile,
@@ -161,6 +164,7 @@ Page({
 
   //保存地址
   saveData: function(e) {
+    app.log(e);
     var that = this
     var data = e.detail.value;
     if (!that.checkAddress(data)) {
@@ -247,6 +251,13 @@ Page({
   //下拉刷新完后关闭
   onPullDownRefresh: function() {
     wx.stopPullDownRefresh()
+  },
+
+  //取消退回
+  cancel:function(){
+    wx.navigateBack({
+      delta: 1
+    })
   },
 })
 

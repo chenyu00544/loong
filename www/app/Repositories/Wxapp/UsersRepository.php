@@ -288,6 +288,11 @@ class UsersRepository implements UsersRepositoryInterface
         $re->province_name = $re->mapprovince->region_name;
         $re->city_name = $re->mapcity->region_name;
         $re->district_name = $re->mapdistrict->region_name;
+        unset($re->mapcountry);
+        unset($re->mapprovince);
+        unset($re->mapcity);
+        unset($re->mapdistrict);
+        unset($re->mapstreet);
         return $re;
     }
 

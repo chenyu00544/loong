@@ -129,11 +129,11 @@
     $("option").click(function(){
         $("select").removeAttr("size");
         $("select").blur();
-        this.attr("selected","");
+        $(this).attr("selected","");
     });
     $("select").blur(function(){
         $("select").removeAttr("size");
-        this.attr("selected","");
+        $(this).attr("selected","");
     });
     $("select").focus(function(){
         $(this).attr("size","10");

@@ -154,10 +154,12 @@ class GoodsModel extends Model
                 $query->where(['parent_id' => 0])->limit(2);
             }])
             ->with(['gattr' => function ($query) {
-                $query->select(['goods_attr_id', 'goods_id', 'attr_id', 'color_value', 'attr_price', 'attr_value', 'attr_img_flie', 'attr_gallery_flie', 'attr_checked'])->where(['attr_checked' => 1])
+                $query->select(['goods_attr_id', 'goods_id', 'attr_id', 'color_value', 'attr_price', 'attr_value', 'attr_img_flie', 'attr_gallery_flie', 'attr_checked', 'img_flag'])
+                    ->where(['attr_checked' => 1])
                     ->with(['attr' => function ($query) {
                         $query->select(['attr_type', 'attr_id', 'attr_name', 'attr_group']);
                     }])
+                    ->orderBy('img_flag', 'DESC')
                     ->orderBy('attr_sort', 'DESC');
             }])
             ->with(['ggallery' => function ($query) {

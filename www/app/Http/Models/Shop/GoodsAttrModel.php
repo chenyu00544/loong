@@ -36,8 +36,16 @@ class GoodsAttrModel extends Model
         return $this->select($column)
             ->join('attribute', 'attribute.attr_id', '=', 'goods_attr.attr_id')
             ->where($where)
-            ->orderBy('goods_attr.attr_id', 'asc')
+            ->orderBy('attribute.attr_cat_type', 'DESC')
             ->get();
+    }
+
+    public function getGoodsAttrJoinAttr($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->join('attribute', 'attribute.attr_id', '=', 'goods_attr.attr_id')
+            ->where($where)
+            ->first();
     }
 
     public function setGoodsAttr($where, $data)

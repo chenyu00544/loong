@@ -47,6 +47,10 @@
     <view class="padding-box m-top20 profile-btn">
       <button formType="submit">保 存</button>
     </view>
+    <view class="padding-box m-top20">
+      <button bindtap="cancel">取消</button>
+    </view>
+
     <!--省市区弹框-->
     <view class="animation-element-wrapper" animation="{{animation}}" style="visibility:{{show ? 'visible':'hidden'}}" bindtap="hiddenFloatView" data-id="444">
       <view class="animation-element" catchtap="nono">

@@ -55,10 +55,10 @@
                             <label class="col-sm-4 control-label">分类筛选样式：</label>
                             <div class="col-sm-4 n-wd400">
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="attr_cat_type" value="1" checked="true"> 普通
+                                    <input type="radio" name="attr_cat_type" value="0" checked="true"> 普通
                                 </label>
                                 <label class="radio-inline fl">
-                                    <input type="radio" name="attr_cat_type" value="0"> 颜色
+                                    <input type="radio" name="attr_cat_type" value="1"> 颜色
                                 </label>
                             </div>
                         </div>

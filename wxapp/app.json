@@ -5,7 +5,7 @@
     "pages/cart/index",
     "pages/user/index",
     "pages/goods/index",
-    "pages/order/checkout"
+    "pages/downorder/checkout"
   ],
   "permission": {
     "scope.userLocation": {

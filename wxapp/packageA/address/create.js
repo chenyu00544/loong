@@ -21,7 +21,7 @@ Page({
     value: [0, 0, 0]
   },
   onLoad: function(options) {
-    var that = this
+    var that = this;
     var region = wx.getStorageSync("region");
     if (region != undefined && region.length > 0) {
       //初始化信息
@@ -171,6 +171,14 @@ Page({
       county_id: ''
     })
   },
+
+  //取消退回
+  cancel: function () {
+    wx.navigateBack({
+      delta: 1
+    })
+  },
+  
   //下拉刷新完后关闭
   onPullDownRefresh: function() {
     wx.stopPullDownRefresh()

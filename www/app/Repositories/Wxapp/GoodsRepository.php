@@ -366,7 +366,7 @@ class GoodsRepository implements GoodsRepositoryInterface
         } elseif ($data['model_price'] == 2) {
             $re = $this->productsAreaModel->getProdcut($where);
         }
-        if(!empty($re)){
+        if (!empty($re)) {
             $re->product_price_format = Common::priceFormat($re->product_price);
             $re->product_promote_price_format = Common::priceFormat($re->product_promote_price);
             $re->product_market_price_format = Common::priceFormat($re->product_market_price);
@@ -822,16 +822,16 @@ class GoodsRepository implements GoodsRepositoryInterface
             //fixme 检查库存
             $cart = $this->cartModel->getCartByProductAndGoods($where);
             $is_exceed = false;
-            if($cart->product_id > 0){
-                if($cart->products->product_number < $request['goods_number']){
+            if ($cart->product_id > 0) {
+                if ($cart->products->product_number < $request['goods_number']) {
                     $is_exceed = true;
                 }
-            }else{
-                if($cart->goods->goods_number < $request['goods_number']){
+            } else {
+                if ($cart->goods->goods_number < $request['goods_number']) {
                     $is_exceed = true;
                 }
             }
-            if($is_exceed){
+            if ($is_exceed) {
                 return false;
             }
             $update['goods_number'] = $request['goods_number'];

@@ -8,7 +8,10 @@ Page({
     is_first_action: true,
   },
   onLoad: function(options) {
-    fromPage = options.objectId
+    fromPage = options.objectId;
+    this.setData({
+      isIphoneX: app.globalData.isIphoneX
+    });
   },
   onShow: function() {
     this.getAddressList();
@@ -16,20 +19,12 @@ Page({
       is_first_action: true,
     })
   },
-  // 加载中
-  loadingChange() {
-    setTimeout(() => {
-      this.setData({
-        hidden: true
-      })
-    }, 1000)
-  },
   // 下拉刷新
   onPullDownRefresh: function() {
     wx.stopPullDownRefresh()
   },
   getAddressList: function() {
-    var that = this
+    var that = this;
     app.vcvbRequest(("user/addresses"))
       .then((res) => {
         var addressList = res.data.data
@@ -99,7 +94,7 @@ Page({
           if (fromPage != "user_center"){
             wx.navigateBack({
               delta: 1
-            })
+            });
           }else{
             that.onShow();
           }

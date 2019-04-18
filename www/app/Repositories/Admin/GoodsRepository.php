@@ -314,6 +314,7 @@ class GoodsRepository implements GoodsRepositoryInterface
             $goodsAttrValue[$value->attr_value] = $value->goods_attr_id;
         }
         //商品属性货品数据
+        $attribute = '';
         $products = [];
         if ($data['model_price'] == 0) {
             if (empty($data['attr_values'])) {
@@ -347,15 +348,23 @@ class GoodsRepository implements GoodsRepositoryInterface
                     $products[] = $value;
                 }
             } else {
-                $data['attr_values'];
                 $goodAttrIds = [];
                 $this->goodsAttrModel->setGoodsAttr(['goods_id' => $id], ['attr_checked' => 0]);
                 foreach ($data['attr_values'] as $value) {
                     foreach ($value as $val) {
+                        if($attribute == '' ||  $attribute->attr_id != $val[1]){
+                            $attribute = $this->attributeModel->getAttr(['attr_id' => $val[1]]);
+                        }
                         if (!empty($goodsAttrValue[$val[0]])) {
                             $val[0] = $goodsAttrValue[$val[0]];
                             $goodAttrIds[$val[1]][] = $val[0];
-                            $this->goodsAttrModel->setGoodsAttr(['goods_attr_id' => $val[0]], ['attr_checked' => 1]);
+                            $goods_attr_data['attr_checked'] = 1;
+                            if($attribute->attr_cat_type == 1){
+                                $goods_attr_data['img_flag'] = 1;
+                            }else{
+                                $goods_attr_data['img_flag'] = 0;
+                            }
+                            $this->goodsAttrModel->setGoodsAttr(['goods_attr_id' => $val[0]], $goods_attr_data);
                         } else {
                             $addData['goods_id'] = $id;
                             $addData['attr_value'] = $val[0];
@@ -363,7 +372,14 @@ class GoodsRepository implements GoodsRepositoryInterface
                             $addData['attr_sort'] = 1;
                             $addData['admin_id'] = $ru_id;
                             $addData['attr_checked'] = 1;
+                            if($attribute->attr_cat_type == 1){
+                                $addData['img_flag'] = 1;
+                            }
                             $res = $this->goodsAttrModel->addGoodsAttr($addData);
+                            if($res){
+                                $goodsAttrJoinAttr = $this->goodsAttrModel->getGoodsAttrJoinAttr(['goods_attr_id'=>$res->goods_attr_id]);
+                                $goodsAttrArr[$res->goods_attr_id] = $goodsAttrJoinAttr;
+                            }
                             $goodAttrIds[$val[1]][] = $res->goods_attr_id;
                         }
                     }

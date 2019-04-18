@@ -39,7 +39,7 @@
     </view>
     <!--地址-e-->
     <!--btn-->
-    <view class="footer-fixed f-34">
+    <view class="footer-fixed f-34 {{isIphoneX?'iphonex-class':''}}" style='background-color:#ff495e;'>
       <view class="order-bt" style="width:100%" bindtap="createAddress">添加新地址</view>
     </view>
   </view>
