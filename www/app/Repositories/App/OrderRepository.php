@@ -163,10 +163,10 @@ class OrderRepository implements OrderRepositoryInterface
             $re->confirm_take_time_date = date('Y-m-d', $re->confirm_take_time);
             $re->current_time = time();
             $re->order_id_str = (string)$re->order_id;
-            $re->country_name = $re->mapcountry->region_name;
-            $re->province_name = $re->mapprovince->region_name;
-            $re->city_name = $re->mapcity->region_name;
-            $re->district_name = $re->mapdistrict->region_name;
+            $re->country_name = !empty($re->mapcountry->region_name)?$re->mapcountry->region_name:'';
+            $re->province_name = !empty($re->mapprovince->region_name)?$re->mapprovince->region_name:'';
+            $re->city_name = !empty($re->mapcity->region_name)?$re->mapcity->region_name:'';
+            $re->district_name = !empty($re->mapdistrict->region_name)?$re->mapdistrict->region_name:'';
             foreach ($re->orderGoods as $order_goods) {
                 $order_goods->goods_thumb = FileHandle::getImgByOssUrl($order_goods->Goods->goods_thumb);
                 $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);

@@ -21,7 +21,6 @@
 }
 
 /*list*/
-
 .order-box {
   padding: 0 15px;
 }
@@ -29,6 +28,7 @@
 .order-header {
   border-bottom: 1rpx solid #e4e4e4;
   padding: 20rpx 0;
+  align-items: center;
 }
 
 .order-header .title {
@@ -59,15 +59,18 @@
 
 .order-shop {
   padding: 16rpx 0 16rpx 0;
+  border-bottom:1rpx solid #e4e4e4;
 }
 
 .order-shop-left, .order-shop-left image {
   width: 160rpx;
   height: 160rpx;
-  border: 1rpx solid #e4e4e4;
   margin-right: 15rpx;
-  display: inline-block;
   background:#fff;
+}
+
+.order-shop-right{
+  margin-left: 20rpx;
 }
 
 .order-shop .num {
@@ -95,7 +98,7 @@
 }
 
 .order-list-box .left {
-  flex: 4;
+  flex: 6;
   overflow: hidden;
   position:relative;
 }
@@ -140,7 +143,6 @@
   color:#888;
 
 }
-.order-img_list{background:rgba(255, 255, 255, 0.2);border-top:1rpx solid #e4e4e4;border-bottom:1rpx solid #e4e4e4}
 .order-right-name{position:absolute;top:50%;left:180rpx;font-size:30rpx;color:#555;width:100%;margin-top:-46rpx;line-height:1.6}
 .bar-btn{background:#ff495e;color:#fff !important;padding: 5rpx 10rpx;border-radius: 20rpx;}
 .commont-nav-more{width:100rpx;border-left:1rpx solid #e4e4e4}

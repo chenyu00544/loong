@@ -29,7 +29,7 @@
     <view class="user-order b-f">
       <view class="user-order-cont dis-flex">
         <view class="flex-box p-r">
-          <navigator url="../../packageA/order/index?id=0" hover-class="none">
+          <navigator url="../../packageA/order/index?id=1" hover-class="none">
             <text class="iconfont icon-form orderListIcon "></text>
             <text class="listCont">全部订单</text>
             <block wx:if="{{userInfo.order_comment_count > 0}}">
@@ -38,7 +38,7 @@
           </navigator>
         </view>
         <view class="flex-box p-r">
-          <navigator url="../../packageA/order/index?id=1" hover-class="none">
+          <navigator url="../../packageA/order/index?id=2" hover-class="none">
             <text class="iconfont icon-daifukuan orderListIcon "></text>
             <text class="listCont">待付款</text>
             <block wx:if="{{userInfo.order_unpayed_count> 0}}">
@@ -47,7 +47,7 @@
           </navigator>
         </view>
         <view class="flex-box p-r">
-          <navigator url="../../packageA/order/index?id=2" hover-class="none">
+          <navigator url="../../packageA/order/index?id=3" hover-class="none">
             <text class="iconfont icon-templatedefault orderListIcon "></text>
             <text class="listCont">待发货</text>
             <block wx:if="{{userInfo.order_unship_count > 0}}">
@@ -56,7 +56,7 @@
           </navigator>
         </view>
         <view class="flex-box p-r">
-          <navigator url="../../packageA/order/index?id=3" hover-class="none">
+          <navigator url="../../packageA/order/index?id=4" hover-class="none">
             <text class="iconfont icon-daishouhuo orderListIcon "></text>
             <text class="listCont">待收货</text>
             <block wx:if="{{userInfo.order_shipped_count > 0}}">
@@ -65,7 +65,7 @@
           </navigator>
         </view>
         <view class="flex-box p-r">
-          <navigator url="../../packageA/order/index?id=4" hover-class="none">
+          <navigator url="../../packageA/order/index?id=5" hover-class="none">
             <text class="iconfont icon-daipingjia orderListIcon "></text>
             <text class="listCont">待评价</text>
             <block wx:if="{{userInfo.order_comment_count > 0}}">
@@ -74,7 +74,7 @@
           </navigator>
         </view>
         <!-- <view class="flex-box p-r">
-          <navigator url="../../packageA/order/index?id=5" hover-class="navigator-hover">
+          <navigator url="../../packageA/order/index?id=6" hover-class="navigator-hover">
             <text class="iconfont icon-templatedefault orderListIcon "></text>
             <text class="listCont">退/换货</text>
             <block wx:if="{{userInfo.order_return_count > 0}}">
