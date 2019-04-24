@@ -53,11 +53,13 @@
         <navigator url="../goods/index?objectId={{item.goods_id}}">
           <view class="dis-flex flow-shopList" data-index="{{index}}">
             <view class="flow-list-left">
-              <image src="{{item.goods_thumb}}" mode="aspectFit"></image>
+              <image src="{{item.original_img}}" mode="aspectFit"></image>
             </view>
             <view class="flow-list-right box-flex">
               <text class="f-30 col-3 twolist-hidden m-top20">{{item.goods_name}}</text>
-              <text class="f-26 col-7">{{item.goods_attr}}</text>
+              <view>
+                <text class="f-26 col-7">{{item.goods_attr}}</text>
+              </view>
               <view class="flow-list-cont">
                 <text class="flow-cont">{{item.shop_price_format}}</text>
                 <text class="small">×{{item.o_goods_number}}</text>
@@ -138,7 +140,7 @@
             <label class="radio" wx:for="{{order.bonus}}" wx:key="bonus-radio" wx:for-index="index">
               <view class="dis-box b-f coupons_list">
                 <view class="coupons-radio-left">
-                  <radio value="{{item.bu_id}}" checked="{{item.checked}}" disabled="{{item.min_goods_amount < total.total ? false : true}}"/> {{item.value}}
+                  <radio value="{{item.bu_id}}" checked="{{item.checked}}" disabled="{{item.min_goods_amount < total.total ? false : true}}" /> {{item.value}}
                 </view>
                 <view class="coupons-radio-right box-flex">
                   <coupons-li class=" dis-box oh ">
@@ -197,7 +199,7 @@
     <!-- 合计-s-->
     <view class="flow-all-money b-f padding-box m-top20">
       <view class="dis-flex flow-all-list">
-        <text class="flex-five">商品金额:</text>
+        <text class="flex-five">订单金额{{total.goods_amount < total.price ? "(促销价)":""}}:</text>
         <view class="flex-five t-r">
           <text class="col-m">{{total.goods_amount}}</text>
         </view>

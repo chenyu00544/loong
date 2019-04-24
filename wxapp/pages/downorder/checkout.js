@@ -53,6 +53,8 @@ Page({
 
   //计算订单总金额
   total: function() {
+    var price= 0;
+    var order_amount = 0;
     var goods_amount = 0;
     var shipping_fee = 0;
     var tax = 0;
@@ -61,18 +63,22 @@ Page({
 
     var order = this.data.order;
     for (var i in order.order) {
+      price += parseFloat(order.order[i].total.price);
+      order_amount += parseFloat(order.order[i].order_amount);
       goods_amount += parseFloat(order.order[i].goods_amount);
       shipping_fee += parseFloat(order.order[i].shipping_fee);
       tax += parseFloat(order.order[i].tax);
       discount += parseFloat(order.order[i].discount);
     }
     total.goods_amount = goods_amount;
+    total.order_amount = order_amount;
     total.shipping_fee = shipping_fee;
     total.tax = tax;
     total.discount = discount;
     total.total = goods_amount + shipping_fee + tax - discount - parseFloat(this.data.bonus_money) - parseFloat(this.data.coupons_money);
     total.bonus = this.data.bonus_money;
     total.coupons = this.data.coupons_money;
+    total.price = price;
     this.setData({
       total: total
     })

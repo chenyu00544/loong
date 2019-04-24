@@ -339,6 +339,9 @@ class OrderRepository implements OrderRepositoryInterface
         // fixme 终端来源
         $froms = empty($data['froms']) ? 'app' : trim($data['froms']);
 
+        // fixme 微信小程序系数
+        $wx = 1.2;
+
         // fixme 直接购买
         if (!empty($data['goods_id'])) {
             $goods_id = intval($data['goods_id']);
@@ -573,8 +576,8 @@ class OrderRepository implements OrderRepositoryInterface
                 unset($goods_detail->gattr);
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
-                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
-                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id]*$wx;
+                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id]*$wx - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
@@ -810,8 +813,8 @@ class OrderRepository implements OrderRepositoryInterface
                 unset($goods_detail->gattr);
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
-                $order_new[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
-                $order_new[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
+                $order_new[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id]*$wx;
+                $order_new[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id]*$wx - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
@@ -1045,8 +1048,8 @@ class OrderRepository implements OrderRepositoryInterface
                 unset($goods_detail->gattr);
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
-                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
-                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id]*$wx;
+                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id]*$wx - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
