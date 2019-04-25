@@ -121,7 +121,10 @@ Page({
 
   //查看物流
   afterSaleOrder: function(e) {
-
+    var order_id = e.currentTarget.dataset.id || 0;
+    wx.navigateTo({
+      url: "../logistics/index?ObjectId=" + order_id,
+    });
   },
 
   //确认收货

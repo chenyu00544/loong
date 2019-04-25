@@ -1,0 +1,5 @@
+.header-img{width: 100%;height: 250rpx;}
+.dot{width: 30rpx;height: 30rpx;border-radius: 50rpx;background-color: #e9363a;float: right;margin-right: -15rpx;margin-top: 25rpx;}
+.h-line{width: 5rpx;height: 100%;background-color: #ccc;float: right;margin-right: 40rpx;}
+.jc-end{justify-content: flex-end;}
+.log-title{margin-top: 10rpx;}

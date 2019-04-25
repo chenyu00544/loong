@@ -21,7 +21,8 @@
         "order/detail",
         "address/index",
         "address/detail",
-        "address/create"
+        "address/create",
+        "logistics/index"
       ]
     }
   ],

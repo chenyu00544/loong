@@ -63,6 +63,7 @@ class Http
         if (!preg_match('/^(http|https)/is', $url)) {
             $url = "http://" . $url;
         }
+
         $code = self::getSupport();
         switch ($code) {
             case 1:

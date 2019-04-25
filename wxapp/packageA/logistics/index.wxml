@@ -1,0 +1,31 @@
+<view>
+  <image src="../../images/logistics_header.jpg" class="header-img"></image>
+</view>
+<view>
+  <view class="b-f">
+    <text></text>
+    <text></text>
+  </view>
+  <view>
+    <text></text>
+  </view>
+</view>
+<view class="b-f">
+  <view wx:for="{{logistics}}" wx:key="logistic" class="flex">
+    <view class="flex-1">
+      <view class="h-line"></view>
+      <view class="dot"></view>
+    </view>
+    <view class="flex-5">
+      <view class="log-title">
+        <text class="f-30 col-s">{{item.location}}</text>
+      </view>
+      <view>
+        <text class="f-26 col-3">{{item.time}}</text>
+      </view>
+      <view>
+        <text class="f-26 col-3">{{item.context}}</text>
+      </view>
+    </view>
+  </view>
+</view>
