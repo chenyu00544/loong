@@ -1,0 +1,40 @@
+<view>
+  <view class="m-top10" wx:for="{{order.order_goods}}" wx:key="goods" wx:for-index="goods_index">
+    <view class="b-b b-f cont-box">
+      <view class="flex ac">
+        <image src="{{item.original_img}}" class="goods-img"></image>
+        <text class="f-30 col-3 m-left10">{{item.goods_name}}</text>
+      </view>
+    </view>
+
+    <view class="b-f cont-box flex fw">
+      <text wx:for="{{item.comment}}" wx:key="comment_label" wx:for-item="comment_item" data-id="{{comment_item.id}}" data-goods_index="{{goods_index}}" class="f-30 col-3 padding-box m-left10 m-top10 {{comment_item.selected == 1? 'act':'noact'}}" bindtap="selectCommentLabel">{{comment_item.label_name}}</text>
+    </view>
+
+    <view class="b-f cont-box">
+      <view wx:for="{{item.starKey}}" wx:for-item="star_item" wx:key="star_key" class="flex ac m-top20">
+        <text class="f-30" wx:if="{{star_item.name == 'goods_rank'}}">商品描述：</text>
+        <text class="f-30" wx:elif="{{star_item.name == 'service_rank'}}">服务描述：</text>
+        <text class="f-30" wx:else>物流描述：</text>
+        <block wx:for="{{star_index}}" wx:for-item="star" wx:key="star_i">
+          <image data-id="{{star_item.id}}" data-goods_index="{{goods_index}}" data-star_value="{{star}}" src="../../images/icon_star_active.png" wx:if="{{star_item.value >= star}}" class="star-img" bindtap="selectStar"></image>
+          <image data-id="{{star_item.id}}" data-goods_index="{{goods_index}}" data-star_value="{{star}}" src="../../images/icon_star.png" class="star-img" bindtap="selectStar" wx:else></image>
+        </block>
+        <text class="col-3 f-32 m-left10">{{star_item.value}}.0</text>
+        <text class="col-s f-30 m-left10" wx:if="{{star_item.value == 1}}">差评</text>
+        <text class="col-s f-30 m-left10" wx:elif="{{star_item.value > 1 && star_item.value <= 3}}">中评</text>
+        <text class="col-s f-30 m-left10" wx:else>好评</text>
+      </view>
+    </view>
+
+    <view class="b-f cont-box">
+      <textarea placeholder="请输入您的真实描述" class="f-32 b-all"></textarea>
+    </view>
+    <view class="b-f cont-box">
+      <block>
+        <image src="../../images/icon_add_back.png" data-goods_index="{{goods_index}}" class="add-img m-right10"></image>
+      </block>
+      <image src="../../images/icon_add_back.png" data-goods_index="{{goods_index}}" class="add-img m-right10" bindtap=""></image>
+    </view>
+  </view>
+</view>

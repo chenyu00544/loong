@@ -22,7 +22,8 @@
         "address/index",
         "address/detail",
         "address/create",
-        "logistics/index"
+        "logistics/index",
+        "evaluate/index"
       ]
     }
   ],

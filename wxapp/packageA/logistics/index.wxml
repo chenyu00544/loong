@@ -1,16 +1,16 @@
 <view>
   <image src="../../images/logistics_header.jpg" class="header-img"></image>
 </view>
-<view>
-  <view class="b-f">
-    <text></text>
-    <text></text>
+<view class="b-f pad-box">
+  <view>
+    <text class="f-28 col-3">收货人: {{order.consignee}}</text>
+    <text class="f-28 col-3 m-left10"> 联系方式: {{order.mobile}}</text>
   </view>
   <view>
-    <text></text>
+    <text class="f-28 col-3">收货地址:{{order.mapprovince.region_name}} {{order.mapcity.region_name}} {{order.mapdistrict.region_name}} {{order.address}}</text>
   </view>
 </view>
-<view class="b-f">
+<view class="b-f m-top20">
   <view wx:for="{{logistics}}" wx:key="logistic" class="flex">
     <view class="flex-1">
       <view class="h-line"></view>
@@ -18,13 +18,13 @@
     </view>
     <view class="flex-5">
       <view class="log-title">
-        <text class="f-30 col-s">{{item.location}}</text>
+        <text class="f-30 col-s">{{item.context}}</text>
       </view>
       <view>
         <text class="f-26 col-3">{{item.time}}</text>
       </view>
       <view>
-        <text class="f-26 col-3">{{item.context}}</text>
+        <text class="f-26 col-3">{{item.location}}</text>
       </view>
     </view>
   </view>

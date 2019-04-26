@@ -120,7 +120,7 @@ Page({
   },
 
   //查看物流
-  afterSaleOrder: function(e) {
+  checkLogisticsOrder: function(e) {
     var order_id = e.currentTarget.dataset.id || 0;
     wx.navigateTo({
       url: "../logistics/index?ObjectId=" + order_id,
@@ -174,7 +174,10 @@ Page({
 
   //评价
   evaluate: function(e) {
-
+    var order_id = e.currentTarget.dataset.id || 0;
+    wx.navigateTo({
+      url: "../evaluate/index?ObjectId=" + order_id,
+    });
   },
 
   //再次评价

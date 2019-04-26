@@ -70,6 +70,7 @@ page{background: #F7F7F7;}
 .m-top10{margin-top:10rpx;}
 .m-top20{margin-top:25rpx;}
 .m-left10{margin-left:10rpx;}
+.m-right10{margin-right:10rpx;}
 .p-top20{padding-top:20rpx !important;}
 .p-bottom{padding-bottom: 56px;}
 .wh100{width:100%;height:100%}
@@ -640,6 +641,7 @@ buy_number{justify-content: space-between; margin: 10px 5px;}
 .fd{flex-direction: column;}
 .ac{align-items:center;}
 .w100{width:100%;}
+.fw{flex-wrap:wrap;}
 
 .flex-1{flex:1}
 .flex-2{flex:2}

@@ -6,7 +6,6 @@ Page({
     is_first_action: true,
   },
   onShow() {
-    app.redirectTo('../../packageA/order/index?id=4');
     var that = this;
     token = wx.getStorageSync('token')
     if (!token) {

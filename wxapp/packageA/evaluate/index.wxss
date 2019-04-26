@@ -1,0 +1,9 @@
+.goods-img{width: 80rpx;height: 80rpx;border-radius: 5rpx;}
+.line{border-bottom: 1rpx solid #ccc}
+.act{background-color: #BE0117; color: #fff;border-radius: 10rpx;}
+.noact{background-color: #ddd; color: #333;border-radius: 10rpx;}
+.star-img{width: 40rpx;height: 40rpx; margin-left: 10rpx;}
+.padding-box{padding:10rpx 20rpx;}
+.add-img{width: 100rpx;height: 100rpx; padding: 40rpx;border: 1rpx solid #eee}
+.b-all{border-radius: 5rpx; border: 1rpx solid #eee}
+textarea{width:-moz-calc(100% - (10rpx) *2);width:-webkit-calc(100% - (10rpx) *2);width: calc(100% - (10rpx) *2);height: 300rpx;padding: 10rpx;}
