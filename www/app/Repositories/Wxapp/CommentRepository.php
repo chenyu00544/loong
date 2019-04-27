@@ -73,7 +73,7 @@ class CommentRepository implements CommentRepositoryInterface
             foreach ($comment->commentImg as $commentImg) {
                 $commentImg->comment_img = FileHandle::getImgByOssUrl($commentImg->comment_img);
             }
-            foreach ($comment->reply as $reply){
+            foreach ($comment->reply as $reply) {
                 foreach ($reply->commentImg as $comImg) {
                     $comImg->comment_img = FileHandle::getImgByOssUrl($comImg->comment_img);
                 }
@@ -99,12 +99,12 @@ class CommentRepository implements CommentRepositoryInterface
 
     public function addComment($data, $uid)
     {
+        $res = [];
         $time = time();
         $order_id = empty($data['order_id']) ? 0 : $data['order_id'];
-        $ure = $this->usersModel->getUser($uid);
+        $user = $this->usersModel->getUser($uid);
         $goods_ids = explode(',', $data['goods_ids']);
-        $img_num = 0;
-        $img_n = 0;
+        $comment_id = 0;
         foreach ($goods_ids as $goods_id) {
             $comment = $this->commentModel->getCommentsByOrder(['order_id' => $order_id, 'parent_id' => 0], ['*']);
             $comment_id = empty($comment) ? 0 : $comment->comment_id;
@@ -112,25 +112,26 @@ class CommentRepository implements CommentRepositoryInterface
             $commentData = [
                 'comment_id' => $ct_id,
                 'comment_type' => $comment_id == 0 ? 0 : 2,
-                'email' => $ure->email,
+                'email' => $user->email,
                 'id_value' => $goods_id,
-                'user_name' => $ure->nick_name,
-                'content' => empty($data['content_' . $goods_id]) ? '默认好评' : $data['content_' . $goods_id],
-                'comment_rank' => empty($data['goods_rank_' . $goods_id]) ? 5 : $data['goods_rank_' . $goods_id],
-                'comment_server' => empty($data['service_rank_' . $goods_id]) ? 5 : $data['service_rank_' . $goods_id],
-                'comment_delivery' => empty($data['shipping_rank_' . $goods_id]) ? 5 : $data['shipping_rank_' . $goods_id],
+                'user_name' => $user->nick_name,
+                'content' => empty($data['comment'][$goods_id]['content']) ? '默认好评' : $data['comment'][$goods_id]['content'],
+                'comment_rank' => empty($data['comment'][$goods_id]['starKey'][0]['value']) ? 5 : $data['comment'][$goods_id]['starKey'][0]['value'],
+                'comment_server' => empty($data['comment'][$goods_id]['starKey'][1]['value']) ? 5 : $data['comment'][$goods_id]['starKey'][1]['value'],
+                'comment_delivery' => empty($data['comment'][$goods_id]['starKey'][2]['value']) ? 5 : $data['comment'][$goods_id]['starKey'][2]['value'],
                 'add_time' => $time,
                 'ip_address' => empty($data['ip']) ? 0 : $data['ip'],
                 'status' => 1,
                 'parent_id' => $comment_id,
                 'user_id' => $uid,
-                'ru_id' => empty($data['ru_id']) ? 0 : $data['ru_id'],
+                'ru_id' => empty($data['comment'][$goods_id]['ru_id']) ? 0 : $data['comment'][$goods_id]['ru_id'],
                 'order_id' => $order_id,
-                'rec_id' => empty($data['rec_id']) ? 0 : $data['rec_id'],
+                'rec_id' => empty($data['comment'][$goods_id]['rec_id']) ? 0 : $data['comment'][$goods_id]['rec_id'],
             ];
             $re = $this->commentModel->addComment($commentData);
-
-            $label_ids = explode(',', $data['label_ids_' . $goods_id]);
+            $re->comment_id = $ct_id;
+            $res[] = $re;
+            $label_ids = explode(',', $data['comment'][$goods_id]['label_ids']);
             foreach ($label_ids as $label_id) {
                 $commentExtData = [
                     'comment_id' => $ct_id,
@@ -139,25 +140,6 @@ class CommentRepository implements CommentRepositoryInterface
                 ];
                 $this->commentExtModel->addCommentExt($commentExtData);
             }
-            $img_num += $data['img_num_' . $goods_id];
-            for ($i = $img_n; $i < $img_num; $i++) {
-                if (!empty($data['file_' . $i])) {
-                    if ($data['file_' . $i]->isValid()) {
-                        $path = 'comment_img';
-                        $uri = FileHandle::upLoadImage($data['file_' . $i], $path);
-                        $comment_img = [
-                            'user_id' => $uid,
-                            'order_id' => $order_id,
-                            'rec_id' => empty($data['rec_id']) ? 0 : $data['rec_id'],
-                            'goods_id' => $goods_id,
-                            'comment_id' => $ct_id,
-                            'comment_img' => $uri
-                        ];
-                        $this->commentImgModel->addCommentImgs($comment_img);
-                    }
-                }
-            }
-            $img_n += $data['img_num_' . $goods_id];
         }
 
         $owhere['order_id'] = $order_id;
@@ -170,7 +152,28 @@ class CommentRepository implements CommentRepositoryInterface
                 'comment_status' => CS_REVIEW_COMMENTED,
             ];
         }
-        $this->orderInfoModel->setOrder($owhere, $odata);
+//        $this->orderInfoModel->setOrder($owhere, $odata);
+        return $res;
+    }
+
+    public function uploadCommentImg($data, $uid)
+    {
+        $re = false;
+        if (!empty($data['file'])) {
+            if ($data['file']->isValid()) {
+                $path = 'comment_img';
+                $uri = FileHandle::upLoadImage($data['file'], $path);
+                $comment_img = [
+                    'user_id' => $uid,
+                    'order_id' => $data['order_id'],
+                    'rec_id' => empty($data['rec_id']) ? 0 : $data['rec_id'],
+                    'goods_id' => $data['goods_id'],
+                    'comment_id' => $data['ct_id'],
+                    'comment_img' => $uri
+                ];
+                $re = $this->commentImgModel->addCommentImgs($comment_img);
+            }
+        }
         return $re;
     }
 }

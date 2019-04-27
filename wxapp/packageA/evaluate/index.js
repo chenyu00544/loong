@@ -4,6 +4,8 @@ Page({
   data: {
     order: [],
     stars: [],
+    comment_image: [],
+    content: [],
     star_index: [1, 2, 3, 4, 5],
     starKey: [{
       id: 1,
@@ -103,9 +105,90 @@ Page({
     });
   },
 
-  //添加评价图片
-  addCommentImage:function(e){
+  //添加图片
+  addCommentImage: function(e) {
+    var that = this;
+    var goods_index = e.currentTarget.dataset.goods_index || 0;
+    wx.chooseImage({
+      count: 3,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: function(res) {
+        that.data.comment_image[goods_index] = res.tempFilePaths;
+        that.setData({
+          comment_image: that.data.comment_image
+        });
+        app.log(res.tempFilePaths);
+      },
+    })
+  },
 
+  //描述输入
+  textareaInput: function(e) {
+    var that = this;
+    var goods_index = e.currentTarget.dataset.goods_index || 0;
+    var content = e.detail.value || "";
+    that.data.content[goods_index] = content;
+  },
+
+  //保存
+  saveComment: function() {
+    var that = this;
+    var comment = {};
+    var label_ids = [];
+    var goods_ids = [];
+    for (var i in that.data.order.order_goods) {
+      var _comment = {}
+      var goods_id = that.data.order.order_goods[i].goods_id;
+      goods_ids.push(goods_id);
+
+      _comment.ru_id = that.data.order.order_goods[i].ru_id;
+      _comment.rec_id = that.data.order.order_goods[i].rec_id;
+
+      if (that.data.content[i] != undefined) {
+        _comment.content = that.data.content[i];
+      } else {
+        _comment.content = "";
+      }
+
+      var label_ids = [];
+      for (var j in that.data.order.order_goods[i].comment) {
+        if (that.data.order.order_goods[i].comment[j].selected == 1) {
+          label_ids.push(that.data.order.order_goods[i].comment[j].id);
+        }
+      }
+      _comment.label_ids = label_ids.join(",");
+
+      _comment.starKey = that.data.order.order_goods[i].starKey;
+
+      comment[goods_id] = _comment;
+    }
+
+    app.vcvbRequest("comment/add", {
+      comment: comment,
+      order_id: that.data.order.order_id,
+      goods_ids: goods_ids.join(","),
+    }).then((res) => {
+      that.uploadImage();
+    });
+  },
+
+  //上传图片
+  uploadImage(order_id, rec_id, goods_id, ct_id) {
+    wx.uploadFile({
+      url: app.apiUrl("wx/comment/up/img"),
+      filePath: '',
+      name: 'file',
+      formData: {
+        order_id: order_id,
+        rec_id: rec_id,
+        goods_id: goods_id,
+        ct_id: ct_id
+      },
+      success(res) {
+        const data = res.data
+      }
+    });
   },
 
   onShareAppMessage: function() {

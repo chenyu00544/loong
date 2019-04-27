@@ -28,13 +28,17 @@
     </view>
 
     <view class="b-f cont-box">
-      <textarea placeholder="请输入您的真实描述" class="f-32 b-all"></textarea>
+      <textarea placeholder="请输入您的真实描述" class="f-32 b-all" maxlength="255" data-goods_index="{{goods_index}}" bindinput="textareaInput"></textarea>
     </view>
     <view class="b-f cont-box">
-      <block>
-        <image src="../../images/icon_add_back.png" data-goods_index="{{goods_index}}" class="add-img m-right10"></image>
+      <block wx:for="{{comment_image[goods_index]}}" wx:key="c_img" wx:for-item="comment_img_item">
+        <image src="{{comment_img_item}}" data-goods_index="{{goods_index}}" class="comment-img m-right10"></image>
       </block>
-      <image src="../../images/icon_add_back.png" data-goods_index="{{goods_index}}" class="add-img m-right10" bindtap=""></image>
+      <image src="../../images/icon_add_back.png" data-goods_index="{{goods_index}}" class="add-img m-right10" bindtap="addCommentImage"></image>
     </view>
+  </view>
+
+  <view class="padding-box m-top20 profile-btn">
+    <button bindtap="saveComment">保存</button>
   </view>
 </view>

@@ -45,4 +45,18 @@ class CommentController extends CommonController
             return ['code' => 1, 'msg' => '未登陆'];
         }
     }
+
+    public function uploadCommentImg(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $data = $request->all();
+            dd($data);
+            $data['ip'] = $request->getClientIp();
+            $re = $this->commentRepository->addCommentImgs($data, $uid);
+            return $this->apiReturn($re);
+        } else {
+            return ['code' => 1, 'msg' => '未登陆'];
+        }
+    }
 }

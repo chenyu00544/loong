@@ -1079,6 +1079,7 @@ class OrderRepository implements OrderRepositoryInterface
                 break;
             }
         }
+
         $args['ship_no'] = $data['ship_no'];
         $shipProxy = new ShippingProxy();
         $re = $shipProxy->getExpress($args['ship_name'], $args['ship_no']);

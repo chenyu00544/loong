@@ -73,7 +73,7 @@ class CommentRepository implements CommentRepositoryInterface
             foreach ($comment->commentImg as $commentImg) {
                 $commentImg->comment_img = FileHandle::getImgByOssUrl($commentImg->comment_img);
             }
-            foreach ($comment->reply as $reply){
+            foreach ($comment->reply as $reply) {
                 foreach ($reply->commentImg as $comImg) {
                     $comImg->comment_img = FileHandle::getImgByOssUrl($comImg->comment_img);
                 }
@@ -101,7 +101,7 @@ class CommentRepository implements CommentRepositoryInterface
     {
         $time = time();
         $order_id = empty($data['order_id']) ? 0 : $data['order_id'];
-        $ure = $this->usersModel->getUser($uid);
+        $user = $this->usersModel->getUser($uid);
         $goods_ids = explode(',', $data['goods_ids']);
         $img_num = 0;
         $img_n = 0;
@@ -112,9 +112,9 @@ class CommentRepository implements CommentRepositoryInterface
             $commentData = [
                 'comment_id' => $ct_id,
                 'comment_type' => $comment_id == 0 ? 0 : 2,
-                'email' => $ure->email,
+                'email' => $user->email,
                 'id_value' => $goods_id,
-                'user_name' => $ure->nick_name,
+                'user_name' => $user->nick_name,
                 'content' => empty($data['content_' . $goods_id]) ? '默认好评' : $data['content_' . $goods_id],
                 'comment_rank' => empty($data['goods_rank_' . $goods_id]) ? 5 : $data['goods_rank_' . $goods_id],
                 'comment_server' => empty($data['service_rank_' . $goods_id]) ? 5 : $data['service_rank_' . $goods_id],
@@ -124,9 +124,9 @@ class CommentRepository implements CommentRepositoryInterface
                 'status' => 1,
                 'parent_id' => $comment_id,
                 'user_id' => $uid,
-                'ru_id' => empty($data['ru_id']) ? 0 : $data['ru_id'],
+                'ru_id' => empty($data['ru_id_' . $goods_id]) ? 0 : $data['ru_id_' . $goods_id],
                 'order_id' => $order_id,
-                'rec_id' => empty($data['rec_id']) ? 0 : $data['rec_id'],
+                'rec_id' => empty($data['rec_id_' . $goods_id]) ? 0 : $data['rec_id_' . $goods_id],
             ];
             $re = $this->commentModel->addComment($commentData);
 

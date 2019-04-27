@@ -173,11 +173,12 @@ public class EvaluateDetailActivity extends BaseGroupRecyclerViewActivity {
             for (int i = 0; i < orderDetail.getOrderGoodses().size(); i++) {
                 boolean bool = false;
                 for (int n = 0; n < goods_ids.size(); n++) {
-                    if (goods_ids.get(n).equals(orderDetail.getOrderGoodses().get(i).getGoods_id())) {
+                    if (goods_ids.get(n).equals(orderDetail.getOrderGoodses().get(i).getGoods_id
+                            ())) {
                         bool = true;
                     }
                 }
-                if(bool){
+                if (bool) {
                     continue;
                 }
                 goods_ids.add(orderDetail.getOrderGoodses().get(i).getGoods_id());
@@ -317,6 +318,8 @@ public class EvaluateDetailActivity extends BaseGroupRecyclerViewActivity {
         HashMap<String, String> mp = new HashMap<>();
         List<File> files = new ArrayList<>();
         List<Integer> goods_ids = new ArrayList<>();
+        List<Integer> ru_ids = new ArrayList<>();
+        List<Integer> rec_ids = new ArrayList<>();
         mp.put("token", token);
         for (int i = 0; i < evaluateGroups.size(); i++) {
             OrderGoods orderGoods = (OrderGoods) evaluateGroups.get(i).getHeader();
@@ -326,10 +329,15 @@ public class EvaluateDetailActivity extends BaseGroupRecyclerViewActivity {
                     bool = true;
                 }
             }
-            if(bool){
+            if (bool) {
                 continue;
             }
             goods_ids.add(orderDetail.getOrderGoodses().get(i).getGoods_id());
+            mp.put("ru_id_" + orderDetail.getOrderGoodses().get(i).getGoods_id(), orderDetail
+                    .getOrderGoodses().get(i).getRu_id() + "");
+            mp.put("rec_id_" + orderDetail.getOrderGoodses().get(i).getGoods_id(), orderDetail
+                    .getOrderGoodses().get(i).getRec_id() + "");
+            rec_ids.add(orderDetail.getOrderGoodses().get(i).getRec_id());
             for (int j = 0; j < evaluateGroups.get(i).getObjs().size(); j++) {
                 if (evaluateGroups.get(i).getObjs().get(j) instanceof Labels) {
                     Labels labels = (Labels) evaluateGroups.get(i).getObjs().get(j);
@@ -365,41 +373,42 @@ public class EvaluateDetailActivity extends BaseGroupRecyclerViewActivity {
 
         mp.put("goods_ids", StringUtils.join(goods_ids, ","));
         mp.put("order_id", orderDetail.getOrder_id_str());
-        mp.put("ru_id", orderDetail.getRu_id());
 
         HttpUtils.getInstance().postImage(ConstantManager.Url.COMMENT_ADD, mp, files, new
                 HttpUtils.NetCall() {
-            @Override
-            public void success(Call call, final JSONObject json) throws IOException {
-                runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
-                        if (json != null) {
-                            try {
-                                if (json.getInt("code") == 0) {
-                                    confirmDialog.setTitle(context.getResources().getString(R
-                                            .string.thank_you_comment));
-                                    confirmDialog.show();
+                    public void success(Call call, final JSONObject json) throws IOException {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (json != null) {
+                                    try {
+                                        if (json.getInt("code") == 0) {
+                                            confirmDialog.setTitle(context.getResources()
+                                                    .getString(R
+                                                    .string.thank_you_comment));
+                                            confirmDialog.show();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
+                        });
                     }
-                });
-            }
 
-            @Override
-            public void failed(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
-                        ToastUtils.showShortToast(context, context.getResources().getString(R
-                                .string.net_error));
+                    public void failed(Call call, IOException e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showShortToast(context, context.getResources()
+                                        .getString(R
+                                        .string.net_error));
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     View.OnClickListener listener = new View.OnClickListener() {
