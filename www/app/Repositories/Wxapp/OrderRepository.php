@@ -167,10 +167,10 @@ class OrderRepository implements OrderRepositoryInterface
             $re->confirm_take_time_date = date('Y-m-d', $re->confirm_take_time);
             $re->current_time = time();
             $re->order_id_str = (string)$re->order_id;
-            $re->country_name = !empty($re->mapcountry->region_name)?$re->mapcountry->region_name:'';
-            $re->province_name = !empty($re->mapprovince->region_name)?$re->mapprovince->region_name:'';
-            $re->city_name = !empty($re->mapcity->region_name)?$re->mapcity->region_name:'';
-            $re->district_name = !empty($re->mapdistrict->region_name)?$re->mapdistrict->region_name:'';
+            $re->country_name = !empty($re->mapcountry->region_name) ? $re->mapcountry->region_name : '';
+            $re->province_name = !empty($re->mapprovince->region_name) ? $re->mapprovince->region_name : '';
+            $re->city_name = !empty($re->mapcity->region_name) ? $re->mapcity->region_name : '';
+            $re->district_name = !empty($re->mapdistrict->region_name) ? $re->mapdistrict->region_name : '';
             foreach ($re->orderGoods as $order_goods) {
                 $order_goods->goods_thumb = FileHandle::getImgByOssUrl($order_goods->Goods->goods_thumb);
                 $order_goods->goods_img = FileHandle::getImgByOssUrl($order_goods->Goods->goods_img);
@@ -316,6 +316,7 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $return = [];
         $time = time();
+
         // fixme 用户地址
         $uwhere['user_id'] = $uid;
         $user = $this->usersModel->getUserByAddress($uwhere, ['user_id', 'address_id']);
@@ -353,9 +354,13 @@ class OrderRepository implements OrderRepositoryInterface
                     $attr_ids[] = $attr->attr_id;
                     $goods_attr_ids[] = $attr->goods_attr_id;
                 }
+                // fixme 检查product商品库存
+                
+            }else{
+                // fixme 检查goods商品库存
             }
 
-            //购买的商品信息
+            // fixme 购买的商品信息
             $wherein[] = $goods_id;
             $where['is_on_sale'] = 1;
             $where['is_delete'] = 0;
@@ -427,11 +432,11 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goods['goods_sn'] = $goods_detail->goods_sn;
                 $order_goods['o_goods_number'] = $num;
                 $order_goods['market_price'] = $goods_detail->market_price;
-                $order_goods['goods_price'] = $goods_detail->shop_price;
+                $order_goods['goods_price'] = $goods_detail->shop_price * $wx;
                 $order_goods['ru_id'] = $goods_detail->user_id;
                 $order_goods['is_real'] = empty($goods_detail->is_real) ? 1 : 0;
                 $order_goods['extension_code'] = '';
-                $shop_price = $goods_detail->shop_price;
+                $shop_price = $goods_detail->shop_price * $wx;
                 $g_amount = $shop_price * $num;
 
                 //本身商品的促销活动
@@ -576,8 +581,8 @@ class OrderRepository implements OrderRepositoryInterface
                 unset($goods_detail->gattr);
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
-                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id]*$wx;
-                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id]*$wx - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
@@ -595,7 +600,8 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
             return $return;
-        } // fixme 订单再次购买
+        }
+        // fixme 订单再次购买
         elseif (!empty($data['order_id'])) {
             $where['order_id'] = $data['order_id'];
             $column = ['*'];
@@ -685,11 +691,11 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goods['goods_sn'] = $goods_detail->goods_sn;
                 $order_goods['o_goods_number'] = $goods_num[$goods_detail->goods_id];
                 $order_goods['market_price'] = $goods_detail->market_price;
-                $order_goods['goods_price'] = $goods_detail->shop_price;
+                $order_goods['goods_price'] = $goods_detail->shop_price * $wx;
                 $order_goods['ru_id'] = $goods_detail->user_id;
                 $order_goods['is_real'] = empty($goods_detail->is_real) ? 1 : 0;
                 $order_goods['extension_code'] = '';
-                $shop_price = $goods_detail->shop_price;
+                $shop_price = $goods_detail->shop_price * $wx;
                 $g_amount = $shop_price * $goods_num[$goods_detail->goods_id];
 
                 //本身商品的促销活动
@@ -813,8 +819,8 @@ class OrderRepository implements OrderRepositoryInterface
                 unset($goods_detail->gattr);
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
-                $order_new[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id]*$wx;
-                $order_new[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id]*$wx - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
+                $order_new[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
+                $order_new[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order_new[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];
@@ -832,7 +838,8 @@ class OrderRepository implements OrderRepositoryInterface
                 }
             }
             return $return;
-        } // fixme 购物车结算购买
+        }
+        // fixme 购物车结算购买
         elseif (!empty($data['rec_ids'])) {
             $rec_ids = explode(',', $data['rec_ids']);
 
@@ -926,11 +933,11 @@ class OrderRepository implements OrderRepositoryInterface
                 $order_goods['goods_sn'] = $goods_detail->goods_sn;
                 $order_goods['o_goods_number'] = $num;
                 $order_goods['market_price'] = $goods_detail->market_price;
-                $order_goods['goods_price'] = $goods_detail->shop_price;
+                $order_goods['goods_price'] = $goods_detail->shop_price * $wx;
                 $order_goods['ru_id'] = $goods_detail->user_id;
                 $order_goods['is_real'] = empty($goods_detail->is_real) ? 1 : 0;
                 $order_goods['extension_code'] = '';
-                $shop_price = $goods_detail->shop_price;
+                $shop_price = $goods_detail->shop_price * $wx;
                 $g_amount = $shop_price * $num;
 
                 //本身商品的促销活动
@@ -1048,8 +1055,8 @@ class OrderRepository implements OrderRepositoryInterface
                 unset($goods_detail->gattr);
                 $order_goodses[$goods_detail->user_id][] = $goods_detail;
 
-                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id]*$wx;
-                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id]*$wx - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['goods_amount'] = $goods_amount[$goods_detail->user_id];
+                $order[$goods_detail->user_id]['order_amount'] = $goods_amount[$goods_detail->user_id] - $discount[$goods_detail->user_id] + $tax[$goods_detail->user_id] + $shipping_fee[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['discount'] = $discount[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['tax'] = $tax[$goods_detail->user_id];
                 $order[$goods_detail->user_id]['shipping_fee'] = $shipping_fee[$goods_detail->user_id];

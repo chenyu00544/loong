@@ -133,7 +133,7 @@ Page({
             showViewMol: !that.data.showViewMol
           })
           wx.navigateTo({
-            url: "../order/checkout?ObjectId=" + res.data.data.order_id,
+            url: "../downorder/checkout?ObjectId=" + res.data.data.order[0],
           });
         }
       });

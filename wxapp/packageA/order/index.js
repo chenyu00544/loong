@@ -37,7 +37,10 @@ Page({
       order_type: id,
     }).then((res) => {
       wx.hideLoading();
-      var lists = that.data.orders
+      var lists = [];
+      if (page != 1) {
+        lists = that.data.orders
+      }
       for (var i = 0; i < res.data.data.length; i++) {
         lists.push(res.data.data[i]);
       }
@@ -53,12 +56,17 @@ Page({
   },
 
   onLoad: function(e) {
-    var that = this
+    var that = this;
     that.data.current = e.id || 1;
     that.setData({
       current: that.data.current,
       scrollHeight: wx.getSystemInfoSync().windowHeight - 40,
     });
+    page = 1;
+  },
+
+  onShow: function() {
+    var that = this;
     page = 1;
     that.orderStatus(that, that.data.current);
   },
@@ -162,7 +170,7 @@ Page({
     var order_id = e.currentTarget.dataset.id || 0;
     app.vcvbRequest(("order/add"), {
       order_id: order_id,
-      froms:"wxapp"
+      froms: "wxapp"
     }).then((res) => {
       if (res.data.code == 0) {
         wx.navigateTo({

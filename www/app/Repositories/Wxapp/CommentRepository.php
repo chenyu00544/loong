@@ -106,7 +106,7 @@ class CommentRepository implements CommentRepositoryInterface
         $goods_ids = explode(',', $data['goods_ids']);
         $comment_id = 0;
         foreach ($goods_ids as $goods_id) {
-            $comment = $this->commentModel->getCommentsByOrder(['order_id' => $order_id, 'parent_id' => 0], ['*']);
+            $comment = $this->commentModel->getCommentsByOrder(['order_id' => $order_id, 'id_value' => $goods_id, 'parent_id' => 0], ['*']);
             $comment_id = empty($comment) ? 0 : $comment->comment_id;
             $ct_id = RedisCache::incrby('comment_id');
             $commentData = [
@@ -152,7 +152,7 @@ class CommentRepository implements CommentRepositoryInterface
                 'comment_status' => CS_REVIEW_COMMENTED,
             ];
         }
-//        $this->orderInfoModel->setOrder($owhere, $odata);
+        $this->orderInfoModel->setOrder($owhere, $odata);
         return $res;
     }
 

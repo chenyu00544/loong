@@ -35,7 +35,7 @@ Page({
   onShow() {
     // app.redirectTo("../goods/index?objectId=923");
     // app.switchTo("../user/index");
-    app.redirectTo("../../packageA/evaluate/index?ObjectId=166");
+    // app.redirectTo("../../packageA/evaluate/index?ObjectId=166");
     // app.redirectTo("../../packageA/address/detail?objectId=1");
     var that = this
     if (wx.getStorageSync('token')) {

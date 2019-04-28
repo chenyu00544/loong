@@ -119,7 +119,7 @@
                       <block wx:if="{{item.pay_status == 2 && item.shipping_status == 2 && item.order_status == 1 && item.comment_status == 1}}">
                         <view class="flex-box">
                           <view class="btn-default m-left10" bindtap='againBuy' data-id="{{item.order_id}}">再次购买</view>
-                          <view class="btn-default" bindtap='againEvaluate' data-id="{{item.order_id}}">追评</view>
+                          <view class="btn-default" bindtap='againEvaluate' data-id="{{item.order_id}}" bindtap='evaluate'>追评</view>
                         </view>
                       </block>
 

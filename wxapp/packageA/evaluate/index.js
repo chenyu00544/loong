@@ -169,26 +169,50 @@ Page({
       order_id: that.data.order.order_id,
       goods_ids: goods_ids.join(","),
     }).then((res) => {
-      that.uploadImage();
+      if(res.data.code == 0){
+        for (var i in res.data.data){
+          var order_id = res.data.data[i].order_id;
+          var rec_id = res.data.data[i].rec_id;
+          var goods_id = res.data.data[i].id_value;
+          var ct_id = res.data.data[i].comment_id;
+          var bool = that.uploadImage(order_id, rec_id, goods_id, ct_id);
+        }
+        wx.navigateBack({
+          delta: 1
+        })
+      }
     });
   },
 
   //上传图片
   uploadImage(order_id, rec_id, goods_id, ct_id) {
-    wx.uploadFile({
-      url: app.apiUrl("wx/comment/up/img"),
-      filePath: '',
-      name: 'file',
-      formData: {
-        order_id: order_id,
-        rec_id: rec_id,
-        goods_id: goods_id,
-        ct_id: ct_id
-      },
-      success(res) {
-        const data = res.data
+    var that =this;
+    for (var i in that.data.order.order_goods){
+      if (that.data.order.order_goods[i].goods_id == goods_id){
+        var images = that.data.comment_image[i];
+        for (var j in images){
+          wx.uploadFile({
+            url: app.apiUrl("wx/comment/up/img"),
+            filePath: images[j],
+            name: 'file',
+            formData: {
+              order_id: order_id,
+              rec_id: rec_id,
+              goods_id: goods_id,
+              ct_id: ct_id
+            },
+            header: {
+              'Content-Type': 'application/json',
+              'vcvbuy-Authorization': wx.getStorageSync('token')
+            },
+            success(res) {
+              
+            }
+          });
+        }
       }
-    });
+    }
+    return true;
   },
 
   onShareAppMessage: function() {

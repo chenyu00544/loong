@@ -51,9 +51,8 @@ class CommentController extends CommonController
         $uid = Verifiable::authorization($request);
         if ($uid != '') {
             $data = $request->all();
-            dd($data);
             $data['ip'] = $request->getClientIp();
-            $re = $this->commentRepository->addCommentImgs($data, $uid);
+            $re = $this->commentRepository->uploadCommentImg($data, $uid);
             return $this->apiReturn($re);
         } else {
             return ['code' => 1, 'msg' => '未登陆'];

@@ -103,6 +103,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::post('comment/label', 'CommentController@label');
     Route::post('comment/list', 'CommentController@getComments');
     Route::post('comment/add', 'CommentController@addComment');
+    Route::post('comment/up/img', 'CommentController@uploadCommentImg');
 
     Route::post('brand/index', 'BrandController@index');
 });
