@@ -134,9 +134,11 @@
     $("select").blur(function(){
         $("select").removeAttr("size");
         $(this).attr("selected","");
+        $(this).css('height','');
     });
     $("select").focus(function(){
         $(this).attr("size","10");
+        $(this).css('height','auto');
     });
 });
 

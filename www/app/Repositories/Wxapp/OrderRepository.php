@@ -355,7 +355,7 @@ class OrderRepository implements OrderRepositoryInterface
                     $goods_attr_ids[] = $attr->goods_attr_id;
                 }
                 // fixme 检查product商品库存
-                
+
             }else{
                 // fixme 检查goods商品库存
             }

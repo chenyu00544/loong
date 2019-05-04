@@ -1,0 +1,634 @@
+<view class="flex flex-wrap">
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-renshu common-icon"></text>
+    </view>
+    <view>
+      <text>icon-renshu</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-shipin common-icon"></text>
+    </view>
+    <view>
+      <text>icon-shipin</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-msnui-rightmini common-icon"></text>
+    </view>
+    <view>
+      <text>icon-msnui-rightmini</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-delete common-icon"></text>
+    </view>
+    <view>
+      <text>icon-delete</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-edit common-icon"></text>
+    </view>
+    <view>
+      <text>icon-edit</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-favorite common-icon"></text>
+    </view>
+    <view>
+      <text>icon-favorite</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-form common-icon"></text>
+    </view>
+    <view>
+      <text>icon-form</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-help common-icon"></text>
+    </view>
+    <view>
+      <text>icon-help</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-viewlist common-icon"></text>
+    </view>
+    <view>
+      <text>icon-viewlist</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-money common-icon"></text>
+    </view>
+    <view>
+      <text>icon-money</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-fenlei common-icon"></text>
+    </view>
+    <view>
+      <text>icon-fenlei</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-jiangbei common-icon"></text>
+    </view>
+    <view>
+      <text>icon-jiangbei</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-fanhui common-icon"></text>
+    </view>
+    <view>
+      <text>icon-fanhui</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-shopping common-icon"></text>
+    </view>
+    <view>
+      <text>icon-shopping</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-kefu common-icon"></text>
+    </view>
+    <view>
+      <text>icon-kefu</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-jiantou1 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-jiantou1</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-tishi common-icon"></text>
+    </view>
+    <view>
+      <text>icon-tishi</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-dianpu common-icon"></text>
+    </view>
+    <view>
+      <text>icon-dianpu</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-shaixuan1 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-shaixuan1</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-jifen common-icon"></text>
+    </view>
+    <view>
+      <text>icon-jifen</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-tuandui1 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-tuandui1</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-icon01 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-icon01</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-pailie common-icon"></text>
+    </view>
+    <view>
+      <text>icon-pailie</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-map common-icon"></text>
+    </view>
+    <view>
+      <text>icon-map</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-qudiandianpumingpianicon common-icon"></text>
+    </view>
+    <view>
+      <text>icon-qudiandianpumingpianicon</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-dingdan common-icon"></text>
+    </view>
+    <view>
+      <text>icon-dingdan</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-cuxiao common-icon"></text>
+    </view>
+    <view>
+      <text>icon-cuxiao</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-cart common-icon"></text>
+    </view>
+    <view>
+      <text>icon-cart</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-daojianfu common-icon"></text>
+    </view>
+    <view>
+      <text>icon-daojianfu</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-home common-icon"></text>
+    </view>
+    <view>
+      <text>icon-home</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-profile common-icon"></text>
+    </view>
+    <view>
+      <text>icon-profile</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-huo common-icon"></text>
+    </view>
+    <view>
+      <text>icon-huo</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-gengduo common-icon"></text>
+    </view>
+    <view>
+      <text>icon-gengduo</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-shezhi common-icon"></text>
+    </view>
+    <view>
+      <text>icon-shezhi</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-xiangyoujiantou common-icon"></text>
+    </view>
+    <view>
+      <text>icon-xiangyoujiantou</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-dianpu2 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-dianpu2</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-xiajiantous common-icon"></text>
+    </view>
+    <view>
+      <text>icon-xiajiantous</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-templatedefault common-icon"></text>
+    </view>
+    <view>
+      <text>icon-templatedefault</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-fenxiang common-icon"></text>
+    </view>
+    <view>
+      <text>icon-fenxiang</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-icon04 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-icon04</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-xiaoxi common-icon"></text>
+    </view>
+    <view>
+      <text>icon-xiaoxi</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-unif063 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-unif063</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-dizhi common-icon"></text>
+    </view>
+    <view>
+      <text>icon-dizhi</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-icon_pc common-icon"></text>
+    </view>
+    <view>
+      <text>icon-icon_pc</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-z-new common-icon"></text>
+    </view>
+    <view>
+      <text>icon-z-new</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-wancheng1 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-wancheng1</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-tuandui common-icon"></text>
+    </view>
+    <view>
+      <text>icon-tuandui</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-gouwuche common-icon"></text>
+    </view>
+    <view>
+      <text>icon-gouwuche</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-iconxx2 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-iconxx2</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-menu-product common-icon"></text>
+    </view>
+    <view>
+      <text>icon-menu-product</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-buoumaotubiao30 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-buoumaotubiao30</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-weixin common-icon"></text>
+    </view>
+    <view>
+      <text>icon-weixin</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-daishouhuo common-icon"></text>
+    </view>
+    <view>
+      <text>icon-daishouhuo</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-fanhuidingbu common-icon"></text>
+    </view>
+    <view>
+      <text>icon-fanhuidingbu</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-youhuiquan common-icon"></text>
+    </view>
+    <view>
+      <text>icon-youhuiquan</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-tubiao_liulan common-icon"></text>
+    </view>
+    <view>
+      <text>icon-tubiao_liulan</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-kanjia common-icon"></text>
+    </view>
+    <view>
+      <text>icon-kanjia</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-jiantou-copy common-icon"></text>
+    </view>
+    <view>
+      <text>icon-jiantou-copy</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-favorites common-icon"></text>
+    </view>
+    <view>
+      <text>icon-favorites</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-xihuan common-icon"></text>
+    </view>
+    <view>
+      <text>icon-xihuan</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-guanbi common-icon"></text>
+    </view>
+    <view>
+      <text>icon-guanbi</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-tableshare common-icon"></text>
+    </view>
+    <view>
+      <text>icon-tableshare</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-daifukuan common-icon"></text>
+    </view>
+    <view>
+      <text>icon-daifukuan</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-dianji common-icon"></text>
+    </view>
+    <view>
+      <text>icon-dianji</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-sousuo common-icon"></text>
+    </view>
+    <view>
+      <text>icon-sousuo</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-dingwei1 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-dingwei1</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-daipingjia common-icon"></text>
+    </view>
+    <view>
+      <text>icon-daipingjia</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-fapiaoguanli common-icon"></text>
+    </view>
+    <view>
+      <text>icon-fapiaoguanli</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-shouji common-icon"></text>
+    </view>
+    <view>
+      <text>icon-shouji</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-meiyougengduo common-icon"></text>
+    </view>
+    <view>
+      <text>icon-meiyougengduo</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-time_icon common-icon"></text>
+    </view>
+    <view>
+      <text>icon-time_icon</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-shehuituanti common-icon"></text>
+    </view>
+    <view>
+      <text>icon-shehuituanti</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-shoucang1 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-shoucang1</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-fenxiang1 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-fenxiang1</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-add common-icon"></text>
+    </view>
+    <view>
+      <text>icon-add</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-guanbi1 common-icon"></text>
+    </view>
+    <view>
+      <text>icon-guanbi1</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-mjiantou-copy common-icon"></text>
+    </view>
+    <view>
+      <text>icon-mjiantou-copy</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-yiji-shouye common-icon"></text>
+    </view>
+    <view>
+      <text>icon-yiji-shouye</text>
+    </view>
+  </view>
+  <view class="m-left20">
+    <view class="icon">
+      <text class="iconfont icon-im_faxian common-icon"></text>
+    </view>
+    <view>
+      <text>icon-im_faxian</text>
+    </view>
+  </view>
+</view>

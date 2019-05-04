@@ -23,7 +23,7 @@ class UserController extends CommonController
     {
         $uid = Verifiable::authorization($request);
         if ($uid != '') {
-            $re = $this->usersRepository->getUserInfo($uid);
+            $re = $this->usersRepository->getUserInfo($request->all(), $uid);
             return ['code' => 0, 'msg' => '', 'data' => $re];
         }
         return ['code' => 1, 'msg' => '', 'data' => []];

@@ -1,0 +1,12 @@
+.icon{
+  text-align: center;
+  font-size: 80rpx;
+}
+
+.iconfont {
+  font-size: 80rpx;
+}
+
+.m-left20{margin-left: 20rpx;}
+
+.flex-wrap{flex-wrap: wrap}

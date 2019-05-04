@@ -34,6 +34,7 @@ class UsersRepository implements UsersRepositoryInterface
     private $commentModel;
     private $wechatUserModel;
     private $couponsUserModel;
+    private $goodsRepository;
 
     public function __construct(
         UsersModel $usersModel,
@@ -44,7 +45,8 @@ class UsersRepository implements UsersRepositoryInterface
         CartModel $cartModel,
         CommentModel $commentModel,
         WechatUserModel $wechatUserModel,
-        CouponsUserModel $couponsUserModel
+        CouponsUserModel $couponsUserModel,
+        GoodsRepository $goodsRepository
     )
     {
         $this->usersModel = $usersModel;
@@ -56,6 +58,7 @@ class UsersRepository implements UsersRepositoryInterface
         $this->commentModel = $commentModel;
         $this->wechatUserModel = $wechatUserModel;
         $this->couponsUserModel = $couponsUserModel;
+        $this->goodsRepository = $goodsRepository;
     }
 
     public function login($userInfo, $code, $type, $ip, $device_id = '')
@@ -149,7 +152,7 @@ class UsersRepository implements UsersRepositoryInterface
         return $return;
     }
 
-    public function getUserInfo($uid)
+    public function getUserInfo($data, $uid)
     {
         $column = ['user_id', 'server_id', 'email', 'is_email', 'nick_name', 'sex', 'birthday', 'user_money', 'frozen_money', 'bonus_money', 'pay_points',
             'rank_points', 'address_id', 'user_rank', 'mobile_phone', 'is_phone', 'credit_line', 'logo', 'qq', 'union_id'];
@@ -225,7 +228,7 @@ class UsersRepository implements UsersRepositoryInterface
             'order_id' => 0,
         ];
         $user->coupons_count = $this->couponsUserModel->countCouponsUser($coupons_where);
-
+        $user->like_goods = $this->goodsRepository->getGoodsesByUserLike($data, $uid);
         return $user;
     }
 

@@ -33,10 +33,11 @@ Page({
     this.getIndexData(navPage, 0);
   },
   onShow() {
+    // app.redirectTo("../../packageA/icon/index");
     // app.redirectTo("../goods/index?objectId=923");
     // app.switchTo("../user/index");
-    // app.redirectTo("../../packageA/evaluate/index?ObjectId=166");
-    // app.redirectTo("../../packageA/address/detail?objectId=1");
+    // app.redirectTo("../../packageA/user/history");
+    app.redirectTo("../../packageA/group/index");
     var that = this
     if (wx.getStorageSync('token')) {
       // app.redirectTo("../../packageA/login/index");

@@ -108,7 +108,7 @@
         </view>
       </view>
       <!--orderList-s-->
-      <view class="dis-box user-list weui-cells cont-box b-f m-top20">
+      <!-- <view class="dis-box user-list weui-cells cont-box b-f m-top20">
         <view class="box-flex li t-c">
           <navigator url="../user/collect" hover-class="none">
             <text class="f-w f-30 col-3">{{userInfo.funds.goods_count}}</text>
@@ -127,7 +127,7 @@
             <view class="f-26 col-6 m-top4">浏览足迹</view>
           </navigator>
         </view>
-      </view>
+      </view> -->
       <!-- <view class="weui-cells m-top20">
         <navigator url="../../packageA/bargain/order/index" class="weui-cell weui-cell_access b-f">
           <view class="weui-cell__hd">
@@ -138,6 +138,17 @@
           </view>
           <span class="weui-cell__ft"></span>
         </navigator>
+        -->
+      <view class="weui-cells m-top20">
+        <!-- <navigator url="../../packageA/icon/index" class="weui-cell weui-cell_access b-f">
+          <view class="weui-cell__hd">
+            <text class="iconfont icon-z-new common-icon"></text>
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <p class="f-30 pl-12">icon</p>
+          </view>
+          <span class="weui-cell__ft"></span>
+        </navigator> -->
         <navigator url="../../packageA/group/order/index" class="weui-cell weui-cell_access b-f">
           <view class="weui-cell__hd">
             <text class="iconfont icon-tuandui common-icon"></text>
@@ -147,26 +158,24 @@
           </view>
           <span class="weui-cell__ft"></span>
         </navigator>
-        <view class="weui-cell weui-cell_access b-f" bindtap='drpRegister'>
+        <navigator url="../../packageA/user/collect" class="weui-cell weui-cell_access b-f">
           <view class="weui-cell__hd">
-            <text class="iconfont icon-dianpu common-icon"></text>
+            <text class="iconfont icon-favorite common-icon"></text>
           </view>
           <view class="weui-cell__bd weui-cell_primary">
-            <p class="f-30 pl-12">我的微店</p>
-          </view>
-          <span class="weui-cell__ft"></span>
-        </view>
-        <navigator url="../user/speak" class="weui-cell weui-cell_access b-f">
-          <view class="weui-cell__hd">
-            <text class="iconfont icon-fenxiang1 common-icon"></text>
-          </view>
-          <view class="weui-cell__bd weui-cell_primary">
-            <p class="f-30 pl-12">我的代言</p>
+            <p class="f-30 pl-12">收藏商品</p>
           </view>
           <span class="weui-cell__ft"></span>
         </navigator>
-      </view> -->
-      <view class="weui-cells m-top20">
+        <navigator url="../../packageA/user/history" class="weui-cell weui-cell_access b-f">
+          <view class="weui-cell__hd">
+            <text class="iconfont icon-im_faxian common-icon"></text>
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <p class="f-30 pl-12">浏览足迹</p>
+          </view>
+          <span class="weui-cell__ft"></span>
+        </navigator>
         <navigator url="../../packageA/address/index?objectId=user_center" class="weui-cell weui-cell_access b-f">
           <view class="weui-cell__hd">
             <text class="iconfont icon-map common-icon"></text>
@@ -206,10 +215,10 @@
     </view>
     <!--list-s-->
     <view class="category-list">
-      <navigator class="list b-f" wx:for="{{recommend}}" wx:key="list" url="../../packageB/goods/index?objectId={{item.goods_id}}" hover-class="none">
+      <navigator class="list b-f" wx:for="{{userInfo.like_goods}}" wx:key="list" url="../goods/index?objectId={{item.goods_id}}" hover-class="none">
         <view class="left">
           <view class="img">
-            <image src="{{item.goods_thumb}}" mode="aspectFit" class="goodsImg" />
+            <image src="{{item.original_img}}" mode="aspectFit" class="goodsImg" />
           </view>
         </view>
         <view class="right">
@@ -219,6 +228,15 @@
           </view>
         </view>
       </navigator>
+      <block wx:if="{{is_loading}}">
+        <template is="down_loading" />
+      </block>
+      <block wx:else>
+        <view class="title-footer p-r">
+          <text class="f-24 col-9 cont">我是有底线的</text>
+          <view class="hr"></view>
+        </view>
+      </block>
     </view>
     <!--list-e-->
   </view>

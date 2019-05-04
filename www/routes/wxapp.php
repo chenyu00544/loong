@@ -99,6 +99,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::post('faat/group/buy', 'FaatController@groupBuy');
     Route::post('faat/team/nav', 'FaatController@teamNav');
     Route::post('faat/team', 'FaatController@team');
+    Route::post('faat/team/goods', 'FaatController@teamGoods');
 
     Route::post('comment/label', 'CommentController@label');
     Route::post('comment/list', 'CommentController@getComments');

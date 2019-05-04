@@ -16,7 +16,7 @@ class CommonController extends Controller
     public function apiReturn($data = array(), $msg = '', $code = '10000')
     {
         if ($msg != '') {
-            return (['code' => 0, 'msg' => $msg, 'data' => $data, 'time' => time()]);
+            return (['code' => $code, 'msg' => $msg, 'data' => $data, 'time' => time()]);
         } else {
             return (['code' => 0, 'msg' => Config::get('define')[$code], 'data' => $data, 'time' => time()]);
         }

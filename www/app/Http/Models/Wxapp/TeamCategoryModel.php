@@ -50,7 +50,7 @@ class TeamCategoryModel extends Model
             ->where($where)
             ->whereIn('id', $whereIn)
             ->with(['goods' => function ($query) {
-                $query->join('goods', 'goods.goods_id', '=', 'team_goods.goods_id')->select(['team_goods.tc_id','team_goods.id', 'team_goods.goods_id', 'team_goods.team_price', 'goods.goods_id', 'goods.goods_name', 'goods.original_img']);
+                $query->join('goods', 'goods.goods_id', '=', 'team_goods.goods_id')->select(['team_goods.tc_id', 'team_goods.id', 'team_goods.goods_id', 'team_goods.team_price', 'team_goods.team_num', 'goods.goods_id', 'goods.goods_name', 'goods.original_img', 'goods.shop_price', 'goods.market_price']);
             }])
             ->get();
     }

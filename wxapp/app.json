@@ -23,7 +23,14 @@
         "address/detail",
         "address/create",
         "logistics/index",
-        "evaluate/index"
+        "evaluate/index",
+        "icon/index",
+        "user/collect",
+        "user/history",
+        "group/index",
+        "group/goods",
+        "group/rank",
+        "group/order/index"
       ]
     }
   ],

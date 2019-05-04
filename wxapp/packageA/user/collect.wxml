@@ -1,0 +1,49 @@
+<import src="../../common/common.wxml" />
+<view class="container">
+  <view class="common-header-xian"></view>
+  <view wx:if="{{list !=''}}">
+    <view class="items m-top20">
+      <view class="category-list arrange">
+        <view class="list b-f" wx:for="{{list}}" wx:key="list">
+          <view class="left">
+            <navigator url="../../pages/goods/index?objectId={{item.goods.goods_id}}" hover-class="none">
+              <view class="img">
+                <image src="{{item.goods.original_img}}" mode="aspectFit" class="goodsImg" />
+              </view>
+            </navigator>
+          </view>
+          <view class="right">
+            <view class="cont">
+              <navigator url="../../pages/goods/index?objectId={{item.goods.goods_id}}" hover-class="none">
+                <text class="f-30 title twolist-hidden m-top10">{{item.goods.goods_name}}</text>
+                <view class="price f-34 col-m m-top10">{{item.goods.shop_price}}
+                  <text class="del f-22">{{item.goods.market_price}}</text>
+                </view>
+              </navigator>
+              <view data-index="{{index}}" bindtap="delCollect" class="collect-del fr">
+                <text class="iconfont icon-lajixiang"></text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <block wx:if="{{is_loading}}">
+      <template is="down_loading" />
+    </block>
+    <block wx:else>
+      <view class="title-footer p-r">
+        <text class="f-24 col-9 cont">我是有底线的</text>
+        <view class="hr"></view>
+      </view>
+    </block>
+  </view>
+  <view wx:else>
+    <view class="ectouch-notcont">
+      <view class="img">
+        <image src="../../images/no_content.png" mode="aspectFit" />
+      </view>
+      <text class="cont">亲，您还没有收藏商品哦</text>
+    </view>
+  </view>
+</view>

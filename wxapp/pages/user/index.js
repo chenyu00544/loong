@@ -1,20 +1,23 @@
-var app = getApp()
-var token
-var goodshistory
+var app = getApp();
+var page = 1;
 Page({
   data: {
     is_first_action: true,
+    is_loading:false
   },
+
   onShow() {
     var that = this;
-    token = wx.getStorageSync('token')
+    page = 1;
+    var token = wx.getStorageSync('token')
     if (!token) {
       app.redirectTo("../../packageA/login/index");
     }
     that.user();
   },
+
   user() {
-    var that = this
+    var that = this;
     app.vcvbRequest(("user/index"), {
         page: "1",
       }).then((res) => {
@@ -23,10 +26,36 @@ Page({
         }
         that.setData({
           userInfo: res.data.data,
-          hidden: true
         })
-      })
+      });
   },
+
+  loadMore:function(){
+    var that = this;
+    page++;
+    that.setData({
+      is_loading: true
+    });
+    app.vcvbRequest(("user/index"), {
+      page: page,
+    }).then((res) => {
+      if (!res.data.data.user_id) {
+        app.redirectTo("../../packageA/login/index")
+      }
+      for (var i in res.data.data.like_goods){
+        that.data.userInfo.like_goods.push(res.data.data.like_goods[i]);
+      }
+      that.setData({
+        userInfo: that.data.userInfo,
+        is_loading: false
+      })
+    });
+  },
+
+  onReachBottom:function(){
+    this.loadMore();
+  },
+
   //增值发票
   invoiceNav(e) {
     var that = this
@@ -73,6 +102,7 @@ Page({
       wx.stopPullDownRefresh() //停止下拉刷新
     }, 1500);
   },
+
   onShareAppMessage() {
     return {
       title: '小程序首页',
