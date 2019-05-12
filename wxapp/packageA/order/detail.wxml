@@ -1,142 +1,208 @@
-<view class="container p-bottom">
-  <view class="common-header-xian"></view>
-  <scroll-view scroll-y="true">
-    <!--地址-s-->
+<import src="../../common/common.wxml" />
+<block wx:if="{{true}}">
+  <view class="container p-bottom">
+    <view class="common-header-xian"></view>
+    <!-- 发货地址-s -->
     <view class="b-f">
-      <view class="flow-checkout-header b-f dis-flex">
-        <view class="flow-header-left pl-12">
-          <view class="flow-checkout-admin f-32 col-3">{{orders.consignee}}
-            <text class="f-32 col-m">{{orders.mobile}}</text>
+      <view class="flow-checkout-header dis-box">
+        <text class="iconfont icon-dingwei1"></text>
+        <view class="flow-header-left">
+          <view class="flow-checkout-admin f-30 col-3">
+            <text>{{order.order[0].consignee}}</text>
+            <text>{{order.order[0].mobile}}</text>
+            <text class="col-m"></text>
           </view>
-          <view class="flow-checkout-address">{{orders.address}}</view>
+          <view class="flow-checkout-address">
+            <text>{{order.order[0].mapprovince.region_name}}</text>
+            <text>{{order.order[0].mapcity.region_name}}</text>
+            <text>{{order.order[0].mapdistrict.region_name}}</text>
+            <text>{{order.order[0].address}}</text>
+          </view>
         </view>
       </view>
     </view>
-    <!-- <block wx:if="{{orders.comment!=''}}">
-      <view class="flow-message-box b-f m-top10">
-        <view class="flow-message-title h5">买家留言</view>
-        <view class="cont h5">{{orders.comment}}</view>
-      </view>
-    </block> -->
+    <!-- 发货地址-e -->
 
     <!--商品列表-s-->
-    <view class="order-cont b-f m-top20">
-      <view class="order-header dis-flex">
-        <view class="flex-box">
-          <text class="title">商品列表</text>
-        </view>
-        <view class="flex-box">
-          <text class="cont fr col-m">{{orders.pay_status}} {{orders.shipping_status}} {{orders.order_status}}</text>
-        </view>
+    <view wx:for="{{order.order}}" wx:key="orders" class="flow-list m-top20">
+      <view class="header">
+        <text class="iconfont icon-dianpu2"></text>
+        <text class="shop_name">{{item.order_sn}}</text>
       </view>
-      <view class="order-num">
-        <text>订单号：</text>{{orders.order_sn}}</view>
-      <view class="time">
-        <text>{{orders.add_time}}</text>
+      <view class="checkout_list" wx:for="{{item.order_goods}}" wx:for-index="index" wx:key="checkList">
+        <navigator url="../goods/index?objectId={{item.goods_id}}">
+          <view class="dis-flex flow-shopList" data-index="{{index}}">
+            <view class="flow-list-left">
+              <image src="{{item.original_img}}" mode="aspectFit"></image>
+            </view>
+            <view class="flow-list-right box-flex">
+              <text class="f-30 col-3 twolist-hidden m-top20">{{item.goods_name}}</text>
+              <view>
+                <text class="f-26 col-7">{{item.goods_attr}}</text>
+              </view>
+              <view class="flow-list-cont">
+                <text class="flow-cont">{{item.shop_price_format}}</text>
+                <text class="small">×{{item.o_goods_number}}</text>
+              </view>
+            </view>
+          </view>
+        </navigator>
+      </view>
+      <view class="flow-num-box b-f">
+        <text>共 {{item.total.number}}件商品,合计：</text>
+        <text class="flow-money col-m">￥{{item.total.price}}</text>
       </view>
     </view>
-    <view class="padding-box b-f">
-      <block wx:for="{{goodsList}}" wx:key="orders">
-        <view class="dis-flex flow-shopList b-f" bindtap="siteDetail" data-index="{{index}}">
-          <view class="flow-list-left">
-            <image src="{{item.goods_thumb}}" mode="aspectFit" />
+    <!--商品列表-e-->
+
+    <!--发票-s-->
+    <block wx:if="{{can_invoice == 1}}">
+      <view class="flow-distribution dis-flex b-f {{coupons_list!=''?'':'m-top20'}}" bindtap="cascadePopup">
+        <view class="flow-distribution-left pl-12">
+          <text class="flow-dis col-7">发票信息</text>
+          <block wx:if="{{invoiceType == 0}}">
+            <block wx:if="{{inv_payee == '单位'}}">
+              <text class="cont-text">{{unitName}}</text>
+            </block>
+            <block wx:if="{{inv_payee == '个人'}}">
+              <text class="cont-text ">{{inv_payee}}</text>
+            </block>
+          </block>
+          <block wx:if="{{invoiceType == 1}}">
+            <text class="cont-text">增值发票</text>
+          </block>
+          <block wx:if="{{invoiceType ==undefined && inv_payee == undefined}}">
+            <text class="cont-text ">选择发票类型</text>
+          </block>
+        </view>
+        <view class="flow-distribution-right pr-12 p-r">
+          <text class="iconfont icon-xiangyoujiantou"></text>
+        </view>
+      </view>
+    </block>
+    <!--发票-e-->
+
+    <!-- 合计-s-->
+    <view class="flow-all-money b-f padding-box m-top20">
+      <view class="dis-flex flow-all-list">
+        <text class="flex-five">订单金额{{total.goods_amount < total.price ? "(促销价)":""}}:</text>
+        <view class="flex-five t-r">
+          <text class="col-m">{{total.goods_amount}}</text>
+        </view>
+      </view>
+      <block wx:if="{{total.shipping_fee}}">
+        <view class="dis-flex flow-all-list-cont">
+          <text class="flex-five col-7">快递费用：</text>
+          <text class="flex-five col-m t-r">+￥{{total.shipping_fee}}</text>
+        </view>
+      </block>
+      <block wx:if="{{total.tax}}">
+        <view class="dis-flex flow-all-list-cont">
+          <text class="flex-five col-7">税费：</text>
+          <text class="flex-five col-m t-r">+￥{{total.tax}}</text>
+        </view>
+      </block>
+      <block wx:if="{{total.coupons}}">
+        <view class="dis-flex flow-all-list-cont">
+          <text class="flex-five col-7">优惠券：</text>
+          <text class="flex-five col-m t-r">-￥{{total.coupons}}</text>
+        </view>
+      </block>
+      <block wx:if="{{total.bonus}}">
+        <view class="dis-flex flow-all-list-cont">
+          <text class="flex-five col-7">红包：</text>
+          <text class="flex-five col-m t-r">-￥{{total.bonus}}</text>
+        </view>
+      </block>
+      <block wx:if="{{total.total}}">
+        <view class="dis-flex flow-all-list-cont">
+          <text class="flex-five col-7">实付款：</text>
+          <text class="flex-five col-m t-r">￥{{total.total}}</text>
+        </view>
+      </block>
+    </view>
+    <!-- 合计-e -->
+
+    <!--btn-s-->
+    <view class="flow-fixed-footer b-f m-top10 {{isIphoneX?'iphonex-class':''}}">
+      <view class="dis-flex chackout-box">
+        <view class=" chackout-right" catchtap="shiped" data-id="{{order.order[0].order_id}}" wx:if="{{order.order[0].shipping_status < 2}}">
+          <text class="flow-btn">确认收货</text>
+        </view>
+        <view class=" chackout-right" catchtap="back" wx:else>
+          <text class="flow-btn">返回</text>
+        </view>
+      </view>
+    </view>
+    <!--btn-e-->
+    <view class="t_product" animation="{{animationData}}">
+      <view class="invoice_list">
+        <view class="header">发票类型</view>
+        <view class="invoice-box">
+          <view class="list" id="top-nav-bar-{{!hiddenOrder ? true : 0}}">
+            <text bindtap="toOrder" id="0">普通发票</text>
           </view>
-          <view class="flow-list-right">
-            <text class="h4 twolist-hidden">{{item.goods_name}}</text>
-            <text class="p">{{item.goods_attr}}</text>
-            <view class="flow-list-cont">
-              <text class="flow-cont">{{item.goods_price_formated}}</text>
-              <text class="small">×{{item.goods_number}}</text>
+          <view class="list {{vat_invoice!='' ? '' : 'active'}}" id="top-nav-bar-{{!hiddenAddress ? true : 0}}">
+            <text bindtap="{{vat_invoice!='' ? 'toAddress' : 'toAddressTs'}}" id="1">增值发票</text>
+          </view>
+        </view>
+        <!--普通发票-->
+        <view hidden="{{hiddenOrder}}" class="order">
+          <text class="cont">电子发票是税务局认可的有效凭证，其法律效力、基本用途及使用规定</text>
+          <view class="invoice-box invoice-box-user">
+            <view class="list" id="top-nav-bar-{{!hiddenUser ? true : 0}}">
+              <text bindtap="userList" id="个人">个人</text>
+            </view>
+            <view class="list" id="top-nav-bar-{{!hiddenUnit ? true : 0}}">
+              <text bindtap="unitList" id="单位">单位</text>
+            </view>
+          </view>
+          <!--内容-->
+          <view hidden="{{hiddenUnit}}" class="Unit">
+            <view class="section_input dis-box">
+              <view class="left col-3">
+                <text>单位名称</text>
+              </view>
+              <view class="right">
+                <input confirm-type="" name="unitName" type="text" placeholder="输入单位名称" value="{{unitName}}" bindinput="unitNameInput" />
+              </view>
+            </view>
+            <view class="section_input dis-box">
+              <view class="left col-3">
+                <text>识别码</text>
+              </view>
+              <view class="right">
+                <input confirm-type="" name="headingCode" type="number" placeholder="请输入纳税人识别码" value="{{headingCode}}" bindinput="unitNumInput" />
+              </view>
+            </view>
+          </view>
+          <view class="user-invoice">
+            <view class="header-user">发票内容</view>
+            <view class="page-section">
+              <view class="weui-cells weui-cells_after-title">
+                <radio-group bindchange="radioChange" name="radio">
+                  <label class="weui-cell weui-check__label" wx:for="{{userInvoice}}" wx:key="{{item.value}}">
+                    <view class="weui-cell__hd">
+                      <radio value="{{item}}" color='#ff495e' />
+                    </view>
+                    <view class="weui-cell__bd">{{item}}</view>
+                  </label>
+                </radio-group>
+              </view>
             </view>
           </view>
         </view>
-      </block>
-    </view>
+      </view>
+      <!--增值发票-->
+      <view hidden="{{hiddenAddress}}" class="address">
 
-    <!--商品列表-e-->
-
-    <!--配送方式-s-->
-    <view class="select b-f">
-      <view class="flow-distribution dis-flex m-top20">
-        <view class="flow-distribution-left pl-12">
-          <text class="flow-dis col-7">配送方式</text>
-          <text class="m-l flow-dis">{{orders.shipping_name}}</text>
-        </view>
       </view>
-      <view class="flow-num-box b-f">共{{orders.total_number}}件商品，合计：
-        <text class="flow-money">{{orders.total_amount_formated}}</text>
+      <view class="padding-box m-top20 profile-btn">
+        <button bindtap="cascadeDismiss">确 定</button>
       </view>
-    </view>
-    <!--商品金额-s-->
-    <block wx:if="{{orders.invoice_type == '0' && orders.inv_content != '0' && orders.inv_content != ''}}">
-      <view class="flow-all-money b-f padding-box m-top20">
-        <view class="dis-flex flow-all-list">
-          <text class="flex-five">发票信息</text>
-          <text class="flex-five col-3 t-r">普通发票</text>
-        </view>
-        <view class="dis-flex flow-all-list-cont">
-          <text class="flex-five col-7">发票类型</text>
-          <text class="flex-five col-m t-r">{{orders.inv_payee}}</text>
-        </view>
-        <view class="dis-flex flow-all-list-cont">
-          <text class="flex-five col-7">发票明细</text>
-          <text class="flex-five col-m t-r">{{orders.inv_content}}</text>
-        </view>
-      </view>
-    </block>
-    <block wx:if="{{orders.invoice_type == '1'}}">
-      <view class="flow-all-money b-f padding-box m-top20">
-        <view class="dis-flex flow-all-list">
-          <text class="flex-five">发票信息</text>
-          <text class="flex-five col-3 t-r">增值发票</text>
-        </view>
-      </view>
-    </block>
-
-
-    <!--商品金额-s-->
-    <view class="flow-all-money b-f padding-box m-top20">
-      <view class="dis-flex flow-all-list">
-        <text class="flex-five">商品金额</text>
-        <text class="flex-five col-m t-r">{{orders.goods_amount_formated}}</text>
-      </view>
-      <block wx:if="{{orders.shipping_fee >= 0}}">
-        <view class="dis-flex flow-all-list-cont">
-          <text class="flex-five col-7">快递运费</text>
-          <text class="flex-five col-m t-r">+{{orders.shipping_fee_formated}}</text>
-        </view>
-      </block>
-      <block wx:if="{{orders.coupons!=undefined}}">
-        <view class="dis-flex flow-all-list-cont">
-          <text class="flex-five col-7">优惠券</text>
-          <text class="flex-five col-m t-r">-{{orders.coupons}}</text>
-        </view>
-      </block>
-      <view class="dis-flex flow-all-list-cont">
-        <text class="flex-five col-7">已付金额</text>
-        <text class="flex-five col-m t-r">￥{{orders.money_paid}}</text>
-      </view>
-      <view class="dis-flex flow-all-list-cont">
-        <text class="flex-five col-7">应付金额</text>
-        <text class="flex-five col-m t-r">{{orders.total_amount_formated}}</text>
-      </view>
-    </view>
-  </scroll-view>
-
-  <!--btn-->
-  <view class="flow-fixed-footer b-f">
-    <view class="dis-flex chackout-box" wx:if="{{orders.pay_status == '未付款'}}">
-      <view class="flex-box chackout-left-detail t-c" bindtap='cancel_order'>取消订单</view>
-      <view class="flex-box chackout-right-detail order-number" bindtap="submitOrder">
-        <form bindsubmit="pay_order" report-submit="true" data-id='{{orders.order_id}}'>
-          <button form-type="submit">
-            <text class="flow-btn" wx:if="{{orders.pay_status == '未付款'}}">去付款</text>
-          </button>
-        </form>
-      </view>
-    </view>
-    <view class="flow-btn h3" wx:if="{{orders.shipping_status == '已发货'}}">
-      <view bindtap='confirm_order' data-id="{{orders.order_id}}">确认收货</view>
     </view>
   </view>
-</view>
+</block>
+<block wx:else>
+  <template is="loading" />
+</block>

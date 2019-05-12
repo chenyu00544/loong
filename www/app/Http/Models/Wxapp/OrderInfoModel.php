@@ -129,6 +129,18 @@ class OrderInfoModel extends Model
                     ->with(['Goods'])
                     ->get();
             }])
+            ->with(['mapcountry' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapprovince' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapcity' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapdistrict' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
             ->where($where);
         if (!empty($whereIn)) {
             $m->whereIn('order_id', $whereIn);
@@ -211,5 +223,29 @@ class OrderInfoModel extends Model
             ->where('user_id', $user_id)
             ->where('extension_code', 'team_buy')
             ->count();
+    }
+
+    /**
+     * 获取拼团团员信息
+     * @param string $type
+     * @param integer $size
+     * @return mixed
+     */
+    public function teamUserList($team_id = 0, $page = 1, $size = 5)
+    {
+        $begin = ($page - 1) * $size;
+
+        $list = $this
+            ->select('order_info.add_time','order_info.team_id', 'order_info.user_id','order_info.team_parent_id','order_info.team_user_id')
+            ->leftjoin('users as u', 'order_info.user_id', '=', 'u.user_id')
+            ->where([['order_info.team_id', '=', $team_id],['order_info.extension_code', '=', 'team_buy']])
+            ->orWhere([['order_info.pay_status', '=', 2],['order_info.order_status', '=', 4]])
+            ->orderBy('order_info.add_time', 'asc')
+            ->offset($begin)
+            ->limit($size)
+            ->get()
+            ->toArray();
+
+        return $list;
     }
 }

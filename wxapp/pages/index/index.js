@@ -33,14 +33,18 @@ Page({
     this.getIndexData(navPage, 0);
   },
   onShow() {
+
     // app.redirectTo("../../packageA/icon/index");
     // app.redirectTo("../goods/index?objectId=923");
     // app.switchTo("../user/index");
     // app.redirectTo("../../packageA/user/history");
     // app.redirectTo("../../packageA/group/index");
     // app.redirectTo("../../packageA/group/rank");
-    app.redirectTo("../../packageA/group/order/index");
+    // app.redirectTo("../../packageA/group/order/index");
+    app.redirectTo("../../packageA/group/wait?objectId=2&user_id=60");
     // app.redirectTo("../../packageA/group/goods?objectId=923");
+    // app.redirectTo("../../packageA/order/detail?objectId=167");
+
     var that = this
     if (wx.getStorageSync('token')) {
       // app.redirectTo("../../packageA/login/index");

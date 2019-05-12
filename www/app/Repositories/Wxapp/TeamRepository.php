@@ -493,8 +493,63 @@ class TeamRepository implements TeamRepositoryInterface
         }
     }
 
-    public function getTeamOrder($data, $uid)
+    /**
+     * 等待成团
+     * @param int $uid      会员id
+     * @param int $team_id  开团id
+     * @param int $user_id  开团会员id
+     * @return mixed
+     */
+    public function teamWait($uid = 0, $team_id = 0, $user_id)
     {
+        $result = [
+            'error' => 0,
+            'team_info' => '',         //拼团信息
+            'teamUser' => '',          //已成功开团信息
+        ];
+        $time = time();
+        //订单状态
+        //$order_info = $this->teamRepository->orderInfo($team_id, $user_id);
 
+        //获取拼团信息
+        $team_info = $this->teamLogModel->teamInfo($team_id);
+        $user_info = $this->usersModel->getUser($team_info['team_parent_id']);
+        $team_info['user_name'] = !empty($user_info->nick_name) ? $user_info->nick_name : $user_info->user_name;
+        $team_info['logo'] = FileHandle::getImgByOssUrl($user_info->logo);
+        $team_info['original_img'] = FileHandle::getImgByOssUrl($team_info['original_img']);
+        $team_info['team_price'] = Common::priceFormat($team_info['team_price']);
+
+        $end_time = $team_info['start_time'] + ($team_info['validity_time'] * 3600);//剩余时间
+        $team_info['end_time'] =$end_time + (8 * 3600);
+        $team_num = $this->orderInfoModel->surplusNum($team_info['team_id']);  //统计几人参团
+        $team_info['surplus'] = $team_info['team_num'] - $team_num;//还差几人
+        $team_info['bar'] = round($team_num * 100 / $team_info['team_num'], 0);//百分比
+
+        if ($team_info['status'] != 1 && $time < $end_time && $team_info['is_team'] == 1) {//进行中
+            $team_info['status'] = 0;
+        } elseif (($team_info['status'] != 1 && $time > $end_time) || $team_info['is_team'] != 1) {//失败
+            $team_info['status'] = 2;
+        } elseif ($team_info['status'] = 1) {//成功
+            $team_info['status'] = 1;
+        }
+
+        //验证是否已经参团
+        $team_join = $this->orderInfoModel->teamJoin($uid, $team_id);
+        if ($team_join > 0) {
+            $team_info['team_join'] = 1;
+        }
+
+        $result['team_info'] = $team_info;
+
+        //获取拼团团员信息
+        $teamUser = $this->orderInfoModel->teamUserList($team_id, 1, 5);
+        foreach ($teamUser as $key => $val) {
+            $user_info = $this->usersModel->getUser($val['user_id']);
+            $teamUser[$key]['user_name'] = !empty($user_info->nick_name) ? $user_info->nick_name : $user_info->nick_name;
+            $teamUser[$key]['user_picture'] = FileHandle::getImgByOssUrl($user_info->logo);
+        }
+        $result['teamUser'] = $teamUser;
+
+        return $result;
     }
 }

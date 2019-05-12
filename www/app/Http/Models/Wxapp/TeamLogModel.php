@@ -80,4 +80,18 @@ class TeamLogModel extends Model
             ->limit($size)
             ->get();
     }
+
+    public function teamInfo($team_id)
+    {
+        $info = $this->select('team_log.team_id', 'team_log.start_time','team_log.status','o.user_id','o.team_parent_id','g.goods_id','g.goods_thumb','g.original_img','g.goods_img','g.goods_name','g.goods_brief','tg.validity_time' ,'tg.team_num' ,'tg.team_price','tg.is_team')
+            ->leftjoin('order_info as o', 'team_log.team_id', '=', 'o.team_id')
+            ->leftjoin('goods as g', 'team_log.goods_id', '=', 'g.goods_id')
+            ->leftjoin('team_goods as tg', 'team_log.t_id', '=', 'tg.id')
+            ->where('team_log.team_id', $team_id)
+            ->where('o.extension_code', 'team_buy')
+            ->where('o.team_parent_id', '>', 0)
+            ->first()
+            ->toArray();
+        return $info;
+    }
 }
