@@ -56,11 +56,11 @@ class TeamController extends CommonController
         }
     }
 
-    public function teamOrder(Request $request)
+    public function teamOrders(Request $request)
     {
         $uid = Verifiable::authorization($request);
         if ($uid != '') {
-            $res = $this->teamRepository->getTeamOrder($request->all(), $uid);
+            $res = $this->teamRepository->getTeamOrders($request->all(), $uid);
             if (is_numeric($res)) {
                 return $this->apiReturn(array(), '', $res);
             } else {

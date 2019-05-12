@@ -51,6 +51,7 @@
       </view>
     </scroll-view>
   </view>
+  
   <!--公用nav-start-->
   <view class="commont-fixed-footer t-c dis-box ">
     <view class="box-flex li">

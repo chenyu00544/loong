@@ -431,7 +431,7 @@ class TeamRepository implements TeamRepositoryInterface
         }
     }
 
-    public function getTeamOrder($data, $uid)
+    public function getTeamOrders($data, $uid)
     {
         $where['status'] = empty($data['type']) ? 0 : $data['type'];
         $page = empty($data['page']) ? 1 : $data['page'];

@@ -103,6 +103,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::post('team/goods', 'TeamController@teamGoods');
     Route::post('team/buy', 'TeamController@teamBuy');
     Route::post('team/rank', 'TeamController@teamRank');
+    Route::post('team/orders', 'TeamController@teamOrders');
     Route::post('team/order', 'TeamController@teamOrder');
 
     Route::post('comment/label', 'CommentController@label');

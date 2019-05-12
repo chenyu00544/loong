@@ -13,7 +13,7 @@ Page({
 
   orderStatus: function (that, id) {
     app.showLoading();
-    app.vcvbRequest("team/order", {
+    app.vcvbRequest("team/orders", {
       size: size,
       page: page,
       type: type
