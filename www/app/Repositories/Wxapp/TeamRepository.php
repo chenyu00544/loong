@@ -492,4 +492,9 @@ class TeamRepository implements TeamRepositoryInterface
             return 10004;
         }
     }
+
+    public function getTeamOrder($data, $uid)
+    {
+
+    }
 }
