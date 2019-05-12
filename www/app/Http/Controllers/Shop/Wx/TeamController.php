@@ -80,4 +80,19 @@ class TeamController extends CommonController
             return $this->apiReturn($res);
         }
     }
+
+    public function teamOrder(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $res = $this->teamRepository->getTeamOrder($request->all(), $uid);
+            if (is_numeric($res)) {
+                return $this->apiReturn(array(), '', $res);
+            } else {
+                return $this->apiReturn($res);
+            }
+        } else {
+            return $this->apiReturn(array(), '未登陆', 10002);
+        }
+    }
 }
