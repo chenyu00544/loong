@@ -46,4 +46,11 @@ class ProductsModel extends Model
             ->where('goods_attr', $gids)
             ->first();
     }
+
+    public function getProdcuts($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->get();
+    }
 }

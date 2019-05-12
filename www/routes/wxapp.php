@@ -97,9 +97,13 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::post('faat/brand', 'FaatController@brand');
     Route::post('faat/seckill', 'FaatController@secondKill');
     Route::post('faat/group/buy', 'FaatController@groupBuy');
-    Route::post('faat/team/nav', 'FaatController@teamNav');
-    Route::post('faat/team', 'FaatController@team');
-    Route::post('faat/team/goods', 'FaatController@teamGoods');
+
+    Route::post('team/nav', 'TeamController@teamNav');
+    Route::post('team', 'TeamController@team');
+    Route::post('team/goods', 'TeamController@teamGoods');
+    Route::post('team/buy', 'TeamController@teamBuy');
+    Route::post('team/rank', 'TeamController@teamRank');
+    Route::post('team/order', 'TeamController@teamOrder');
 
     Route::post('comment/label', 'CommentController@label');
     Route::post('comment/list', 'CommentController@getComments');

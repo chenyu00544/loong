@@ -95,3 +95,6 @@ padding:0 10rpx;
 .goods-bargain-img .left .bargain-num{padding: 0 8rpx}
 .goods-bargain-img .left .pro-num{font-size:38rpx;text-align:left;padding-left:8rpx;
 }
+.team-num{width: 80rpx;display: block}
+.footer-fixed image{width:56rpx;height: 56rpx;}
+.footer-fixed .wd{width: 150rpx;text-align: center;}

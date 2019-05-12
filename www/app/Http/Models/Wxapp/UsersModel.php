@@ -23,6 +23,10 @@ class UsersModel extends Model
     {
         return $this->hasMany('App\Http\Models\Wxapp\UserAddressModel', 'user_id', 'user_id');
     }
+    public function address()
+    {
+        return $this->hasOne('App\Http\Models\Wxapp\UserAddressModel', 'user_id', 'user_id');
+    }
 
     public function real()
     {
@@ -54,6 +58,26 @@ class UsersModel extends Model
                         $query->select(['region_id', 'region_name']);
                     }]);
             }])
+            ->where($where)
+            ->first();
+    }
+
+    public function getUserAndExt($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->with(['address' => function ($query) {
+                $query->select(['address_id', 'user_id', 'consignee', 'country', 'province', 'city', 'district', 'address', 'mobile', 'zipcode', 'email', 'best_time', 'sign_building'])
+                    ->with(['mapprovince' => function ($query) {
+                        $query->select(['region_id', 'region_name']);
+                    }])
+                    ->with(['mapcity' => function ($query) {
+                        $query->select(['region_id', 'region_name']);
+                    }])
+                    ->with(['mapdistrict' => function ($query) {
+                        $query->select(['region_id', 'region_name']);
+                    }]);
+            }])
+            ->with(['real'])
             ->where($where)
             ->first();
     }

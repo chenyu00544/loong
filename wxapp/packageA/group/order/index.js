@@ -2,7 +2,6 @@
 var app = getApp()
 var token
 var openid;
-var url = app.apiUrl('team/teamUserOrder');
 var size = 30;
 var page = 1;
 var type="0"
@@ -13,47 +12,35 @@ Page({
   },
 
   orderStatus: function (that, id) {
-    wx.request({
-      url: url,
-      data: {
-        size: size,
-        page: page,
-        type: type
-      },
-      header: {
-        'Content-Type': 'application/json',
-        'X-ECTouch-Authorization': token
-      },
-      method: "POST",
-      success: function (res) {
-        that.setData({
-          orders: res.data.data,
-
-        })
-      }
-    })
+    app.showLoading();
+    app.vcvbRequest("team/order", {
+      size: size,
+      page: page,
+      type: type
+    }).then((res)=>{
+      app.hideLoading();
+      that.setData({
+        orders: res.data.data,
+      })
+    });
   },
+  
   onLoad: function (e) {
     var that = this
-    token = wx.getStorageSync('token')
     that.data.current = e.id || 0
     this.setData({
       current: that.data.current
     })
     this.orderStatus(this, that.data.current);
-    //加载中
-    this.loadingChange()
-    //获取openid
   },
-  /*订单导航内容切换*/
 
+  /*订单导航内容切换*/
   bindHeaderTap: function (event) {
     this.setData({
       current: event.target.dataset.index,
     });
     type = event.target.dataset.index
     this.orderStatus(this, event.target.dataset.index);
-    this.loadingChange()
   },
 
   siteDetail: function (e) {
@@ -63,14 +50,13 @@ Page({
     // console.log(e)
     var orderId = that.data.orders[index].order_id;
     wx.navigateTo({
-      url: "../order/detail?objectId=" + orderId
+      url: "../../order/detail?objectId=" + orderId
     });
   },
 
-  /*等待成团 */
+  /* 拼团进度 */
   teamWait:function(e){
     var that = this
-    token = wx.getStorageSync('token')
     var index = e.currentTarget.dataset.index;
     var team_id = that.data.orders[index].team_id
     var user_id = that.data.orders[index].user_id
@@ -160,13 +146,6 @@ Page({
         }
       }
     })
-  },
-  loadingChange() {
-    setTimeout(() => {
-      this.setData({
-        hidden: true
-      })
-    }, 1000)
   },
   //下拉刷新完后关闭
   onPullDownRefresh: function () {

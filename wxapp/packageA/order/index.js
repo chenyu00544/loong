@@ -87,7 +87,7 @@ Page({
     var index = e.currentTarget.dataset.index;
     var orderId = that.data.orders[index].order_id;
     wx.navigateTo({
-      url: "../../pages/order/detail?objectId=" + orderId
+      url: "../order/detail?objectId=" + orderId
     });
   },
 

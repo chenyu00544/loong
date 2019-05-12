@@ -34,7 +34,7 @@
             <div class="fromlist clearfix">
                 <div class="clearfix">
                     <div class="fr wd250 pad-tb-10">
-                        <form action="{{url('admin/team/info'.$nav_type)}}" method="get">
+                        <form action="{{url('admin/team/info/'.$nav_type)}}" method="get">
                             {{csrf_field()}}
                             <input type="text" name="keywords" value="{{$search['keywords']}}"
                                    class="form-control input-sm max-wd-190" placeholder="活动名称">

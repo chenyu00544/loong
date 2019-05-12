@@ -1,5 +1,4 @@
 var app = getApp();
-var token
 var page = "1"
 Page({
   data: {
@@ -20,7 +19,7 @@ Page({
   //获取导航
   getNav: function() {
     var that = this;
-    app.vcvbRequest("faat/team/nav").then((res) => {
+    app.vcvbRequest("team/nav").then((res) => {
       if (res.data.code == 0) {
         that.setData({
           nav: res.data.data,
@@ -34,7 +33,7 @@ Page({
   //商品列表
   groupList: function(navId) {
     var that = this
-    app.vcvbRequest("faat/team", {
+    app.vcvbRequest("team", {
       page:1,
       id: navId
     }).then((res) => {
@@ -49,26 +48,6 @@ Page({
     this.setData({
       subNavIndex: index,
     });
-  },
-
-  //拼团首页
-  homeCont: function() {
-    var that = this
-    //初始化onLoad
-    var token = wx.getStorageSync('token')
-    wx.request({
-      url: app.apiUrl("team"),
-      method: "POST",
-      header: {
-        'Content-Type': 'application/json',
-        'X-ECTouch-Authorization': token
-      },
-      success: function(res) {
-        that.setData({
-          index: res.data.data,
-        })
-      }
-    })
   },
 
   // 点击标题切换当前页时改变样式

@@ -9,6 +9,7 @@
 
 namespace App\Http\Models\Wxapp;
 
+use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 
 class OrderInfoModel extends Model
@@ -53,6 +54,16 @@ class OrderInfoModel extends Model
         return $this->hasMany('App\Http\Models\Wxapp\OrderReturnModel', 'order_id', 'order_id');
     }
 
+    public function teamLog()
+    {
+        return $this->hasOne('App\Http\Models\Wxapp\TeamLogModel', 'team_id', 'team_id');
+    }
+
+    public function teamGoods()
+    {
+        return $this->hasOne('App\Http\Models\Wxapp\TeamGoodsModel', 'id', 't_id');
+    }
+
     public function getOrders($where, $orWhere = [], $page = 0, $column = ['*'], $orderBy = [], $size = 10)
     {
         $m = $this->select($column)
@@ -84,12 +95,29 @@ class OrderInfoModel extends Model
         if (empty($orderBy)) {
             $m->orderBy('add_time', 'DESC');
         } else {
-            foreach ($orderBy as $key => $value){
+            foreach ($orderBy as $key => $value) {
                 $m->orderBy($key, $value);
             }
         }
         return $m->offset($page * $size)
             ->limit($size)
+            ->get();
+    }
+
+    public function getOrdersByTeam($where, $page, $size, $column = ['*'])
+    {
+        return $this->select($column)
+            ->leftJoin('team_log', 'team_log.team_id', '=', 'order_info.team_id')
+            ->with(['teamGoods'])
+            ->with(['orderGoods' => function ($query) {
+                $query->select(['goods_id', 'order_id'])
+                    ->with(['Goods' => function ($query) {
+                        $query->select(['goods_id', 'click_count', 'desc_mobile', 'goods_name', 'original_img', 'shop_price', 'is_hot', 'is_new', 'is_best', 'goods_video','goods_thumb','user_id']);
+                    }]);
+            }])
+            ->where($where)
+            ->limit($size)
+            ->offset(($page - 1) * $size)
             ->get();
     }
 
@@ -154,5 +182,34 @@ class OrderInfoModel extends Model
                     $query->orWhere($where);
                 }
             })->count();
+    }
+
+    /**
+     * 统计该拼团已参与人数
+     * @param $bargain_id
+     * @return mixed
+     */
+    public function surplusNum($team_id = 0)
+    {
+        return $this->select('*')
+            ->where([['team_id', '=', $team_id], ['extension_code', '=', 'team_buy']])
+            ->where(function ($query) {
+                $query->orWhere(['pay_status' => 2])->orWhere(['order_status' => 4]);
+            })
+            ->count();
+    }
+
+    /**
+     * 验证是否已经参团
+     * @param $bargain_id
+     * @return mixed
+     */
+    public function teamJoin($user_id, $t_id = 0)
+    {
+        return $this->select('*')
+            ->where('extension_id', $t_id)
+            ->where('user_id', $user_id)
+            ->where('extension_code', 'team_buy')
+            ->count();
     }
 }

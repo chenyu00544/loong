@@ -28,7 +28,7 @@
         <view class="tab-item pad-tb-20" wx:for="{{list.goodses}}" wx:key="sub_goods" wx:for-index="sub_nav_index">
           <view class="flex fd" data-id="{{sub_nav_index}}" bindtap="subNavClick">
             <image mode="aspectFit" src="{{item.tc_img}}" class="sub-nav-img"/>
-            <text class="col-3 f-30 sub-nav-title {{subNavIndex==sub_nav_index?'active':''}}">{{item.name}}</text>
+            <text class="col-3 f-26 sub-nav-title {{subNavIndex==sub_nav_index?'active':''}}">{{item.name}}</text>
           </view>
         </view>
       </scroll-view>

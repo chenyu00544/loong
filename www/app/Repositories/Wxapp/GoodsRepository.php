@@ -173,7 +173,6 @@ class GoodsRepository implements GoodsRepositoryInterface
                 }
             }
 
-
             $goods_detail->collect = $this->collectGoodsModel->countCollectGoods(['goods_id' => $goods_id, 'user_id' => $user_id, 'is_attention' => 1]);
 
             //大型活动

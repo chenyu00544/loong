@@ -5,35 +5,31 @@
     <!--详情相册-->
     <view class="goods-swiper" bindtap="imgPreview">
       <swiper autoplay="{{true}}" bindchange="setCurrent" indicator-dots="{{indicatorDots}}" interval="{{interval}}" circular="true" duration="{{duration}}" class="goods-box" style="border-bottom:none;">
-        <block wx:for="{{goodsCont.goods_img}}" wx:key="goodsImg">
+        <block wx:for="{{goodsCont.goods_info.ggallery}}" wx:key="goodsImg">
           <swiper-item>
-            <image src="{{item}}" mode="aspectFill" class="slide-image" />
+            <image src="{{item.img_original}}" mode="aspectFill" class="slide-image" />
           </swiper-item>
         </block>
       </swiper>
       <view class="num">
         <text>{{currentIndex>9?currentIndex:currentIndex}}</text>
-        <text>/{{goodsCont.goods_img.length>9?goodsCont.goods_img.length:goodsCont.goods_img.length}}</text>
+        <text>/{{goodsCont.goods_info.ggallery.length}}</text>
       </view>
     </view>
     <!--活动标题-->
     <view class="goods-bargain-img countDownTimeView countDownAllView">
-      <view class="dis-box">
-        <view class="left box-flex">
-          <view class="dis-box">
-            <view class="bargain-icon dis-box">
-              <view class="b-f icon">
-                <text class="iconfont icon-shehuituanti "></text>
-              </view>
-              <view class="">
-                <text class="f-22 bargain-num ">{{goodsCont.goods_info.team_num}}人团</text>
-              </view>
-            </view>
-            <view class="box-flex pro-num m-top10">
-              {{group_property.goods_price_formated?group_property.goods_price_formated:goodsCont.goods_info.team_price}}
-              <text class="del" style="font-size:22rpx;color:#fff">{{property.market_price_formated?property.market_price_formated:goodsCont.goods_info.market_price}}</text>
-            </view>
+      <view class="left flex">
+        <view class="bargain-icon flex-center">
+          <view class="b-f icon h100">
+            <text class="iconfont icon-shehuituanti"></text>
           </view>
+          <view class="">
+            <text class="f-22 team-num">{{goodsCont.goods_info.team_num}}人团</text>
+          </view>
+        </view>
+        <view class="box-flex pro-num m-top10">
+          拼团价：￥{{group_property.goods_price_formated?group_property.goods_price_formated:goodsCont.goods_info.team_price}}
+          <text class="del" style="font-size:22rpx;color:#fff">{{property.market_price_formated?property.market_price_formated:goodsCont.goods_info.market_price}}</text>
         </view>
       </view>
     </view>
@@ -41,11 +37,11 @@
       <!--标题-->
       <view class="goods-title dis-box">
         <text class="f-31 twolist-hidden box-flex">
-          <text class="tag">拼</text>{{goodsCont.goods_info.goods_name}}</text>
+          <text class="tag">拼</text>{{goodsCont.goods_info.goods.goods_name}}</text>
       </view>
       <view class="sales f-28 dis-box m-top20 col-7">
-        <text class="box-flex">销量：{{goodsCont.goods_info.sales_volume}}</text>
-        <text class="box-flex t-r">库存：{{property.stock?property.stock:goodsCont.goods_info.stock}} </text>
+        <text class="box-flex">销量：{{goodsCont.goods_info.goods.sales_volume}}</text>
+        <text class="box-flex t-r">库存：{{goodsCont.goods_info.goods.goods_number}} </text>
       </view>
     </view>
     <!--拼团介绍-->
@@ -110,11 +106,11 @@
       <view class="li" wx:for="{{goodsCont.team_log}}" wx:key="team_log">
         <view class="cont dis-box">
           <view class="img">
-            <image src="{{item.user_picture}}"></image>
+            <image src="{{item.user.logo}}"></image>
           </view>
           <view class="name box-flex" style="margin-top:6rpx">
             <view class="dis-box">
-              <view class="box-flex col-3 f-30">{{item.user_name}}</view>
+              <view class="box-flex col-3 f-30">{{item.user.user_name}}</view>
               <view class="box-flex col-7 f-26">还差
                 <text class="col-m">{{item.surplus}}</text>人成团</view>
             </view>
@@ -125,9 +121,9 @@
             <text class="iconfont icon-xiangyoujiantou"></text>
           </view>
         </view>
-
       </view>
     </view>
+
     <!--店铺-->
     <block wx:if="{{goodsCont.detail!= undefined}}">
       <view class="goods-store cont-box p-r m-top20 b-f " bindtap='storeDetail'>
@@ -147,6 +143,7 @@
         </view>
       </view>
     </block>
+
     <!--评论-->
     <block wx:if="{{goodsComment!=''}}">
       <view class="dis-box cont-box b-f goods-property-box common-title-box m-top20">
@@ -185,6 +182,7 @@
       </view>
 
     </block>
+
     <!--精品推荐-->
     <block wx:if="{{goodsCont.new_goods!=''}}">
       <view class="weui-panel__hd b-f m-top20">精选商品</view>
@@ -256,23 +254,24 @@
 
     <!-- 提交订单 -->
     <view class="footer-fixed f-34">
-      <view class="goods-fixed-icon" bindtap="groupHome">
-        <view class="bargain-icon">
+      <view class="flex-center fd" bindtap="groupHome">
+        <view class="wd">
           <image src="../../images/nav_group_active.png"></image>
         </view>
         <view class="bargain-home f-22 col-3">拼团首页</view>
       </view>
-      <view class="order-number" style="line-height:inherit;" id="cart" bindtap="onChangeShowState">
-        <view class="f-34 m-top4">{{property.goods_price_formated?property.goods_price_formated:goodsCont.goods_info.goods_price}}</view>
+      <view class="order-number" style="line-height:inherit;" id="buy" bindtap="onChangeShowState">
+        <view class="f-34 m-top4">{{goodsCont.goods_info.goods.shop_price}}</view>
         <view class="f-26">单独购买</view>
       </view>
       <view class="order-bt" style="line-height:inherit;" id="checkout" bindtap="groupProperty">
-        <view class="f-34 m-top4">{{group_property.goods_price_formated?group_property.goods_price_formated:goodsCont.goods_info.team_price}}</view>
+        <view class="f-34 m-top4">{{goodsCont.goods_info.team_price}}</view>
         <view class="f-26">我要开团</view>
       </view>
     </view>
   </view>
 </scroll-view>
+
 <!--单独购买属性弹框-->
 <view class="group-property-mol bargain-mol ts-3 {{showViewProperty?'active':''}}">
   <view class="cart_close modal-close" bindtap="onChangeShowState">
@@ -281,29 +280,29 @@
   <view class="cont-box">
     <view class="dis-box cart_product">
       <view class="cart_product_img">
-        <image src="{{property.attr_img?property.attr_img:goodsCont.goods_info.goods_thumb}}" />
+        <image src="{{attr_img}}" />
       </view>
       <view class="cart_product_info">
-        <view class="onelist-hidden f-30 h4">{{goodsCont.goods_info.goods_name}}</view>
-        <view class="cart_product_price">{{property.goods_price_formated?property.goods_price_formated:goodsCont.goods_info.goods_price}}</view>
-        <view class="cart_product_repertory">库存 {{property.stock?property.stock:goodsCont.goods_info.stock}} 件</view>
+        <view class="onelist-hidden f-30 h4">{{goodsCont.goods_info.goods.goods_name}}</view>
+        <view class="cart_product_price">{{goodsCont.goods_info.goods.goods_price}}</view>
+        <view class="cart_product_repertory">库存: {{stock}} 件</view>
       </view>
     </view>
   </view>
   <scroll-view scroll-y="true" class="max-cont">
     <view class="cart">
       <view class="modal_cont_box">
-        <block wx:if="{{item.values[0].label!=''}}" wx:for="{{properties}}" wx:for-index="attr_id" wx:key="carModels">
+        <block wx:for="{{properties}}" wx:for-index="attr_id" wx:key="carModels">
           <view class="cf tmall-types common-title-box dis-box">
-            <text class="tipstxt l-title" id="{{attr_id}}">{{item.name}}</text>
+            <text class="tipstxt l-title f-col29" id="{{item[0].attr_id}}">{{item[0].attr_name}}</text>
             <view class="box-flex">
-              <view class="cf cartypelist" wx:for="{{item.values}}" wx:for-index="attr_id_child" wx:key="carModelChild">
-                <block wx:if="{{item.label!=''}}">
+              <view class="cf cartypelist" wx:for="{{item}}" wx:for-index="attr_id_child" wx:key="carModelChild">
+                <block wx:if="{{item.attr_value !=''}}">
                   <block wx:if="{{item.checked}}">
-                    <view class="cartypeitem cur" id="{{item.id}}" bindtap="modelTap">{{item.label}}</view>
+                    <view class="cartypeitem cur" id="{{item.goods_attr_id}}" bindtap="modelTap">{{item.attr_value}}</view>
                   </block>
                   <block wx:else>
-                    <view class="cartypeitem" id="{{item.id}}" bindtap="modelTap">{{item.label}}</view>
+                    <view class="cartypeitem" id="{{item.goods_attr_id}}" bindtap="modelTap">{{item.attr_value}}</view>
                   </block>
                 </block>
               </view>
@@ -312,26 +311,40 @@
         </block>
         <view class="buy_number common-title-box dis-box">
           <view class="buyNumber f-28 l-title">
-            <text>数量</text>
+            <text class='f-col29'>数量</text>
           </view>
-          <view class="selectNumber">
-            <button type="default" class="default  {{num >1  ? '' : ' default-active'}}" bindtap="down">-</button>
+          <view class="selectNumber bg-back">
+            <button type="default" class="default default-active f-col29" bindtap="down">-</button>
             <input type="number" value="{{ num }}" bindinput="import" />
-            <button type="default" class="default" bindtap="up">+</button>
+            <button type="default" class="default default-active f-col29" bindtap="up">+</button>
           </view>
         </view>
       </view>
     </view>
   </scroll-view>
-  <view class="footer f-28 col-6  dis-box t-c">
-    <!-- <view class="order-number box-flex" id="cart" bindtap="goodsCheckout">
-          <view class="f-30">加入购物车</view>
-        </view> -->
-    <view class="box-flex" style="width:100%" id="checkout" bindtap="goodsCheckout">
-      <view class="f-30">立即购买</view>
+  <block wx:if="{{faat.faat_type == 0 && cd_time > 0}}">
+    <view class="footer f-28 col-6  dis-box t-c" style="background:#ccc;">
+      <view class="box-flex" style="width:100%">
+        <view class="f-30">上新预告</view>
+      </view>
     </view>
-  </view>
+  </block>
+  <block wx:elif="{{stock > 0}}">
+    <view class="footer f-36 dis-box t-c">
+      <view class="box-flex" style="width:100%" id="{{id}}" bindtap="goodsCheckout">
+        <view class="f-c">直接购买</view>
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="footer f-36 col-6  dis-box t-c" style="background:#ccc;">
+      <view class="box-flex" style="width:100%">
+        <view class="f-30">已售罄</view>
+      </view>
+    </view>
+  </block>
 </view>
+
 <!--拼团属性弹框-->
 <view class="group-property-mol bargain-mol ts-3 {{showViewGroupProperty?'active':''}}">
   <view class="cart_close modal-close" bindtap="groupProperty">
@@ -340,14 +353,14 @@
   <view class="cont-box">
     <view class="dis-box cart_product">
       <view class="cart_product_img">
-        <image src="{{property.attr_img?property.attr_img:goodsCont.goods_info.goods_thumb}}" />
+        <image src="{{attr_img}}" />
       </view>
       <view class="cart_product_info">
         <view class="onelist-hidden f-30 h4">{{goodsCont.goods_info.goods_name}}</view>
         <view class="cart_product_price">
-          <text class="f-24 col-7">{{goodsCont.goods_info.team_num}}人团</text> {{group_property.goods_price_formated?group_property.goods_price_formated:goodsCont.goods_info.team_price}}
+          <text class="f-24 col-7">{{goodsCont.goods_info.team_num}}人团</text> {{goodsCont.goods_info.team_price}}
         </view>
-        <view class="cart_product_repertory">库存 {{property.stock?property.stock:goodsCont.goods_info.stock}} 件
+        <view class="cart_product_repertory">库存 {{property.product_number?property.product_number:goodsCont.goods_info.stock}} 件
           <text class="col-m f-24">(限购:{{goodsCont.goods_info.astrict_num}}件)</text>
         </view>
       </view>
@@ -356,17 +369,17 @@
   <scroll-view scroll-y="true" class="max-cont">
     <view class="cart">
       <view class="modal_cont_box">
-        <block wx:if="{{item.values[0].label!=''}}" wx:for="{{properties}}" wx:for-index="attr_id" wx:key="carModels">
+        <block wx:for="{{properties}}" wx:for-index="attr_id" wx:key="carModels">
           <view class="cf tmall-types common-title-box dis-box">
-            <text class="tipstxt l-title" id="{{attr_id}}">{{item.name}}</text>
+            <text class="tipstxt l-title f-col29" id="{{item[0].attr_id}}">{{item[0].attr_name}}</text>
             <view class="box-flex">
-              <view class="cf cartypelist" wx:for="{{item.values}}" wx:for-index="attr_id_child" wx:key="carModelChild">
-                <block wx:if="{{item.label!=''}}">
+              <view class="cf cartypelist" wx:for="{{item}}" wx:for-index="attr_id_child" wx:key="carModelChild">
+                <block wx:if="{{item.attr_value !=''}}">
                   <block wx:if="{{item.checked}}">
-                    <view class="cartypeitem cur" id="{{item.id}}" bindtap="groupModelTap">{{item.label}}</view>
+                    <view class="cartypeitem cur" id="{{item.goods_attr_id}}" bindtap="modelTap">{{item.attr_value}}</view>
                   </block>
                   <block wx:else>
-                    <view class="cartypeitem" id="{{item.id}}" bindtap="groupModelTap">{{item.label}}</view>
+                    <view class="cartypeitem" id="{{item.goods_attr_id}}" bindtap="modelTap">{{item.attr_value}}</view>
                   </block>
                 </block>
               </view>
@@ -375,15 +388,14 @@
         </block>
         <view class="buy_number common-title-box dis-box">
           <view class="buyNumber f-28 l-title">
-            <text>数量</text>
+            <text class='f-col29'>数量</text>
           </view>
-          <view class="selectNumber">
-            <button type="default" class="default  {{groupNum>1  ? '' : ' default-active'}}" bindtap="groupDown">-</button>
-            <input type="number" value="{{groupNum}}" bindinput="groupImport" />
-            <button type="default" class="default" bindtap="groupUp">+</button>
+          <view class="selectNumber bg-back">
+            <button type="default" class="default default-active f-col29" bindtap="groupDown">-</button>
+            <input type="number" value="{{ groupNum }}" bindinput="groupImport" />
+            <button type="default" class="default default-active f-col29" bindtap="groupUp">+</button>
           </view>
         </view>
-
       </view>
     </view>
   </scroll-view>
@@ -391,6 +403,7 @@
     <button type="button" class="cart_sure h3" id="{{id}}" bindtap="goodsCheckout"> 确 定 </button>
   </view>
 </view>
+
 <!--玩法模态框-->
 <view class="bargain-paly-mol bargain-mol ts-3 {{showViewPlay?'active':''}}">
   <view class="header dis-box cont-box f-28 col-3">
@@ -409,9 +422,11 @@
   </scroll-view>
   <view class="footer f-34 col-6 cont-box t-c" bindtap='bargainPlayclose'>确 定</view>
 </view>
+
 <view class="widget-goTop" bindtap="goTop" wx:if="{{ floorstatus }}">
   <text class="iconfont icon-fanhuidingbu"></text>
 </view>
+
 <!--悬浮导航-->
 <view class="filter-menu {{nav_select?'active':''}}">
   <view class="filter-menu-list ts-5">
@@ -434,10 +449,6 @@
   <view class="filter-menu-title" bindtap='commonNav'></view>
 </view>
 
-
-
-
 <!--遮罩层-->
 <view class="bargain-commont-bg hide{{showViewMol?'show':''}}">
 </view>
-<loading hidden="{{hidden}}">加载中…</loading>

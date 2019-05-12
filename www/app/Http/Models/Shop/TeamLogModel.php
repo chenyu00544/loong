@@ -40,7 +40,7 @@ class TeamLogModel extends Model
             ->leftJoin('team_goods', 'team_goods.id', '=', 'team_log.t_id')
             ->where($where)
             ->with(['order' => function ($query) {
-                $query->where([['team_user_id', '>', 0]])->select(['team_id', 'team_parent_id', 'team_user_id', 'team_price', 'order_id']);
+                $query->where(['extension_code' => 'team_buy'])->select(['team_id', 'team_parent_id', 'team_user_id', 'team_price', 'order_id']);
             }])
             ->with(['store' => function ($query) {
                 $query->select(['shop_name', 'ru_id']);

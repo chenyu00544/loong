@@ -31,7 +31,7 @@ App({
     })
     return promise
   },
-  shwomessage(msg, time = 1000, icon = 'warn') {
+  showmessage(msg, time = 1000, icon = 'warn') {
     wx.showToast({
       title: msg,
       icon: icon,
@@ -238,7 +238,7 @@ App({
     })
     setTimeout(function() {
       wx.hideLoading()
-    }, 3000)
+    }, 5000)
   },
   hideLoading: function(title) {
     wx.hideLoading();

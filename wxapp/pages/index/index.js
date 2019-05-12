@@ -37,13 +37,15 @@ Page({
     // app.redirectTo("../goods/index?objectId=923");
     // app.switchTo("../user/index");
     // app.redirectTo("../../packageA/user/history");
-    app.redirectTo("../../packageA/group/index");
+    // app.redirectTo("../../packageA/group/index");
+    // app.redirectTo("../../packageA/group/rank");
+    app.redirectTo("../../packageA/group/order/index");
+    // app.redirectTo("../../packageA/group/goods?objectId=923");
     var that = this
     if (wx.getStorageSync('token')) {
       // app.redirectTo("../../packageA/login/index");
-    }else{
-      that.getLocation();
     }
+    that.getLocation();
   },
 
   //获取页面数据

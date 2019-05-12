@@ -2,7 +2,6 @@
 var app = getApp()
 var token
 var openid;
-var url = app.apiUrl('team/teamRanking');
 var size = 30;
 var page = 1;
 var type="0"
@@ -16,38 +15,25 @@ Page({
     countDownSecond: 0,
   },
   orderStatus: function (that, id) {
-    wx.request({
-      url: url,
-      data: {
-        size: size,
-        page: page,
-        type: type
-      },
-      header: {
-        'Content-Type': 'application/json',
-        'X-ECTouch-Authorization': token
-      },
-      method: "POST",
-      success: function (res) {
-        that.setData({
-          orders: res.data.data,
-
-        })
-      }
-    })
+    app.vcvbRequest("team/rank",{
+      size: size,
+      page: page,
+      type: type
+    }).then((res)=>{
+      that.setData({
+        orders: res.data.data,
+      })
+    });
   },
   onLoad: function (e) {
     var that = this
-    token = wx.getStorageSync('token')
     that.data.current = e.id || 0
     this.setData({
       current: that.data.current
     })
     this.orderStatus(this, that.data.current);
-    //加载中
-    this.loadingChange()
-    //获取openid
   },
+  
   /*订单导航内容切换*/
   bindHeaderTap: function (event) {
     type = event.target.dataset.index
@@ -55,7 +41,6 @@ Page({
     this.setData({
       current: event.target.dataset.index,
     });
-    this.loadingChange()
   },
   
   siteDetail: function (e) {
@@ -162,13 +147,7 @@ Page({
       }
     })
   },
-  loadingChange() {
-    setTimeout(() => {
-      this.setData({
-        hidden: true
-      })
-    }, 1000)
-  },
+  
   //下拉刷新完后关闭
   onPullDownRefresh: function () {
     wx.stopPullDownRefresh()

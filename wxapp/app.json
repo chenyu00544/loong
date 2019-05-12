@@ -30,6 +30,7 @@
         "group/index",
         "group/goods",
         "group/rank",
+        "group/wait",
         "group/order/index"
       ]
     }
