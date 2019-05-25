@@ -11,17 +11,25 @@ namespace App\Repositories\Admin;
 use App\Contracts\WxappRepositoryInterface;
 use App\Facades\RedisCache;
 use App\Http\Models\Shop\WxappModel;
+use App\Http\Models\Shop\WxappServerMsgModel;
+use App\Http\Models\Shop\WxappServerSessionModel;
 
 class WxappRepository implements WxappRepositoryInterface
 {
 
     private $wxappModel;
+    private $wxappServerSessionModel;
+    private $wxappServerMsgModel;
 
     public function __construct(
-        WxappModel $wxappModel
+        WxappModel $wxappModel,
+        WxappServerSessionModel $wxappServerSessionModel,
+        WxappServerMsgModel $wxappServerMsgModel
     )
     {
         $this->wxappModel = $wxappModel;
+        $this->wxappServerSessionModel = $wxappServerSessionModel;
+        $this->wxappServerMsgModel = $wxappServerMsgModel;
     }
 
     public function getWxapp($user)
@@ -66,5 +74,16 @@ class WxappRepository implements WxappRepositoryInterface
         $data['ru_id'] = $user->ru_id;
         $data['add_time'] = time();
         return $this->wxappModel->addWxapp($data);
+    }
+
+    public function getWxappSessionByPage($data)
+    {
+        $keywords = empty($data['keywords']) ? '' : $data['keywords'];
+        $size = empty($data['page']) ? 10 : $data['page'];
+        $where = [
+            ['count_msg', '<=', '5'],
+            ['update_time', '>', time() - 48 * 3600],
+        ];
+        return $this->wxappServerSessionModel->getWxappServerSessionByPage($where, $keywords, ['*'], $size);
     }
 }

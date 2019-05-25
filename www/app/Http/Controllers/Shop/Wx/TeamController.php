@@ -22,18 +22,31 @@ class TeamController extends CommonController
         $this->orderRepository = $orderRepository;
     }
 
+    /**
+     * 拼团子频道商品列表
+     * @return mixed
+     */
     public function teamNav(Request $request)
     {
         $res = $this->teamRepository->getTeamNav();
         return $this->apiReturn($res);
     }
 
+    /**
+     * 拼团频道页面
+     * @return mixed
+     */
     public function team(Request $request)
     {
         $res = $this->teamRepository->getTeam($request->all());
         return $this->apiReturn($res);
     }
 
+    /**
+     * 拼团商品详情
+     * @param Request $request
+     * @return array
+     */
     public function teamGoods(Request $request)
     {
         $uid = Verifiable::authorization($request);
@@ -45,6 +58,11 @@ class TeamController extends CommonController
         }
     }
 
+    /**
+     * 拼团购买
+     * @param Request $request
+     * @return array
+     */
     public function teamBuy(Request $request)
     {
         $uid = Verifiable::authorization($request);
@@ -85,6 +103,11 @@ class TeamController extends CommonController
         }
     }
 
+    /**
+     * 等待成团页面
+     * @param Request $request
+     * @return array
+     */
     public function teamWait(Request $request)
     {
         //验证参数
@@ -98,6 +121,64 @@ class TeamController extends CommonController
         }
 
         $list = $this->teamRepository->teamWait($uid, $request->get('team_id'), $request->get('user_id'));
+
+        return $this->apiReturn($list);
+    }
+
+    /**
+     *  拼团排行商品列表
+     * @return array
+     */
+    public function teamRanking(Request $request)
+    {
+        //验证参数
+        $this->validate($request, [
+            'page' => 'required|integer',
+            'size' => 'required|integer',
+            'type' => 'required|integer'
+        ]);
+
+        // 拼团排行
+        $list = $this->teamRepository->teamRankingList($request->get('page'), $request->get('size'), $request->get('type'));
+
+        return $this->apiReturn($list);
+    }
+
+    /**
+     * 拼推荐商品
+     * @return mixed
+     */
+    public function teamIsBest(Request $request)
+    {
+        //验证参数
+        $this->validate($request, [
+            'page' => 'required|integer',
+            'size' => 'required|integer',
+            'type' => 'required|integer',  //3
+        ]);
+
+        // 拼团排行
+        $list = $this->teamRepository->teamRankingList($request->get('page'), $request->get('size'), $request->get('type'));
+
+        return $this->apiReturn($list);
+    }
+
+
+    /**
+     * 拼团成员
+     * @return mixed
+     */
+    public function teamUser(Request $request)
+    {
+        //验证参数
+        $this->validate($request, [
+            'team_id' => 'required|int',  //开团id
+            'page' => 'required|integer',
+            'size' => 'required|integer',
+        ]);
+
+        // 拼团成员
+        $list = $this->teamRepository->teamUser($request->get('team_id'), $request->get('page'), $request->get('size'));
 
         return $this->apiReturn($list);
     }

@@ -28,7 +28,7 @@
                 <text class="iconfont icon-xiajiantous f-22"></text>
               </view> -->
               <view class="search box-flex">
-                <navigator class="cont t-c flex-center" url="../search/index" open-type="navigate" hover-class="none">
+                <navigator class="cont t-c flex-center" url="../../packageA/search/keywords" open-type="navigate" hover-class="none">
                   <text class="iconfont icon-sousuo f-28"></text>
                   <text class="f-30">搜索商品</text>
                 </navigator>

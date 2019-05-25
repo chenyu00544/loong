@@ -206,7 +206,7 @@ class OrderInfoModel extends Model
         return $this->select('*')
             ->where([['team_id', '=', $team_id], ['extension_code', '=', 'team_buy']])
             ->where(function ($query) {
-                $query->orWhere(['pay_status' => 2])->orWhere(['order_status' => 4]);
+                $query->orWhere(['pay_status' => PS_PAYED])->orWhere(['order_status' => OS_CONFIRMED]);
             })
             ->count();
     }
@@ -235,11 +235,12 @@ class OrderInfoModel extends Model
     {
         $begin = ($page - 1) * $size;
 
-        $list = $this
-            ->select('order_info.add_time','order_info.team_id', 'order_info.user_id','order_info.team_parent_id','order_info.team_user_id')
+        $list = $this->select('order_info.add_time','order_info.team_id', 'order_info.user_id','order_info.team_parent_id','order_info.team_user_id','order_info.extension_code','order_info.order_status','order_info.pay_status','u.user_name','u.nick_name','u.logo')
             ->leftjoin('users as u', 'order_info.user_id', '=', 'u.user_id')
             ->where([['order_info.team_id', '=', $team_id],['order_info.extension_code', '=', 'team_buy']])
-            ->orWhere([['order_info.pay_status', '=', 2],['order_info.order_status', '=', 4]])
+            ->where(function($query){
+                $query->orWhere(['pay_status' => PS_PAYED])->orWhere(['order_status' => OS_CONFIRMED]);
+            })
             ->orderBy('order_info.add_time', 'asc')
             ->offset($begin)
             ->limit($size)

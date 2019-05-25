@@ -4,7 +4,7 @@
     <view class="left p-r">
           <text class="wait-user-tag" wx:if="{{item.team_parent_id!='0'}}">团长</text>
       <view class="header">
-        <image src="{{item.user_picture}}" />
+        <image src="{{item.logo}}" />
       </view>
     </view>
     <view class="box-flex right">

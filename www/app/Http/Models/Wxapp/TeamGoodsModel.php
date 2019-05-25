@@ -75,4 +75,47 @@ class TeamGoodsModel extends Model
             ->where(['is_team' => 1])
             ->first();
     }
+
+    public function teamRankingList($page = 1, $size = 10, $type = 0)
+    {
+        $goods = $this
+            ->select('g.goods_id', 'g.goods_name', 'g.shop_price','g.goods_number', 'g.sales_volume','g.goods_thumb', 'team_goods.id', 'team_goods.team_price', 'team_goods.team_num','team_goods.limit_num')
+            ->leftjoin('goods as g', 'g.goods_id', '=', 'team_goods.goods_id');
+
+        switch ($type) {
+            // 热门
+            case '0':
+                $goods->orderBy('team_goods.limit_num', 'DESC');
+                break;
+            // 新品
+            case '1':
+                $goods->orderBy('g.add_time', 'DESC');
+                break;
+            // 优选
+            case '2':
+                $goods->where('g.is_hot', 1);
+                break;
+            case '3':
+                $goods->where('g.is_best', 1);
+                break;
+        }
+
+        $begin = ($page - 1) * $size;
+        $list = $goods->where('team_goods.is_team', 1)
+            ->where('team_goods.is_audit', 2)
+            ->where('g.is_on_sale', 1)
+            ->where('g.is_alone_sale', 1)
+            ->where('g.is_delete', 0)
+            ->where('g.review_status', '>', 2)
+            ->offset($begin)
+            ->limit($size)
+            ->get()
+            ->toArray();
+
+        if ($list === null) {
+            return [];
+        }
+
+        return $list;
+    }
 }

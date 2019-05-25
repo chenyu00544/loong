@@ -42,5 +42,6 @@
         {!! csrf_field() !!}
     </div>
 </div>
+<script type="text/javascript" src="{{asset('styles/plugin/canvas-nest/canvas-nest.min.js')}}" count="200" zindex="-2" opacity="0.8" color="0,0,205"></script>
 </body>
 </html>

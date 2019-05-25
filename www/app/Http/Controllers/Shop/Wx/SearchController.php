@@ -36,7 +36,7 @@ class SearchController extends CommonController
         }
         $res = $this->goodsRepository->getSearchByKeywords();
         if ($res) {
-            RedisCache::get('search_keywords', ['code' => 0, 'msg' => '', 'data' => $res], 60 * 24);
+            RedisCache::setex('search_keywords', ['code' => 0, 'msg' => '', 'data' => $res], 60 * 24);
             return ['code' => 0, 'msg' => '', 'data' => $res];
         } else {
             return ['code' => 1, 'msg' => '', 'data' => []];

@@ -12,6 +12,7 @@ use App\Contracts\TeamRepositoryInterface;
 use App\Facades\Common;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
+use App\Facades\ShopConfig;
 use App\Http\Models\Wxapp\BrowseGoodsModel;
 use App\Http\Models\Wxapp\GoodsAttrModel;
 use App\Http\Models\Wxapp\OrderGoodsModel;
@@ -503,7 +504,6 @@ class TeamRepository implements TeamRepositoryInterface
     public function teamWait($uid = 0, $team_id = 0, $user_id)
     {
         $result = [
-            'error' => 0,
             'team_info' => '',         //拼团信息
             'teamUser' => '',          //已成功开团信息
         ];
@@ -544,12 +544,64 @@ class TeamRepository implements TeamRepositoryInterface
         //获取拼团团员信息
         $teamUser = $this->orderInfoModel->teamUserList($team_id, 1, 5);
         foreach ($teamUser as $key => $val) {
-            $user_info = $this->usersModel->getUser($val['user_id']);
-            $teamUser[$key]['user_name'] = !empty($user_info->nick_name) ? $user_info->nick_name : $user_info->nick_name;
-            $teamUser[$key]['user_picture'] = FileHandle::getImgByOssUrl($user_info->logo);
+            $teamUser[$key]['user_name'] = !empty($val['nick_name']) ? $val['nick_name'] : $val['user_name'];
+            $teamUser[$key]['logo'] = FileHandle::getImgByOssUrl($val['logo']);
         }
         $result['teamUser'] = $teamUser;
 
         return $result;
+    }
+
+    public function teamRankingList($page = 1, $size = 10, $type = 0)
+    {
+        $page = empty($page) ? 1 : $page;
+        $arr = [
+            'id',             //拼团活动id
+            'goods_id',       //商品id
+            'goods_name',     //商品名
+            'shop_price',     //商品价格
+            'goods_thumb',    //商品图片
+            'team_price',     //拼团价格
+            'team_num',       //几人团
+            'limit_num'      //已参团人数
+        ];
+        $goodsList = $this->teamGoodsModel->teamRankingList($page, $size, $type);
+        $list = [];
+        foreach ($goodsList as $key => $val) {
+            $list[$key]['key'] = $key + 1;
+            $list[$key]['id'] = $val['id'];
+            $list[$key]['goods_id'] = $val['goods_id'];
+            $list[$key]['goods_name'] = $val['goods_name'];
+            $list[$key]['shop_price'] = Common::priceFormat($val['shop_price']);
+            $list[$key]['goods_thumb'] =  FileHandle::getImgByOssUrl($val['goods_thumb']);
+            $list[$key]['team_price'] = Common::priceFormat($val['team_price']);
+            $list[$key]['team_num'] = $val['team_num'];
+            $list[$key]['limit_num'] = $val['limit_num'];
+            $list[$key]['type'] = $type;
+        }
+
+        return $list;
+    }
+
+    /**
+     * 拼团成员页面
+     * @param int $team_id
+     * @param int $page
+     * @param int $size
+     * @return mixed
+     */
+    public function teamUser($team_id = 0, $page = 1, $size = 10)
+    {
+        $page = empty($page) ? 1 : $page;
+
+        //获取拼团团员信息
+        $teamUser = $this->orderInfoModel->teamUserList($team_id, $page, $size);
+        $timeFormat = RedisCache::get('shop_config')['time_format'];
+        foreach ($teamUser as $key => $val) {
+            $teamUser[$key]['add_time'] = date($timeFormat, $val['add_time']); // 时间
+            $teamUser[$key]['user_name'] = !empty($val['nick_name']) ? $val['nick_name'] : $val['user_name'];
+            $teamUser[$key]['logo'] = FileHandle::getImgByOssUrl($val['logo']);
+        }
+        return $teamUser;
     }
 }

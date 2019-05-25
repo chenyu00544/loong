@@ -127,7 +127,7 @@ App({
   region() {
     var that = this
     var areaInfo = [];
-    if (wx.getStorageSync("region") != undefined && wx.getStorageSync("region").length > 0){
+    if (wx.getStorageSync("region") != undefined && wx.getStorageSync("region").length > 0) {
       return;
     }
     wx.request({
@@ -138,8 +138,8 @@ App({
         var address = res.data.data //数组
         that.log(address);
 
-        for (var i in address){
-          if (address[i].region_id === 1){
+        for (var i in address) {
+          if (address[i].region_id === 1) {
             areaInfo = address[i].province
           }
         }
@@ -242,5 +242,23 @@ App({
   },
   hideLoading: function(title) {
     wx.hideLoading();
+  },
+
+  //去重
+  remove_duplication: function(array) {
+    var temp = [];
+    var index = [];
+    var l = array.length;
+    for (var i = 0; i < l; i++) {
+      for (var j = i + 1; j < l; j++) {
+        if (array[i] === array[j]) {
+          i++;
+          j = i;
+        }
+      }
+      temp.push(array[i]);
+      index.push(i);
+    }
+    return temp;
   }
 })

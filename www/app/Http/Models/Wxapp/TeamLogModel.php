@@ -74,7 +74,7 @@ class TeamLogModel extends Model
             ->where('team_log.is_show', 1)
             ->where('o.extension_code', 'team_buy')
             ->where('o.team_parent_id', '>', 0)
-            ->where('o.pay_status', 2)
+            ->where('o.pay_status', PS_PAYED)
             ->where('tg.is_team', 1)
             ->orderBy('o.add_time', 'desc')
             ->limit($size)

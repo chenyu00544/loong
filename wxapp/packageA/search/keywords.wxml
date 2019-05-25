@@ -1,0 +1,55 @@
+<view class="container">
+  <view class="cont-box search-max-box">
+    <!--search-header-->
+    <view class="flex search-input-box">
+      <view class="search-input">
+        <view class="flex search-box">
+          <view class="left">
+            <icon type="search" size="14" color="rgba(180,180,180,1)" />
+          </view>
+          <view class="right">
+            <input class="input" type="text" focus="true" placeholder-style="color:#aba9a9" placeholder="请输入您搜索的商品" bindinput="getSearchContent" />
+          </view>
+        </view>
+      </view>
+      <view class="serch-button">
+        <button type="warn" bindtap="search"> 搜索 </button>
+      </view>
+    </view>
+  </view>
+
+  <view class="cont-box">
+    <view class="search-cont-box" wx:if="{{history_key.length > 0}}">
+      <view class="title-box">最近搜索
+        <text class="iconfont icon-lajixiang col-7" bindtap="clearSearch"></text>
+      </view>
+      <view class="sale-button-box flex fw">
+        <view class="seconds-kill-li {{idx < 5?'hot-bt':''}}" wx:for="{{history_key}}" wx:for-index="idx" wx:for-item="words" wx:key="hotrecent" bindtap='goSearch' data-text="{{words}}">
+          <view class="recent-button f-32" >{{words}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="cont-box">
+    <view class="search-cont-box" wx:if="{{hot_key.length > 0}}">
+      <view class="title-box">热门搜索</view>
+      <view class="sale-button-box flex fw">
+        <view class="seconds-kill-li {{idx < 6?'hot-bt':''}}" wx:for="{{hot_key}}" wx:for-index="idx" wx:key="key" bindtap='goSearch' data-text="{{item.keyword}}">
+          <view class="recent-button f-32" >{{item.keyword}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="cont-box">
+    <view class="search-cont-box" wx:if="{{hot_cate.length > 0}}">
+      <view class="title-box">热门分类</view>
+      <view class="sale-button-box flex fw">
+        <view class="seconds-kill-hot flex-center " wx:for="{{hot_cate}}" wx:for-index="idx" wx:key="cate" data-cate_id="{{item.cate_id}}" bindtap='goSearch'>
+          <view class="recent-button f-30">{{item.cate_name}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

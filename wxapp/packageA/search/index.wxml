@@ -1,0 +1,195 @@
+<!--header-fixed-->
+<import src="../../common/common.wxml" />
+<view class="more-max-box">
+  <!--搜索框-->
+  <view class="common-search-box b-f dis-box" style="position:static">
+    <navigator class="common-search box-flex" open-type="navigate" url="../search/keywords" hover-class="none">
+      <view class="search flex">
+        <icon type="search" class="text-center" size="14" color="rgba(0,0,0,0.4)" />
+        <block wx:if="{{keyword}}">
+          <text>{{keyword}}</text>
+        </block>
+      </view>
+    </navigator>
+    <view class="right f-28" bindtap="onChangeShowState">
+      <block wx:if="{{showView}}">
+        <text class="iconfont icon-pailie f-34"></text>
+      </block>
+      <block wx:else="{{showView}}">
+        <text class="iconfont icon-viewlist"></text>
+      </block>
+    </view>
+  </view>
+  <!--分类nav-->
+  <view class="store_nav_cont dis-box b-f b-b">
+    <view bindtap="toCateAll" class="box-flex t-c p-r" id="list-{{nav_focus == 0 ? true : 0}}" data-index="0 ">
+      <text>综合</text>
+    </view>
+    <view bindtap="toNum" class="box-flex t-c p-r" id="list-{{nav_focus == 1 ? true : 0}}" data-index="1">
+      <text class="price"> 销量</text>
+      <text class="iconfont icon-jiantou-copy tf-180 top_jiantou {{showVolumnSort == 0?'':'active'}}"></text>
+      <text class="iconfont icon-jiantou-copy bot_jiantou {{showVolumnSort == 1?'':'active'}}"></text>
+    </view>
+    <view bindtap="toPrice" class="box-flex t-c p-r" id="list-{{nav_focus == 2 ? true : 0}}" data-index="2">
+      <text class="price"> 价格</text>
+      <text class="iconfont icon-jiantou-copy tf-180 top_jiantou {{showPriceSort == 0 ?'':'active'}}"></text>
+      <text class="iconfont icon-jiantou-copy bot_jiantou {{showPriceSort == 1?'':'active'}}"></text>
+    </view>
+    <view bindtap="toSynthesize" class="box-flex t-c p-r" id="list-0">
+      <text>筛选</text>
+      <text class="f-22 iconfont icon-shaixuan1 col-7" style="padding-left:2rpx;"></text>
+    </view>
+  </view>
+  <block wx:if="{{list!=''}}">
+    <scroll-view class="more-scroll-box" scroll-y="true" bindscroll='scroll' bindscrolltolower="searchScrollLower">
+      <view hidden="{{hiddenCateAll}}" class="new">
+        <!--默认-->
+        <view class="category-list {{arrange}}">
+          <navigator class="list b-f" wx:for="{{list}}" wx:key="list" url="../../pages/goods/index?objectId={{item.goods_id}}" hover-class="none">
+            <view class="left">
+              <view class="img">
+                <image src="{{item.original_img}}" mode="aspectFit" class="goodsImg" />
+              </view>
+            </view>
+            <view class="right">
+              <view class="cont">
+                <text class="f-30 title twolist-hidden m-top10">{{item.goods_name}}</text>
+                <view class="price f-34 col-m m-top10">{{item.shop_price_formated}}
+                  <text class="del f-22">{{item.market_price_formated}}</text>
+                </view>
+                <view class="goods_number">
+                  <view class="dis-box  f-24 col-7 m-top10">
+                    <view class="box-flex ">库存：{{item.goods_number}}</view>
+                    <view class="box-flex t-r">销量:{{item.sales_volume}}</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </navigator>
+        </view>
+      </view>
+      <view class="loading-section b-f" wx:if="{{searchLoading}}">
+        <view class="loading"></view>
+      </view>
+      <view class="loading complete" wx:else>
+        <view class="title-footer p-r">
+          <text class="f-24 col-9  cont">我是有底线的</text>
+          <view class="hr"></view>
+        </view>
+      </view>
+    </scroll-view>
+  </block>
+  <block wx:else>
+    <template is="notCont" />
+  </block>
+</view>
+<!--悬浮导航-->
+<view class="filter-menu {{nav_select?'active':''}}">
+  <view class="filter-menu-list ts-5">
+    <custom-ul>
+      <custom-li bindtap="nav" data-index="home">
+        <text class="iconfont icon-home"></text>
+      </custom-li>
+      <custom-li bindtap="nav" data-index="fenlei">
+        <text class="iconfont icon-fenlei"></text>
+      </custom-li>
+      <custom-li bindtap="nav" data-index="cart">
+        <text class="iconfont icon-cart"></text>
+      </custom-li>
+      <custom-li bindtap="nav" data-index="profile">
+        <text class="iconfont icon-profile"></text>
+      </custom-li>
+      <custom-li class="w"></custom-li>
+    </custom-ul>
+  </view>
+  <view class="filter-menu-title" bindtap='commonNav'></view>
+</view>
+
+<!--属性筛选模态框-->
+<view class="attr-mol ts-3 {{showViewMol?'active':''}}">
+  <scroll-view scroll-y="true" class="max-cont" style="height:{{scrollview_h}}px;">
+    <view class="container">
+      <form bindsubmit="formSubmit" bindreset="formReset" report-submit="true">
+        <view class="page__input">
+          <view class="weui-cells">
+            <view class="weui-cell weui-cell_access b-f">
+              <view class="weui-cell__bd f-30">　</view>
+            </view>
+          </view>
+
+          <view class="attr-cell b-f">
+            <view class="f-30">{{filter.server.title}}</view>
+            <view class="m-top20 flex fw">
+              <text class="bt f-32 {{item.selected?'act':''}}" wx:for="{{filter.server.values}}" wx:key="server" data-item="server" data-id="{{index}}" bindtap="selectSearchAttr">{{item.server_name}}</text>
+            </view>
+          </view>
+
+          <view class="weui-cells m-top20">
+            <view class="weui-cell b-f">
+              <view class="weui-cell__bd f-30">{{filter.price.title}}</view>
+            </view>
+            <view class="weui-cell tab-list b-f cont-box">
+              <view class="override_price dis-box m-top10">
+                <view class="box-flex t-c">
+                  <view style="background:#f7f7f7;border-radius:5rpx;padding:6rpx">
+                    <input class="f-28" confirm-type="" name="price_min" type="text" placeholder="最低价" value="{{price_min}}" bindinput="minPrice" />
+                  </view>
+                </view>
+                <view style="padding:0 30rpx">-</view>
+                <view class="box-flex t-c">
+                  <view style="background:#f7f7f7;border-radius:5rpx;padding:6rpx">
+                    <input class="f-28" confirm-type="" name="price_max" type="text" placeholder="最高价" value="{{price_max}}" bindinput="maxPrice" />
+                  </view>
+                </view>
+              </view>
+            </view>
+            <view class="attr-cell b-f pad-top0">
+              <view class="flex fw">
+                <text class="bt f-32 {{item.selected?'act':''}}" wx:for="{{filter.price.price_range}}" wx:key="price" data-item="price" data-id="{{index}}" bindtap="selectSearchAttr">{{item.min}}-{{item.max}}</text>
+              </view>
+            </view>
+          </view>
+
+          <view class="attr-cell b-f">
+            <view class="f-30">{{filter.brand.title}}</view>
+            <view class="m-top20 flex fw">
+              <text class="bt f-32 {{item.selected?'act':''}}" wx:for="{{filter.brand.values}}" wx:key="brand" data-item="brand" data-id="{{index}}" bindtap="selectSearchAttr">{{item.brand_name}}</text>
+            </view>
+          </view>
+
+          <view class="attr-cell b-f">
+            <view class="f-30">{{filter.cate.title}}</view>
+            <view class="m-top20 flex fw">
+              <text class="bt f-32 {{item.selected?'act':''}}" wx:for="{{filter.cate.values}}" wx:key="cate" data-item="cate" data-id="{{index}}" bindtap="selectSearchAttr">{{item.cat_alias_name}}</text>
+            </view>
+          </view>
+
+          <block wx:for="{{filter.attr}}" wx:key="attr" wx:for-index="attr_i" wx:for-item="attr_item">
+            <view class="attr-cell b-f">
+              <view class="f-30">{{attr_item.attr_name}}</view>
+              <view class="m-top20 flex fw">
+                <text class="bt f-32 {{attr_item.selecteds[attr_j]?'act':''}}" wx:for="{{attr_item.attr_values}}" wx:for-index="attr_j" wx:key="attribute" data-item="attr" data-idi="{{attr_i}}" data-idj="{{attr_j}}" bindtap="selectSearchAttr">{{item}}</text>
+              </view>
+            </view>
+          </block>
+        </view>
+        <view class="cont-box" style="padding-bottom:80rpx;">
+          <view class="dis-box m-top20 screen_btn">
+            <view class="box-flex list" bindtap="closeModel">
+              <button type="default" size="{{defaultSize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" hover-class="other-button-hover"> 关闭
+              </button>
+            </view>
+            <view class="box-flex list">
+              <button type="primary" size="{{primarySize}}" loading="{{loading}}" plain="{{plain}}" disabled="{{disabled}}" formType="submit"> 确认 ({{count_goods}})
+              </button>
+            </view>
+          </view>
+        </view>
+      </form>
+    </view>
+  </scroll-view>
+</view>
+
+<!--遮罩层-->
+<view class="bargain-commont-bg {{showViewMol?'show':'hide'}}" bindtap="closeModel">
+</view>

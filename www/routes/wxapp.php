@@ -100,11 +100,14 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
 
     Route::post('team/nav', 'TeamController@teamNav');
     Route::post('team', 'TeamController@team');
+    Route::post('team/rank', 'TeamController@teamRank');
+    Route::post('team/orders', 'TeamController@teamOrders');
     Route::post('team/goods', 'TeamController@teamGoods');
     Route::post('team/buy', 'TeamController@teamBuy');
-    Route::post('team/rank', 'TeamController@teamRank');
     Route::post('team/wait', 'TeamController@teamWait');
-    Route::post('team/orders', 'TeamController@teamOrders');
+    Route::post('team/ranking', 'TeamController@teamRanking');
+    Route::post('team/user', 'TeamController@teamUser');
+    Route::post('team/best', 'TeamController@teamIsBest');
 
     Route::post('comment/label', 'CommentController@label');
     Route::post('comment/list', 'CommentController@getComments');

@@ -3,10 +3,10 @@
   <view class="dis-box bargain-user padding-all">
     <view class="left">
       <view class="header">
-        <image src="{{wait.team_info.user_picture}}" />
+        <image src="{{wait.team_info.logo}}" />
       </view>
     </view>
-    <view class="box-flex right" wx:if="{{wait.team_info.status!='1'}}">
+    <view class="box-flex right" wx:if="{{wait.team_info.status != '1'}}">
       <view class="h4 f-30 col-3">开团成功啦！</view>
       <view class="p f-26 col-3 m-top10">只差
         <text class="em col-m">{{wait.team_info.surplus}}</text>位小伙伴参团，快点邀请好友参团。
@@ -22,7 +22,7 @@
     <view class=" b-f  item">
       <view class=" dis-box  cont-box" bindtap="siteDetail">
         <view class="user-left">
-          <image src="{{wait.team_info.goods_thumb}}" mode="aspectFit" class="goodsImg" />
+          <image src="{{wait.team_info.original_img}}" mode="aspectFit" class="goodsImg" />
         </view>
         <view class="box-flex user-right p-r">
           <text class="f-30 col-3 twolist-hidden">{{wait.team_info.goods_name}}</text>
@@ -38,7 +38,7 @@
     <block wx:if="{{wait.team_info.status!='1'}}">
       <view class="title-hrbg-team">剩余
         <view class="span color-dark" id="leftTime">
-          <block wx:if="{{countDownDay=='0'}}">
+          <block wx:if="{{countDownDay !='0'}}">
             <text class="voteText countDownTimeText">{{countDownDay}}</text>
             <text class="name col-s">:</text>
           </block>
@@ -57,10 +57,10 @@
       </view>
     </block>
     <view class="group-user-list">
-      <view wx:for="{{user_picture}}" wx:key="user_picture" class="list p-r">
+      <view wx:for="{{team_user}}" wx:key="user" class="list p-r">
         <text class="wait-user-tag" wx:if="{{item.team_parent_id!='0'}}">团长</text>
         <view class="img">
-          <image src="{{item.user_picture}}" mode="aspectFit" class="goodsImg" />
+          <image src="{{item.logo}}" mode="aspectFit" class="goodsImg" />
         </view>
       </view>
       <view class="list" bindtap='userList'>
@@ -152,7 +152,7 @@
       </view>
     </navigator>
   </view>
-  <!--list-e--
+  <!--list-e -->
   <!-- 提交订单 -->
   <view class="footer-fixed f-34">
     <view class="order-number" wx:if="{{wait.team_info.status!='1'}}" id="cart" bindtap="groupMore">更多拼团</view>

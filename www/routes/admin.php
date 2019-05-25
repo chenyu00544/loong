@@ -247,6 +247,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('wechatconfig', 'WechatConfigController');
 
     Route::resource('wxappconfig', 'WxappConfigController');
+    Route::resource('wxappsession', 'WxappSessionController');
 
     Route::resource('sms', 'SmsController');
 

@@ -2,7 +2,7 @@ var app = getApp();
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.min.js')
 var qqmap = new QQMapWX({
   key: "XSYBZ-P2G34-3K7UB-XPFZS-TBGHT-CXB4U"
-})
+});
 var goods_id = '',
   navPage = 0,
   isloading = true,
@@ -33,7 +33,6 @@ Page({
     this.getIndexData(navPage, 0);
   },
   onShow() {
-
     // app.redirectTo("../../packageA/icon/index");
     // app.redirectTo("../goods/index?objectId=923");
     // app.switchTo("../user/index");
@@ -41,11 +40,14 @@ Page({
     // app.redirectTo("../../packageA/group/index");
     // app.redirectTo("../../packageA/group/rank");
     // app.redirectTo("../../packageA/group/order/index");
-    app.redirectTo("../../packageA/group/wait?objectId=2&user_id=60");
+    // app.redirectTo("../../packageA/group/wait?objectId=2&user_id=60");
     // app.redirectTo("../../packageA/group/goods?objectId=923");
     // app.redirectTo("../../packageA/order/detail?objectId=167");
+    // app.redirectTo("../../packageA/search/keywords");
+    app.redirectTo("../../packageA/search/index?keyword=测试");
+    // app.redirectTo("../../packageA/search/index?objectId=ccc");
 
-    var that = this
+    var that = this;
     if (wx.getStorageSync('token')) {
       // app.redirectTo("../../packageA/login/index");
     }
@@ -59,12 +61,12 @@ Page({
     app.vcvbRequest("index", {
       nav_id: nav,
     }).then((res) => {
-      if (res.data.data != undefined) {
+      if (res.data.data !== undefined) {
         if (!that.data.ads.length) {
           for (let index in res.data.data.adses) {
-            if (res.data.data.adses[index].type == "slide") {
+            if (res.data.data.adses[index].type === "slide") {
               that.data.banner = res.data.data.adses[index].ads;
-            } else if (res.data.data.adses[index].type == "navigation") {
+            } else if (res.data.data.adses[index].type === "navigation") {
               that.data.navigation = res.data.data.adses[index].ads;
             } else {
               that.data.ads.push(res.data.data.adses[index]);
@@ -97,7 +99,7 @@ Page({
   },
   //进去详情页
   siteDetail: function(e) {
-    var that = this
+    var that = this;
     var index = e.currentTarget.dataset.index;
     var goodsId = e.currentTarget.dataset.goodsid;
 
@@ -129,8 +131,8 @@ Page({
       originHeight = e.detail.height * px2rpx,
       ratio = originWidth / originHeight;
     var viewWidth = 750,
-      viewHeight //设定一个初始宽度
-    //当它的宽度大于初始宽度时，实际效果跟mode=widthFix一致
+      viewHeight; //设定一个初始宽度
+    // 当它的宽度大于初始宽度时，实际效果跟mode=widthFix一致
     if (originWidth >= viewWidth) {
       //宽度等于viewWidth,只需要求出高度就能实现自适应
       viewHeight = viewWidth / ratio;
@@ -143,7 +145,7 @@ Page({
     imageSize[e.target.dataset.index] = {
       width: viewWidth,
       height: viewHeight
-    }
+    };
     this.setData({
       imageSize: imageSize
     })
@@ -225,7 +227,7 @@ Page({
   },
   //定位
   chooseLocation() {
-    var that = this
+    var that = this;
     wx.chooseLocation({
       success: (res) => {
         wx.setStorageSync('currentPosition', res)
@@ -238,8 +240,8 @@ Page({
           },
           success: (res) => {
             app.vcvbRequest(("location/specific"), {
-              address: res.result.address_component.city,
-            })
+                address: res.result.address_component.city,
+              })
               .then((res) => {
                 that.setData({
                   address: res.address,
@@ -256,7 +258,7 @@ Page({
               address: addess,
             })
           },
-          fail: (res) => { },
+          fail: (res) => {},
         });
 
       }
@@ -264,7 +266,7 @@ Page({
   },
   //获取当前定位
   getLocation() {
-    var that = this
+    var that = this;
     wx.getLocation({
       success: (res) => {
         //缓存当前位置坐标
@@ -315,7 +317,7 @@ Page({
     })
   },
   transformRegion(res) {
-    var that = this
+    var that = this;
     var lat = res.latitude;
     var lon = res.longitude;
     qqmap.reverseGeocoder({
@@ -335,7 +337,7 @@ Page({
           address: addess,
         })
       },
-      fail: (res) => { },
+      fail: (res) => {},
     });
   },
-})
+});

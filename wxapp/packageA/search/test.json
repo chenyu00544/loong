@@ -1,0 +1,69 @@
+{
+  add_time
+: "1555245346"
+brand_id
+: "100"
+brand_logo
+: "https://oss.vcvbuy.com/upload/brand_logo/154738652661626618769.jpg"
+brand_name
+: "Aptamil"
+cat_id
+: "16"
+current_time
+: 1558253575
+goods_brief
+: "测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试"
+goods_id
+: 923
+goods_img
+: "http://www.vcvbuy.com/styles/images/upload/no_picture.jpg"
+goods_name
+: "测试"
+goods_thumb
+: "http://www.vcvbuy.com/styles/images/upload/no_picture.jpg"
+goods_type
+: "19"
+gvp
+: [
+    {id: 1, price_type: "1", goods_id: "923", volume_number: "2", volume_price: "313.00"
+    },…
+  ]
+is_best
+: "0"
+is_delete
+: "0"
+is_hot
+: "1"
+is_new
+: "0"
+is_on_sale
+: "1"
+is_promote
+: "1"
+market_price
+: "454.80"
+market_price_format
+: "￥454.80"
+original_img
+: "https://oss.vcvbuy.com/upload/gallery_album/goods_gallery/original_img/153976504401109480219.jpg"
+pinyin_keyword
+: "ceshi"
+promote_end_date
+: "1562471940"
+promote_price
+: "289.00"
+promote_price_format
+: "￥289.00"
+promote_start_date
+: "1529467200"
+review_status
+: "3"
+sales_volume
+: "0"
+shop_price
+: "379.00"
+shop_price_format
+: "￥379.00"
+sort_order
+: "120"
+}

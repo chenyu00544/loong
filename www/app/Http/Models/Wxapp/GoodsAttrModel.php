@@ -58,9 +58,9 @@ class GoodsAttrModel extends Model
                 }
                 $attr_value = substr($attr_value, 0, -1);
                 if ($k < count($filter) - 1) {
-                    $sql .= "SELECT * FROM {$prefix}goods_attr WHERE attr_id = $attr_id AND attr_value IN ($attr_value) UNION ALL ";
+                    $sql .= "SELECT goods_id,attr_id FROM {$prefix}goods_attr WHERE attr_id = $attr_id AND attr_checked = 1 AND attr_value IN ($attr_value) GROUP BY goods_id,attr_id UNION ALL ";
                 } else {
-                    $sql .= "SELECT * FROM {$prefix}goods_attr WHERE attr_id = $attr_id AND attr_value IN ($attr_value)";
+                    $sql .= "SELECT goods_id,attr_id FROM {$prefix}goods_attr WHERE attr_id = $attr_id AND attr_checked = 1 AND attr_value IN ($attr_value) GROUP BY goods_id,attr_id";
                 }
                 $n = $k;
             }
@@ -74,7 +74,7 @@ class GoodsAttrModel extends Model
                     $attr_value .= '"' . $attr_v . '",';
                 }
                 $attr_value = substr($attr_value, 0, -1);
-                $sql = "SELECT a.goods_id FROM {$prefix}goods_attr AS a JOIN {$prefix}goods AS g ON a.goods_id=g.goods_id WHERE $fw $fwi $whereOr attr_id = $attr_id AND attr_value IN ($attr_value) AND $like";
+                $sql = "SELECT distinct a.goods_id FROM {$prefix}goods_attr AS a JOIN {$prefix}goods AS g ON a.goods_id=g.goods_id WHERE $fw $fwi $whereOr attr_id = $attr_id AND a.attr_checked = 1 AND attr_value IN ($attr_value) AND $like";
             }
         } else {
             $sql = "SELECT goods_id FROM {$prefix}goods WHERE $fw $fwi $whereOr $like";

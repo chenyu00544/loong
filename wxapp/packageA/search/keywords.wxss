@@ -1,0 +1,16 @@
+/*热门搜索*/
+page {
+  background: #fff;
+}
+/*search*/
+.search-max-box {background:#efeff4;}
+.search-input-box{height: 60rpx; overflow:hidden;}
+.search-input{width: 80%; background: #fff; border-radius: 5px 0 0 5px; padding-left: 10rpx; box-sizing: border-box; overflow:hidden;border-left: 1rpx solid #eee; border-top: 1rpx solid #eee; border-bottom: 1rpx solid #eee;border-radius:5px 0 0 5px;}
+.search-input .left icon{margin-top: 10rpx;}
+.search-input .right{flex:5}
+.search-input .right text{margin-left: 70rpx;}
+.search-input input{font-size: 28rpx; height: 50rpx; line-height: 50rpx; padding-left:10px;}
+.serch-button{width: 20%; box-sizing: border-box;}
+.serch-button button{line-height: 60rpx; height: 60rpx; font-size: 28rpx; border-radius: 0 5px 5px 0;}
+.seconds-kill-li{padding: 10rpx 25rpx; border: 1rpx solid #eee; border-radius: 10rpx; margin-right: 20rpx;margin-top: 15rpx;}
+.seconds-kill-hot{width: 80rpx;height: 80rpx; text-align: center; padding: 25rpx; border: 1rpx solid #eee; border-radius: 80rpx; margin-right: 20rpx;margin-top: 15rpx;overflow: hidden; word-wrap: break-word;background: #eee;}

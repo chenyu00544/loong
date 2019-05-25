@@ -1,0 +1,16 @@
+page{  display: flex;  flex-direction: column;  height: 100%;  }
+ .more-scroll-box{  position: absolute;  bottom: 0;  left: 0;  right: 0;  top: 180rpx;  }
+/*搜索框*/
+.common-search-box .common-search {margin-right:15rpx}
+.common-search-box .search icon {left:0; margin-left:20rpx;}
+.common-search-box .right{width:60rpx;}
+.common-search-box .right text{height:60rpx;line-height:60rpx;}
+.attr-mol {background:#fff;position:fixed;left:100%;top:0;right:-85%;bottom:0;z-index:120;visibility:hidden;}
+.attr-mol.active{left:15%;right:0;visibility:visible;}
+.attr-cell{padding: 10px 15px;}
+.bt{background: #eee;color: #292929;border-radius: 10rpx;padding: 10rpx 20rpx;margin: 20rpx 20rpx 0 0 ;}
+.act{background: #ec5151;color: #fff;}
+.pad-top0{padding-top: 0; }
+
+
+

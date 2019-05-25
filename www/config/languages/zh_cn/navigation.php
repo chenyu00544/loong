@@ -187,6 +187,10 @@ return array(
             'name' => '小程序设置',
             'url' => 'admin/wxappconfig',
         ),
+        'wxappsession' => array(
+            'name' => '小程序客服会话',
+            'url' => 'admin/wxappsession',
+        ),
     ),
 
 
