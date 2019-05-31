@@ -34,6 +34,10 @@ class Wxapp
 
     const GET_WXA_TEMPLATE_SEND_URL = '/cgi-bin/message/wxopen/template/send?';  //发送模板消息 接口地址
 
+    const GET_WXA_SERVER_SEND_URL = '/cgi-bin/message/custom/send?';  //发送客服消息 接口地址
+
+    const GET_WXA_UPLOAD_MEDIA_URL = '/cgi-bin/media/upload?';  //发送客服消息 接口地址
+
     public $debug =  false;
 
     public $errCode = 40001;
@@ -299,8 +303,41 @@ class Wxapp
         return false;
     }
 
+    /**
+     * 发送客服消息
+     */
+    public function sendServerMessage($data)
+    {
+        $result = $this->curlPost(self::API_URL_PREFIX.self::GET_WXA_SERVER_SEND_URL.'access_token='.self::getAccessToken(), self::json_encode($data));
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return false;
+            }
+            return $json;
+        }
+        return false;
+    }
 
-
+    /**
+     * 上传图片媒体文件
+     */
+    public function uploadMedia($data)
+    {
+        $result = $this->http_post(self::API_URL_PREFIX.self::GET_WXA_UPLOAD_MEDIA_URL.'access_token='.self::getAccessToken(), $data, true);
+        if ($result) {
+            $json = json_decode($result, true);
+            if (!$json || !empty($json['errcode'])) {
+                $this->errCode = $json['errcode'];
+                $this->errMsg = $json['errmsg'];
+                return false;
+            }
+            return $json;
+        }
+        return false;
+    }
 
     /**
      * GET 请求
@@ -368,6 +405,51 @@ class Wxapp
         curl_close($ch);
         if (intval($aStatus["http_code"])==200) {
             return $result;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * POST 请求
+     * @param string $url
+     * @param array $param
+     * @param boolean $post_file 是否文件上传
+     * @return string content
+     */
+    private function http_post($url, $param, $post_file=false)
+    {
+        $oCurl = curl_init();
+        if (stripos($url, "https://")!==false) {
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($oCurl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($oCurl, CURLOPT_SSLVERSION, 1); //CURL_SSLVERSION_TLSv1
+        }
+        if (is_string($param) || $post_file) {
+            $strPOST = $param;
+        } else {
+            $aPOST = [];
+            foreach ($param as $key=>$val) {
+                $aPOST[] = $key."=".urlencode($val);
+            }
+            $strPOST =  join("&", $aPOST);
+        }
+        if (class_exists('\CURLFile')) {
+            curl_setopt($oCurl, CURLOPT_SAFE_UPLOAD, true);
+        } else {
+            if (defined('CURLOPT_SAFE_UPLOAD')) {
+                curl_setopt($oCurl, CURLOPT_SAFE_UPLOAD, false);
+            }
+        }
+        curl_setopt($oCurl, CURLOPT_URL, $url);
+        curl_setopt($oCurl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($oCurl, CURLOPT_POST, true);
+        curl_setopt($oCurl, CURLOPT_POSTFIELDS, $strPOST);
+        $sContent = curl_exec($oCurl);
+        $aStatus = curl_getinfo($oCurl);
+        curl_close($oCurl);
+        if (intval($aStatus["http_code"])==200) {
+            return $sContent;
         } else {
             return false;
         }

@@ -181,6 +181,10 @@ return array(
             'name' => '公众号设置',
             'url' => 'admin/wechatconfig',
         ),
+        'reply' => array(
+            'name' => '自动回复',
+            'url' => 'admin/wechat/reply',
+        ),
     ),
     'wxapp' => array(
         'wxappconfig' => array(

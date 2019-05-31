@@ -1,6 +1,6 @@
 @extends('shop.layouts.index')
 @section('content')
-    <body style="overflow-y: scroll;background-color: #f7f7f7;">
+    <body style="overflow: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
         <div class="title">会话管理 - 会员列表</div>
         <div class="content">
@@ -81,7 +81,7 @@
                                         小时{{floor((48*3600 - time() + $wxapp->update_time)%3600/60)}}分
                                     </td>
                                     <td class="text-center">
-                                        <a type="button" href="javascript:;" data-openid="{{$wxapp->openid}}"
+                                        <a type="button" href="javascript:;" data-id="{{$wxapp->id}}"
                                            class="btn btn-info btn-send btn-sm mar-all-5">发送消息</a>
                                         <a type="button" class="btn btn-danger btn-del btn-sm mar-all-5"
                                            data-id="{{$wxapp->id}}">删除</a>
@@ -128,14 +128,14 @@
 
             //发送客服消息
             $('.btn-send').click(function () {
-                var openid = $(this).data('openid');
+                var id = $(this).data('id');
                 layer.open({
                     type: 2,
-                    area: ['500px', '400px'],
+                    area: ['650px', '400px'],
                     fixed: true, //固定
                     maxmin: true,
                     title: '发送客户消息',
-                    content: ["<?php echo e(url('admin/wxappsession')); ?>/" + openid + "/edit", 'no'],
+                    content: ["<?php echo e(url('admin/wxappsession')); ?>/" + id + "/edit", 'no'],
                     success: function (layero, index) {
                         layer.iframeAuto(index)
                     }

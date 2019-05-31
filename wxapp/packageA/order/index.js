@@ -1,6 +1,5 @@
 //获取应用实例
 var app = getApp()
-var token
 var openid;
 var size = 100;
 var page = 1;

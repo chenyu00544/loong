@@ -118,7 +118,6 @@ Page({
         that.setData({
           comment_image: that.data.comment_image
         });
-        app.log(res.tempFilePaths);
       },
     })
   },
@@ -206,7 +205,7 @@ Page({
               'vcvbuy-Authorization': wx.getStorageSync('token')
             },
             success(res) {
-              
+
             }
           });
         }

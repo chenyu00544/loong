@@ -32,7 +32,7 @@ class VerifiableService
         return Validator::make($input, $rules, $message);
     }
 
-    public static function authorization($request){
+    public static  function authorization($request){
         if(empty($request->header()[strtolower('vcvbuy-authorization')][0])){
             return '';
         }else{

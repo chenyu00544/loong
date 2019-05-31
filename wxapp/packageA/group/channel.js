@@ -1,5 +1,5 @@
 var app = getApp()
-var url = app.apiUrl("team/categoryList ");
+var url = app.apiUrl("team/categoryList");
 var tc_id
 var page = '1'
 var size = '30'
@@ -27,7 +27,7 @@ var GetList = function (that) {
       size: size,
       keyword: keyword,
       sort_key: sort_key,
-      sort_value: sort_value  
+      sort_value: sort_value
     },
     method: "post",
     header: {

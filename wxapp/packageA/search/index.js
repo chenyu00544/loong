@@ -371,7 +371,8 @@ Page({
     for (var i in search_attr) {
       data[i] = search_attr[i];
     }
-    app.vcvbRequest("search/filter/to", data).then((res) => {
+    app.vcvbRequest("search/filter/to", data)
+        .then((res) => {
       if (res.data.code == 0) {
         goodsIds = res.data.data.goods_id.join(",");
         if (goodsIds == ""){

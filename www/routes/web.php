@@ -17,6 +17,7 @@ Route::get('welcome', function () {
 Route::group(['namespace' => 'Shop\Home\Pc'], function () {
     Route::any('/', 'IndexController@index');
     Route::any('test', 'IndexController@test');
+    Route::any('socket', 'IndexController@socket');
 
     Route::any('article', 'ArticleController@index')->name('article');
     Route::any('article/detail', 'ArticleController@artDetail')->name('articleDetail');

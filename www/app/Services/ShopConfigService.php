@@ -141,7 +141,11 @@ class ShopConfigService
                 }
             }
         }
-        $shopConf = $m->getConf();
+        if ($groups != 'shop') {
+            $shopConf = $m->getGroupsConfig(['shop_group' => $groups]);
+        } else {
+            $shopConf = $m->getConf();
+        }
         $shop_conf = [];
         foreach ($shopConf as $value) {
             $shop_conf[$value->code] = $value->value;

@@ -101,6 +101,18 @@ class OrderInfoModel extends Model
                     ->with(['Goods'])
                     ->get();
             }])
+            ->with(['mapcountry' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapprovince' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapcity' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
+            ->with(['mapdistrict' => function ($query) {
+                $query->select(['region_id', 'region_name']);
+            }])
             ->where($where);
         if (!empty($whereIn)) {
             $m->whereIn('order_id', $whereIn);

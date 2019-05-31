@@ -90,9 +90,9 @@ class OrderController extends CommonController
         $order = $this->orderRepository->getOrder($id);
         $addresses = $this->userAddressRepository->getUserAddresses($order->user_id);
         $regions = $this->regionsRepository->getRegions();
-        $provinces = $this->regionsRepository->getRegions(1, $order->country);
-        $citys = $this->regionsRepository->getRegions(2, $order->province);
-        $districts = $this->regionsRepository->getRegions(3, $order->city);
+        $provinces = $this->regionsRepository->getRegions($order->country);
+        $citys = $this->regionsRepository->getRegions($order->province);
+        $districts = $this->regionsRepository->getRegions($order->city);
         return view('shop.admin.order.consigneeEdit', compact('order', 'addresses', 'regions', 'provinces', 'citys', 'districts'));
     }
 

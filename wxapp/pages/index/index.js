@@ -33,18 +33,21 @@ Page({
     this.getIndexData(navPage, 0);
   },
   onShow() {
+
     // app.redirectTo("../../packageA/icon/index");
     // app.redirectTo("../goods/index?objectId=923");
     // app.switchTo("../user/index");
+    // app.redirectTo("../../packageA/real/index");
     // app.redirectTo("../../packageA/user/history");
     // app.redirectTo("../../packageA/group/index");
     // app.redirectTo("../../packageA/group/rank");
     // app.redirectTo("../../packageA/group/order/index");
     // app.redirectTo("../../packageA/group/wait?objectId=2&user_id=60");
     // app.redirectTo("../../packageA/group/goods?objectId=923");
-    // app.redirectTo("../../packageA/order/detail?objectId=167");
+    // app.redirectTo("../../packageA/order/detail?objectId=210");
+    // app.redirectTo("../downorder/checkout?ObjectId=210");
     // app.redirectTo("../../packageA/search/keywords");
-    app.redirectTo("../../packageA/search/index?keyword=测试");
+    // app.redirectTo("../../packageA/search/index?keyword=测试");
     // app.redirectTo("../../packageA/search/index?objectId=ccc");
 
     var that = this;
@@ -109,11 +112,11 @@ Page({
     wx.navigateTo({
       url: "../goods/index?objectId=" + goodsId,
     });
-    app.netReq("user/trajectory", {
-      utype: 1,
-      type_name: "普通商品",
-      action_name: e.currentTarget.dataset.goods_name
-    }, function(res) {});
+    // app.netReq("user/trajectory", {
+    //   utype: 1,
+    //   type_name: "普通商品",
+    //   action_name: e.currentTarget.dataset.goods_name
+    // }, function(res) {});
   },
   //返回顶部
   goTop: function(e) {

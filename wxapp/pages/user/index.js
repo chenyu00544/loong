@@ -110,4 +110,4 @@ Page({
       path: '/pages/user/user'
     }
   }
-})
+});

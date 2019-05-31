@@ -28,7 +28,7 @@ App({
           reject(data);
         }
       })
-    })
+    });
     return promise
   },
   showmessage(msg, time = 1000, icon = 'warn') {
@@ -165,27 +165,27 @@ App({
     })
 
   },
-  netReq: function(url, param, callback) {
-    wx.showNavigationBarLoading();
-    setTimeout(() => {
-      wx.hideNavigationBarLoading();
-    }, 3000)
-    var that = this
-    var token = wx.getStorageSync('token');
-    wx.request({
-      url: that.apiUrl(url),
-      data: param,
-      method: "post",
-      header: {
-        'Content-Type': 'application/json',
-        'X-ECTouch-Authorization': token
-      },
-      success: function(res) {
-        wx.hideNavigationBarLoading();
-        callback(res);
-      }
-    });
-  },
+  // netReq: function(url, param, callback) {
+  //   wx.showNavigationBarLoading();
+  //   setTimeout(() => {
+  //     wx.hideNavigationBarLoading();
+  //   }, 3000)
+  //   var that = this
+  //   var token = wx.getStorageSync('token');
+  //   wx.request({
+  //     url: that.apiUrl(url),
+  //     data: param,
+  //     method: "post",
+  //     header: {
+  //       'Content-Type': 'application/json',
+  //       'X-ECTouch-Authorization': token
+  //     },
+  //     success: function(res) {
+  //       wx.hideNavigationBarLoading();
+  //       callback(res);
+  //     }
+  //   });
+  // },
   //窗口宽度
   winWidth: function() {
     return wx.getSystemInfoSync().windowWidth;
@@ -224,6 +224,10 @@ App({
             key: 'token',
             // data: JSON.parse(res.data.split('\n')[1]).token
             data: res.data.data.token
+          });
+          wx.setStorage({
+            key: 'is_real',
+            data: res.data.data.is_real
           });
         });
       }

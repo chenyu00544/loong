@@ -45,11 +45,14 @@ class WxappServerSessionModel extends Model
             ->first();
     }
 
-    public function getWxappServerSessions($where, $column = ['*'])
+    public function getWxappServerSessions($where, $whereIn = array(), $column = ['*'])
     {
-        return $this->select($column)
-            ->where($where)
-            ->orderBy('update_time', 'desc')
+        $m = $this->select($column)
+            ->where($where);
+        if (!empty($whereIn)) {
+            $m->whereIn('id', $whereIn);
+        }
+        return $m->orderBy('update_time', 'desc')
             ->get();
     }
 
@@ -62,6 +65,11 @@ class WxappServerSessionModel extends Model
     public function addWxappServerSession($data)
     {
         return $this->create($data);
+    }
+
+    public function incrementWxappServerSession($where, $column = 'count_msg', $count = 1)
+    {
+        return $this->where($where)->increment($column, $count);
     }
 
     public function delWxappServerSession($where)

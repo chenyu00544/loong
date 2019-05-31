@@ -1,6 +1,6 @@
 @extends('shop.layouts.index')
 @section('content')
-    <body style="overflow-y: scroll;background-color: #f7f7f7;">
+    <body style="overflow: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
         <div class="title">第三方服务 - 快递鸟配置</div>
         <div class="content">

@@ -1,6 +1,6 @@
 @extends('shop.layouts.index')
 @section('content')
-    <body style="overflow-y: scroll;background-color: #f7f7f7;">
+    <body style="overflow: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
         <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>会员管理 - 会员列表</div>
         <div class="content">

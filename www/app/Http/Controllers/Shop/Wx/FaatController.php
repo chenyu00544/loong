@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Shop\Wx;
 
+use App\Facades\Verifiable;
 use App\Repositories\Wxapp\BrandRepository;
 use App\Repositories\Wxapp\FaatRepository;
 use Illuminate\Http\Request;
@@ -52,5 +53,66 @@ class FaatController extends CommonController
         return $this->apiReturn($res);
     }
 
+    public function teamNav(Request $request)
+    {
+        $res = $this->faatRepository->getTeamNav();
+        return $this->apiReturn($res);
+    }
 
+    public function team(Request $request)
+    {
+        $res = $this->faatRepository->getTeam($request->all());
+        return $this->apiReturn($res);
+    }
+
+    public function teamGoods(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        $res = $this->faatRepository->getTeamGoods($request->all(), $uid);
+        if (is_numeric($res)) {
+            return $this->apiReturn(array(),'', $res);
+        } else {
+            return $this->apiReturn($res);
+        }
+    }
+
+    public function teamBuy(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $res = $this->faatRepository->setTeamBuy($request->all(), $uid);
+            if (is_numeric($res)) {
+                return $this->apiReturn(array(), '', $res);
+            } else {
+                return $this->apiReturn($res);
+            }
+        } else {
+            return $this->apiReturn(array(), '未登陆', 10002);
+        }
+    }
+
+    public function teamOrder(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $res = $this->faatRepository->getTeamOrder($request->all(), $uid);
+            if (is_numeric($res)) {
+                return $this->apiReturn(array(), '', $res);
+            } else {
+                return $this->apiReturn($res);
+            }
+        } else {
+            return $this->apiReturn(array(), '未登陆', 10002);
+        }
+    }
+
+    public function teamRank(Request $request)
+    {
+        $res = $this->faatRepository->getTeamRank($request->all());
+        if (is_numeric($res)) {
+            return $this->apiReturn(array(), '', $res);
+        } else {
+            return $this->apiReturn($res);
+        }
+    }
 }

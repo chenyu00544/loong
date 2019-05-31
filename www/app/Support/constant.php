@@ -20,6 +20,7 @@ define('API_TIME', '');
 define('EC_TEMPLATE', '');
 define('VCVB_SNDATE', 'YmdHis');
 define('WXAPP_SERVER', 'wxserver4494400544');
+define('WXCHAT_SERVER', 'wxchatserver4494400544');
 
 define('MOBILE_WECHAT',             dirname(__DIR__) . '/Modules/Admin/Controllers/WechatController.php'); //微商城目录
 define('MOBILE_DRP',                dirname(__DIR__) . '/Modules/Admin/Controllers/DrpController.php'); //微分销目录

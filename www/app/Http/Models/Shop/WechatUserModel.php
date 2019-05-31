@@ -35,10 +35,15 @@ class WechatUserModel extends Model
         return $this->create($data);
     }
 
+    public function getWechatCount($where)
+    {
+        return $this->where($where)->count();
+    }
+
     public function delWechat($where)
     {
         try{
-            $this->where($where)->delete();
+            return $this->where($where)->delete();
         }catch (\Exception $e){
 
         }

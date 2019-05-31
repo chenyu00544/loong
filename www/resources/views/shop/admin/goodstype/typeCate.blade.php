@@ -1,6 +1,6 @@
 @extends('shop.layouts.index')
 @section('content')
-    <body style="overflow-y: scroll;background-color: #f7f7f7;">
+    <body style="overflow: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
         <div class="title">商品管理 - 类型分类</div>
         <div class="content">

@@ -45,14 +45,17 @@ class LoginController extends CommonController
         $this->validate($request, [
             'code' => 'required'
         ]);
-
         // 用户登录
         if (false === ($result = $this->usersRepository->loginSilent($request->all()))) {
             return ['登录失败', 1];
         }
         //登录成功
-
         return $this->apiReturn($result);
+    }
+
+    public function bindPhone(Request $request)
+    {
+        
     }
 
     public function getDeviceId(Request $request)

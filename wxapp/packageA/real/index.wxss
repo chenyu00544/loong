@@ -1,0 +1,6 @@
+.bt{width:100%;background-color:#ff495e;color:#fff;text-align:center;line-height:46px;}
+.title{background: #ddd;padding: 12rpx 24rpx;}
+.bb-line{border-bottom: 1rpx solid #ddd;}
+.card-img{width: 320rpx;height: 200rpx;}
+.card-img-tip{width: 240rpx;height: 150rpx;}
+.footer-fixed{background-color:#ff495e;}

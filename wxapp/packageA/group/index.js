@@ -6,7 +6,7 @@ Page({
     autoplay: true,
     currentTab: 0, //预设当前项的值
     scrollLeft: 0, //tab标题的滚动条位置
-    scrollSubLeft: 0, 
+    scrollSubLeft: 0,
     scrollTop: 0,
     subNavIndex:0,
   },
@@ -19,7 +19,8 @@ Page({
   //获取导航
   getNav: function() {
     var that = this;
-    app.vcvbRequest("team/nav").then((res) => {
+    app.vcvbRequest("team/nav")
+        .then((res) => {
       if (res.data.code == 0) {
         that.setData({
           nav: res.data.data,
@@ -134,7 +135,7 @@ Page({
       url: "../group/goods?objectId=" + goodsId
     });
   },
-  
+
   //下拉刷新完后关闭
   onPullDownRefresh: function() {
     wx.stopPullDownRefresh()

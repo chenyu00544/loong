@@ -37,5 +37,6 @@ Route::group(['prefix' => 'web', 'namespace' => 'Shop\Api'], function () {
 });
 
 Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Api'], function () {
-    Route::any('server', 'WxController@server');
+    Route::any('wxapp/server', 'WxController@wxappServer');
+    Route::any('wxchat/server', 'WxController@wxchatServer');
 });

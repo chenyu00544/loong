@@ -283,6 +283,7 @@ return array(
             'order_delay_day' => '申请延迟收货时间设置',
             'pay_effective_time' => '支付有效时间（分钟）',
             'seller_stages' => '商家设置商品分期',
+            'card_real' => '购买商品是否开启身份认证',
         ),
     'cfg_range' =>
         array(
@@ -948,6 +949,11 @@ return array(
                     1 => '启用',
                 ),
             'seller_stages' =>
+                array(
+                    0 => '关闭',
+                    1 => '开启',
+                ),
+            'card_real' =>
                 array(
                     0 => '关闭',
                     1 => '开启',

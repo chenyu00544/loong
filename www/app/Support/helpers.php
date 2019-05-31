@@ -307,3 +307,38 @@ function logResult($message = '', $context = [], $level = 'info', $channel = '')
         \Illuminate\Support\Facades\Log::$level($message, $context);
     }
 }
+
+/**
+ * html代码输入
+ *
+ * @param $str
+ *
+ * @return string
+ */
+function html_in($str)
+{
+    $str = trim($str);
+    $str = htmlspecialchars($str);
+    if (!get_magic_quotes_gpc()) {
+        $str = addslashes($str);
+    }
+    return $str;
+}
+
+/**
+ * html代码输出
+ *
+ * @param $str
+ *
+ * @return string
+ */
+function html_out($str)
+{
+    if (function_exists('htmlspecialchars_decode')) {
+        $str = htmlspecialchars_decode($str);
+    } else {
+        $str = html_entity_decode($str);
+    }
+    $str = stripslashes($str);
+    return $str;
+}

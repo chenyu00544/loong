@@ -4,7 +4,7 @@ Page({
   data: {
     is_loading: false,
     list: [],
-    delBtnWidth: 180, //删除按钮宽度单位（rpx）
+    delBtnWidth: 180, 
   },
   getCollectGoods: function(that) {
     app.vcvbRequest("collect/goodses", {

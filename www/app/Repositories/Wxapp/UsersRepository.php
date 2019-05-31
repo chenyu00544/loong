@@ -139,10 +139,24 @@ class UsersRepository implements UsersRepositoryInterface
             } else {
                 $return["token"] = 0;
             }
+            if($re->user){
+                $return["logo"] = FileHandle::getImgByOssUrl($re->user->logo);
+            }else{
+                $return["logo"] = FileHandle::getImgByOssUrl('');
+            }
+
+            if($re->userReal){
+                $return["is_real"] = $re->userReal->review_status;
+            }else{
+                $return["is_real"] = 0;
+            }
             return $return;
         }
 
         $args['openid'] = $response['openid'];
+        if(!empty($response['unionid'])){
+            $args['unionid'] = $response['unionid'];
+        }
         if ($re) {
             $this->wechatUserModel->setWechat($where, $args);
         } else {
@@ -150,6 +164,11 @@ class UsersRepository implements UsersRepositoryInterface
             $return["token"] = 0;
         }
         return $return;
+    }
+
+    public function bindPhone($data)
+    {
+
     }
 
     public function getUserInfo($data, $uid)
@@ -355,9 +374,9 @@ class UsersRepository implements UsersRepositoryInterface
         $res = $this->userAddressModel->delAddress($where);
         if ($user->address_id == $data['address_id']) {
             $re = $this->userAddressModel->getAddress();
-            if($re->count()){
+            if ($re->count()) {
                 $updata['address_id'] = $re->address_id;
-            }else{
+            } else {
                 $updata['address_id'] = 0;
             }
             $this->usersModel->setUsers($where, $updata);
@@ -382,28 +401,11 @@ class UsersRepository implements UsersRepositoryInterface
 
     public function setUsersReal($data, $uid)
     {
-        $path = 'user_card';
         $where['user_id'] = $uid;
         $re = $this->usersRealModel->getUsersReal($where);
         $updata = [];
         foreach ($data as $key => $value) {
-            if ($key == 'file_0') {
-                if ($value->isValid()) {
-                    $uri = FileHandle::upLoadImage($value, $path);
-                    $updata['front_of_id_card'] = $uri;
-                    if ($re) {
-                        FileHandle::deleteFile($re->front_of_id_card);
-                    }
-                }
-            } elseif ($key == 'file_1') {
-                if ($value->isValid()) {
-                    $uri = FileHandle::upLoadImage($value, $path);
-                    $updata['reverse_of_id_card'] = $uri;
-                    if ($re) {
-                        FileHandle::deleteFile($re->reverse_of_id_card);
-                    }
-                }
-            } elseif ($key == 'card_name') {
+            if ($key == 'card_name') {
                 $updata['real_name'] = $value;
             } elseif ($key == 'card_num') {
                 $updata['self_num'] = $value;
@@ -418,5 +420,35 @@ class UsersRepository implements UsersRepositoryInterface
             $req = $this->usersRealModel->addUsersReal($updata);
         }
         return ['review_status' => 3];
+    }
+
+    public function uploadCartImg($data, $uid)
+    {
+        $re = false;
+        if (!empty($data['file'])) {
+            if ($data['file']->isValid()) {
+                $path = 'user_card';
+                $uri = FileHandle::upLoadImage($data['file'], $path);
+                $where = [
+                    'user_id' => $uid,
+                ];
+                $real = $this->usersRealModel->getUsersReal($where);
+                if ($data['card_type'] == 'front') {
+                    $real_data['front_of_id_card'] = $uri;
+                } else {
+                    $real_data['reverse_of_id_card'] = $uri;
+                }
+
+                $re = $this->usersRealModel->setUsersReal($where, $real_data);
+                if($re){
+                    if ($data['card_type'] == 'front') {
+                        FileHandle::deleteFile($real->front_of_id_card);
+                    } else {
+                        FileHandle::deleteFile($real->reverse_of_id_card);
+                    }
+                }
+            }
+        }
+        return $re;
     }
 }

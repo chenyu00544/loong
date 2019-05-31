@@ -178,7 +178,7 @@ Page({
       delta: 1
     })
   },
-  
+
   //下拉刷新完后关闭
   onPullDownRefresh: function() {
     wx.stopPullDownRefresh()
@@ -232,7 +232,7 @@ Page({
         title: '详细地址不能为空',
         image: '../../images/failure.png',
         duration: 2000,
-      })
+      });
       return false;
     }
     return true;

@@ -46,6 +46,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::post('login/silent', 'LoginController@silent');
     Route::post('login/reg', 'LoginController@register');
     Route::post('login/deviceid', 'LoginController@getDeviceId');
+    Route::post('login/bind/phone', 'LoginController@bindPhone');
 
     Route::post('collect/goods/add', 'CollectController@collectGoods');
     Route::post('collect/goods/cart', 'CollectController@collectGoodsToCart');
@@ -65,6 +66,7 @@ Route::group(['prefix' => 'wx', 'namespace' => 'Shop\Wx'], function () {
     Route::post('user/address/del', 'UserController@delAddress');
     Route::post('user/real', 'UserController@real');
     Route::post('user/real/set', 'UserController@setReal');
+    Route::post('user/real/up/img', 'UserController@uploadCartImg');
 
     Route::post('order/index', 'OrderController@index');
     Route::post('order/get', 'OrderController@getOrder');

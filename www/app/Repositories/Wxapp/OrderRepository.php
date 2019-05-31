@@ -337,6 +337,14 @@ class OrderRepository implements OrderRepositoryInterface
             }
         }
 
+        // fixme 检查是否身份认证
+        if(RedisCache::get('goods_config')['card_real'] == 1){
+            $user_r = $this->usersModel->getUserAndExt($uwhere);
+            if(!$user_r->real || $user_r->real->review_status != 1){
+                return 50001;
+            }
+        }
+
         // fixme 终端来源
         $froms = empty($data['froms']) ? 'app' : trim($data['froms']);
 
@@ -355,9 +363,15 @@ class OrderRepository implements OrderRepositoryInterface
                     $goods_attr_ids[] = $attr->goods_attr_id;
                 }
                 // fixme 检查product商品库存
-
-            }else{
-                // fixme 检查goods商品库存
+                sort($goods_attr_ids);
+                $product = $this->productsModel->getProdcut(['goods_id' => $goods_id, 'goods_attr' => implode('|', $goods_attr_ids)]);
+                if (!$product) {
+                    rsort($goods_attr_ids);
+                    $product = $this->productsModel->getProdcut(['goods_id' => $goods_id, 'goods_attr' => implode('|', $goods_attr_ids)]);
+                }
+                if ($num > $product->product_number) {
+                    return 30003;
+                }
             }
 
             // fixme 购买的商品信息
@@ -382,7 +396,7 @@ class OrderRepository implements OrderRepositoryInterface
             $order_goodses = [];
 
             foreach ($goodses as $goods_detail) {
-                //限购
+                //fixme 限购
                 if ($goods_detail->is_limit_buy == 1 && $goods_detail->limit_buy_start_date < time() && $goods_detail->limit_buy_end_date > time()) {
                     $orderWhere = [['add_time', '>', $goods_detail->limit_buy_start_date], ['add_time', '<', $goods_detail->limit_buy_end_date], ['goods_id', '=', $goods_detail->goods_id], ['order_status', '<>', OS_CANCELED], ['order_status', '<>', OS_INVALID]];
                     $limit_orders = $this->orderGoodsModel->getOrderGoodsByOrder($orderWhere);
@@ -391,8 +405,13 @@ class OrderRepository implements OrderRepositoryInterface
                         $goods_num += $limit_order->o_goods_number;
                     }
                     if ($goods_num + $num > $goods_detail->limit_buy_num) {
-                        return '当前商品达到限购数量';
+                        return 30004;
                     }
+                }
+
+                // fixme 检查goods商品库存
+                if ($goods_detail->goods_number < $num) {
+                    return 30003;
                 }
 
                 if (empty($order[$goods_detail->user_id]['order_id'])) {
@@ -480,10 +499,10 @@ class OrderRepository implements OrderRepositoryInterface
                     $order[$goods_detail->user_id]['extension_code'] = 'sec_kill';
                     $order[$goods_detail->user_id]['extension_id'] = $goods_detail->secKill->sec_id;
                     if ($goods_detail->secKill->sec_limit < $num) {
-                        return '限购数量' . $goods_detail->secKill->sec_limit . '';
+                        return 30004;
                     }
                     if ($goods_detail->secKill->sec_num < $this->orderInfoModel->countOrder([['extension_id', '=', $goods_detail->secKill->sec_id], ['extension_id', '=', $goods_detail->secKill->sec_id], ['add_time', '>', $goods_detail->secKill->b_time], ['add_time', '>', $goods_detail->secKill->e_time]])) {
-                        return '商品已抢光';
+                        return 30007;
                     }
                     $goods_amount[$goods_detail->user_id] = $goods_detail->secKill->sec_price * $num;
                 } elseif (!empty($goods_detail->teamGoods)) {
@@ -495,7 +514,7 @@ class OrderRepository implements OrderRepositoryInterface
                     $order[$goods_detail->user_id]['team_price'] = $goods_detail->teamGoods->team_price;
                     $goods_amount[$goods_detail->user_id] = $goods_detail->teamGoods->team_price * $num;
                     if ($goods_detail->teamGoods->astrict_num < $num) {
-                        return '限购数量' . $goods_detail->teamGoods->astrict_num . '';
+                        return 30004;
                     }
                 } elseif (!empty($goods_detail->groupBuy)) {
                     $price_ladder = unserialize($goods_detail->groupBuy->price_ladder);
@@ -607,7 +626,7 @@ class OrderRepository implements OrderRepositoryInterface
             $column = ['*'];
             $order = $this->orderInfoModel->getOrder($where, $column);
             if ($order->count() == 0) {
-                return false;
+                return 10002;
             }
             $wherein = [];
             $goods_num = [];
@@ -632,7 +651,7 @@ class OrderRepository implements OrderRepositoryInterface
             ];
 
             if (count($wherein) == 0) {
-                return false;
+                return 10002;
             }
 
             $goodses = $this->goodsModel->getGoodsByOrder($gwhere, $column, $wherein);
@@ -652,7 +671,7 @@ class OrderRepository implements OrderRepositoryInterface
                         $goods_number += $limit_order->o_goods_number;
                     }
                     if ($goods_number + $goods_num[$goods_detail->goods_id] > $goods_detail->limit_buy_num) {
-                        return '当前商品中包含限购商品，无法再次购买';
+                        return 30008;
                     }
                 }
 
@@ -880,7 +899,7 @@ class OrderRepository implements OrderRepositoryInterface
                         $goods_number += $limit_order->o_goods_number;
                     }
                     if ($goods_number + $goods_num[$k] > $goods_detail->limit_buy_num) {
-                        return '当前商品中包含限购商品，无法再次购买';
+                        return 30008;
                     }
                 }
                 $goodses_arr[$goods_detail->goods_id] = $goods_detail;

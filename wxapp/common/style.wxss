@@ -54,6 +54,7 @@ page{background: #F7F7F7;}
 .col-m{color:#e9363a !important;}
 .col-s{color:#BE0117 !important;}
 .col-00a{color:#00a3e7}
+.col-gre{color:greenyellow}
 .icon-msnui-rightmini{color:#C8C8CD}
 
 .del{TEXT-DECORATION:line-through;padding-left:10rpx;color:#999}
@@ -637,7 +638,8 @@ buy_number{justify-content: space-between; margin: 10px 5px;}
 .f-colc6{color: #c6c6c6!important}
 .f-cole9{color: #e9363a!important}
 .flex-center{display:flex;justify-content:center;align-items:center;}
-
+.jc-around{justify-content: space-around}
+.jc-between{justify-content: space-between}
 .ws{white-space: pre-line;}
 .fd{flex-direction: column;}
 .ac{align-items:center;}

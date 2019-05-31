@@ -131,10 +131,15 @@ Page({
           that.setData({
             showViewProperty: !that.data.showViewProperty,
             showViewMol: !that.data.showViewMol
-          })
+          });
+          
           wx.navigateTo({
             url: "../downorder/checkout?ObjectId=" + res.data.data.order[0],
           });
+        } else if (res.data.code == 50001){
+          wx.navigateTo({
+            url: "../../packageA/real/index",
+          })
         }
       });
     }

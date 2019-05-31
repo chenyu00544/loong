@@ -33,10 +33,10 @@ class CartController extends CommonController
             if (is_array($code)) {
                 return $this->apiReturn($code);
             } else {
-                return $this->apiReturn([], '', $code);
+                return $this->apiReturn([], $code);
             }
         } else {
-            return $this->apiReturn([], '', 10002);
+            return $this->apiReturn([], 10002);
         }
     }
 
@@ -46,7 +46,7 @@ class CartController extends CommonController
         if ($re) {
             return $this->apiReturn($re);
         } else {
-            return $this->apiReturn([], '',30003);
+            return $this->apiReturn([], 30003);
         }
     }
 
@@ -56,7 +56,7 @@ class CartController extends CommonController
         if ($re) {
             return $this->apiReturn($re);
         } else {
-            return $this->apiReturn([], '',10003);
+            return $this->apiReturn([],10003);
         }
     }
 }

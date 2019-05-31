@@ -1,4 +1,4 @@
-## cd d:/wamp64/www/github
+﻿## cd d:/wamp64/www/github
     D:\github\www\
     D:\wamp64\www\compare\online\
     
@@ -440,9 +440,40 @@
 ####返回最后更新磁盘的时间
     
      $redis->lastsave();
-     
-     
-     
-###jq 改变input值 监听不到变化
-       在jq给input赋值的时候就给 一个$("#inpstart").trigger("input"); 
-       使用$('xxx').bind('input propertychange', function () {});
+
+
+
+##批量生成models
+    reliese/laravel
+    
+    composer require reliese/laravel
+    composer require reliese/laravel --dev 开发环境
+    
+    config/app.php
+    
+    'providers' => [
+        /*
+         * Package Service Providers...
+         */
+    
+        Reliese\Coders\CodersServiceProvider::class,
+    ],
+    
+    Then you'll need to register the provider in app/Providers/AppServiceProvider.php file.
+    public function register()
+    {
+        if ($this->app->environment() == 'local') {
+            $this->app->register(\Reliese\Coders\CodersServiceProvider::class);
+        }
+    }
+    
+    Add the models.php configuration file to your config directory and clear the config cache:
+    
+    php artisan vendor:publish --tag=reliese-models
+    php artisan config:clear
+    
+    生成models
+    php artisan code:models
+    
+    生成model
+    php artisan code:models --table=users

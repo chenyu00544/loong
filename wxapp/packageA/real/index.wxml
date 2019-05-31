@@ -1,0 +1,65 @@
+<import src="../../common/common.wxml" />
+<block wx:if="{{real != undefined}}">
+
+  <view class="cont-box flex b-f" wx:if="{{real.review_status == 2}}">
+    <text class="f-30 col-m">{{real.review_content}}</text>
+  </view>
+
+  <view class="title flex jc-between">
+    <text class="f-30">身份信息（必填）</text>
+    <text class="f-30 col-gre" wx:if="{{real.review_status == 1}}">通过审核</text>
+    <text class="f-30 col-s" wx:elif="{{real.review_status == 2}}">未通过</text>
+    <text class="f-30 col-00a" wx:elif="{{real.review_status == 3}}">审核中</text>
+    <text class="f-30" wx:else="{{real.review_status == 0}}">未提交</text>
+  </view>
+  <view>
+  </view>
+
+  <view>
+    <input placeholder="姓名" value="{{name}}" bindinput="" class="f-34 cont-box bb-line"></input>
+    <input placeholder="身份证号" value="{{cardId}}" bindinput="" class="f-34 cont-box"></input>
+  </view>
+
+  <view class="title flex jc-between">
+    <text class="f-30">身份证正反面（必填）</text>
+    <text class="f-30 col-gre" wx:if="{{real.review_status == 1}}">通过审核</text>
+    <text class="f-30 col-s" wx:elif="{{real.review_status == 2}}">未通过</text>
+    <text class="f-30 col-00a" wx:elif="{{real.review_status == 3}}">审核中</text>
+    <text class="f-30" wx:else="{{real.review_status == 0}}">未提交</text>
+  </view>
+  <view>
+    <view class="cont-box">
+      <text class="f-28 tip col-6">温馨提示：请上传原始比例的身份证正反面，请勿涂改裁剪，保证身份证信息清晰显示，否则无法通过审核</text>
+    </view>
+    <view class="flex jc-around cont-box">
+      <view>
+        <image class="card-img" data-index="front" src="{{cardfront != ''?cardfront:'../../images/icon_up_card.png'}}" bindtap="addImage"></image>
+      </view>
+      <view>
+        <image class="card-img" data-index="back" src="{{cardback != ''?cardback:'../../images/icon_up_card.png'}}" bindtap="addImage"></image>
+      </view>
+    </view>
+    <view class="flex jc-around cont-box">
+      <view class="flex fd">
+        <text class="f-30 cont-box t-c">示例</text>
+        <image class="card-img-tip" src="../../images/card_front.png"></image>
+      </view>
+      <view class="flex fd">
+        <text class="f-30 cont-box t-c">示例</text>
+        <image class="card-img-tip" src="../../images/card_back.png"></image>
+      </view>
+    </view>
+  </view>
+
+  <view class="bg-back cont-box">
+    <text class="f-30 t-c">为什么需要实名认证</text>
+    <text class="f-28">{{real.explain}}</text>
+  </view>
+
+  <view class="footer-fixed f-34 {{isIphoneX?'iphonex-class':''}}">
+    <view class="bt" bindtap="seveReal">保　存</view>
+  </view>
+</block>
+<block wx:else>
+  <template is="loading" />
+</block>

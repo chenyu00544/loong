@@ -10,6 +10,7 @@ namespace App\Repositories\App;
 
 use App\Contracts\NotifyRepositoryInterface;
 use App\Facades\FileHandle;
+use App\Facades\RedisCache;
 use App\Http\Models\App\NotifyModel;
 use App\Http\Models\App\UsersModel;
 

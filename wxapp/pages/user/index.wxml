@@ -185,6 +185,15 @@
           </view>
           <span class="weui-cell__ft"></span>
         </navigator>
+        <navigator url="../../packageA/real/index" class="weui-cell weui-cell_access b-f">
+          <view class="weui-cell__hd">
+            <text class="iconfont icon-shezhi common-icon"></text>
+          </view>
+          <view class="weui-cell__bd weui-cell_primary">
+            <p class="f-30 pl-12">个人设置</p>
+          </view>
+          <span class="weui-cell__ft"></span>
+        </navigator>
         <!-- <view class="weui-cell weui-cell_access b-f" bindtap="invoiceNav">
           <view class="weui-cell__hd">
             <text class="iconfont icon-templatedefault common-icon"></text>

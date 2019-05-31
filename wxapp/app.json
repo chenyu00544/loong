@@ -34,7 +34,8 @@
         "group/order/index",
         "group/user/list",
         "search/index",
-        "search/keywords"
+        "search/keywords",
+        "real/index"
       ]
     }
   ],

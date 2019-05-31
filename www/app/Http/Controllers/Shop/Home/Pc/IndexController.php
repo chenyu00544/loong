@@ -18,7 +18,9 @@ class IndexController extends CommonController
 
     public function index(Request $request)
     {
+//        dd(RedisCache::get('wechat_config'));
         dd(FileHandle::getImgByOssUrl(''));
+//        dd(RedisCache::get('wechat_config'));
 //        ignore_user_abort(true);
 //        set_time_limit(0);
 //        $db = DB::table('users_copy');

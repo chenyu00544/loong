@@ -73,22 +73,17 @@
     
     重启
     systemctl restart nginx
-##阿里云centos7.4安装mysql5.7
-##使用root登录
-##Long19860212
+阿里云centos7.4安装mysql5.7
+使用root登录
+Long19860212
 
 ##安装PHP
 
-    #tar zxvf php-5.6.38.tar.gz
+    wget -O php7.tar.gz http://cn2.php.net/get/php-7.1.1.tar.gz/from/this/mirror
+    #cd php-7.0.4
+    #yum install libxml2 libxml2-devel openssl openssl-devel bzip2 bzip2-devel libcurl libcurl-devel libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel gmp gmp-devel libmcrypt libmcrypt-devel readline readline-devel libxslt libxslt-devel
     #cd php-5.6.38配置安装进入到目录，我们需要在安装的时候将安装目录配置到/usr/local/php/里
-    #./configure --prefix=/usr/local/php --with-curl --with-freetype-dir --with-gd 
-    --with-gettext --with-iconv-dir --with-kerberos --with-libdir=lib64 --with-libxml-dir 
-    --with-MySQL --with-mysqli --with-openssl --with-pcre-regex --with-pdo-mysql 
-    --with-pdo-sqlite --with-pear --with-png-dir --with-jpeg-dir --with-xmlrpc --with-xsl --with-zlib 
-    --enable-fpm --enable-bcmath --enable-libxml --enable-inline-optimization 
-    --enable-gd-native-ttf --enable-mbregex --enable-mbstring --enable-opcache 
-    --enable-pcntl --enable-shmop --enable-soap --enable-sockets --enable-sysvsem 
-    --enable-xml --enable-zip
+    #./configure --prefix=/usr/local/php --with-config-file-path=/etc --enable-fpm --with-fpm-user=nginx --with-fpm-group=nginx --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-soap --with-libxml-dir --with-xmlrpc --with-openssl --with-mcrypt --with-mhash --with-pcre-regex --with-sqlite3 --with-zlib --enable-bcmath --with-iconv --with-bz2 --enable-calendar --with-curl --with-cdb --enable-dom --enable-exif --enable-fileinfo --enable-filter --with-pcre-dir --enable-ftp --with-gd --with-openssl-dir --with-jpeg-dir --with-png-dir --with-zlib-dir --with-freetype-dir --enable-gd-native-ttf --enable-gd-jis-conv --with-gettext --with-gmp --with-mhash --enable-json --enable-mbstring --enable-mbregex --enable-mbregex-backtrack --with-libmbfl --with-onig --enable-pdo --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-zlib-dir --with-pdo-sqlite --with-readline --enable-session --enable-shmop --enable-simplexml --enable-sockets --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-libxml-dir --with-xsl --enable-zip --enable-mysqlnd-compression-support --with-pear --enable-opcache
     配置的过程中可能会报如下错误
     错误1：xml2-config not found. Please check your libxml2 installation.
     解决办法安装libxml2相关组件#yum install libxml2
@@ -102,6 +97,14 @@
     错误5：xslt-config not found. Please reinstall the libxslt >= 1.1.0 distribution安装libxslt相关组件#yum install libxslt-devel
     
     #make && make install
+    
+    配置环境变量
+    vi /etc/profile
+    在末尾追加
+    PATH=$PATH:/usr/local/php/bin
+    export PATH
+    执行命令使得改动立即生效
+    source /etc/profile
     
     配置相关php.ini
     配置首先我们需要配置的是php.ini这个文件
@@ -138,7 +141,7 @@
 
     # /usr/local/nginx/sbin/nginx -s reload
     
-##安装redis
+##安装redis服务
 
     $ wget http://download.redis.io/releases/redis-4.0.11.tar.gz 
     cd /usr/local
@@ -222,9 +225,32 @@
     13.命令立即执行生效
     mysql>flush privileges;
 
+##安装redis扩展
+    cd /usr/local/src
+    wget http://pecl.php.net/get/redis-4.2.0.tgz
+    tar -zxvf redis-4.2.0.tgz 
+    cd swoole-4.2.0
+    /usr/local/php/bin/phpize
+    ./configure --with-php-config=/usr/local/php/bin/php-config
+    make && make install
+    修改php.ini文件：
+    添加extension=redis.so
+    service php-fpm restart
+    
+##安装swoole扩展
+    cd /usr/local/src
+    wget -c http://pecl.php.net/get/swoole-4.3.4.tgz
+    tar xzvf swoole-4.3.4.tgz
+    cd swoole-4.3.4
+    /usr/local/php/bin/phpize
+    ./configure --with-php-config=/usr/local/php/bin/php-config
+    make && make install
+    修改php.ini文件：
+    添加extension=swoole.so
+    service php-fpm restart
 ---------------------------------------------------------------------
 
-##其他功能:
+其他功能:
 
     # 检查并且显示Apache相关安装包
     [root@localhost ~]# rpm -qa | grep mysql
@@ -278,14 +304,13 @@
     # 查看所有数据库用户
     mysql>SELECT DISTINCT CONCAT('User: ''',user,'''@''',host,''';') AS query FROM mysql.user;
 
-    sql-mode="NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
-    Incorrect datetime value: '0000-00-00 00:00:00'
 
-##mysql密码：Loong00544!#%&
 
-##mysql 远程登录密码 Vcvbuy00544!#%@$^
+mysql密码：Loong00544!#%&
 
-##定时任务
+mysql 远程登录密码 Vcvbuy00544!#%@$^
+
+定时任务
 
     yum install crontabs 
     systemctl enable crond （设为开机启动） 
@@ -306,144 +331,3 @@
     
     
     swoole 安装
-    
-    启动 php artisan swoole:http start
-    
-    
-##Apache Benchmark(简称ab) 是Apache安装包中自带的压力测试工具， ab 在 centOS7 下的安装和使用方法
-
-    ①.ab(apache benchmark)安装
-    命令： yum -y install httpd-tools
-    
-    GET压测
-    ab -n 1000 -c 10 http://localhost/index.php
-    
-    POST压测
-    ab -n 1000 -c 100 -p postdata.txt -T application/x-www-form-urlencoded "http://localhost/index.php"
-    
-    
-    
-##安装swcs分词扩展
-
-    1. 取得 scws-1.2.3 的代码
-    wget http://www.xunsearch.com/scws/down/scws-1.2.3.tar.bz2
-    
-    2. 解开压缩包
-    [hightman@d1 ~]$ tar xvjf scws-1.2.3.tar.bz2
-    
-    3. 进入目录执行配置脚本和编译
-    [hightman@d1 ~]$ cd scws-1.2.3[hightman@d1 ~/scws-1.2.3]$ ./configure --prefix=/usr/local/scws ; make ; make install
-    
-    注：这里和通用的 GNU 软件安装方式一样，具体选项参数执行 ./configure --help 查看。
-    常用选项为：--prefix=<scws的安装目录>
-    
-    4. 顺利的话已经编译并安装成功到 /usr/local/scws 中了，执行下面命令看看文件是否存在
-    [hightman@d1 ~/scws-1.2.3]$ ls -al /usr/local/scws/lib/libscws.la
-    
-    5. 试试执行 scws-cli 文件
-    [hightman@d1 ~/scws-1.2.3]$ /usr/local/scws/bin/scws -h
-    scws (scws-cli/1.2.3)
-    Simple Chinese Word Segmentation - Command line usage.
-    Copyright (C)2007 by hightman.
-    ...
-    
-    6 用 wget 下载并解压词典，或从主页下载然后自行解压再将 *.xdb 放入 /usr/local/scws/etc 目录中
-    [hightman@d1 ~/scws-1.2.3]$ cd /usr/local/scws/etc
-    [hightman@d1 /usr/local/scws/etc]$ wget http://www.xunsearch.com/scws/down/scws-dict-chs-gbk.tar.bz2
-    [hightman@d1 /usr/local/scws/etc]$ wget http://www.xunsearch.com/scws/down/scws-dict-chs-utf8.tar.bz2
-    [hightman@d1 /usr/local/scws/etc]$ tar xvjf scws-dict-chs-gbk.tar.bz2
-    [hightman@d1 /usr/local/scws/etc]$ tar xvjf scws-dict-chs-utf8.tar.bz2
-    
-    10. 如果您需要在 php 中调用分词，建议继续阅读本文安装 php 扩展，否则可跳过不看。
-    
-        假设您已经将 scws 按上述步骤安装到 /usr/local/scws 中。
-        安装此扩展要求您的 php 和系统环境安装了相应的 autoconf automake 工具及 phpize 。
-    
-        1) 进入源码目录的 phpext/ 目录 ( cd ~/scws-1.2.3 )
-        2) 执行 phpize （在PHP安装目录的bin/目录下）
-        3) 执行 ./configure --with-scws=/usr/local/scws 
-           若 php 安装在特殊目录 $php_prefix, 则请在 configure 后加上 --with-php-config=$php_prefix/bin/php-config
-        4) 执行 make 然后用 root 身份执行 make install     
-        5) 在 php.ini 中加入以下几行
-    
-    [scws]
-    ;
-    ; 注意请检查 php.ini 中的 extension_dir 的设定值是否正确, 否则请将 extension_dir 设为空，
-    ; 再把 extension = scws.so 指定绝对路径。
-    ;
-    extension = scws.so
-    scws.default.charset = gbk
-    scws.default.fpath = /usr/local/scws/etc
-    
-        6) 命令行下执行 php -m 就能看到 scws 了或者在 phpinfo() 中看看关于 scws 的部分，记得要重启 web 服务器
-           才能使新的 php.ini 生效。
-        7) 这样就算安装完成了，余下的工作只是PHP代码编写问题了。
-           关于 PHP 扩展的使用说明请参看代码中 phpext/README.md 文件或其它文档章节。
-    
-    aclocal-1.15: command not found
-    执行   autoreconf -ivf
-    
-    
-###配置自签名证书
-    cd /nginx/ssl
-    
-    openssl genrsa -out server.key 1024
-    openssl req -new -key ssl.key -out ssl.csr
-    openssl x509 -req -days 3650 -in ssl.csr -signkey ssl.key -out ssl.crt
-    
-###nginx转发的5个策略负载均衡的价值所在
-    1、轮询（默认）
-    每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。
-    upstream backserver {
-    server 192.168.0.14;
-    server 192.168.0.15;
-    }
-    
-    2、指定权重
-    指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况。
-    upstream backserver {
-    server 192.168.0.14 weight=10;
-    server 192.168.0.15 weight=10;
-    }
-    
-    3、IP绑定 ip_hash
-    每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。
-    upstream backserver {
-    ip_hash;
-    server 192.168.0.14:88;
-    server 192.168.0.15:80;
-    }
-    
-    4、fair（第三方）
-    按后端服务器的响应时间来分配请求，响应时间短的优先分配。
-    upstream backserver {
-    server server1;
-    server server2;
-    fair;
-    }
-    
-    5、url_hash（第三方）
-    按访问url的hash结果来分配请求，使每个url定向到同一个后端服务器，后端服务器为缓存时比较有效。
-    upstream backserver {
-    server squid1:3128;
-    server squid2:3128;
-    hash $request_uri;
-    hash_method crc32;
-    }
-
-
-##投票
-    FTP地址：host4352964.xincache1.cn
-    FTP账号：host4352964
-    FTP密码 W8Z8u7h9 
-    
-    mysql
-    my4443118.xincache1.cn
-    my4443118
-    d9T5y4V9
-    
-    wechat
-    znkjchszd@163.com
-    wangyi123.
-    
-    http://tp.577f.cn/index.php?g=Wap&m=Vote&a=index&token=Eioa5C5oj3S32qhH&id=20

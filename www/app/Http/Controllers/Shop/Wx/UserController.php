@@ -110,12 +110,24 @@ class UserController extends CommonController
         if ($uid != '') {
             $re = $this->usersRepository->setUsersReal($request->all(), $uid);
             if ($re) {
-                return ['code' => 0, 'msg' => '', 'data' => $re];
+                return $this->apiReturn($re);
             } else {
                 return ['code' => 1, 'msg' => '', 'data' => []];
             }
         }
         return ['code' => 1, 'msg' => '未登陆', 'data' => []];
+    }
+
+    public function uploadCartImg(Request $request)
+    {
+        $uid = Verifiable::authorization($request);
+        if ($uid != '') {
+            $data = $request->all();
+            $re = $this->usersRepository->uploadCartImg($data, $uid);
+            return $this->apiReturn($re);
+        } else {
+            return ['code' => 1, 'msg' => '未登陆'];
+        }
     }
 
     public function setUser(Request $request)

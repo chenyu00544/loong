@@ -38,7 +38,8 @@ Page({
 
   getHotKeyWords: function() {
     var that = this;
-    app.vcvbRequest("search/keywords").then((res) => {
+    app.vcvbRequest("search/keywords")
+        .then((res) => {
       if (res.data.code == 0) {
         that.setData({
           hot_key: res.data.data.keyword,

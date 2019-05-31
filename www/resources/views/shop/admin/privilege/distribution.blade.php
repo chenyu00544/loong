@@ -1,6 +1,6 @@
 @extends('shop.layouts.index')
 @section('content')
-    <body style="overflow-y: scroll;background-color: #f7f7f7;">
+    <body style="overflow: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
         <div class="title"><a href="javascript:history.go(-1);" class="s-back">返回</a>权限管理 - 分派权限 [{{$user->user_name}}]</div>
         <div class="content">

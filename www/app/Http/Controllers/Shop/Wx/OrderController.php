@@ -62,7 +62,7 @@ class OrderController extends CommonController
             if (is_array($data)) {
                 return ['code' => 0, 'msg' => '', 'data' => $data];
             } else {
-                return ['code' => 1, 'msg' => $data, 'data' => ''];
+                return $this->apiReturn([], '', $data);
             }
         }
         return ['code' => 1, 'msg' => '未登录', 'data' => []];
