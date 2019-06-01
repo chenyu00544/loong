@@ -183,8 +183,33 @@ return array(
         ),
         'reply' => array(
             'name' => '自动回复',
-            'url' => 'admin/wechat/reply',
+            'url' => 'admin/wechatreply',
         ),
+        'massmessage' => array(
+            'name' => '群发消息',
+            'url' => 'admin/wechatmassmessage',
+        ),
+        'material' => array(
+            'name' => '素材管理',
+            'url' => 'admin/wechatmaterial',
+        ),
+        'fans' => array(
+            'name' => '粉丝管理',
+            'url' => 'admin/wechatfans',
+        ),
+        'template' => array(
+            'name' => '消息模板',
+            'url' => 'admin/wechattemplate',
+        ),
+        'menu' => array(
+            'name' => '自定义菜单',
+            'url' => 'admin/wechatmenu',
+        ),
+        'qrcode' => array(
+            'name' => '二维码管理',
+            'url' => 'admin/wechatqrcode',
+        ),
+
     ),
     'wxapp' => array(
         'wxappconfig' => array(

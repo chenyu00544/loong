@@ -9,19 +9,30 @@
 namespace App\Repositories\Admin;
 
 use App\Contracts\WechatRepositoryInterface;
+use App\Facades\FileHandle;
 use App\Facades\RedisCache;
+use App\Http\Models\Shop\WechatMediaModel;
 use App\Http\Models\Shop\WechatModel;
+use App\Http\Models\Shop\WechatReplyModel;
 
 class WechatRepository implements WechatRepositoryInterface
 {
 
+    protected $wechat_id = 1;
+
     private $wechatModel;
+    private $wechatReplyModel;
+    private $wechatMediaModel;
 
     public function __construct(
-        WechatModel $wechatModel
+        WechatModel $wechatModel,
+        WechatReplyModel $wechatReplyModel,
+        WechatMediaModel $wechatMediaModel
     )
     {
         $this->wechatModel = $wechatModel;
+        $this->wechatReplyModel = $wechatReplyModel;
+        $this->wechatMediaModel = $wechatMediaModel;
     }
 
     public function getWechat($user)
@@ -53,7 +64,7 @@ class WechatRepository implements WechatRepositoryInterface
         }
         $re = $this->wechatModel->setWechat($where, $data);
         $conf = $this->wechatModel->getWechat($where);
-        if($conf){
+        if ($conf) {
             RedisCache::set('wechat_config', $conf->toArray());
         }
         return $re;
@@ -64,5 +75,34 @@ class WechatRepository implements WechatRepositoryInterface
         $data['ru_id'] = $user->ru_id;
         $data['time'] = time();
         return $this->wechatModel->addWechat($data);
+    }
+
+    public function getWechatReplyAuto()
+    {
+        $subscribe = $this->wechatReplyModel->getWechatReply(['type' => 'subscribe', 'wechat_id' => $this->wechat_id]);
+        $media = $this->wechatMediaModel->getWechatMedia(['id' => $subscribe->media_id, 'wechat_id' => $this->wechat_id], ['file', 'type', 'file_name']);
+        if ($media) {
+            $media->file = FileHandle::getImgByOssUrl($media->file);
+            $subscribe->media = $media;
+        }
+        return $subscribe;
+    }
+
+    public function getWechatMaterialByPage()
+    {
+        $newses = $this->wechatMediaModel->getWechatMediaByPage(['wechat_id' => $this->wechat_id]);
+        $morenewses = [];
+        foreach ($newses as $news) {
+            $news->file = FileHandle::getImgByOssUrl($news->file);
+            if ($news->article_id != '') {
+                $newIds = explode(',', $news->article_id);
+                $morenews = $this->wechatMediaModel->getWechatMedias($newIds);
+                $news->morenewses = $morenews;
+                $morenewses[] = $news;
+            }
+        }
+        $return['news'] = $newses;
+        $return['newses'] = $morenewses;
+        return $return;
     }
 }

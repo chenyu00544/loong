@@ -17,6 +17,21 @@ class WechatMediaModel extends Model
     public $timestamps = false;
     protected $guarded = [];
 
+    public function getWechatMediaByPage($where=array(), $column = ['*'], $size = 5)
+    {
+        return $this->select($column)
+            ->where($where)
+            ->orderBy('id', 'desc')
+            ->paginate($size);
+    }
+
+    public function getWechatMedias($inwhere=array(), $column = ['*'])
+    {
+        return $this->select($column)
+            ->whereIn('id',$inwhere)
+            ->get();
+    }
+
     public function getWechatMedia($where, $column = ['*'])
     {
         return $this->select($column)

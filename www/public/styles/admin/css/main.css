@@ -3426,3 +3426,21 @@ input[type=file].upload-file {
     display: inline-block;
     line-height: normal;
 }
+
+.news {
+    border: 1px solid #ddd;
+    padding: 5px 5px 0 5px;
+    overflow: hidden;
+}
+
+.cover {
+    height: 160px;
+    position: relative;
+    margin-bottom: 5px;
+    overflow: hidden;
+}
+
+.news .cover img {
+    width: 100%;
+    height: auto;
+}

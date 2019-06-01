@@ -13,7 +13,7 @@ use App\Facades\Verifiable;
 use App\Repositories\Admin\WechatRepository;
 use Illuminate\Http\Request;
 
-class WechatController extends CommonController
+class WechatMaterialController extends CommonController
 {
     private $wechatRepository;
 
@@ -22,7 +22,7 @@ class WechatController extends CommonController
     )
     {
         parent::__construct();
-        $this->checkPrivilege('wechatconfig');
+        $this->checkPrivilege('wechatmaterial');
         $this->wechatRepository = $wechatRepository;
     }
 
@@ -33,11 +33,21 @@ class WechatController extends CommonController
      */
     public function index()
     {
-        $wechat = $this->wechatRepository->getWechat($this->user);
-        $ru_id = $this->user->ru_id;
-        return view('shop.admin.wechat.wechatConfig', compact('wechat', 'ru_id'));
+        $navType = 'news';
+        $materials = $this->wechatRepository->getWechatMaterialByPage();
+        return view('shop.admin.wechat.wechatMaterial', compact('materials', 'navType'));
     }
 
+
+    public function addNews()
+    {
+        return view('shop.admin.wechat.addWechatMaterialNews');
+    }
+
+    public function setNews($id)
+    {
+        return view('shop.admin.wechat.setWechatMaterialNews');
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -56,7 +66,8 @@ class WechatController extends CommonController
      */
     public function store(Request $request)
     {
-        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required', "orgid" => 'required']);
+        dd($request->except('_token'));
+        $ver = Verifiable::Validator($request->all(), ["appid" => 'required']);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
@@ -72,7 +83,16 @@ class WechatController extends CommonController
      */
     public function show($id)
     {
-        //
+        $navType = $id;
+        if ($id == 'subscribe') {
+            $subscribe = $this->wechatRepository->getWechatReplyAuto();
+            return view('shop.admin.wechat.wechatReply', compact('subscribe', 'navType'));
+        } elseif ($id == 'autoreply') {
+
+        } else {
+
+        }
+
     }
 
     /**
