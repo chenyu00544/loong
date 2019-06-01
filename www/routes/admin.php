@@ -249,10 +249,14 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::resource('wechatmaterial', 'WechatMaterialController');
     Route::get('wechatmaterial/news/add', 'WechatMaterialController@addNews');
-    Route::get('wechatmaterial/news/set/{id}', 'WechatMaterialController@setNews');
-    Route::get('wechatmaterial/image/set/{id}', 'WechatMaterialController@setImage');
-    Route::get('wechatmaterial/voice/set/{id}', 'WechatMaterialController@setVoice');
-    Route::get('wechatmaterial/video/set/{id}', 'WechatMaterialController@setVideo');
+    Route::get('wechatmaterial/newses/add', 'WechatMaterialController@addNewses');
+    Route::get('wechatmaterial/news/edit/{id}', 'WechatMaterialController@editNews');
+    Route::get('wechatmaterial/image/edit/{id}', 'WechatMaterialController@setImage');
+    Route::get('wechatmaterial/voice/add', 'WechatMaterialController@addVoice');
+    Route::get('wechatmaterial/voice/edit/{id}', 'WechatMaterialController@editVoice');
+    Route::get('wechatmaterial/video/add', 'WechatMaterialController@addVideo');
+    Route::get('wechatmaterial/video/edit/{id}', 'WechatMaterialController@editVideo');
+    Route::get('wechatmaterial/modal/{id}', 'WechatMaterialController@materialModal');
 
     Route::resource('wxappconfig', 'WxappConfigController');
     Route::resource('wxappsession', 'WxappSessionController');

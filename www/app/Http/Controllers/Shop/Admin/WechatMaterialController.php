@@ -34,20 +34,42 @@ class WechatMaterialController extends CommonController
     public function index()
     {
         $navType = 'news';
-        $materials = $this->wechatRepository->getWechatMaterialByPage();
+        $materials = $this->wechatRepository->getWechatMaterialByPage($navType);
         return view('shop.admin.wechat.wechatMaterial', compact('materials', 'navType'));
     }
-
 
     public function addNews()
     {
         return view('shop.admin.wechat.addWechatMaterialNews');
     }
 
-    public function setNews($id)
+    public function addNewses()
     {
-        return view('shop.admin.wechat.setWechatMaterialNews');
+        return view('shop.admin.wechat.addWechatMaterialNewses');
     }
+
+    public function editNews($id)
+    {
+        $material = $this->wechatRepository->getWechatMaterial($id);
+        return view('shop.admin.wechat.setWechatMaterialNews', compact('material'));
+    }
+
+    public function addVideo()
+    {
+        return view('shop.admin.wechat.addWechatMaterialVideo');
+    }
+
+    public function editVideo($id)
+    {
+        $material = $this->wechatRepository->getWechatMaterial($id);
+        return view('shop.admin.wechat.setWechatMaterialVideo', compact('material'));
+    }
+
+    public function materialModal($id)
+    {
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -66,13 +88,16 @@ class WechatMaterialController extends CommonController
      */
     public function store(Request $request)
     {
-        dd($request->except('_token'));
-        $ver = Verifiable::Validator($request->all(), ["appid" => 'required']);
+        $ver = Verifiable::Validator($request->all(), []);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->wechatRepository->addWechat($request->except('_token'), $this->user);
-        return view('shop.admin.success');
+        $re = $this->wechatRepository->modifyWechatMaterial($request->except('_token'), $this->user);
+        if ($re) {
+            return view('shop.admin.success');
+        } else {
+            return view('shop.admin.failed');
+        }
     }
 
     /**
@@ -84,15 +109,8 @@ class WechatMaterialController extends CommonController
     public function show($id)
     {
         $navType = $id;
-        if ($id == 'subscribe') {
-            $subscribe = $this->wechatRepository->getWechatReplyAuto();
-            return view('shop.admin.wechat.wechatReply', compact('subscribe', 'navType'));
-        } elseif ($id == 'autoreply') {
-
-        } else {
-
-        }
-
+        $materials = $this->wechatRepository->getWechatMaterialByPage($navType);
+        return view('shop.admin.wechat.wechatMaterial', compact('materials', 'navType'));
     }
 
     /**
@@ -103,7 +121,7 @@ class WechatMaterialController extends CommonController
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -115,11 +133,11 @@ class WechatMaterialController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required', "orgid" => 'required']);
+        $ver = Verifiable::Validator($request->all(), []);
         if (!$ver->passes()) {
             return view('shop.admin.failed');
         }
-        $re = $this->wechatRepository->setWechat($request->except('_token', '_method'), $id);
+        $re = $this->wechatRepository->modifyWechatMaterial($request->except('_token', '_method'), array(), $id);
         return view('shop.admin.success');
     }
 
@@ -131,6 +149,6 @@ class WechatMaterialController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->wechatRepository->delWechatMaterial($id);
     }
 }

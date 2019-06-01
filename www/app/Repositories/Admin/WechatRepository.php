@@ -88,21 +88,153 @@ class WechatRepository implements WechatRepositoryInterface
         return $subscribe;
     }
 
-    public function getWechatMaterialByPage()
+    public function getWechatMaterialByPage($type)
     {
-        $newses = $this->wechatMediaModel->getWechatMediaByPage(['wechat_id' => $this->wechat_id]);
+        $newses = $this->wechatMediaModel->getWechatMediaByPage(['wechat_id' => $this->wechat_id, 'type' => $type]);
+
         $morenewses = [];
         foreach ($newses as $news) {
             $news->file = FileHandle::getImgByOssUrl($news->file);
-            if ($news->article_id != '') {
-                $newIds = explode(',', $news->article_id);
-                $morenews = $this->wechatMediaModel->getWechatMedias($newIds);
-                $news->morenewses = $morenews;
-                $morenewses[] = $news;
+            if ($type == 'news') {
+                if ($news->article_id != '') {
+                    $newIds = explode(',', $news->article_id);
+                    $morenews = $this->wechatMediaModel->getWechatMedias($newIds);
+                    $news->morenewses = $morenews;
+                    $morenewses[] = $news;
+                }
             }
         }
-        $return['news'] = $newses;
         $return['newses'] = $morenewses;
+        $return['news'] = $newses;
         return $return;
+    }
+
+    public function getWechatMaterial($id)
+    {
+        $material = $this->wechatMediaModel->getWechatMedia(['id' => $id]);
+        $material->file = FileHandle::getImgByOssUrl($material->file);
+        return $material;
+    }
+
+    public function modifyWechatMaterial($data, $user, $id = 0)
+    {
+        if ($id == 0) {
+            $wechat = $this->getWechat($user);
+            $updata['wechat_id'] = $wechat->id;
+            $updata['add_time'] = time();
+        } else {
+            $where['id'] = $id;
+            $media = $this->wechatMediaModel->getWechatMedia($where);
+        }
+        $updata['edit_time'] = time();
+        $path = 'wechat_material';
+        switch ($data['type']) {
+            case 'news':
+            case 'image':
+                foreach ($data as $key => $value) {
+                    if ($key == 'file') {
+                        if ($value && $value->isValid()) {
+                            if (!empty($media)) {
+                                FileHandle::deleteFile($media->file);
+                            }
+                            // 验证文件大小
+                            if ($value->getSize() > 2 * 1024 * 1024) {
+                                return false;
+                            }
+                            $updata['size'] = $value->getSize();
+                            // 验证文件格式
+                            if (!in_array($value->getMimeType(), ['image/jpeg', 'image/png'])) {
+                                return false;
+                            }
+                            $updata['file'] = FileHandle::upLoadImage($value, $path);
+                            $updata['file_name'] = explode('/', $updata['file'])[2];
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        $updata[$key] = $value;
+                    }
+                }
+                break;
+            case 'voice':
+
+                foreach ($data as $key => $value) {
+                    if ($key == 'file') {
+                        if ($value && $value->isValid()) {
+                            if (!empty($media)) {
+                                FileHandle::deleteFile($media->file);
+                            }
+
+                            // 验证文件大小
+                            if ($value->getSize() > 5 * 1024 * 1024) {
+                                return false;
+                            }
+                            $updata['size'] = $value->getSize();
+
+                            // 验证文件格式
+                            if (!in_array($value->getMimeType(), ['audio/amr', 'audio/x-mpeg', 'audio/mpeg', 'audio/mp3'])) {
+                                return false;
+                            }
+                            $updata['file'] = FileHandle::upLoad_file($value, $path);
+                            $updata['file_name'] = explode('/', $updata['file'])[2];
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        $updata[$key] = $value;
+                    }
+                }
+                break;
+            case 'video':
+                foreach ($data as $key => $value) {
+                    if ($key == 'file') {
+                        if ($value && $value->isValid()) {
+                            if (!empty($media)) {
+                                FileHandle::deleteFile($media->file);
+                            }
+
+                            // 验证文件大小
+                            if ($value->getSize() > 10 * 1024 * 1024) {
+                                return false;
+                            }
+                            $updata['size'] = $value->getSize();
+
+                            // 验证文件格式
+                            if (!in_array($value->getMimeType(), ['video/mp4'])) {
+                                return false;
+                            }
+                            $updata['file'] = FileHandle::upLoad_file($value, $path);
+                            $updata['file_name'] = explode('/', $updata['file'])[2];
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        $updata[$key] = $value;
+                    }
+                }
+                break;
+
+        }
+        if ($id == 0) {
+            $re = $this->wechatMediaModel->addWechatMedia($updata);
+        } else {
+            $re = $this->wechatMediaModel->setWechatMedia($where, $updata);
+        }
+        return $re;
+    }
+
+    public function delWechatMaterial($id)
+    {
+        $req = ['code' => 5, 'msg' => '操作失败'];
+
+        $where['id'] = $id;
+        $media = $this->wechatMediaModel->getWechatMedia($where);
+        FileHandle::deleteFile($media->file);
+        $re = $this->wechatMediaModel->delWechatMedia($where);
+        if ($re) {
+            $req['code'] = 1;
+            $req['msg'] = '操作成功';
+        }
+        return $req;
     }
 }

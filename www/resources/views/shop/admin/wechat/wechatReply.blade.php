@@ -41,10 +41,18 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <ul class="nav nav-pills" role="tablist">
-                                        <li role="presentation"><a href="javascript:;" class="glyphicon glyphicon-pencil fs-18" title="文字" data-model="text"></a></li>
-                                        <li role="presentation"><a href="javascript:;" class="glyphicon glyphicon-picture fs-18" title="图片" data-model="image"></a></li>
-                                        <li role="presentation"><a href="javascript:;" class="glyphicon glyphicon-volume-up fs-18" data-model="voice" title="语音"></a></li>
-                                        <li role="presentation"><a href="javascript:;" class="glyphicon glyphicon-film fs-18" data-model="video" title="视频"></a></li>
+                                        <li role="presentation"><a href="javascript:;"
+                                                                   class="glyphicon glyphicon-pencil fs-18" title="文字"
+                                                                   data-model="text"></a></li>
+                                        <li role="presentation"><a href="javascript:;"
+                                                                   class="glyphicon glyphicon-picture fs-18" title="图片"
+                                                                   data-model="image"></a></li>
+                                        <li role="presentation"><a href="javascript:;"
+                                                                   class="glyphicon glyphicon-volume-up fs-18"
+                                                                   data-model="voice" title="语音"></a></li>
+                                        <li role="presentation"><a href="javascript:;"
+                                                                   class="glyphicon glyphicon-film fs-18"
+                                                                   data-model="video" title="视频"></a></li>
                                     </ul>
                                 </div>
                                 <div class="panel-body">
@@ -67,10 +75,18 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <ul class="nav nav-pills" role="tablist">
-                                        <li role="presentation"><a href="javascript:;" class="glyphicon glyphicon-pencil fs-18" title="文字" data-model="text"></a></li>
-                                        <li role="presentation"><a href="javascript:;" class="glyphicon glyphicon-picture fs-18" title="图片" data-model="image"></a></li>
-                                        <li role="presentation"><a href="javascript:;" class="glyphicon glyphicon-volume-up fs-18" data-model="voice" title="语音"></a></li>
-                                        <li role="presentation"><a href="javascript:;" class="glyphicon glyphicon-film fs-18" data-model="video" title="视频"></a></li>
+                                        <li role="presentation"><a href="javascript:;"
+                                                                   class="glyphicon glyphicon-pencil fs-18" title="文字"
+                                                                   data-model="text"></a></li>
+                                        <li role="presentation"><a href="javascript:;"
+                                                                   class="glyphicon glyphicon-picture fs-18" title="图片"
+                                                                   data-model="image"></a></li>
+                                        <li role="presentation"><a href="javascript:;"
+                                                                   class="glyphicon glyphicon-volume-up fs-18"
+                                                                   data-model="voice" title="语音"></a></li>
+                                        <li role="presentation"><a href="javascript:;"
+                                                                   class="glyphicon glyphicon-film fs-18"
+                                                                   data-model="video" title="视频"></a></li>
                                     </ul>
                                 </div>
                                 <div class="panel-body">
@@ -97,21 +113,24 @@
     <script type="text/javascript" src="{{url('styles/plugin/jquery/jquery.md5.js')}}"></script>
     <script>
         $(function () {
-            $('.secret_key').click(function () {
-                var str = Date.parse(new Date()) + '';
-                $('input[name=secret_key]').val($.md5(str));
-            });
-            $('.token').click(function () {
-                var str = Date.parse(new Date()) + '';
-                $('input[name=token]').val($.md5(str));
-            });
+            $('.nav-pills a').click(function () {
+                var model = $(this).data('model');
+                if (model == 'text') {
 
-            // H5 复制粘贴 兼容IE8+，Chrome 45+, Firefox 43+
-            var copyUrl = document.querySelector('.copy-url');
-            copyUrl.onclick = function () {
-                var url = $('.url').val();
-                copyTextToClipboard(url);
-            };
+                } else {
+                    layer.open({
+                        type: 2,
+                        area: ['800px', '400px'],
+                        fixed: true, //不固定
+                        maxmin: true,
+                        title: '素材选择',
+                        content: ["{{url('admin/wechatmaterial/modal/')}}/" + model],
+                        success: function (layero, index) {
+                            layer.iframeAuto(index)
+                        }
+                    });
+                }
+            });
         });
     </script>
 @endsection
