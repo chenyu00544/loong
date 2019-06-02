@@ -25,10 +25,17 @@ class WechatMediaModel extends Model
             ->paginate($size);
     }
 
-    public function getWechatMedias($inwhere=array(), $column = ['*'])
+    public function getWechatMediasIn($inwhere=array(), $column = ['*'])
     {
         return $this->select($column)
             ->whereIn('id',$inwhere)
+            ->get();
+    }
+
+    public function getWechatMedias($where=array(), $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
             ->get();
     }
 

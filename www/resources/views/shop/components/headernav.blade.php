@@ -8,7 +8,7 @@
     <div class="fl admin-menu">
         <ul>
             @foreach($navs['index'] as $k => $v)
-                <li data-param="{{$k}}" class="fl text-center lh48 @if($loop->index == 0) active @endif"><a
+                <li data-param="{{$k}}" class="fl text-center lh48"><a
                             href="{{url($navs[array_keys($navs[$k])[0]][array_keys($navs[array_keys($navs[$k])[0]])[0]]['url'])}}"
                             target="main">{{$v}}</a>
                 </li>
@@ -248,9 +248,9 @@
 <div class="top-border"></div>
 <div class="nav-left">
     @foreach($navs['index'] as $k => $v)
-        <div class="sub-nav sub_{{$k}}" style="display:@if($k == 'home')block @else none @endif">
+        <div class="sub-nav sub_{{$k}}" data-param="sub_{{$k}}" style="display: none;">
             @foreach($navs[$k] as $key => $val)
-                <div class="item fl @if($loop->index == 0)current @endif">
+                <div class="item fl"  data-param="{{$loop->index}}">
                     <div class="title fl">
                         <a href="{{url($navs[$key][array_keys($navs[$key])[0]]['url'])}}" target="main">
                             <i class="nav_icon icon_{{$key}}"></i>
@@ -260,7 +260,7 @@
                     <div class="sub-item fl" style="display:@if($loop->index == 0)block @else none @endif">
                         <ul>
                             @foreach($navs[$key] as $n => $m)
-                                <li class="@if($loop->index == 0) curr @endif">
+                                <li class="" data-param="{{$loop->index}}">
                                     <s></s>
                                     <a href="{{url($m['url'])}}" target="main">{{$m['name']}}</a>
                                 </li>

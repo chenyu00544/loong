@@ -21,7 +21,6 @@ class WechatRuleKeywordsModel extends Model
     {
         return $this->select($column)
             ->where($where)
-            ->orderBy('add_time', 'DESC')
             ->first();
     }
 

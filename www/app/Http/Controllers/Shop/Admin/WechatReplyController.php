@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Verifiable;
 use App\Repositories\Admin\WechatRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class WechatReplyController extends CommonController
 {
@@ -23,6 +24,7 @@ class WechatReplyController extends CommonController
     {
         parent::__construct();
         $this->checkPrivilege('wechatreply');
+        View::share('backUrl', url('admin/wechatreply'));
         $this->wechatRepository = $wechatRepository;
     }
 
@@ -34,18 +36,32 @@ class WechatReplyController extends CommonController
     public function index()
     {
         $navType = 'subscribe';
-        $subscribe = $this->wechatRepository->getWechatReplyAuto();
-        return view('shop.admin.wechat.wechatReply', compact('subscribe', 'navType'));
+        $subscribes = $this->wechatRepository->getWechatReplyAutos($navType);
+        return view('shop.admin.wechat.wechatReply', compact('subscribes', 'navType'));
+    }
+
+    public function setWechatReplyAuto(Request $request)
+    {
+        $ver = Verifiable::Validator($request->all(), ['type' => 'required']);
+        if (!$ver->passes()) {
+            return view('shop.admin.failed');
+        }
+        $re = $this->wechatRepository->setWechatReplyAuto($request->except('_token'), $this->user);
+        if($re){
+            return view('shop.admin.success');
+        }else{
+            return view('shop.admin.failed');
+        }
     }
 
     /**
      * Show the form for creating a new resource.
-     *
+     * 关键字
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('shop.admin.wechat.addWechatReplyKey');
     }
 
     /**
@@ -73,26 +89,27 @@ class WechatReplyController extends CommonController
     public function show($id)
     {
         $navType = $id;
+        $subscribes = $this->wechatRepository->getWechatReplyAutos($navType);
         if ($id == 'subscribe') {
-            $subscribe = $this->wechatRepository->getWechatReplyAuto();
-            return view('shop.admin.wechat.wechatReply', compact('subscribe', 'navType'));
+            return view('shop.admin.wechat.wechatReply', compact('subscribes', 'navType'));
         } elseif ($id == 'autoreply') {
-
+            return view('shop.admin.wechat.wechatReplyMsg', compact('subscribes', 'navType'));
         } else {
-
+            return view('shop.admin.wechat.wechatReplyKey', compact('subscribes', 'navType'));
         }
 
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * 关键字
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        //
+        $subscribe = $this->wechatRepository->getWechatReplyAuto($id);
+        return view('shop.admin.wechat.setWechatReplyKey', compact('subscribe'));
     }
 
     /**
@@ -104,12 +121,7 @@ class WechatReplyController extends CommonController
      */
     public function update(Request $request, $id)
     {
-        $ver = Verifiable::Validator($request->all(), ["appid" => 'required', "appsecret" => 'required', "orgid" => 'required']);
-        if (!$ver->passes()) {
-            return view('shop.admin.failed');
-        }
-        $re = $this->wechatRepository->setWechat($request->except('_token', '_method'), $id);
-        return view('shop.admin.success');
+
     }
 
     /**
@@ -120,6 +132,6 @@ class WechatReplyController extends CommonController
      */
     public function destroy($id)
     {
-        //
+        return $this->wechatRepository->delWechatReplyAuto($id);
     }
 }

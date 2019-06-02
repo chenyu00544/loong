@@ -246,6 +246,7 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
 
     Route::resource('wechatconfig', 'WechatConfigController');
     Route::resource('wechatreply', 'WechatReplyController');
+    Route::post('wechatreply/replyauto/set', 'WechatReplyController@setWechatReplyAuto');
 
     Route::resource('wechatmaterial', 'WechatMaterialController');
     Route::get('wechatmaterial/news/add', 'WechatMaterialController@addNews');

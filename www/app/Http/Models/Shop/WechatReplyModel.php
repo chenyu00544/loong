@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class WechatReplyModel extends Model
 {
     protected $table = 'wechat_reply';
-    protected $primaryKey = 'uid';
+    protected $primaryKey = 'id';
     public $timestamps = false;
     protected $guarded = [];
 
@@ -29,6 +29,14 @@ class WechatReplyModel extends Model
             ->where($where)
             ->orderBy('add_time', 'DESC')
             ->first();
+    }
+
+    public function getWechatReplys($where, $column = ['*'])
+    {
+        return $this->select($column)
+            ->where($where)
+            ->orderBy('add_time', 'DESC')
+            ->get();
     }
 
     public function getWechatReplyHas($where, $column = ['*'], $key = '')

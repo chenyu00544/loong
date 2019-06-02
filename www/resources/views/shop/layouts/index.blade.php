@@ -24,6 +24,7 @@
 <body>
 @yield('content')
 <script type="text/javascript" src="{{asset('styles/plugin/jquery/jquery.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('styles/plugin/jquery/jquery.cookie.js')}}"></script>
 <script type="text/javascript" src="{{asset('styles/plugin/bootstrap/static/bootstrap.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('styles/plugin/bootstrap/switch/bootstrap-switch.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal.custom.js')}}"></script>
@@ -36,7 +37,7 @@
 <script type="text/javascript" src="{{asset('styles/plugin/nyroModal/js/jquery.nyroModal-ie6.js')}}"></script>
 <![endif]-->
 @if($debug)
-    <script type="text/javascript" src="{{asset('styles/admin/js/main.js')}}"></script>
+    <script type="text/javascript" src="{{asset('styles/admin/js/main.js?v='.$v)}}"></script>
 @else
     <script type="text/javascript" src="{{asset('styles/admin/js/main.min.js')}}"></script>
 @endif

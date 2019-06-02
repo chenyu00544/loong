@@ -12,9 +12,12 @@ namespace App\Http\Controllers\Shop\Admin;
 use App\Facades\Verifiable;
 use App\Repositories\Admin\WechatRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class WechatMaterialController extends CommonController
 {
+
     private $wechatRepository;
 
     public function __construct(
@@ -23,6 +26,7 @@ class WechatMaterialController extends CommonController
     {
         parent::__construct();
         $this->checkPrivilege('wechatmaterial');
+        View::share('backUrl', url('admin/wechatmaterial'));
         $this->wechatRepository = $wechatRepository;
     }
 
@@ -67,7 +71,9 @@ class WechatMaterialController extends CommonController
 
     public function materialModal($id)
     {
-
+        $type = $id;
+        $materials = $this->wechatRepository->getWechatMaterials($id);
+        return view('shop.admin.wechat.modal.materiaLibrary', compact('type', 'materials'));
     }
 
     /**

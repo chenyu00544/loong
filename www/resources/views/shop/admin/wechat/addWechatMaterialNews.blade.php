@@ -3,7 +3,7 @@
     <body style="overflow: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
         <div class="title">
-            <a href="javascript:history.go(-1);" class="s-back">返回</a>
+            <a href="{{$backUrl}}" class="s-back">返回</a>
             素材管理 - 图文添加
         </div>
         <div class="content">
@@ -58,7 +58,7 @@
 
                         <div class="form-group">
                             <label class="col-sm-3 control-label">摘要：</label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-4">
                                 <textarea name="digest" id="" class="form-control"></textarea>
                             </div>
                         </div>
