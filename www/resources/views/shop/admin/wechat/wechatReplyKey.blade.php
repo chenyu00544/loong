@@ -9,8 +9,8 @@
                     <li class="@if($navType == 'subscribe') curr @endif fl">
                         <a href="{{url('admin/wechatreply/subscribe')}}">关注自动回复</a>
                     </li>
-                    <li class="@if($navType == 'autoreply') curr @endif fl">
-                        <a href="{{url('admin/wechatreply/autoreply')}}">消息自动回复</a>
+                    <li class="@if($navType == 'msg') curr @endif fl">
+                        <a href="{{url('admin/wechatreply/msg')}}">消息自动回复</a>
                     </li>
                     <li class="@if($navType == 'keywords') curr @endif fl">
                         <a href="{{url('admin/wechatreply/keywords')}}">关键词自动回复</a>

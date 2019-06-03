@@ -176,7 +176,7 @@ class WechatRepository implements WechatRepositoryInterface
                     $re = $this->wechatReplyModel->addWechatReply($updata);
                 }
                 break;
-            case 'autoreply':
+            case 'msg':
                 if (!empty($data['content'])) {
                     $updata['content'] = $data['content'];
                 } elseif (!empty($data['media_id'])) {

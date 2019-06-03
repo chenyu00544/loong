@@ -92,7 +92,7 @@ class WechatReplyController extends CommonController
         $subscribes = $this->wechatRepository->getWechatReplyAutos($navType);
         if ($id == 'subscribe') {
             return view('shop.admin.wechat.wechatReply', compact('subscribes', 'navType'));
-        } elseif ($id == 'autoreply') {
+        } elseif ($id == 'msg') {
             return view('shop.admin.wechat.wechatReplyMsg', compact('subscribes', 'navType'));
         } else {
             return view('shop.admin.wechat.wechatReplyKey', compact('subscribes', 'navType'));

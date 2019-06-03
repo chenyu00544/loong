@@ -2,7 +2,7 @@
 @section('content')
     <body style="overflow: scroll;background-color: #f7f7f7;">
     <div class="warpper clearfix">
-        <div class="title">微信设置 - 自动回复</div>
+        <div class="title">微信设置 - 消息自动回复</div>
         <div class="content">
             <div class="tabs mar-top-20">
                 <ul class="fl">
@@ -88,7 +88,8 @@
                                                                  src="{{$subscribe->media->file}}" controls=""/>
                                                         </div>
                                                         <div>
-                                                            <h5 class="mar-bt-5 fl" style="">{{$subscribe->media->title}}</h5>
+                                                            <h5 class="mar-bt-5 fl"
+                                                                style="">{{$subscribe->media->title}}</h5>
                                                             <div style="float: left;overflow: hidden;width: 80px;height: 40px;">{!! $subscribe->media->content !!}</div>
                                                         </div>
                                                         <i class="checked"></i>
@@ -135,7 +136,7 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="media_id" value="">
-                                <input type="hidden" name="type" value="subscribe">
+                                <input type="hidden" name="type" value="msg">
                                 <input type="hidden" name="id" value="{{$subscribe->id}}">
                                 <div class="form-group">
                                     <div class="col-sm-1 control-label"></div>
@@ -176,7 +177,7 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="media_id" value="">
-                                <input type="hidden" name="type" value="subscribe">
+                                <input type="hidden" name="type" value="msg">
                                 <input type="hidden" name="id" value="">
                                 <div class="form-group">
                                     <div class="col-sm-4 control-label">&nbsp;</div>
