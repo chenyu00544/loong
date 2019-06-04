@@ -245,8 +245,15 @@ Route::group(['middleware' => ['admin.login'], 'prefix' => 'admin', 'namespace' 
     Route::resource('mobileoauth', 'MobileOAuthController');
 
     Route::resource('wechatconfig', 'WechatConfigController');
+
     Route::resource('wechatreply', 'WechatReplyController');
     Route::post('wechatreply/replyauto/set', 'WechatReplyController@setWechatReplyAuto');
+
+    Route::resource('wechatmenu', 'WechatMenuController');
+    Route::post('wechatmenu/change', 'WechatMenuController@change');
+    Route::post('wechatmenu/menu/create', 'WechatMenuController@createMenu');
+    Route::get('wechatmenu/modal/{$id}', 'WechatMenuController@modal');
+
 
     Route::resource('wechatmaterial', 'WechatMaterialController');
     Route::get('wechatmaterial/news/add', 'WechatMaterialController@addNews');

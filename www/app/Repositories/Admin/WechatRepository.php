@@ -12,6 +12,7 @@ use App\Contracts\WechatRepositoryInterface;
 use App\Facades\FileHandle;
 use App\Facades\RedisCache;
 use App\Http\Models\Shop\WechatMediaModel;
+use App\Http\Models\Shop\WechatMenuModel;
 use App\Http\Models\Shop\WechatModel;
 use App\Http\Models\Shop\WechatReplyModel;
 use App\Http\Models\Shop\WechatRuleKeywordsModel;
@@ -25,18 +26,21 @@ class WechatRepository implements WechatRepositoryInterface
     private $wechatReplyModel;
     private $wechatMediaModel;
     private $wechatRuleKeywordsModel;
+    private $wechatMenuModel;
 
     public function __construct(
         WechatModel $wechatModel,
         WechatReplyModel $wechatReplyModel,
         WechatMediaModel $wechatMediaModel,
-        WechatRuleKeywordsModel $wechatRuleKeywordsModel
+        WechatRuleKeywordsModel $wechatRuleKeywordsModel,
+        WechatMenuModel $wechatMenuModel
     )
     {
         $this->wechatModel = $wechatModel;
         $this->wechatReplyModel = $wechatReplyModel;
         $this->wechatMediaModel = $wechatMediaModel;
         $this->wechatRuleKeywordsModel = $wechatRuleKeywordsModel;
+        $this->wechatMenuModel = $wechatMenuModel;
     }
 
     public function initParam($user)
@@ -443,5 +447,20 @@ class WechatRepository implements WechatRepositoryInterface
             $req['msg'] = '操作成功';
         }
         return $req;
+    }
+
+    public function getWechatMenus()
+    {
+        $menus = $this->wechatMenuModel->getWechatMenus(['pid' => 0]);
+        foreach ($menus as $menu) {
+            foreach ($menu->subMenus as $key => $subMenu) {
+                if ($key != $menu->subMenus->count() - 1) {
+                    $subMenu->name = '┣' . $subMenu->name;
+                } else {
+                    $subMenu->name = '┗' . $subMenu->name;
+                }
+            }
+        }
+        return $menus;
     }
 }
